@@ -1,0 +1,10 @@
+[package]
+name = "ro-contracts"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+bytes.workspace = true
+serde.workspace = true
+thiserror.workspace = true
+async-trait.workspace = true

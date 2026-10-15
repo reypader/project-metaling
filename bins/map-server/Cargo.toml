@@ -1,0 +1,16 @@
+[package]
+name = "map-server"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+ro-contracts.workspace = true
+ro-packets.workspace = true
+ro-engine.workspace = true
+ro-db.workspace = true
+ro-mechanics.workspace = true
+ro-persistence.workspace = true
+ro-scripting.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true

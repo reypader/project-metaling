@@ -1,0 +1,40 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/contracts",
+    "crates/packets",
+    "crates/engine",
+    "crates/db",
+    "crates/mechanics",
+    "crates/persistence",
+    "crates/scripting",
+    "bins/login-server",
+    "bins/char-server",
+    "bins/map-server",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[workspace.dependencies]
+ro-contracts = { path = "crates/contracts" }
+ro-packets = { path = "crates/packets" }
+ro-engine = { path = "crates/engine" }
+ro-db = { path = "crates/db" }
+ro-mechanics = { path = "crates/mechanics" }
+ro-persistence = { path = "crates/persistence" }
+ro-scripting = { path = "crates/scripting" }
+
+tokio = { version = "1.40", features = ["full"] }
+bytes = "1.7"
+serde = { version = "1.0", features = ["derive"] }
+serde_yaml = "0.9"
+thiserror = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+smallvec = { version = "1.13", features = ["union", "const_generics"] }
+fixedbitset = "0.5"
+rustc-hash = "2.0"
+async-trait = "0.1"

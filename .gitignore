@@ -1,0 +1,36 @@
+# External Reference Repositories
+/reference/
+
+# Rust / Cargo Build Artifacts
+/target/
+**/*.rs.bk
+*.pdb
+
+# Ragnarok Online Binary & Runtime Data
+*.grf
+*.gpf
+*.rgz
+*.gat
+*.rsw
+*.gnd
+*.mcache
+*.dat
+/data/
+/maps/
+/logs/
+
+# Local Databases, Env & Secrets
+.env
+.env.*
+!.env.example
+*.sqlite
+*.sqlite3
+*.db
+
+# OS & IDE Artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
