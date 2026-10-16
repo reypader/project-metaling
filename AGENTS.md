@@ -12,20 +12,21 @@ If you are operating at the workspace root, you are the **Main Agent**.
   * `./AGENTS.md` and `./crates/<domain>/AGENTS.md` (Architecture, governance, and subagent domain specs)
   * `./crates/contracts/**` (Strictly pure cross-crate traits, DTOs, Event enums, error types, and ID newtypes)
   * `./bins/**` (`./bins/login-server/**`, `./bins/char-server/**`, `./bins/map-server/**`) (Executable binary entrypoints under the exclusive jurisdiction of the Main Agent)
+  * `./tools/**` (`./tools/proxy/**`, auxiliary development and debugging tools under the exclusive jurisdiction of the Main Agent)
 * **Strict Prohibition:** **YOU MUST NEVER traverse, read, or modify the implementation files inside `./crates/<domain>/src/**`** (except `./crates/contracts/**`).
 * **Your Job:**
   1. Arbitrate whether a new cross-domain contract (trait, event struct, or DTO) is needed in `crates/contracts`.
   2. Update `crates/contracts` so downstream subagents have a compiling target interface.
   3. Delegate domain implementation tasks to the specific Subagent responsible for that library crate via `invoke_subagent`.
-  4. Connect the completed library crates together inside `./bins/*`.
+  4. Connect the completed library crates together inside `./bins/*` and `./tools/*`.
 
 #### Mandatory Operating Rules for the Main Agent:
 1. **Strict Interface Purity in `crates/contracts`:**
    `crates/contracts` contains zero business logic, zero concrete codecs, zero wire framing loops, and zero heavy transport dependencies. Only abstract data structures, enums, newtypes, and traits belong in this crate. Concrete framing algorithms and serialization logic belong in domain crates such as `crates/packets`.
 2. **Mandatory Subagent Delegation:**
    The Main Agent must never implement domain logic, including packet framing, packet parsing, packet serialization, coordinate bit-packing, database repositories, combat formulas, or ECS systems. When new domain functionality is required, the Main Agent defines the compiling interface in `crates/contracts` and immediately invokes the corresponding domain subagent using `invoke_subagent`.
-3. **Binary Restraint and Exclusive Jurisdiction over `bins/*`:**
-   All binaries under `./bins/*` remain under the exclusive write scope of the Main Agent. Binary entrypoints are restricted to bootstrap configuration, dependency injection, inter-server HTTP routing, TCP session supervision, and high-level actor coordination that calls domain crate functions. Inline gameplay state machines, bespoke protocol decoders, and hardcoded entity repositories inside `bins/*` are prohibited.
+3. **Binary Restraint and Exclusive Jurisdiction over `bins/*` and `tools/*`:**
+   All binaries under `./bins/*` and auxiliary tools under `./tools/*` remain under the exclusive write scope of the Main Agent. Binary entrypoints are restricted to bootstrap configuration, dependency injection, inter-server HTTP routing, TCP session supervision, proxying, and high-level actor coordination that calls domain crate functions. Inline gameplay state machines, bespoke protocol decoders, and hardcoded entity repositories inside `bins/*` are prohibited.
 
 ### Role 2: Domain Subagents (Crate-Scoped Specialists)
 Each library crate under `./crates/<domain>/` has its own local `AGENTS.md` and is served by a dedicated Subagent.
@@ -35,7 +36,7 @@ Each library crate under `./crates/<domain>/` has its own local `AGENTS.md` and 
   3. Any file inside `./reference/**` (`rathena`, `Hercules`, `rust-ro`, `rathena-script-lang-interpreter`) needed to extract domain specifications.
 * **Direct Inspection of Contracts (No `cargo doc`):** Subagents must read the Rust files in `./crates/contracts/src/` directly via file viewing tools. Subagents must avoid invoking `cargo doc` or background documentation builds to inspect contracts, as this introduces unnecessary compilation overhead.
 * **Allowed Write Scope:** **ONLY** `./crates/<domain>/src/**` and `./crates/<domain>/Cargo.toml`.
-* **Strict Prohibition:** A Subagent **MUST NEVER** write to `./crates/contracts/**`, `./bins/**`, or another domain crate (`./crates/<other_domain>/**`). Subagents also must never read implementation files inside other domain crates (`./crates/<other_domain>/src/**`). If a Subagent needs a missing field, event, or trait method in `crates/contracts`, it must **STOP** and request a Contract Amendment from the Main Agent.
+* **Strict Prohibition:** A Subagent **MUST NEVER** write to `./crates/contracts/**`, `./bins/**`, `./tools/**`, or another domain crate (`./crates/<other_domain>/**`). Subagents also must never read implementation files inside other domain crates (`./crates/<other_domain>/src/**`). If a Subagent needs a missing field, event, or trait method in `crates/contracts`, it must **STOP** and request a Contract Amendment from the Main Agent.
 
 ---
 
@@ -54,10 +55,12 @@ project-metaling/
 │   ├── mechanics/            # [Subagent] Pure stateless math functions (stats, damage Context, status rules)
 │   ├── persistence/          # [Subagent] PostgreSQL (sqlx) & stub repositories for accounts/characters
 │   └── scripting/            # [Subagent] Adapter around rathena-script-lang-interpreter for NPC/item scripts
-└── bins/
-    ├── login-server/         # [Main Agent] TCP :6900 & HTTP :6901 binary entrypoint
-    ├── char-server/          # [Main Agent] TCP :6121 & HTTP :6122 binary entrypoint
-    └── map-server/           # [Main Agent] TCP :5121 & HTTP :5122 binary entrypoint (hosts `crates/engine`)
+├── bins/
+│   ├── login-server/         # [Main Agent] TCP :6900 & HTTP :6901 binary entrypoint
+│   ├── char-server/          # [Main Agent] TCP :6121 & HTTP :6122 binary entrypoint
+│   └── map-server/           # [Main Agent] TCP :5121 & HTTP :5122 binary entrypoint (hosts `crates/engine`)
+└── tools/
+    └── proxy/                # [Main Agent] RO packet logging & forwarding proxy (:6900, :6121, :5121)
 ```
 
 ### 2.1 Behavior Delegation Matrix
