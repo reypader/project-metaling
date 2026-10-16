@@ -27,14 +27,16 @@ ro-mechanics = { path = "crates/mechanics" }
 ro-persistence = { path = "crates/persistence" }
 ro-scripting = { path = "crates/scripting" }
 
-tokio = { version = "1.40", features = ["full"] }
-bytes = "1.7"
+tokio = { version = "1.53", features = ["full"] }
+bytes = "1.12"
 serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.9"
-thiserror = "1.0"
+thiserror = "2.0"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
-smallvec = { version = "1.13", features = ["union", "const_generics"] }
+smallvec = { version = "1.16", features = ["union", "const_generics"] }
 fixedbitset = "0.5"
-rustc-hash = "2.0"
+rustc-hash = "2.1"
 async-trait = "0.1"
+axum = { version = "0.8", features = ["json"] }
+tokio-util = { version = "0.7", features = ["codec"] }
