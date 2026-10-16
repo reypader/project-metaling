@@ -38,7 +38,7 @@ pub struct MapPosition {
     pub dir: u8,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct CharacterSummary {
     pub char_id: CharId,
     pub account_id: AccountId,
@@ -52,4 +52,14 @@ pub struct CharacterSummary {
     pub hair_color: u16,
     pub last_map: String,
     pub last_pos: MapPosition,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CharServerInfo {
+    pub ip: [u8; 4],
+    pub port: u16,
+    pub name: String,
+    pub users: u16,
+    pub server_type: u16,
+    pub new_server: u16,
 }

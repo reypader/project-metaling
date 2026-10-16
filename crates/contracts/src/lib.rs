@@ -3,10 +3,12 @@
 
 pub mod http;
 pub mod ids;
+pub mod map;
 pub mod packet;
 
 pub use http::*;
 pub use ids::*;
+pub use map::*;
 pub use packet::*;
 
 /// Target client version from `reference/rathena/src/config/packets.hpp`.

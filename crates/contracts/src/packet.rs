@@ -6,7 +6,7 @@ use bytes::Bytes;
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
-use crate::ids::{AccountId, CharId, MapPosition, SessionId, Sex};
+use crate::ids::{AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, SessionId, Sex};
 
 /// Maximum allowed packet size across all servers to prevent unbounded allocation.
 pub const MAX_PACKET_SIZE: usize = 65535;
@@ -93,6 +93,12 @@ pub enum OutboundTarget {
     Broadcast(BroadcastScope),
 }
 
+impl From<BroadcastScope> for OutboundTarget {
+    fn from(scope: BroadcastScope) -> Self {
+        Self::Broadcast(scope)
+    }
+}
+
 /// Scope definition for spatial or broadcast packets emitted by map-server.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum BroadcastScope {
@@ -142,9 +148,28 @@ impl OutboundPacket {
     }
 }
 
-/// High-level intents decoded from incoming client packets (`CZ_`).
+/// High-level intents decoded from incoming client packets (`CA_`, `CH_`, `CZ_`).
+///
+/// Variants contain only the fields physically present in the wire frame.
+/// Session-level identity (`SessionId`, `AccountId`, `CharId`) is carried by [`SessionIntent`].
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ClientIntent {
+    Login {
+        username: String,
+        password: String,
+        client_version: u32,
+        client_type: u8,
+    },
+    EnterCharServer {
+        account_id: AccountId,
+        login_id1: u32,
+        login_id2: u32,
+        client_version: u16,
+        sex: Sex,
+    },
+    SelectCharacter {
+        slot: u8,
+    },
     EnterMap {
         account_id: AccountId,
         char_id: CharId,
@@ -152,32 +177,50 @@ pub enum ClientIntent {
         client_tick: u32,
         sex: Sex,
     },
-    NotifyActorInit {
-        char_id: CharId,
-    },
+    NotifyActorInit,
     RequestTime {
-        char_id: CharId,
         client_tick: u32,
     },
     RequestMove {
-        char_id: CharId,
         dest_x: u16,
         dest_y: u16,
     },
     ChangeDirection {
-        char_id: CharId,
         head_dir: u16,
         body_dir: u8,
     },
     RequestAction {
-        char_id: CharId,
         target_id: u32,
         action_type: u8,
     },
     RequestEntityName {
-        char_id: CharId,
         entity_id: u32,
     },
+}
+
+/// Session-authenticated envelope wrapping a wire `ClientIntent` for dispatch to server logic actors.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SessionIntent {
+    pub session_id: SessionId,
+    pub account_id: Option<AccountId>,
+    pub char_id: Option<CharId>,
+    pub intent: ClientIntent,
+}
+
+impl SessionIntent {
+    pub fn new(
+        session_id: SessionId,
+        account_id: Option<AccountId>,
+        char_id: Option<CharId>,
+        intent: ClientIntent,
+    ) -> Self {
+        Self {
+            session_id,
+            account_id,
+            char_id,
+            intent,
+        }
+    }
 }
 
 #[derive(thiserror::Error, Debug)]
@@ -197,6 +240,9 @@ pub enum PacketCodecError {
 
     #[error("Unknown or unregistered packet opcode: {0}")]
     UnknownOpcode(PacketOpcode),
+
+    #[error("Unsupported server event for serialization: {0}")]
+    UnsupportedEvent(String),
 }
 
 /// Table trait defining expected frame lengths for opcodes under a specific client version.
@@ -211,4 +257,95 @@ pub trait PacketIntentParser: Send + Sync {
         raw: &RawPacket,
         packetver: u32,
     ) -> Result<Option<ClientIntent>, PacketCodecError>;
+}
+
+/// High-level domain events emitted by logic modules and engine systems, decoupled from wire serialization.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ServerEvent {
+    LoginAccepted {
+        account_id: AccountId,
+        login_id1: u32,
+        login_id2: u32,
+        sex: Sex,
+        char_servers: Vec<CharServerInfo>,
+    },
+    LoginRefused {
+        error_code: u8,
+    },
+    CharacterListLoaded {
+        account_id: AccountId,
+        total_slots: u8,
+        characters: Vec<CharacterSummary>,
+    },
+    CharacterSelected {
+        char_id: CharId,
+        map_name: String,
+        map_host: [u8; 4],
+        map_port: u16,
+    },
+    AcceptEnter {
+        server_tick: u32,
+        pos: MapPosition,
+    },
+    TimeSynchronized {
+        server_tick: u32,
+    },
+    EntityMoved {
+        char_id: CharId,
+        start_pos: MapPosition,
+        dest_pos: MapPosition,
+        move_start_tick: u32,
+    },
+    EntityAppeared {
+        char_id: CharId,
+        pos: MapPosition,
+        name: String,
+        hair_style: u16,
+        hair_color: u16,
+    },
+    EntityVanished {
+        char_id: CharId,
+        vanish_type: u8,
+    },
+    EntityAction {
+        source_id: u32,
+        target_id: u32,
+        action_type: u8,
+        action_tick: u32,
+    },
+    ParameterChanged {
+        var_id: u16,
+        value: i32,
+    },
+}
+
+/// High-level domain event tagged with its target broadcast scope.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ScopedServerEvent {
+    pub scope: BroadcastScope,
+    pub event: ServerEvent,
+}
+
+impl ScopedServerEvent {
+    pub fn new(scope: BroadcastScope, event: ServerEvent) -> Self {
+        Self { scope, event }
+    }
+}
+
+/// Trait defining the serializer contract that translates a domain `ServerEvent` into wire `Bytes`.
+pub trait EventEncoder: Send + Sync {
+    fn encode_event(
+        &self,
+        event: &ServerEvent,
+        packetver: u32,
+    ) -> Result<Bytes, PacketCodecError>;
+
+    fn encode_scoped_event(
+        &self,
+        scoped: &ScopedServerEvent,
+        packetver: u32,
+    ) -> Result<OutboundPacket, PacketCodecError> {
+        let data = self.encode_event(&scoped.event, packetver)?;
+        Ok(OutboundPacket::new(scoped.scope.clone().into(), data))
+    }
 }
