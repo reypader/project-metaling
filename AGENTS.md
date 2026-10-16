@@ -3,40 +3,53 @@
 ## 1. Project Vision & Multi-Agent Operating Model
 **Project Metaling** is a clean-room *Ragnarok Online* (RO) server workspace written in **Rust** using a custom **Entity-Component-System (ECS)** architecture.
 
-To keep LLM context windows small and prevent cross-domain coupling, this Cargo workspace enforces a **Strict Subagent Isolation Protocol**:
+To keep LLM context windows focused and prevent cross-domain coupling, this Cargo workspace enforces a **Strict Subagent Isolation Protocol** backed by custom subagents under `./.agents/agents/*.md` and contextual directory rules (`AGENTS.md`) inside each module:
 
 ### Role 1: The Main Agent (Root Orchestrator & Contract Arbiter)
 If you are operating at the workspace root, you are the **Main Agent**.
-* **Your Exclusive Write Scope:**
+* **Your Exclusive Read & Write Scope:**
   * `./Cargo.toml` (Workspace manifest and shared dependencies)
-  * `./AGENTS.md` and `./crates/<domain>/AGENTS.md` (Architecture, governance, and subagent domain specs)
-  * `./crates/contracts/**` (Strictly pure cross-crate traits, DTOs, Event enums, error types, and ID newtypes)
-  * `./bins/**` (`./bins/login-server/**`, `./bins/char-server/**`, `./bins/map-server/**`) (Executable binary entrypoints under the exclusive jurisdiction of the Main Agent)
-  * `./tools/**` (`./tools/proxy/**`, auxiliary development and debugging tools under the exclusive jurisdiction of the Main Agent)
-* **Strict Prohibition:** **YOU MUST NEVER traverse, read, or modify the implementation files inside `./crates/<domain>/src/**`** (except `./crates/contracts/**`).
+  * `./AGENTS.md`, `./crates/*/AGENTS.md`, `./bins/AGENTS.md`, `./tools/AGENTS.md`, and `./.agents/**` (Architecture, governance, contextual module rules, and custom subagent definitions)
+  * `./crates/ro-contracts/**` (Strictly pure cross-crate traits, DTOs, Event enums, error types, and ID newtypes)
+* **Strict Prohibition:**
+  * **YOU MUST NEVER traverse, read, or modify any files inside `./crates/ro-packets/**`, `./crates/ro-engine/**`, `./crates/ro-db/**`, `./crates/ro-mechanics/**`, `./crates/ro-persistence/**`, `./crates/ro-scripting/**`, `./bins/**`, `./tools/**`, or `./reference/**`** (except for maintaining their `AGENTS.md` rule files when recalibrating workspace governance).
 * **Your Job:**
-  1. Arbitrate whether a new cross-domain contract (trait, event struct, or DTO) is needed in `crates/contracts`.
-  2. Update `crates/contracts` so downstream subagents have a compiling target interface.
-  3. Delegate domain implementation tasks to the specific Subagent responsible for that library crate via `invoke_subagent`.
-  4. Connect the completed library crates together inside `./bins/*` and `./tools/*`.
+  1. Consult the `reference-explorer` subagent via `invoke_subagent` whenever reference specifications from `./reference/**` are required to design or amend contracts.
+  2. Arbitrate whether a new cross-domain contract (trait, event struct, or DTO) is needed in `crates/ro-contracts`, update `crates/ro-contracts`, and verify compilation via `cargo check -p ro-contracts`.
+  3. Delegate crate implementation tasks to the dedicated crate subagents (`ro-packets`, `ro-engine`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`) via `invoke_subagent`.
+  4. Delegate server binary coordination (`login-server`, `char-server`, `map-server`) to `ro-bins` and auxiliary tooling tasks (`proxy`) to `ro-tools` via `invoke_subagent`.
 
 #### Mandatory Operating Rules for the Main Agent:
-1. **Strict Interface Purity in `crates/contracts`:**
-   `crates/contracts` contains zero business logic, zero concrete codecs, zero wire framing loops, and zero heavy transport dependencies. Only abstract data structures, enums, newtypes, and traits belong in this crate. Concrete framing algorithms and serialization logic belong in domain crates such as `crates/packets`.
+1. **Strict Interface Purity in `crates/ro-contracts`:**
+   `crates/ro-contracts` contains zero business logic, zero concrete codecs, zero wire framing loops, and zero heavy transport dependencies. Only abstract data structures, enums, newtypes, and traits belong in this crate. Concrete framing algorithms and serialization logic belong in domain crates such as `crates/ro-packets`.
 2. **Mandatory Subagent Delegation:**
-   The Main Agent must never implement domain logic, including packet framing, packet parsing, packet serialization, coordinate bit-packing, database repositories, combat formulas, or ECS systems. When new domain functionality is required, the Main Agent defines the compiling interface in `crates/contracts` and immediately invokes the corresponding domain subagent using `invoke_subagent`.
-3. **Binary Restraint and Exclusive Jurisdiction over `bins/*` and `tools/*`:**
-   All binaries under `./bins/*` and auxiliary tools under `./tools/*` remain under the exclusive write scope of the Main Agent. Binary entrypoints are restricted to bootstrap configuration, dependency injection, inter-server HTTP routing, TCP session supervision, proxying, and high-level actor coordination that calls domain crate functions. Inline gameplay state machines, bespoke protocol decoders, and hardcoded entity repositories inside `bins/*` are prohibited.
+   The Main Agent must never implement domain logic, server binary entrypoints, proxy tools, or reference file searches directly. When new functionality is required, the Main Agent defines the compiling interface in `crates/ro-contracts` and invokes the corresponding custom subagent via `invoke_subagent`.
 
-### Role 2: Domain Subagents (Crate-Scoped Specialists)
-Each library crate under `./crates/<domain>/` has its own local `AGENTS.md` and is served by a dedicated Subagent.
-* **Allowed Read Scope:**
-  1. Its own crate directory (`./crates/<domain>/**`).
-  2. The shared contract crate (`./crates/contracts/**`, including `./crates/contracts/src/**`). Subagents are encouraged to read contract definitions directly from disk.
-  3. Any file inside `./reference/**` (`rathena`, `Hercules`, `rust-ro`, `rathena-script-lang-interpreter`) needed to extract domain specifications.
-* **Direct Inspection of Contracts (No `cargo doc`):** Subagents must read the Rust files in `./crates/contracts/src/` directly via file viewing tools. Subagents must avoid invoking `cargo doc` or background documentation builds to inspect contracts, as this introduces unnecessary compilation overhead.
-* **Allowed Write Scope:** **ONLY** `./crates/<domain>/src/**` and `./crates/<domain>/Cargo.toml`.
-* **Strict Prohibition:** A Subagent **MUST NEVER** write to `./crates/contracts/**`, `./bins/**`, `./tools/**`, or another domain crate (`./crates/<other_domain>/**`). Subagents also must never read implementation files inside other domain crates (`./crates/<other_domain>/src/**`). If a Subagent needs a missing field, event, or trait method in `crates/contracts`, it must **STOP** and request a Contract Amendment from the Main Agent.
+### Role 2: Custom Subagents (`./.agents/agents/*.md`)
+Each submodule in the workspace is served by a dedicated custom subagent configured in `./.agents/agents/<name>.md`:
+
+| Subagent Name | Config File | Model & Effort | Owned Scope | Responsibility |
+| :--- | :--- | :--- | :--- | :--- |
+| **`ro-packets`** | `.agents/agents/ro-packets.md` | `gemini-3.8-flash` (`high`) | `./crates/ro-packets/**` | Binary wire framing, `PACKETVER = 20260219` opcodes, packet parsing, event encoding, `WBUFPOS`/`WBUFPOS2` bit-packing |
+| **`ro-engine`** | `.agents/agents/ro-engine.md` | `gemini-3.8-flash` (`high`) | `./crates/ro-engine/**` | Deterministic ECS `World`, `8x8` `SpatialGrid`, A* pathfinding, AoI broadcasting, entity lifecycles, map tick loop |
+| **`ro-db`** | `.agents/agents/ro-db.md` | `gemini-3.8-flash` (`high`) | `./crates/ro-db/**` | `.gat`/`.rsw` walkability grids, Renewal YAML loaders (`item_db`, `mob_db`, `skill_db`), spawn/warp file parsers |
+| **`ro-mechanics`** | `.agents/agents/ro-mechanics.md` | `gemini-3.8-flash` (`high`) | `./crates/ro-mechanics/**` | Pure stateless Aegis and Renewal stat derivations, elemental/size/race tables, combat damage formulas |
+| **`ro-persistence`** | `.agents/agents/ro-persistence.md` | `gemini-3.8-flash` (`high`) | `./crates/ro-persistence/**` | `InMemoryStubRepo` (Phases 0 to 3), PostgreSQL `sqlx` `PostgresRepo` (Phase 4+), SQL migrations, account/character CRUD |
+| **`ro-scripting`** | `.agents/agents/ro-scripting.md` | `gemini-3.8-flash` (`high`) | `./crates/ro-scripting/**` | `rathena-script-lang-interpreter` VM adapter, non-blocking NPC dialog suspension/resumption, item bonus scripts |
+| **`ro-bins`** | `.agents/agents/ro-bins.md` | `gemini-3.8-flash` (`high`) | `./bins/**` | `login-server`, `char-server`, `map-server` entrypoints, TCP session workers, actor channels, inter-server Axum HTTP APIs |
+| **`ro-tools`** | `.agents/agents/ro-tools.md` | `gemini-3.8-flash` (`high`) | `./tools/**` | `tools/proxy` TCP packet logging/forwarding proxy and auxiliary diagnostic utilities |
+| **`reference-explorer`** | `.agents/agents/reference-explorer.md` | `gemini-3.8-flash` (`medium`) | `./reference/**` (Read-Only) | Extracts protocol layouts, YAML schemas, SQL schemas, and Aegis mechanics from `./reference/**` for the Main Agent and all subagents |
+| **`code-reviewer`** | `.agents/agents/code-reviewer.md` | `claude-opus-5.5` | Target crate/package (Read-Only) | Audits multi-file changes across any crate, binary, or tool package to identify defects, contract gaps, and edge cases |
+
+#### Mandatory Operating Rules for All Subagents:
+1. **Read-Only Access to `crates/ro-contracts` & Requesting Contract Changes (No `cargo doc`):**
+   All subagents may read `./crates/ro-contracts/**` directly from disk via file viewing tools. Subagents must never modify `./crates/ro-contracts/**` and must never invoke `cargo doc` to inspect contract definitions. Whenever a subagent needs a new or modified field, event, DTO, error variant, or trait method in `crates/ro-contracts`, it can request the contract change from the Main/Parent Agent and wait for the Main/Parent Agent to apply it.
+2. **Reference Lookups via `reference-explorer` Only:**
+   Neither the Main Agent nor any implementation subagent (`ro-packets`, `ro-engine`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`, `ro-bins`, `ro-tools`) may read `./reference/**` directly. Whenever reference information is needed, the agent must invoke or message `reference-explorer`.
+3. **Peer Subagent Consultation & Cross-Library Integration:**
+   Subagents must never read or modify files in another subagent's owned directory. Instead, subagents invoke (`invoke_subagent`) or message (`send_message`) one another whenever they need integration details, public constructor signatures, or behavioral clarification across library boundaries. This is especially important for `ro-bins` and `ro-tools` when connecting domain crates together.
+4. **Mandatory Multi-File Code Review (`code-reviewer`):**
+   Whenever any subagent (except `reference-explorer` and `code-reviewer`) performs code changes spanning more than one file in a crate or package, that subagent must spawn `code-reviewer` (`claude-opus-5.5`) via `invoke_subagent` to review the changes, highlight gaps and edge cases, and resolve all findings before finishing.
 
 ---
 
@@ -46,64 +59,60 @@ Each library crate under `./crates/<domain>/` has its own local `AGENTS.md` and 
 project-metaling/
 ├── AGENTS.md                 # [Main Agent] Master architecture & orchestration rules
 ├── Cargo.toml                # [Main Agent] Workspace manifest
-├── reference/                # [Read-Only for All Agents] Cloned C/C++/Rust reference repos
+├── .agents/
+│   └── agents/               # [Main Agent] Custom subagent definitions (.md)
+├── reference/                # [reference-explorer Subagent Only (Read-Only)] Cloned reference repos
 ├── crates/
-│   ├── contracts/            # [Main Agent] Shared traits, IDs, ClientIntent, OutboundPacket, DTOs
-│   ├── packets/              # [Subagent] Binary wire protocol, framing, PACKETVER structs, bit-packing
-│   ├── engine/               # [Subagent] ECS World, 8x8 SpatialGrid, Map tick loop, AoI, movement, entities
-│   ├── db/                   # [Subagent] Static YAML database loaders (item_db, mob_db, skill_db) & .gat map cache
-│   ├── mechanics/            # [Subagent] Pure stateless math functions (stats, damage Context, status rules)
-│   ├── persistence/          # [Subagent] PostgreSQL (sqlx) & stub repositories for accounts/characters
-│   └── scripting/            # [Subagent] Adapter around rathena-script-lang-interpreter for NPC/item scripts
-├── bins/
-│   ├── login-server/         # [Main Agent] TCP :6900 & HTTP :6901 binary entrypoint
-│   ├── char-server/          # [Main Agent] TCP :6121 & HTTP :6122 binary entrypoint
-│   └── map-server/           # [Main Agent] TCP :5121 & HTTP :5122 binary entrypoint (hosts `crates/engine`)
-└── tools/
-    └── proxy/                # [Main Agent] RO packet logging & forwarding proxy (:6900, :6121, :5121)
+│   ├── ro-contracts/         # [Main Agent] Shared traits, IDs, ClientIntent, OutboundPacket, DTOs
+│   ├── ro-packets/           # [ro-packets Subagent] Binary wire protocol, framing, PACKETVER structs, bit-packing
+│   ├── ro-engine/            # [ro-engine Subagent] ECS World, 8x8 SpatialGrid, Map tick loop, AoI, movement, entities
+│   ├── ro-db/                # [ro-db Subagent] Static YAML database loaders (item_db, mob_db, skill_db) & .gat map cache
+│   ├── ro-mechanics/         # [ro-mechanics Subagent] Pure stateless math functions (stats, damage Context, status rules)
+│   ├── ro-persistence/       # [ro-persistence Subagent] PostgreSQL (sqlx) & stub repositories for accounts/characters
+│   └── ro-scripting/         # [ro-scripting Subagent] Adapter around rathena-script-lang-interpreter for NPC/item scripts
+├── bins/                     # [ro-bins Subagent] Server binary entrypoints & inter-server coordination
+│   ├── login-server/         # TCP :6900 & HTTP :6901 binary entrypoint
+│   ├── char-server/          # TCP :6121 & HTTP :6122 binary entrypoint
+│   └── map-server/           # TCP :5121 & HTTP :5122 binary entrypoint (hosts `crates/ro-engine`)
+└── tools/                    # [ro-tools Subagent] Auxiliary development & debugging tools
+    └── proxy/                # RO packet logging & forwarding proxy (:6900, :6121, :5121)
 ```
 
 ### 2.1 Behavior Delegation Matrix
-When implementing a feature or fixing a bug, the Main Agent uses this matrix to determine where each behavior belongs and how crates interact through `crates/contracts`:
+When implementing a feature or fixing a bug, the Main Agent uses this matrix to determine where each behavior belongs and how crates interact through `crates/ro-contracts`:
 
-| Behavior / Responsibility | Owner Scope | Contract Interface (`crates/contracts`) | Upstream Caller / Consumer |
+| Behavior / Responsibility | Owner Scope | Contract Interface (`crates/ro-contracts`) | Upstream Caller / Consumer |
 | :--- | :--- | :--- | :--- |
-| **Cross-crate IDs, DTOs, Intents, Events, & Traits** | `crates/contracts` (Main Agent) | `ids.rs`, `packet.rs`, `map.rs`, `http.rs`, repository & engine traits | All domain crates and `bins/*` |
-| **TCP framing, opcode length table, byte parsing, event encoding, `WBUFPOS`/`WBUFPOS2` bit-packing** | `crates/packets` (Subagent) | `PacketLengthTable`, `PacketIntentParser`, `EventEncoder`, `RawPacket` | `bins/{login,char,map}-server/src/session.rs` |
-| **`.gat`/`.rsw` walkability grids, `item_db`/`mob_db`/`skill_db` YAML loading, spawn/warp file parsing** | `crates/db` (Subagent) | `MapWalkability`, static blueprint DTOs, and database provider traits | Initialized by `bins/map-server`, queried by `crates/engine` |
-| **Derived stats (`ATK`, `DEF`, `ASPD`, `HIT`, `FLEE`), elemental/size/race modifiers, damage formulas** | `crates/mechanics` (Subagent) | Pure stateless calculator traits and `DamageContext` / stat DTOs | Invoked by `crates/engine` during combat and status ticks |
-| **Account authentication, character slot CRUD, in-memory stub repo (Phases 0 to 3), PostgreSQL `sqlx` repo (Phase 4+)** | `crates/persistence` (Subagent) | `AccountRepository`, `CharacterRepository`, `CharacterSummary` | Injected into `LoginService`, `CharService`, and `MapService` |
-| **NPC conversation execution (`mes`, `next`, `select`, `warp`) & item script evaluation** | `crates/scripting` (Subagent) | Script VM runner traits and script suspension/resumption events | Invoked by `crates/engine` during entity interaction phases |
-| **ECS `World`, `8x8` `SpatialGrid`, A* pathfinding over `MapWalkability`, AoI calculation, entity lifecycle, deterministic tick loop** | `crates/engine` (Subagent) | Consumes `ClientIntent` (with session/character context), emits `ScopedServerEvent` | Hosted and ticked by `bins/map-server` (`MapService`) |
-| **TCP listener loops, raw 4-byte `AccountId` echo, `session.rs` channel bridge, Axum HTTP routers/clients, service dependency injection** | `bins/*` (Main Agent) | Consumes `crates/contracts` traits and wires concrete domain types together | Executed directly as server binaries |
+| **Cross-crate IDs, DTOs, Intents, Events, & Traits** | `crates/ro-contracts` (Main Agent) | `ids.rs`, `packet.rs`, `map.rs`, `http.rs`, repository & engine traits | All domain crates, `bins/*`, and `tools/*` |
+| **TCP framing, opcode length table, byte parsing, event encoding, `WBUFPOS`/`WBUFPOS2` bit-packing** | `crates/ro-packets` (`ro-packets`) | `PacketLengthTable`, `PacketIntentParser`, `EventEncoder`, `RawPacket` | `bins/{login,char,map}-server/src/session.rs`, `tools/proxy` |
+| **`.gat`/`.rsw` walkability grids, `item_db`/`mob_db`/`skill_db` YAML loading, spawn/warp file parsing** | `crates/ro-db` (`ro-db`) | `MapWalkability`, static blueprint DTOs, and database provider traits | Initialized by `bins/map-server`, queried by `crates/ro-engine` |
+| **Derived stats (`ATK`, `DEF`, `ASPD`, `HIT`, `FLEE`), elemental/size/race modifiers, damage formulas** | `crates/ro-mechanics` (`ro-mechanics`) | Pure stateless calculator traits and `DamageContext` / stat DTOs | Invoked by `crates/ro-engine` during combat and status ticks |
+| **Account authentication, character slot CRUD, in-memory stub repo (Phases 0 to 3), PostgreSQL `sqlx` repo (Phase 4+)** | `crates/ro-persistence` (`ro-persistence`) | `AccountRepository`, `CharacterRepository`, `CharacterSummary` | Injected into `LoginService`, `CharService`, and `MapService` |
+| **NPC conversation execution (`mes`, `next`, `select`, `warp`) & item script evaluation** | `crates/ro-scripting` (`ro-scripting`) | Script VM runner traits and script suspension/resumption events | Invoked by `crates/ro-engine` during entity interaction phases |
+| **ECS `World`, `8x8` `SpatialGrid`, A* pathfinding over `MapWalkability`, AoI calculation, entity lifecycle, deterministic tick loop** | `crates/ro-engine` (`ro-engine`) | Consumes `ClientIntent` (with session/character context), emits `ScopedServerEvent` | Hosted and ticked by `bins/map-server` (`MapService`) |
+| **TCP listener loops, raw 4-byte `AccountId` echo, `session.rs` channel bridge, Axum HTTP routers/clients, service dependency injection** | `bins/*` (`ro-bins`) | Consumes `crates/ro-contracts` traits and connects concrete domain types | Executed directly as server binaries |
+| **RO packet logging & TCP forwarding proxy across `:6900`, `:6121`, `:5121`** | `tools/*` (`ro-tools`) | Consumes `PacketLengthTable` and packet framing traits | Executed as standalone diagnostic tooling |
 
-### 2.2 Judgement Rules: What Belongs in `bins/*` vs. Domain Crates
-1. **No Domain State in `bins/*/src/service.rs`:**
-   * `LoginService` (`bins/login-server`) and `CharService` (`bins/char-server`) must delegate account lookups, credential checks, and character list/creation/deletion storage to `crates/persistence` via `AccountRepository` and `CharacterRepository`. Even during Phases 0 to 3, stub account and character records belong in `crates/persistence::InMemoryStubRepo` rather than hardcoded structs inside `bins/*`.
-   * `MapService` (`bins/map-server`) must delegate map state, default spawn coordinates, entity tracking, server tick generation, movement, and AoI event emission to `crates/engine`. `MapService` exists only to run the tick timer, feed session-authenticated intents into `crates/engine`, coordinate map transfers, and route emitted `ScopedServerEvent` payloads to client sessions.
-2. **Protocol vs. Session Context:**
-   * `crates/packets` owns wire-level framing and opcode-to-struct decoding/encoding.
-   * `bins/*/src/session.rs` owns the live `TcpStream`, the raw 4-byte `AccountId` handshake echo required by `CH_ENTER` and `CZ_ENTER`, and per-connection session state (`SessionId`, authenticated `AccountId`, and `CharId`).
-3. **Multi-Subagent Delegation Sequencing:**
-   When a roadmap deliverable spans multiple crates, the Main Agent executes work in four stages:
-   * **Stage 1 (Contracts First):** Update `crates/contracts` with all required traits, DTOs, and enum variants. Run `cargo check -p ro-contracts` to verify compilation.
-   * **Stage 2 (Leaf Providers in Parallel):** Invoke subagents for leaf crates (`crates/packets`, `crates/db`, `crates/mechanics`, `crates/persistence`, `crates/scripting`) concurrently via `invoke_subagent`. These crates depend only on `crates/contracts`.
-   * **Stage 3 (Engine Integration):** Invoke the `crates/engine` subagent to implement ECS systems consuming the contract traits. (If all contract traits were already finalized in Stage 1, Stage 3 may run concurrently with Stage 2.)
-   * **Stage 4 (Binary Wiring & Verification):** Instantiate the concrete providers from `db`, `mechanics`, `persistence`, `scripting`, `packets`, and `engine` inside `bins/*`, and run workspace integration tests.
+### 2.2 Multi-Subagent Delegation Sequencing
+When a roadmap deliverable spans multiple crates, the Main Agent executes work in four stages:
+* **Stage 1 (Reference Consultation & Contracts First):** Consult `reference-explorer` if reference specs are needed, update `crates/ro-contracts` with all required traits, DTOs, and enum variants, and run `cargo check -p ro-contracts` to verify compilation.
+* **Stage 2 (Leaf Providers in Parallel):** Invoke subagents for leaf crates (`ro-packets`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`) concurrently via `invoke_subagent`.
+* **Stage 3 (Engine Integration):** Invoke `ro-engine` to implement ECS systems consuming the contract traits. (When all contract traits are finalized in Stage 1, Stage 3 may run concurrently with Stage 2.)
+* **Stage 4 (Binary & Tooling Wiring):** Invoke `ro-bins` (and `ro-tools` when applicable) via `invoke_subagent` to connect the concrete providers from `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`, `ro-packets`, and `ro-engine`, consulting peer subagents as needed and running workspace integration tests.
 
 ---
 
-## 3. Reference Repositories Routing Table (`./reference/`)
-All agents may freely inspect `./reference/` to extract protocol specs, YAML schemas, and Aegis mechanics. **Never copy C/C++ pointer control flow or `rust-ro`'s non-ECS service layer.**
+## 3. Reference Repositories Routing Table (`./reference/` via `reference-explorer`)
+Only the `reference-explorer` subagent may inspect `./reference/**`. The Main Agent and all other subagents consult `reference-explorer` to extract protocol specs, YAML schemas, and Aegis mechanics. **Never copy C/C++ pointer control flow or `rust-ro`'s non-ECS service layer.**
 
-| Domain Crate | Primary Reference Paths | What to Extract |
+| Target Domain | Primary Reference Paths Inspected by `reference-explorer` | What `reference-explorer` Extracts |
 | :--- | :--- | :--- |
-| **`crates/packets`** | • `reference/rathena/src/config/packets.hpp`<br>• `reference/rathena/src/map/packets_struct.hpp`<br>• `reference/rathena/src/map/packets.hpp`<br>• `reference/rathena/src/map/clif_packetdb.hpp`<br>• `reference/rathena/src/map/clif_shuffle.hpp`<br>• `reference/rathena/src/login/loginclif.cpp`<br>• `reference/rathena/src/char/char_clif.cpp`<br>• `reference/rust-ro/lib/packets/` | Latest `PACKETVER` struct layouts from `rathena`. Binary reader/writer patterns and 3-byte (`WBUFPOS`) / 6-byte (`WBUFPOS2`) coordinate bit-packing from `rust-ro`. Inspect `clif_shuffle.hpp` for shuffled incoming map opcodes overriding `clif_packetdb.hpp`. |
-| **`crates/engine`** | • `reference/Hercules/src/map/*.h`<br>• `reference/rathena/src/map/map.cpp`<br>• `reference/rathena/src/map/pc.cpp`<br>• `reference/rathena/src/map/unit.cpp` | High-level state machine lifecycles (login spawn handshake, walking ticks, sitting, portal warp triggers, AoI broadcast ranges). Re-implement inside ECS. |
-| **`crates/db`** | • `reference/rathena/db/re/` (and `db/import/`)<br>• `reference/rathena/npc/re/warps/` & `mobs/`<br>• `reference/rust-ro/tools/map-cache/` | `serde_yaml` schemas for items, mobs, skills, and job tables; `.gat`/`.rsw` map cell walkability parsing; monster/warp spawn definitions. |
-| **`crates/mechanics`** | • `reference/rathena/src/map/battle.cpp`<br>• `reference/rathena/src/map/status.cpp`<br>• `reference/rathena/src/map/skills/<job>/*.cpp`<br>• `reference/rust-ro/tools/stat-calc/` | Pure mathematical formulas, ASPD/stat derivations, elemental/size/race tables, and `SkillImpl` ratios. |
-| **`crates/persistence`** | • `reference/rathena/sql-files/main.sql`<br>• `reference/rust-ro/server/src/repository/` | Account, character, and inventory relational table designs adapted for modern PostgreSQL (`sqlx`). |
-| **`crates/scripting`** | • `reference/rathena-script-lang-interpreter/src/` | VM hooks and native function bindings to bridge NPC scripts with ECS events. |
+| **`crates/ro-packets`** | • `reference/rathena/src/config/packets.hpp`<br>• `reference/rathena/src/map/packets_struct.hpp`<br>• `reference/rathena/src/map/packets.hpp`<br>• `reference/rathena/src/map/clif_packetdb.hpp`<br>• `reference/rathena/src/map/clif_shuffle.hpp`<br>• `reference/rathena/src/login/loginclif.cpp`<br>• `reference/rathena/src/char/char_clif.cpp`<br>• `reference/rust-ro/lib/packets/` | `PACKETVER = 20260219` struct layouts from `rathena`. Binary reader/writer patterns and 3-byte (`WBUFPOS`) / 6-byte (`WBUFPOS2`) coordinate bit-packing from `rust-ro`. Shuffled incoming map opcodes in `clif_shuffle.hpp` overriding `clif_packetdb.hpp`. |
+| **`crates/ro-engine`** | • `reference/Hercules/src/map/*.h`<br>• `reference/rathena/src/map/map.cpp`<br>• `reference/rathena/src/map/pc.cpp`<br>• `reference/rathena/src/map/unit.cpp` | High-level state machine lifecycles (login spawn handshake, walking ticks, sitting, portal warp triggers, AoI broadcast ranges) to re-implement inside ECS. |
+| **`crates/ro-db`** | • `reference/rathena/db/re/` (and `db/import/`)<br>• `reference/rathena/npc/re/warps/` & `mobs/`<br>• `reference/rust-ro/tools/map-cache/` | `serde_yaml` schemas for items, mobs, skills, and job tables; `.gat`/`.rsw` map cell walkability parsing; monster and warp spawn definitions. |
+| **`crates/ro-mechanics`** | • `reference/rathena/src/map/battle.cpp`<br>• `reference/rathena/src/map/status.cpp`<br>• `reference/rathena/src/map/skills/<job>/*.cpp`<br>• `reference/rust-ro/tools/stat-calc/` | Pure mathematical formulas, ASPD/stat derivations, elemental/size/race tables, and `SkillImpl` ratios. |
+| **`crates/ro-persistence`** | • `reference/rathena/sql-files/main.sql`<br>• `reference/rust-ro/server/src/repository/` | Account, character, and inventory relational table designs adapted for modern PostgreSQL (`sqlx`). |
+| **`crates/ro-scripting`** | • `reference/rathena-script-lang-interpreter/src/` | VM hooks and native function bindings to bridge NPC scripts with ECS events. |
 
 ---
 
@@ -121,7 +130,7 @@ All agents may freely inspect `./reference/` to extract protocol specs, YAML sch
   * `AC_ACCEPT_LOGIN`: `0x0ac4` (Dynamic)
   * `HC_NOTIFY_ZONESVR`: `0x0ac5` (Fixed 156 bytes)
 * **Macro Offset Parsing:** In `parseable_packet(opcode, length, handler, pos0, pos1, ...)`, the trailing integer arguments define exact byte offsets from byte 0 of the packet frame. Decoders must follow these positions to read fields accurately.
-* **Extraction Tooling (No Standalone C++ Builds):** Do not attempt to compile standalone C++ binaries against rAthena headers. The headers transitively require MySQL client libraries and internal subsystem headers. Use the C preprocessor directly (`clang -E -DPACKETVER=20260219 ...`) or ripgrep pattern searches over macro definitions.
+* **Extraction Tooling (No Standalone C++ Builds):** `reference-explorer` must never compile standalone C++ binaries against rAthena headers because the headers transitively require MySQL client libraries and internal subsystem headers. `reference-explorer` uses the C preprocessor directly (`clang -E -DPACKETVER=20260219 ...`) or ripgrep pattern searches over macro definitions.
 * **32-bit Item IDs (`u32`):** Modern `PACKETVER` defines `MAX_ITEMID > UINT16_MAX`. All item ID fields in packets and contracts must use `u32`.
 * **Graceful Unknown Packet Logging:** If the server receives an opcode not yet required for the current phase, log `tracing::debug!("Unhandled packet opcode={:#06x} len={}", opcode, bytes.len())`, consume the frame bytes using the packet length table, and continue the session loop.
 
@@ -140,100 +149,28 @@ All agents may freely inspect `./reference/` to extract protocol specs, YAML sch
 ### Phase 1: Map Movement & Sitting
 * **Goal:** Walk around `prontera` with smooth pathing and toggle sitting/standing.
 * **Deliverables:**
-  1. `crates/db`: Load `.gat` walkability grids for maps.
-  2. `crates/engine`: Implement A* pathfinding over `.gat` cells, `WalkingPath` sparse component, and `MapPosition` updates in the 8x8 `SpatialGrid`.
+  1. `crates/ro-db`: Load `.gat` walkability grids for maps.
+  2. `crates/ro-engine`: Implement A* pathfinding over `.gat` cells, `WalkingPath` sparse component, and `MapPosition` updates in the 8x8 `SpatialGrid`.
   3. Handle `CZ_REQUEST_MOVE` -> emit `ZC_NOTIFY_PLAYERMOVE` (6-byte bit-packed coordinates `WBUFPOS2`).
   4. Handle `CZ_CHANGE_DIRECTION` (head/body direction) and `CZ_REQUEST_ACT` (`action = 2` sit, `action = 3` stand) -> broadcast `ZC_NOTIFY_ACT` to AoI.
 
 ### Phase 2: Static Entities (Monsters & Map Portals)
 * **Goal:** See monsters (stationary) and warp portal visual effects spawned on the map.
 * **Deliverables:**
-  1. `crates/db`: Parse `mob_db.yml` and map spawn/warp definitions.
-  2. `crates/engine`: Spawn Monster ECS entities and Portal (`GroundSkillUnit` / warp NPC) entities into the `SpatialGrid`.
+  1. `crates/ro-db`: Parse `mob_db.yml` and map spawn/warp definitions.
+  2. `crates/ro-engine`: Spawn Monster ECS entities and Portal (`GroundSkillUnit` / warp NPC) entities into the `SpatialGrid`.
   3. Broadcast `ZC_NOTIFY_STANDENTRY` / `ZC_NOTIFY_NEWENTRY` when a player enters AoI or finishes `CZ_NOTIFY_ACTORINIT`, and handle `CZ_REQNAME` (`0x0368`) -> `ZC_ACK_REQNAME` so hovering over a monster displays its name.
 
 ### Phase 3: Map Switching & Portal Collision
 * **Goal:** Walk into a warp portal cell and seamlessly transition to the destination map.
 * **Deliverables:**
-  1. `crates/engine`: Detect when a player's `MapPosition` steps within the trigger radius of a Warp Portal entity.
+  1. `crates/ro-engine`: Detect when a player's `MapPosition` steps within the trigger radius of a Warp Portal entity.
   2. Despawn player from the current Map `World`, transfer entity state to the destination Map `World`, and emit `ZC_NPCACK_MAPMOVE` (`0x0091`) with the new `.gat` name and `(X, Y)` coordinates.
   3. Re-run the `CZ_NOTIFY_ACTORINIT` (`0x007D`) map-load synchronization cycle on arrival.
 
 ### Phase 4: PostgreSQL Persistence & Character Creation
 * **Goal:** Replace hardcoded stubs with real PostgreSQL persistence using `sqlx`.
 * **Deliverables:**
-  1. `crates/persistence`: Implement PostgreSQL migrations and queries for `accounts` and `characters` (persisting `account_id`, `char_id`, `name`, `slot`, `sex`, `hair_style`, `hair_color`, `last_map`, `last_x`, `last_y`).
+  1. `crates/ro-persistence`: Implement PostgreSQL migrations and queries for `accounts` and `characters` (persisting `account_id`, `char_id`, `name`, `slot`, `sex`, `hair_style`, `hair_color`, `last_map`, `last_x`, `last_y`).
   2. `char-server`: Implement `CH_MAKE_CHAR` (`0x0067` / `0x0A39`) and `CH_DELETE_CHAR`, persisting new characters to PostgreSQL.
-  3. `map-server`: Load character spawn location/appearance from `crates/persistence` on login and flush updated `(last_map, last_x, last_y)` on movement/warp/disconnect.
-
----
-
-## 6. Network Topology & Communication Boundaries
-
-All server binaries execute on the Tokio asynchronous runtime. Network responsibilities partition into client-facing TCP streaming and internal inter-server HTTP communication.
-
-### 6.1 Client Boundaries (TCP Binary Protocol)
-Clients connect to designated TCP ports using the Ragnarok Online binary packet protocol.
-* **`login-server` (TCP :6900):**
-  Accepts transient connections. Decodes `CA_LOGIN`, issues a `SessionTicket`, returns `AC_ACCEPT_LOGIN` containing the list of available character servers, and drops the TCP connection.
-* **`char-server` (TCP :6121):**
-  Accepts transient connections. Decodes `CH_ENTER`, verifies the `SessionTicket`, echoes the 4-byte `AccountId`, returns `HC_ACCEPT_ENTER` containing character slots, decodes `CH_SELECT_CHAR`, returns `HC_NOTIFY_ZONESVR` pointing to the target map server, and drops the TCP connection.
-* **`map-server` (TCP :5121):**
-  Accepts persistent gameplay connections. Decodes `CZ_ENTER`, echoes `AccountId`, returns `ZC_ACCEPT_ENTER`. Decodes `CZ_NOTIFY_ACTORINIT`, synchronizes map state, and maintains the tick loop exchanging `CZ_REQUEST_TIME` and `ZC_NOTIFY_TIME`. Decodes player movement and action intents, then broadcasts outbound packets across Area of Interest (AoI) subscribers.
-
-### 6.2 Inter-Server Boundaries (Internal Axum HTTP APIs)
-Coordination between server binaries runs over Axum HTTP services using JSON payloads defined in `crates/contracts/src/http.rs`.
-* **Login Server Internal API (:6901):**
-  * `POST /api/v1/sessions/validate`: Validates an active `SessionTicket` presented to `char-server`.
-  * `POST /api/v1/servers/register`: Registers a `char-server` instance and updates its capacity.
-  * `POST /api/v1/servers/heartbeat`: Receives periodic health and user count telemetry.
-  * `GET /api/v1/health`: Health probe endpoint.
-* **Char Server Internal API (:6122):**
-  * `POST /api/v1/maps/register`: Registers a `map-server` instance and its hosted maps.
-  * `POST /api/v1/transfers/prepare`: Coordinates character transfer reservations prior to client redirection.
-  * `GET /api/v1/health`: Health probe endpoint.
-* **Map Server Internal API (:5122):**
-  * `POST /api/v1/transfers/accept`: Confirms an incoming player transfer ticket.
-  * `GET /api/v1/health`: Health probe reporting map instances, player count, and tick rate.
-
-### 6.3 Packet Framing Interface (Referencing `rust-ro`)
-The packet interface builds upon the framing mechanics in `reference/rust-ro/lib/packets/` and `reference/rathena/src/map/clif_packetdb.hpp`.
-* **Opcode Header:** Every packet begins with a 2-byte little-endian `PacketOpcode`.
-* **Length Evaluation:** The `PacketLengthTable` trait evaluates the opcode into either `PacketLength::Fixed(usize)` or `PacketLength::Dynamic`. Dynamic packets contain a 2-byte little-endian length at bytes 2..4 specifying total packet size.
-* **Tokio Decoder:** `PacketDecoder` implements `tokio_util::codec::Decoder`, producing `RawPacket` items containing the opcode and frozen `bytes::Bytes` payload.
-* **Outbound Broadcasts:** `OutboundPacket` encapsulates zero-copy `bytes::Bytes` tagged with `OutboundTarget`, enabling multicast across spatial entities without duplicate memory allocation.
-
-### 6.4 Unified Protocol-to-Logic Channel Bridge
-All three server binaries (`login-server`, `char-server`, `map-server`) enforce a uniform decoupling pattern between network protocol workers (`session.rs`) and application logic (`service.rs`) using Tokio asynchronous channels (`tokio::sync::mpsc`). Channels are scoped to the unit of sequential consistency for each server type:
-
-```text
-  [login-server & char-server: Ephemeral Per-Session Logic Actor]
-  +-----------------------+    mpsc (SessionIntent)    +----------------------------+
-  | Protocol Worker       | -------------------------> | Ephemeral Session Actor    |
-  | (session.rs)          | <------------------------- | (LoginSessionActor /       |
-  | Split Reader / Writer |    try_send (Bytes/Event)  |  CharSessionActor)         |
-  +-----------------------+                            +----------------------------+
-
-  [map-server: Long-Lived Per-World Logic Actor]
-  +-----------------------+    mpsc (SessionIntent)    +----------------------------+
-  | Protocol Worker       | -------------------------> | Long-Lived MapWorldActor   |
-  | (session.rs)          | <------------------------- | (ro-engine World +         |
-  | Split Reader / Writer |    try_send (Frozen Bytes) |  Deterministic Tick Loop)  |
-  +-----------------------+                            +----------------------------+
-```
-
-1. **Protocol Worker (`session.rs`):**
-   * Owns the client `TcpStream`, splitting it into an **Inbound Reader** (`OwnedReadHalf`) and an **Outbound Writer** (`OwnedWriteHalf`) so inbound packet decoding and outbound socket writes never block or deadlock each other.
-   * Tracks per-connection session state (`SessionId`, and the authenticated `AccountId` / `CharId` established during `CH_ENTER` or `CZ_ENTER`).
-   * Utilizes `PacketDecoder` and `PacketIntentParser` to produce pure wire-level `ClientIntent` instances from raw incoming bytes, then wraps them in a `SessionIntent` envelope containing `(SessionId, Option<AccountId>, Option<CharId>, ClientIntent)`.
-   * Enforces sequential per-session handshake state: post-handshake packets (`SelectCharacter`, `NotifyActorInit`, `RequestTime`, `RequestMove`, `ChangeDirection`, `RequestAction`, `RequestEntityName`) are rejected until the session has completed its entry handshake (`EnterCharServer` or `EnterMap`).
-   * For wire protocol handshakes requiring a raw 4-byte `AccountId` echo (`char-server`, `map-server`), queues the 4-byte payload to the Outbound Writer immediately upon receiving `ClientIntent::EnterCharServer` or `ClientIntent::EnterMap`.
-
-2. **Logic Layer & Actor Lifetimes Across Servers:**
-   * **Non-Blocking Outbound Dispatch:** Logic actors must never `.await` on a per-client outbound channel inside a shared loop, as a single slow or stalled TCP client would block other players. Outbound delivery uses non-blocking `try_send` to the session's Outbound Writer queue (disconnecting overflowed sessions).
-   * **`login-server` (Ephemeral `LoginSessionActor` per Client Session):**
-     Client connections to `login-server` are transient handshakes. Each accepted connection spawns an ephemeral `LoginSessionActor` paired with `session.rs` via dedicated `mpsc` channels and holding shared `Arc` handles to `AccountRepository` and the character server registry. It processes `ClientIntent::Login` sequentially for that client and exits when the session closes.
-   * **`char-server` (Ephemeral `CharSessionActor` per Client Session):**
-     Client connections to `char-server` are transient character selection sessions. Each accepted connection spawns an ephemeral `CharSessionActor` paired with `session.rs` via dedicated `mpsc` channels and holding shared `Arc` handles to `CharacterRepository` and the map server registry. Because the actor is dedicated to one client, `EnterCharServer` completes and binds the session's `AccountId` before `SelectCharacter`, `MakeCharacter`, or `DeleteCharacter` is processed, without blocking unrelated accounts during database or HTTP queries.
-   * **`map-server` (Long-Lived `MapWorldActor` per Map Instance):**
-     Map instances (`prontera.gat`, etc.) are persistent simulation worlds hosted by `MapService`. Each active map runs a long-lived `MapWorldActor` owning a `ro-engine` `World`, a periodic tick timer, and a map-scoped `mpsc` inbox. Player sessions bind to their current map's `MapWorldActor` upon `EnterMap` and forward `SessionIntent` messages in FIFO order. At each tick, the `MapWorldActor` drains queued intents, executes the deterministic ECS phases, encodes each emitted `ScopedServerEvent` once into frozen `bytes::Bytes`, and fans out the `Bytes` via non-blocking `try_send` to the outbound writer channels of target sessions in the Area of Interest. When a player steps into a warp portal, their session re-binds to the destination map's `MapWorldActor`.
+  3. `map-server`: Load character spawn location/appearance from `crates/ro-persistence` on login and flush updated `(last_map, last_x, last_y)` on movement/warp/disconnect.

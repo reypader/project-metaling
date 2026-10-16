@@ -1,13 +1,13 @@
 [workspace]
 resolver = "2"
 members = [
-    "crates/contracts",
-    "crates/packets",
-    "crates/engine",
-    "crates/db",
-    "crates/mechanics",
-    "crates/persistence",
-    "crates/scripting",
+    "crates/ro-contracts",
+    "crates/ro-packets",
+    "crates/ro-engine",
+    "crates/ro-db",
+    "crates/ro-mechanics",
+    "crates/ro-persistence",
+    "crates/ro-scripting",
     "bins/login-server",
     "bins/char-server",
     "bins/map-server",
@@ -20,13 +20,13 @@ edition = "2021"
 license = "MIT"
 
 [workspace.dependencies]
-ro-contracts = { path = "crates/contracts" }
-ro-packets = { path = "crates/packets" }
-ro-engine = { path = "crates/engine" }
-ro-db = { path = "crates/db" }
-ro-mechanics = { path = "crates/mechanics" }
-ro-persistence = { path = "crates/persistence" }
-ro-scripting = { path = "crates/scripting" }
+ro-contracts = { path = "crates/ro-contracts" }
+ro-packets = { path = "crates/ro-packets" }
+ro-engine = { path = "crates/ro-engine" }
+ro-db = { path = "crates/ro-db" }
+ro-mechanics = { path = "crates/ro-mechanics" }
+ro-persistence = { path = "crates/ro-persistence" }
+ro-scripting = { path = "crates/ro-scripting" }
 
 tokio = { version = "1.53", features = ["full"] }
 bytes = "1.12"
