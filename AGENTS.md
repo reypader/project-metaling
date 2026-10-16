@@ -10,14 +10,22 @@ If you are operating at the workspace root, you are the **Main Agent**.
 * **Your Exclusive Write Scope:**
   * `./Cargo.toml` (Workspace manifest and shared dependencies)
   * `./AGENTS.md` (Architecture & roadmap)
-  * `./crates/contracts/**` (All cross-crate traits, DTOs, Event enums, and ID newtypes)
-  * `./bins/login-server/**`, `./bins/char-server/**`, `./bins/map-server/**` (Thin binary entrypoints that wire domain crates together)
+  * `./crates/contracts/**` (Strictly pure cross-crate traits, DTOs, Event enums, error types, and ID newtypes)
+  * `./bins/**` (`./bins/login-server/**`, `./bins/char-server/**`, `./bins/map-server/**`) (Executable binary entrypoints under the exclusive jurisdiction of the Main Agent)
 * **Strict Prohibition:** **YOU MUST NEVER traverse, read, or modify the implementation files inside `./crates/<domain>/src/**`** (except `./crates/contracts/**`).
 * **Your Job:**
   1. Arbitrate whether a new cross-domain contract (trait, event struct, or DTO) is needed in `crates/contracts`.
   2. Update `crates/contracts` so downstream subagents have a compiling target interface.
-  3. Delegate domain implementation tasks to the specific Subagent responsible for that library crate.
-  4. Wire the completed library crates together inside `./bins/*`.
+  3. Delegate domain implementation tasks to the specific Subagent responsible for that library crate via `invoke_subagent`.
+  4. Connect the completed library crates together inside `./bins/*`.
+
+#### Mandatory Operating Rules for the Main Agent:
+1. **Strict Interface Purity in `crates/contracts`:**
+   `crates/contracts` contains zero business logic, zero concrete codecs, zero wire framing loops, and zero heavy transport dependencies. Only abstract data structures, enums, newtypes, and traits belong in this crate. Concrete framing algorithms and serialization logic belong in domain crates such as `crates/packets`.
+2. **Mandatory Subagent Delegation:**
+   The Main Agent must never implement domain logic, including packet framing, packet parsing, packet serialization, coordinate bit-packing, database repositories, combat formulas, or ECS systems. When new domain functionality is required, the Main Agent defines the compiling interface in `crates/contracts` and immediately invokes the corresponding domain subagent using `invoke_subagent`.
+3. **Binary Restraint and Exclusive Jurisdiction over `bins/*`:**
+   All binaries under `./bins/*` remain under the exclusive write scope of the Main Agent. Binary entrypoints are restricted to bootstrap configuration, dependency injection, and high-level lifecycle supervision that calls domain crate functions. Inline request handlers, bespoke protocol decoders, and inline application state machines inside `bins/*` are prohibited.
 
 ### Role 2: Domain Subagents (Crate-Scoped Specialists)
 Each library crate under `./crates/<domain>/` has its own local `AGENTS.md` and is served by a dedicated Subagent.
@@ -26,7 +34,7 @@ Each library crate under `./crates/<domain>/` has its own local `AGENTS.md` and 
   2. The shared contract crate (`./crates/contracts/src/**`)
   3. Any file inside `./reference/**` (`rathena`, `Hercules`, `rust-ro`, `rathena-script-lang-interpreter`) needed to extract domain specifications.
 * **Allowed Write Scope:** **ONLY** `./crates/<domain>/**`.
-* **Strict Prohibition:** A Subagent **MUST NEVER** read, traverse, or modify another domain crate (`./crates/<other_domain>/**`) or `./crates/contracts/**`. If a Subagent needs a missing field, event, or trait method in `crates/contracts`, it must **STOP** and request a Contract Amendment from the Main Agent.
+* **Strict Prohibition:** A Subagent **MUST NEVER** read, traverse, or modify another domain crate (`./crates/<other_domain>/**`), `./crates/contracts/**`, or `./bins/**`. If a Subagent needs a missing field, event, or trait method in `crates/contracts`, it must **STOP** and request a Contract Amendment from the Main Agent.
 
 ---
 
@@ -113,3 +121,40 @@ All agents may freely inspect `./reference/` to extract protocol specs, YAML sch
   1. `crates/persistence`: Implement PostgreSQL migrations and queries for `accounts` and `characters` (persisting `account_id`, `char_id`, `name`, `slot`, `sex`, `hair_style`, `hair_color`, `last_map`, `last_x`, `last_y`).
   2. `char-server`: Implement `CH_MAKE_CHAR` (`0x0067` / `0x0A39`) and `CH_DELETE_CHAR`, persisting new characters to PostgreSQL.
   3. `map-server`: Load character spawn location/appearance from `crates/persistence` on login and flush updated `(last_map, last_x, last_y)` on movement/warp/disconnect.
+
+---
+
+## 6. Network Topology & Communication Boundaries
+
+All server binaries execute on the Tokio asynchronous runtime. Network responsibilities partition into client-facing TCP streaming and internal inter-server HTTP communication.
+
+### 6.1 Client Boundaries (TCP Binary Protocol)
+Clients connect to designated TCP ports using the Ragnarok Online binary packet protocol.
+* **`login-server` (TCP :6900):**
+  Accepts transient connections. Decodes `CA_LOGIN`, issues a `SessionTicket`, returns `AC_ACCEPT_LOGIN` containing the list of available character servers, and drops the TCP connection.
+* **`char-server` (TCP :6121):**
+  Accepts transient connections. Decodes `CH_ENTER`, verifies the `SessionTicket`, echoes the 4-byte `AccountId`, returns `HC_ACCEPT_ENTER` containing character slots, decodes `CH_SELECT_CHAR`, returns `HC_NOTIFY_ZONESVR` pointing to the target map server, and drops the TCP connection.
+* **`map-server` (TCP :5121):**
+  Accepts persistent gameplay connections. Decodes `CZ_ENTER`, echoes `AccountId`, returns `ZC_ACCEPT_ENTER`. Decodes `CZ_NOTIFY_ACTORINIT`, synchronizes map state, and maintains the tick loop exchanging `CZ_REQUEST_TIME` and `ZC_NOTIFY_TIME`. Decodes player movement and action intents, then broadcasts outbound packets across Area of Interest (AoI) subscribers.
+
+### 6.2 Inter-Server Boundaries (Internal Axum HTTP APIs)
+Coordination between server binaries runs over Axum HTTP services using JSON payloads defined in `crates/contracts/src/http.rs`.
+* **Login Server Internal API (:6901):**
+  * `POST /api/v1/sessions/validate`: Validates an active `SessionTicket` presented to `char-server`.
+  * `POST /api/v1/servers/register`: Registers a `char-server` instance and updates its capacity.
+  * `POST /api/v1/servers/heartbeat`: Receives periodic health and user count telemetry.
+  * `GET /api/v1/health`: Health probe endpoint.
+* **Char Server Internal API (:6122):**
+  * `POST /api/v1/maps/register`: Registers a `map-server` instance and its hosted maps.
+  * `POST /api/v1/transfers/prepare`: Coordinates character transfer reservations prior to client redirection.
+  * `GET /api/v1/health`: Health probe endpoint.
+* **Map Server Internal API (:5122):**
+  * `POST /api/v1/transfers/accept`: Confirms an incoming player transfer ticket.
+  * `GET /api/v1/health`: Health probe reporting map instances, player count, and tick rate.
+
+### 6.3 Packet Framing Interface (Referencing `rust-ro`)
+The packet interface builds upon the framing mechanics in `reference/rust-ro/lib/packets/` and `reference/rathena/src/map/clif_packetdb.hpp`.
+* **Opcode Header:** Every packet begins with a 2-byte little-endian `PacketOpcode`.
+* **Length Evaluation:** The `PacketLengthTable` trait evaluates the opcode into either `PacketLength::Fixed(usize)` or `PacketLength::Dynamic`. Dynamic packets contain a 2-byte little-endian length at bytes 2..4 specifying total packet size.
+* **Tokio Decoder:** `PacketDecoder` implements `tokio_util::codec::Decoder`, producing `RawPacket` items containing the opcode and frozen `bytes::Bytes` payload.
+* **Outbound Broadcasts:** `OutboundPacket` encapsulates zero-copy `bytes::Bytes` tagged with `OutboundTarget`, enabling multicast across spatial entities without duplicate memory allocation.
