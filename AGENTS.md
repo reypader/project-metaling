@@ -98,7 +98,7 @@ All agents may freely inspect `./reference/` to extract protocol specs, YAML sch
 
 | Domain Crate | Primary Reference Paths | What to Extract |
 | :--- | :--- | :--- |
-| **`crates/packets`** | • `reference/rathena/src/config/packets.hpp`<br>• `reference/rathena/src/map/packets_struct.hpp`<br>• `reference/rathena/src/map/packets.hpp`<br>• `reference/rathena/src/map/clif_packetdb.hpp`<br>• `reference/rathena/src/login/loginclif.cpp`<br>• `reference/rathena/src/char/char_clif.cpp`<br>• `reference/rust-ro/lib/packets/` | Latest `PACKETVER` struct layouts from `rathena`. Binary reader/writer patterns and 3-byte (`WBUFPOS`) / 6-byte (`WBUFPOS2`) coordinate bit-packing from `rust-ro`. |
+| **`crates/packets`** | • `reference/rathena/src/config/packets.hpp`<br>• `reference/rathena/src/map/packets_struct.hpp`<br>• `reference/rathena/src/map/packets.hpp`<br>• `reference/rathena/src/map/clif_packetdb.hpp`<br>• `reference/rathena/src/map/clif_shuffle.hpp`<br>• `reference/rathena/src/login/loginclif.cpp`<br>• `reference/rathena/src/char/char_clif.cpp`<br>• `reference/rust-ro/lib/packets/` | Latest `PACKETVER` struct layouts from `rathena`. Binary reader/writer patterns and 3-byte (`WBUFPOS`) / 6-byte (`WBUFPOS2`) coordinate bit-packing from `rust-ro`. Inspect `clif_shuffle.hpp` for shuffled incoming map opcodes overriding `clif_packetdb.hpp`. |
 | **`crates/engine`** | • `reference/Hercules/src/map/*.h`<br>• `reference/rathena/src/map/map.cpp`<br>• `reference/rathena/src/map/pc.cpp`<br>• `reference/rathena/src/map/unit.cpp` | High-level state machine lifecycles (login spawn handshake, walking ticks, sitting, portal warp triggers, AoI broadcast ranges). Re-implement inside ECS. |
 | **`crates/db`** | • `reference/rathena/db/re/` (and `db/import/`)<br>• `reference/rathena/npc/re/warps/` & `mobs/`<br>• `reference/rust-ro/tools/map-cache/` | `serde_yaml` schemas for items, mobs, skills, and job tables; `.gat`/`.rsw` map cell walkability parsing; monster/warp spawn definitions. |
 | **`crates/mechanics`** | • `reference/rathena/src/map/battle.cpp`<br>• `reference/rathena/src/map/status.cpp`<br>• `reference/rathena/src/map/skills/<job>/*.cpp`<br>• `reference/rust-ro/tools/stat-calc/` | Pure mathematical formulas, ASPD/stat derivations, elemental/size/race tables, and `SkillImpl` ratios. |
@@ -107,11 +107,23 @@ All agents may freely inspect `./reference/` to extract protocol specs, YAML sch
 
 ---
 
-## 4. Target `PACKETVER` Policy (Latest rAthena Default)
-* **Source of Truth:** Always resolve `PACKETVER` from the default `#define PACKETVER YYYYMMDD` in `reference/rathena/src/config/packets.hpp` (and `src/common/mmo.hpp`).
-* **Preprocessor Rule:** When inspecting `reference/rathena` C/C++ files, always evaluate `#if PACKETVER` blocks against this latest date and ignore legacy `#else` branches.
-* **32-bit Item IDs (`u32`):** Modern `PACKETVER` defines `MAX_ITEMID > UINT16_MAX`. All item ID fields in packets and contracts MUST use `u32` (never `rust-ro`'s legacy `u16`).
-* **Graceful Unknown Packet Logging:** If the server receives a valid or unknown packet opcode not yet required for the current phase, **DO NOT panic or drop the TCP connection.** Log `tracing::debug!("Unhandled packet opcode={:#06x} len={}", opcode, bytes.len())`, consume the frame bytes using the packet length table, and continue the session loop.
+## 4. Target `PACKETVER` Policy (Pinned Version: 20260219)
+* **Exclusive Target Version:** The workspace pins `PACKETVER = 20260219` as the single client version. The server omits backwards compatibility for older packet versions.
+* **Packet Shuffling Precedence (`clif_shuffle.hpp`):** For `PACKETVER = 20260219`, map server incoming packet opcodes are defined in `reference/rathena/src/map/clif_shuffle.hpp`. Definitions in `clif_shuffle.hpp` take precedence over `clif_packetdb.hpp`.
+* **Canonical Core Opcodes for `20260219`:**
+  * `CZ_ENTER`: `0x0436` (Fixed 23 bytes; account id at byte 2, char id at byte 6, auth code at byte 10, client tick at byte 14, 4 bytes padding at 18..22, sex at byte 22)
+  * `CZ_NOTIFY_ACTORINIT`: `0x007d` (Fixed 2 bytes)
+  * `CZ_REQUEST_TIME`: `0x0360` (Fixed 6 bytes; client tick at byte 2)
+  * `CZ_REQUEST_MOVE`: `0x035f` (Fixed 5 bytes; 3-byte packed coords at byte 2)
+  * `CZ_CHANGE_DIRECTION`: `0x0361` (Fixed 5 bytes; head dir at byte 2, body dir at byte 4)
+  * `CZ_REQUEST_ACT`: `0x0437` (Fixed 7 bytes; target id at byte 2, action type at byte 6)
+  * `CZ_REQNAME`: `0x0368` (Fixed 6 bytes; entity id at byte 2)
+  * `AC_ACCEPT_LOGIN`: `0x0ac4` (Dynamic)
+  * `HC_NOTIFY_ZONESVR`: `0x0ac5` (Fixed 156 bytes)
+* **Macro Offset Parsing:** In `parseable_packet(opcode, length, handler, pos0, pos1, ...)`, the trailing integer arguments define exact byte offsets from byte 0 of the packet frame. Decoders must follow these positions to read fields accurately.
+* **Extraction Tooling (No Standalone C++ Builds):** Do not attempt to compile standalone C++ binaries against rAthena headers. The headers transitively require MySQL client libraries and internal subsystem headers. Use the C preprocessor directly (`clang -E -DPACKETVER=20260219 ...`) or ripgrep pattern searches over macro definitions.
+* **32-bit Item IDs (`u32`):** Modern `PACKETVER` defines `MAX_ITEMID > UINT16_MAX`. All item ID fields in packets and contracts must use `u32`.
+* **Graceful Unknown Packet Logging:** If the server receives an opcode not yet required for the current phase, log `tracing::debug!("Unhandled packet opcode={:#06x} len={}", opcode, bytes.len())`, consume the frame bytes using the packet length table, and continue the session loop.
 
 ---
 
@@ -122,7 +134,7 @@ All agents may freely inspect `./reference/` to extract protocol specs, YAML sch
 * **Deliverables:**
   1. `login-server` (`:6900`): Handle `CA_LOGIN`, issue session token `(AccountId, LoginId1, LoginId2)`, send `AC_ACCEPT_LOGIN` with `char-server` IP/port.
   2. `char-server` (`:6121`): Handle `CH_ENTER`, echo raw 4-byte `AccountId`, send `HC_ACCEPT_ENTER` (and character page packets for modern `PACKETVER`) with 1 hardcoded stub character, handle `CH_SELECT_CHAR`, reply with `HC_NOTIFY_ZONESVR` (`prontera.gat`, `map-server` IP/port).
-  3. `map-server` (`:5121`): Handle `CZ_ENTER`, echo 4-byte `AccountId` + `ZC_ACCEPT_ENTER` (spawn coords + server tick), handle `CZ_NOTIFY_ACTORINIT` (`0x007D` "Map Loaded"), respond with initial actor state (`ZC_NOTIFY_NEWENTRY` / `ZC_PAR_CHANGE`), and reply to `CZ_REQUEST_TIME` (`0x007E` / `0x0360`) with `ZC_NOTIFY_TIME` so the client does not time out.
+  3. `map-server` (`:5121`): Handle `CZ_ENTER`, echo 4-byte `AccountId` + `ZC_ACCEPT_ENTER` (spawn coords + server tick), handle `CZ_NOTIFY_ACTORINIT` (`0x007D` "Map Loaded"), respond with initial actor state (`ZC_NOTIFY_NEWENTRY` / `ZC_PAR_CHANGE`), and reply to `CZ_REQUEST_TIME` (`0x0360`) with `ZC_NOTIFY_TIME` so the client does not time out.
   4. All other incoming packets log their opcode + payload length and are safely ignored.
 
 ### Phase 1: Map Movement & Sitting
@@ -138,7 +150,7 @@ All agents may freely inspect `./reference/` to extract protocol specs, YAML sch
 * **Deliverables:**
   1. `crates/db`: Parse `mob_db.yml` and map spawn/warp definitions.
   2. `crates/engine`: Spawn Monster ECS entities and Portal (`GroundSkillUnit` / warp NPC) entities into the `SpatialGrid`.
-  3. Broadcast `ZC_NOTIFY_STANDENTRY` / `ZC_NOTIFY_NEWENTRY` when a player enters AoI or finishes `CZ_NOTIFY_ACTORINIT`, and handle `CZ_REQNAME` (`0x0094` / `0x0368`) -> `ZC_ACK_REQNAME` so hovering over a monster displays its name.
+  3. Broadcast `ZC_NOTIFY_STANDENTRY` / `ZC_NOTIFY_NEWENTRY` when a player enters AoI or finishes `CZ_NOTIFY_ACTORINIT`, and handle `CZ_REQNAME` (`0x0368`) -> `ZC_ACK_REQNAME` so hovering over a monster displays its name.
 
 ### Phase 3: Map Switching & Portal Collision
 * **Goal:** Walk into a warp portal cell and seamlessly transition to the destination map.

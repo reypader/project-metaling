@@ -13,10 +13,10 @@ use ro_contracts::{
 };
 use ro_packets::{
     incoming::{decode_frame, DecodedFrame},
-    PacketDecoder, Phase0IntentParser, RathenaPacketLengthTable,
+    is_implemented_outbound_opcode, PacketDecoder, Phase0IntentParser, RathenaPacketLengthTable,
 };
 use tokio_util::codec::Decoder;
-use tracing::{debug, info, warn};
+use tracing::{info, warn};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PacketDirection {
@@ -149,7 +149,6 @@ impl PacketLogger {
                 Err(err) => {
                     let head_opcode = u16::from_le_bytes([self.buffer[0], self.buffer[1]]);
                     let opcode = PacketOpcode(head_opcode);
-                    let opcode_hex = format!("{:#06x}", head_opcode);
 
                     let advance_bytes = find_resync_offset(
                         &self.buffer,
@@ -174,12 +173,13 @@ impl PacketLogger {
                     let seq = self.tracker.next_seq();
                     warn!(
                         target: "proxy",
-                        "[{:?} Session #{}] [Seq #{:<3}] [{}] UNMAPPED OPCODE: {} (reason: {}, consumed {} bytes){}, payload: {}",
+                        "[{:?} Session #{}] [Seq #{:<3}] [{}] {} len={} [UNKNOWN / UNMAPPED in table.rs] (reason: {}, consumed {} bytes){}, payload: {}",
                         self.server_type,
                         self.session_id,
                         seq,
                         self.direction,
-                        opcode_hex,
+                        opcode,
+                        consumed_bytes,
                         err,
                         consumed_bytes,
                         dyn_hint,
@@ -192,7 +192,7 @@ impl PacketLogger {
                         opcode,
                         length: consumed_bytes,
                         detail: format!(
-                            "[UNMAPPED in table.rs, {} bytes] payload: {}",
+                            "[UNKNOWN / UNMAPPED in table.rs, {} bytes] payload: {}",
                             consumed_bytes, payload_preview
                         ),
                     });
@@ -209,68 +209,40 @@ impl PacketLogger {
         let total_len = 2 + raw.payload.len();
         let payload_preview = format_hex_preview(&raw.payload);
 
-        let mut detail = format!("payload: {}", payload_preview);
-
-        // Attempt high-level intent parsing using ro-packets
-        if self.direction == PacketDirection::ClientToServer {
+        let (is_implemented, detail_msg) = if self.direction == PacketDirection::ClientToServer {
             match decode_frame(raw, TARGET_PACKETVER) {
-                Ok(DecodedFrame::Unhandled { opcode: unhandled_op, len }) => {
-                    detail = format!("[Unhandled Intent] payload: {}", payload_preview);
-                    info!(
-                        target: "proxy",
-                        "[{:?} Session #{}] [Seq #{:<3}] [{}] {} len={} [Unhandled Intent] => payload: {}",
-                        self.server_type, self.session_id, seq, self.direction, unhandled_op, len, payload_preview
-                    );
-                }
-                Ok(frame) => {
-                    detail = format!("Decoded: {:?}", frame);
-                    info!(
-                        target: "proxy",
-                        "[{:?} Session #{}] [Seq #{:<3}] [{}] {} len={} => Decoded: {:?}",
-                        self.server_type, self.session_id, seq, self.direction, opcode, total_len, frame
-                    );
-                }
-                Err(err) => {
-                    // Try fallback parser
+                Ok(DecodedFrame::Unhandled { .. }) => {
                     match self.parser.parse_intent(raw, TARGET_PACKETVER) {
-                        Ok(Some(intent)) => {
-                            detail = format!("Decoded Intent: {:?}", intent);
-                            info!(
-                                target: "proxy",
-                                "[{:?} Session #{}] [Seq #{:<3}] [{}] {} len={} => Decoded Intent: {:?}",
-                                self.server_type, self.session_id, seq, self.direction, opcode, total_len, intent
-                            );
-                        }
-                        Ok(None) => {
-                            info!(
-                                target: "proxy",
-                                "[{:?} Session #{}] [Seq #{:<3}] [{}] {} len={} => payload: {}",
-                                self.server_type, self.session_id, seq, self.direction, opcode, total_len, payload_preview
-                            );
-                        }
-                        Err(_) => {
-                            debug!(
-                                target: "proxy",
-                                "[{:?} Session #{}] [Seq #{:<3}] [{}] {} len={} => decode error: {}, payload: {}",
-                                self.server_type, self.session_id, seq, self.direction, opcode, total_len, err, payload_preview
-                            );
-                            info!(
-                                target: "proxy",
-                                "[{:?} Session #{}] [Seq #{:<3}] [{}] {} len={} => payload: {}",
-                                self.server_type, self.session_id, seq, self.direction, opcode, total_len, payload_preview
-                            );
-                        }
+                        Ok(Some(intent)) => (true, format!("Decoded Intent: {:?}", intent)),
+                        _ => (false, format!("payload: {}", payload_preview)),
+                    }
+                }
+                Ok(frame) => (true, format!("Decoded: {:?}", frame)),
+                Err(_) => {
+                    match self.parser.parse_intent(raw, TARGET_PACKETVER) {
+                        Ok(Some(intent)) => (true, format!("Decoded Intent: {:?}", intent)),
+                        _ => (false, format!("payload: {}", payload_preview)),
                     }
                 }
             }
         } else {
-            // Server to Client packets
-            info!(
-                target: "proxy",
-                "[{:?} Session #{}] [Seq #{:<3}] [{}] {} len={} => payload: {}",
-                self.server_type, self.session_id, seq, self.direction, opcode, total_len, payload_preview
-            );
-        }
+            let implemented = is_implemented_outbound_opcode(opcode, TARGET_PACKETVER);
+            (implemented, format!("payload: {}", payload_preview))
+        };
+
+        let status_tag = if is_implemented {
+            "[IMPLEMENTED]"
+        } else {
+            "[KNOWN / UNIMPLEMENTED]"
+        };
+
+        let detail = format!("{} {}", status_tag, detail_msg);
+
+        info!(
+            target: "proxy",
+            "[{:?} Session #{}] [Seq #{:<3}] [{}] {} len={} {} => {}",
+            self.server_type, self.session_id, seq, self.direction, opcode, total_len, status_tag, detail_msg
+        );
 
         self.tracker.record(PacketSequenceEntry {
             seq,
@@ -448,8 +420,93 @@ mod tests {
         assert!(flow.contains("Seq #1"));
         assert!(flow.contains("0x0001"));
         assert!(flow.contains("UNMAPPED in table.rs"));
+        assert!(flow.contains("[UNKNOWN / UNMAPPED in table.rs"));
         assert!(flow.contains("Seq #2"));
         assert!(flow.contains("0x007f"));
+        assert!(flow.contains("ZC_NOTIFY_TIME"));
+        assert!(flow.contains("[IMPLEMENTED]"));
+    }
+
+    #[test]
+    fn test_packet_logger_implemented_inbound_and_outbound() {
+        let tracker = Arc::new(SessionSequenceTracker::new());
+
+        // Implemented Inbound: CA_LOGIN (0x0064, fixed 55 bytes)
+        let mut in_logger = PacketLogger::new(
+            ServerType::Login,
+            1,
+            PacketDirection::ClientToServer,
+            tracker.clone(),
+        );
+        let mut ca_login = vec![0x64, 0x00];
+        ca_login.extend_from_slice(&20211103u32.to_le_bytes());
+        ca_login.extend_from_slice(&[0u8; 49]); // 24 user + 24 pass + 1 client_type
+        in_logger.feed_and_log(&ca_login);
+
+        // Implemented Outbound: ZC_NOTIFY_TIME (0x007f, fixed 6 bytes)
+        let mut out_logger = PacketLogger::new(
+            ServerType::Map,
+            1,
+            PacketDirection::ServerToClient,
+            tracker.clone(),
+        );
+        let zc_time = [0x7f, 0x00, 0x12, 0x34, 0x56, 0x78];
+        out_logger.feed_and_log(&zc_time);
+
+        let flow = tracker.format_sequence_flow();
+        assert!(flow.contains("CA_LOGIN"));
+        assert!(flow.contains("0x0064 (CA_LOGIN)"));
+        assert!(flow.contains("[IMPLEMENTED]"));
+
+        assert!(flow.contains("ZC_NOTIFY_TIME"));
+        assert!(flow.contains("0x007f (ZC_NOTIFY_TIME)"));
+        assert!(flow.contains("[IMPLEMENTED]"));
+    }
+
+    #[test]
+    fn test_packet_logger_known_unimplemented_inbound_and_outbound() {
+        let tracker = Arc::new(SessionSequenceTracker::new());
+
+        // Inbound known in table.rs but unimplemented: CZ_REQUEST_QUIT (0x0082, fixed 2 bytes)
+        let mut in_logger = PacketLogger::new(
+            ServerType::Map,
+            1,
+            PacketDirection::ClientToServer,
+            tracker.clone(),
+        );
+        in_logger.feed_and_log(&[0x82, 0x00]);
+
+        // Outbound known in table.rs but unimplemented: ZC_NPCACK_ENABLE (0x0093, fixed 2 bytes)
+        let mut out_logger = PacketLogger::new(
+            ServerType::Map,
+            1,
+            PacketDirection::ServerToClient,
+            tracker.clone(),
+        );
+        out_logger.feed_and_log(&[0x93, 0x00]);
+
+        let flow = tracker.format_sequence_flow();
+        assert!(flow.contains("CZ_REQUEST_QUIT"));
+        assert!(flow.contains("0x0082 (CZ_REQUEST_QUIT)"));
+        assert!(flow.contains("ZC_NPCACK_ENABLE"));
+        assert!(flow.contains("0x0093 (ZC_NPCACK_ENABLE)"));
+        assert!(flow.contains("[KNOWN / UNIMPLEMENTED]"));
+    }
+
+    #[test]
+    fn test_packet_logger_totally_unknown_unmapped() {
+        let tracker = Arc::new(SessionSequenceTracker::new());
+        let mut logger = PacketLogger::new(
+            ServerType::Char,
+            1,
+            PacketDirection::ClientToServer,
+            tracker.clone(),
+        );
+        logger.feed_and_log(&[0x01, 0x00, 0x00, 0x00]);
+
+        let flow = tracker.format_sequence_flow();
+        assert!(flow.contains("0x0001"));
+        assert!(flow.contains("[UNKNOWN / UNMAPPED in table.rs"));
     }
 
     #[test]

@@ -12,8 +12,10 @@ use ro_packets::outgoing::{
     encode_ac_accept_login, encode_ac_refuse_login, encode_hc_notify_zonesvr,
     encode_zc_accept_enter, encode_zc_notify_act, encode_zc_notify_act_params,
     encode_zc_notify_newentry, encode_zc_notify_playermove, encode_zc_notify_time,
-    encode_zc_par_change, ActParams, CharServerEntry, NewEntryParams, Phase0EventEncoder,
+    encode_zc_par_change, ActParams, CharServerEntry, ModernEventEncoder, NewEntryParams,
+    Phase0EventEncoder,
 };
+use ro_packets::table::RathenaPacketLengthTable;
 use tokio_util::codec::Decoder;
 
 #[test]
@@ -22,16 +24,17 @@ fn test_stream_fragmentation_and_coalescing() {
     let mut stream_buffer = BytesMut::new();
 
     // Prepare 3 packets:
-    // 1. CZ_ENTER (0x0072, 19 bytes)
-    let mut cz_enter_bytes = vec![0x72, 0x00];
+    // 1. CZ_ENTER (0x0436, 23 bytes)
+    let mut cz_enter_bytes = vec![0x36, 0x04];
     cz_enter_bytes.extend_from_slice(&2000001u32.to_le_bytes()); // account_id
     cz_enter_bytes.extend_from_slice(&150001u32.to_le_bytes());  // char_id
     cz_enter_bytes.extend_from_slice(&12345u32.to_le_bytes());   // login_id1
     cz_enter_bytes.extend_from_slice(&99999u32.to_le_bytes());   // client_tick
+    cz_enter_bytes.extend_from_slice(&[0u8; 4]);                 // padding
     cz_enter_bytes.push(1); // Sex::Male
 
-    // 2. CZ_REQUEST_TIME (0x007e, 6 bytes)
-    let mut cz_time_bytes = vec![0x7e, 0x00];
+    // 2. CZ_REQUEST_TIME (0x0360, 6 bytes)
+    let mut cz_time_bytes = vec![0x60, 0x03];
     cz_time_bytes.extend_from_slice(&100001u32.to_le_bytes());
 
     // 3. CZ_NOTIFY_ACTORINIT (0x007d, 2 bytes)
@@ -56,7 +59,7 @@ fn test_stream_fragmentation_and_coalescing() {
     assert_eq!(decoded_packets.len(), 3);
 
     // Check packet 1
-    assert_eq!(decoded_packets[0].opcode, PacketOpcode(0x0072));
+    assert_eq!(decoded_packets[0].opcode, PacketOpcode(0x0436));
     let frame1 = decode_frame(&decoded_packets[0], ro_contracts::TARGET_PACKETVER).unwrap();
     assert_eq!(
         frame1,
@@ -70,7 +73,7 @@ fn test_stream_fragmentation_and_coalescing() {
     );
 
     // Check packet 2
-    assert_eq!(decoded_packets[1].opcode, PacketOpcode(0x007e));
+    assert_eq!(decoded_packets[1].opcode, PacketOpcode(0x0360));
     let frame2 = decode_frame(&decoded_packets[1], ro_contracts::TARGET_PACKETVER).unwrap();
     assert_eq!(
         frame2,
@@ -137,17 +140,17 @@ fn test_outgoing_serializers_and_redecoding() {
     );
     let mut stream = BytesMut::from(login_bytes.as_ref());
     let raw = decoder.decode(&mut stream).unwrap().expect("AC_ACCEPT_LOGIN decoded");
-    assert_eq!(raw.opcode, PacketOpcode(0x0069));
-    assert_eq!(raw.payload_len(), 47 + 32 - 4);
+    assert_eq!(raw.opcode, PacketOpcode(0x0ac4));
+    assert_eq!(raw.payload_len(), 64 + 160 - 4);
 
-    // 2. AC_REFUSE_LOGIN (23 bytes)
+    // 2. AC_REFUSE_LOGIN (26 bytes)
     let refuse_bytes = encode_ac_refuse_login(3, "0");
     let mut stream = BytesMut::from(refuse_bytes.as_ref());
     let raw = decoder.decode(&mut stream).unwrap().expect("AC_REFUSE_LOGIN decoded");
-    assert_eq!(raw.opcode, PacketOpcode(0x006a));
-    assert_eq!(raw.payload_len(), 21);
+    assert_eq!(raw.opcode, PacketOpcode(0x083e));
+    assert_eq!(raw.payload_len(), 24);
 
-    // 3. HC_NOTIFY_ZONESVR (28 bytes)
+    // 3. HC_NOTIFY_ZONESVR (156 bytes)
     let zone_bytes = encode_hc_notify_zonesvr(
         CharId(150001),
         "geffen.gat",
@@ -156,10 +159,10 @@ fn test_outgoing_serializers_and_redecoding() {
     );
     let mut stream = BytesMut::from(zone_bytes.as_ref());
     let raw = decoder.decode(&mut stream).unwrap().expect("HC_NOTIFY_ZONESVR decoded");
-    assert_eq!(raw.opcode, PacketOpcode(0x0071));
-    assert_eq!(raw.payload_len(), 26);
+    assert_eq!(raw.opcode, PacketOpcode(0x0ac5));
+    assert_eq!(raw.payload_len(), 154);
 
-    // 4. ZC_ACCEPT_ENTER (11 bytes)
+    // 4. ZC_ACCEPT_ENTER (13 bytes)
     let accept_bytes = encode_zc_accept_enter(
         12345,
         MapPosition { x: 50, y: 75, dir: 2 },
@@ -168,8 +171,8 @@ fn test_outgoing_serializers_and_redecoding() {
     );
     let mut stream = BytesMut::from(accept_bytes.as_ref());
     let raw = decoder.decode(&mut stream).unwrap().expect("ZC_ACCEPT_ENTER decoded");
-    assert_eq!(raw.opcode, PacketOpcode(0x0073));
-    assert_eq!(raw.payload_len(), 9);
+    assert_eq!(raw.opcode, PacketOpcode(0x02eb));
+    assert_eq!(raw.payload_len(), 11);
 
     // 5. ZC_NOTIFY_TIME (6 bytes)
     let time_bytes = encode_zc_notify_time(8888);
@@ -209,15 +212,15 @@ fn test_outgoing_serializers_and_redecoding() {
     let newentry_bytes = encode_zc_notify_newentry(&entry_params);
     let mut stream = BytesMut::from(newentry_bytes.as_ref());
     let raw = decoder.decode(&mut stream).unwrap().expect("ZC_NOTIFY_NEWENTRY decoded");
-    assert_eq!(raw.opcode, PacketOpcode(0x009d));
-    assert_eq!(raw.payload_len(), 51);
+    assert_eq!(raw.opcode, PacketOpcode(0x09fe));
+    assert_eq!(raw.payload_len(), 103);
 
-    // 7. ZC_PAR_CHANGE (5 bytes)
+    // 7. ZC_PAR_CHANGE (8 bytes)
     let par_bytes = encode_zc_par_change(5, 99);
     let mut stream = BytesMut::from(par_bytes.as_ref());
     let raw = decoder.decode(&mut stream).unwrap().expect("ZC_PAR_CHANGE decoded");
-    assert_eq!(raw.opcode, PacketOpcode(0x00be));
-    assert_eq!(raw.payload_len(), 3);
+    assert_eq!(raw.opcode, PacketOpcode(0x00b0));
+    assert_eq!(raw.payload_len(), 6);
 
     // 8. ZC_NOTIFY_PLAYERMOVE (12 bytes)
     let move_bytes = encode_zc_notify_playermove(10, 20, 30, 40, 5000);
@@ -226,14 +229,14 @@ fn test_outgoing_serializers_and_redecoding() {
     assert_eq!(raw.opcode, PacketOpcode(0x0087));
     assert_eq!(raw.payload_len(), 10);
 
-    // 9. ZC_NOTIFY_ACT (29 bytes)
+    // 9. ZC_NOTIFY_ACT (34 bytes)
     let act_bytes = encode_zc_notify_act(100, 200, 1000, 0, 0, 10, 1, 0, 0);
     let mut stream = BytesMut::from(act_bytes.as_ref());
     let raw = decoder.decode(&mut stream).unwrap().expect("ZC_NOTIFY_ACT decoded");
-    assert_eq!(raw.opcode, PacketOpcode(0x008a));
-    assert_eq!(raw.payload_len(), 27);
+    assert_eq!(raw.opcode, PacketOpcode(0x08c8));
+    assert_eq!(raw.payload_len(), 32);
 
-    // 10. ZC_NOTIFY_ACT via ActParams (29 bytes)
+    // 10. ZC_NOTIFY_ACT via ActParams (34 bytes)
     let act_params = ActParams {
         source_id: 100,
         target_id: 200,
@@ -255,7 +258,7 @@ fn test_event_encoder_integration() {
     let ver = ro_contracts::TARGET_PACKETVER;
     let mut decoder = PacketDecoder::default();
 
-    // 1. AcceptEnter
+    // 1. AcceptEnter (0x02eb)
     let event = ServerEvent::AcceptEnter {
         server_tick: 1111,
         pos: MapPosition { x: 50, y: 60, dir: 1 },
@@ -263,9 +266,9 @@ fn test_event_encoder_integration() {
     let bytes = encoder.encode_event(&event, ver).unwrap();
     let mut stream = BytesMut::from(bytes.as_ref());
     let raw = decoder.decode(&mut stream).unwrap().unwrap();
-    assert_eq!(raw.opcode, PacketOpcode(0x0073));
+    assert_eq!(raw.opcode, PacketOpcode(0x02eb));
 
-    // 2. LoginAccepted
+    // 2. LoginAccepted (0x0ac4)
     let event = ServerEvent::LoginAccepted {
         account_id: AccountId(2000001),
         login_id1: 1111,
@@ -283,14 +286,14 @@ fn test_event_encoder_integration() {
     let bytes = encoder.encode_event(&event, ver).unwrap();
     let mut stream = BytesMut::from(bytes.as_ref());
     let raw = decoder.decode(&mut stream).unwrap().unwrap();
-    assert_eq!(raw.opcode, PacketOpcode(0x0069));
+    assert_eq!(raw.opcode, PacketOpcode(0x0ac4));
 
-    // 3. LoginRefused
+    // 3. LoginRefused (0x083e)
     let event = ServerEvent::LoginRefused { error_code: 6 };
     let bytes = encoder.encode_event(&event, ver).unwrap();
     let mut stream = BytesMut::from(bytes.as_ref());
     let raw = decoder.decode(&mut stream).unwrap().unwrap();
-    assert_eq!(raw.opcode, PacketOpcode(0x006a));
+    assert_eq!(raw.opcode, PacketOpcode(0x083e));
 
     // 4. CharacterListLoaded (produces HC_ACCEPT_ENTER + HC_ACK_CHARINFO_PER_PAGE)
     let event = ServerEvent::CharacterListLoaded {
@@ -329,7 +332,7 @@ fn test_event_encoder_integration() {
     let bytes = encoder.encode_event(&event, ver).unwrap();
     let mut stream = BytesMut::from(bytes.as_ref());
     let raw = decoder.decode(&mut stream).unwrap().unwrap();
-    assert_eq!(raw.opcode, PacketOpcode(0x0071));
+    assert_eq!(raw.opcode, PacketOpcode(0x0ac5));
 }
 
 #[test]
@@ -429,4 +432,146 @@ fn test_pos2_roundtrip_exhaustive() {
         assert_eq!(sx0, usx0);
         assert_eq!(sy0, usy0);
     }
+}
+
+#[test]
+fn test_modern_framing_and_intent_parsing() {
+    let ver = 20260219;
+    let mut decoder = PacketDecoder::new(RathenaPacketLengthTable, ver);
+    let mut stream_buffer = BytesMut::new();
+
+    // Prepare modern stream:
+    // 1. CZ_ENTER (0x0436, 23 bytes)
+    let mut cz_enter = vec![0x36, 0x04];
+    cz_enter.extend_from_slice(&2000001u32.to_le_bytes());
+    cz_enter.extend_from_slice(&150001u32.to_le_bytes());
+    cz_enter.extend_from_slice(&12345u32.to_le_bytes());
+    cz_enter.extend_from_slice(&99999u32.to_le_bytes());
+    cz_enter.extend_from_slice(&[0u8; 4]);
+    cz_enter.push(0); // Female
+
+    // 2. CZ_REQUEST_TIME (0x0360, 6 bytes)
+    let mut cz_time = vec![0x60, 0x03];
+    cz_time.extend_from_slice(&88888u32.to_le_bytes());
+
+    // 3. CZ_REQUEST_MOVE (0x035f, 5 bytes)
+    let mut cz_move = vec![0x5f, 0x03];
+    cz_move.extend_from_slice(&pack_pos_dir(120, 240, 0));
+
+    // 4. CZ_CHANGE_DIRECTION (0x0361, 5 bytes)
+    let mut cz_dir = vec![0x61, 0x03];
+    cz_dir.extend_from_slice(&2u16.to_le_bytes());
+    cz_dir.push(4);
+
+    // 5. CZ_REQUEST_ACT (0x0437, 7 bytes)
+    let mut cz_act = vec![0x37, 0x04];
+    cz_act.extend_from_slice(&50001u32.to_le_bytes());
+    cz_act.push(2);
+
+    // 6. CZ_REQNAME (0x0368, 6 bytes)
+    let mut cz_name = vec![0x68, 0x03];
+    cz_name.extend_from_slice(&60001u32.to_le_bytes());
+
+    let mut all_bytes = Vec::new();
+    all_bytes.extend_from_slice(&cz_enter);
+    all_bytes.extend_from_slice(&cz_time);
+    all_bytes.extend_from_slice(&cz_move);
+    all_bytes.extend_from_slice(&cz_dir);
+    all_bytes.extend_from_slice(&cz_act);
+    all_bytes.extend_from_slice(&cz_name);
+
+    let mut decoded = Vec::new();
+    for chunk in all_bytes.chunks(3) {
+        stream_buffer.extend_from_slice(chunk);
+        while let Some(packet) = decoder.decode(&mut stream_buffer).unwrap() {
+            decoded.push(packet);
+        }
+    }
+
+    assert_eq!(decoded.len(), 6);
+    assert_eq!(decoded[0].opcode, PacketOpcode(0x0436));
+    assert_eq!(
+        decode_frame(&decoded[0], ver).unwrap(),
+        DecodedFrame::Intent(ClientIntent::EnterMap {
+            account_id: AccountId(2000001),
+            char_id: CharId(150001),
+            login_id1: 12345,
+            client_tick: 99999,
+            sex: Sex::Female,
+        })
+    );
+
+    assert_eq!(decoded[1].opcode, PacketOpcode(0x0360));
+    assert_eq!(
+        decode_frame(&decoded[1], ver).unwrap(),
+        DecodedFrame::Intent(ClientIntent::RequestTime { client_tick: 88888 })
+    );
+
+    assert_eq!(decoded[2].opcode, PacketOpcode(0x035f));
+    assert_eq!(
+        decode_frame(&decoded[2], ver).unwrap(),
+        DecodedFrame::Intent(ClientIntent::RequestMove { dest_x: 120, dest_y: 240 })
+    );
+
+    assert_eq!(decoded[3].opcode, PacketOpcode(0x0361));
+    assert_eq!(
+        decode_frame(&decoded[3], ver).unwrap(),
+        DecodedFrame::Intent(ClientIntent::ChangeDirection { head_dir: 2, body_dir: 4 })
+    );
+
+    assert_eq!(decoded[4].opcode, PacketOpcode(0x0437));
+    assert_eq!(
+        decode_frame(&decoded[4], ver).unwrap(),
+        DecodedFrame::Intent(ClientIntent::RequestAction { target_id: 50001, action_type: 2 })
+    );
+
+    assert_eq!(decoded[5].opcode, PacketOpcode(0x0368));
+    assert_eq!(
+        decode_frame(&decoded[5], ver).unwrap(),
+        DecodedFrame::Intent(ClientIntent::RequestEntityName { entity_id: 60001 })
+    );
+}
+
+#[test]
+fn test_modern_event_encoder_roundtrip() {
+    let encoder = ModernEventEncoder;
+    let ver = 20260219;
+    let mut decoder = PacketDecoder::new(RathenaPacketLengthTable, ver);
+
+    // 1. ZC_ACCEPT_ENTER_MODERN (0x02eb, 13 bytes)
+    let event = ServerEvent::AcceptEnter {
+        server_tick: 7777,
+        pos: MapPosition { x: 55, y: 66, dir: 3 },
+    };
+    let bytes = encoder.encode_event(&event, ver).unwrap();
+    let mut stream = BytesMut::from(bytes.as_ref());
+    let raw = decoder.decode(&mut stream).unwrap().unwrap();
+    assert_eq!(raw.opcode, PacketOpcode(0x02eb));
+    assert_eq!(raw.payload_len(), 11);
+
+    // 2. ZC_NOTIFY_MOVE_MODERN (0x09fd, 114 bytes dynamic)
+    let event = ServerEvent::EntityMoved {
+        char_id: CharId(150001),
+        start_pos: MapPosition { x: 10, y: 20, dir: 0 },
+        dest_pos: MapPosition { x: 30, y: 40, dir: 0 },
+        move_start_tick: 5000,
+    };
+    let bytes = encoder.encode_event(&event, ver).unwrap();
+    let mut stream = BytesMut::from(bytes.as_ref());
+    let raw = decoder.decode(&mut stream).unwrap().unwrap();
+    assert_eq!(raw.opcode, PacketOpcode(0x09fd));
+    assert_eq!(raw.payload_len(), 110);
+
+    // 3. ZC_NOTIFY_ACT_MODERN (0x08c8, 34 bytes)
+    let event = ServerEvent::EntityAction {
+        source_id: 100,
+        target_id: 200,
+        action_type: 2,
+        action_tick: 1234,
+    };
+    let bytes = encoder.encode_event(&event, ver).unwrap();
+    let mut stream = BytesMut::from(bytes.as_ref());
+    let raw = decoder.decode(&mut stream).unwrap().unwrap();
+    assert_eq!(raw.opcode, PacketOpcode(0x08c8));
+    assert_eq!(raw.payload_len(), 32);
 }

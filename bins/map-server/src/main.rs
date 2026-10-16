@@ -128,11 +128,12 @@ mod tests {
 
         let mut client = TcpStream::connect(server_addr).await.unwrap();
 
-        let mut cz_enter_bytes = vec![0x72, 0x00];
+        let mut cz_enter_bytes = vec![0x36, 0x04];
         cz_enter_bytes.extend_from_slice(&2000000u32.to_le_bytes());
         cz_enter_bytes.extend_from_slice(&150001u32.to_le_bytes());
         cz_enter_bytes.extend_from_slice(&1u32.to_le_bytes());
         cz_enter_bytes.extend_from_slice(&12345u32.to_le_bytes());
+        cz_enter_bytes.extend_from_slice(&[0u8; 4]);
         cz_enter_bytes.push(1);
 
         client.write_all(&cz_enter_bytes).await.unwrap();
@@ -167,10 +168,10 @@ mod tests {
                 init_opcodes.push(raw.opcode);
             }
         }
-        assert_eq!(init_opcodes[0], PacketOpcode(0x009d));
-        assert_eq!(init_opcodes[1], PacketOpcode(0x00be));
+        assert_eq!(init_opcodes[0], PacketOpcode::ZC_NOTIFY_NEWENTRY);
+        assert_eq!(init_opcodes[1], PacketOpcode::ZC_PAR_CHANGE);
 
-        let mut cz_time_bytes = vec![0x7e, 0x00];
+        let mut cz_time_bytes = vec![0x60, 0x03];
         cz_time_bytes.extend_from_slice(&55555u32.to_le_bytes());
         client.write_all(&cz_time_bytes).await.unwrap();
         client.flush().await.unwrap();

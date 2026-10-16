@@ -66,18 +66,7 @@ impl From<CharServerInfo> for CharServerEntry {
     }
 }
 
-/// Encodes `AC_ACCEPT_LOGIN` (0x0069).
-///
-/// Dynamic packet structure:
-/// - 0..2: opcode (0x0069)
-/// - 2..4: packet length (47 + 32 * servers.len())
-/// - 4..8: login_id1
-/// - 8..12: account_id
-/// - 12..16: login_id2
-/// - 16..20: last_ip
-/// - 20..46: last_login (26 bytes)
-/// - 46..47: sex (1 byte)
-/// - 47..: char server entries (32 bytes each)
+/// Encodes `AC_ACCEPT_LOGIN` (0x0ac4).
 pub fn encode_ac_accept_login(
     login_id1: u32,
     account_id: AccountId,
@@ -87,7 +76,48 @@ pub fn encode_ac_accept_login(
     sex: Sex,
     servers: &[CharServerEntry],
 ) -> Bytes {
-    let total_len = 47 + servers.len() * 32;
+    encode_ac_accept_login_modern(
+        login_id1,
+        account_id,
+        login_id2,
+        last_ip,
+        last_login,
+        sex,
+        "",
+        servers,
+    )
+}
+
+/// Encodes `AC_REFUSE_LOGIN` (0x083e).
+pub fn encode_ac_refuse_login(error_code: u8, unblock_time: &str) -> Bytes {
+    encode_ac_refuse_login_modern(error_code as u32, unblock_time)
+}
+
+/// Encodes modern `AC_ACCEPT_LOGIN` (0x0ac4) for PACKETVER >= 20170315.
+///
+/// Dynamic packet structure:
+/// - 0..2: opcode (0x0ac4)
+/// - 2..4: packet length (64 + 160 * servers.len())
+/// - 4..8: login_id1
+/// - 8..12: account_id
+/// - 12..16: login_id2
+/// - 16..20: last_ip
+/// - 20..46: last_login (26 bytes)
+/// - 46..47: sex (1 byte)
+/// - 47..64: token (17 bytes)
+/// - 64..: char server entries (160 bytes each)
+#[allow(clippy::too_many_arguments)]
+pub fn encode_ac_accept_login_modern(
+    login_id1: u32,
+    account_id: AccountId,
+    login_id2: u32,
+    last_ip: [u8; 4],
+    last_login: &str,
+    sex: Sex,
+    token: &str,
+    servers: &[CharServerEntry],
+) -> Bytes {
+    let total_len = 64 + servers.len() * 160;
     let mut buf = BytesMut::with_capacity(total_len);
 
     buf.put_u16_le(PacketOpcode::AC_ACCEPT_LOGIN.raw());
@@ -98,6 +128,7 @@ pub fn encode_ac_accept_login(
     buf.put_slice(&last_ip);
     buf.put_slice(&write_fixed_string::<26>(last_login));
     buf.put_u8(sex as u8);
+    buf.put_slice(&write_fixed_string::<17>(token));
 
     for s in servers {
         buf.put_slice(&s.ip);
@@ -106,21 +137,22 @@ pub fn encode_ac_accept_login(
         buf.put_u16_le(s.users);
         buf.put_u16_le(s.server_type);
         buf.put_u16_le(s.new_server);
+        buf.put_bytes(0, 128);
     }
 
     buf.freeze()
 }
 
-/// Encodes `AC_REFUSE_LOGIN` (0x006a).
+/// Encodes modern `AC_REFUSE_LOGIN` (0x083e) for PACKETVER >= 20120000.
 ///
-/// Fixed packet structure (23 bytes):
-/// - 0..2: opcode (0x006a)
-/// - 2..3: error code
-/// - 3..23: unblock time (20 bytes)
-pub fn encode_ac_refuse_login(error_code: u8, unblock_time: &str) -> Bytes {
-    let mut buf = BytesMut::with_capacity(23);
+/// Fixed packet structure (26 bytes):
+/// - 0..2: opcode (0x083e)
+/// - 2..6: error code (u32 LE)
+/// - 6..26: unblock time (20 bytes)
+pub fn encode_ac_refuse_login_modern(error_code: u32, unblock_time: &str) -> Bytes {
+    let mut buf = BytesMut::with_capacity(26);
     buf.put_u16_le(PacketOpcode::AC_REFUSE_LOGIN.raw());
-    buf.put_u8(error_code);
+    buf.put_u32_le(error_code);
     buf.put_slice(&write_fixed_string::<20>(unblock_time));
     buf.freeze()
 }
@@ -249,46 +281,39 @@ pub fn encode_hc_ack_charinfo_per_page(characters: &[CharacterSummary]) -> Bytes
 ///
 /// Fixed packet structure (28 bytes):
 /// - 0..2: opcode (0x0071)
+/// Encodes `HC_NOTIFY_ZONESVR` (0x0ac5 for modern PACKETVER >= 20170315, 156 bytes).
+///
+/// Packet structure:
+/// - 0..2: opcode (0x0ac5)
 /// - 2..6: char_id (u32 LE)
 /// - 6..22: map name (16 bytes)
 /// - 22..26: ip (4 bytes)
 /// - 26..28: port (u16 LE)
+/// - 28..156: unknown padding (128 bytes)
 pub fn encode_hc_notify_zonesvr(
     char_id: CharId,
     map_name: &str,
     ip: [u8; 4],
     port: u16,
 ) -> Bytes {
-    let mut buf = BytesMut::with_capacity(28);
+    let mut buf = BytesMut::with_capacity(156);
     buf.put_u16_le(PacketOpcode::HC_NOTIFY_ZONESVR.raw());
     buf.put_u32_le(char_id.0);
     buf.put_slice(&write_fixed_string::<16>(map_name));
     buf.put_slice(&ip);
     buf.put_u16_le(port);
+    buf.put_bytes(0, 128);
     buf.freeze()
 }
 
-/// Encodes `ZC_ACCEPT_ENTER` (0x0073).
-///
-/// Fixed packet structure (11 bytes):
-/// - 0..2: opcode (0x0073)
-/// - 2..6: start time (u32 LE)
-/// - 6..9: pos_dir (3 bytes packed)
-/// - 9..10: x_size (u8)
-/// - 10..11: y_size (u8)
+/// Encodes `ZC_ACCEPT_ENTER` (0x02eb).
 pub fn encode_zc_accept_enter(
     start_time: u32,
     pos: MapPosition,
     x_size: u8,
     y_size: u8,
 ) -> Bytes {
-    let mut buf = BytesMut::with_capacity(11);
-    buf.put_u16_le(PacketOpcode::ZC_ACCEPT_ENTER.raw());
-    buf.put_u32_le(start_time);
-    buf.put_slice(&pack_pos_dir(pos.x, pos.y, pos.dir));
-    buf.put_u8(x_size);
-    buf.put_u8(y_size);
-    buf.freeze()
+    encode_zc_accept_enter2(start_time, pos, x_size, y_size, 0)
 }
 
 /// Encodes `ZC_ACCEPT_ENTER2` (0x02eb).
@@ -353,52 +378,14 @@ pub struct NewEntryParams {
     pub clevel: i16,
 }
 
-/// Encodes `ZC_NOTIFY_NEWENTRY` (0x009d).
-///
-/// Fixed packet structure (53 bytes).
+/// Encodes `ZC_NOTIFY_NEWENTRY` (0x09fe).
 pub fn encode_zc_notify_newentry(params: &NewEntryParams) -> Bytes {
-    let mut buf = BytesMut::with_capacity(53);
-    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_NEWENTRY.raw());
-    buf.put_u32_le(params.gid);
-    buf.put_i16_le(params.speed);
-    buf.put_i16_le(params.body_state);
-    buf.put_i16_le(params.health_state);
-    buf.put_i16_le(params.effect_state);
-    buf.put_i16_le(params.job);
-    buf.put_i16_le(params.head);
-    buf.put_i16_le(params.weapon);
-    buf.put_i16_le(params.accessory);
-    buf.put_i16_le(params.shield);
-    buf.put_i16_le(params.accessory2);
-    buf.put_i16_le(params.accessory3);
-    buf.put_i16_le(params.headpalette);
-    buf.put_i16_le(params.bodypalette);
-    buf.put_i16_le(params.head_dir);
-    buf.put_u32_le(params.guid);
-    buf.put_i16_le(params.gemblem_ver);
-    buf.put_i16_le(params.honor);
-    buf.put_i16_le(params.virtue);
-    buf.put_u8(params.is_pkmode_on);
-    buf.put_u8(params.sex as u8);
-    buf.put_slice(&pack_pos_dir(params.pos.x, params.pos.y, params.pos.dir));
-    buf.put_u8(params.x_size);
-    buf.put_u8(params.y_size);
-    buf.put_i16_le(params.clevel);
-    buf.freeze()
+    encode_zc_notify_newentry_modern(params)
 }
 
-/// Encodes `ZC_PAR_CHANGE` (0x00be / STATUS_CHANGE).
-///
-/// Fixed packet structure (5 bytes):
-/// - 0..2: opcode (0x00be)
-/// - 2..4: status/var id (u16 LE)
-/// - 4..5: value (u8)
+/// Encodes `ZC_PAR_CHANGE` (0x00b0).
 pub fn encode_zc_par_change(var_id: u16, value: u8) -> Bytes {
-    let mut buf = BytesMut::with_capacity(5);
-    buf.put_u16_le(PacketOpcode::ZC_PAR_CHANGE.raw());
-    buf.put_u16_le(var_id);
-    buf.put_u8(value);
-    buf.freeze()
+    encode_zc_par_change_i32(var_id, value as i32)
 }
 
 /// Encodes `ZC_PAR_CHANGE` with 32-bit count (0x00b0).
@@ -463,9 +450,7 @@ pub struct ActParams {
     pub left_damage: i16,
 }
 
-/// Encodes `ZC_NOTIFY_ACT` (0x008a).
-///
-/// Fixed packet structure (29 bytes).
+/// Encodes `ZC_NOTIFY_ACT` (0x08c8).
 #[allow(clippy::too_many_arguments)]
 pub fn encode_zc_notify_act(
     source_id: u32,
@@ -478,18 +463,18 @@ pub fn encode_zc_notify_act(
     action_type: u8,
     left_damage: i16,
 ) -> Bytes {
-    let mut buf = BytesMut::with_capacity(29);
-    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_ACT.raw());
-    buf.put_u32_le(source_id);
-    buf.put_u32_le(target_id);
-    buf.put_u32_le(server_tick);
-    buf.put_i32_le(attack_speed);
-    buf.put_i32_le(damage_delay);
-    buf.put_i16_le(damage);
-    buf.put_i16_le(div_count);
-    buf.put_u8(action_type);
-    buf.put_i16_le(left_damage);
-    buf.freeze()
+    encode_zc_notify_act_modern(
+        source_id,
+        target_id,
+        server_tick,
+        attack_speed,
+        damage_delay,
+        damage as i32,
+        0,
+        div_count as u16,
+        action_type,
+        left_damage as i32,
+    )
 }
 
 /// Encodes `ZC_NOTIFY_ACT` (0x008a) using [`ActParams`].
@@ -507,11 +492,210 @@ pub fn encode_zc_notify_act_params(params: &ActParams) -> Bytes {
     )
 }
 
+/// Encodes modern `ZC_NOTIFY_ACT` (0x08c8) for PACKETVER >= 20131223.
+///
+/// Fixed packet structure (34 bytes):
+/// - 0..2: opcode (0x08c8)
+/// - 2..6: source_id (u32 LE)
+/// - 6..10: target_id (u32 LE)
+/// - 10..14: server_tick (u32 LE)
+/// - 14..18: src_speed (i32 LE)
+/// - 18..22: dmg_speed (i32 LE)
+/// - 22..26: damage (i32 LE)
+/// - 26..27: is_sp_damage (u8)
+/// - 27..29: div_count (u16 LE)
+/// - 29..30: action_type (u8)
+/// - 30..34: damage2 (i32 LE)
+#[allow(clippy::too_many_arguments)]
+pub fn encode_zc_notify_act_modern(
+    source_id: u32,
+    target_id: u32,
+    server_tick: u32,
+    src_speed: i32,
+    dmg_speed: i32,
+    damage: i32,
+    is_sp_damage: u8,
+    div_count: u16,
+    action_type: u8,
+    damage2: i32,
+) -> Bytes {
+    let mut buf = BytesMut::with_capacity(34);
+    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_ACT.raw());
+    buf.put_u32_le(source_id);
+    buf.put_u32_le(target_id);
+    buf.put_u32_le(server_tick);
+    buf.put_i32_le(src_speed);
+    buf.put_i32_le(dmg_speed);
+    buf.put_i32_le(damage);
+    buf.put_u8(is_sp_damage);
+    buf.put_u16_le(div_count);
+    buf.put_u8(action_type);
+    buf.put_i32_le(damage2);
+    buf.freeze()
+}
+
+/// Encodes modern `ZC_NOTIFY_NEWENTRY` (0x09fe) for PACKETVER >= 20150513.
+///
+/// Dynamic packet structure for modern clients (107 bytes).
+pub fn encode_zc_notify_newentry_modern(params: &NewEntryParams) -> Bytes {
+    let mut buf = BytesMut::with_capacity(107);
+    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_NEWENTRY.raw());
+    buf.put_u16_le(107);
+    buf.put_u8(0); // objecttype: BL_PC = 0
+    buf.put_u32_le(params.gid); // AID
+    buf.put_u32_le(params.gid); // GID
+    buf.put_i16_le(params.speed);
+    buf.put_i16_le(params.body_state);
+    buf.put_i16_le(params.health_state);
+    buf.put_i32_le(params.effect_state as i32);
+    buf.put_i16_le(params.job);
+    buf.put_u16_le(params.head as u16);
+    buf.put_u32_le(params.weapon as u32);
+    buf.put_u32_le(params.shield as u32);
+    buf.put_u16_le(params.accessory as u16);
+    buf.put_u16_le(params.accessory2 as u16);
+    buf.put_u16_le(params.accessory3 as u16);
+    buf.put_i16_le(params.headpalette);
+    buf.put_i16_le(params.bodypalette);
+    buf.put_i16_le(params.head_dir);
+    buf.put_u16_le(0); // robe
+    buf.put_u32_le(params.guid);
+    buf.put_i16_le(params.gemblem_ver);
+    buf.put_i16_le(params.honor);
+    buf.put_i32_le(params.virtue as i32);
+    buf.put_u8(params.is_pkmode_on);
+    buf.put_u8(params.sex as u8);
+    buf.put_slice(&pack_pos_dir(params.pos.x, params.pos.y, params.pos.dir));
+    buf.put_u8(params.x_size);
+    buf.put_u8(params.y_size);
+    buf.put_i16_le(params.clevel);
+    buf.put_i16_le(0); // font
+    buf.put_i32_le(100); // maxHP
+    buf.put_i32_le(100); // HP
+    buf.put_u8(0); // isBoss
+    buf.put_i16_le(0); // body
+    buf.put_slice(&write_fixed_string::<24>("")); // name
+    buf.freeze()
+}
+
+/// Encodes modern `ZC_NOTIFY_STANDENTRY` (0x09ff) for PACKETVER >= 20150513.
+///
+/// Dynamic packet structure for modern clients (108 bytes).
+pub fn encode_zc_notify_standentry_modern(params: &NewEntryParams, state: u8) -> Bytes {
+    let mut buf = BytesMut::with_capacity(108);
+    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_STANDENTRY.raw());
+    buf.put_u16_le(108);
+    buf.put_u8(0); // objecttype: BL_PC = 0
+    buf.put_u32_le(params.gid); // AID
+    buf.put_u32_le(params.gid); // GID
+    buf.put_i16_le(params.speed);
+    buf.put_i16_le(params.body_state);
+    buf.put_i16_le(params.health_state);
+    buf.put_i32_le(params.effect_state as i32);
+    buf.put_i16_le(params.job);
+    buf.put_u16_le(params.head as u16);
+    buf.put_u32_le(params.weapon as u32);
+    buf.put_u32_le(params.shield as u32);
+    buf.put_u16_le(params.accessory as u16);
+    buf.put_u16_le(params.accessory2 as u16);
+    buf.put_u16_le(params.accessory3 as u16);
+    buf.put_i16_le(params.headpalette);
+    buf.put_i16_le(params.bodypalette);
+    buf.put_i16_le(params.head_dir);
+    buf.put_u16_le(0); // robe
+    buf.put_u32_le(params.guid);
+    buf.put_i16_le(params.gemblem_ver);
+    buf.put_i16_le(params.honor);
+    buf.put_i32_le(params.virtue as i32);
+    buf.put_u8(params.is_pkmode_on);
+    buf.put_u8(params.sex as u8);
+    buf.put_slice(&pack_pos_dir(params.pos.x, params.pos.y, params.pos.dir));
+    buf.put_u8(params.x_size);
+    buf.put_u8(params.y_size);
+    buf.put_u8(state);
+    buf.put_i16_le(params.clevel);
+    buf.put_i16_le(0); // font
+    buf.put_i32_le(100); // maxHP
+    buf.put_i32_le(100); // HP
+    buf.put_u8(0); // isBoss
+    buf.put_i16_le(0); // body
+    buf.put_slice(&write_fixed_string::<24>("")); // name
+    buf.freeze()
+}
+
+/// Encodes modern `ZC_NOTIFY_MOVE` (0x09fd) for PACKETVER >= 20150513.
+///
+/// Dynamic packet structure for modern clients (114 bytes).
+pub fn encode_zc_notify_move_modern(
+    char_id: CharId,
+    x0: u16,
+    y0: u16,
+    x1: u16,
+    y1: u16,
+    move_start_time: u32,
+    name: &str,
+) -> Bytes {
+    let mut buf = BytesMut::with_capacity(114);
+    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_MOVE.raw());
+    buf.put_u16_le(114);
+    buf.put_u8(0); // objecttype: BL_PC = 0
+    buf.put_u32_le(char_id.0); // AID
+    buf.put_u32_le(char_id.0); // GID
+    buf.put_i16_le(150); // speed
+    buf.put_i16_le(0); // body_state
+    buf.put_i16_le(0); // health_state
+    buf.put_i32_le(0); // effect_state
+    buf.put_i16_le(0); // job
+    buf.put_u16_le(0); // head
+    buf.put_u32_le(0); // weapon
+    buf.put_u32_le(0); // shield
+    buf.put_u16_le(0); // accessory
+    buf.put_u32_le(move_start_time);
+    buf.put_u16_le(0); // accessory2
+    buf.put_u16_le(0); // accessory3
+    buf.put_i16_le(0); // headpalette
+    buf.put_i16_le(0); // bodypalette
+    buf.put_i16_le(0); // head_dir
+    buf.put_u16_le(0); // robe
+    buf.put_u32_le(0); // guid
+    buf.put_i16_le(0); // gemblem_ver
+    buf.put_i16_le(0); // honor
+    buf.put_i32_le(0); // virtue
+    buf.put_u8(0); // is_pkmode_on
+    buf.put_u8(1); // sex: Male
+    buf.put_slice(&pack_pos2(x0, y0, x1, y1, 8, 8));
+    buf.put_u8(5); // x_size
+    buf.put_u8(5); // y_size
+    buf.put_i16_le(1); // clevel
+    buf.put_i16_le(0); // font
+    buf.put_i32_le(100); // maxHP
+    buf.put_i32_le(100); // HP
+    buf.put_u8(0); // isBoss
+    buf.put_i16_le(0); // body
+    buf.put_slice(&write_fixed_string::<24>(name));
+    buf.freeze()
+}
+
 /// Default event encoder connecting domain `ServerEvent` variants to Phase 0 packet serializers.
 #[derive(Debug, Default, Clone, Copy)]
 pub struct Phase0EventEncoder;
 
 impl EventEncoder for Phase0EventEncoder {
+    fn encode_event(
+        &self,
+        event: &ServerEvent,
+        packetver: u32,
+    ) -> Result<Bytes, PacketCodecError> {
+        ModernEventEncoder.encode_event(event, packetver)
+    }
+}
+
+
+/// Modern event encoder connecting domain `ServerEvent` variants to modern packet serializers.
+#[derive(Debug, Default, Clone, Copy)]
+pub struct ModernEventEncoder;
+
+impl EventEncoder for ModernEventEncoder {
     fn encode_event(
         &self,
         event: &ServerEvent,
@@ -527,18 +711,19 @@ impl EventEncoder for Phase0EventEncoder {
             } => {
                 let entries: Vec<CharServerEntry> =
                     char_servers.iter().map(CharServerEntry::from).collect();
-                Ok(encode_ac_accept_login(
+                Ok(encode_ac_accept_login_modern(
                     *login_id1,
                     *account_id,
                     *login_id2,
                     [0, 0, 0, 0],
                     "",
                     *sex,
+                    "",
                     &entries,
                 ))
             }
             ServerEvent::LoginRefused { error_code } => {
-                Ok(encode_ac_refuse_login(*error_code, ""))
+                Ok(encode_ac_refuse_login_modern(*error_code as u32, ""))
             }
             ServerEvent::CharacterListLoaded {
                 total_slots,
@@ -562,23 +747,25 @@ impl EventEncoder for Phase0EventEncoder {
                 *map_port,
             )),
             ServerEvent::AcceptEnter { server_tick, pos } => {
-                Ok(encode_zc_accept_enter(*server_tick, *pos, 5, 5))
+                Ok(encode_zc_accept_enter2(*server_tick, *pos, 5, 5, 0))
             }
             ServerEvent::TimeSynchronized { server_tick } => {
                 Ok(encode_zc_notify_time(*server_tick))
             }
             ServerEvent::EntityMoved {
+                char_id,
                 start_pos,
                 dest_pos,
                 move_start_tick,
-                ..
             } => {
-                Ok(encode_zc_notify_playermove(
+                Ok(encode_zc_notify_move_modern(
+                    *char_id,
                     start_pos.x,
                     start_pos.y,
                     dest_pos.x,
                     dest_pos.y,
                     *move_start_tick,
+                    "",
                 ))
             }
             ServerEvent::EntityAppeared {
@@ -615,14 +802,14 @@ impl EventEncoder for Phase0EventEncoder {
                     y_size: 5,
                     clevel: 1,
                 };
-                Ok(encode_zc_notify_newentry(&params))
+                Ok(encode_zc_notify_newentry_modern(&params))
             }
             ServerEvent::EntityVanished {
                 char_id,
                 vanish_type,
             } => Ok(encode_zc_notify_vanish(char_id.0, *vanish_type)),
             ServerEvent::ParameterChanged { var_id, value } => {
-                Ok(encode_zc_par_change(*var_id, (*value & 0xff) as u8))
+                Ok(encode_zc_par_change_i32(*var_id, *value))
             }
             ServerEvent::EntityAction {
                 source_id,
@@ -631,10 +818,11 @@ impl EventEncoder for Phase0EventEncoder {
                 action_tick,
             } => {
                 if *action_type <= 8 {
-                    Ok(encode_zc_notify_act(
+                    Ok(encode_zc_notify_act_modern(
                         *source_id,
                         *target_id,
                         *action_tick,
+                        0,
                         0,
                         0,
                         0,
@@ -650,6 +838,31 @@ impl EventEncoder for Phase0EventEncoder {
             }
         }
     }
+}
+
+/// Rathena-compatible alias for modern event encoder.
+pub type RathenaEventEncoder = ModernEventEncoder;
+
+/// Returns whether the specified opcode is an outbound server-to-client packet currently encoded by this crate.
+pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> bool {
+    matches!(
+        opcode,
+        PacketOpcode::HC_ACCEPT_ENTER
+            | PacketOpcode::ZC_NOTIFY_TIME
+            | PacketOpcode::ZC_NOTIFY_VANISH
+            | PacketOpcode::ZC_NOTIFY_PLAYERMOVE
+            | PacketOpcode::ZC_PAR_CHANGE
+            | PacketOpcode::ZC_ACCEPT_ENTER
+            | PacketOpcode::HC_ACCEPT_ENTER2
+            | PacketOpcode::AC_REFUSE_LOGIN
+            | PacketOpcode::ZC_NOTIFY_ACT
+            | PacketOpcode::HC_ACK_CHARINFO_PER_PAGE
+            | PacketOpcode::ZC_NOTIFY_MOVE
+            | PacketOpcode::ZC_NOTIFY_NEWENTRY
+            | PacketOpcode::ZC_NOTIFY_STANDENTRY
+            | PacketOpcode::AC_ACCEPT_LOGIN
+            | PacketOpcode::HC_NOTIFY_ZONESVR
+    )
 }
 
 #[cfg(test)]
@@ -677,24 +890,24 @@ mod tests {
             &servers,
         );
 
-        assert_eq!(bytes.len(), 47 + 32);
-        assert_eq!(&bytes[0..2], &0x0069u16.to_le_bytes());
-        assert_eq!(&bytes[2..4], &(79u16).to_le_bytes());
+        assert_eq!(bytes.len(), 64 + 160);
+        assert_eq!(&bytes[0..2], &0x0ac4u16.to_le_bytes());
+        assert_eq!(&bytes[2..4], &(224u16).to_le_bytes());
         assert_eq!(&bytes[4..8], &1111u32.to_le_bytes());
         assert_eq!(&bytes[8..12], &2000001u32.to_le_bytes());
         assert_eq!(&bytes[12..16], &2222u32.to_le_bytes());
         assert_eq!(&bytes[16..20], &[10, 0, 0, 1]);
         assert_eq!(bytes[46], 1); // Male
-        assert_eq!(&bytes[47..51], &[127, 0, 0, 1]);
-        assert_eq!(&bytes[51..53], &6121u16.to_le_bytes());
+        assert_eq!(&bytes[64..68], &[127, 0, 0, 1]);
+        assert_eq!(&bytes[68..70], &6121u16.to_le_bytes());
     }
 
     #[test]
     fn test_encode_ac_refuse_login() {
         let bytes = encode_ac_refuse_login(1, "0");
-        assert_eq!(bytes.len(), 23);
-        assert_eq!(&bytes[0..2], &0x006au16.to_le_bytes());
-        assert_eq!(bytes[2], 1);
+        assert_eq!(bytes.len(), 26);
+        assert_eq!(&bytes[0..2], &0x083eu16.to_le_bytes());
+        assert_eq!(&bytes[2..6], &1u32.to_le_bytes());
     }
 
     #[test]
@@ -706,8 +919,8 @@ mod tests {
             5121,
         );
 
-        assert_eq!(bytes.len(), 28);
-        assert_eq!(&bytes[0..2], &0x0071u16.to_le_bytes());
+        assert_eq!(bytes.len(), 156);
+        assert_eq!(&bytes[0..2], &0x0ac5u16.to_le_bytes());
         assert_eq!(&bytes[2..6], &150001u32.to_le_bytes());
         assert_eq!(&bytes[22..26], &[127, 0, 0, 1]);
         assert_eq!(&bytes[26..28], &5121u16.to_le_bytes());
@@ -718,11 +931,12 @@ mod tests {
         let pos = MapPosition { x: 156, y: 180, dir: 4 };
         let bytes = encode_zc_accept_enter(99999, pos, 5, 5);
 
-        assert_eq!(bytes.len(), 11);
-        assert_eq!(&bytes[0..2], &0x0073u16.to_le_bytes());
+        assert_eq!(bytes.len(), 13);
+        assert_eq!(&bytes[0..2], &0x02ebu16.to_le_bytes());
         assert_eq!(&bytes[2..6], &99999u32.to_le_bytes());
         assert_eq!(bytes[9], 5);
         assert_eq!(bytes[10], 5);
+        assert_eq!(&bytes[11..13], &0u16.to_le_bytes());
     }
 
     #[test]
@@ -764,18 +978,19 @@ mod tests {
         };
 
         let bytes = encode_zc_notify_newentry(&params);
-        assert_eq!(bytes.len(), 53);
-        assert_eq!(&bytes[0..2], &0x009du16.to_le_bytes());
-        assert_eq!(&bytes[2..6], &150001u32.to_le_bytes());
+        assert_eq!(bytes.len(), 107);
+        assert_eq!(&bytes[0..2], &0x09feu16.to_le_bytes());
+        assert_eq!(&bytes[2..4], &107u16.to_le_bytes());
+        assert_eq!(&bytes[5..9], &150001u32.to_le_bytes());
     }
 
     #[test]
     fn test_encode_zc_par_change() {
         let bytes = encode_zc_par_change(10, 50);
-        assert_eq!(bytes.len(), 5);
-        assert_eq!(&bytes[0..2], &0x00beu16.to_le_bytes());
+        assert_eq!(bytes.len(), 8);
+        assert_eq!(&bytes[0..2], &0x00b0u16.to_le_bytes());
         assert_eq!(&bytes[2..4], &10u16.to_le_bytes());
-        assert_eq!(bytes[4], 50);
+        assert_eq!(&bytes[4..8], &50i32.to_le_bytes());
     }
 
     #[test]
@@ -783,22 +998,22 @@ mod tests {
         let encoder = Phase0EventEncoder;
         let ver = ro_contracts::TARGET_PACKETVER;
 
-        // 1. AcceptEnter
+        // 1. AcceptEnter -> 0x02eb (13 bytes)
         let event = ServerEvent::AcceptEnter {
             server_tick: 5000,
             pos: MapPosition { x: 100, y: 120, dir: 4 },
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();
-        assert_eq!(bytes.len(), 11);
-        assert_eq!(&bytes[0..2], &0x0073u16.to_le_bytes());
+        assert_eq!(bytes.len(), 13);
+        assert_eq!(&bytes[0..2], &0x02ebu16.to_le_bytes());
 
-        // 2. TimeSynchronized
+        // 2. TimeSynchronized -> 0x007f (6 bytes)
         let event = ServerEvent::TimeSynchronized { server_tick: 9999 };
         let bytes = encoder.encode_event(&event, ver).unwrap();
         assert_eq!(bytes.len(), 6);
         assert_eq!(&bytes[0..2], &0x007fu16.to_le_bytes());
 
-        // 3. EntityMoved
+        // 3. EntityMoved -> 0x09fd (114 bytes)
         let event = ServerEvent::EntityMoved {
             char_id: CharId(150001),
             start_pos: MapPosition { x: 10, y: 20, dir: 0 },
@@ -806,11 +1021,10 @@ mod tests {
             move_start_tick: 1234,
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();
-        assert_eq!(bytes.len(), 12);
-        assert_eq!(&bytes[0..2], &0x0087u16.to_le_bytes());
-        assert_eq!(&bytes[2..6], &1234u32.to_le_bytes());
+        assert_eq!(bytes.len(), 114);
+        assert_eq!(&bytes[0..2], &0x09fdu16.to_le_bytes());
 
-        // 4. EntityAppeared
+        // 4. EntityAppeared -> 0x09fe (107 bytes)
         let event = ServerEvent::EntityAppeared {
             char_id: CharId(150001),
             pos: MapPosition { x: 50, y: 60, dir: 2 },
@@ -819,10 +1033,10 @@ mod tests {
             hair_color: 2,
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();
-        assert_eq!(bytes.len(), 53);
-        assert_eq!(&bytes[0..2], &0x009du16.to_le_bytes());
+        assert_eq!(bytes.len(), 107);
+        assert_eq!(&bytes[0..2], &0x09feu16.to_le_bytes());
 
-        // 5. EntityVanished
+        // 5. EntityVanished -> 0x0080 (7 bytes)
         let event = ServerEvent::EntityVanished {
             char_id: CharId(150001),
             vanish_type: 1,
@@ -831,16 +1045,16 @@ mod tests {
         assert_eq!(bytes.len(), 7);
         assert_eq!(&bytes[0..2], &0x0080u16.to_le_bytes());
 
-        // 6. ParameterChanged
+        // 6. ParameterChanged -> 0x00b0 (8 bytes)
         let event = ServerEvent::ParameterChanged {
             var_id: 10,
             value: 42,
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();
-        assert_eq!(bytes.len(), 5);
-        assert_eq!(&bytes[0..2], &0x00beu16.to_le_bytes());
+        assert_eq!(bytes.len(), 8);
+        assert_eq!(&bytes[0..2], &0x00b0u16.to_le_bytes());
 
-        // 7. EntityAction supported
+        // 7. EntityAction supported -> 0x08c8 (34 bytes)
         let event = ServerEvent::EntityAction {
             source_id: 100,
             target_id: 200,
@@ -848,8 +1062,8 @@ mod tests {
             action_tick: 4321,
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();
-        assert_eq!(bytes.len(), 29);
-        assert_eq!(&bytes[0..2], &0x008au16.to_le_bytes());
+        assert_eq!(bytes.len(), 34);
+        assert_eq!(&bytes[0..2], &0x08c8u16.to_le_bytes());
 
         // 8. EntityAction unsupported
         let event = ServerEvent::EntityAction {
@@ -866,7 +1080,7 @@ mod tests {
             _ => panic!("Expected UnsupportedEvent error"),
         }
 
-        // 9. LoginAccepted
+        // 9. LoginAccepted -> 0x0ac4 (64 + 160 bytes)
         let event = ServerEvent::LoginAccepted {
             account_id: AccountId(2000001),
             login_id1: 1111,
@@ -882,14 +1096,14 @@ mod tests {
             }],
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();
-        assert_eq!(&bytes[0..2], &0x0069u16.to_le_bytes());
-        assert_eq!(bytes.len(), 47 + 32);
+        assert_eq!(&bytes[0..2], &0x0ac4u16.to_le_bytes());
+        assert_eq!(bytes.len(), 64 + 160);
 
-        // 10. LoginRefused
+        // 10. LoginRefused -> 0x083e (26 bytes)
         let event = ServerEvent::LoginRefused { error_code: 1 };
         let bytes = encoder.encode_event(&event, ver).unwrap();
-        assert_eq!(&bytes[0..2], &0x006au16.to_le_bytes());
-        assert_eq!(bytes.len(), 23);
+        assert_eq!(&bytes[0..2], &0x083eu16.to_le_bytes());
+        assert_eq!(bytes.len(), 26);
         assert_eq!(bytes[2], 1);
 
         // 11. CharacterListLoaded
@@ -929,8 +1143,152 @@ mod tests {
             map_port: 5121,
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();
-        assert_eq!(&bytes[0..2], &0x0071u16.to_le_bytes());
-        assert_eq!(bytes.len(), 28);
+        assert_eq!(&bytes[0..2], &0x0ac5u16.to_le_bytes());
+        assert_eq!(bytes.len(), 156);
         assert_eq!(&bytes[2..6], &150001u32.to_le_bytes());
+    }
+
+    #[test]
+    fn test_modern_event_encoder_20260219() {
+        let encoder = ModernEventEncoder;
+        let ver = 20260219;
+
+        // 1. AcceptEnter -> 0x02eb (ZC_ACCEPT_ENTER_MODERN)
+        let event = ServerEvent::AcceptEnter {
+            server_tick: 5000,
+            pos: MapPosition { x: 100, y: 120, dir: 4 },
+        };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(bytes.len(), 13);
+        assert_eq!(&bytes[0..2], &0x02ebu16.to_le_bytes());
+
+        // 2. TimeSynchronized -> 0x007f (ZC_NOTIFY_TIME)
+        let event = ServerEvent::TimeSynchronized { server_tick: 9999 };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(bytes.len(), 6);
+        assert_eq!(&bytes[0..2], &0x007fu16.to_le_bytes());
+
+        // 3. EntityMoved -> 0x09fd (ZC_NOTIFY_MOVE_MODERN)
+        let event = ServerEvent::EntityMoved {
+            char_id: CharId(150001),
+            start_pos: MapPosition { x: 10, y: 20, dir: 0 },
+            dest_pos: MapPosition { x: 30, y: 40, dir: 0 },
+            move_start_tick: 1234,
+        };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(bytes.len(), 114);
+        assert_eq!(&bytes[0..2], &0x09fdu16.to_le_bytes());
+
+        // 4. EntityAppeared -> 0x09fe (ZC_NOTIFY_NEWENTRY_MODERN)
+        let event = ServerEvent::EntityAppeared {
+            char_id: CharId(150001),
+            pos: MapPosition { x: 50, y: 60, dir: 2 },
+            name: "Novice".to_string(),
+            hair_style: 1,
+            hair_color: 2,
+        };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(bytes.len(), 107);
+        assert_eq!(&bytes[0..2], &0x09feu16.to_le_bytes());
+
+        // 5. EntityVanished -> 0x0080 (ZC_NOTIFY_VANISH)
+        let event = ServerEvent::EntityVanished {
+            char_id: CharId(150001),
+            vanish_type: 1,
+        };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(bytes.len(), 7);
+        assert_eq!(&bytes[0..2], &0x0080u16.to_le_bytes());
+
+        // 6. ParameterChanged -> 0x00b0 (ZC_PAR_CHANGE_STANDARD)
+        let event = ServerEvent::ParameterChanged {
+            var_id: 10,
+            value: 42,
+        };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(bytes.len(), 8);
+        assert_eq!(&bytes[0..2], &0x00b0u16.to_le_bytes());
+
+        // 7. EntityAction supported -> 0x08c8 (ZC_NOTIFY_ACT_MODERN)
+        let event = ServerEvent::EntityAction {
+            source_id: 100,
+            target_id: 200,
+            action_type: 0,
+            action_tick: 4321,
+        };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(bytes.len(), 34);
+        assert_eq!(&bytes[0..2], &0x08c8u16.to_le_bytes());
+
+        // 8. LoginAccepted -> 0x0ac4 (AC_ACCEPT_LOGIN_MODERN)
+        let event = ServerEvent::LoginAccepted {
+            account_id: AccountId(2000001),
+            login_id1: 1111,
+            login_id2: 2222,
+            sex: Sex::Male,
+            char_servers: vec![CharServerInfo {
+                ip: [127, 0, 0, 1],
+                port: 6121,
+                name: "Loki".to_string(),
+                users: 10,
+                server_type: 0,
+                new_server: 0,
+            }],
+        };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(&bytes[0..2], &0x0ac4u16.to_le_bytes());
+        assert_eq!(bytes.len(), 64 + 160);
+
+        // 9. LoginRefused -> 0x083e (AC_REFUSE_LOGIN_MODERN)
+        let event = ServerEvent::LoginRefused { error_code: 1 };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(&bytes[0..2], &0x083eu16.to_le_bytes());
+        assert_eq!(bytes.len(), 26);
+    }
+
+    #[test]
+    fn test_is_implemented_outbound_opcode() {
+        let ver = 20260219;
+        let implemented = [
+            PacketOpcode::HC_ACCEPT_ENTER,
+            PacketOpcode::ZC_NOTIFY_TIME,
+            PacketOpcode::ZC_NOTIFY_VANISH,
+            PacketOpcode::ZC_NOTIFY_PLAYERMOVE,
+            PacketOpcode::ZC_PAR_CHANGE,
+            PacketOpcode::ZC_ACCEPT_ENTER,
+            PacketOpcode::HC_ACCEPT_ENTER2,
+            PacketOpcode::AC_REFUSE_LOGIN,
+            PacketOpcode::ZC_NOTIFY_ACT,
+            PacketOpcode::HC_ACK_CHARINFO_PER_PAGE,
+            PacketOpcode::ZC_NOTIFY_MOVE,
+            PacketOpcode::ZC_NOTIFY_NEWENTRY,
+            PacketOpcode::ZC_NOTIFY_STANDENTRY,
+            PacketOpcode::AC_ACCEPT_LOGIN,
+            PacketOpcode::HC_NOTIFY_ZONESVR,
+        ];
+
+        for op in implemented {
+            assert!(
+                is_implemented_outbound_opcode(op, ver),
+                "Opcode {:#06x} should be marked as implemented",
+                op.raw()
+            );
+        }
+
+        let unimplemented = [
+            PacketOpcode::CA_LOGIN,
+            PacketOpcode::CZ_ENTER,
+            PacketOpcode::CZ_REQUEST_MOVE,
+            PacketOpcode(0x0091), // ZC_NPCACK_MAPMOVE
+            PacketOpcode(0x1234),
+        ];
+
+        for op in unimplemented {
+            assert!(
+                !is_implemented_outbound_opcode(op, ver),
+                "Opcode {:#06x} should not be marked as implemented",
+                op.raw()
+            );
+        }
     }
 }

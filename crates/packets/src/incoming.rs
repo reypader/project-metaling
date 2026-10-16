@@ -1,16 +1,16 @@
-//! Phase 0 incoming client packet decoders.
+//! Incoming client packet decoders supporting PACKETVER 20260219 opcodes.
 //!
 //! Covers:
 //! - `CA_LOGIN` (0x0064 / 0x0277)
 //! - `CH_ENTER` (0x0065)
 //! - `CH_SELECT_CHAR` (0x0066)
-//! - `CZ_ENTER` (0x0072)
+//! - `CZ_ENTER` (0x0436)
 //! - `CZ_NOTIFY_ACTORINIT` (0x007d)
-//! - `CZ_REQUEST_TIME` (0x007e)
-//! - `CZ_REQUEST_MOVE` (0x0085)
-//! - `CZ_CHANGE_DIRECTION` (0x009b)
-//! - `CZ_REQUEST_ACT` (0x0089)
-//! - `CZ_REQNAME` (0x0094)
+//! - `CZ_REQUEST_TIME` (0x0360)
+//! - `CZ_REQUEST_MOVE` (0x035f)
+//! - `CZ_CHANGE_DIRECTION` (0x0361)
+//! - `CZ_REQUEST_ACT` (0x0437)
+//! - `CZ_REQNAME` (0x0368)
 
 use ro_contracts::ids::{AccountId, CharId, Sex};
 use ro_contracts::packet::{ClientIntent, PacketCodecError, PacketIntentParser, PacketOpcode, RawPacket};
@@ -182,7 +182,7 @@ impl ChSelectCharPacket {
     }
 }
 
-/// Decoded representation of `CZ_ENTER` (0x0072).
+/// Decoded representation of `CZ_ENTER` (0x0436).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CzEnterPacket {
     pub account_id: AccountId,
@@ -196,7 +196,7 @@ impl CzEnterPacket {
     pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
         if raw.payload.len() < 17 {
             return Err(PacketCodecError::MalformedHeader(format!(
-                "CZ_ENTER payload expected 17 bytes, got {}",
+                "CZ_ENTER payload expected at least 17 bytes, got {}",
                 raw.payload.len()
             )));
         }
@@ -205,7 +205,11 @@ impl CzEnterPacket {
         let char_id = CharId(u32::from_le_bytes(raw.payload[4..8].try_into().unwrap()));
         let login_id1 = u32::from_le_bytes(raw.payload[8..12].try_into().unwrap());
         let client_tick = u32::from_le_bytes(raw.payload[12..16].try_into().unwrap());
-        let sex = parse_sex(raw.payload[16]);
+        let sex = if raw.payload.len() >= 21 {
+            parse_sex(raw.payload[20])
+        } else {
+            parse_sex(raw.payload[16])
+        };
 
         Ok(Self {
             account_id,
@@ -241,7 +245,7 @@ impl CzNotifyActorInitPacket {
     }
 }
 
-/// Decoded representation of `CZ_REQUEST_TIME` (0x007e).
+/// Decoded representation of `CZ_REQUEST_TIME` (0x0360).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CzRequestTimePacket {
     pub client_tick: u32,
@@ -267,7 +271,7 @@ impl CzRequestTimePacket {
     }
 }
 
-/// Decoded representation of `CZ_REQUEST_MOVE` (0x0085).
+/// Decoded representation of `CZ_REQUEST_MOVE` (0x035f).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CzRequestMovePacket {
     pub dest_x: u16,
@@ -296,7 +300,7 @@ impl CzRequestMovePacket {
     }
 }
 
-/// Decoded representation of `CZ_CHANGE_DIRECTION` (0x009b).
+/// Decoded representation of `CZ_CHANGE_DIRECTION` (0x0361).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CzChangeDirectionPacket {
     pub head_dir: u16,
@@ -325,7 +329,7 @@ impl CzChangeDirectionPacket {
     }
 }
 
-/// Decoded representation of `CZ_REQUEST_ACT` (0x0089).
+/// Decoded representation of `CZ_REQUEST_ACT` (0x0437).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CzRequestActPacket {
     pub target_id: u32,
@@ -357,7 +361,7 @@ impl CzRequestActPacket {
     }
 }
 
-/// Decoded representation of `CZ_REQNAME` (0x0094).
+/// Decoded representation of `CZ_REQNAME` (0x0368).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CzReqNamePacket {
     pub entity_id: u32,
@@ -411,7 +415,7 @@ pub fn decode_frame(raw: &RawPacket, packetver: u32) -> Result<DecodedFrame, Pac
             let p = ChSelectCharPacket::decode(raw)?;
             Ok(DecodedFrame::Intent(p.to_intent()))
         }
-        0x0072 => {
+        0x0436 => {
             let p = CzEnterPacket::decode(raw)?;
             Ok(DecodedFrame::Intent(p.to_intent()))
         }
@@ -419,23 +423,23 @@ pub fn decode_frame(raw: &RawPacket, packetver: u32) -> Result<DecodedFrame, Pac
             let p = CzNotifyActorInitPacket::decode(raw)?;
             Ok(DecodedFrame::Intent(p.to_intent()))
         }
-        0x007e => {
+        0x0360 => {
             let p = CzRequestTimePacket::decode(raw)?;
             Ok(DecodedFrame::Intent(p.to_intent()))
         }
-        0x0085 => {
+        0x035f => {
             let p = CzRequestMovePacket::decode(raw)?;
             Ok(DecodedFrame::Intent(p.to_intent()))
         }
-        0x009b => {
+        0x0361 => {
             let p = CzChangeDirectionPacket::decode(raw)?;
             Ok(DecodedFrame::Intent(p.to_intent()))
         }
-        0x0089 => {
+        0x0437 => {
             let p = CzRequestActPacket::decode(raw)?;
             Ok(DecodedFrame::Intent(p.to_intent()))
         }
-        0x0094 => {
+        0x0368 => {
             let p = CzReqNamePacket::decode(raw)?;
             Ok(DecodedFrame::Intent(p.to_intent()))
         }
@@ -467,17 +471,23 @@ impl PacketIntentParser for Phase0IntentParser {
             0x0064 | 0x0277 => Ok(Some(CaLoginPacket::decode(raw)?.to_intent())),
             0x0065 => Ok(Some(ChEnterPacket::decode(raw)?.to_intent())),
             0x0066 => Ok(Some(ChSelectCharPacket::decode(raw)?.to_intent())),
-            0x0072 => Ok(Some(CzEnterPacket::decode(raw)?.to_intent())),
+            0x0436 => Ok(Some(CzEnterPacket::decode(raw)?.to_intent())),
             0x007d => Ok(Some(CzNotifyActorInitPacket::decode(raw)?.to_intent())),
-            0x007e => Ok(Some(CzRequestTimePacket::decode(raw)?.to_intent())),
-            0x0085 => Ok(Some(CzRequestMovePacket::decode(raw)?.to_intent())),
-            0x009b => Ok(Some(CzChangeDirectionPacket::decode(raw)?.to_intent())),
-            0x0089 => Ok(Some(CzRequestActPacket::decode(raw)?.to_intent())),
-            0x0094 => Ok(Some(CzReqNamePacket::decode(raw)?.to_intent())),
+            0x0360 => Ok(Some(CzRequestTimePacket::decode(raw)?.to_intent())),
+            0x035f => Ok(Some(CzRequestMovePacket::decode(raw)?.to_intent())),
+            0x0361 => Ok(Some(CzChangeDirectionPacket::decode(raw)?.to_intent())),
+            0x0437 => Ok(Some(CzRequestActPacket::decode(raw)?.to_intent())),
+            0x0368 => Ok(Some(CzReqNamePacket::decode(raw)?.to_intent())),
             _ => Ok(None),
         }
     }
 }
+
+/// Modern alias for the intent parser.
+pub type ModernIntentParser = Phase0IntentParser;
+
+/// Rathena-compatible alias for the intent parser.
+pub type RathenaIntentParser = Phase0IntentParser;
 
 #[cfg(test)]
 mod tests {
@@ -554,14 +564,14 @@ mod tests {
 
     #[test]
     fn test_decode_cz_enter() {
-        let mut payload = vec![0u8; 17];
+        let mut payload = vec![0u8; 21];
         payload[0..4].copy_from_slice(&2000001u32.to_le_bytes());
         payload[4..8].copy_from_slice(&150001u32.to_le_bytes());
         payload[8..12].copy_from_slice(&11111u32.to_le_bytes());
         payload[12..16].copy_from_slice(&54321u32.to_le_bytes());
-        payload[16] = 0; // Female
+        payload[20] = 0; // Female
 
-        let raw = RawPacket::new(PacketOpcode(0x0072), Bytes::from(payload));
+        let raw = RawPacket::new(PacketOpcode(0x0436), Bytes::from(payload));
         let decoded = CzEnterPacket::decode(&raw).unwrap();
 
         assert_eq!(decoded.account_id, AccountId(2000001));
@@ -586,7 +596,7 @@ mod tests {
     #[test]
     fn test_decode_cz_request_time() {
         let payload = 98765u32.to_le_bytes().to_vec();
-        let raw = RawPacket::new(PacketOpcode(0x007e), Bytes::from(payload));
+        let raw = RawPacket::new(PacketOpcode(0x0360), Bytes::from(payload));
         let decoded = CzRequestTimePacket::decode(&raw).unwrap();
 
         assert_eq!(decoded.client_tick, 98765);
@@ -595,7 +605,7 @@ mod tests {
     #[test]
     fn test_decode_cz_request_move() {
         let pos = pack_pos_dir(120, 240, 4);
-        let raw = RawPacket::new(PacketOpcode(0x0085), Bytes::copy_from_slice(&pos));
+        let raw = RawPacket::new(PacketOpcode(0x035f), Bytes::copy_from_slice(&pos));
         let decoded = CzRequestMovePacket::decode(&raw).unwrap();
 
         assert_eq!(decoded.dest_x, 120);
@@ -607,7 +617,7 @@ mod tests {
         let parser = Phase0IntentParser;
         let ver = ro_contracts::TARGET_PACKETVER;
 
-        let raw_time = RawPacket::new(PacketOpcode(0x007e), Bytes::copy_from_slice(&55555u32.to_le_bytes()));
+        let raw_time = RawPacket::new(PacketOpcode(0x0360), Bytes::copy_from_slice(&55555u32.to_le_bytes()));
         let intent = parser.parse_intent(&raw_time, ver).unwrap().unwrap();
         assert_eq!(
             intent,
@@ -668,5 +678,101 @@ mod tests {
         assert_eq!(select_intent, ClientIntent::SelectCharacter { slot: 2 });
         let frame_select = decode_frame(&raw_select, ver).unwrap();
         assert_eq!(frame_select, DecodedFrame::Intent(select_intent));
+    }
+
+    #[test]
+    fn test_modern_client_intent_decoding() {
+        let parser = Phase0IntentParser;
+        let ver = ro_contracts::TARGET_PACKETVER;
+
+        // 1. CZ_REQUEST_MOVE (0x035f)
+        let pos = pack_pos_dir(250, 300, 2);
+        let raw_move = RawPacket::new(PacketOpcode(0x035f), Bytes::copy_from_slice(&pos));
+        let move_intent = parser.parse_intent(&raw_move, ver).unwrap().unwrap();
+        assert_eq!(
+            move_intent,
+            ClientIntent::RequestMove {
+                dest_x: 250,
+                dest_y: 300,
+            }
+        );
+        let frame_move = decode_frame(&raw_move, ver).unwrap();
+        assert_eq!(frame_move, DecodedFrame::Intent(move_intent));
+
+        // 2. CZ_REQUEST_TIME (0x0360)
+        let raw_time = RawPacket::new(PacketOpcode(0x0360), Bytes::copy_from_slice(&77777u32.to_le_bytes()));
+        let time_intent = parser.parse_intent(&raw_time, ver).unwrap().unwrap();
+        assert_eq!(
+            time_intent,
+            ClientIntent::RequestTime {
+                client_tick: 77777,
+            }
+        );
+        let frame_time = decode_frame(&raw_time, ver).unwrap();
+        assert_eq!(frame_time, DecodedFrame::Intent(time_intent));
+
+        // 3. CZ_CHANGE_DIRECTION (0x0361)
+        let mut dir_payload = vec![0u8; 3];
+        dir_payload[0..2].copy_from_slice(&6u16.to_le_bytes());
+        dir_payload[2] = 4;
+        let raw_dir = RawPacket::new(PacketOpcode(0x0361), Bytes::from(dir_payload));
+        let dir_intent = parser.parse_intent(&raw_dir, ver).unwrap().unwrap();
+        assert_eq!(
+            dir_intent,
+            ClientIntent::ChangeDirection {
+                head_dir: 6,
+                body_dir: 4,
+            }
+        );
+        let frame_dir = decode_frame(&raw_dir, ver).unwrap();
+        assert_eq!(frame_dir, DecodedFrame::Intent(dir_intent));
+
+        // 4. CZ_REQUEST_ACT (0x0437)
+        let mut act_payload = vec![0u8; 5];
+        act_payload[0..4].copy_from_slice(&100050u32.to_le_bytes());
+        act_payload[4] = 2; // sit
+        let raw_act = RawPacket::new(PacketOpcode(0x0437), Bytes::from(act_payload));
+        let act_intent = parser.parse_intent(&raw_act, ver).unwrap().unwrap();
+        assert_eq!(
+            act_intent,
+            ClientIntent::RequestAction {
+                target_id: 100050,
+                action_type: 2,
+            }
+        );
+        let frame_act = decode_frame(&raw_act, ver).unwrap();
+        assert_eq!(frame_act, DecodedFrame::Intent(act_intent));
+
+        // 5. CZ_REQNAME (0x0368)
+        let raw_reqname = RawPacket::new(PacketOpcode(0x0368), Bytes::copy_from_slice(&1002u32.to_le_bytes()));
+        let reqname_intent = parser.parse_intent(&raw_reqname, ver).unwrap().unwrap();
+        assert_eq!(
+            reqname_intent,
+            ClientIntent::RequestEntityName {
+                entity_id: 1002,
+            }
+        );
+        let frame_reqname = decode_frame(&raw_reqname, ver).unwrap();
+        assert_eq!(frame_reqname, DecodedFrame::Intent(reqname_intent));
+
+        // 6. CZ_ENTER (0x0436)
+        let mut cz_enter_payload = vec![0u8; 21];
+        cz_enter_payload[0..4].copy_from_slice(&2000002u32.to_le_bytes());
+        cz_enter_payload[4..8].copy_from_slice(&150002u32.to_le_bytes());
+        cz_enter_payload[8..12].copy_from_slice(&33333u32.to_le_bytes());
+        cz_enter_payload[12..16].copy_from_slice(&65432u32.to_le_bytes());
+        cz_enter_payload[20] = 1; // Male
+        let raw_enter = RawPacket::new(PacketOpcode(0x0436), Bytes::from(cz_enter_payload));
+        let enter_intent = parser.parse_intent(&raw_enter, ver).unwrap().unwrap();
+        assert_eq!(
+            enter_intent,
+            ClientIntent::EnterMap {
+                account_id: AccountId(2000002),
+                char_id: CharId(150002),
+                login_id1: 33333,
+                client_tick: 65432,
+                sex: Sex::Male,
+            }
+        );
     }
 }
