@@ -1,7 +1,7 @@
-# AGENTS.md — Project Metaling (Root Orchestrator & Architecture Spec)
+# AGENTS.md: Project Metaling (Root Orchestrator & Architecture Spec)
 
 ## 1. Project Vision & Multi-Agent Operating Model
-**Project Metaling** is a clean-room *Ragnarok Online* (RO) server workspace written in **Rust** using a custom/tailored **Entity-Component-System (ECS)** architecture.
+**Project Metaling** is a clean-room *Ragnarok Online* (RO) server workspace written in **Rust** using a custom **Entity-Component-System (ECS)** architecture.
 
 To keep LLM context windows small and prevent cross-domain coupling, this Cargo workspace enforces a **Strict Subagent Isolation Protocol**:
 
@@ -9,7 +9,7 @@ To keep LLM context windows small and prevent cross-domain coupling, this Cargo 
 If you are operating at the workspace root, you are the **Main Agent**.
 * **Your Exclusive Write Scope:**
   * `./Cargo.toml` (Workspace manifest and shared dependencies)
-  * `./AGENTS.md` (Architecture & roadmap)
+  * `./AGENTS.md` and `./crates/<domain>/AGENTS.md` (Architecture, governance, and subagent domain specs)
   * `./crates/contracts/**` (Strictly pure cross-crate traits, DTOs, Event enums, error types, and ID newtypes)
   * `./bins/**` (`./bins/login-server/**`, `./bins/char-server/**`, `./bins/map-server/**`) (Executable binary entrypoints under the exclusive jurisdiction of the Main Agent)
 * **Strict Prohibition:** **YOU MUST NEVER traverse, read, or modify the implementation files inside `./crates/<domain>/src/**`** (except `./crates/contracts/**`).
@@ -25,20 +25,21 @@ If you are operating at the workspace root, you are the **Main Agent**.
 2. **Mandatory Subagent Delegation:**
    The Main Agent must never implement domain logic, including packet framing, packet parsing, packet serialization, coordinate bit-packing, database repositories, combat formulas, or ECS systems. When new domain functionality is required, the Main Agent defines the compiling interface in `crates/contracts` and immediately invokes the corresponding domain subagent using `invoke_subagent`.
 3. **Binary Restraint and Exclusive Jurisdiction over `bins/*`:**
-   All binaries under `./bins/*` remain under the exclusive write scope of the Main Agent. Binary entrypoints are restricted to bootstrap configuration, dependency injection, and high-level lifecycle supervision that calls domain crate functions. Inline request handlers, bespoke protocol decoders, and inline application state machines inside `bins/*` are prohibited.
+   All binaries under `./bins/*` remain under the exclusive write scope of the Main Agent. Binary entrypoints are restricted to bootstrap configuration, dependency injection, inter-server HTTP routing, TCP session supervision, and high-level actor coordination that calls domain crate functions. Inline gameplay state machines, bespoke protocol decoders, and hardcoded entity repositories inside `bins/*` are prohibited.
 
 ### Role 2: Domain Subagents (Crate-Scoped Specialists)
 Each library crate under `./crates/<domain>/` has its own local `AGENTS.md` and is served by a dedicated Subagent.
 * **Allowed Read Scope:**
-  1. Its own crate directory (`./crates/<domain>/**`)
-  2. The shared contract crate (`./crates/contracts/src/**`)
+  1. Its own crate directory (`./crates/<domain>/**`).
+  2. The shared contract crate (`./crates/contracts/**`, including `./crates/contracts/src/**`). Subagents are encouraged to read contract definitions directly from disk.
   3. Any file inside `./reference/**` (`rathena`, `Hercules`, `rust-ro`, `rathena-script-lang-interpreter`) needed to extract domain specifications.
-* **Allowed Write Scope:** **ONLY** `./crates/<domain>/**`.
-* **Strict Prohibition:** A Subagent **MUST NEVER** read, traverse, or modify another domain crate (`./crates/<other_domain>/**`), `./crates/contracts/**`, or `./bins/**`. If a Subagent needs a missing field, event, or trait method in `crates/contracts`, it must **STOP** and request a Contract Amendment from the Main Agent.
+* **Direct Inspection of Contracts (No `cargo doc`):** Subagents must read the Rust files in `./crates/contracts/src/` directly via file viewing tools. Subagents must avoid invoking `cargo doc` or background documentation builds to inspect contracts, as this introduces unnecessary compilation overhead.
+* **Allowed Write Scope:** **ONLY** `./crates/<domain>/src/**` and `./crates/<domain>/Cargo.toml`.
+* **Strict Prohibition:** A Subagent **MUST NEVER** write to `./crates/contracts/**`, `./bins/**`, or another domain crate (`./crates/<other_domain>/**`). Subagents also must never read implementation files inside other domain crates (`./crates/<other_domain>/src/**`). If a Subagent needs a missing field, event, or trait method in `crates/contracts`, it must **STOP** and request a Contract Amendment from the Main Agent.
 
 ---
 
-## 2. Workspace Layout & Crate Boundaries
+## 2. Workspace Layout & Delegation Decision Matrix
 
 ```text
 project-metaling/
@@ -54,10 +55,38 @@ project-metaling/
 │   ├── persistence/          # [Subagent] PostgreSQL (sqlx) & stub repositories for accounts/characters
 │   └── scripting/            # [Subagent] Adapter around rathena-script-lang-interpreter for NPC/item scripts
 └── bins/
-    ├── login-server/         # [Main Agent] TCP :6900 binary entrypoint
-    ├── char-server/          # [Main Agent] TCP :6121 binary entrypoint
-    └── map-server/           # [Main Agent] TCP :5121 binary entrypoint (hosts `crates/engine`)
+    ├── login-server/         # [Main Agent] TCP :6900 & HTTP :6901 binary entrypoint
+    ├── char-server/          # [Main Agent] TCP :6121 & HTTP :6122 binary entrypoint
+    └── map-server/           # [Main Agent] TCP :5121 & HTTP :5122 binary entrypoint (hosts `crates/engine`)
 ```
+
+### 2.1 Behavior Delegation Matrix
+When implementing a feature or fixing a bug, the Main Agent uses this matrix to determine where each behavior belongs and how crates interact through `crates/contracts`:
+
+| Behavior / Responsibility | Owner Scope | Contract Interface (`crates/contracts`) | Upstream Caller / Consumer |
+| :--- | :--- | :--- | :--- |
+| **Cross-crate IDs, DTOs, Intents, Events, & Traits** | `crates/contracts` (Main Agent) | `ids.rs`, `packet.rs`, `map.rs`, `http.rs`, repository & engine traits | All domain crates and `bins/*` |
+| **TCP framing, opcode length table, byte parsing, event encoding, `WBUFPOS`/`WBUFPOS2` bit-packing** | `crates/packets` (Subagent) | `PacketLengthTable`, `PacketIntentParser`, `EventEncoder`, `RawPacket` | `bins/{login,char,map}-server/src/session.rs` |
+| **`.gat`/`.rsw` walkability grids, `item_db`/`mob_db`/`skill_db` YAML loading, spawn/warp file parsing** | `crates/db` (Subagent) | `MapWalkability`, static blueprint DTOs, and database provider traits | Initialized by `bins/map-server`, queried by `crates/engine` |
+| **Derived stats (`ATK`, `DEF`, `ASPD`, `HIT`, `FLEE`), elemental/size/race modifiers, damage formulas** | `crates/mechanics` (Subagent) | Pure stateless calculator traits and `DamageContext` / stat DTOs | Invoked by `crates/engine` during combat and status ticks |
+| **Account authentication, character slot CRUD, in-memory stub repo (Phases 0 to 3), PostgreSQL `sqlx` repo (Phase 4+)** | `crates/persistence` (Subagent) | `AccountRepository`, `CharacterRepository`, `CharacterSummary` | Injected into `LoginService`, `CharService`, and `MapService` |
+| **NPC conversation execution (`mes`, `next`, `select`, `warp`) & item script evaluation** | `crates/scripting` (Subagent) | Script VM runner traits and script suspension/resumption events | Invoked by `crates/engine` during entity interaction phases |
+| **ECS `World`, `8x8` `SpatialGrid`, A* pathfinding over `MapWalkability`, AoI calculation, entity lifecycle, deterministic tick loop** | `crates/engine` (Subagent) | Consumes `ClientIntent` (with session/character context), emits `ScopedServerEvent` | Hosted and ticked by `bins/map-server` (`MapService`) |
+| **TCP listener loops, raw 4-byte `AccountId` echo, `session.rs` channel bridge, Axum HTTP routers/clients, service dependency injection** | `bins/*` (Main Agent) | Consumes `crates/contracts` traits and wires concrete domain types together | Executed directly as server binaries |
+
+### 2.2 Judgement Rules: What Belongs in `bins/*` vs. Domain Crates
+1. **No Domain State in `bins/*/src/service.rs`:**
+   * `LoginService` (`bins/login-server`) and `CharService` (`bins/char-server`) must delegate account lookups, credential checks, and character list/creation/deletion storage to `crates/persistence` via `AccountRepository` and `CharacterRepository`. Even during Phases 0 to 3, stub account and character records belong in `crates/persistence::InMemoryStubRepo` rather than hardcoded structs inside `bins/*`.
+   * `MapService` (`bins/map-server`) must delegate map state, default spawn coordinates, entity tracking, server tick generation, movement, and AoI event emission to `crates/engine`. `MapService` exists only to run the tick timer, feed session-authenticated intents into `crates/engine`, coordinate map transfers, and route emitted `ScopedServerEvent` payloads to client sessions.
+2. **Protocol vs. Session Context:**
+   * `crates/packets` owns wire-level framing and opcode-to-struct decoding/encoding.
+   * `bins/*/src/session.rs` owns the live `TcpStream`, the raw 4-byte `AccountId` handshake echo required by `CH_ENTER` and `CZ_ENTER`, and per-connection session state (`SessionId`, authenticated `AccountId`, and `CharId`).
+3. **Multi-Subagent Delegation Sequencing:**
+   When a roadmap deliverable spans multiple crates, the Main Agent executes work in four stages:
+   * **Stage 1 (Contracts First):** Update `crates/contracts` with all required traits, DTOs, and enum variants. Run `cargo check -p ro-contracts` to verify compilation.
+   * **Stage 2 (Leaf Providers in Parallel):** Invoke subagents for leaf crates (`crates/packets`, `crates/db`, `crates/mechanics`, `crates/persistence`, `crates/scripting`) concurrently via `invoke_subagent`. These crates depend only on `crates/contracts`.
+   * **Stage 3 (Engine Integration):** Invoke the `crates/engine` subagent to implement ECS systems consuming the contract traits. (If all contract traits were already finalized in Stage 1, Stage 3 may run concurrently with Stage 2.)
+   * **Stage 4 (Binary Wiring & Verification):** Instantiate the concrete providers from `db`, `mechanics`, `persistence`, `scripting`, `packets`, and `engine` inside `bins/*`, and run workspace integration tests.
 
 ---
 
@@ -83,7 +112,7 @@ All agents may freely inspect `./reference/` to extract protocol specs, YAML sch
 
 ---
 
-## 5. Incremental Implementation Roadmap (Phases 0–4)
+## 5. Incremental Implementation Roadmap (Phases 0 to 4)
 
 ### Phase 0: Three-Server Network Handshake & Map Entry (Stub State)
 * **Goal:** Connect an official client matching `PACKETVER`, log in with a hardcoded stub account/character, select the Character Server, select the character, and load onto a starter map (`prontera`).
@@ -158,3 +187,38 @@ The packet interface builds upon the framing mechanics in `reference/rust-ro/lib
 * **Length Evaluation:** The `PacketLengthTable` trait evaluates the opcode into either `PacketLength::Fixed(usize)` or `PacketLength::Dynamic`. Dynamic packets contain a 2-byte little-endian length at bytes 2..4 specifying total packet size.
 * **Tokio Decoder:** `PacketDecoder` implements `tokio_util::codec::Decoder`, producing `RawPacket` items containing the opcode and frozen `bytes::Bytes` payload.
 * **Outbound Broadcasts:** `OutboundPacket` encapsulates zero-copy `bytes::Bytes` tagged with `OutboundTarget`, enabling multicast across spatial entities without duplicate memory allocation.
+
+### 6.4 Unified Protocol-to-Logic Channel Bridge
+All three server binaries (`login-server`, `char-server`, `map-server`) enforce a uniform decoupling pattern between network protocol workers (`session.rs`) and application logic (`service.rs`) using Tokio asynchronous channels (`tokio::sync::mpsc`). Channels are scoped to the unit of sequential consistency for each server type:
+
+```text
+  [login-server & char-server: Ephemeral Per-Session Logic Actor]
+  +-----------------------+    mpsc (SessionIntent)    +----------------------------+
+  | Protocol Worker       | -------------------------> | Ephemeral Session Actor    |
+  | (session.rs)          | <------------------------- | (LoginSessionActor /       |
+  | Split Reader / Writer |    try_send (Bytes/Event)  |  CharSessionActor)         |
+  +-----------------------+                            +----------------------------+
+
+  [map-server: Long-Lived Per-World Logic Actor]
+  +-----------------------+    mpsc (SessionIntent)    +----------------------------+
+  | Protocol Worker       | -------------------------> | Long-Lived MapWorldActor   |
+  | (session.rs)          | <------------------------- | (ro-engine World +         |
+  | Split Reader / Writer |    try_send (Frozen Bytes) |  Deterministic Tick Loop)  |
+  +-----------------------+                            +----------------------------+
+```
+
+1. **Protocol Worker (`session.rs`):**
+   * Owns the client `TcpStream`, splitting it into an **Inbound Reader** (`OwnedReadHalf`) and an **Outbound Writer** (`OwnedWriteHalf`) so inbound packet decoding and outbound socket writes never block or deadlock each other.
+   * Tracks per-connection session state (`SessionId`, and the authenticated `AccountId` / `CharId` established during `CH_ENTER` or `CZ_ENTER`).
+   * Utilizes `PacketDecoder` and `PacketIntentParser` to produce pure wire-level `ClientIntent` instances from raw incoming bytes, then wraps them in a `SessionIntent` envelope containing `(SessionId, Option<AccountId>, Option<CharId>, ClientIntent)`.
+   * Enforces sequential per-session handshake state: post-handshake packets (`SelectCharacter`, `NotifyActorInit`, `RequestTime`, `RequestMove`, `ChangeDirection`, `RequestAction`, `RequestEntityName`) are rejected until the session has completed its entry handshake (`EnterCharServer` or `EnterMap`).
+   * For wire protocol handshakes requiring a raw 4-byte `AccountId` echo (`char-server`, `map-server`), queues the 4-byte payload to the Outbound Writer immediately upon receiving `ClientIntent::EnterCharServer` or `ClientIntent::EnterMap`.
+
+2. **Logic Layer & Actor Lifetimes Across Servers:**
+   * **Non-Blocking Outbound Dispatch:** Logic actors must never `.await` on a per-client outbound channel inside a shared loop, as a single slow or stalled TCP client would block other players. Outbound delivery uses non-blocking `try_send` to the session's Outbound Writer queue (disconnecting overflowed sessions).
+   * **`login-server` (Ephemeral `LoginSessionActor` per Client Session):**
+     Client connections to `login-server` are transient handshakes. Each accepted connection spawns an ephemeral `LoginSessionActor` paired with `session.rs` via dedicated `mpsc` channels and holding shared `Arc` handles to `AccountRepository` and the character server registry. It processes `ClientIntent::Login` sequentially for that client and exits when the session closes.
+   * **`char-server` (Ephemeral `CharSessionActor` per Client Session):**
+     Client connections to `char-server` are transient character selection sessions. Each accepted connection spawns an ephemeral `CharSessionActor` paired with `session.rs` via dedicated `mpsc` channels and holding shared `Arc` handles to `CharacterRepository` and the map server registry. Because the actor is dedicated to one client, `EnterCharServer` completes and binds the session's `AccountId` before `SelectCharacter`, `MakeCharacter`, or `DeleteCharacter` is processed, without blocking unrelated accounts during database or HTTP queries.
+   * **`map-server` (Long-Lived `MapWorldActor` per Map Instance):**
+     Map instances (`prontera.gat`, etc.) are persistent simulation worlds hosted by `MapService`. Each active map runs a long-lived `MapWorldActor` owning a `ro-engine` `World`, a periodic tick timer, and a map-scoped `mpsc` inbox. Player sessions bind to their current map's `MapWorldActor` upon `EnterMap` and forward `SessionIntent` messages in FIFO order. At each tick, the `MapWorldActor` drains queued intents, executes the deterministic ECS phases, encodes each emitted `ScopedServerEvent` once into frozen `bytes::Bytes`, and fans out the `Bytes` via non-blocking `try_send` to the outbound writer channels of target sessions in the Area of Interest. When a player steps into a warp portal, their session re-binds to the destination map's `MapWorldActor`.
