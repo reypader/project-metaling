@@ -1,0 +1,341 @@
+================================================================================
+Ragnarok Online Packet Proxy - Global Sequence Log
+Target PACKETVER: 20260219
+Generated: 2026-10-17 14:11:06.787 UTC
+Total Packets Recorded: 323
+================================================================================
+
+Chronological Packet Sequence:
+#      Timestamp (UTC)         Server  Session  Direction          Opcode                   Len    Details
+--------------------------------------------------------------------------------------------------------------
+1      2026-10-17 14:10:16.023 Login   #1       CLIENT -> SERVER   0x0064 (CA_LOGIN)        55     [IMPLEMENTED] Decoded: Intent(Login { username: "test", password: "passwords", client_version: 2147483648, client_type: 0 })
+2      2026-10-17 14:10:16.033 Login   #1       SERVER -> CLIENT   0x083e (AC_REFUSE_LOGIN) 26     [IMPLEMENTED] payload: [01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00] |........................|
+3      2026-10-17 14:10:20.523 Login   #2       CLIENT -> SERVER   0x0064 (CA_LOGIN)        55     [IMPLEMENTED] Decoded: Intent(Login { username: "test", password: "password", client_version: 2147483648, client_type: 0 })
+4      2026-10-17 14:10:20.535 Login   #2       SERVER -> CLIENT   0x0ac4 (AC_ACCEPT_LOGIN) 224    [IMPLEMENTED] payload: [cf 17 65 90 80 84 1e 00 33 fa b6 2f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+188 bytes)] |..e.....3../....................|
+5      2026-10-17 14:10:21.344 Char    #3       CLIENT -> SERVER   0x0065 (CH_ENTER)        17     [IMPLEMENTED] Decoded: Intent(EnterCharServer { account_id: AccountId(2000000), login_id1: 2422544335, login_id2: 800520755, client_version: 0, sex: Male })
+6      2026-10-17 14:10:21.350 Char    #3       SERVER -> CLIENT   0x8480                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [1e 00] |..|
+7      2026-10-17 14:10:21.355 Char    #3       SERVER -> CLIENT   0x082d (HC_ACCEPT_ENTER2) 29     [IMPLEMENTED] payload: [1d 00 0f 00 00 0f 0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00] |...........................|
+8      2026-10-17 14:10:21.355 Char    #3       SERVER -> CLIENT   0x006b (HC_ACCEPT_ENTER) 727    [IMPLEMENTED] payload: [0f 0f 0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f0 49 02 00 00 00 00 00 00 ... (+691 bytes)] |........................I.......|
+9      2026-10-17 14:10:21.355 Char    #3       SERVER -> CLIENT   0x09a0 (HC_CHARLIST_NOTIFY) 6      [KNOWN / UNIMPLEMENTED] payload: [05 00 00 00] |....|
+10     2026-10-17 14:10:21.355 Char    #3       SERVER -> CLIENT   0x020d (HC_BLOCK_CHARACTER) 4      [KNOWN / UNIMPLEMENTED] payload: []
+11     2026-10-17 14:10:21.355 Char    #3       SERVER -> CLIENT   0x08b9 (HC_SECOND_PASSWD_LOGIN) 12     [KNOWN / UNIMPLEMENTED] payload: [64 33 00 00 80 84 1e 00 01 00] |d3........|
+12     2026-10-17 14:10:21.364 Char    #3       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [KNOWN / UNIMPLEMENTED] payload: []
+13     2026-10-17 14:10:21.364 Char    #3       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [KNOWN / UNIMPLEMENTED] payload: []
+14     2026-10-17 14:10:21.364 Char    #3       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [KNOWN / UNIMPLEMENTED] payload: []
+15     2026-10-17 14:10:21.364 Char    #3       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [KNOWN / UNIMPLEMENTED] payload: []
+16     2026-10-17 14:10:21.364 Char    #3       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [KNOWN / UNIMPLEMENTED] payload: []
+17     2026-10-17 14:10:21.370 Char    #3       SERVER -> CLIENT   0x0b72                   704    [UNKNOWN / UNMAPPED in table.rs, 704 bytes] payload: [c0 02 f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 ... (+670 bytes)] |...I............................|
+18     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0b72                   93     [UNKNOWN / UNMAPPED in table.rs, 93 bytes] payload: [c0 02 f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 ... (+59 bytes)] |...I............................|
+19     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+20     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+21     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test...............|
+22     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+23     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 00] |....|
+24     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+25     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x7000                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [72 6f 6e 74 65 72 61 2e 67 61 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |rontera.gat.....................|
+26     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+27     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+28     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 32 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test2..............|
+29     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+30     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 01] |....|
+31     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+32     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x6900                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [7a 5f 69 6e 74 30 32 2e 67 61 74 00 00 00 00 71 40 01 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |z_int02.gat....q@...............|
+33     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+34     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+35     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 33 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test3..............|
+36     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+37     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 02] |....|
+38     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+39     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x6900                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [7a 5f 69 6e 74 30 34 2e 67 61 74 00 00 00 00 db 40 01 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |z_int04.gat.....@...............|
+40     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+41     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+42     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 34 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test4..............|
+43     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+44     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 03] |....|
+45     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+46     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x6900                   127    [UNKNOWN / UNMAPPED in table.rs, 127 bytes] payload: [7a 5f 69 6e 74 2e 67 61 74 00 00 00 00 00 00 28 41 01 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+93 bytes)] |z_int.gat......(A...............|
+47     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+48     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+49     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test...............|
+50     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+51     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 00] |....|
+52     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+53     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x7000                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [72 6f 6e 74 65 72 61 2e 67 61 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |rontera.gat.....................|
+54     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+55     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+56     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 32 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test2..............|
+57     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+58     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 01] |....|
+59     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+60     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x6900                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [7a 5f 69 6e 74 30 32 2e 67 61 74 00 00 00 00 71 40 01 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |z_int02.gat....q@...............|
+61     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+62     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+63     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 33 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test3..............|
+64     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+65     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 02] |....|
+66     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+67     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x6900                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [7a 5f 69 6e 74 30 34 2e 67 61 74 00 00 00 00 db 40 01 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |z_int04.gat.....@...............|
+68     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+69     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+70     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 34 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test4..............|
+71     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+72     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 03] |....|
+73     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+74     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x6900                   32     [UNKNOWN / UNMAPPED in table.rs, 32 bytes] payload: [7a 5f 69 6e 74 2e 67 61 74 00 00 00 00 00 00 28 41 01 00 00 00 00 00 00 00 00 00 00 00 00] |z_int.gat......(A.............|
+75     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+76     2026-10-17 14:10:21.375 Char    #3       SERVER -> CLIENT   0x0b72                   2      [UNKNOWN / UNMAPPED in table.rs, 2 bytes] payload: []
+77     2026-10-17 14:10:21.399 Char    #3       CLIENT -> SERVER   0x0187 (PING)            6      [KNOWN / UNIMPLEMENTED] payload: [80 84 1e 00] |....|
+78     2026-10-17 14:10:33.406 Char    #3       CLIENT -> SERVER   0x0187 (PING)            6      [KNOWN / UNIMPLEMENTED] payload: [80 84 1e 00] |....|
+79     2026-10-17 14:10:41.538 Char    #3       CLIENT -> SERVER   0x08b8 (CH_SECOND_PASSWD_ACK) 8      [KNOWN / UNIMPLEMENTED] payload: [80 84 1e 00 36 30] |....60|
+80     2026-10-17 14:10:41.538 Char    #3       CLIENT -> SERVER   0x3936                   2      [UNKNOWN / UNMAPPED in table.rs, 2 bytes] payload: []
+81     2026-10-17 14:10:45.414 Char    #3       CLIENT -> SERVER   0x0187 (PING)            6      [KNOWN / UNIMPLEMENTED] payload: [80 84 1e 00] |....|
+82     2026-10-17 14:10:49.174 Char    #3       CLIENT -> SERVER   0x0a39 (CH_MAKE_CHAR)    36     [KNOWN / UNIMPLEMENTED] payload: [74 65 73 74 35 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 00 00 16 00 00 00 00 ... (+2 bytes)] |test5...........................|
+83     2026-10-17 14:10:50.899 Char    #3       CLIENT -> SERVER   0x0066 (CH_SELECT_CHAR)  3      [IMPLEMENTED] Decoded: Intent(SelectCharacter { slot: 4 })
+84     2026-10-17 14:10:50.933 Map     #4       CLIENT -> SERVER   0x0436 (CZ_ENTER)        23     [IMPLEMENTED] Decoded: Intent(EnterMap { account_id: AccountId(2000000), char_id: CharId(150004), login_id1: 2422544335, client_tick: 4028630224, sex: Male })
+85     2026-10-17 14:10:50.939 Map     #4       SERVER -> CLIENT   0x0283 (ZC_AID)          6      [KNOWN / UNIMPLEMENTED] payload: [80 84 1e 00] |....|
+86     2026-10-17 14:10:50.941 Map     #4       SERVER -> CLIENT   0x0b18                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+87     2026-10-17 14:10:50.941 Map     #4       SERVER -> CLIENT   0x02eb (ZC_ACCEPT_ENTER) 13     [IMPLEMENTED] payload: [68 1f 86 02 04 81 a0 05 05 00 00] |h..........|
+88     2026-10-17 14:10:50.941 Map     #4       SERVER -> CLIENT   0x0201 (ZC_FRIENDS_LIST) 4      [KNOWN / UNIMPLEMENTED] payload: []
+89     2026-10-17 14:10:50.941 Map     #4       SERVER -> CLIENT   0x008e (ZC_NOTIFY_PLAYERCHAT) 72     [KNOWN / UNIMPLEMENTED] payload: [72 41 74 68 65 6e 61 20 56 65 72 73 69 6f 6e 20 47 69 74 20 48 61 73 68 3a 20 20 64 34 62 38 65 ... (+36 bytes)] |rAthena Version Git Hash:  d4b8e|
+90     2026-10-17 14:10:50.941 Map     #4       SERVER -> CLIENT   0x008e (ZC_NOTIFY_PLAYERCHAT) 64     [KNOWN / UNIMPLEMENTED] payload: [57 65 6c 63 6f 6d 65 20 74 6f 20 72 41 74 68 65 6e 61 21 20 45 6e 6a 6f 79 21 20 50 6c 65 61 73 ... (+28 bytes)] |Welcome to rAthena! Enjoy! Pleas|
+91     2026-10-17 14:10:50.941 Map     #4       SERVER -> CLIENT   0x0091 (ZC_NPCACK_MAPMOVE) 18     [KNOWN / UNIMPLEMENTED] payload: [69 7a 5f 69 6e 74 30 34 2e 67 61 74 00 00 00 00] |iz_int04.gat....|
+92     2026-10-17 14:10:50.941 Map     #4       SERVER -> CLIENT   0x0012                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [1a 00] |..|
+93     2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [19 00 4c 4f 00 00] |..LO..|
+94     2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x0141                   84     [UNKNOWN / UNMAPPED in table.rs, 84 bytes] payload: [0d 00 00 00 01 00 00 00 00 00 00 00 41 01 0e 00 00 00 01 00 00 00 00 00 00 00 41 01 0f 00 00 00 ... (+50 bytes)] |............A.............A.....|
+95     2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [31 00 b1 00 00 00] |1.....|
+96     2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [32 00 66 00 00 00] |2.f...|
+97     2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [35 00 4e 02 00 00] |5.N...|
+98     2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [29 00 01 00 00 00] |).....|
+99     2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2d 00 01 00 00 00] |-.....|
+100    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2e 00 0a 00 00 00] |......|
+101    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2a 00 11 00 00 00] |*.....|
+102    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2e 00 0a 00 00 00] |......|
+103    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2d 00 01 00 00 00] |-.....|
+104    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [33 00 01 00 00 00] |3.....|
+105    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [34 00 01 00 00 00] |4.....|
+106    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2c 00 01 00 00 00] |,.....|
+107    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2b 00 00 00 00 00] |+.....|
+108    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [30 00 00 00 00 00] |0.....|
+109    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2f 00 01 00 00 00] |/.....|
+110    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x013a                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [01 00] |..|
+111    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [06 00 28 00 00 00] |..(...|
+112    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [08 00 0b 00 00 00] |......|
+113    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [05 00 28 00 00 00] |..(...|
+114    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [07 00 0b 00 00 00] |......|
+115    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [18 00 f4 01 00 00] |......|
+116    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x09e7 (ZC_NOTIFY_UNREADMAIL) 3      [KNOWN / UNIMPLEMENTED] payload: [00] |.|
+117    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x0a24 (ZC_ACH_UPDATE)   66     [KNOWN / UNIMPLEMENTED] payload: [00 00 00 00 00 00 00 00 00 00 12 00 00 00 80 a9 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+32 bytes)] |................................|
+118    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x0a24 (ZC_ACH_UPDATE)   66     [KNOWN / UNIMPLEMENTED] payload: [0a 00 00 00 00 00 0a 00 00 00 12 00 00 00 80 a9 03 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+32 bytes)] |................................|
+119    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x0a24 (ZC_ACH_UPDATE)   66     [KNOWN / UNIMPLEMENTED] payload: [0a 00 00 00 00 00 0a 00 00 00 12 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+32 bytes)] |................................|
+120    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x0a23 (ZC_ALL_ACH_LIST) 72     [KNOWN / UNIMPLEMENTED] payload: [01 00 00 00 0a 00 00 00 00 00 0a 00 00 00 12 00 00 00 80 a9 03 00 01 00 00 00 00 00 00 00 00 00 ... (+36 bytes)] |................................|
+121    2026-10-17 14:10:50.953 Map     #4       SERVER -> CLIENT   0x0ade (ZC_OVERWEIGHT_PERCENT) 6      [KNOWN / UNIMPLEMENTED] payload: [46 00 00 00] |F...|
+122    2026-10-17 14:10:51.298 Map     #4       CLIENT -> SERVER   0x007d (CZ_NOTIFY_ACTORINIT) 2      [IMPLEMENTED] Decoded: Intent(NotifyActorInit)
+123    2026-10-17 14:10:51.298 Map     #4       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 6200621 })
+124    2026-10-17 14:10:51.307 Map     #4       CLIENT -> SERVER   0x08c9 (CZ_CASHSHOP_LIST_REQUEST) 2      [KNOWN / UNIMPLEMENTED] payload: []
+125    2026-10-17 14:10:51.315 Map     #4       CLIENT -> SERVER   0x007d (CZ_NOTIFY_ACTORINIT) 2      [IMPLEMENTED] Decoded: Intent(NotifyActorInit)
+126    2026-10-17 14:10:51.315 Map     #4       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 6200638 })
+127    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x01d7 (ZC_SPRITE_CHANGE2) 11     [KNOWN / UNIMPLEMENTED] payload: [80 84 1e 00 02 b1 04 00 00] |.........|
+128    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x0000                   10     [UNKNOWN / UNMAPPED in table.rs, 10 bytes] payload: [00 00 08 0b 06 00 00 00] |........|
+129    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x0b09 (PACKET_0X0B09)   39     [KNOWN / UNIMPLEMENTED] payload: [00 04 00 bc 5b 00 00 02 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+3 bytes)] |....[...........................|
+130    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x0b39 (PACKET_0X0B39)   141    [KNOWN / UNIMPLEMENTED] payload: [00 02 00 b1 04 00 00 05 02 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+105 bytes)] |................................|
+131    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x0b0b                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+132    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x0a9b (PACKET_0X0A9B)   4      [KNOWN / UNIMPLEMENTED] payload: []
+133    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [18 00 f4 01 00 00] |......|
+134    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [19 00 4c 4f 00 00] |..LO..|
+135    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x099b (ZC_NOTIFY_MAPPROPERTY2) 8      [KNOWN / UNIMPLEMENTED] payload: [00 00 00 06 00 00] |......|
+136    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY) 108    [IMPLEMENTED] payload: [06 ee cd 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 8b 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+137    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY) 108    [IMPLEMENTED] payload: [06 c0 d0 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 2d 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |...................-............|
+138    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x010f                   642    [UNKNOWN / UNMAPPED in table.rs, 642 bytes] payload: [29 00 01 00 00 00 00 00 00 00 00 00 00 00 4e 56 5f 42 41 53 49 43 00 00 00 00 00 00 00 00 00 00 ... (+608 bytes)] |).............NV_BASIC..........|
+139    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+140    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x0102 (CZ_CHANGE_GROUPEXPOPTION) 6      [KNOWN / UNIMPLEMENTED] payload: [02 01 02 01] |....|
+141    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x0102 (CZ_CHANGE_GROUPEXPOPTION) 6      [KNOWN / UNIMPLEMENTED] payload: [02 01 02 01] |....|
+142    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x1100                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+143    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+144    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+145    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x0a00 (ZC_SHORTCUT_KEY_LIST_0X0A00) 269    [KNOWN / UNIMPLEMENTED] payload: [00 01 00 00 00 b1 00 66 00 01 00 01 00 4e 02 00 00 41 01 0d 00 00 00 01 00 00 00 00 00 00 00 41 ... (+235 bytes)] |.......f.....N...A.............A|
+146    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x0000                   2      [UNKNOWN / UNMAPPED in table.rs, 2 bytes] payload: []
+147    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x00be (ZC_STATUS_CHANGE) 5      [KNOWN / UNIMPLEMENTED] payload: [f7 00 00] |...|
+148    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x00be (ZC_STATUS_CHANGE) 5      [KNOWN / UNIMPLEMENTED] payload: [f8 00 00] |...|
+149    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x00be (ZC_STATUS_CHANGE) 5      [KNOWN / UNIMPLEMENTED] payload: [f9 00 00] |...|
+150    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x00be (ZC_STATUS_CHANGE) 5      [KNOWN / UNIMPLEMENTED] payload: [fa 00 00] |...|
+151    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x00be (ZC_STATUS_CHANGE) 5      [KNOWN / UNIMPLEMENTED] payload: [fb 00 00] |...|
+152    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x00be (ZC_STATUS_CHANGE) 5      [KNOWN / UNIMPLEMENTED] payload: [fc 00 00] |...|
+153    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x02c9                   6      [UNKNOWN / UNMAPPED in table.rs, 6 bytes] payload: [00 da 02 00] |....|
+154    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [02 00 00 00 00 00 00 00] |........|
+155    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [01 00 00 00 00 00 00 00] |........|
+156    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [03 00 00 00 00 00 00 00] |........|
+157    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [05 00 00 00 00 00 00 00] |........|
+158    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x0b8d                   209    [UNKNOWN / UNMAPPED in table.rs, 209 bytes] payload: [45 00 01 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 ... (+175 bytes)] |E...............................|
+159    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x0446 (ZC_QUEST_NOTIFY_EFFECT) 14     [KNOWN / UNIMPLEMENTED] payload: [f8 cd 8e 06 38 00 20 00 00 00 01 00] |....8. .....|
+160    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x0446 (ZC_QUEST_NOTIFY_EFFECT) 14     [KNOWN / UNIMPLEMENTED] payload: [fd cd 8e 06 38 00 20 00 00 00 01 00] |....8. .....|
+161    2026-10-17 14:10:51.349 Map     #4       SERVER -> CLIENT   0x007f (ZC_NOTIFY_TIME)  6      [IMPLEMENTED] payload: [01 21 86 02] |.!..|
+162    2026-10-17 14:10:51.445 Map     #4       SERVER -> CLIENT   0x007f (ZC_NOTIFY_TIME)  6      [IMPLEMENTED] payload: [5e 21 86 02] |^!..|
+163    2026-10-17 14:10:51.612 Map     #4       CLIENT -> SERVER   0x0447 (CZ_BLOCKING_PLAY_CANCEL) 2      [KNOWN / UNIMPLEMENTED] payload: []
+164    2026-10-17 14:10:51.617 Map     #4       SERVER -> CLIENT   0x0b1b                   2      [UNKNOWN / UNMAPPED in table.rs, 2 bytes] payload: []
+165    2026-10-17 14:10:54.166 Map     #4       CLIENT -> SERVER   0x00b2 (CZ_RESTART)      3      [KNOWN / UNIMPLEMENTED] payload: [01] |.|
+166    2026-10-17 14:10:54.215 Map     #4       SERVER -> CLIENT   0x00b3                   3      [UNKNOWN / UNMAPPED in table.rs, 3 bytes] payload: [01] |.|
+167    2026-10-17 14:10:54.520 Char    #5       CLIENT -> SERVER   0x0065 (CH_ENTER)        17     [IMPLEMENTED] Decoded: Intent(EnterCharServer { account_id: AccountId(2000000), login_id1: 2422544335, login_id2: 800520755, client_version: 0, sex: Male })
+168    2026-10-17 14:10:54.524 Char    #5       SERVER -> CLIENT   0x8480                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [1e 00] |..|
+169    2026-10-17 14:10:54.525 Char    #5       SERVER -> CLIENT   0x082d (HC_ACCEPT_ENTER2) 29     [IMPLEMENTED] payload: [1d 00 0f 00 00 0f 0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00] |...........................|
+170    2026-10-17 14:10:54.526 Char    #5       SERVER -> CLIENT   0x006b (HC_ACCEPT_ENTER) 902    [IMPLEMENTED] payload: [0f 0f 0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f0 49 02 00 00 00 00 00 00 ... (+866 bytes)] |........................I.......|
+171    2026-10-17 14:10:54.526 Char    #5       SERVER -> CLIENT   0x09a0 (HC_CHARLIST_NOTIFY) 6      [KNOWN / UNIMPLEMENTED] payload: [05 00 00 00] |....|
+172    2026-10-17 14:10:54.526 Char    #5       SERVER -> CLIENT   0x020d (HC_BLOCK_CHARACTER) 4      [KNOWN / UNIMPLEMENTED] payload: []
+173    2026-10-17 14:10:54.526 Char    #5       SERVER -> CLIENT   0x08b9 (HC_SECOND_PASSWD_LOGIN) 12     [KNOWN / UNIMPLEMENTED] payload: [b1 2c 00 00 80 84 1e 00 00 00] |.,........|
+174    2026-10-17 14:10:54.537 Char    #5       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [KNOWN / UNIMPLEMENTED] payload: []
+175    2026-10-17 14:10:54.537 Char    #5       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [KNOWN / UNIMPLEMENTED] payload: []
+176    2026-10-17 14:10:54.537 Char    #5       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [KNOWN / UNIMPLEMENTED] payload: []
+177    2026-10-17 14:10:54.538 Char    #5       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [KNOWN / UNIMPLEMENTED] payload: []
+178    2026-10-17 14:10:54.538 Char    #5       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [KNOWN / UNIMPLEMENTED] payload: []
+179    2026-10-17 14:10:54.541 Char    #5       SERVER -> CLIENT   0x0b72                   879    [UNKNOWN / UNMAPPED in table.rs, 879 bytes] payload: [6f 03 f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 ... (+845 bytes)] |o..I............................|
+180    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x0b72                   93     [UNKNOWN / UNMAPPED in table.rs, 93 bytes] payload: [6f 03 f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 ... (+59 bytes)] |o..I............................|
+181    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+182    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+183    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test...............|
+184    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+185    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 00] |....|
+186    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+187    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x7000                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [72 6f 6e 74 65 72 61 2e 67 61 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |rontera.gat.....................|
+188    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+189    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+190    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 32 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test2..............|
+191    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+192    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 01] |....|
+193    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+194    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x6900                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [7a 5f 69 6e 74 30 32 2e 67 61 74 00 00 00 00 50 40 01 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |z_int02.gat....P@...............|
+195    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+196    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+197    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 33 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test3..............|
+198    2026-10-17 14:10:54.544 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+199    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 02] |....|
+200    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+201    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x6900                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [7a 5f 69 6e 74 30 34 2e 67 61 74 00 00 00 00 ba 40 01 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |z_int04.gat.....@...............|
+202    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+203    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+204    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 34 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test4..............|
+205    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+206    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 03] |....|
+207    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+208    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x6900                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [7a 5f 69 6e 74 2e 67 61 74 00 00 00 00 00 00 07 41 01 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |z_int.gat.......A...............|
+209    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+210    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+211    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 35 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test5..............|
+212    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+213    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 04] |....|
+214    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+215    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x6900                   127    [UNKNOWN / UNMAPPED in table.rs, 127 bytes] payload: [7a 5f 69 6e 74 30 34 2e 67 61 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+93 bytes)] |z_int04.gat.....................|
+216    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+217    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+218    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test...............|
+219    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+220    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 00] |....|
+221    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+222    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x7000                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [72 6f 6e 74 65 72 61 2e 67 61 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |rontera.gat.....................|
+223    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+224    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+225    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 32 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test2..............|
+226    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+227    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 01] |....|
+228    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+229    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x6900                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [7a 5f 69 6e 74 30 32 2e 67 61 74 00 00 00 00 50 40 01 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |z_int02.gat....P@...............|
+230    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+231    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+232    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 33 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test3..............|
+233    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+234    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 02] |....|
+235    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+236    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x6900                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [7a 5f 69 6e 74 30 34 2e 67 61 74 00 00 00 00 ba 40 01 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |z_int04.gat.....@...............|
+237    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+238    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+239    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 34 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test4..............|
+240    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+241    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 03] |....|
+242    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+243    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x6900                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [7a 5f 69 6e 74 2e 67 61 74 00 00 00 00 00 00 07 41 01 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |z_int.gat.......A...............|
+244    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+245    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+246    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 35 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test5..............|
+247    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+248    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 04] |....|
+249    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+250    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x6900                   127    [UNKNOWN / UNMAPPED in table.rs, 127 bytes] payload: [7a 5f 69 6e 74 30 34 2e 67 61 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+93 bytes)] |z_int04.gat.....................|
+251    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+252    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+253    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test...............|
+254    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+255    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 00] |....|
+256    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+257    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x7000                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [72 6f 6e 74 65 72 61 2e 67 61 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |rontera.gat.....................|
+258    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+259    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+260    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 32 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test2..............|
+261    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+262    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 01] |....|
+263    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+264    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x6900                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [7a 5f 69 6e 74 30 32 2e 67 61 74 00 00 00 00 50 40 01 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |z_int02.gat....P@...............|
+265    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+266    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+267    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 33 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test3..............|
+268    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+269    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 02] |....|
+270    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+271    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x6900                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [7a 5f 69 6e 74 30 34 2e 67 61 74 00 00 00 00 ba 40 01 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |z_int04.gat.....@...............|
+272    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+273    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+274    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 34 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test4..............|
+275    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+276    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 03] |....|
+277    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+278    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x6900                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [7a 5f 69 6e 74 2e 67 61 74 00 00 00 00 00 00 07 41 01 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |z_int.gat.......A...............|
+279    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+280    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+281    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 35 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test5..............|
+282    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+283    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 04] |....|
+284    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+285    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x6900                   127    [UNKNOWN / UNMAPPED in table.rs, 127 bytes] payload: [7a 5f 69 6e 74 30 34 2e 67 61 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+93 bytes)] |z_int04.gat.....................|
+286    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+287    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+288    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test...............|
+289    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+290    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 00] |....|
+291    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+292    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x7000                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [72 6f 6e 74 65 72 61 2e 67 61 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |rontera.gat.....................|
+293    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+294    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+295    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 32 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test2..............|
+296    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+297    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 01] |....|
+298    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+299    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x6900                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [7a 5f 69 6e 74 30 32 2e 67 61 74 00 00 00 00 50 40 01 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |z_int02.gat....P@...............|
+300    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+301    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+302    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 33 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test3..............|
+303    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+304    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 02] |....|
+305    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+306    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x6900                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [7a 5f 69 6e 74 30 34 2e 67 61 74 00 00 00 00 ba 40 01 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |z_int04.gat.....@...............|
+307    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+308    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+309    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 34 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test4..............|
+310    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+311    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 03] |....|
+312    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+313    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x6900                   123    [UNKNOWN / UNMAPPED in table.rs, 123 bytes] payload: [7a 5f 69 6e 74 2e 67 61 74 00 00 00 00 00 00 07 41 01 00 00 00 00 00 00 00 00 00 00 00 00 00 01 ... (+89 bytes)] |z_int.gat.......A...............|
+314    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+315    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+316    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0000                   38     [UNKNOWN / UNMAPPED in table.rs, 38 bytes] payload: [00 00 00 00 00 00 00 00 00 00 00 00 00 74 65 73 74 35 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+4 bytes)] |.............test5..............|
+317    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+318    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [01 01 01 04] |....|
+319    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+320    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x6900                   32     [UNKNOWN / UNMAPPED in table.rs, 32 bytes] payload: [7a 5f 69 6e 74 30 34 2e 67 61 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00] |z_int04.gat...................|
+321    2026-10-17 14:10:54.545 Char    #5       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+322    2026-10-17 14:10:56.739 Char    #5       CLIENT -> SERVER   0x0827 (CH_DELETE_CHAR3_RESERVED) 6      [KNOWN / UNIMPLEMENTED] payload: [f4 49 02 00] |.I..|
+323    2026-10-17 14:10:56.774 Char    #5       SERVER -> CLIENT   0x0828 (HC_DELETE_CHAR3_RESERVED) 14     [KNOWN / UNIMPLEMENTED] payload: [f4 49 02 00 01 00 00 00 80 51 01 00] |.I.......Q..|
+
+================================================================================
+Summary by Server:
+  Login Server: 4 packets
+  Char Server:  236 packets
+  Map Server:   83 packets
+  Total:        323 packets
+================================================================================
