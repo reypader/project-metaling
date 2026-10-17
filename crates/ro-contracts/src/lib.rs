@@ -1,11 +1,13 @@
 //! Shared domain contracts, IDs, events, and repository traits.
 //! Owned exclusively by the Main Orchestrator Agent.
 
+pub mod account;
 pub mod http;
 pub mod ids;
 pub mod map;
 pub mod packet;
 
+pub use account::*;
 pub use http::*;
 pub use ids::*;
 pub use map::*;
