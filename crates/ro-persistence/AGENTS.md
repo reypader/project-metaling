@@ -3,6 +3,7 @@
 ## 1. Module Ownership & Collaboration Boundaries
 * **Designated Owner:** `.agents/agents/ro-persistence.md` (`ro-persistence` custom subagent).
 * **Write Scope:** `./crates/ro-persistence/src/**`, `./crates/ro-persistence/migrations/**`, and `./crates/ro-persistence/Cargo.toml` exclusively.
+* **Design Reference:** Read `./crates/ro-persistence/DESIGN.md` for an initial architectural design to follow. This document serves as a rough directional sketch of where the persistence domain is headed and allows flexibility as implementation details evolve.
 * **Contract Inspection & Change Requests:** Read `./crates/ro-contracts/src/**` directly from disk. Never modify `./crates/ro-contracts/**` and never run `cargo doc`. Request any needed contract changes in `ro-contracts` from the Main/Parent Agent.
 * **Reference Lookups:** Consult `.agents/agents/reference-explorer.md` (`reference-explorer`) whenever SQL table schemas, column types, or repository patterns from `./reference/**` are needed. Never read `./reference/**` directly.
 * **Peer Consultation:** Coordinate with `ro-bins` via subagent messaging when integrating `InMemoryStubRepo` and `PostgresRepo` into `login-server`, `char-server`, and `map-server`.
@@ -17,7 +18,7 @@
 ### 2.1 Dual Repository Implementation Strategy
 1. **`InMemoryStubRepo` (Phases 0 to 3):**
    * Provides a thread-safe (`Send + Sync`) in-memory implementation of the repository traits in `crates/ro-contracts`.
-   * Pre-seeds a default test account (`AccountId(2000000)`, username `"testuser"`, `Sex::Male`) and a default character (`CharId(150001)`, slot `0`, name `"Novice"`, job `0`, `last_map: "prontera.gat"`, `last_pos: (156, 191, 0)`).
+   * Pre-seeds a default test account (`AccountId(2000000)`, username `"test"`, password `"password"`, `Sex::Male`) and a default character (`CharId(150001)`, slot `0`, name `"Novice"`, job `0`, `last_map: "prontera.gat"`, `last_pos: (156, 191, 0)`).
    * Supports in-memory updates to character position (`last_map`, `last_pos`) during Phase 3 map warps and character creation or deletion in tests without requiring a running PostgreSQL instance.
 2. **`PostgresRepo` (Phase 4+):**
    * Uses `sqlx::PgPool` to execute asynchronous queries and manage SQL schema migrations.

@@ -3,6 +3,7 @@
 ## 1. Module Ownership & Collaboration Boundaries
 * **Designated Owner:** `.agents/agents/ro-engine.md` (`ro-engine` custom subagent).
 * **Write Scope:** `./crates/ro-engine/src/**` and `./crates/ro-engine/Cargo.toml` exclusively.
+* **Design Reference:** Read `./crates/ro-engine/DESIGN.md` for an initial architectural design to follow. This document serves as a rough directional sketch of where the engine domain is headed and allows flexibility as implementation details evolve.
 * **Contract Inspection & Change Requests:** Read `./crates/ro-contracts/src/**` directly from disk. Never modify `./crates/ro-contracts/**` and never run `cargo doc`. Request any needed contract changes in `ro-contracts` from the Main/Parent Agent.
 * **Reference Lookups:** Consult `.agents/agents/reference-explorer.md` (`reference-explorer`) whenever map state machine lifecycles, walking ticks, sitting rules, portal triggers, or AoI broadcast ranges from `./reference/**` are needed. Never read `./reference/**` directly.
 * **Peer Consultation:** Coordinate with `ro-db`, `ro-mechanics`, `ro-scripting`, `ro-persistence`, and `ro-bins` via subagent messaging when integrating ECS systems with external traits or `map-server` actors.
