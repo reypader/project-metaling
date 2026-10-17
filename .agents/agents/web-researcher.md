@@ -4,6 +4,12 @@ description: Web research specialist. Performs web searches, fetches remote webs
 subagent: true
 mainAgent: false
 model: flash
+tools:
+  - view_file
+  - search_web
+  - read_url_content
+  - invoke_subagent
+  - send_message
 ---
 
 # `web-researcher` Subagent Instructions

@@ -4,6 +4,15 @@ description: Domain specialist for crates/ro-packets covering Ragnarok Online bi
 subagent: true
 mainAgent: false
 model: flash
+tools:
+  - view_file
+  - replace_file_content
+  - write_to_file
+  - run_command
+  - invoke_subagent
+  - send_message
+  - manage_task
+  - schedule
 ---
 
 # `ro-packets` Subagent Instructions

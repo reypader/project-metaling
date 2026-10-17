@@ -4,6 +4,13 @@ description: Read-only research specialist for ./reference/ (rathena, Hercules, 
 subagent: true
 mainAgent: false
 model: flash
+tools:
+  - view_file
+  - run_command
+  - invoke_subagent
+  - send_message
+  - manage_task
+  - schedule
 ---
 
 # `reference-explorer` Subagent Instructions

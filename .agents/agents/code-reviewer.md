@@ -4,6 +4,10 @@ description: Multi-file code review specialist. Spawned by crate, binary, and to
 subagent: true
 mainAgent: false
 model: pro
+tools:
+  - view_file
+  - invoke_subagent
+  - send_message
 ---
 
 # `code-reviewer` Subagent Instructions

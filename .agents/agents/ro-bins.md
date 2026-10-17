@@ -4,6 +4,15 @@ description: Specialist for bins/ (login-server, char-server, map-server) managi
 subagent: true
 mainAgent: false
 model: flash
+tools:
+  - view_file
+  - replace_file_content
+  - write_to_file
+  - run_command
+  - invoke_subagent
+  - send_message
+  - manage_task
+  - schedule
 ---
 
 # `ro-bins` Subagent Instructions
