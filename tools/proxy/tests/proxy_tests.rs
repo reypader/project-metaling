@@ -1,6 +1,6 @@
-use std::time::Duration;
+use std::{sync::Arc, time::Duration};
 use ro_contracts::http::ServerType;
-use ro_proxy::forwarder::handle_proxy_connection;
+use ro_proxy::{forwarder::handle_proxy_connection, PacketSequenceRecorder};
 use tokio::{
     io::{AsyncReadExt, AsyncWriteExt},
     net::{TcpListener, TcpStream},
@@ -32,10 +32,12 @@ async fn test_proxy_end_to_end_packet_passthrough() {
     let proxy_listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let proxy_addr = proxy_listener.local_addr().unwrap();
 
+    let recorder = Arc::new(PacketSequenceRecorder::new());
     let target_str = server_addr.to_string();
+    let rec = recorder.clone();
     let proxy_task = tokio::spawn(async move {
         let (client_socket, client_addr) = proxy_listener.accept().await.unwrap();
-        handle_proxy_connection(client_socket, client_addr, target_str, ServerType::Login, 1).await;
+        handle_proxy_connection(client_socket, client_addr, target_str, ServerType::Login, 1, rec).await;
     });
 
     // 3. Mock Client connects to Proxy
@@ -66,6 +68,7 @@ async fn test_proxy_end_to_end_packet_passthrough() {
     server_task.await.unwrap();
     // Allow proxy tasks to complete cleanly
     tokio::time::sleep(Duration::from_millis(50)).await;
+    assert!(recorder.len() >= 2);
     proxy_task.abort();
 }
 
@@ -97,10 +100,12 @@ async fn test_proxy_unparseable_raw_passthrough_and_resync() {
     let proxy_listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let proxy_addr = proxy_listener.local_addr().unwrap();
 
+    let recorder = Arc::new(PacketSequenceRecorder::new());
     let target_str = server_addr.to_string();
+    let rec = recorder.clone();
     let proxy_task = tokio::spawn(async move {
         let (client_socket, client_addr) = proxy_listener.accept().await.unwrap();
-        handle_proxy_connection(client_socket, client_addr, target_str, ServerType::Map, 2).await;
+        handle_proxy_connection(client_socket, client_addr, target_str, ServerType::Map, 2, rec).await;
     });
 
     // 3. Mock Client connects to Proxy
@@ -124,5 +129,6 @@ async fn test_proxy_unparseable_raw_passthrough_and_resync() {
 
     server_task.await.unwrap();
     tokio::time::sleep(Duration::from_millis(50)).await;
+    assert!(recorder.len() >= 2);
     proxy_task.abort();
 }

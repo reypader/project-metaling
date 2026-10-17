@@ -12,7 +12,7 @@ use tokio::{
 };
 use tracing::{debug, error, info};
 
-use crate::logger::{PacketDirection, PacketLogger, SessionSequenceTracker};
+use crate::logger::{PacketDirection, PacketLogger, PacketSequenceRecorder, SessionSequenceTracker};
 
 static NEXT_SESSION_ID: AtomicUsize = AtomicUsize::new(1);
 
@@ -20,6 +20,7 @@ pub async fn run_proxy_server(
     listener: TcpListener,
     target_addr: String,
     server_type: ServerType,
+    recorder: Arc<PacketSequenceRecorder>,
 ) -> Result<(), std::io::Error> {
     let local_addr = listener.local_addr()?;
     info!(
@@ -32,8 +33,9 @@ pub async fn run_proxy_server(
             Ok((client_stream, client_addr)) => {
                 let session_id = NEXT_SESSION_ID.fetch_add(1, Ordering::SeqCst);
                 let target = target_addr.clone();
+                let rec = recorder.clone();
                 tokio::spawn(async move {
-                    handle_proxy_connection(client_stream, client_addr, target, server_type, session_id).await;
+                    handle_proxy_connection(client_stream, client_addr, target, server_type, session_id, rec).await;
                 });
             }
             Err(err) => {
@@ -52,6 +54,7 @@ pub async fn handle_proxy_connection(
     target_addr: String,
     server_type: ServerType,
     session_id: usize,
+    recorder: Arc<PacketSequenceRecorder>,
 ) {
     info!(
         "[{:?} Session #{}] Accepted client connection from {} -> connecting to target {}",
@@ -72,7 +75,11 @@ pub async fn handle_proxy_connection(
     let (mut client_reader, mut client_writer) = client_stream.into_split();
     let (mut target_reader, mut target_writer) = target_stream.into_split();
 
-    let tracker = Arc::new(SessionSequenceTracker::new());
+    let tracker = Arc::new(SessionSequenceTracker::with_global(
+        server_type,
+        session_id,
+        recorder,
+    ));
 
     let client_to_target = {
         let target_addr = target_addr.clone();
@@ -186,7 +193,7 @@ pub async fn handle_proxy_connection(
     }
 
     info!(
-        "[{:?} Session #{}] Connection closed for client {} <-> target {}\n{}",
-        server_type, session_id, client_addr, target_addr, tracker.format_sequence_flow()
+        "[{:?} Session #{}] Connection closed for client {} <-> target {} (recorded {} packets)",
+        server_type, session_id, client_addr, target_addr, tracker.packet_count()
     );
 }

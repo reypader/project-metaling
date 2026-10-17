@@ -42,6 +42,10 @@ pub struct ProxyArgs {
     /// Optional override for proxy map listen port (defaults to 5121)
     #[arg(long = "listen-map-port", default_value_t = DEFAULT_MAP_PORT)]
     pub listen_map_port: u16,
+
+    /// Optional output log file path (defaults to packet_sequence-<date>.log)
+    #[arg(short = 'o', long = "log-file")]
+    pub log_file: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -54,6 +58,7 @@ pub struct ProxyConfig {
     pub login_target: String,
     pub char_target: String,
     pub map_target: String,
+    pub log_file: Option<String>,
 }
 
 pub fn resolve_target(
@@ -86,6 +91,13 @@ impl ProxyArgs {
         let char_target = resolve_target(self.char_server.as_deref(), &self.target_ip, DEFAULT_CHAR_PORT)?;
         let map_target = resolve_target(self.map_server.as_deref(), &self.target_ip, DEFAULT_MAP_PORT)?;
 
+        let log_file = self
+            .log_file
+            .as_deref()
+            .map(str::trim)
+            .filter(|s| !s.is_empty())
+            .map(String::from);
+
         Ok(ProxyConfig {
             bind_addr: self.bind_addr.clone(),
             target_ip: self.target_ip.clone(),
@@ -95,6 +107,7 @@ impl ProxyArgs {
             login_target,
             char_target,
             map_target,
+            log_file,
         })
     }
 }
@@ -153,11 +166,49 @@ mod tests {
             listen_login_port: 6900,
             listen_char_port: 6121,
             listen_map_port: 5121,
+            log_file: None,
         };
 
         let config = args.build_config().unwrap();
         assert_eq!(config.login_target, "192.168.1.200:6900");
         assert_eq!(config.char_target, "10.0.0.2:6125");
         assert_eq!(config.map_target, "10.0.0.3:5125");
+        assert_eq!(config.log_file, None);
+    }
+
+    #[test]
+    fn test_build_config_with_custom_log_file() {
+        let args = ProxyArgs {
+            target_ip: "127.0.0.1".to_string(),
+            login: None,
+            char_server: None,
+            map_server: None,
+            bind_addr: "127.0.0.1".to_string(),
+            listen_login_port: 6900,
+            listen_char_port: 6121,
+            listen_map_port: 5121,
+            log_file: Some("/tmp/custom_proxy.log".to_string()),
+        };
+
+        let config = args.build_config().unwrap();
+        assert_eq!(config.log_file.as_deref(), Some("/tmp/custom_proxy.log"));
+    }
+
+    #[test]
+    fn test_build_config_with_empty_log_file() {
+        let args = ProxyArgs {
+            target_ip: "127.0.0.1".to_string(),
+            login: None,
+            char_server: None,
+            map_server: None,
+            bind_addr: "127.0.0.1".to_string(),
+            listen_login_port: 6900,
+            listen_char_port: 6121,
+            listen_map_port: 5121,
+            log_file: Some("   ".to_string()),
+        };
+
+        let config = args.build_config().unwrap();
+        assert_eq!(config.log_file, None);
     }
 }

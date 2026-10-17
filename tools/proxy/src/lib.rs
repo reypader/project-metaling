@@ -8,6 +8,7 @@ pub use config::{
 };
 pub use forwarder::{handle_proxy_connection, run_proxy_server};
 pub use logger::{
-    format_hex_preview, PacketDirection, PacketLogger, PacketSequenceEntry,
+    civil_from_timestamp, format_hex_preview, generate_log_filename, GlobalSequenceEntry,
+    PacketDirection, PacketLogger, PacketSequenceEntry, PacketSequenceRecorder,
     SessionSequenceTracker,
 };
