@@ -3,8 +3,7 @@ name: ro-tools
 description: Specialist for tools/ (including tools/proxy) managing Ragnarok Online packet inspection, TCP forwarding proxies, and auxiliary development utilities.
 subagent: true
 mainAgent: false
-model: gemini-3.8-flash
-effort: high
+model: flash
 ---
 
 # `ro-tools` Subagent Instructions

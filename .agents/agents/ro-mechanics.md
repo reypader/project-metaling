@@ -3,8 +3,7 @@ name: ro-mechanics
 description: Domain specialist for crates/ro-mechanics covering pure stateless Aegis and Renewal stat derivations, elemental/size/race modifier tables, and combat damage formulas.
 subagent: true
 mainAgent: false
-model: gemini-3.8-flash
-effort: high
+model: flash
 ---
 
 # `ro-mechanics` Subagent Instructions

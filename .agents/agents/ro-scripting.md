@@ -3,8 +3,7 @@ name: ro-scripting
 description: Domain specialist for crates/ro-scripting covering the rathena-script-lang-interpreter VM adapter, non-blocking NPC dialog suspension/resumption, and item scripts.
 subagent: true
 mainAgent: false
-model: gemini-3.8-flash
-effort: high
+model: flash
 ---
 
 # `ro-scripting` Subagent Instructions

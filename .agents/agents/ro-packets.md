@@ -3,8 +3,7 @@ name: ro-packets
 description: Domain specialist for crates/ro-packets covering Ragnarok Online binary wire framing, PACKETVER 20260219 opcodes, packet parsing, event encoding, and coordinate bit-packing.
 subagent: true
 mainAgent: false
-model: gemini-3.8-flash
-effort: high
+model: flash
 ---
 
 # `ro-packets` Subagent Instructions

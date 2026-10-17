@@ -13,33 +13,42 @@ If you are operating at the workspace root, you are the **Main Agent**.
   * `./crates/ro-contracts/**` (Strictly pure cross-crate traits, DTOs, Event enums, error types, and ID newtypes)
 * **Strict Prohibition:**
   * **YOU MUST NEVER traverse, read, or modify any files inside `./crates/ro-packets/**`, `./crates/ro-engine/**`, `./crates/ro-db/**`, `./crates/ro-mechanics/**`, `./crates/ro-persistence/**`, `./crates/ro-scripting/**`, `./bins/**`, `./tools/**`, or `./reference/**`** (except for maintaining their `AGENTS.md` rule files when recalibrating workspace governance).
+  * **YOU MUST NEVER author, create, or execute temporary scratch scripts, one-off file parsers, or bulk editing scripts directly.**
 * **Your Job:**
   1. Consult the `reference-explorer` subagent via `invoke_subagent` whenever reference specifications from `./reference/**` are required to design or amend contracts.
   2. Arbitrate whether a new cross-domain contract (trait, event struct, or DTO) is needed in `crates/ro-contracts`, update `crates/ro-contracts`, and verify compilation via `cargo check -p ro-contracts`.
   3. Delegate crate implementation tasks to the dedicated crate subagents (`ro-packets`, `ro-engine`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`) via `invoke_subagent`.
   4. Delegate server binary coordination (`login-server`, `char-server`, `map-server`) to `ro-bins` and auxiliary tooling tasks (`proxy`) to `ro-tools` via `invoke_subagent`.
+  5. Delegate all temporary script writing, data parsing, format conversions, and bulk edits to `utility-scripter` via `invoke_subagent`.
+  6. Delegate external web research, documentation fetching, and link crawling to `web-researcher` via `invoke_subagent`.
 
 #### Mandatory Operating Rules for the Main Agent:
 1. **Strict Interface Purity in `crates/ro-contracts`:**
    `crates/ro-contracts` contains zero business logic, zero concrete codecs, zero wire framing loops, and zero heavy transport dependencies. Only abstract data structures, enums, newtypes, and traits belong in this crate. Concrete framing algorithms and serialization logic belong in domain crates such as `crates/ro-packets`.
 2. **Mandatory Subagent Delegation:**
    The Main Agent must never implement domain logic, server binary entrypoints, proxy tools, or reference file searches directly. When new functionality is required, the Main Agent defines the compiling interface in `crates/ro-contracts` and invokes the corresponding custom subagent via `invoke_subagent`.
+3. **Mandatory Scripting Delegation (`utility-scripter`):**
+   The Main Agent must never author, generate, or execute temporary scratch scripts, one-off file parsers, data extraction scripts, or bulk format converters directly. Whenever script authoring, data extraction, format conversion, or bulk file editing is needed, the Main Agent must invoke the `utility-scripter` subagent via `invoke_subagent`.
+4. **Mandatory Web Research Delegation (`web-researcher`):**
+   The Main Agent must never perform web searches, web page fetching, or link crawling directly. Whenever external documentation, web references, or library research are needed, the Main Agent must invoke the `web-researcher` subagent via `invoke_subagent`.
 
 ### Role 2: Custom Subagents (`./.agents/agents/*.md`)
 Each submodule in the workspace is served by a dedicated custom subagent configured in `./.agents/agents/<name>.md`:
 
-| Subagent Name | Config File | Model & Effort | Owned Scope | Responsibility |
+| Subagent Name | Config File | Model Tier | Owned Scope | Responsibility |
 | :--- | :--- | :--- | :--- | :--- |
-| **`ro-packets`** | `.agents/agents/ro-packets.md` | `gemini-3.8-flash` (`high`) | `./crates/ro-packets/**` | Binary wire framing, `PACKETVER = 20260219` opcodes, packet parsing, event encoding, `WBUFPOS`/`WBUFPOS2` bit-packing |
-| **`ro-engine`** | `.agents/agents/ro-engine.md` | `gemini-3.8-flash` (`high`) | `./crates/ro-engine/**` | Deterministic ECS `World`, `8x8` `SpatialGrid`, A* pathfinding, AoI broadcasting, entity lifecycles, map tick loop |
-| **`ro-db`** | `.agents/agents/ro-db.md` | `gemini-3.8-flash` (`high`) | `./crates/ro-db/**` | `.gat`/`.rsw` walkability grids, Renewal YAML loaders (`item_db`, `mob_db`, `skill_db`), spawn/warp file parsers |
-| **`ro-mechanics`** | `.agents/agents/ro-mechanics.md` | `gemini-3.8-flash` (`high`) | `./crates/ro-mechanics/**` | Pure stateless Aegis and Renewal stat derivations, elemental/size/race tables, combat damage formulas |
-| **`ro-persistence`** | `.agents/agents/ro-persistence.md` | `gemini-3.8-flash` (`high`) | `./crates/ro-persistence/**` | `InMemoryStubRepo` (Phases 0 to 3), PostgreSQL `sqlx` `PostgresRepo` (Phase 4+), SQL migrations, account/character CRUD |
-| **`ro-scripting`** | `.agents/agents/ro-scripting.md` | `gemini-3.8-flash` (`high`) | `./crates/ro-scripting/**` | `rathena-script-lang-interpreter` VM adapter, non-blocking NPC dialog suspension/resumption, item bonus scripts |
-| **`ro-bins`** | `.agents/agents/ro-bins.md` | `gemini-3.8-flash` (`high`) | `./bins/**` | `login-server`, `char-server`, `map-server` entrypoints, TCP session workers, actor channels, inter-server Axum HTTP APIs |
-| **`ro-tools`** | `.agents/agents/ro-tools.md` | `gemini-3.8-flash` (`high`) | `./tools/**` | `tools/proxy` TCP packet logging/forwarding proxy and auxiliary diagnostic utilities |
-| **`reference-explorer`** | `.agents/agents/reference-explorer.md` | `gemini-3.8-flash` (`medium`) | `./reference/**` (Read-Only) | Extracts protocol layouts, YAML schemas, SQL schemas, and Aegis mechanics from `./reference/**` for the Main Agent and all subagents |
-| **`code-reviewer`** | `.agents/agents/code-reviewer.md` | `claude-opus-5.5` | Target crate/package (Read-Only) | Audits multi-file changes across any crate, binary, or tool package to identify defects, contract gaps, and edge cases |
+| **`ro-packets`** | `.agents/agents/ro-packets.md` | `flash` | `./crates/ro-packets/**` | Binary wire framing, `PACKETVER = 20260219` opcodes, packet parsing, event encoding, `WBUFPOS`/`WBUFPOS2` bit-packing |
+| **`ro-engine`** | `.agents/agents/ro-engine.md` | `flash` | `./crates/ro-engine/**` | Deterministic ECS `World`, `8x8` `SpatialGrid`, A* pathfinding, AoI broadcasting, entity lifecycles, map tick loop |
+| **`ro-db`** | `.agents/agents/ro-db.md` | `flash` | `./crates/ro-db/**` | `.gat`/`.rsw` walkability grids, Renewal YAML loaders (`item_db`, `mob_db`, `skill_db`), spawn/warp file parsers |
+| **`ro-mechanics`** | `.agents/agents/ro-mechanics.md` | `flash` | `./crates/ro-mechanics/**` | Pure stateless Aegis and Renewal stat derivations, elemental/size/race tables, combat damage formulas |
+| **`ro-persistence`** | `.agents/agents/ro-persistence.md` | `flash` | `./crates/ro-persistence/**` | `InMemoryStubRepo` (Phases 0 to 3), PostgreSQL `sqlx` `PostgresRepo` (Phase 4+), SQL migrations, account/character CRUD |
+| **`ro-scripting`** | `.agents/agents/ro-scripting.md` | `flash` | `./crates/ro-scripting/**` | `rathena-script-lang-interpreter` VM adapter, non-blocking NPC dialog suspension/resumption, item bonus scripts |
+| **`ro-bins`** | `.agents/agents/ro-bins.md` | `flash` | `./bins/**` | `login-server`, `char-server`, `map-server` entrypoints, TCP session workers, actor channels, inter-server Axum HTTP APIs |
+| **`ro-tools`** | `.agents/agents/ro-tools.md` | `flash` | `./tools/**` | `tools/proxy` TCP packet logging/forwarding proxy and auxiliary diagnostic utilities |
+| **`reference-explorer`** | `.agents/agents/reference-explorer.md` | `flash` | `./reference/**` (Read-Only) | Extracts protocol layouts, YAML schemas, SQL schemas, and Aegis mechanics from `./reference/**` for the Main Agent and all subagents |
+| **`code-reviewer`** | `.agents/agents/code-reviewer.md` | `pro` | Target crate/package (Read-Only) | Audits multi-file changes across any crate, binary, or tool package to identify defects, contract gaps, and edge cases |
+| **`web-researcher`** | `.agents/agents/web-researcher.md` | `flash` | Internet / Web (External) | Web searches, URL fetching, hyperlink navigation, HTML/markdown parsing |
+| **`utility-scripter`** | `.agents/agents/utility-scripter.md` | `flash` | Scratch directory & delegated files | Temporary scratch scripts, one-off file parsers, bulk editors, format converters |
 
 #### Mandatory Operating Rules for All Subagents:
 1. **Read-Only Access to `crates/ro-contracts` & Requesting Contract Changes (No `cargo doc`):**
@@ -49,7 +58,9 @@ Each submodule in the workspace is served by a dedicated custom subagent configu
 3. **Peer Subagent Consultation & Cross-Library Integration:**
    Subagents must never read or modify files in another subagent's owned directory. Instead, subagents invoke (`invoke_subagent`) or message (`send_message`) one another whenever they need integration details, public constructor signatures, or behavioral clarification across library boundaries. This is especially important for `ro-bins` and `ro-tools` when connecting domain crates together.
 4. **Mandatory Multi-File Code Review (`code-reviewer`):**
-   Whenever any subagent (except `reference-explorer` and `code-reviewer`) performs code changes spanning more than one file in a crate or package, that subagent must spawn `code-reviewer` (`claude-opus-5.5`) via `invoke_subagent` to review the changes, highlight gaps and edge cases, and resolve all findings before finishing.
+   Whenever any subagent (except `reference-explorer` and `code-reviewer`) performs code changes spanning more than one file in a crate or package, that subagent must spawn `code-reviewer` (`pro` tier) via `invoke_subagent` to review the changes, highlight gaps and edge cases, and resolve all findings before finishing.
+5. **General-Use Utility & Web Subagents (`web-researcher` & `utility-scripter`):**
+   Any agent or subagent may invoke `web-researcher` to research external documentation, fetch websites, follow links, and parse HTML or markdown resources. Any agent or subagent may invoke `utility-scripter` to author and execute temporary one-off scripts, file parsers, bulk editors, and format converters to minimize context window noise. `web-researcher` and `utility-scripter` may interact directly with each other to process and parse fetched web data.
 
 ---
 

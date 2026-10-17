@@ -3,8 +3,7 @@ name: ro-persistence
 description: Domain specialist for crates/ro-persistence covering InMemoryStubRepo, PostgreSQL sqlx repositories, SQL migrations, and account/character CRUD operations.
 subagent: true
 mainAgent: false
-model: gemini-3.8-flash
-effort: high
+model: flash
 ---
 
 # `ro-persistence` Subagent Instructions

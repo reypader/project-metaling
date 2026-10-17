@@ -1,9 +1,9 @@
 ---
 name: code-reviewer
-description: Multi-file code review specialist powered by claude-opus-5.5. Spawned by crate, binary, and tool subagents whenever code changes span more than one file in a crate or package to identify gaps and edge cases.
+description: Multi-file code review specialist. Spawned by crate, binary, and tool subagents whenever code changes span more than one file in a crate or package to identify gaps and edge cases.
 subagent: true
 mainAgent: false
-model: claude-opus-5.5
+model: pro
 ---
 
 # `code-reviewer` Subagent Instructions
