@@ -1,7 +1,7 @@
 mod service;
 mod session;
 
-use std::net::SocketAddr;
+use std::{net::SocketAddr, sync::Arc};
 
 use axum::{
     extract::State,
@@ -12,37 +12,28 @@ use tokio::net::TcpListener;
 use tracing::{error, info};
 
 use ro_contracts::{
-    ids::CharServerInfo, HealthResponse, RegisterCharServerRequest, RegisterCharServerResponse,
-    ServerHeartbeat, ServerHeartbeatResponse, ServerStatus, ServerType, ValidateSessionRequest,
+    HealthResponse, RegisterCharServerRequest, RegisterCharServerResponse,
+    ServerHeartbeat, ServerHeartbeatResponse, ValidateSessionRequest,
     ValidateSessionResponse, TARGET_PACKETVER,
 };
+use ro_persistence::InMemoryStubRepo;
 
-use service::LoginServiceHandle;
-use session::handle_client_session;
+pub use service::{LoginService, LoginServiceHandle};
+pub use session::{handle_client_session, handle_in_memory_session, handle_stream};
 
-async fn health_check() -> Json<HealthResponse> {
-    Json(HealthResponse {
-        status: ServerStatus::Ready,
-        server_type: ServerType::Login,
-        server_name: "metaling-login".to_string(),
-        uptime_seconds: 0,
-        active_connections: 0,
-        target_packetver: TARGET_PACKETVER,
-    })
+pub async fn health_check(State(service): State<LoginServiceHandle>) -> Json<HealthResponse> {
+    Json(service.health_response())
 }
 
-async fn validate_session(
+pub async fn validate_session(
+    State(service): State<LoginServiceHandle>,
     Json(payload): Json<ValidateSessionRequest>,
 ) -> Json<ValidateSessionResponse> {
     info!("Validating session for account id {}", payload.account_id.0);
-    Json(ValidateSessionResponse {
-        valid: true,
-        account_id: payload.account_id,
-        error_message: None,
-    })
+    Json(service.validate_session(&payload))
 }
 
-async fn register_char_server(
+pub async fn register_char_server(
     State(service): State<LoginServiceHandle>,
     Json(payload): Json<RegisterCharServerRequest>,
 ) -> Json<RegisterCharServerResponse> {
@@ -50,29 +41,32 @@ async fn register_char_server(
         "Registering character server {} at {}:{}",
         payload.name, payload.client_host, payload.client_port
     );
-
-    let info = CharServerInfo {
-        ip: [127, 0, 0, 1],
-        port: payload.client_port,
-        name: payload.name,
-        users: 0,
-        server_type: 0,
-        new_server: 0,
-    };
-    service.register_char_server(info);
-
+    let accepted = service.register_char_server(payload.clone());
     Json(RegisterCharServerResponse {
-        accepted: true,
+        accepted,
         server_id: payload.server_id,
     })
 }
 
-async fn handle_heartbeat(Json(payload): Json<ServerHeartbeat>) -> Json<ServerHeartbeatResponse> {
+pub async fn handle_heartbeat(
+    State(service): State<LoginServiceHandle>,
+    Json(payload): Json<ServerHeartbeat>,
+) -> Json<ServerHeartbeatResponse> {
     info!(
         "Heartbeat received from server {} with {} active users",
         payload.server_id, payload.user_count
     );
-    Json(ServerHeartbeatResponse { acknowledged: true })
+    let acknowledged = service.update_heartbeat(&payload);
+    Json(ServerHeartbeatResponse { acknowledged })
+}
+
+pub fn create_http_router(service: LoginServiceHandle) -> Router {
+    Router::new()
+        .route("/api/v1/health", get(health_check))
+        .route("/api/v1/sessions/validate", post(validate_session))
+        .route("/api/v1/servers/register", post(register_char_server))
+        .route("/api/v1/servers/heartbeat", post(handle_heartbeat))
+        .with_state(service)
 }
 
 #[tokio::main]
@@ -84,14 +78,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         TARGET_PACKETVER
     );
 
-    let service_handle = LoginServiceHandle::new();
+    let account_repo = Arc::new(InMemoryStubRepo::new());
+    let service_handle = LoginService::new(account_repo);
 
-    let http_router = Router::new()
-        .route("/api/v1/health", get(health_check))
-        .route("/api/v1/sessions/validate", post(validate_session))
-        .route("/api/v1/servers/register", post(register_char_server))
-        .route("/api/v1/servers/heartbeat", post(handle_heartbeat))
-        .with_state(service_handle.clone());
+    let http_router = create_http_router(service_handle.clone());
 
     let http_addr: SocketAddr = "0.0.0.0:6901".parse()?;
     let http_listener = TcpListener::bind(http_addr).await?;
@@ -138,53 +128,221 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use bytes::BytesMut;
-    use ro_contracts::PacketOpcode;
-    use ro_packets::{PacketDecoder, RathenaPacketLengthTable};
-    use tokio::{
-        io::{AsyncReadExt, AsyncWriteExt},
-        net::TcpStream,
+    use ro_contracts::{
+        ids::{AccountId, Sex},
+        ServerStatus, ServerType,
     };
-    use tokio_util::codec::Decoder;
+    use tokio::io::{AsyncReadExt, AsyncWriteExt};
+
+    fn make_ca_login_frame(username: &str, password: &str) -> [u8; 55] {
+        let mut frame = [0u8; 55];
+        frame[0..2].copy_from_slice(&0x0064u16.to_le_bytes());
+        frame[2..6].copy_from_slice(&0x8000_0000u32.to_le_bytes());
+        let user_bytes = username.as_bytes();
+        frame[6..6 + user_bytes.len().min(24)].copy_from_slice(&user_bytes[..user_bytes.len().min(24)]);
+        let pass_bytes = password.as_bytes();
+        frame[30..30 + pass_bytes.len().min(24)].copy_from_slice(&pass_bytes[..pass_bytes.len().min(24)]);
+        frame[54] = 0;
+        frame
+    }
 
     #[tokio::test]
-    async fn test_login_handshake_via_channel_service() {
-        let service_handle = LoginServiceHandle::new();
+    async fn test_trace_session_1_bad_password() {
+        let repo = Arc::new(InMemoryStubRepo::new());
+        let service = LoginService::new(repo);
 
-        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let server_addr = listener.local_addr().unwrap();
+        let (mut client_stream, server_stream) = tokio::io::duplex(1024);
+        let (server_reader, server_writer) = tokio::io::split(server_stream);
 
-        tokio::spawn(async move {
-            let (socket, peer_addr) = listener.accept().await.unwrap();
-            handle_client_session(socket, peer_addr, service_handle).await;
-        });
+        tokio::spawn(handle_in_memory_session(
+            server_reader,
+            server_writer,
+            service,
+        ));
 
-        let mut client_socket = TcpStream::connect(server_addr).await.unwrap();
+        let frame = make_ca_login_frame("test", "passwords");
+        client_stream.write_all(&frame).await.unwrap();
+        client_stream.flush().await.unwrap();
 
-        let mut ca_login_frame = [0u8; 55];
-        ca_login_frame[0] = 0x64;
-        ca_login_frame[1] = 0x00;
-        ca_login_frame[2..6].copy_from_slice(&1u32.to_le_bytes());
-        let username_bytes = b"testuser";
-        ca_login_frame[6..6 + username_bytes.len()].copy_from_slice(username_bytes);
-        let password_bytes = b"secret";
-        ca_login_frame[30..30 + password_bytes.len()].copy_from_slice(password_bytes);
-        ca_login_frame[54] = 0;
+        let mut response_buf = [0u8; 64];
+        let bytes_read = client_stream.read(&mut response_buf).await.unwrap();
+        assert_eq!(bytes_read, 26);
 
-        client_socket.write_all(&ca_login_frame).await.unwrap();
-        client_socket.flush().await.unwrap();
+        let mut expected_refuse = [0u8; 26];
+        expected_refuse[0..2].copy_from_slice(&0x083eu16.to_le_bytes());
+        expected_refuse[2..6].copy_from_slice(&1u32.to_le_bytes());
 
-        let mut decoder = PacketDecoder::new(RathenaPacketLengthTable, TARGET_PACKETVER);
-        let mut buffer = BytesMut::with_capacity(1024);
+        assert_eq!(&response_buf[..26], &expected_refuse);
 
+        // Verify socket reaches EOF because server closed connection
+        let next_read = client_stream.read(&mut response_buf).await.unwrap();
+        assert_eq!(next_read, 0);
+    }
+
+    #[tokio::test]
+    async fn test_trace_session_2_valid_password_and_ticket_lifecycle() {
+        let repo = Arc::new(InMemoryStubRepo::new());
+        let service = LoginService::new(repo);
+
+        let (mut client_stream, server_stream) = tokio::io::duplex(2048);
+        let (server_reader, server_writer) = tokio::io::split(server_stream);
+
+        tokio::spawn(handle_in_memory_session(
+            server_reader,
+            server_writer,
+            service.clone(),
+        ));
+
+        // Send Session #2 CA_LOGIN
+        let frame = make_ca_login_frame("test", "password");
+        client_stream.write_all(&frame).await.unwrap();
+        client_stream.flush().await.unwrap();
+
+        let mut response_buf = [0u8; 512];
+        let mut total_read = 0;
         loop {
-            if let Some(raw) = decoder.decode(&mut buffer).unwrap() {
-                assert_eq!(raw.opcode, PacketOpcode::AC_ACCEPT_LOGIN);
-                assert!(raw.payload_len() > 0);
+            let n = client_stream.read(&mut response_buf[total_read..]).await.unwrap();
+            if n == 0 {
                 break;
             }
-            let bytes_read = client_socket.read_buf(&mut buffer).await.unwrap();
-            assert!(bytes_read > 0);
+            total_read += n;
+            if total_read >= 224 {
+                break;
+            }
         }
+        assert_eq!(total_read, 224);
+
+        // Opcode 0x0ac4
+        let opcode = u16::from_le_bytes([response_buf[0], response_buf[1]]);
+        assert_eq!(opcode, 0x0ac4);
+
+        // Total length 224
+        let packet_len = u16::from_le_bytes([response_buf[2], response_buf[3]]);
+        assert_eq!(packet_len, 224);
+
+        // Account ID 2000000
+        let account_id_val = u32::from_le_bytes(response_buf[8..12].try_into().unwrap());
+        assert_eq!(account_id_val, 2000000);
+
+        // Non-zero login IDs
+        let login_id1 = u32::from_le_bytes(response_buf[4..8].try_into().unwrap());
+        let login_id2 = u32::from_le_bytes(response_buf[12..16].try_into().unwrap());
+        assert_ne!(login_id1, 0);
+        assert_ne!(login_id2, 0);
+
+        // Sex: 1 (Male)
+        let sex_byte = response_buf[46];
+        assert_eq!(sex_byte, 1);
+
+        // Char server port: 6121
+        let char_port = u16::from_le_bytes(response_buf[68..70].try_into().unwrap());
+        assert_eq!(char_port, 6121);
+
+        // Verify socket reaches EOF upon handshake completion
+        let mut eof_check = [0u8; 1];
+        let eof_bytes = client_stream.read(&mut eof_check).await.unwrap();
+        assert_eq!(eof_bytes, 0);
+
+        // Initial validation from char-server (CH_ENTER)
+        let validate_req = ValidateSessionRequest {
+            account_id: AccountId(account_id_val),
+            login_id1,
+            login_id2,
+            sex: Sex::Male,
+        };
+        let res1 = validate_session(State(service.clone()), Json(validate_req.clone())).await.0;
+        assert!(res1.valid);
+        assert_eq!(res1.account_id, AccountId(account_id_val));
+        assert!(res1.error_message.is_none());
+
+        // Return to Character Selection (second validation with exact same ticket)
+        let res2 = validate_session(State(service.clone()), Json(validate_req.clone())).await.0;
+        assert!(res2.valid);
+        assert_eq!(res2.account_id, AccountId(account_id_val));
+
+        // Validation with incorrect login_id1
+        let bad_validate_req = ValidateSessionRequest {
+            account_id: AccountId(account_id_val),
+            login_id1: login_id1.wrapping_add(1),
+            login_id2,
+            sex: Sex::Male,
+        };
+        let res3 = validate_session(State(service.clone()), Json(bad_validate_req)).await.0;
+        assert!(!res3.valid);
+    }
+
+    #[tokio::test]
+    async fn test_char_server_registration_and_heartbeat_flow() {
+        let repo = Arc::new(InMemoryStubRepo::new());
+        let service = LoginService::new(repo);
+
+        // Register char-server with updated port and name
+        let reg_req = RegisterCharServerRequest {
+            server_id: 1,
+            name: "Custom-Char".to_string(),
+            client_host: "127.0.0.1".to_string(),
+            client_port: 6128,
+            internal_http_url: "http://127.0.0.1:6129".to_string(),
+            max_users: 1500,
+        };
+        let reg_res = register_char_server(State(service.clone()), Json(reg_req)).await.0;
+        assert!(reg_res.accepted);
+        assert_eq!(reg_res.server_id, 1);
+
+        // Send heartbeat updating active users to 77
+        let hb_req = ServerHeartbeat {
+            server_id: 1,
+            user_count: 77,
+            timestamp_ms: 99999,
+        };
+        let hb_res = handle_heartbeat(State(service.clone()), Json(hb_req)).await.0;
+        assert!(hb_res.acknowledged);
+
+        // Connect client via duplex stream and assert updated descriptor in 0x0ac4
+        let (mut client_stream, server_stream) = tokio::io::duplex(2048);
+        let (server_reader, server_writer) = tokio::io::split(server_stream);
+
+        tokio::spawn(handle_in_memory_session(
+            server_reader,
+            server_writer,
+            service.clone(),
+        ));
+
+        let frame = make_ca_login_frame("test", "password");
+        client_stream.write_all(&frame).await.unwrap();
+        client_stream.flush().await.unwrap();
+
+        let mut response_buf = [0u8; 512];
+        let mut total_read = 0;
+        loop {
+            let n = client_stream.read(&mut response_buf[total_read..]).await.unwrap();
+            if n == 0 {
+                break;
+            }
+            total_read += n;
+            if total_read >= 224 {
+                break;
+            }
+        }
+        assert_eq!(total_read, 224);
+
+        // Char server port should be 6128
+        let char_port = u16::from_le_bytes(response_buf[68..70].try_into().unwrap());
+        assert_eq!(char_port, 6128);
+
+        // Active users should be 77
+        let users = u16::from_le_bytes(response_buf[90..92].try_into().unwrap());
+        assert_eq!(users, 77);
+    }
+
+    #[tokio::test]
+    async fn test_health_check_endpoint() {
+        let repo = Arc::new(InMemoryStubRepo::new());
+        let service = LoginService::new(repo);
+
+        let health = health_check(State(service)).await.0;
+        assert_eq!(health.status, ServerStatus::Ready);
+        assert_eq!(health.server_type, ServerType::Login);
+        assert_eq!(health.target_packetver, TARGET_PACKETVER);
     }
 }

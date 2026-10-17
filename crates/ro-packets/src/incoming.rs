@@ -514,6 +514,60 @@ mod tests {
     }
 
     #[test]
+    fn test_decode_ca_login_captured_trace_failure_and_retry() {
+        let parser = ModernIntentParser::default();
+        let ver = ro_contracts::TARGET_PACKETVER;
+
+        let mut payload_fail = vec![0u8; 53];
+        payload_fail[0..4].copy_from_slice(&0x80000000u32.to_le_bytes());
+        payload_fail[4..8].copy_from_slice(b"test");
+        payload_fail[28..37].copy_from_slice(b"passwords");
+        payload_fail[52] = 0;
+
+        let raw_fail = RawPacket::new(PacketOpcode(0x0064), Bytes::from(payload_fail));
+        let decoded_fail = CaLoginPacket::decode(&raw_fail).unwrap();
+        assert_eq!(decoded_fail.version, 0x80000000);
+        assert_eq!(decoded_fail.username, "test");
+        assert_eq!(decoded_fail.password, "passwords");
+        assert_eq!(decoded_fail.client_type, 0);
+
+        let intent_fail = parser.parse_intent(&raw_fail, ver).unwrap().unwrap();
+        assert_eq!(
+            intent_fail,
+            ClientIntent::Login {
+                username: "test".to_string(),
+                password: "passwords".to_string(),
+                client_version: 0x80000000,
+                client_type: 0,
+            }
+        );
+
+        let mut payload_success = vec![0u8; 53];
+        payload_success[0..4].copy_from_slice(&0x80000000u32.to_le_bytes());
+        payload_success[4..8].copy_from_slice(b"test");
+        payload_success[28..36].copy_from_slice(b"password");
+        payload_success[52] = 0;
+
+        let raw_success = RawPacket::new(PacketOpcode(0x0064), Bytes::from(payload_success));
+        let decoded_success = CaLoginPacket::decode(&raw_success).unwrap();
+        assert_eq!(decoded_success.version, 0x80000000);
+        assert_eq!(decoded_success.username, "test");
+        assert_eq!(decoded_success.password, "password");
+        assert_eq!(decoded_success.client_type, 0);
+
+        let intent_success = parser.parse_intent(&raw_success, ver).unwrap().unwrap();
+        assert_eq!(
+            intent_success,
+            ClientIntent::Login {
+                username: "test".to_string(),
+                password: "password".to_string(),
+                client_version: 0x80000000,
+                client_type: 0,
+            }
+        );
+    }
+
+    #[test]
     fn test_decode_ca_login_pcbang_0277() {
         let mut payload = vec![0u8; 82];
         payload[0..4].copy_from_slice(&20211103u32.to_le_bytes());
