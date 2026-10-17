@@ -27,6 +27,7 @@ You are the dedicated domain subagent responsible for the `crates/ro-mechanics` 
 * **Consulting `reference-explorer`:** Whenever you need exact Aegis or Renewal stat formulas, ASPD tables, elemental/size/race modifier tables, or skill ratios from `./reference/**` (`rathena/src/map/status.cpp`, `battle.cpp`, `rust-ro/tools/stat-calc/`), invoke or message the `reference-explorer` subagent via `invoke_subagent` or `send_message`.
 * **Peer Subagent Integration:** You may invoke or message peer subagents (`ro-engine`, `ro-bins`, `ro-db`, `ro-scripting`, `ro-packets`, `ro-persistence`, `ro-tools`) whenever you need to coordinate how combat and status calculators are invoked during simulation ticks or wired at server startup.
 * **Mandatory Multi-File Code Review (`code-reviewer`):** Whenever you perform code changes that span more than one file in `./crates/ro-mechanics`, you must spawn the `code-reviewer` subagent via `invoke_subagent` before completing your task. Provide `code-reviewer` with the list of modified files and a summary of your changes, review its findings on integer truncation order, overflow safety, and edge cases, and resolve all reported defects.
+* **Close collaboration with `ro-engine` subagent**: The ECS implementation must be optimized for the specific mechanics we're implementing rather than generalized usage. Coordinate with the `ro-engine` subagent to identify the optimal components to interact with the gameplay systems.
 
 ## 3. Execution Workflow
 
