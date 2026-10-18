@@ -132,3 +132,48 @@ async fn test_proxy_unparseable_raw_passthrough_and_resync() {
     assert!(recorder.len() >= 2);
     proxy_task.abort();
 }
+
+#[tokio::test]
+async fn test_proxy_trailing_buffer_flushed_on_connection_close() {
+    let mock_server_listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let server_addr = mock_server_listener.local_addr().unwrap();
+
+    let server_task = tokio::spawn(async move {
+        let (mut socket, _) = mock_server_listener.accept().await.unwrap();
+
+        // Read 10 bytes of partial CA_LOGIN sent by client
+        let mut buf = [0u8; 10];
+        socket.read_exact(&mut buf).await.unwrap();
+        // Server drops socket to trigger EOF
+    });
+
+    let proxy_listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let proxy_addr = proxy_listener.local_addr().unwrap();
+
+    let recorder = Arc::new(PacketSequenceRecorder::new());
+    let target_str = server_addr.to_string();
+    let rec = recorder.clone();
+    let proxy_task = tokio::spawn(async move {
+        let (client_socket, client_addr) = proxy_listener.accept().await.unwrap();
+        handle_proxy_connection(client_socket, client_addr, target_str, ServerType::Login, 3, rec).await;
+    });
+
+    let mut client_socket = TcpStream::connect(proxy_addr).await.unwrap();
+
+    // Send partial 10 bytes of CA_LOGIN
+    let partial_data = [0x64, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08];
+    client_socket.write_all(&partial_data).await.unwrap();
+    client_socket.flush().await.unwrap();
+
+    // Client closes write stream
+    client_socket.shutdown().await.unwrap();
+
+    server_task.await.unwrap();
+    let _ = tokio::time::timeout(Duration::from_millis(500), proxy_task).await;
+
+    // Verify trailing bytes were flushed into recorder
+    assert!(!recorder.is_empty());
+    let entries = recorder.entries();
+    let trailing_entry = entries.iter().find(|e| e.detail.contains("TRAILING PARTIAL FRAME on EOF"));
+    assert!(trailing_entry.is_some());
+}

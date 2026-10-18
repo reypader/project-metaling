@@ -128,6 +128,7 @@ pub async fn handle_proxy_connection(
                 logger.feed_and_log(chunk);
             }
 
+            logger.flush();
             let _ = target_writer.shutdown().await;
         }
     };
@@ -179,6 +180,7 @@ pub async fn handle_proxy_connection(
                 logger.feed_and_log(chunk);
             }
 
+            logger.flush();
             let _ = client_writer.shutdown().await;
         }
     };
