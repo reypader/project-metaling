@@ -360,12 +360,6 @@ impl LoginService {
     }
 }
 
-impl Default for LoginService {
-    fn default() -> Self {
-        Self::new(Arc::new(ro_persistence::InMemoryStubRepo::new()))
-    }
-}
-
 /// Ephemeral logic actor processing `SessionIntent` messages sequentially for one login client.
 struct LoginSessionActor {
     session_id: SessionId,
@@ -431,11 +425,19 @@ impl LoginSessionActor {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ro_persistence::InMemoryStubRepo;
+    use ro_persistence::PostgresRepo;
+
+    async fn setup_test_repo() -> Arc<dyn ro_contracts::account::AccountRepository> {
+        let test_db_url = std::env::var("DATABASE_URL")
+            .unwrap_or_else(|_| "postgres://ragnarok:ragnarok@localhost:5432/ragnarok".to_string());
+        let repo = PostgresRepo::connect(&test_db_url).await.unwrap();
+        let _ = repo.seed_test_data().await;
+        Arc::new(repo)
+    }
 
     #[tokio::test]
     async fn test_process_login_success() {
-        let repo = Arc::new(InMemoryStubRepo::new());
+        let repo = setup_test_repo().await;
         let service = LoginService::new(repo);
 
         let event = service
@@ -463,7 +465,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_process_login_bad_password() {
-        let repo = Arc::new(InMemoryStubRepo::new());
+        let repo = setup_test_repo().await;
         let service = LoginService::new(repo);
 
         let event = service
@@ -475,7 +477,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_process_login_unknown_user() {
-        let repo = Arc::new(InMemoryStubRepo::new());
+        let repo = setup_test_repo().await;
         let service = LoginService::new(repo);
 
         let event = service
@@ -487,7 +489,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_session_ticket_lifecycle_and_reauth() {
-        let repo = Arc::new(InMemoryStubRepo::new());
+        let repo = setup_test_repo().await;
         let service = LoginService::new(repo);
 
         let event = service
@@ -545,7 +547,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_session_ticket_expiration() {
-        let repo = Arc::new(InMemoryStubRepo::new());
+        let repo = setup_test_repo().await;
         // Configure with 1ms TTL
         let service = LoginService::with_ttl(repo, Duration::from_millis(1));
 
@@ -579,7 +581,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_char_server_registration_and_heartbeat() {
-        let repo = Arc::new(InMemoryStubRepo::new());
+        let repo = setup_test_repo().await;
         let service = LoginService::new(repo);
 
         let reg_req = RegisterCharServerRequest {

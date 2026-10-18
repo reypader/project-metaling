@@ -47,5 +47,6 @@ This master index maps extracted protocol opcodes, bit-packing algorithms, Aegis
 | Schema / Format | Summary | Target File & Section |
 | :--- | :--- | :--- |
 | Renewal YAML Schemas | Static database schemas (`item_db.yml`, `mob_db.yml`, `skill_db.yml`, `job_stats.yml`) | [db/yaml_schemas.md#renewal-yaml-database-schemas](./db/yaml_schemas.md#renewal-yaml-database-schemas) |
-| Relational SQL Schemas | Account, character, and inventory table layouts for PostgreSQL | [db/sql_schemas.md#relational-persistence-schemas](./db/sql_schemas.md#relational-persistence-schemas) |
+| Relational SQL: `login` | Account credentials, administrative groups, and inter-server authentication seed | [db/sql_schemas.md#login-table-schema](./db/sql_schemas.md#login-table-schema) |
+| Relational SQL: `char` | Character slots, base and trait attributes, vitals, appearance, and coordinates | [db/sql_schemas.md#char-table-schema](./db/sql_schemas.md#char-table-schema) |
 | `.gat` / `.rsw` & Spawns | Map cell walkability grid binary layout and mob/warp script definitions | [db/map_gat.md#map-walkability-and-spawn-formats](./db/map_gat.md#map-walkability-and-spawn-formats) |

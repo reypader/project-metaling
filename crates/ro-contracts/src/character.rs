@@ -3,7 +3,7 @@
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 
-use crate::ids::{AccountId, CharId, CharacterSummary, Sex};
+use crate::ids::{AccountId, CharId, CharacterSummary, MapPosition, Sex};
 
 /// Request DTO for creating a new character on an account.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -151,4 +151,12 @@ pub trait CharacterRepository: Send + Sync {
         account_id: AccountId,
         char_id: CharId,
     ) -> Result<CancelDeleteOutcome, crate::repository::RepositoryError>;
+
+    /// Persists updated coordinates and map location for an active character.
+    async fn update_position(
+        &self,
+        char_id: CharId,
+        map_name: &str,
+        pos: MapPosition,
+    ) -> Result<(), crate::repository::RepositoryError>;
 }

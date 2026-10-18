@@ -1,9 +1,10 @@
-/// Configuration for `login-server` network ports.
+/// Configuration for `login-server` network ports and database connection.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LoginConfig {
     pub client_port: u16,
     pub http_port: u16,
     pub advertised_char_port: u16,
+    pub database_url: String,
 }
 
 impl Default for LoginConfig {
@@ -12,6 +13,7 @@ impl Default for LoginConfig {
             client_port: 6900,
             http_port: 6901,
             advertised_char_port: 6121,
+            database_url: "postgres://ragnarok:ragnarok@localhost:5432/ragnarok".to_string(),
         }
     }
 }
@@ -51,6 +53,33 @@ fn get_cli_arg(args: &[String], short: Option<&str>, long: &str) -> Option<u16> 
     None
 }
 
+fn get_cli_arg_string(args: &[String], short: Option<&str>, long: &str) -> Option<String> {
+    let mut iter = args.iter();
+    while let Some(arg) = iter.next() {
+        if let Some(short_flag) = short {
+            if arg == short_flag {
+                if let Some(val) = iter.next() {
+                    return Some(val.clone());
+                }
+            }
+            let prefix = format!("{short_flag}=");
+            if let Some(rest) = arg.strip_prefix(&prefix) {
+                return Some(rest.to_string());
+            }
+        }
+        if arg == long {
+            if let Some(val) = iter.next() {
+                return Some(val.clone());
+            }
+        }
+        let prefix = format!("{long}=");
+        if let Some(rest) = arg.strip_prefix(&prefix) {
+            return Some(rest.to_string());
+        }
+    }
+    None
+}
+
 impl LoginConfig {
     pub fn from_args_and_env<I, S, F>(args: I, env: F) -> Self
     where
@@ -75,10 +104,15 @@ impl LoginConfig {
             .or_else(|| env("CHAR_ADVERTISED_PORT").and_then(|v| v.parse().ok()))
             .unwrap_or(defaults.advertised_char_port);
 
+        let database_url = get_cli_arg_string(&args_vec, None, "--database-url")
+            .or_else(|| env("DATABASE_URL"))
+            .unwrap_or(defaults.database_url);
+
         Self {
             client_port,
             http_port,
             advertised_char_port,
+            database_url,
         }
     }
 
@@ -93,7 +127,7 @@ mod tests {
     use std::collections::HashMap;
     use std::sync::Arc;
     use ro_contracts::packet::ServerEvent;
-    use ro_persistence::InMemoryStubRepo;
+    use ro_persistence::PostgresRepo;
     use crate::service::LoginService;
 
     #[test]
@@ -181,9 +215,12 @@ mod tests {
         assert_eq!(cfg.client_port, 6910, "login-server binds to 6910 for proxy");
         assert_eq!(cfg.advertised_char_port, 6121, "advertises 6121 proxy port for char-server");
 
-        let repo = Arc::new(InMemoryStubRepo::new());
+        let test_db_url = std::env::var("DATABASE_URL")
+            .unwrap_or_else(|_| "postgres://ragnarok:ragnarok@localhost:5432/ragnarok".to_string());
+        let repo = PostgresRepo::connect(&test_db_url).await.unwrap();
+        let _ = repo.seed_test_data().await;
         let service = LoginService::with_ttl_and_char_port(
-            repo,
+            Arc::new(repo),
             std::time::Duration::from_secs(300),
             cfg.advertised_char_port,
         );
@@ -195,5 +232,43 @@ mod tests {
             }
             other => panic!("expected LoginAccepted, got {:?}", other),
         }
+    }
+
+    #[test]
+    fn test_bin_cfg_001_login_default_database_url() {
+        let cfg = LoginConfig::from_args_and_env(
+            Vec::<String>::new(),
+            |_| None,
+        );
+        assert_eq!(
+            cfg.database_url,
+            "postgres://ragnarok:ragnarok@localhost:5432/ragnarok"
+        );
+    }
+
+    #[test]
+    fn test_bin_cfg_persist_001_login_database_url_cli_over_env_over_default() {
+        let env_map: HashMap<&str, &str> = [
+            ("DATABASE_URL", "postgres://env_user:env_pass@env-host:5432/env_db"),
+        ]
+        .into_iter()
+        .collect();
+
+        let cfg_env = LoginConfig::from_args_and_env(
+            Vec::<String>::new(),
+            |key| env_map.get(key).map(|v| v.to_string()),
+        );
+        assert_eq!(cfg_env.database_url, "postgres://env_user:env_pass@env-host:5432/env_db");
+
+        let args = vec![
+            "login-server",
+            "--database-url",
+            "postgres://cli_user:cli_pass@cli-host:5432/cli_db",
+        ];
+        let cfg_cli = LoginConfig::from_args_and_env(
+            args,
+            |key| env_map.get(key).map(|v| v.to_string()),
+        );
+        assert_eq!(cfg_cli.database_url, "postgres://cli_user:cli_pass@cli-host:5432/cli_db");
     }
 }

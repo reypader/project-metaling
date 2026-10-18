@@ -138,7 +138,9 @@ pub async fn handle_client_session(
                             authenticated_account = Some(entered_account_id);
                             authenticated_char = Some(entered_char_id);
 
-                            let target_world_tx = service.resolve_world_for_character(entered_char_id);
+                            let (target_world_tx, spawn_pos) =
+                                service.resolve_world_for_character(entered_char_id).await;
+
                             let session_intent = SessionIntent::new(
                                 session_id,
                                 authenticated_account,
@@ -151,6 +153,7 @@ pub async fn handle_client_session(
                                     session_id,
                                     account_id: entered_account_id,
                                     char_id: entered_char_id,
+                                    spawn_pos,
                                     outbound_tx: tx,
                                     initial_intent: session_intent,
                                 })

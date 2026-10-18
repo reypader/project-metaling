@@ -1,0 +1,25 @@
+# Docker Compose configuration for local development infrastructure.
+
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: metaling-db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-ragnarok}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ragnarok}
+      POSTGRES_DB: ${POSTGRES_DB:-ragnarok}
+    volumes:
+      - metalingdb:/var/lib/postgresql/data
+      - ../../crates/ro-persistence/sql/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ../../crates/ro-persistence/sql/02_seed.sql:/docker-entrypoint-initdb.d/02_seed.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-ragnarok} -d $${POSTGRES_DB:-ragnarok}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  metalingdb:

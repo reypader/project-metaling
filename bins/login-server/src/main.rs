@@ -21,7 +21,6 @@ use ro_contracts::{
     ServerHeartbeat, ServerHeartbeatResponse, ValidateSessionRequest,
     ValidateSessionResponse, TARGET_PACKETVER,
 };
-use ro_persistence::InMemoryStubRepo;
 
 pub use service::{LoginService, LoginServiceHandle};
 pub use session::{handle_client_session, handle_in_memory_session, handle_stream};
@@ -94,7 +93,11 @@ async fn main() -> anyhow::Result<()> {
         TARGET_PACKETVER, config.client_port, config.http_port, config.advertised_char_port
     );
 
-    let account_repo = Arc::new(InMemoryStubRepo::new());
+    let account_repo = Arc::new(
+        ro_persistence::PostgresRepo::connect(&config.database_url)
+            .await
+            .with_context(|| format!("Failed to connect to database at {}", config.database_url))?,
+    );
     let service_handle = LoginService::with_ttl_and_char_port(
         account_repo,
         std::time::Duration::from_secs(300),
@@ -175,9 +178,17 @@ mod tests {
         frame
     }
 
+    async fn setup_test_repo() -> Arc<dyn ro_contracts::account::AccountRepository> {
+        let test_db_url = std::env::var("DATABASE_URL")
+            .unwrap_or_else(|_| "postgres://ragnarok:ragnarok@localhost:5432/ragnarok".to_string());
+        let repo = ro_persistence::PostgresRepo::connect(&test_db_url).await.unwrap();
+        let _ = repo.seed_test_data().await;
+        Arc::new(repo)
+    }
+
     #[tokio::test]
     async fn test_trace_session_1_bad_password() {
-        let repo = Arc::new(InMemoryStubRepo::new());
+        let repo = setup_test_repo().await;
         let service = LoginService::new(repo);
 
         let (mut client_stream, server_stream) = tokio::io::duplex(1024);
@@ -220,7 +231,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_trace_session_2_valid_password_and_ticket_lifecycle() {
-        let repo = Arc::new(InMemoryStubRepo::new());
+        let repo = setup_test_repo().await;
         let service = LoginService::new(repo);
 
         let (mut client_stream, server_stream) = tokio::io::duplex(2048);
@@ -322,7 +333,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_char_server_registration_and_heartbeat_flow() {
-        let repo = Arc::new(InMemoryStubRepo::new());
+        let repo = setup_test_repo().await;
         let service = LoginService::new(repo);
 
         // Register char-server with updated port and name
@@ -366,14 +377,13 @@ mod tests {
 
         let mut response_buf = [0u8; 512];
         let mut total_read = 0;
-        loop {
-            let n = client_stream.read(&mut response_buf[total_read..]).await.unwrap();
-            if n == 0 {
-                break;
-            }
-            total_read += n;
-            if total_read >= 224 {
-                break;
+        let deadline = tokio::time::Instant::now() + std::time::Duration::from_secs(5);
+        while total_read < 224 && tokio::time::Instant::now() < deadline {
+            if let Ok(Ok(n)) = tokio::time::timeout(std::time::Duration::from_millis(100), client_stream.read(&mut response_buf[total_read..])).await {
+                if n == 0 {
+                    break;
+                }
+                total_read += n;
             }
         }
         assert_eq!(total_read, 224);
@@ -391,7 +401,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_login_socket_remains_open_until_client_disconnects() {
-        let repo = Arc::new(InMemoryStubRepo::new());
+        let repo = setup_test_repo().await;
         let service = LoginService::new(repo);
 
         let (mut client_stream, server_stream) = tokio::io::duplex(2048);
@@ -409,10 +419,12 @@ mod tests {
 
         let mut response_buf = [0u8; 512];
         let mut total_read = 0;
-        while total_read < 224 {
-            let n = client_stream.read(&mut response_buf[total_read..]).await.unwrap();
-            assert!(n > 0, "Unexpected early EOF");
-            total_read += n;
+        let deadline = tokio::time::Instant::now() + std::time::Duration::from_secs(5);
+        while total_read < 224 && tokio::time::Instant::now() < deadline {
+            if let Ok(Ok(n)) = tokio::time::timeout(std::time::Duration::from_millis(100), client_stream.read(&mut response_buf[total_read..])).await {
+                assert!(n > 0, "Unexpected early EOF");
+                total_read += n;
+            }
         }
         assert_eq!(total_read, 224);
 
@@ -439,7 +451,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_health_check_endpoint() {
-        let repo = Arc::new(InMemoryStubRepo::new());
+        let repo = setup_test_repo().await;
         let service = LoginService::new(repo);
 
         let health = health_check(State(service)).await.0;
@@ -450,7 +462,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_register_char_server_capacity_limit() {
-        let repo = Arc::new(InMemoryStubRepo::new());
+        let repo = setup_test_repo().await;
         let service = LoginService::new(repo);
 
         for id in 2..=32 {
@@ -482,5 +494,46 @@ mod tests {
             .expect_err("Registration should exceed capacity");
         assert_eq!(err.0, StatusCode::SERVICE_UNAVAILABLE);
         assert!(!err.1 .0.accepted);
+    }
+
+    #[tokio::test]
+    async fn test_bin_cfg_persist_002_login_startup_failure_on_unreachable_db() {
+        let unreachable_url = "postgres://invalid:invalid@127.0.0.1:5433/nonexistent";
+        let connect_result = ro_persistence::PostgresRepo::connect(unreachable_url).await;
+        assert!(connect_result.is_err(), "Expected connection to unreachable DB to fail fast");
+    }
+
+    #[tokio::test]
+    async fn test_bin_login_persist_001_auth_against_postgres() {
+        use ro_contracts::packet::ServerEvent;
+        let db_url = std::env::var("DATABASE_URL")
+            .unwrap_or_else(|_| "postgres://ragnarok:ragnarok@localhost:5432/ragnarok".to_string());
+        let repo = match ro_persistence::PostgresRepo::connect(&db_url).await {
+            Ok(r) => r,
+            Err(err) => {
+                eprintln!("Skipping test_bin_login_persist_001: DB unavailable ({})", err);
+                return;
+            }
+        };
+        let _ = repo.seed_test_data().await;
+
+        let service = LoginService::new(Arc::new(repo));
+
+        let event = service
+            .process_login("test", "password", 0x80000000, 0)
+            .await;
+        match event {
+            ServerEvent::LoginAccepted { account_id, sex, char_servers, .. } => {
+                assert_eq!(account_id, AccountId(2000000));
+                assert_eq!(sex, Sex::Male);
+                assert!(!char_servers.is_empty());
+            }
+            other => panic!("Expected LoginAccepted, got {:?}", other),
+        }
+
+        let bad_event = service
+            .process_login("test", "wrongpassword", 0x80000000, 0)
+            .await;
+        assert_eq!(bad_event, ServerEvent::LoginRefused { error_code: 1 });
     }
 }

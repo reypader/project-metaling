@@ -105,6 +105,7 @@ project-metaling/
 │   ├── char-server/          # TCP :6121 & HTTP :6122 binary entrypoint
 │   └── map-server/           # TCP :5121 & HTTP :5122 binary entrypoint (hosts `crates/ro-engine`)
 └── tools/                    # [ro-tools Subagent] Auxiliary development & debugging tools
+    ├── docker/               # Docker Compose stack for PostgreSQL and server containers
     └── proxy/                # RO packet logging & forwarding proxy (:6900, :6121, :5121)
 ```
 
@@ -118,11 +119,11 @@ When implementing a feature or fixing a bug, the Main Agent uses this matrix to 
 | **TCP framing, opcode length table, byte parsing, event encoding, `WBUFPOS`/`WBUFPOS2` bit-packing** | `crates/ro-packets` (`ro-packets`) | `PacketLengthTable`, `PacketIntentParser`, `EventEncoder`, `RawPacket` | `bins/{login,char,map}-server/src/session.rs`, `tools/proxy` |
 | **`.gat`/`.rsw` walkability grids, `item_db`/`mob_db`/`skill_db` YAML loading, spawn/warp file parsing** | `crates/ro-db` (`ro-db`) | `MapWalkability`, static blueprint DTOs, and database provider traits | Initialized by `bins/map-server`, queried by `crates/ro-engine` |
 | **Derived stats (`ATK`, `DEF`, `ASPD`, `HIT`, `FLEE`), elemental/size/race modifiers, damage formulas** | `crates/ro-mechanics` (`ro-mechanics`) | Pure stateless calculator traits and `DamageContext` / stat DTOs | Invoked by `crates/ro-engine` during combat and status ticks |
-| **Account authentication, character slot CRUD, in-memory stub repo (Phases 0 to 3), PostgreSQL `sqlx` repo (Phase 4+)** | `crates/ro-persistence` (`ro-persistence`) | `AccountRepository`, `CharacterRepository`, `CharacterSummary` | Injected into `LoginService`, `CharService`, and `MapService` |
+| **Account authentication, character slot CRUD, PostgreSQL `sqlx` repository (`PostgresRepo`)** | `crates/ro-persistence` (`ro-persistence`) | `AccountRepository`, `CharacterRepository`, `CharacterSummary` | Injected into `LoginService`, `CharService`, and `MapService` |
 | **NPC conversation execution (`mes`, `next`, `select`, `warp`) & item script evaluation** | `crates/ro-scripting` (`ro-scripting`) | Script VM runner traits and script suspension/resumption events | Invoked by `crates/ro-engine` during entity interaction phases |
 | **ECS `World`, `8x8` `SpatialGrid`, A* pathfinding over `MapWalkability`, AoI calculation, entity lifecycle, deterministic tick loop** | `crates/ro-engine` (`ro-engine`) | Consumes `ClientIntent` (with session/character context), emits `ScopedServerEvent` | Hosted and ticked by `bins/map-server` (`MapService`) |
 | **TCP listener loops, char-server raw 4-byte `AccountId` echo, `session.rs` channel bridge, Axum HTTP routers/clients, service dependency injection** | `bins/*` (`ro-bins`) | Consumes `crates/ro-contracts` traits and connects concrete domain types | Executed directly as server binaries |
-| **RO packet logging & TCP forwarding proxy across `:6900`, `:6121`, `:5121`** | `tools/*` (`ro-tools`) | Consumes `PacketLengthTable` and packet framing traits | Executed as standalone diagnostic tooling |
+| **RO packet logging & TCP forwarding proxy (`:6900`, `:6121`, `:5121`) and Docker Compose infrastructure (`tools/docker`)** | `tools/*` (`ro-tools`) | Consumes `PacketLengthTable` and packet framing traits; mounts SQL init files from `crates/ro-persistence` | Executed as standalone diagnostic and container tooling |
 
 ### 2.2 Multi-Subagent Delegation Sequencing
 When introducing or changing behavior across crates and binaries, the Main Agent executes work in seven stages:

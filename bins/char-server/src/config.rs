@@ -1,10 +1,11 @@
-/// Configuration for `char-server` network ports.
+/// Configuration for `char-server` network ports and database connection.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CharConfig {
     pub client_port: u16,
     pub http_port: u16,
     pub advertised_port: u16,
     pub default_map_port: u16,
+    pub database_url: String,
 }
 
 impl Default for CharConfig {
@@ -14,6 +15,7 @@ impl Default for CharConfig {
             http_port: 6122,
             advertised_port: 6121,
             default_map_port: 5121,
+            database_url: "postgres://ragnarok:ragnarok@localhost:5432/ragnarok".to_string(),
         }
     }
 }
@@ -53,6 +55,33 @@ fn get_cli_arg(args: &[String], short: Option<&str>, long: &str) -> Option<u16> 
     None
 }
 
+fn get_cli_arg_string(args: &[String], short: Option<&str>, long: &str) -> Option<String> {
+    let mut iter = args.iter();
+    while let Some(arg) = iter.next() {
+        if let Some(short_flag) = short {
+            if arg == short_flag {
+                if let Some(val) = iter.next() {
+                    return Some(val.clone());
+                }
+            }
+            let prefix = format!("{short_flag}=");
+            if let Some(rest) = arg.strip_prefix(&prefix) {
+                return Some(rest.to_string());
+            }
+        }
+        if arg == long {
+            if let Some(val) = iter.next() {
+                return Some(val.clone());
+            }
+        }
+        let prefix = format!("{long}=");
+        if let Some(rest) = arg.strip_prefix(&prefix) {
+            return Some(rest.to_string());
+        }
+    }
+    None
+}
+
 impl CharConfig {
     pub fn from_args_and_env<I, S, F>(args: I, env: F) -> Self
     where
@@ -80,11 +109,16 @@ impl CharConfig {
             .or_else(|| env("MAP_ADVERTISED_PORT").and_then(|v| v.parse().ok()))
             .unwrap_or(defaults.default_map_port);
 
+        let database_url = get_cli_arg_string(&args_vec, None, "--database-url")
+            .or_else(|| env("DATABASE_URL"))
+            .unwrap_or(defaults.database_url);
+
         Self {
             client_port,
             http_port,
             advertised_port,
             default_map_port,
+            database_url,
         }
     }
 
@@ -165,5 +199,49 @@ mod tests {
 
         assert_eq!(cfg.client_port, 6131, "bind port must be 6131");
         assert_eq!(cfg.advertised_port, 6121, "advertised port must be 6121");
+    }
+
+    #[test]
+    fn test_bin_cfg_002_char_default_database_url() {
+        let cfg = CharConfig::from_args_and_env(
+            Vec::<String>::new(),
+            |_| None,
+        );
+        assert_eq!(
+            cfg.database_url,
+            "postgres://ragnarok:ragnarok@localhost:5432/ragnarok"
+        );
+    }
+
+    #[test]
+    fn test_bin_cfg_persist_001_char_database_url_cli_over_env_over_default() {
+        let env_map: HashMap<&str, &str> = [
+            ("DATABASE_URL", "postgres://char_env_user:char_env_pass@env-host:5432/char_env_db"),
+        ]
+        .into_iter()
+        .collect();
+
+        let cfg_env = CharConfig::from_args_and_env(
+            Vec::<String>::new(),
+            |key| env_map.get(key).map(|v| v.to_string()),
+        );
+        assert_eq!(
+            cfg_env.database_url,
+            "postgres://char_env_user:char_env_pass@env-host:5432/char_env_db"
+        );
+
+        let args = vec![
+            "char-server",
+            "--database-url",
+            "postgres://char_cli_user:char_cli_pass@cli-host:5432/char_cli_db",
+        ];
+        let cfg_cli = CharConfig::from_args_and_env(
+            args,
+            |key| env_map.get(key).map(|v| v.to_string()),
+        );
+        assert_eq!(
+            cfg_cli.database_url,
+            "postgres://char_cli_user:char_cli_pass@cli-host:5432/char_cli_db"
+        );
     }
 }

@@ -9,6 +9,7 @@ use std::{
 
 use bytes::Bytes;
 use ro_contracts::{
+    character::CharacterRepository,
     ids::{AccountId, CharId, MapPosition, SessionId},
     packet::{ClientIntent, EventEncoder, ServerEvent, SessionIntent},
     TARGET_PACKETVER,
@@ -23,6 +24,7 @@ pub enum WorldCommand {
         session_id: SessionId,
         account_id: AccountId,
         char_id: CharId,
+        spawn_pos: MapPosition,
         outbound_tx: mpsc::Sender<Bytes>,
         initial_intent: SessionIntent,
     },
@@ -36,8 +38,9 @@ pub enum WorldCommand {
 #[derive(Clone)]
 pub struct MapServiceHandle {
     next_session_id: Arc<AtomicU64>,
+    char_repo: Arc<dyn CharacterRepository>,
     worlds: Arc<RwLock<HashMap<String, mpsc::Sender<WorldCommand>>>>,
-    pending_transfers: Arc<RwLock<HashMap<CharId, String>>>,
+    pending_transfers: Arc<RwLock<HashMap<CharId, (String, Option<MapPosition>)>>>,
     start_time: Instant,
 }
 
@@ -59,15 +62,20 @@ pub fn is_valid_map_name(map_name: &str) -> bool {
 }
 
 impl MapServiceHandle {
-    pub fn new() -> Self {
+    pub fn new(char_repo: Arc<dyn CharacterRepository>) -> Self {
         let handle = Self {
             next_session_id: Arc::new(AtomicU64::new(1)),
+            char_repo,
             worlds: Arc::new(RwLock::new(HashMap::new())),
             pending_transfers: Arc::new(RwLock::new(HashMap::new())),
             start_time: Instant::now(),
         };
         let _ = handle.get_or_spawn_world("prontera.gat");
         handle
+    }
+
+    pub fn char_repo(&self) -> &Arc<dyn CharacterRepository> {
+        &self.char_repo
     }
 
     pub fn uptime_seconds(&self) -> u64 {
@@ -78,7 +86,12 @@ impl MapServiceHandle {
         SessionId(self.next_session_id.fetch_add(1, Ordering::Relaxed))
     }
 
-    pub fn accept_transfer(&self, char_id: CharId, destination_map: String) -> bool {
+    pub fn accept_transfer(
+        &self,
+        char_id: CharId,
+        destination_map: String,
+        destination_pos: Option<MapPosition>,
+    ) -> bool {
         if !is_valid_map_name(&destination_map) {
             warn!(
                 "MapService rejected invalid destination map '{}' for character id {}",
@@ -126,24 +139,56 @@ impl MapServiceHandle {
             );
             return false;
         }
-        transfers.insert(char_id, destination_map);
+        transfers.insert(char_id, (destination_map.clone(), destination_pos));
+
+        if let Some(pos) = destination_pos {
+            let repo = Arc::clone(&self.char_repo);
+            let dest_map = destination_map.clone();
+            tokio::spawn(async move {
+                if let Err(err) = repo.update_position(char_id, &dest_map, pos).await {
+                    error!("Failed to update position on transfer for char {}: {}", char_id.0, err);
+                }
+            });
+        }
+
         true
     }
 
-    /// Resolves the target map for an entering character and returns the long-lived world channel.
-    pub fn resolve_world_for_character(&self, char_id: CharId) -> mpsc::Sender<WorldCommand> {
-        let mut transfers = match self.pending_transfers.write() {
-            Ok(guard) => guard,
-            Err(poisoned) => {
-                warn!("Pending transfers write lock poisoned during resolve_world_for_character. Recovering inner state.");
-                poisoned.into_inner()
-            }
+    /// Resolves the target map and spawn position for an entering character.
+    pub async fn resolve_world_for_character(
+        &self,
+        char_id: CharId,
+    ) -> (mpsc::Sender<WorldCommand>, MapPosition) {
+        let pending = {
+            let mut transfers = match self.pending_transfers.write() {
+                Ok(guard) => guard,
+                Err(poisoned) => {
+                    warn!("Pending transfers write lock poisoned during resolve_world_for_character. Recovering inner state.");
+                    poisoned.into_inner()
+                }
+            };
+            transfers.remove(&char_id)
         };
-        let map_name = transfers
-            .remove(&char_id)
-            .unwrap_or_else(|| "prontera.gat".to_string());
 
-        self.get_or_spawn_world(&map_name)
+        let default_pos = MapPosition {
+            x: 156,
+            y: 191,
+            dir: 0,
+        };
+
+        let (map_name, spawn_pos) = match pending {
+            Some((map, Some(pos))) => (map, pos),
+            Some((map, None)) => match self.char_repo.find_by_id(char_id).await {
+                Ok(Some(ch)) => (map, ch.last_pos),
+                _ => (map, default_pos),
+            },
+            None => match self.char_repo.find_by_id(char_id).await {
+                Ok(Some(ch)) => (ch.last_map, ch.last_pos),
+                _ => ("prontera.gat".to_string(), default_pos),
+            },
+        };
+
+        (self.get_or_spawn_world(&map_name), spawn_pos)
     }
 
     pub fn get_or_spawn_world(&self, map_name: &str) -> mpsc::Sender<WorldCommand> {
@@ -171,18 +216,12 @@ impl MapServiceHandle {
         }
 
         let (tx, rx) = mpsc::channel(256);
-        let world_actor = MapWorldActor::new(map_name.to_string());
+        let world_actor = MapWorldActor::new(map_name.to_string(), Arc::clone(&self.char_repo));
         tokio::spawn(async move {
             world_actor.run(rx).await;
         });
         worlds.insert(map_name.to_string(), tx.clone());
         tx
-    }
-}
-
-impl Default for MapServiceHandle {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
@@ -198,13 +237,14 @@ struct MapWorldActor {
     map_name: String,
     default_pos: MapPosition,
     server_tick: u32,
+    char_repo: Arc<dyn CharacterRepository>,
     sessions: HashMap<SessionId, ConnectedPlayer>,
     pending_intents: Vec<SessionIntent>,
     encoder: Phase0EventEncoder,
 }
 
 impl MapWorldActor {
-    fn new(map_name: String) -> Self {
+    fn new(map_name: String, char_repo: Arc<dyn CharacterRepository>) -> Self {
         Self {
             map_name,
             default_pos: MapPosition {
@@ -213,6 +253,7 @@ impl MapWorldActor {
                 dir: 0,
             },
             server_tick: 1000,
+            char_repo,
             sessions: HashMap::new(),
             pending_intents: Vec::with_capacity(64),
             encoder: Phase0EventEncoder,
@@ -249,6 +290,7 @@ impl MapWorldActor {
                 session_id,
                 account_id,
                 char_id,
+                spawn_pos,
                 outbound_tx,
                 initial_intent,
             } => {
@@ -257,7 +299,7 @@ impl MapWorldActor {
                     ConnectedPlayer {
                         account_id,
                         char_id,
-                        pos: self.default_pos,
+                        pos: spawn_pos,
                         outbound_tx,
                     },
                 );
@@ -267,9 +309,26 @@ impl MapWorldActor {
                 self.pending_intents.push(session_intent);
             }
             WorldCommand::LeaveSession { session_id } => {
-                self.sessions.remove(&session_id);
+                self.remove_and_persist_player(session_id);
             }
         }
+    }
+
+    fn remove_and_persist_player(&mut self, session_id: SessionId) -> Option<ConnectedPlayer> {
+        let player = self.sessions.remove(&session_id)?;
+        let repo = Arc::clone(&self.char_repo);
+        let char_id = player.char_id;
+        let map_name = self.map_name.clone();
+        let pos = player.pos;
+        tokio::spawn(async move {
+            if let Err(err) = repo.update_position(char_id, &map_name, pos).await {
+                error!(
+                    "Failed to persist position on disconnect for char {}: {}",
+                    char_id.0, err
+                );
+            }
+        });
+        Some(player)
     }
 
     fn drain_intents(&mut self) {
@@ -352,7 +411,7 @@ impl MapWorldActor {
                     );
                     let restart_ack = ServerEvent::RestartAck { result: 1 };
                     self.send_unicast(session_id, &restart_ack);
-                    self.sessions.remove(&session_id);
+                    self.remove_and_persist_player(session_id);
                 } else {
                     warn!(
                         "Map '{}' received unsupported restart_type {} from {:?}",
@@ -385,7 +444,7 @@ impl MapWorldActor {
                     "Session {:?} (char {}) outbound queue full or closed on map '{}'; removing session",
                     session_id, player.char_id.0, self.map_name
                 );
-                self.sessions.remove(&session_id);
+                self.remove_and_persist_player(session_id);
             }
         }
     }
@@ -418,7 +477,7 @@ impl MapWorldActor {
             }
         }
         for session_id in disconnected {
-            self.sessions.remove(&session_id);
+            self.remove_and_persist_player(session_id);
         }
     }
 }

@@ -39,6 +39,7 @@ pub struct CharServiceHandle {
 }
 
 impl CharServiceHandle {
+    #[allow(dead_code)]
     pub fn new(char_repo: Arc<dyn CharacterRepository>) -> Self {
         Self::with_default_map_port(char_repo, 5121)
     }
@@ -150,12 +151,6 @@ impl CharServiceHandle {
             actor.run(intent_rx).await;
         });
         intent_tx
-    }
-}
-
-impl Default for CharServiceHandle {
-    fn default() -> Self {
-        Self::new(Arc::new(ro_persistence::InMemoryStubRepo::new()))
     }
 }
 

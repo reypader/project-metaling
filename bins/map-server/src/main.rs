@@ -41,7 +41,11 @@ async fn accept_transfer(
         payload.char_id.0, payload.destination_map
     );
 
-    let accepted = service.accept_transfer(payload.char_id, payload.destination_map);
+    let accepted = service.accept_transfer(
+        payload.char_id,
+        payload.destination_map,
+        Some(payload.destination_pos),
+    );
 
     Json(PrepareMapTransferResponse { accepted })
 }
@@ -56,7 +60,12 @@ async fn main() -> anyhow::Result<()> {
         TARGET_PACKETVER, config.client_port, config.http_port, config.advertised_port
     );
 
-    let service_handle = MapServiceHandle::new();
+    let char_repo = std::sync::Arc::new(
+        ro_persistence::PostgresRepo::connect(&config.database_url)
+            .await
+            .with_context(|| format!("Failed to connect to database at {}", config.database_url))?,
+    );
+    let service_handle = MapServiceHandle::new(char_repo);
 
     let http_router = Router::new()
         .route("/api/v1/health", get(health_check))
@@ -117,18 +126,28 @@ async fn main() -> anyhow::Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::sync::Arc;
     use bytes::BytesMut;
     use ro_contracts::packet::PacketOpcode;
     use ro_packets::{PacketDecoder, RathenaPacketLengthTable};
+    use ro_persistence::PostgresRepo;
     use tokio::{
         io::{AsyncReadExt, AsyncWriteExt},
         net::TcpStream,
     };
     use tokio_util::codec::Decoder;
 
+    async fn setup_test_repo() -> Arc<dyn ro_contracts::character::CharacterRepository> {
+        let test_db_url = std::env::var("DATABASE_URL")
+            .unwrap_or_else(|_| "postgres://ragnarok:ragnarok@localhost:5432/ragnarok".to_string());
+        let repo = PostgresRepo::connect(&test_db_url).await.unwrap();
+        let _ = repo.seed_test_data().await;
+        Arc::new(repo)
+    }
+
     #[tokio::test]
     async fn test_map_handshake_enter_actorinit_and_time() {
-        let service_handle = MapServiceHandle::new();
+        let service_handle = MapServiceHandle::new(setup_test_repo().await);
 
         let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
         let server_addr = listener.local_addr().unwrap();
@@ -203,7 +222,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_map_restart_to_char_select() {
-        let service_handle = MapServiceHandle::new();
+        let service_handle = MapServiceHandle::new(setup_test_repo().await);
 
         let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
         let server_addr = listener.local_addr().unwrap();
@@ -266,7 +285,7 @@ mod tests {
     async fn test_accept_transfer_validation() {
         use ro_contracts::ids::{AccountId, CharId, MapPosition};
 
-        let service = MapServiceHandle::new();
+        let service = MapServiceHandle::new(setup_test_repo().await);
 
         let valid_req = PrepareMapTransferRequest {
             token: "valid_token".to_string(),
