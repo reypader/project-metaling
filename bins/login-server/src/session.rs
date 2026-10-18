@@ -44,16 +44,16 @@ pub async fn handle_stream<R, W>(
                         error!("Failed to flush event to client {:?}: {}", session_id, err);
                         return;
                     }
-                    if matches!(
-                        event,
-                        ServerEvent::LoginAccepted { .. } | ServerEvent::LoginRefused { .. }
-                    ) {
-                        let _ = writer.shutdown().await;
+                    if matches!(event, ServerEvent::LoginAccepted { .. }) {
                         info!(
-                            "Completed login handshake for {:?}. Closing socket.",
+                            "Login accepted for session {:?}. Socket remains open for closure initiated by client.",
                             session_id
                         );
-                        return;
+                    } else if matches!(event, ServerEvent::LoginRefused { .. }) {
+                        info!(
+                            "Login refused for session {:?}. Socket remains open for closure initiated by client.",
+                            session_id
+                        );
                     }
                 }
                 Err(err) => {
@@ -64,74 +64,74 @@ pub async fn handle_stream<R, W>(
         }
     });
 
-    let mut reader_task = tokio::spawn(async move {
-        let mut decoder = PacketDecoder::new(RathenaPacketLengthTable, TARGET_PACKETVER);
-        let mut buffer = BytesMut::with_capacity(2048);
-        let parser = Phase0IntentParser;
+    let mut decoder = PacketDecoder::new(RathenaPacketLengthTable, TARGET_PACKETVER);
+    let mut buffer = BytesMut::with_capacity(2048);
+    let parser = Phase0IntentParser;
 
-        loop {
-            match reader.read_buf(&mut buffer).await {
-                Ok(0) => {
-                    info!("Client {:?} closed connection", session_id);
-                    break;
+    'session_loop: loop {
+        match reader.read_buf(&mut buffer).await {
+            Ok(0) => {
+                info!("Client {:?} closed connection", session_id);
+                break 'session_loop;
+            }
+            Ok(bytes_read) => {
+                debug!(
+                    "Read {} bytes from client {:?}",
+                    bytes_read, session_id
+                );
+            }
+            Err(err) => {
+                error!(
+                    "Socket read error from client {:?}: {}",
+                    session_id, err
+                );
+                break 'session_loop;
+            }
+        }
+
+        while let Some(raw_packet) = match decoder.decode(&mut buffer) {
+            Ok(frame) => frame,
+            Err(err) => {
+                error!("Packet framing error for client {:?}: {}", session_id, err);
+                break 'session_loop;
+            }
+        } {
+            match parser.parse_intent(&raw_packet, TARGET_PACKETVER) {
+                Ok(Some(intent)) => {
+                    info!(
+                        "Session {:?} parsed client intent: {:?}",
+                        session_id, intent
+                    );
+                    let session_intent = SessionIntent::new(session_id, None, None, intent);
+                    if intent_tx.send(session_intent).await.is_err() {
+                        break 'session_loop;
+                    }
                 }
-                Ok(bytes_read) => {
+                Ok(None) => {
                     debug!(
-                        "Read {} bytes from client {:?}",
-                        bytes_read, session_id
+                        "Unhandled packet opcode={:#06x} len={}",
+                        raw_packet.opcode.0,
+                        raw_packet.payload_len()
                     );
                 }
                 Err(err) => {
-                    error!(
-                        "Socket read error from client {:?}: {}",
-                        session_id, err
-                    );
-                    break;
-                }
-            }
-
-            while let Some(raw_packet) = match decoder.decode(&mut buffer) {
-                Ok(frame) => frame,
-                Err(err) => {
-                    error!("Packet framing error for client {:?}: {}", session_id, err);
-                    return;
-                }
-            } {
-                match parser.parse_intent(&raw_packet, TARGET_PACKETVER) {
-                    Ok(Some(intent)) => {
-                        info!(
-                            "Session {:?} parsed client intent: {:?}",
-                            session_id, intent
-                        );
-                        let session_intent = SessionIntent::new(session_id, None, None, intent);
-                        if intent_tx.send(session_intent).await.is_err() {
-                            return;
-                        }
-                    }
-                    Ok(None) => {
-                        debug!(
-                            "Unhandled packet opcode={:#06x} len={}",
-                            raw_packet.opcode.0,
-                            raw_packet.payload_len()
-                        );
-                    }
-                    Err(err) => {
-                        warn!("Packet parsing error for client {:?}: {}", session_id, err);
-                    }
+                    warn!("Packet parsing error for client {:?}: {}", session_id, err);
                 }
             }
         }
-    });
+    }
 
-    tokio::select! {
-        _ = &mut writer_task => {
-            debug!("Writer task completed for session {:?}", session_id);
-            reader_task.abort();
-        }
-        _ = &mut reader_task => {
-            debug!("Reader task completed for session {:?}", session_id);
-            writer_task.abort();
-        }
+    drop(intent_tx);
+
+    if tokio::time::timeout(std::time::Duration::from_millis(1000), &mut writer_task)
+        .await
+        .is_err()
+    {
+        warn!(
+            "Session {:?} writer task timed out during termination",
+            session_id
+        );
+        writer_task.abort();
     }
 }
 

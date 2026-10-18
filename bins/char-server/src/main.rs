@@ -7,8 +7,9 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
+use anyhow::Context;
 use tokio::net::TcpListener;
-use tracing::{error, info};
+use tracing::{error, info, warn};
 
 use ro_contracts::{
     HealthResponse, PrepareMapTransferRequest, PrepareMapTransferResponse,
@@ -20,12 +21,14 @@ use ro_persistence::InMemoryStubRepo;
 use service::CharServiceHandle;
 use session::handle_client_session;
 
-async fn health_check() -> Json<HealthResponse> {
+async fn health_check(
+    axum::extract::State(service): axum::extract::State<CharServiceHandle>,
+) -> Json<HealthResponse> {
     Json(HealthResponse {
         status: ServerStatus::Ready,
         server_type: ServerType::Char,
         server_name: "metaling-char".to_string(),
-        uptime_seconds: 0,
+        uptime_seconds: service.uptime_seconds(),
         active_connections: 0,
         target_packetver: TARGET_PACKETVER,
     })
@@ -43,16 +46,22 @@ async fn register_map_server(
         payload.maps.len()
     );
 
+    let host = payload
+        .client_host
+        .parse::<std::net::Ipv4Addr>()
+        .map(|addr| addr.octets())
+        .unwrap_or([127, 0, 0, 1]);
+
     let registered_maps_count = payload.maps.len();
-    service.register_map_server(
+    let accepted = service.register_map_server(
         payload.name,
         payload.maps,
-        [127, 0, 0, 1],
+        host,
         payload.client_port,
     );
 
     Json(RegisterMapServerResponse {
-        accepted: true,
+        accepted,
         registered_maps_count,
     })
 }
@@ -68,7 +77,7 @@ async fn prepare_transfer(
 }
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+async fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt::init();
 
     info!(
@@ -85,12 +94,20 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/api/v1/transfers/prepare", post(prepare_transfer))
         .with_state(service_handle.clone());
 
-    let http_addr: SocketAddr = "0.0.0.0:6122".parse()?;
-    let http_listener = TcpListener::bind(http_addr).await?;
+    let http_addr: SocketAddr = "0.0.0.0:6122"
+        .parse()
+        .context("Failed to parse char-server HTTP address")?;
+    let http_listener = TcpListener::bind(http_addr)
+        .await
+        .with_context(|| format!("Failed to bind char-server HTTP listener to {}", http_addr))?;
     info!("Character HTTP internal API listening on {}", http_addr);
 
-    let client_addr: SocketAddr = "0.0.0.0:6121".parse()?;
-    let client_listener = TcpListener::bind(client_addr).await?;
+    let client_addr: SocketAddr = "0.0.0.0:6121"
+        .parse()
+        .context("Failed to parse char-server client TCP address")?;
+    let client_listener = TcpListener::bind(client_addr)
+        .await
+        .with_context(|| format!("Failed to bind char-server client TCP listener to {}", client_addr))?;
     info!("Character client TCP listener active on {}", client_addr);
 
     let http_task = tokio::spawn(async move {
@@ -111,8 +128,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     ));
                 }
                 Err(err) => {
-                    error!("Error accepting client connection: {}", err);
-                    break;
+                    warn!("Transient error accepting client connection: {}", err);
+                    tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+                    continue;
                 }
             }
         }
@@ -316,9 +334,8 @@ mod tests {
         let raw = notify_raw.expect("expected HC_NOTIFY_ZONESVR 0x0ac5");
         assert_eq!(raw.opcode, PacketOpcode::HC_NOTIFY_ZONESVR);
 
-        let mut eof_buf = [0u8; 1];
-        let n = client1.read(&mut eof_buf).await.unwrap();
-        assert_eq!(n, 0);
+        // The client initiates connection closure after receiving HC_NOTIFY_ZONESVR.
+        drop(client1);
 
         let mut client2 = TcpStream::connect(server_addr).await.unwrap();
         let mut buffer2 = BytesMut::with_capacity(4096);

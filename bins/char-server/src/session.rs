@@ -83,10 +83,9 @@ pub async fn handle_client_session(
                             }
                             if matches!(event, ServerEvent::CharacterSelected { .. }) {
                                 info!(
-                                    "Character selected for {:?} ({}). Closing socket for zone redirect.",
+                                    "Character selected for session {:?} ({}). Socket remains open for closure initiated by client.",
                                     session_id, peer_addr
                                 );
-                                return;
                             }
                         }
                         Err(err) => {

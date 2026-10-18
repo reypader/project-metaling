@@ -4,7 +4,7 @@ use std::{
         atomic::{AtomicU64, Ordering},
         Arc, RwLock,
     },
-    time::Duration,
+    time::{Duration, Instant},
 };
 
 use bytes::Bytes;
@@ -37,6 +37,24 @@ pub struct MapServiceHandle {
     next_session_id: Arc<AtomicU64>,
     worlds: Arc<RwLock<HashMap<String, mpsc::Sender<WorldCommand>>>>,
     pending_transfers: Arc<RwLock<HashMap<CharId, String>>>,
+    start_time: Instant,
+}
+
+pub const MAX_HOSTED_WORLDS: usize = 128;
+pub const MAX_PENDING_TRANSFERS: usize = 1024;
+
+pub fn is_valid_map_name(map_name: &str) -> bool {
+    if map_name.is_empty() || map_name.len() > 32 {
+        return false;
+    }
+    if !map_name.ends_with(".gat") {
+        return false;
+    }
+    let stem = &map_name[..map_name.len() - 4];
+    !stem.is_empty()
+        && stem
+            .chars()
+            .all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-')
 }
 
 impl MapServiceHandle {
@@ -45,46 +63,108 @@ impl MapServiceHandle {
             next_session_id: Arc::new(AtomicU64::new(1)),
             worlds: Arc::new(RwLock::new(HashMap::new())),
             pending_transfers: Arc::new(RwLock::new(HashMap::new())),
+            start_time: Instant::now(),
         };
         let _ = handle.get_or_spawn_world("prontera.gat");
         handle
+    }
+
+    pub fn uptime_seconds(&self) -> u64 {
+        self.start_time.elapsed().as_secs()
     }
 
     pub fn allocate_session_id(&self) -> SessionId {
         SessionId(self.next_session_id.fetch_add(1, Ordering::Relaxed))
     }
 
-    pub fn accept_transfer(&self, char_id: CharId, destination_map: String) {
+    pub fn accept_transfer(&self, char_id: CharId, destination_map: String) -> bool {
+        if !is_valid_map_name(&destination_map) {
+            warn!(
+                "MapService rejected invalid destination map '{}' for character id {}",
+                destination_map, char_id.0
+            );
+            return false;
+        }
+
+        let worlds_guard = match self.worlds.read() {
+            Ok(guard) => guard,
+            Err(poisoned) => {
+                warn!("Map worlds read lock poisoned during accept_transfer. Recovering inner state.");
+                poisoned.into_inner()
+            }
+        };
+        let world_exists = worlds_guard.contains_key(&destination_map);
+        let world_count = worlds_guard.len();
+        drop(worlds_guard);
+
+        if !world_exists && world_count >= MAX_HOSTED_WORLDS {
+            warn!(
+                "MapService rejected transfer to map '{}' for character id {}: maximum world count ({}) reached.",
+                destination_map, char_id.0, MAX_HOSTED_WORLDS
+            );
+            return false;
+        }
+
         info!(
             "MapService confirmed transfer reservation for character id {} to map {}",
             char_id.0, destination_map
         );
         let _ = self.get_or_spawn_world(&destination_map);
-        if let Ok(mut transfers) = self.pending_transfers.write() {
-            transfers.insert(char_id, destination_map);
+
+        let mut transfers = match self.pending_transfers.write() {
+            Ok(guard) => guard,
+            Err(poisoned) => {
+                warn!("Pending transfers write lock poisoned during accept_transfer. Recovering inner state.");
+                poisoned.into_inner()
+            }
+        };
+        if !transfers.contains_key(&char_id) && transfers.len() >= MAX_PENDING_TRANSFERS {
+            warn!(
+                "MapService rejected transfer for character id {}: pending transfers limit ({}) reached.",
+                char_id.0, MAX_PENDING_TRANSFERS
+            );
+            return false;
         }
+        transfers.insert(char_id, destination_map);
+        true
     }
 
     /// Resolves the target map for an entering character and returns the long-lived world channel.
     pub fn resolve_world_for_character(&self, char_id: CharId) -> mpsc::Sender<WorldCommand> {
-        let map_name = self
-            .pending_transfers
-            .write()
-            .ok()
-            .and_then(|mut t| t.remove(&char_id))
+        let mut transfers = match self.pending_transfers.write() {
+            Ok(guard) => guard,
+            Err(poisoned) => {
+                warn!("Pending transfers write lock poisoned during resolve_world_for_character. Recovering inner state.");
+                poisoned.into_inner()
+            }
+        };
+        let map_name = transfers
+            .remove(&char_id)
             .unwrap_or_else(|| "prontera.gat".to_string());
 
         self.get_or_spawn_world(&map_name)
     }
 
     pub fn get_or_spawn_world(&self, map_name: &str) -> mpsc::Sender<WorldCommand> {
-        if let Ok(worlds) = self.worlds.read() {
-            if let Some(tx) = worlds.get(map_name) {
-                return tx.clone();
+        let worlds_guard = match self.worlds.read() {
+            Ok(guard) => guard,
+            Err(poisoned) => {
+                warn!("Map worlds read lock poisoned during get_or_spawn_world. Recovering inner state.");
+                poisoned.into_inner()
             }
+        };
+        if let Some(tx) = worlds_guard.get(map_name) {
+            return tx.clone();
         }
+        drop(worlds_guard);
 
-        let mut worlds = self.worlds.write().expect("Map worlds lock poisoned");
+        let mut worlds = match self.worlds.write() {
+            Ok(guard) => guard,
+            Err(poisoned) => {
+                warn!("Map worlds write lock poisoned during get_or_spawn_world. Recovering inner state.");
+                poisoned.into_inner()
+            }
+        };
         if let Some(tx) = worlds.get(map_name) {
             return tx.clone();
         }

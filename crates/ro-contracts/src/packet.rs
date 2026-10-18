@@ -2102,7 +2102,7 @@ impl OutboundPacket {
 ///
 /// Variants contain only the fields physically present in the wire frame.
 /// Session-level identity (`SessionId`, `AccountId`, `CharId`) is carried by [`SessionIntent`].
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq)]
 pub enum ClientIntent {
     Login {
         username: String,
@@ -2169,6 +2169,118 @@ pub enum ClientIntent {
     },
 }
 
+impl std::fmt::Debug for ClientIntent {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Login {
+                username,
+                password: _,
+                client_version,
+                client_type,
+            } => f
+                .debug_struct("Login")
+                .field("username", username)
+                .field("password", &"[REDACTED]")
+                .field("client_version", client_version)
+                .field("client_type", client_type)
+                .finish(),
+            Self::EnterCharServer {
+                account_id,
+                login_id1,
+                login_id2,
+                client_version,
+                sex,
+            } => f
+                .debug_struct("EnterCharServer")
+                .field("account_id", account_id)
+                .field("login_id1", login_id1)
+                .field("login_id2", login_id2)
+                .field("client_version", client_version)
+                .field("sex", sex)
+                .finish(),
+            Self::RequestCharacterList => write!(f, "RequestCharacterList"),
+            Self::SelectCharacter { slot } => f
+                .debug_struct("SelectCharacter")
+                .field("slot", slot)
+                .finish(),
+            Self::CreateCharacter {
+                name,
+                slot,
+                hair_color,
+                hair_style,
+                starting_job,
+                sex,
+            } => f
+                .debug_struct("CreateCharacter")
+                .field("name", name)
+                .field("slot", slot)
+                .field("hair_color", hair_color)
+                .field("hair_style", hair_style)
+                .field("starting_job", starting_job)
+                .field("sex", sex)
+                .finish(),
+            Self::ReserveDeleteCharacter { char_id } => f
+                .debug_struct("ReserveDeleteCharacter")
+                .field("char_id", char_id)
+                .finish(),
+            Self::CancelDeleteCharacter { char_id } => f
+                .debug_struct("CancelDeleteCharacter")
+                .field("char_id", char_id)
+                .finish(),
+            Self::CharPing { account_id } => f
+                .debug_struct("CharPing")
+                .field("account_id", account_id)
+                .finish(),
+            Self::EnterMap {
+                account_id,
+                char_id,
+                login_id1,
+                client_tick,
+                sex,
+            } => f
+                .debug_struct("EnterMap")
+                .field("account_id", account_id)
+                .field("char_id", char_id)
+                .field("login_id1", login_id1)
+                .field("client_tick", client_tick)
+                .field("sex", sex)
+                .finish(),
+            Self::NotifyActorInit => write!(f, "NotifyActorInit"),
+            Self::RequestTime { client_tick } => f
+                .debug_struct("RequestTime")
+                .field("client_tick", client_tick)
+                .finish(),
+            Self::RequestMove { dest_x, dest_y } => f
+                .debug_struct("RequestMove")
+                .field("dest_x", dest_x)
+                .field("dest_y", dest_y)
+                .finish(),
+            Self::ChangeDirection { head_dir, body_dir } => f
+                .debug_struct("ChangeDirection")
+                .field("head_dir", head_dir)
+                .field("body_dir", body_dir)
+                .finish(),
+            Self::RequestAction {
+                target_id,
+                action_type,
+            } => f
+                .debug_struct("RequestAction")
+                .field("target_id", target_id)
+                .field("action_type", action_type)
+                .finish(),
+            Self::RequestEntityName { entity_id } => f
+                .debug_struct("RequestEntityName")
+                .field("entity_id", entity_id)
+                .finish(),
+            Self::Restart { restart_type } => f
+                .debug_struct("Restart")
+                .field("restart_type", restart_type)
+                .finish(),
+        }
+    }
+}
+
+
 /// Session-authenticated envelope wrapping a wire `ClientIntent` for dispatch to server logic actors.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SessionIntent {
@@ -2199,17 +2311,31 @@ pub enum PacketCodecError {
     #[error("IO failure: {0}")]
     Io(#[from] std::io::Error),
 
-    #[error("Packet length {length} exceeds maximum permitted threshold {max} for opcode {opcode}")]
+    #[error("Packet length {length} exceeds maximum permitted threshold {max} for opcode {opcode:?}")]
     PacketTooLarge {
         opcode: PacketOpcode,
         length: usize,
         max: usize,
     },
 
+    #[error("Truncated payload for opcode {opcode:?}: expected {expected} bytes, got {actual}")]
+    TruncatedPayload {
+        opcode: PacketOpcode,
+        expected: usize,
+        actual: usize,
+    },
+
+    #[error("Invalid field value in opcode {opcode:?}: field '{field}' has invalid value {value}")]
+    InvalidField {
+        opcode: PacketOpcode,
+        field: &'static str,
+        value: u32,
+    },
+
     #[error("Malformed packet header: {0}")]
     MalformedHeader(String),
 
-    #[error("Unknown or unregistered packet opcode: {0}")]
+    #[error("Unknown or unregistered packet opcode: {0:?}")]
     UnknownOpcode(PacketOpcode),
 
     #[error("Unsupported server event for serialization: {0}")]
@@ -2247,6 +2373,9 @@ pub enum ServerEvent {
         account_id: AccountId,
         total_slots: u8,
         characters: Vec<CharacterSummary>,
+    },
+    CharacterListRefused {
+        error_code: u8,
     },
     CharacterPageLoaded {
         characters: Vec<CharacterSummary>,

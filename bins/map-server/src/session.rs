@@ -182,7 +182,18 @@ pub async fn handle_client_session(
     }
 
     if let Some(tx) = &world_tx {
-        let _ = tx.try_send(WorldCommand::LeaveSession { session_id });
+        let leave_cmd = WorldCommand::LeaveSession { session_id };
+        if let Err(err) = tokio::time::timeout(
+            std::time::Duration::from_millis(500),
+            tx.send(leave_cmd),
+        )
+        .await
+        {
+            warn!(
+                "Session {:?} timed out sending LeaveSession to MapWorldActor: {}",
+                session_id, err
+            );
+        }
     }
     drop(outbound_tx);
 

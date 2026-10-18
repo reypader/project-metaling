@@ -1,14 +1,17 @@
 use std::sync::Arc;
+use anyhow::{Context, Result};
 use clap::Parser;
 use ro_contracts::http::ServerType;
 use ro_proxy::{
-    config::ProxyArgs, forwarder::run_proxy_server, generate_log_filename, PacketSequenceRecorder,
+    config::{format_host_port, ProxyArgs},
+    forwarder::run_proxy_server,
+    generate_log_filename, PacketSequenceRecorder,
 };
 use tokio::net::TcpListener;
 use tracing::{error, info};
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+async fn main() -> Result<()> {
     tracing_subscriber::fmt()
         .with_env_filter(
             tracing_subscriber::EnvFilter::try_from_default_env()
@@ -19,7 +22,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = ProxyArgs::parse();
     let config = args
         .build_config()
-        .map_err(|e| std::io::Error::new(std::io::ErrorKind::InvalidInput, e))?;
+        .context("Failed to build proxy configuration from command-line arguments")?;
+
+    let login_bind = format_host_port(&config.bind_addr, config.login_listen_port);
+    let char_bind = format_host_port(&config.bind_addr, config.char_listen_port);
+    let map_bind = format_host_port(&config.bind_addr, config.map_listen_port);
 
     info!("============================================================");
     info!(
@@ -27,27 +34,30 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         ro_contracts::TARGET_PACKETVER
     );
     info!(
-        "  Login Proxy: {}:{} -> Target {}",
-        config.bind_addr, config.login_listen_port, config.login_target
+        "  Login Proxy: {} -> Target {}",
+        login_bind, config.login_target
     );
     info!(
-        "  Char Proxy:  {}:{} -> Target {}",
-        config.bind_addr, config.char_listen_port, config.char_target
+        "  Char Proxy:  {} -> Target {}",
+        char_bind, config.char_target
     );
     info!(
-        "  Map Proxy:   {}:{} -> Target {}",
-        config.bind_addr, config.map_listen_port, config.map_target
+        "  Map Proxy:   {} -> Target {}",
+        map_bind, config.map_target
     );
     info!("============================================================");
 
     let recorder = Arc::new(PacketSequenceRecorder::new());
 
-    let login_listener =
-        TcpListener::bind(format!("{}:{}", config.bind_addr, config.login_listen_port)).await?;
-    let char_listener =
-        TcpListener::bind(format!("{}:{}", config.bind_addr, config.char_listen_port)).await?;
-    let map_listener =
-        TcpListener::bind(format!("{}:{}", config.bind_addr, config.map_listen_port)).await?;
+    let login_listener = TcpListener::bind(&login_bind)
+        .await
+        .with_context(|| format!("Failed to bind Login listener on {}", login_bind))?;
+    let char_listener = TcpListener::bind(&char_bind)
+        .await
+        .with_context(|| format!("Failed to bind Char listener on {}", char_bind))?;
+    let map_listener = TcpListener::bind(&map_bind)
+        .await
+        .with_context(|| format!("Failed to bind Map listener on {}", map_bind))?;
 
     let login_target = config.login_target;
     let login_recorder = recorder.clone();

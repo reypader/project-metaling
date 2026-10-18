@@ -1,3 +1,4 @@
+use anyhow::{Context, Result};
 use clap::Parser;
 
 pub const DEFAULT_LOGIN_PORT: u16 = 6900;
@@ -61,35 +62,95 @@ pub struct ProxyConfig {
     pub log_file: Option<String>,
 }
 
+/// Formats host and port into a valid network address string.
+/// IPv6 addresses are enclosed in brackets if not already bracketed.
+pub fn format_host_port(host: &str, port: u16) -> String {
+    let host = host.trim();
+    if host.is_empty() {
+        return format!("127.0.0.1:{}", port);
+    }
+    if host.starts_with('[') && host.ends_with(']') {
+        let inner = host[1..host.len() - 1].trim();
+        if inner.is_empty() {
+            return format!("127.0.0.1:{}", port);
+        }
+        return format!("{}:{}", host, port);
+    }
+    if host.parse::<std::net::Ipv6Addr>().is_ok() || (host.contains(':') && !host.contains('.')) {
+        format!("[{}]:{}", host, port)
+    } else {
+        format!("{}:{}", host, port)
+    }
+}
+
 pub fn resolve_target(
     input: Option<&str>,
     default_ip: &str,
     default_port: u16,
-) -> Result<String, String> {
+) -> Result<String> {
     match input {
         Some(s) if !s.trim().is_empty() => {
             let s = s.trim();
-            if let Some((host, port_str)) = s.split_once(':') {
+
+            if s.starts_with('[') {
+                if let Some(bracket_end) = s.find(']') {
+                    let host = s[1..bracket_end].trim();
+                    if host.is_empty() {
+                        anyhow::bail!("Empty host inside IPv6 brackets in '{}'", s);
+                    }
+                    let after = &s[bracket_end + 1..];
+                    if after.is_empty() {
+                        return Ok(format!("[{}]:{}", host, default_port));
+                    }
+                    if let Some(port_str) = after.strip_prefix(':') {
+                        let port: u16 = port_str
+                            .parse()
+                            .with_context(|| format!("Invalid port in '{}'", s))?;
+                        return Ok(format!("[{}]:{}", host, port));
+                    }
+                    anyhow::bail!("Invalid characters after IPv6 bracket in '{}'", s);
+                } else {
+                    anyhow::bail!("Unclosed bracket in '{}'", s);
+                }
+            }
+
+            if let Ok(ipv6) = s.parse::<std::net::Ipv6Addr>() {
+                return Ok(format!("[{}]:{}", ipv6, default_port));
+            }
+
+            if let Some(port_str) = s.strip_prefix(':') {
+                let port: u16 = port_str
+                    .parse()
+                    .with_context(|| format!("Invalid port in '{}'", s))?;
+                return Ok(format_host_port(default_ip, port));
+            }
+
+            if let Ok(port) = s.parse::<u16>() {
+                return Ok(format_host_port(default_ip, port));
+            }
+
+            if let Some((host, port_str)) = s.rsplit_once(':') {
                 let host = if host.is_empty() { default_ip } else { host };
                 let port: u16 = port_str
                     .parse()
-                    .map_err(|e| format!("Invalid port in '{}': {}", s, e))?;
-                Ok(format!("{}:{}", host, port))
-            } else if let Ok(port) = s.parse::<u16>() {
-                Ok(format!("{}:{}", default_ip, port))
-            } else {
-                Ok(format!("{}:{}", s, default_port))
+                    .with_context(|| format!("Invalid port in '{}'", s))?;
+                return Ok(format_host_port(host, port));
             }
+
+            Ok(format_host_port(s, default_port))
         }
-        _ => Ok(format!("{}:{}", default_ip, default_port)),
+        _ => Ok(format_host_port(default_ip, default_port)),
     }
 }
 
 impl ProxyArgs {
-    pub fn build_config(&self) -> Result<ProxyConfig, String> {
-        let login_target = resolve_target(self.login.as_deref(), &self.target_ip, DEFAULT_LOGIN_PORT)?;
-        let char_target = resolve_target(self.char_server.as_deref(), &self.target_ip, DEFAULT_CHAR_PORT)?;
-        let map_target = resolve_target(self.map_server.as_deref(), &self.target_ip, DEFAULT_MAP_PORT)?;
+    pub fn build_config(&self) -> Result<ProxyConfig> {
+        let login_target = resolve_target(self.login.as_deref(), &self.target_ip, DEFAULT_LOGIN_PORT)
+            .context("Failed to resolve Login server target address")?;
+        let char_target = resolve_target(self.char_server.as_deref(), &self.target_ip, DEFAULT_CHAR_PORT)
+            .context("Failed to resolve Char server target address")?;
+        let map_target = resolve_target(self.map_server.as_deref(), &self.target_ip, DEFAULT_MAP_PORT)
+            .context("Failed to resolve Map server target address")?;
 
         let log_file = self
             .log_file
@@ -210,5 +271,92 @@ mod tests {
 
         let config = args.build_config().unwrap();
         assert_eq!(config.log_file, None);
+    }
+
+    #[test]
+    fn test_format_host_port_ipv4_and_ipv6() {
+        assert_eq!(format_host_port("127.0.0.1", 6900), "127.0.0.1:6900");
+        assert_eq!(format_host_port("localhost", 6900), "localhost:6900");
+        assert_eq!(format_host_port("::1", 6900), "[::1]:6900");
+        assert_eq!(format_host_port("[::1]", 6900), "[::1]:6900");
+        assert_eq!(format_host_port("2001:db8::1", 5121), "[2001:db8::1]:5121");
+        assert_eq!(format_host_port("", 6900), "127.0.0.1:6900");
+    }
+
+    #[test]
+    fn test_resolve_target_ipv6_bracketed_with_port() {
+        let res = resolve_target(Some("[::1]:7000"), "127.0.0.1", 6900).unwrap();
+        assert_eq!(res, "[::1]:7000");
+
+        let res = resolve_target(Some("[2001:db8::1]:8000"), "127.0.0.1", 6900).unwrap();
+        assert_eq!(res, "[2001:db8::1]:8000");
+    }
+
+    #[test]
+    fn test_resolve_target_ipv6_bracketed_without_port() {
+        let res = resolve_target(Some("[::1]"), "127.0.0.1", 6900).unwrap();
+        assert_eq!(res, "[::1]:6900");
+
+        let res = resolve_target(Some("[2001:db8::1]"), "127.0.0.1", 5121).unwrap();
+        assert_eq!(res, "[2001:db8::1]:5121");
+    }
+
+    #[test]
+    fn test_resolve_target_ipv6_unbracketed_without_port() {
+        let res = resolve_target(Some("::1"), "127.0.0.1", 6900).unwrap();
+        assert_eq!(res, "[::1]:6900");
+
+        let res = resolve_target(Some("2001:db8::1"), "127.0.0.1", 5121).unwrap();
+        assert_eq!(res, "[2001:db8::1]:5121");
+    }
+
+    #[test]
+    fn test_resolve_target_ipv6_default_ip() {
+        let res = resolve_target(None, "::1", 6900).unwrap();
+        assert_eq!(res, "[::1]:6900");
+
+        let res = resolve_target(Some("7000"), "::1", 6900).unwrap();
+        assert_eq!(res, "[::1]:7000");
+
+        let res = resolve_target(Some(":7000"), "::1", 6900).unwrap();
+        assert_eq!(res, "[::1]:7000");
+    }
+
+    #[test]
+    fn test_resolve_target_ipv6_invalid_formats() {
+        let res = resolve_target(Some("[::1]:abc"), "127.0.0.1", 6900);
+        assert!(res.is_err());
+
+        let res = resolve_target(Some("[::1"), "127.0.0.1", 6900);
+        assert!(res.is_err());
+
+        let res = resolve_target(Some("[::1]extra"), "127.0.0.1", 6900);
+        assert!(res.is_err());
+
+        let res = resolve_target(Some("[]"), "127.0.0.1", 6900);
+        assert!(res.is_err());
+
+        let res = resolve_target(Some("[]:6900"), "127.0.0.1", 6900);
+        assert!(res.is_err());
+    }
+
+    #[test]
+    fn test_build_config_with_ipv6_target() {
+        let args = ProxyArgs {
+            target_ip: "::1".to_string(),
+            login: None,
+            char_server: Some("[::1]:6125".to_string()),
+            map_server: Some("::1".to_string()),
+            bind_addr: "[::]".to_string(),
+            listen_login_port: 6900,
+            listen_char_port: 6121,
+            listen_map_port: 5121,
+            log_file: None,
+        };
+
+        let config = args.build_config().unwrap();
+        assert_eq!(config.login_target, "[::1]:6900");
+        assert_eq!(config.char_target, "[::1]:6125");
+        assert_eq!(config.map_target, "[::1]:5121");
     }
 }

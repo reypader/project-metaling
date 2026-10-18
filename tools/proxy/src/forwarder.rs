@@ -10,7 +10,7 @@ use tokio::{
     io::{AsyncReadExt, AsyncWriteExt},
     net::{TcpListener, TcpStream},
 };
-use tracing::{debug, error, info};
+use tracing::{debug, error, info, warn};
 
 use crate::logger::{PacketDirection, PacketLogger, PacketSequenceRecorder, SessionSequenceTracker};
 
@@ -39,13 +39,15 @@ pub async fn run_proxy_server(
                 });
             }
             Err(err) => {
-                error!("[{:?}] Failed to accept connection: {}", server_type, err);
-                break;
+                warn!(
+                    "[{:?}] Failed to accept connection: {}. Retrying in 100ms...",
+                    server_type, err
+                );
+                tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+                continue;
             }
         }
     }
-
-    Ok(())
 }
 
 pub async fn handle_proxy_connection(

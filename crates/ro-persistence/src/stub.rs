@@ -8,9 +8,11 @@ use rustc_hash::FxHashMap;
 
 use ro_contracts::account::{Account, AccountRepository, AccountState, AuthError};
 use ro_contracts::character::{
-    CharacterRepository, CreateCharacterError, CreateCharacterRequest, DeleteReserveOutcome,
+    CancelDeleteOutcome, CharacterRepository, CreateCharacterError, CreateCharacterRequest,
+    DeleteReserveOutcome,
 };
 use ro_contracts::ids::{AccountId, CharId, CharacterSummary, MapPosition, Sex};
+use ro_contracts::repository::RepositoryError;
 
 #[derive(Debug)]
 struct StubStorage {
@@ -74,7 +76,8 @@ impl InMemoryStubRepo {
                 dir: 0,
             },
             delete_date: None,
-        });
+        })
+        .expect("default character seed failed");
 
         repo
     }
@@ -108,16 +111,21 @@ impl InMemoryStubRepo {
     }
 
     /// Inserts or updates a character summary in the repository.
-    pub fn insert_character(&self, character: CharacterSummary) {
+    pub fn insert_character(&self, character: CharacterSummary) -> Result<(), RepositoryError> {
         let mut storage = self
             .storage
             .write()
             .unwrap_or_else(|poisoned| poisoned.into_inner());
 
         if character.char_id.0 >= storage.next_char_id {
-            storage.next_char_id = character.char_id.0 + 1;
+            storage.next_char_id = character
+                .char_id
+                .0
+                .checked_add(1)
+                .ok_or_else(|| RepositoryError::Exhausted("Character ID space exhausted".into()))?;
         }
         storage.characters_by_id.insert(character.char_id, character);
+        Ok(())
     }
 }
 
@@ -190,7 +198,7 @@ impl CharacterRepository for InMemoryStubRepo {
     async fn list_by_account(
         &self,
         account_id: AccountId,
-    ) -> Result<Vec<CharacterSummary>, String> {
+    ) -> Result<Vec<CharacterSummary>, RepositoryError> {
         let storage = self
             .storage
             .read()
@@ -211,7 +219,7 @@ impl CharacterRepository for InMemoryStubRepo {
         &self,
         account_id: AccountId,
         slot: u8,
-    ) -> Result<Option<CharacterSummary>, String> {
+    ) -> Result<Option<CharacterSummary>, RepositoryError> {
         let storage = self
             .storage
             .read()
@@ -226,7 +234,7 @@ impl CharacterRepository for InMemoryStubRepo {
         Ok(character)
     }
 
-    async fn find_by_id(&self, char_id: CharId) -> Result<Option<CharacterSummary>, String> {
+    async fn find_by_id(&self, char_id: CharId) -> Result<Option<CharacterSummary>, RepositoryError> {
         let storage = self
             .storage
             .read()
@@ -293,7 +301,10 @@ impl CharacterRepository for InMemoryStubRepo {
         }
 
         let new_char_id = CharId(storage.next_char_id);
-        storage.next_char_id += 1;
+        storage.next_char_id = storage
+            .next_char_id
+            .checked_add(1)
+            .ok_or_else(|| RepositoryError::Exhausted("Character ID space exhausted".into()))?;
 
         let summary = CharacterSummary {
             char_id: new_char_id,
@@ -324,7 +335,7 @@ impl CharacterRepository for InMemoryStubRepo {
         account_id: AccountId,
         char_id: CharId,
         delay_seconds: u32,
-    ) -> DeleteReserveOutcome {
+    ) -> Result<DeleteReserveOutcome, RepositoryError> {
         let mut storage = self
             .storage
             .write()
@@ -332,15 +343,15 @@ impl CharacterRepository for InMemoryStubRepo {
 
         let character = match storage.characters_by_id.get_mut(&char_id) {
             Some(c) => c,
-            None => return DeleteReserveOutcome::NotFoundOrDbError,
+            None => return Ok(DeleteReserveOutcome::NotFoundOrDbError),
         };
 
         if character.account_id != account_id {
-            return DeleteReserveOutcome::NotFoundOrDbError;
+            return Ok(DeleteReserveOutcome::NotFoundOrDbError);
         }
 
         if character.delete_date.is_some() {
-            return DeleteReserveOutcome::Denied;
+            return Ok(DeleteReserveOutcome::Denied);
         }
 
         let now = SystemTime::now()
@@ -348,13 +359,17 @@ impl CharacterRepository for InMemoryStubRepo {
             .unwrap_or_default()
             .as_secs();
 
-        character.delete_date = Some(now + delay_seconds as u64);
-        DeleteReserveOutcome::Success {
+        character.delete_date = Some(now.saturating_add(delay_seconds as u64));
+        Ok(DeleteReserveOutcome::Success {
             delete_delay_seconds: delay_seconds,
-        }
+        })
     }
 
-    async fn cancel_delete(&self, account_id: AccountId, char_id: CharId) -> bool {
+    async fn cancel_delete(
+        &self,
+        account_id: AccountId,
+        char_id: CharId,
+    ) -> Result<CancelDeleteOutcome, RepositoryError> {
         let mut storage = self
             .storage
             .write()
@@ -362,18 +377,18 @@ impl CharacterRepository for InMemoryStubRepo {
 
         let character = match storage.characters_by_id.get_mut(&char_id) {
             Some(c) => c,
-            None => return false,
+            None => return Ok(CancelDeleteOutcome::NotFound),
         };
 
         if character.account_id != account_id {
-            return false;
+            return Ok(CancelDeleteOutcome::NotFound);
         }
 
         if character.delete_date.is_some() {
             character.delete_date = None;
-            true
+            Ok(CancelDeleteOutcome::Success)
         } else {
-            false
+            Ok(CancelDeleteOutcome::NotReserved)
         }
     }
 }
@@ -779,7 +794,8 @@ mod tests {
                 dir: 0,
             },
             delete_date: None,
-        });
+        })
+        .unwrap();
 
         let req_max_slots_reached = CreateCharacterRequest {
             account_id: AccountId(2000000),
@@ -802,7 +818,8 @@ mod tests {
 
         let outcome = repo
             .reserve_delete(AccountId(2000000), CharId(150000), 86400)
-            .await;
+            .await
+            .unwrap();
         assert_eq!(
             outcome,
             DeleteReserveOutcome::Success {
@@ -816,12 +833,14 @@ mod tests {
 
         let duplicate_outcome = repo
             .reserve_delete(AccountId(2000000), CharId(150000), 86400)
-            .await;
+            .await
+            .unwrap();
         assert_eq!(duplicate_outcome, DeleteReserveOutcome::Denied);
 
         let wrong_account_outcome = repo
             .reserve_delete(AccountId(2000001), CharId(150000), 86400)
-            .await;
+            .await
+            .unwrap();
         assert_eq!(
             wrong_account_outcome,
             DeleteReserveOutcome::NotFoundOrDbError
@@ -829,7 +848,8 @@ mod tests {
 
         let missing_char_outcome = repo
             .reserve_delete(AccountId(2000000), CharId(999999), 86400)
-            .await;
+            .await
+            .unwrap();
         assert_eq!(
             missing_char_outcome,
             DeleteReserveOutcome::NotFoundOrDbError
@@ -837,13 +857,15 @@ mod tests {
 
         let wrong_account_cancel = repo
             .cancel_delete(AccountId(2000001), CharId(150000))
-            .await;
-        assert!(!wrong_account_cancel);
+            .await
+            .unwrap();
+        assert_eq!(wrong_account_cancel, CancelDeleteOutcome::NotFound);
 
         let successful_cancel = repo
             .cancel_delete(AccountId(2000000), CharId(150000))
-            .await;
-        assert!(successful_cancel);
+            .await
+            .unwrap();
+        assert_eq!(successful_cancel, CancelDeleteOutcome::Success);
 
         let character_after =
             CharacterRepository::find_by_id(&repo, CharId(150000)).await.unwrap().unwrap();
@@ -851,7 +873,65 @@ mod tests {
 
         let redundant_cancel = repo
             .cancel_delete(AccountId(2000000), CharId(150000))
-            .await;
-        assert!(!redundant_cancel);
+            .await
+            .unwrap();
+        assert_eq!(redundant_cancel, CancelDeleteOutcome::NotReserved);
+    }
+
+    #[tokio::test]
+    async fn test_insert_character_overflow() {
+        let repo = InMemoryStubRepo::new();
+        let character = CharacterSummary {
+            char_id: CharId(u32::MAX),
+            account_id: AccountId(2000000),
+            slot: 2,
+            name: "MaxChar".to_string(),
+            sex: Sex::Male,
+            job_class: 0,
+            base_level: 1,
+            job_level: 1,
+            hair_style: 1,
+            hair_color: 0,
+            last_map: "prontera.gat".to_string(),
+            last_pos: MapPosition {
+                x: 156,
+                y: 191,
+                dir: 0,
+            },
+            delete_date: None,
+        };
+
+        let err = repo.insert_character(character).unwrap_err();
+        assert_eq!(
+            err,
+            RepositoryError::Exhausted("Character ID space exhausted".into())
+        );
+    }
+
+    #[tokio::test]
+    async fn test_create_character_overflow() {
+        let repo = InMemoryStubRepo::new();
+        {
+            let mut storage = repo.storage.write().unwrap();
+            storage.next_char_id = u32::MAX;
+        }
+
+        let req = CreateCharacterRequest {
+            account_id: AccountId(2000000),
+            name: "NextOverflow".to_string(),
+            slot: 1,
+            hair_color: 0,
+            hair_style: 1,
+            starting_job: 0,
+            sex: Sex::Male,
+        };
+
+        let err = repo.create_character(req, 9).await.unwrap_err();
+        assert_eq!(
+            err,
+            CreateCharacterError::Repository(RepositoryError::Exhausted(
+                "Character ID space exhausted".into()
+            ))
+        );
     }
 }

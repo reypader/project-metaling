@@ -137,7 +137,8 @@ fn test_outgoing_serializers_and_redecoding() {
         "2026-10-16 08:00:00",
         Sex::Female,
         &servers,
-    );
+    )
+    .unwrap();
     let mut stream = BytesMut::from(login_bytes.as_ref());
     let raw = decoder.decode(&mut stream).unwrap().expect("AC_ACCEPT_LOGIN decoded");
     assert_eq!(raw.opcode, PacketOpcode(0x0ac4));

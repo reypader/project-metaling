@@ -33,6 +33,51 @@ pub fn parse_sex(byte: u8) -> Sex {
     }
 }
 
+/// Reads a 2-byte little-endian unsigned integer from payload at offset.
+///
+/// Returns `PacketCodecError::TruncatedPayload` when insufficient bytes remain.
+fn read_u16_le(
+    payload: &[u8],
+    offset: usize,
+    opcode: PacketOpcode,
+) -> Result<u16, PacketCodecError> {
+    let expected = offset + 2;
+    if payload.len() < expected {
+        return Err(PacketCodecError::TruncatedPayload {
+            opcode,
+            expected,
+            actual: payload.len(),
+        });
+    }
+    let slice: [u8; 2] = [payload[offset], payload[offset + 1]];
+    Ok(u16::from_le_bytes(slice))
+}
+
+/// Reads a 4-byte little-endian unsigned integer from payload at offset.
+///
+/// Returns `PacketCodecError::TruncatedPayload` when insufficient bytes remain.
+fn read_u32_le(
+    payload: &[u8],
+    offset: usize,
+    opcode: PacketOpcode,
+) -> Result<u32, PacketCodecError> {
+    let expected = offset + 4;
+    if payload.len() < expected {
+        return Err(PacketCodecError::TruncatedPayload {
+            opcode,
+            expected,
+            actual: payload.len(),
+        });
+    }
+    let slice: [u8; 4] = [
+        payload[offset],
+        payload[offset + 1],
+        payload[offset + 2],
+        payload[offset + 3],
+    ];
+    Ok(u32::from_le_bytes(slice))
+}
+
 /// Decoded representation of `CA_LOGIN` (0x0064) or `CA_LOGIN_PCBANG` (0x0277).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CaLoginPacket {
@@ -50,13 +95,14 @@ impl CaLoginPacket {
         match raw.opcode.raw() {
             0x0064 => {
                 if raw.payload.len() < 53 {
-                    return Err(PacketCodecError::MalformedHeader(format!(
-                        "CA_LOGIN payload expected at least 53 bytes, got {}",
-                        raw.payload.len()
-                    )));
+                    return Err(PacketCodecError::TruncatedPayload {
+                        opcode: raw.opcode,
+                        expected: 53,
+                        actual: raw.payload.len(),
+                    });
                 }
 
-                let version = u32::from_le_bytes(raw.payload[0..4].try_into().unwrap());
+                let version = read_u32_le(&raw.payload, 0, raw.opcode)?;
                 let username = read_fixed_string(&raw.payload[4..28]);
                 let password = read_fixed_string(&raw.payload[28..52]);
                 let client_type = raw.payload[52];
@@ -73,13 +119,14 @@ impl CaLoginPacket {
             }
             0x0277 => {
                 if raw.payload.len() < 82 {
-                    return Err(PacketCodecError::MalformedHeader(format!(
-                        "CA_LOGIN_PCBANG payload expected at least 82 bytes, got {}",
-                        raw.payload.len()
-                    )));
+                    return Err(PacketCodecError::TruncatedPayload {
+                        opcode: raw.opcode,
+                        expected: 82,
+                        actual: raw.payload.len(),
+                    });
                 }
 
-                let version = u32::from_le_bytes(raw.payload[0..4].try_into().unwrap());
+                let version = read_u32_le(&raw.payload, 0, raw.opcode)?;
                 let username = read_fixed_string(&raw.payload[4..28]);
                 let password = read_fixed_string(&raw.payload[28..52]);
                 let client_type = raw.payload[52];
@@ -126,16 +173,17 @@ pub struct ChEnterPacket {
 impl ChEnterPacket {
     pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
         if raw.payload.len() < 15 {
-            return Err(PacketCodecError::MalformedHeader(format!(
-                "CH_ENTER payload expected 15 bytes, got {}",
-                raw.payload.len()
-            )));
+            return Err(PacketCodecError::TruncatedPayload {
+                opcode: raw.opcode,
+                expected: 15,
+                actual: raw.payload.len(),
+            });
         }
 
-        let account_id = AccountId(u32::from_le_bytes(raw.payload[0..4].try_into().unwrap()));
-        let login_id1 = u32::from_le_bytes(raw.payload[4..8].try_into().unwrap());
-        let login_id2 = u32::from_le_bytes(raw.payload[8..12].try_into().unwrap());
-        let client_version = u16::from_le_bytes(raw.payload[12..14].try_into().unwrap());
+        let account_id = AccountId(read_u32_le(&raw.payload, 0, raw.opcode)?);
+        let login_id1 = read_u32_le(&raw.payload, 4, raw.opcode)?;
+        let login_id2 = read_u32_le(&raw.payload, 8, raw.opcode)?;
+        let client_version = read_u16_le(&raw.payload, 12, raw.opcode)?;
         let sex = parse_sex(raw.payload[14]);
 
         Ok(Self {
@@ -167,9 +215,11 @@ pub struct ChSelectCharPacket {
 impl ChSelectCharPacket {
     pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
         if raw.payload.is_empty() {
-            return Err(PacketCodecError::MalformedHeader(
-                "CH_SELECT_CHAR payload expected at least 1 byte".to_string(),
-            ));
+            return Err(PacketCodecError::TruncatedPayload {
+                opcode: raw.opcode,
+                expected: 1,
+                actual: raw.payload.len(),
+            });
         }
 
         Ok(Self {
@@ -195,16 +245,17 @@ pub struct CzEnterPacket {
 impl CzEnterPacket {
     pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
         if raw.payload.len() < 17 {
-            return Err(PacketCodecError::MalformedHeader(format!(
-                "CZ_ENTER payload expected at least 17 bytes, got {}",
-                raw.payload.len()
-            )));
+            return Err(PacketCodecError::TruncatedPayload {
+                opcode: raw.opcode,
+                expected: 17,
+                actual: raw.payload.len(),
+            });
         }
 
-        let account_id = AccountId(u32::from_le_bytes(raw.payload[0..4].try_into().unwrap()));
-        let char_id = CharId(u32::from_le_bytes(raw.payload[4..8].try_into().unwrap()));
-        let login_id1 = u32::from_le_bytes(raw.payload[8..12].try_into().unwrap());
-        let client_tick = u32::from_le_bytes(raw.payload[12..16].try_into().unwrap());
+        let account_id = AccountId(read_u32_le(&raw.payload, 0, raw.opcode)?);
+        let char_id = CharId(read_u32_le(&raw.payload, 4, raw.opcode)?);
+        let login_id1 = read_u32_le(&raw.payload, 8, raw.opcode)?;
+        let client_tick = read_u32_le(&raw.payload, 12, raw.opcode)?;
         let sex = if raw.payload.len() >= 21 {
             parse_sex(raw.payload[20])
         } else {
@@ -254,13 +305,14 @@ pub struct CzRequestTimePacket {
 impl CzRequestTimePacket {
     pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
         if raw.payload.len() < 4 {
-            return Err(PacketCodecError::MalformedHeader(format!(
-                "CZ_REQUEST_TIME payload expected 4 bytes, got {}",
-                raw.payload.len()
-            )));
+            return Err(PacketCodecError::TruncatedPayload {
+                opcode: raw.opcode,
+                expected: 4,
+                actual: raw.payload.len(),
+            });
         }
 
-        let client_tick = u32::from_le_bytes(raw.payload[0..4].try_into().unwrap());
+        let client_tick = read_u32_le(&raw.payload, 0, raw.opcode)?;
         Ok(Self { client_tick })
     }
 
@@ -281,10 +333,11 @@ pub struct CzRequestMovePacket {
 impl CzRequestMovePacket {
     pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
         if raw.payload.len() < 3 {
-            return Err(PacketCodecError::MalformedHeader(format!(
-                "CZ_REQUEST_MOVE payload expected 3 bytes, got {}",
-                raw.payload.len()
-            )));
+            return Err(PacketCodecError::TruncatedPayload {
+                opcode: raw.opcode,
+                expected: 3,
+                actual: raw.payload.len(),
+            });
         }
 
         let buf = [raw.payload[0], raw.payload[1], raw.payload[2]];
@@ -310,13 +363,14 @@ pub struct CzChangeDirectionPacket {
 impl CzChangeDirectionPacket {
     pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
         if raw.payload.len() < 3 {
-            return Err(PacketCodecError::MalformedHeader(format!(
-                "CZ_CHANGE_DIRECTION payload expected 3 bytes, got {}",
-                raw.payload.len()
-            )));
+            return Err(PacketCodecError::TruncatedPayload {
+                opcode: raw.opcode,
+                expected: 3,
+                actual: raw.payload.len(),
+            });
         }
 
-        let head_dir = u16::from_le_bytes(raw.payload[0..2].try_into().unwrap());
+        let head_dir = read_u16_le(&raw.payload, 0, raw.opcode)?;
         let body_dir = raw.payload[2];
         Ok(Self { head_dir, body_dir })
     }
@@ -339,13 +393,14 @@ pub struct CzRequestActPacket {
 impl CzRequestActPacket {
     pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
         if raw.payload.len() < 5 {
-            return Err(PacketCodecError::MalformedHeader(format!(
-                "CZ_REQUEST_ACT payload expected 5 bytes, got {}",
-                raw.payload.len()
-            )));
+            return Err(PacketCodecError::TruncatedPayload {
+                opcode: raw.opcode,
+                expected: 5,
+                actual: raw.payload.len(),
+            });
         }
 
-        let target_id = u32::from_le_bytes(raw.payload[0..4].try_into().unwrap());
+        let target_id = read_u32_le(&raw.payload, 0, raw.opcode)?;
         let action_type = raw.payload[4];
         Ok(Self {
             target_id,
@@ -370,13 +425,14 @@ pub struct CzReqNamePacket {
 impl CzReqNamePacket {
     pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
         if raw.payload.len() < 4 {
-            return Err(PacketCodecError::MalformedHeader(format!(
-                "CZ_REQNAME payload expected 4 bytes, got {}",
-                raw.payload.len()
-            )));
+            return Err(PacketCodecError::TruncatedPayload {
+                opcode: raw.opcode,
+                expected: 4,
+                actual: raw.payload.len(),
+            });
         }
 
-        let entity_id = u32::from_le_bytes(raw.payload[0..4].try_into().unwrap());
+        let entity_id = read_u32_le(&raw.payload, 0, raw.opcode)?;
         Ok(Self { entity_id })
     }
 
@@ -401,25 +457,28 @@ pub struct ChMakeCharPacket {
 impl ChMakeCharPacket {
     pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
         if raw.payload.len() < 34 {
-            return Err(PacketCodecError::MalformedHeader(format!(
-                "CH_MAKE_CHAR payload expected 34 bytes, got {}",
-                raw.payload.len()
-            )));
+            return Err(PacketCodecError::TruncatedPayload {
+                opcode: raw.opcode,
+                expected: 34,
+                actual: raw.payload.len(),
+            });
         }
 
         let name = read_fixed_string(&raw.payload[0..24]);
         let slot = raw.payload[24];
-        let hair_color = u16::from_le_bytes(raw.payload[25..27].try_into().unwrap());
-        let hair_style = u16::from_le_bytes(raw.payload[27..29].try_into().unwrap());
-        let starting_job = u32::from_le_bytes(raw.payload[29..33].try_into().unwrap());
+        let hair_color = read_u16_le(&raw.payload, 25, raw.opcode)?;
+        let hair_style = read_u16_le(&raw.payload, 27, raw.opcode)?;
+        let starting_job = read_u32_le(&raw.payload, 29, raw.opcode)?;
         let sex = match raw.payload[33] {
             0 => Sex::Female,
             1 => Sex::Male,
             2 => Sex::Server,
             other => {
-                return Err(PacketCodecError::MalformedHeader(format!(
-                    "Invalid sex {other} in CH_MAKE_CHAR"
-                )));
+                return Err(PacketCodecError::InvalidField {
+                    opcode: raw.opcode,
+                    field: "sex",
+                    value: other as u32,
+                });
             }
         };
 
@@ -454,13 +513,14 @@ pub struct ChDeleteChar3ReservedPacket {
 impl ChDeleteChar3ReservedPacket {
     pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
         if raw.payload.len() < 4 {
-            return Err(PacketCodecError::MalformedHeader(format!(
-                "CH_DELETE_CHAR3_RESERVED payload expected at least 4 bytes, got {}",
-                raw.payload.len()
-            )));
+            return Err(PacketCodecError::TruncatedPayload {
+                opcode: raw.opcode,
+                expected: 4,
+                actual: raw.payload.len(),
+            });
         }
 
-        let char_id = CharId(u32::from_le_bytes(raw.payload[0..4].try_into().unwrap()));
+        let char_id = CharId(read_u32_le(&raw.payload, 0, raw.opcode)?);
         Ok(Self { char_id })
     }
 
@@ -480,13 +540,14 @@ pub struct ChDeleteChar3CancelPacket {
 impl ChDeleteChar3CancelPacket {
     pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
         if raw.payload.len() < 4 {
-            return Err(PacketCodecError::MalformedHeader(format!(
-                "CH_DELETE_CHAR3_CANCEL payload expected at least 4 bytes, got {}",
-                raw.payload.len()
-            )));
+            return Err(PacketCodecError::TruncatedPayload {
+                opcode: raw.opcode,
+                expected: 4,
+                actual: raw.payload.len(),
+            });
         }
 
-        let char_id = CharId(u32::from_le_bytes(raw.payload[0..4].try_into().unwrap()));
+        let char_id = CharId(read_u32_le(&raw.payload, 0, raw.opcode)?);
         Ok(Self { char_id })
     }
 
@@ -520,13 +581,14 @@ pub struct PingPacket {
 impl PingPacket {
     pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
         if raw.payload.len() < 4 {
-            return Err(PacketCodecError::MalformedHeader(format!(
-                "PING payload expected at least 4 bytes, got {}",
-                raw.payload.len()
-            )));
+            return Err(PacketCodecError::TruncatedPayload {
+                opcode: raw.opcode,
+                expected: 4,
+                actual: raw.payload.len(),
+            });
         }
 
-        let account_id = AccountId(u32::from_le_bytes(raw.payload[0..4].try_into().unwrap()));
+        let account_id = AccountId(read_u32_le(&raw.payload, 0, raw.opcode)?);
         Ok(Self { account_id })
     }
 
@@ -546,9 +608,11 @@ pub struct CzRestartPacket {
 impl CzRestartPacket {
     pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
         if raw.payload.is_empty() {
-            return Err(PacketCodecError::MalformedHeader(
-                "CZ_RESTART payload expected at least 1 byte".to_string(),
-            ));
+            return Err(PacketCodecError::TruncatedPayload {
+                opcode: raw.opcode,
+                expected: 1,
+                actual: raw.payload.len(),
+            });
         }
 
         Ok(Self {
@@ -1121,5 +1185,72 @@ mod tests {
         );
         let frame_restart = decode_frame(&raw_restart, ver).unwrap();
         assert_eq!(frame_restart, DecodedFrame::Intent(intent_restart));
+    }
+
+    #[test]
+    fn test_ch_make_char_invalid_sex() {
+        let mut payload = vec![0u8; 34];
+        payload[0..4].copy_from_slice(b"Hero");
+        payload[24] = 0;
+        payload[25..27].copy_from_slice(&1u16.to_le_bytes());
+        payload[27..29].copy_from_slice(&2u16.to_le_bytes());
+        payload[29..33].copy_from_slice(&0u32.to_le_bytes());
+        payload[33] = 99;
+
+        let raw = RawPacket::new(PacketOpcode(0x0a39), Bytes::from(payload));
+        match ChMakeCharPacket::decode(&raw) {
+            Err(PacketCodecError::InvalidField { opcode, field, value }) => {
+                assert_eq!(opcode, PacketOpcode(0x0a39));
+                assert_eq!(field, "sex");
+                assert_eq!(value, 99);
+            }
+            other => panic!("Expected InvalidField error, got {:?}", other),
+        }
+    }
+
+    #[test]
+    fn test_truncated_payload_errors() {
+        let short_payload = Bytes::from_static(&[0u8; 2]);
+
+        let raw_ch_enter = RawPacket::new(PacketOpcode(0x0065), short_payload.clone());
+        match ChEnterPacket::decode(&raw_ch_enter) {
+            Err(PacketCodecError::TruncatedPayload { opcode, expected, actual }) => {
+                assert_eq!(opcode, PacketOpcode(0x0065));
+                assert_eq!(expected, 15);
+                assert_eq!(actual, 2);
+            }
+            other => panic!("Expected TruncatedPayload error, got {:?}", other),
+        }
+
+        let raw_cz_enter = RawPacket::new(PacketOpcode(0x0436), short_payload.clone());
+        match CzEnterPacket::decode(&raw_cz_enter) {
+            Err(PacketCodecError::TruncatedPayload { opcode, expected, actual }) => {
+                assert_eq!(opcode, PacketOpcode(0x0436));
+                assert_eq!(expected, 17);
+                assert_eq!(actual, 2);
+            }
+            other => panic!("Expected TruncatedPayload error, got {:?}", other),
+        }
+
+        let raw_time = RawPacket::new(PacketOpcode(0x0360), short_payload);
+        match CzRequestTimePacket::decode(&raw_time) {
+            Err(PacketCodecError::TruncatedPayload { opcode, expected, actual }) => {
+                assert_eq!(opcode, PacketOpcode(0x0360));
+                assert_eq!(expected, 4);
+                assert_eq!(actual, 2);
+            }
+            other => panic!("Expected TruncatedPayload error, got {:?}", other),
+        }
+
+        let empty_payload = Bytes::new();
+        let raw_select = RawPacket::new(PacketOpcode(0x0066), empty_payload);
+        match ChSelectCharPacket::decode(&raw_select) {
+            Err(PacketCodecError::TruncatedPayload { opcode, expected, actual }) => {
+                assert_eq!(opcode, PacketOpcode(0x0066));
+                assert_eq!(expected, 1);
+                assert_eq!(actual, 0);
+            }
+            other => panic!("Expected TruncatedPayload error, got {:?}", other),
+        }
     }
 }

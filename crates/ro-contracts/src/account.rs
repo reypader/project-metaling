@@ -32,6 +32,9 @@ pub enum AuthError {
     #[error("Server under maintenance")]
     ServerMaintenance,
 
+    #[error("Repository error: {0}")]
+    Repository(#[from] crate::repository::RepositoryError),
+
     #[error("Internal repository failure: {0}")]
     Internal(String),
 }
@@ -45,7 +48,7 @@ impl AuthError {
             Self::AccountExpired => 2,
             Self::AccountBanned => 4,
             Self::ServerMaintenance => 7,
-            Self::Internal(_) => 3,
+            Self::Repository(_) | Self::Internal(_) => 3,
         }
     }
 }

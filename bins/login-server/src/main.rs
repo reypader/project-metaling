@@ -3,13 +3,15 @@ mod session;
 
 use std::{net::SocketAddr, sync::Arc};
 
+use anyhow::Context;
 use axum::{
     extract::State,
+    http::StatusCode,
     routing::{get, post},
     Json, Router,
 };
 use tokio::net::TcpListener;
-use tracing::{error, info};
+use tracing::{error, info, warn};
 
 use ro_contracts::{
     HealthResponse, RegisterCharServerRequest, RegisterCharServerResponse,
@@ -36,16 +38,26 @@ pub async fn validate_session(
 pub async fn register_char_server(
     State(service): State<LoginServiceHandle>,
     Json(payload): Json<RegisterCharServerRequest>,
-) -> Json<RegisterCharServerResponse> {
+) -> Result<Json<RegisterCharServerResponse>, (StatusCode, Json<RegisterCharServerResponse>)> {
     info!(
         "Registering character server {} at {}:{}",
         payload.name, payload.client_host, payload.client_port
     );
-    let accepted = service.register_char_server(payload.clone());
-    Json(RegisterCharServerResponse {
-        accepted,
-        server_id: payload.server_id,
-    })
+    let server_id = payload.server_id;
+    if service.register_char_server(payload) {
+        Ok(Json(RegisterCharServerResponse {
+            accepted: true,
+            server_id,
+        }))
+    } else {
+        Err((
+            StatusCode::SERVICE_UNAVAILABLE,
+            Json(RegisterCharServerResponse {
+                accepted: false,
+                server_id,
+            }),
+        ))
+    }
 }
 
 pub async fn handle_heartbeat(
@@ -70,7 +82,7 @@ pub fn create_http_router(service: LoginServiceHandle) -> Router {
 }
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+async fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt::init();
 
     info!(
@@ -83,12 +95,20 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let http_router = create_http_router(service_handle.clone());
 
-    let http_addr: SocketAddr = "0.0.0.0:6901".parse()?;
-    let http_listener = TcpListener::bind(http_addr).await?;
+    let http_addr: SocketAddr = "0.0.0.0:6901"
+        .parse()
+        .context("Failed to parse login HTTP address")?;
+    let http_listener = TcpListener::bind(http_addr)
+        .await
+        .with_context(|| format!("Failed to bind login HTTP listener to {}", http_addr))?;
     info!("Login HTTP internal API listening on {}", http_addr);
 
-    let client_addr: SocketAddr = "0.0.0.0:6900".parse()?;
-    let client_listener = TcpListener::bind(client_addr).await?;
+    let client_addr: SocketAddr = "0.0.0.0:6900"
+        .parse()
+        .context("Failed to parse login client TCP address")?;
+    let client_listener = TcpListener::bind(client_addr)
+        .await
+        .with_context(|| format!("Failed to bind login client TCP listener to {}", client_addr))?;
     info!("Login client TCP listener active on {}", client_addr);
 
     let http_task = tokio::spawn(async move {
@@ -109,8 +129,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     ));
                 }
                 Err(err) => {
-                    error!("Error accepting client connection: {}", err);
-                    break;
+                    warn!("Transient error accepting client connection: {}", err);
+                    tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+                    continue;
                 }
             }
         }
@@ -174,9 +195,19 @@ mod tests {
 
         assert_eq!(&response_buf[..26], &expected_refuse);
 
-        // Verify socket reaches EOF because server closed connection
-        let next_read = client_stream.read(&mut response_buf).await.unwrap();
-        assert_eq!(next_read, 0);
+        // Verify socket remains open (no premature EOF from server)
+        let timeout_result = tokio::time::timeout(
+            std::time::Duration::from_millis(50),
+            client_stream.read(&mut response_buf),
+        )
+        .await;
+        assert!(
+            timeout_result.is_err(),
+            "Expected socket to remain open waiting for client closure"
+        );
+
+        // Client initiates connection closure
+        drop(client_stream);
     }
 
     #[tokio::test]
@@ -238,10 +269,20 @@ mod tests {
         let char_port = u16::from_le_bytes(response_buf[68..70].try_into().unwrap());
         assert_eq!(char_port, 6121);
 
-        // Verify socket reaches EOF upon handshake completion
+        // Verify socket remains open (no premature EOF from server)
         let mut eof_check = [0u8; 1];
-        let eof_bytes = client_stream.read(&mut eof_check).await.unwrap();
-        assert_eq!(eof_bytes, 0);
+        let timeout_result = tokio::time::timeout(
+            std::time::Duration::from_millis(50),
+            client_stream.read(&mut eof_check),
+        )
+        .await;
+        assert!(
+            timeout_result.is_err(),
+            "Expected socket to remain open waiting for client closure"
+        );
+
+        // Client initiates connection closure after receiving AC_ACCEPT_LOGIN
+        drop(client_stream);
 
         // Initial validation from char-server (CH_ENTER)
         let validate_req = ValidateSessionRequest {
@@ -285,7 +326,10 @@ mod tests {
             internal_http_url: "http://127.0.0.1:6129".to_string(),
             max_users: 1500,
         };
-        let reg_res = register_char_server(State(service.clone()), Json(reg_req)).await.0;
+        let reg_res = register_char_server(State(service.clone()), Json(reg_req))
+            .await
+            .expect("Registration should succeed")
+            .0;
         assert!(reg_res.accepted);
         assert_eq!(reg_res.server_id, 1);
 
@@ -333,6 +377,56 @@ mod tests {
         // Active users should be 77
         let users = u16::from_le_bytes(response_buf[90..92].try_into().unwrap());
         assert_eq!(users, 77);
+
+        drop(client_stream);
+    }
+
+    #[tokio::test]
+    async fn test_login_socket_remains_open_until_client_disconnects() {
+        let repo = Arc::new(InMemoryStubRepo::new());
+        let service = LoginService::new(repo);
+
+        let (mut client_stream, server_stream) = tokio::io::duplex(2048);
+        let (server_reader, server_writer) = tokio::io::split(server_stream);
+
+        let session_handle = tokio::spawn(handle_in_memory_session(
+            server_reader,
+            server_writer,
+            service.clone(),
+        ));
+
+        let frame = make_ca_login_frame("test", "password");
+        client_stream.write_all(&frame).await.unwrap();
+        client_stream.flush().await.unwrap();
+
+        let mut response_buf = [0u8; 512];
+        let mut total_read = 0;
+        while total_read < 224 {
+            let n = client_stream.read(&mut response_buf[total_read..]).await.unwrap();
+            assert!(n > 0, "Unexpected early EOF");
+            total_read += n;
+        }
+        assert_eq!(total_read, 224);
+
+        // Assert socket is still open after 100ms
+        tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+        let mut check_buf = [0u8; 1];
+        let timeout_check = tokio::time::timeout(
+            std::time::Duration::from_millis(50),
+            client_stream.read(&mut check_buf),
+        )
+        .await;
+        assert!(timeout_check.is_err(), "Socket must remain open waiting for client closure");
+
+        // Server task must still be running
+        assert!(!session_handle.is_finished(), "Server session task must not exit before client disconnects");
+
+        // Client closes the stream
+        drop(client_stream);
+
+        // Server task now terminates cleanly within timeout
+        let join_result = tokio::time::timeout(std::time::Duration::from_millis(500), session_handle).await;
+        assert!(join_result.is_ok(), "Server session task should terminate upon client EOF");
     }
 
     #[tokio::test]
@@ -344,5 +438,41 @@ mod tests {
         assert_eq!(health.status, ServerStatus::Ready);
         assert_eq!(health.server_type, ServerType::Login);
         assert_eq!(health.target_packetver, TARGET_PACKETVER);
+    }
+
+    #[tokio::test]
+    async fn test_register_char_server_capacity_limit() {
+        let repo = Arc::new(InMemoryStubRepo::new());
+        let service = LoginService::new(repo);
+
+        for id in 2..=32 {
+            let req = RegisterCharServerRequest {
+                server_id: id,
+                name: format!("Char{}", id),
+                client_host: "127.0.0.1".to_string(),
+                client_port: 6120 + id as u16,
+                internal_http_url: format!("http://127.0.0.1:{}", 7120 + id),
+                max_users: 1000,
+            };
+            let res = register_char_server(State(service.clone()), Json(req))
+                .await
+                .expect("Registration should succeed")
+                .0;
+            assert!(res.accepted);
+        }
+
+        let overflow_req = RegisterCharServerRequest {
+            server_id: 33,
+            name: "OverflowChar".to_string(),
+            client_host: "127.0.0.1".to_string(),
+            client_port: 6199,
+            internal_http_url: "http://127.0.0.1:7199".to_string(),
+            max_users: 1000,
+        };
+        let err = register_char_server(State(service.clone()), Json(overflow_req))
+            .await
+            .expect_err("Registration should exceed capacity");
+        assert_eq!(err.0, StatusCode::SERVICE_UNAVAILABLE);
+        assert!(!err.1 .0.accepted);
     }
 }

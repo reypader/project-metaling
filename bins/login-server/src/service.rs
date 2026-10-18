@@ -44,6 +44,8 @@ pub struct RegisteredCharServer {
     pub last_heartbeat_ms: u64,
 }
 
+pub const MAX_CHAR_SERVERS: usize = 32;
+
 /// Shared login service managing authentication, session tickets, and char-server registration.
 #[derive(Clone)]
 pub struct LoginService {
@@ -153,7 +155,10 @@ impl LoginService {
 
         let mut tickets = match self.active_tickets.write() {
             Ok(guard) => guard,
-            Err(poisoned) => poisoned.into_inner(),
+            Err(poisoned) => {
+                warn!("Active tickets write lock poisoned during process_login. Recovering inner state.");
+                poisoned.into_inner()
+            }
         };
         let now = Instant::now();
         tickets.retain(|_, t| t.expires_at > now);
@@ -177,7 +182,10 @@ impl LoginService {
     pub fn validate_session(&self, req: &ValidateSessionRequest) -> ValidateSessionResponse {
         let mut tickets = match self.active_tickets.write() {
             Ok(guard) => guard,
-            Err(poisoned) => poisoned.into_inner(),
+            Err(poisoned) => {
+                warn!("Active tickets write lock poisoned during validate_session. Recovering inner state.");
+                poisoned.into_inner()
+            }
         };
 
         if let Some(ticket) = tickets.get_mut(&req.account_id) {
@@ -230,8 +238,19 @@ impl LoginService {
 
         let mut servers = match self.char_servers.write() {
             Ok(guard) => guard,
-            Err(poisoned) => poisoned.into_inner(),
+            Err(poisoned) => {
+                warn!("Char servers write lock poisoned during register_char_server. Recovering inner state.");
+                poisoned.into_inner()
+            }
         };
+
+        if !servers.contains_key(&req.server_id) && servers.len() >= MAX_CHAR_SERVERS {
+            warn!(
+                "LoginService rejected char server id={}: capacity limit of {} char servers reached.",
+                req.server_id, MAX_CHAR_SERVERS
+            );
+            return false;
+        }
 
         let current_users = servers.get(&req.server_id).map(|s| s.info.users).unwrap_or(0);
         let info = CharServerInfo {
@@ -259,7 +278,10 @@ impl LoginService {
     pub fn update_heartbeat(&self, heartbeat: &ServerHeartbeat) -> bool {
         let mut servers = match self.char_servers.write() {
             Ok(guard) => guard,
-            Err(poisoned) => poisoned.into_inner(),
+            Err(poisoned) => {
+                warn!("Char servers write lock poisoned during update_heartbeat. Recovering inner state.");
+                poisoned.into_inner()
+            }
         };
 
         if let Some(server) = servers.get_mut(&heartbeat.server_id) {
@@ -278,7 +300,10 @@ impl LoginService {
     pub fn char_server_infos(&self) -> Vec<CharServerInfo> {
         let servers = match self.char_servers.read() {
             Ok(guard) => guard,
-            Err(poisoned) => poisoned.into_inner(),
+            Err(poisoned) => {
+                warn!("Char servers read lock poisoned during char_server_infos. Recovering inner state.");
+                poisoned.into_inner()
+            }
         };
         let mut list: Vec<_> = servers.values().collect();
         list.sort_by_key(|s| s.server_id);
@@ -289,11 +314,14 @@ impl LoginService {
         let now = Instant::now();
         let active_connections = match self.active_tickets.read() {
             Ok(guard) => guard.values().filter(|t| t.expires_at > now).count(),
-            Err(poisoned) => poisoned
-                .into_inner()
-                .values()
-                .filter(|t| t.expires_at > now)
-                .count(),
+            Err(poisoned) => {
+                warn!("Active tickets read lock poisoned during health_response. Recovering inner state.");
+                poisoned
+                    .into_inner()
+                    .values()
+                    .filter(|t| t.expires_at > now)
+                    .count()
+            }
         };
         HealthResponse {
             status: ServerStatus::Ready,
@@ -315,6 +343,7 @@ impl LoginService {
             session_id,
             service: self.clone(),
             outbound_tx,
+            login_processed: false,
         };
         tokio::spawn(async move {
             actor.run(intent_rx).await;
@@ -334,6 +363,7 @@ struct LoginSessionActor {
     session_id: SessionId,
     service: LoginService,
     outbound_tx: mpsc::Sender<ServerEvent>,
+    login_processed: bool,
 }
 
 impl LoginSessionActor {
@@ -353,6 +383,13 @@ impl LoginSessionActor {
                 client_version,
                 client_type,
             } => {
+                if self.login_processed {
+                    warn!(
+                        "Session {:?} received duplicate login intent; ignoring",
+                        self.session_id
+                    );
+                    return true;
+                }
                 info!(
                     "Session {:?} processing login for user '{}' (version={}, client_type={})",
                     self.session_id, username, client_version, client_type
@@ -367,15 +404,17 @@ impl LoginSessionActor {
                         "Session {:?} outbound queue full or closed; dropping login session",
                         self.session_id
                     );
+                    return false;
                 }
-                false
+                self.login_processed = true;
+                true
             }
             unhandled => {
                 warn!(
                     "Session {:?} received unhandled login intent: {:?}",
                     self.session_id, unhandled
                 );
-                false
+                true
             }
         }
     }

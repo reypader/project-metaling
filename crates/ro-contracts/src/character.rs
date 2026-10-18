@@ -35,6 +35,9 @@ pub enum CreateCharacterError {
     #[error("Character creation denied")]
     CreationDenied,
 
+    #[error("Repository error: {0}")]
+    Repository(#[from] crate::repository::RepositoryError),
+
     #[error("Internal repository failure: {0}")]
     Internal(String),
 }
@@ -47,7 +50,7 @@ impl CreateCharacterError {
             Self::Underaged => 0x01,
             Self::InvalidNameSymbols => 0x02,
             Self::IneligibleSlot => 0x03,
-            Self::CreationDenied | Self::Internal(_) => 0xFF,
+            Self::CreationDenied | Self::Repository(_) | Self::Internal(_) => 0xFF,
         }
     }
 }
@@ -59,6 +62,8 @@ pub enum DeleteReserveOutcome {
     Success { delete_delay_seconds: u32 },
     /// Character is already queued for deletion or deletion is forbidden (`result = 0`).
     Denied,
+    /// Character does not exist on the account (`result = 3`).
+    NotFound,
     /// Character does not exist on the account or database failure (`result = 3`).
     NotFoundOrDbError,
     /// Character cannot be deleted while in a guild (`result = 4`).
@@ -75,9 +80,30 @@ impl DeleteReserveOutcome {
                 delete_delay_seconds,
             } => (1, delete_delay_seconds),
             Self::Denied => (0, 0),
-            Self::NotFoundOrDbError => (3, 0),
+            Self::NotFound | Self::NotFoundOrDbError => (3, 0),
             Self::GuildRestricted => (4, 0),
             Self::PartyRestricted => (5, 0),
+        }
+    }
+}
+
+/// Outcome of a character deletion cancellation request (`CH_DELETE_CHAR3_CANCEL` `0x082b`).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum CancelDeleteOutcome {
+    /// Deletion cancellation succeeded (`result = 1`).
+    Success,
+    /// Character not found on the account (`result = 2`).
+    NotFound,
+    /// Character is not currently reserved for deletion (`result = 2`).
+    NotReserved,
+}
+
+impl CancelDeleteOutcome {
+    /// Returns the wire result code for `HC_DELETE_CHAR3_CANCEL` (`0x082c`).
+    pub fn wire_result(self) -> u32 {
+        match self {
+            Self::Success => 1,
+            Self::NotFound | Self::NotReserved => 2,
         }
     }
 }
@@ -89,17 +115,20 @@ pub trait CharacterRepository: Send + Sync {
     async fn list_by_account(
         &self,
         account_id: AccountId,
-    ) -> Result<Vec<CharacterSummary>, String>;
+    ) -> Result<Vec<CharacterSummary>, crate::repository::RepositoryError>;
 
     /// Finds a character belonging to `account_id` at `slot`.
     async fn find_by_slot(
         &self,
         account_id: AccountId,
         slot: u8,
-    ) -> Result<Option<CharacterSummary>, String>;
+    ) -> Result<Option<CharacterSummary>, crate::repository::RepositoryError>;
 
     /// Finds a character by its unique `CharId`.
-    async fn find_by_id(&self, char_id: CharId) -> Result<Option<CharacterSummary>, String>;
+    async fn find_by_id(
+        &self,
+        char_id: CharId,
+    ) -> Result<Option<CharacterSummary>, crate::repository::RepositoryError>;
 
     /// Validates and persists a newly created character.
     async fn create_character(
@@ -114,8 +143,12 @@ pub trait CharacterRepository: Send + Sync {
         account_id: AccountId,
         char_id: CharId,
         delay_seconds: u32,
-    ) -> DeleteReserveOutcome;
+    ) -> Result<DeleteReserveOutcome, crate::repository::RepositoryError>;
 
-    /// Cancels an active deletion reservation (`0x082b` -> `0x082c`), returning true if cancelled.
-    async fn cancel_delete(&self, account_id: AccountId, char_id: CharId) -> bool;
+    /// Cancels an active deletion reservation (`0x082b` -> `0x082c`).
+    async fn cancel_delete(
+        &self,
+        account_id: AccountId,
+        char_id: CharId,
+    ) -> Result<CancelDeleteOutcome, crate::repository::RepositoryError>;
 }

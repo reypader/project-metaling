@@ -1,6 +1,9 @@
-use std::sync::{
-    atomic::{AtomicU64, Ordering},
-    Arc, RwLock,
+use std::{
+    sync::{
+        atomic::{AtomicU64, Ordering},
+        Arc, RwLock,
+    },
+    time::Instant,
 };
 
 use ro_contracts::{
@@ -10,6 +13,8 @@ use ro_contracts::{
 };
 use tokio::sync::mpsc;
 use tracing::{error, info, warn};
+
+pub const MAX_MAP_SERVERS: usize = 64;
 
 #[derive(Clone)]
 struct RegisteredMapServer {
@@ -29,6 +34,7 @@ struct CharSharedState {
 pub struct CharServiceHandle {
     next_session_id: Arc<AtomicU64>,
     shared: Arc<RwLock<CharSharedState>>,
+    start_time: Instant,
 }
 
 impl CharServiceHandle {
@@ -46,16 +52,27 @@ impl CharServiceHandle {
                 char_repo,
                 map_servers: vec![default_map_server],
             })),
+            start_time: Instant::now(),
         }
+    }
+
+    pub fn uptime_seconds(&self) -> u64 {
+        self.start_time.elapsed().as_secs()
     }
 
     pub fn allocate_session_id(&self) -> SessionId {
         SessionId(self.next_session_id.fetch_add(1, Ordering::Relaxed))
     }
 
-    pub fn register_map_server(&self, name: String, maps: Vec<String>, host: [u8; 4], port: u16) {
+    pub fn register_map_server(
+        &self,
+        name: String,
+        maps: Vec<String>,
+        host: [u8; 4],
+        port: u16,
+    ) -> bool {
         info!(
-            "CharService registered map server '{}' at {}.{}.{}.{}:{} with {} maps",
+            "CharService registering map server '{}' at {}.{}.{}.{}:{} with {} maps",
             name,
             host[0],
             host[1],
@@ -64,24 +81,38 @@ impl CharServiceHandle {
             port,
             maps.len()
         );
-        if let Ok(mut state) = self.shared.write() {
-            if let Some(existing) = state
-                .map_servers
-                .iter_mut()
-                .find(|srv| (srv.host == host && srv.port == port) || srv.name == name)
-            {
-                existing.name = name;
-                existing.maps = maps;
-                existing.host = host;
-                existing.port = port;
-            } else {
-                state.map_servers.push(RegisteredMapServer {
-                    name,
-                    maps,
-                    host,
-                    port,
-                });
+        let mut state = match self.shared.write() {
+            Ok(guard) => guard,
+            Err(poisoned) => {
+                warn!("CharSharedState write lock poisoned during register_map_server. Recovering inner state.");
+                poisoned.into_inner()
             }
+        };
+        if let Some(existing) = state
+            .map_servers
+            .iter_mut()
+            .find(|srv| (srv.host == host && srv.port == port) || srv.name == name)
+        {
+            existing.name = name;
+            existing.maps = maps;
+            existing.host = host;
+            existing.port = port;
+            true
+        } else {
+            if state.map_servers.len() >= MAX_MAP_SERVERS {
+                warn!(
+                    "CharService rejected map server '{}': capacity limit of {} reached.",
+                    name, MAX_MAP_SERVERS
+                );
+                return false;
+            }
+            state.map_servers.push(RegisteredMapServer {
+                name,
+                maps,
+                host,
+                port,
+            });
+            true
         }
     }
 
@@ -93,7 +124,10 @@ impl CharServiceHandle {
     ) -> mpsc::Sender<SessionIntent> {
         let (intent_tx, intent_rx) = mpsc::channel(16);
         let char_repo = {
-            let state = self.shared.read().expect("CharSharedState lock poisoned");
+            let state = self.shared.read().unwrap_or_else(|poisoned| {
+                warn!("CharSharedState read lock poisoned during session actor spawn. Recovering inner state.");
+                poisoned.into_inner()
+            });
             Arc::clone(&state.char_repo)
         };
         let actor = CharSessionActor {
@@ -150,7 +184,10 @@ impl CharSessionActor {
                             "Session {:?} failed to list characters for account id {}: {}",
                             self.session_id, account_id.0, err
                         );
-                        Vec::new()
+                        let _ = self.outbound_tx.try_send(ServerEvent::CharacterListRefused {
+                            error_code: 0,
+                        });
+                        return false;
                     }
                 };
 
@@ -190,7 +227,10 @@ impl CharSessionActor {
                             "Session {:?} failed to list character page for account id {}: {}",
                             self.session_id, account_id.0, err
                         );
-                        Vec::new()
+                        let _ = self.outbound_tx.try_send(ServerEvent::CharacterListRefused {
+                            error_code: 0,
+                        });
+                        return false;
                     }
                 };
 
@@ -267,11 +307,20 @@ impl CharSessionActor {
                     self.session_id, account_id.0, char_id.0
                 );
 
-                let outcome = self
+                let (result, delete_delay_seconds) = match self
                     .char_repo
                     .reserve_delete(account_id, char_id, 86_400)
-                    .await;
-                let (result, delete_delay_seconds) = outcome.wire_fields();
+                    .await
+                {
+                    Ok(outcome) => outcome.wire_fields(),
+                    Err(err) => {
+                        error!(
+                            "Session {:?} (account {}) repository error reserving deletion for char id {}: {}",
+                            self.session_id, account_id.0, char_id.0, err
+                        );
+                        ro_contracts::character::DeleteReserveOutcome::NotFoundOrDbError.wire_fields()
+                    }
+                };
 
                 let event = ServerEvent::CharacterDeleteReserved {
                     char_id,
@@ -303,8 +352,16 @@ impl CharSessionActor {
                     self.session_id, account_id.0, char_id.0
                 );
 
-                let cancelled = self.char_repo.cancel_delete(account_id, char_id).await;
-                let result = if cancelled { 1 } else { 2 };
+                let result = match self.char_repo.cancel_delete(account_id, char_id).await {
+                    Ok(outcome) => outcome.wire_result(),
+                    Err(err) => {
+                        error!(
+                            "Session {:?} (account {}) repository error cancelling deletion for char id {}: {}",
+                            self.session_id, account_id.0, char_id.0, err
+                        );
+                        ro_contracts::character::CancelDeleteOutcome::NotFound.wire_result()
+                    }
+                };
 
                 let event = ServerEvent::CharacterDeleteCancelled {
                     char_id,
@@ -357,7 +414,10 @@ impl CharSessionActor {
                 };
 
                 let (map_host, map_port) = {
-                    let state = self.shared.read().expect("CharSharedState lock poisoned");
+                    let state = self.shared.read().unwrap_or_else(|poisoned| {
+                        warn!("CharSharedState read lock poisoned during map server resolution. Recovering inner state.");
+                        poisoned.into_inner()
+                    });
                     state
                         .map_servers
                         .iter()

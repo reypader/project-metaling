@@ -1,4 +1,5 @@
 use std::{
+    collections::VecDeque,
     fmt,
     path::Path,
     sync::{
@@ -58,17 +59,42 @@ pub struct GlobalSequenceEntry {
     pub timestamp: SystemTime,
 }
 
+pub const DEFAULT_MAX_RECORDED_PACKETS: usize = 50_000;
+pub const DEFAULT_MAX_SESSION_HISTORY: usize = 10_000;
+
 /// Thread-safe recorder capturing packet flow across all proxy sessions and servers.
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub struct PacketSequenceRecorder {
-    entries: Mutex<Vec<GlobalSequenceEntry>>,
+    max_capacity: usize,
+    seq_counter: AtomicUsize,
+    entries: Mutex<VecDeque<GlobalSequenceEntry>>,
+}
+
+impl Default for PacketSequenceRecorder {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl PacketSequenceRecorder {
     pub fn new() -> Self {
+        Self::with_capacity(DEFAULT_MAX_RECORDED_PACKETS)
+    }
+
+    pub fn with_capacity(max_capacity: usize) -> Self {
         Self {
-            entries: Mutex::new(Vec::new()),
+            max_capacity: max_capacity.max(1),
+            seq_counter: AtomicUsize::new(1),
+            entries: Mutex::new(VecDeque::new()),
         }
+    }
+
+    pub fn max_capacity(&self) -> usize {
+        self.max_capacity
+    }
+
+    pub fn total_recorded(&self) -> usize {
+        self.seq_counter.load(Ordering::SeqCst).saturating_sub(1)
     }
 
     pub fn record(
@@ -80,8 +106,11 @@ impl PacketSequenceRecorder {
         length: usize,
         detail: String,
     ) -> usize {
+        let global_seq = self.seq_counter.fetch_add(1, Ordering::SeqCst);
         if let Ok(mut entries) = self.entries.lock() {
-            let global_seq = entries.len() + 1;
+            if entries.len() >= self.max_capacity {
+                entries.pop_front();
+            }
             let entry = GlobalSequenceEntry {
                 global_seq,
                 session_id,
@@ -92,7 +121,7 @@ impl PacketSequenceRecorder {
                 detail,
                 timestamp: SystemTime::now(),
             };
-            entries.push(entry);
+            entries.push_back(entry);
             global_seq
         } else {
             0
@@ -108,7 +137,11 @@ impl PacketSequenceRecorder {
     }
 
     pub fn entries(&self) -> Vec<GlobalSequenceEntry> {
-        let mut list = self.entries.lock().map(|e| e.clone()).unwrap_or_default();
+        let mut list: Vec<GlobalSequenceEntry> = self
+            .entries
+            .lock()
+            .map(|e| e.iter().cloned().collect())
+            .unwrap_or_default();
         list.sort_by_key(|e| e.global_seq);
         list
     }
@@ -137,12 +170,19 @@ impl PacketSequenceRecorder {
             }
         }
 
+        let total = self.total_recorded();
+        let total_str = if total > entries.len() {
+            format!("{} (Retained: {})", total, entries.len())
+        } else {
+            format!("{}", entries.len())
+        };
+
         let mut output = String::new();
         output.push_str("================================================================================\n");
         output.push_str("Ragnarok Online Packet Proxy - Global Sequence Log\n");
         output.push_str(&format!("Target PACKETVER: {}\n", TARGET_PACKETVER));
         output.push_str(&format!("Generated: {}\n", timestamp_str));
-        output.push_str(&format!("Total Packets Recorded: {}\n", entries.len()));
+        output.push_str(&format!("Total Packets Recorded: {}\n", total_str));
         output.push_str("================================================================================\n\n");
 
         output.push_str("Chronological Packet Sequence:\n");
@@ -187,7 +227,7 @@ impl PacketSequenceRecorder {
         output.push_str(&format!("  Login Server: {} packets\n", login_count));
         output.push_str(&format!("  Char Server:  {} packets\n", char_count));
         output.push_str(&format!("  Map Server:   {} packets\n", map_count));
-        output.push_str(&format!("  Total:        {} packets\n", entries.len()));
+        output.push_str(&format!("  Total:        {} packets\n", total_str));
         output.push_str("================================================================================\n");
 
         output
@@ -213,20 +253,32 @@ impl PacketSequenceRecorder {
 }
 
 /// Tracks the chronological sequence of packets for an individual connection session.
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub struct SessionSequenceTracker {
     seq_counter: AtomicUsize,
     packet_counter: AtomicUsize,
-    history: Mutex<Vec<PacketSequenceEntry>>,
+    max_history: usize,
+    history: Mutex<VecDeque<PacketSequenceEntry>>,
     global_sink: Option<(ServerType, usize, Arc<PacketSequenceRecorder>)>,
+}
+
+impl Default for SessionSequenceTracker {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl SessionSequenceTracker {
     pub fn new() -> Self {
+        Self::with_history_limit(DEFAULT_MAX_SESSION_HISTORY)
+    }
+
+    pub fn with_history_limit(max_history: usize) -> Self {
         Self {
             seq_counter: AtomicUsize::new(1),
             packet_counter: AtomicUsize::new(0),
-            history: Mutex::new(Vec::new()),
+            max_history: max_history.max(1),
+            history: Mutex::new(VecDeque::new()),
             global_sink: None,
         }
     }
@@ -236,12 +288,26 @@ impl SessionSequenceTracker {
         session_id: usize,
         recorder: Arc<PacketSequenceRecorder>,
     ) -> Self {
+        Self::with_global_and_limit(server_type, session_id, recorder, DEFAULT_MAX_SESSION_HISTORY)
+    }
+
+    pub fn with_global_and_limit(
+        server_type: ServerType,
+        session_id: usize,
+        recorder: Arc<PacketSequenceRecorder>,
+        max_history: usize,
+    ) -> Self {
         Self {
             seq_counter: AtomicUsize::new(1),
             packet_counter: AtomicUsize::new(0),
-            history: Mutex::new(Vec::new()),
+            max_history: max_history.max(1),
+            history: Mutex::new(VecDeque::new()),
             global_sink: Some((server_type, session_id, recorder)),
         }
+    }
+
+    pub fn max_history(&self) -> usize {
+        self.max_history
     }
 
     pub fn next_seq(&self) -> usize {
@@ -261,7 +327,10 @@ impl SessionSequenceTracker {
             );
         }
         if let Ok(mut hist) = self.history.lock() {
-            hist.push(entry);
+            if hist.len() >= self.max_history {
+                hist.pop_front();
+            }
+            hist.push_back(entry);
         }
     }
 
@@ -271,8 +340,8 @@ impl SessionSequenceTracker {
 
     /// Formats the complete chronological sequence flow observed during this session.
     pub fn format_sequence_flow(&self) -> String {
-        let hist = match self.history.lock() {
-            Ok(guard) => guard.clone(),
+        let hist: Vec<PacketSequenceEntry> = match self.history.lock() {
+            Ok(guard) => guard.iter().cloned().collect(),
             Err(_) => return "Unable to format sequence history (lock poisoned)".to_string(),
         };
 
@@ -1131,5 +1200,59 @@ mod tests {
 
         let flow = tracker.format_sequence_flow();
         assert!(flow.contains("[TRAILING BYTE on EOF, 1 byte]"));
+    }
+
+    #[test]
+    fn test_packet_sequence_recorder_bounded_capacity() {
+        let recorder = PacketSequenceRecorder::with_capacity(3);
+        assert_eq!(recorder.max_capacity(), 3);
+
+        for i in 1..=5 {
+            let seq = recorder.record(
+                1,
+                ServerType::Login,
+                PacketDirection::ClientToServer,
+                PacketOpcode(0x0064),
+                55,
+                format!("Packet {}", i),
+            );
+            assert_eq!(seq, i);
+        }
+
+        assert_eq!(recorder.len(), 3);
+        assert_eq!(recorder.total_recorded(), 5);
+
+        let entries = recorder.entries();
+        assert_eq!(entries.len(), 3);
+        assert_eq!(entries[0].global_seq, 3);
+        assert_eq!(entries[0].detail, "Packet 3");
+        assert_eq!(entries[1].global_seq, 4);
+        assert_eq!(entries[1].detail, "Packet 4");
+        assert_eq!(entries[2].global_seq, 5);
+        assert_eq!(entries[2].detail, "Packet 5");
+    }
+
+    #[test]
+    fn test_session_sequence_tracker_bounded_capacity() {
+        let tracker = SessionSequenceTracker::with_history_limit(2);
+        assert_eq!(tracker.max_history(), 2);
+
+        for i in 1..=4 {
+            tracker.record(PacketSequenceEntry {
+                seq: tracker.next_seq(),
+                direction: PacketDirection::ClientToServer,
+                opcode: PacketOpcode(0x0064),
+                length: 55,
+                detail: format!("Session Packet {}", i),
+            });
+        }
+
+        assert_eq!(tracker.packet_count(), 4);
+
+        let flow = tracker.format_sequence_flow();
+        assert!(!flow.contains("Session Packet 1"));
+        assert!(!flow.contains("Session Packet 2"));
+        assert!(flow.contains("Session Packet 3"));
+        assert!(flow.contains("Session Packet 4"));
     }
 }

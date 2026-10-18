@@ -3,13 +3,14 @@ mod session;
 
 use std::net::SocketAddr;
 
+use anyhow::Context;
 use axum::{
     extract::State,
     routing::{get, post},
     Json, Router,
 };
 use tokio::net::TcpListener;
-use tracing::{error, info};
+use tracing::{error, info, warn};
 
 use ro_contracts::{
     HealthResponse, PrepareMapTransferRequest, PrepareMapTransferResponse, ServerStatus,
@@ -19,12 +20,14 @@ use ro_contracts::{
 use service::MapServiceHandle;
 use session::handle_client_session;
 
-async fn health_check() -> Json<HealthResponse> {
+async fn health_check(
+    State(service): State<MapServiceHandle>,
+) -> Json<HealthResponse> {
     Json(HealthResponse {
         status: ServerStatus::Ready,
         server_type: ServerType::Map,
         server_name: "metaling-map".to_string(),
-        uptime_seconds: 0,
+        uptime_seconds: service.uptime_seconds(),
         active_connections: 0,
         target_packetver: TARGET_PACKETVER,
     })
@@ -35,17 +38,17 @@ async fn accept_transfer(
     Json(payload): Json<PrepareMapTransferRequest>,
 ) -> Json<PrepareMapTransferResponse> {
     info!(
-        "Map-server accepted transfer reservation for character id {} on map {}",
+        "Map-server processing transfer reservation for character id {} on map {}",
         payload.char_id.0, payload.destination_map
     );
 
-    service.accept_transfer(payload.char_id, payload.destination_map);
+    let accepted = service.accept_transfer(payload.char_id, payload.destination_map);
 
-    Json(PrepareMapTransferResponse { accepted: true })
+    Json(PrepareMapTransferResponse { accepted })
 }
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+async fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt::init();
 
     info!(
@@ -60,12 +63,20 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/api/v1/transfers/accept", post(accept_transfer))
         .with_state(service_handle.clone());
 
-    let http_addr: SocketAddr = "0.0.0.0:5122".parse()?;
-    let http_listener = TcpListener::bind(http_addr).await?;
+    let http_addr: SocketAddr = "0.0.0.0:5122"
+        .parse()
+        .context("Failed to parse map-server HTTP address")?;
+    let http_listener = TcpListener::bind(http_addr)
+        .await
+        .with_context(|| format!("Failed to bind map-server HTTP listener to {}", http_addr))?;
     info!("Map HTTP internal API listening on {}", http_addr);
 
-    let client_addr: SocketAddr = "0.0.0.0:5121".parse()?;
-    let client_listener = TcpListener::bind(client_addr).await?;
+    let client_addr: SocketAddr = "0.0.0.0:5121"
+        .parse()
+        .context("Failed to parse map-server client TCP address")?;
+    let client_listener = TcpListener::bind(client_addr)
+        .await
+        .with_context(|| format!("Failed to bind map-server client TCP listener to {}", client_addr))?;
     info!("Map client TCP listener active on {}", client_addr);
 
     let http_task = tokio::spawn(async move {
@@ -86,8 +97,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     ));
                 }
                 Err(err) => {
-                    error!("Error accepting client connection: {}", err);
-                    break;
+                    warn!("Transient error accepting client connection: {}", err);
+                    tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+                    continue;
                 }
             }
         }
@@ -246,5 +258,55 @@ mod tests {
         let raw = ack_raw.unwrap();
         assert_eq!(raw.opcode, PacketOpcode(0x00b3));
         assert_eq!(raw.payload.as_ref(), &[1]);
+    }
+
+    #[tokio::test]
+    async fn test_accept_transfer_validation() {
+        use ro_contracts::ids::{AccountId, CharId, MapPosition};
+
+        let service = MapServiceHandle::new();
+
+        let valid_req = PrepareMapTransferRequest {
+            token: "valid_token".to_string(),
+            account_id: AccountId(2000000),
+            char_id: CharId(150001),
+            login_id1: 1,
+            destination_map: "morocc.gat".to_string(),
+            destination_pos: MapPosition {
+                x: 100,
+                y: 100,
+                dir: 0,
+            },
+            character: None,
+        };
+        let res = accept_transfer(State(service.clone()), Json(valid_req)).await.0;
+        assert!(res.accepted);
+
+        let invalid_cases = vec![
+            "",
+            "morocc",
+            "morocc.txt",
+            "../prontera.gat",
+            "invalid/map.gat",
+            "a_very_long_map_name_that_exceeds_limits_and_is_not_standard.gat",
+        ];
+
+        for invalid_map in invalid_cases {
+            let req = PrepareMapTransferRequest {
+                token: "token".to_string(),
+                account_id: AccountId(2000000),
+                char_id: CharId(150002),
+                login_id1: 1,
+                destination_map: invalid_map.to_string(),
+                destination_pos: MapPosition {
+                    x: 100,
+                    y: 100,
+                    dir: 0,
+                },
+                character: None,
+            };
+            let res = accept_transfer(State(service.clone()), Json(req)).await.0;
+            assert!(!res.accepted, "Expected map '{}' to be rejected", invalid_map);
+        }
     }
 }

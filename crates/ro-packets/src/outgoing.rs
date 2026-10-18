@@ -75,7 +75,7 @@ pub fn encode_ac_accept_login(
     last_login: &str,
     sex: Sex,
     servers: &[CharServerEntry],
-) -> Bytes {
+) -> Result<Bytes, PacketCodecError> {
     encode_ac_accept_login_modern(
         login_id1,
         account_id,
@@ -116,9 +116,28 @@ pub fn encode_ac_accept_login_modern(
     sex: Sex,
     token: &str,
     servers: &[CharServerEntry],
-) -> Bytes {
-    let total_len = 64 + servers.len() * 160;
-    assert!(total_len <= u16::MAX as usize, "total_len exceeds maximum u16 packet length");
+) -> Result<Bytes, PacketCodecError> {
+    let total_len = servers
+        .len()
+        .checked_mul(160)
+        .and_then(|len| len.checked_add(64));
+    let total_len = match total_len {
+        Some(len) if len <= u16::MAX as usize => len,
+        Some(len) => {
+            return Err(PacketCodecError::PacketTooLarge {
+                opcode: PacketOpcode(0x0ac4),
+                length: len,
+                max: u16::MAX as usize,
+            });
+        }
+        None => {
+            return Err(PacketCodecError::PacketTooLarge {
+                opcode: PacketOpcode(0x0ac4),
+                length: usize::MAX,
+                max: u16::MAX as usize,
+            });
+        }
+    };
     let mut buf = BytesMut::with_capacity(total_len);
 
     buf.put_u16_le(PacketOpcode::AC_ACCEPT_LOGIN.raw());
@@ -141,7 +160,7 @@ pub fn encode_ac_accept_login_modern(
         buf.put_bytes(0, 128);
     }
 
-    buf.freeze()
+    Ok(buf.freeze())
 }
 
 /// Encodes modern `AC_REFUSE_LOGIN` (0x083e) for PACKETVER >= 20120000.
@@ -236,12 +255,29 @@ pub fn encode_hc_accept_enter(
     premium_start: u8,
     premium_end: u8,
     characters: &[CharacterSummary],
-) -> Bytes {
-    let total_len = 27 + characters.len() * 175;
-    let mut buf = BytesMut::with_capacity(total_len);
+) -> Result<Bytes, PacketCodecError> {
+    let total_len = characters
+        .len()
+        .checked_mul(175)
+        .and_then(|len| len.checked_add(27));
+    let len_u16 = match total_len {
+        Some(len) => u16::try_from(len).map_err(|_| PacketCodecError::PacketTooLarge {
+            opcode: PacketOpcode::HC_ACCEPT_ENTER,
+            length: len,
+            max: u16::MAX as usize,
+        })?,
+        None => {
+            return Err(PacketCodecError::PacketTooLarge {
+                opcode: PacketOpcode::HC_ACCEPT_ENTER,
+                length: usize::MAX,
+                max: u16::MAX as usize,
+            });
+        }
+    };
+    let mut buf = BytesMut::with_capacity(total_len.unwrap_or(0));
 
     buf.put_u16_le(PacketOpcode::HC_ACCEPT_ENTER.raw());
-    buf.put_u16_le(total_len as u16);
+    buf.put_u16_le(len_u16);
     buf.put_u8(total_slots);
     buf.put_u8(premium_start);
     buf.put_u8(premium_end);
@@ -251,6 +287,14 @@ pub fn encode_hc_accept_enter(
         encode_character_info(&mut buf, c);
     }
 
+    Ok(buf.freeze())
+}
+
+/// Encodes `HC_REFUSE_ENTER` (0x006c), fixed 3 bytes.
+pub fn encode_hc_refuse_enter(error_code: u8) -> Bytes {
+    let mut buf = BytesMut::with_capacity(3);
+    buf.put_u16_le(PacketOpcode::HC_REFUSE_ENTER.raw());
+    buf.put_u8(error_code);
     buf.freeze()
 }
 
@@ -280,12 +324,31 @@ pub fn encode_hc_accept_enter2(
 ///
 /// Dynamic packet structure: 4 + 175 * count.
 /// When count is 3, appends a second 4-byte empty frame per rAthena termination rules.
-pub fn encode_hc_ack_charinfo_per_page(characters: &[CharacterSummary]) -> Bytes {
-    let base_len = 4 + characters.len() * 175;
+pub fn encode_hc_ack_charinfo_per_page(
+    characters: &[CharacterSummary],
+) -> Result<Bytes, PacketCodecError> {
+    let base_len = characters
+        .len()
+        .checked_mul(175)
+        .and_then(|len| len.checked_add(4));
+    let len_u16 = match base_len {
+        Some(len) => u16::try_from(len).map_err(|_| PacketCodecError::PacketTooLarge {
+            opcode: PacketOpcode::HC_ACK_CHARINFO_PER_PAGE,
+            length: len,
+            max: u16::MAX as usize,
+        })?,
+        None => {
+            return Err(PacketCodecError::PacketTooLarge {
+                opcode: PacketOpcode::HC_ACK_CHARINFO_PER_PAGE,
+                length: usize::MAX,
+                max: u16::MAX as usize,
+            });
+        }
+    };
     let extra_term = if characters.len() == 3 { 4 } else { 0 };
-    let mut buf = BytesMut::with_capacity(base_len + extra_term);
+    let mut buf = BytesMut::with_capacity(base_len.unwrap_or(0) + extra_term);
     buf.put_u16_le(PacketOpcode::HC_ACK_CHARINFO_PER_PAGE.raw());
-    buf.put_u16_le(base_len as u16);
+    buf.put_u16_le(len_u16);
 
     for c in characters {
         encode_character_info(&mut buf, c);
@@ -296,7 +359,7 @@ pub fn encode_hc_ack_charinfo_per_page(characters: &[CharacterSummary]) -> Bytes
         buf.put_u16_le(4);
     }
 
-    buf.freeze()
+    Ok(buf.freeze())
 }
 
 /// Encodes `HC_ACCEPT_MAKECHAR` (0x0b6f), fixed 177 bytes.
@@ -776,7 +839,7 @@ impl EventEncoder for ModernEventEncoder {
             } => {
                 let entries: Vec<CharServerEntry> =
                     char_servers.iter().map(CharServerEntry::from).collect();
-                Ok(encode_ac_accept_login_modern(
+                encode_ac_accept_login_modern(
                     *login_id1,
                     *account_id,
                     *login_id2,
@@ -785,7 +848,7 @@ impl EventEncoder for ModernEventEncoder {
                     *sex,
                     "",
                     &entries,
-                ))
+                )
             }
             ServerEvent::LoginRefused { error_code } => {
                 Ok(encode_ac_refuse_login_modern(*error_code as u32, ""))
@@ -808,7 +871,7 @@ impl EventEncoder for ModernEventEncoder {
                     0,
                     0,
                     characters,
-                ));
+                )?);
                 let pages = ((*total_slots as u32) / 3).max(1);
                 buf.put_u16_le(PacketOpcode::HC_CHARLIST_NOTIFY.raw());
                 buf.put_u32_le(pages);
@@ -820,8 +883,11 @@ impl EventEncoder for ModernEventEncoder {
                 buf.put_u16_le(0);
                 Ok(buf.freeze())
             }
+            ServerEvent::CharacterListRefused { error_code } => {
+                Ok(encode_hc_refuse_enter(*error_code))
+            }
             ServerEvent::CharacterPageLoaded { characters } => {
-                Ok(encode_hc_ack_charinfo_per_page(characters))
+                encode_hc_ack_charinfo_per_page(characters)
             }
             ServerEvent::CharacterCreated { character } => {
                 Ok(encode_hc_accept_makechar(character))
@@ -955,6 +1021,7 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
     matches!(
         opcode,
         PacketOpcode::HC_ACCEPT_ENTER
+            | PacketOpcode::HC_REFUSE_ENTER
             | PacketOpcode::ZC_NOTIFY_TIME
             | PacketOpcode::ZC_NOTIFY_VANISH
             | PacketOpcode::ZC_NOTIFY_PLAYERMOVE
@@ -1003,7 +1070,8 @@ mod tests {
             "2026-10-16 00:00:00",
             Sex::Male,
             &servers,
-        );
+        )
+        .unwrap();
 
         assert_eq!(bytes.len(), 64 + 160);
         assert_eq!(&bytes[0..2], &0x0ac4u16.to_le_bytes());
@@ -1469,7 +1537,7 @@ mod tests {
             delete_date: None,
         };
         let chars = vec![make_char(0), make_char(1), make_char(2)];
-        let bytes = encode_hc_ack_charinfo_per_page(&chars);
+        let bytes = encode_hc_ack_charinfo_per_page(&chars).unwrap();
         assert_eq!(bytes.len(), 533);
         assert_eq!(&bytes[0..2], &0x0b72u16.to_le_bytes());
         assert_eq!(&bytes[2..4], &529u16.to_le_bytes());
@@ -1579,6 +1647,7 @@ mod tests {
         let ver = 20260219;
         let implemented = [
             PacketOpcode::HC_ACCEPT_ENTER,
+            PacketOpcode::HC_REFUSE_ENTER,
             PacketOpcode::ZC_NOTIFY_TIME,
             PacketOpcode::ZC_NOTIFY_VANISH,
             PacketOpcode::ZC_NOTIFY_PLAYERMOVE,
@@ -1625,6 +1694,89 @@ mod tests {
                 "Opcode {:#06x} should not be marked as implemented",
                 op.raw()
             );
+        }
+    }
+
+    #[test]
+    fn test_encode_character_list_refused() {
+        let error_code = 3u8;
+        let bytes = encode_hc_refuse_enter(error_code);
+        assert_eq!(bytes.len(), 3);
+        assert_eq!(&bytes[0..2], &0x006cu16.to_le_bytes());
+        assert_eq!(bytes[2], 3);
+
+        let encoder = ModernEventEncoder;
+        let event = ServerEvent::CharacterListRefused { error_code };
+        let encoded = encoder.encode_event(&event, 20260219).unwrap();
+        assert_eq!(encoded, bytes);
+    }
+
+    #[test]
+    fn test_encode_packet_too_large_thresholds() {
+        let dummy_servers = vec![
+            CharServerEntry {
+                ip: [127, 0, 0, 1],
+                port: 6121,
+                name: "Server".to_string(),
+                users: 0,
+                server_type: 0,
+                new_server: 0,
+            };
+            410
+        ];
+        let res_login = encode_ac_accept_login_modern(
+            1,
+            AccountId(2000000),
+            2,
+            [0, 0, 0, 0],
+            "",
+            Sex::Male,
+            "",
+            &dummy_servers,
+        );
+        match res_login {
+            Err(PacketCodecError::PacketTooLarge { opcode, length, max }) => {
+                assert_eq!(opcode, PacketOpcode(0x0ac4));
+                assert_eq!(length, 64 + 410 * 160);
+                assert_eq!(max, u16::MAX as usize);
+            }
+            other => panic!("Expected PacketTooLarge error, got {:?}", other),
+        }
+
+        let dummy_char = CharacterSummary {
+            char_id: CharId(150000),
+            account_id: AccountId(2000000),
+            slot: 0,
+            name: "Hero".to_string(),
+            sex: Sex::Male,
+            job_class: 0,
+            base_level: 1,
+            job_level: 1,
+            hair_style: 1,
+            hair_color: 1,
+            last_map: "prontera.gat".to_string(),
+            last_pos: MapPosition { x: 50, y: 50, dir: 0 },
+            delete_date: None,
+        };
+        let dummy_chars = vec![dummy_char.clone(); 375];
+        let res_char_list = encode_hc_accept_enter(9, 0, 0, &dummy_chars);
+        match res_char_list {
+            Err(PacketCodecError::PacketTooLarge { opcode, length, max }) => {
+                assert_eq!(opcode, PacketOpcode::HC_ACCEPT_ENTER);
+                assert_eq!(length, 27 + 375 * 175);
+                assert_eq!(max, u16::MAX as usize);
+            }
+            other => panic!("Expected PacketTooLarge error, got {:?}", other),
+        }
+
+        let res_page = encode_hc_ack_charinfo_per_page(&dummy_chars);
+        match res_page {
+            Err(PacketCodecError::PacketTooLarge { opcode, length, max }) => {
+                assert_eq!(opcode, PacketOpcode::HC_ACK_CHARINFO_PER_PAGE);
+                assert_eq!(length, 4 + 375 * 175);
+                assert_eq!(max, u16::MAX as usize);
+            }
+            other => panic!("Expected PacketTooLarge error, got {:?}", other),
         }
     }
 }
