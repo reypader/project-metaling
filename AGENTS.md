@@ -29,7 +29,7 @@ If you are operating at the workspace root, you are the **Main Agent**.
 2. **Mandatory Subagent Delegation:**
    The Main Agent must never implement domain logic, server binary entrypoints, proxy tools, or reference file searches directly. When new functionality is required, the Main Agent defines the compiling interface in `crates/ro-contracts` and invokes the corresponding custom subagent via `invoke_subagent`.
 3. **Mandatory Holistic Architectural Review (`architectural-code-reviewer`):**
-   After multi-crate features or milestone phases are wired across domain crates and server binaries, the Main Agent invokes `architectural-code-reviewer` (`inherit` tier) via `invoke_subagent` to audit end-to-end vertical slices, cross-crate contract alignment, and adherence to `AGENTS.md` and `DESIGN.md` without loading implementation files into the root context window.
+   After multi-crate features or milestone phases are connected across domain crates and server binaries, the Main Agent must pause and ask the user to switch the active model to Claude Opus 5.5 before invoking `architectural-code-reviewer` (`inherit` tier). Once the user confirms the model switch, the Main Agent invokes `architectural-code-reviewer` via `invoke_subagent` to audit end-to-end vertical slices, cross-crate contract alignment, and adherence to `AGENTS.md` and `DESIGN.md`, and informs the user that they can switch the active model back while the review runs in the background.
 4. **Mandatory Scripting Delegation (`utility-scripter`):**
    The Main Agent must never author, generate, or execute temporary scratch scripts, one-off file parsers, data extraction scripts, or bulk format converters directly. Whenever script authoring, data extraction, format conversion, or bulk file editing is needed, the Main Agent must invoke the `utility-scripter` subagent via `invoke_subagent`.
 5. **Mandatory Web Research Delegation (`web-researcher`):**
@@ -114,7 +114,7 @@ When a roadmap deliverable spans multiple crates, the Main Agent executes work i
 * **Stage 2 (Leaf Providers in Parallel):** Invoke subagents for leaf crates (`ro-packets`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`) concurrently via `invoke_subagent`.
 * **Stage 3 (Engine Integration):** Invoke `ro-engine` to implement ECS systems consuming the contract traits. (When all contract traits are finalized in Stage 1, Stage 3 may run concurrently with Stage 2.)
 * **Stage 4 (Binary & Tooling Wiring):** Invoke `ro-bins` (and `ro-tools` when applicable) via `invoke_subagent` to connect the concrete providers from `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`, `ro-packets`, and `ro-engine`, consulting peer subagents as needed and running workspace integration tests.
-* **Stage 5 (Holistic Architectural Review):** Invoke `architectural-code-reviewer` (`inherit` tier) via `invoke_subagent` to audit the end-to-end vertical slice across crates, binaries, and tools, and delegate any required remediation to the owning subagents before completing the milestone.
+* **Stage 5 (Holistic Architectural Review):** Pause and ask the user to switch the active model to Claude Opus 5.5. Once confirmed, invoke `architectural-code-reviewer` (`inherit` tier) via `invoke_subagent` to audit the end-to-end vertical slice across crates, binaries, and tools, and remind the user that they can switch the model back while waiting for the review to complete. Delegate any required remediation to the owning subagents before completing the milestone.
 
 ---
 
