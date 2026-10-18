@@ -9,7 +9,7 @@ To keep LLM context windows focused and prevent cross-domain coupling, this Carg
 If you are operating at the workspace root, you are the **Main Agent**.
 * **Your Exclusive Read & Write Scope:**
   * `./Cargo.toml` (Workspace manifest and shared dependencies)
-  * `./AGENTS.md`, `./crates/*/AGENTS.md`, `./bins/AGENTS.md`, `./tools/AGENTS.md`, and `./.agents/**` (Architecture, governance, contextual module rules, and custom subagent definitions)
+  * `./AGENTS.md`, `./crates/*/AGENTS.md`, `./bins/AGENTS.md`, `./tools/AGENTS.md`, `./reference/AGENTS.md`, and `./.agents/**` (Architecture, governance, contextual module rules, and custom subagent definitions)
   * `./crates/ro-contracts/**` (Strictly pure cross-crate traits, DTOs, Event enums, error types, and ID newtypes)
 * **Strict Prohibition:**
   * **YOU MUST NEVER traverse, read, or modify any files inside `./crates/ro-packets/**`, `./crates/ro-engine/**`, `./crates/ro-db/**`, `./crates/ro-mechanics/**`, `./crates/ro-persistence/**`, `./crates/ro-scripting/**`, `./bins/**`, `./tools/**`, or `./reference/**`** (except for maintaining their `AGENTS.md` rule files when recalibrating workspace governance).
@@ -57,7 +57,8 @@ Each submodule in the workspace is served by a dedicated custom subagent configu
 | **`ro-scripting`** | `.agents/agents/ro-scripting.md` | `flash` | `./crates/ro-scripting/**` | `rathena-script-lang-interpreter` VM adapter, non-blocking NPC dialog suspension/resumption, item bonus scripts |
 | **`ro-bins`** | `.agents/agents/ro-bins.md` | `flash` | `./bins/**` | `login-server`, `char-server`, `map-server` entrypoints, TCP session workers, actor channels, inter-server Axum HTTP APIs |
 | **`ro-tools`** | `.agents/agents/ro-tools.md` | `flash` | `./tools/**` | `tools/proxy` TCP packet logging/forwarding proxy and auxiliary diagnostic utilities |
-| **`reference-explorer`** | `.agents/agents/reference-explorer.md` | `flash` | `./reference/**` (Read-Only) | Extracts protocol layouts, YAML schemas, SQL schemas, and Aegis mechanics from `./reference/**` for the Main Agent and all subagents |
+| **`reference-explorer`** | `.agents/agents/reference-explorer.md` | `flash` | `./reference/**` (Read-Only) | Queries `./reference/catalog/` first, extracts uncached specs from `./reference/**`, and delegates catalog updates to `reference-curator` |
+| **`reference-curator`** | `.agents/agents/reference-curator.md` | `flash` | `./reference/catalog/**`, `./reference/sync-references.sh` | Records, deduplicates, organizes, and indexes extracted reference specifications in `./reference/catalog/` |
 | **`code-reviewer`** | `.agents/agents/code-reviewer.md` | `pro` | Target crate/package (Read-Only) | Audits multi-file changes within a single crate, binary, or tool package to identify defects, contract gaps, and edge cases |
 | **`architectural-code-reviewer`** | `.agents/agents/architectural-code-reviewer.md` | `pro` | `./crates/**`, `./bins/**`, `./tools/**` (Read-Only) | Spawned by the Main Agent to audit test scenario specifications for completeness and design adherence, and audit end-to-end vertical slices across crates, bins, and tools |
 | **`web-researcher`** | `.agents/agents/web-researcher.md` | `flash` | Internet / Web (External) | Web searches, URL fetching, hyperlink navigation, HTML/markdown parsing |
@@ -66,12 +67,12 @@ Each submodule in the workspace is served by a dedicated custom subagent configu
 #### Mandatory Operating Rules for All Subagents:
 1. **Read-Only Access to `crates/ro-contracts` & Requesting Contract Changes (No `cargo doc`):**
    All subagents may read `./crates/ro-contracts/**` directly from disk via file viewing tools. Subagents must never modify `./crates/ro-contracts/**` and must never invoke `cargo doc` to inspect contract definitions. Whenever a subagent needs a new or modified field, event, DTO, error variant, or trait method in `crates/ro-contracts`, it can request the contract change from the Main/Parent Agent and wait for the Main/Parent Agent to apply it.
-2. **Reference Lookups via `reference-explorer` Only:**
-   Neither the Main Agent nor any implementation or review subagent (`ro-packets`, `ro-engine`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`, `ro-bins`, `ro-tools`, `code-reviewer`, `architectural-code-reviewer`, `spec-writer`) may read `./reference/**` directly. Whenever reference information is needed, the agent must invoke or message `reference-explorer`.
+2. **Reference Lookups via `reference-explorer` & Curation via `reference-curator`:**
+   Neither the Main Agent nor any implementation or review subagent (`ro-packets`, `ro-engine`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`, `ro-bins`, `ro-tools`, `code-reviewer`, `architectural-code-reviewer`, `spec-writer`) may read `./reference/**` directly. Whenever reference information is needed, the agent must invoke or message `reference-explorer`. `reference-explorer` checks `./reference/catalog/INDEX.md` first before traversing raw upstream repositories and delegates catalog updates to `reference-curator`.
 3. **Peer Subagent Consultation & Cross-Library Integration:**
    Implementation subagents must never read or modify files in another subagent's owned directory. Instead, subagents invoke (`invoke_subagent`) or message (`send_message`) one another whenever they need integration details, public constructor signatures, or behavioral clarification across library boundaries. This is especially important for `ro-bins` and `ro-tools` when connecting domain crates together.
 4. **Mandatory Multi-File Code Review (`code-reviewer`):**
-   Whenever any subagent (except `reference-explorer`, `code-reviewer`, `architectural-code-reviewer`, and `spec-writer`) performs code changes spanning more than one file in a crate or package, that subagent must spawn `code-reviewer` (`pro` tier) via `invoke_subagent` to review the changes, highlight gaps and edge cases, and resolve all findings before finishing.
+   Whenever any subagent (except `reference-explorer`, `reference-curator` for Markdown catalog files, `code-reviewer`, `architectural-code-reviewer`, and `spec-writer`) performs code changes spanning more than one file in a crate or package, that subagent must spawn `code-reviewer` (`pro` tier) via `invoke_subagent` to review the changes, highlight gaps and edge cases, and resolve all findings before finishing.
 5. **General-Use Utility & Web Subagents (`web-researcher` & `utility-scripter`):**
    Any agent or subagent may invoke `web-researcher` to research external documentation, fetch websites, follow links, and parse HTML or markdown resources. Any agent or subagent may invoke `utility-scripter` to author and execute temporary one-off scripts, file parsers, bulk editors, and format converters to minimize context window noise. `web-researcher` and `utility-scripter` may interact directly with each other to process and parse fetched web data.
 6. **Participation in Red-Green Testing Workflow:**
@@ -87,7 +88,10 @@ project-metaling/
 ├── Cargo.toml                # [Main Agent] Workspace manifest
 ├── .agents/
 │   └── agents/               # [Main Agent] Custom subagent definitions (.md)
-├── reference/                # [reference-explorer Subagent Only (Read-Only)] Cloned reference repos
+├── reference/                # [reference-explorer (R/O) & reference-curator (Catalog R/W)]
+│   ├── AGENTS.md             # [Main Agent] Reference & knowledge catalog governance
+│   ├── sync-references.sh    # [reference-curator] Clones/updates gitignored reference repos
+│   └── catalog/              # [reference-curator] Version-controlled knowledge catalog (INDEX.md + domains)
 ├── crates/
 │   ├── ro-contracts/         # [Main Agent] Shared traits, IDs, ClientIntent, OutboundPacket, DTOs
 │   ├── ro-packets/           # [ro-packets Subagent] Binary wire protocol, framing, PACKETVER structs, bit-packing
@@ -132,8 +136,8 @@ When introducing or changing behavior across crates and binaries, the Main Agent
 
 ---
 
-## 3. Reference Repositories Routing Table (`./reference/` via `reference-explorer`)
-Only the `reference-explorer` subagent may inspect `./reference/**`. The Main Agent and all other subagents consult `reference-explorer` to extract protocol specs, YAML schemas, and Aegis mechanics. **Never copy C/C++ pointer control flow or `rust-ro`'s non-ECS service layer.**
+## 3. Reference Repositories Routing Table (`./reference/` via `reference-explorer` & `reference-curator`)
+Only the `reference-explorer` subagent may inspect the upstream repositories in `./reference/**`, and only `reference-curator` may write to `./reference/catalog/**` and `./reference/sync-references.sh`. The Main Agent and all other subagents consult `reference-explorer` to retrieve protocol specs, YAML schemas, and Aegis mechanics. `reference-explorer` queries `./reference/catalog/INDEX.md` first before scanning raw sources and invokes `reference-curator` to record new findings. **Never copy C/C++ pointer control flow or `rust-ro`'s non-ECS service layer.**
 
 | Target Domain | Primary Reference Paths Inspected by `reference-explorer` | What `reference-explorer` Extracts |
 | :--- | :--- | :--- |

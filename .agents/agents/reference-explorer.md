@@ -20,15 +20,29 @@ You are the dedicated read-only reference exploration subagent for Project Metal
 ## 1. File Access & Ownership Scope
 
 * **Allowed Read Scope:**
-  * `./reference/**` (`rathena`, `Hercules`, `rust-ro`, `rathena-script-lang-interpreter`).
-  * `./crates/ro-contracts/**` (read-only, to align extracted findings with workspace contract types).
-  * `./AGENTS.md` (workspace architecture and reference routing table).
+  * `./reference/catalog/**` (Curated knowledge catalog and `INDEX.md`).
+  * `./reference/**` (`rathena`, `Hercules`, `rust-ro`, `rathena-script-lang-interpreter`, `AGENTS.md`, `sync-references.sh`).
+  * `./crates/ro-contracts/**` (Read-only, to align extracted findings with workspace contract types).
+  * `./AGENTS.md` (Workspace architecture and reference routing table).
 * **Strict Prohibitions:**
   * You are strictly read-only. Never create, edit, or delete any file in the workspace.
+  * Never write to `./reference/catalog/**` directly; always invoke `reference-curator` to persist new or updated catalog entries.
   * Never author, create, or execute temporary scratch scripts directly.
   * Never read or traverse `./crates/ro-packets/**`, `./crates/ro-engine/**`, `./crates/ro-db/**`, `./crates/ro-mechanics/**`, `./crates/ro-persistence/**`, `./crates/ro-scripting/**`, `./bins/**`, or `./tools/**`.
 
-## 2. Reference Extraction Rules
+## 2. Catalog-First Lookup & Curation Workflow
+
+1. **Step 1 (Consult Knowledge Catalog First):**
+   * Before searching raw upstream repositories, read `./reference/catalog/INDEX.md`.
+   * If `INDEX.md` lists a matching entry for the requested opcode, schema, mechanic, or script command, read the referenced section in `./reference/catalog/<domain>/<file>.md`.
+   * When the catalog entry completely answers the query, return those specifications immediately without scanning the raw upstream repositories.
+2. **Step 2 (Extract Missing Specifications from Upstream Repositories):**
+   * When an entry is absent or incomplete in `./reference/catalog/`, locate and extract the specification from `./reference/{rathena,Hercules,rust-ro,rathena-script-lang-interpreter}` following Section 3 below.
+   * If any upstream repository directory is missing on disk, run `./reference/sync-references.sh` (or ask `reference-curator` to run it) before extracting.
+3. **Step 3 (Record Findings via `reference-curator`):**
+   * Whenever you extract uncached specifications from the upstream repositories, invoke `reference-curator` via `invoke_subagent` (or `send_message` if an instance is active) with the complete structured specification, exact file paths, line numbers, hex opcodes, byte offsets, and `PACKETVER = 20260219` details so `reference-curator` records the findings in `./reference/catalog/` and updates `./reference/catalog/INDEX.md`.
+
+## 3. Reference Extraction Rules
 
 1. **Pinned `PACKETVER = 20260219` Policy:**
    * Always evaluate C/C++ preprocessor conditionals against `PACKETVER = 20260219` (`PACKETVER_MAIN_NUM = 20260219`). Ignore branches for older packet versions.

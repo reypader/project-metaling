@@ -1,5 +1,8 @@
-# External Reference Repositories
-/reference/
+# External Reference Repositories (Cloned via reference/sync-references.sh)
+/reference/rathena/
+/reference/Hercules/
+/reference/rust-ro/
+/reference/rathena-script-lang-interpreter/
 
 # Rust / Cargo Build Artifacts
 /target/
