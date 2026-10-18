@@ -29,7 +29,7 @@ If you are operating at the workspace root, you are the **Main Agent**.
 2. **Mandatory Subagent Delegation:**
    The Main Agent must never implement domain logic, server binary entrypoints, proxy tools, or reference file searches directly. When new functionality is required, the Main Agent defines the compiling interface in `crates/ro-contracts` and invokes the corresponding custom subagent via `invoke_subagent`.
 3. **Mandatory Holistic Architectural Review (`architectural-code-reviewer`):**
-   After multi-crate features or milestone phases are connected across domain crates and server binaries, the Main Agent must pause and ask the user to switch the active model to Claude Opus 5.5 before invoking `architectural-code-reviewer` (`inherit` tier). Once the user confirms the model switch, the Main Agent invokes `architectural-code-reviewer` via `invoke_subagent` to audit end-to-end vertical slices, cross-crate contract alignment, and adherence to `AGENTS.md` and `DESIGN.md`, and informs the user that they can switch the active model back while the review runs in the background.
+   After multi-crate features or milestone phases are connected across domain crates and server binaries, the Main Agent invokes `architectural-code-reviewer` via `invoke_subagent` to audit end-to-end vertical slices, cross-crate contract alignment, and adherence to `AGENTS.md` and `DESIGN.md` without loading implementation files into the root context window.
 4. **Mandatory Scripting Delegation (`utility-scripter`):**
    The Main Agent must never author, generate, or execute temporary scratch scripts, one-off file parsers, data extraction scripts, or bulk format converters directly. Whenever script authoring, data extraction, format conversion, or bulk file editing is needed, the Main Agent must invoke the `utility-scripter` subagent via `invoke_subagent`.
 5. **Mandatory Web Research Delegation (`web-researcher`):**
@@ -50,7 +50,7 @@ Each submodule in the workspace is served by a dedicated custom subagent configu
 | **`ro-tools`** | `.agents/agents/ro-tools.md` | `flash` | `./tools/**` | `tools/proxy` TCP packet logging/forwarding proxy and auxiliary diagnostic utilities |
 | **`reference-explorer`** | `.agents/agents/reference-explorer.md` | `flash` | `./reference/**` (Read-Only) | Extracts protocol layouts, YAML schemas, SQL schemas, and Aegis mechanics from `./reference/**` for the Main Agent and all subagents |
 | **`code-reviewer`** | `.agents/agents/code-reviewer.md` | `pro` | Target crate/package (Read-Only) | Audits multi-file changes within a single crate, binary, or tool package to identify defects, contract gaps, and edge cases |
-| **`architectural-code-reviewer`** | `.agents/agents/architectural-code-reviewer.md` | `inherit` | `./crates/**`, `./bins/**`, `./tools/**` (Read-Only) | Spawned by the Main Agent to audit end-to-end vertical slices, cross-crate integration, and alignment with `AGENTS.md` and `DESIGN.md` |
+| **`architectural-code-reviewer`** | `.agents/agents/architectural-code-reviewer.md` | `pro` | `./crates/**`, `./bins/**`, `./tools/**` (Read-Only) | Spawned by the Main Agent to audit end-to-end vertical slices, cross-crate integration, and alignment with `AGENTS.md` and `DESIGN.md` |
 | **`web-researcher`** | `.agents/agents/web-researcher.md` | `flash` | Internet / Web (External) | Web searches, URL fetching, hyperlink navigation, HTML/markdown parsing |
 | **`utility-scripter`** | `.agents/agents/utility-scripter.md` | `flash` | Scratch directory & delegated files | Temporary scratch scripts, one-off file parsers, bulk editors, format converters |
 
@@ -114,7 +114,7 @@ When a roadmap deliverable spans multiple crates, the Main Agent executes work i
 * **Stage 2 (Leaf Providers in Parallel):** Invoke subagents for leaf crates (`ro-packets`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`) concurrently via `invoke_subagent`.
 * **Stage 3 (Engine Integration):** Invoke `ro-engine` to implement ECS systems consuming the contract traits. (When all contract traits are finalized in Stage 1, Stage 3 may run concurrently with Stage 2.)
 * **Stage 4 (Binary & Tooling Wiring):** Invoke `ro-bins` (and `ro-tools` when applicable) via `invoke_subagent` to connect the concrete providers from `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`, `ro-packets`, and `ro-engine`, consulting peer subagents as needed and running workspace integration tests.
-* **Stage 5 (Holistic Architectural Review):** Pause and ask the user to switch the active model to Claude Opus 5.5. Once confirmed, invoke `architectural-code-reviewer` (`inherit` tier) via `invoke_subagent` to audit the end-to-end vertical slice across crates, binaries, and tools, and remind the user that they can switch the model back while waiting for the review to complete. Delegate any required remediation to the owning subagents before completing the milestone.
+* **Stage 5 (Holistic Architectural Review):** Invoke `architectural-code-reviewer` (`pro` tier) via `invoke_subagent` to audit the end-to-end vertical slice across crates, binaries, and tools, and delegate any required remediation to the owning subagents before completing the milestone.
 
 ---
 
@@ -149,6 +149,10 @@ Only the `reference-explorer` subagent may inspect `./reference/**`. The Main Ag
 * **Extraction Tooling (No Standalone C++ Builds):** `reference-explorer` must never compile standalone C++ binaries against rAthena headers because the headers transitively require MySQL client libraries and internal subsystem headers. `reference-explorer` uses the C preprocessor directly (`clang -E -DPACKETVER=20260219 ...`) or ripgrep pattern searches over macro definitions.
 * **32-bit Item IDs (`u32`):** Modern `PACKETVER` defines `MAX_ITEMID > UINT16_MAX`. All item ID fields in packets and contracts must use `u32`.
 * **Graceful Unknown Packet Logging:** If the server receives an opcode not yet required for the current phase, log `tracing::debug!("Unhandled packet opcode={:#06x} len={}", opcode, bytes.len())`, consume the frame bytes using the packet length table, and continue the session loop.
+* **Client-Initiated TCP Socket Lifecycle & Handoff Policy:**
+  1. Connection establishment is client-initiated. All three server processes listen passively on TCP sockets.
+  2. During normal state handoffs (`CA_LOGIN -> AC_ACCEPT_LOGIN`, `CH_SELECT_CHAR -> HC_NOTIFY_ZONESVR`), servers must keep the TCP socket open. The connection must remain open until the client initiates socket closure (`read_buf` returns `Ok(0)` EOF). Proactive server closure causes the official client to flag a network disconnect and abort the handoff.
+  3. Server-initiated socket teardown is reserved exclusively for framing violations, unrecoverable parse errors, administrative kicks or bans, server process shutdown, and session idle timeouts.
 
 ---
 
@@ -157,8 +161,8 @@ Only the `reference-explorer` subagent may inspect `./reference/**`. The Main Ag
 ### Phase 0: Three-Server Network Handshake & Map Entry (Stub State)
 * **Goal:** Connect an official client matching `PACKETVER`, log in with a hardcoded stub account/character, select the Character Server, select the character, and load onto a starter map (`prontera`).
 * **Deliverables:**
-  1. `login-server` (`:6900`): Handle `CA_LOGIN`, issue session token `(AccountId, LoginId1, LoginId2)`, send `AC_ACCEPT_LOGIN` with `char-server` IP/port.
-  2. `char-server` (`:6121`): Handle `CH_ENTER`, echo raw 4-byte `AccountId`, send `HC_ACCEPT_ENTER` (and character page packets for modern `PACKETVER`) with 1 hardcoded stub character, handle `CH_SELECT_CHAR`, reply with `HC_NOTIFY_ZONESVR` (`prontera.gat`, `map-server` IP/port).
+  1. `login-server` (`:6900`): Handle `CA_LOGIN`, issue session token `(AccountId, LoginId1, LoginId2)`, send `AC_ACCEPT_LOGIN` with `char-server` IP/port, and keep the TCP stream open for client-initiated closure.
+  2. `char-server` (`:6121`): Handle `CH_ENTER`, echo raw 4-byte `AccountId`, send `HC_ACCEPT_ENTER` (and character page packets for modern `PACKETVER`) with 1 hardcoded stub character, handle `CH_SELECT_CHAR`, reply with `HC_NOTIFY_ZONESVR` (`prontera.gat`, `map-server` IP/port), and keep the TCP stream open for client-initiated closure.
   3. `map-server` (`:5121`): Handle `CZ_ENTER`, echo 4-byte `AccountId` + `ZC_ACCEPT_ENTER` (spawn coords + server tick), handle `CZ_NOTIFY_ACTORINIT` (`0x007D` "Map Loaded"), respond with initial actor state (`ZC_NOTIFY_NEWENTRY` / `ZC_PAR_CHANGE`), and reply to `CZ_REQUEST_TIME` (`0x0360`) with `ZC_NOTIFY_TIME` so the client does not time out.
   4. All other incoming packets log their opcode + payload length and are safely ignored.
 

@@ -3,7 +3,7 @@ name: architectural-code-reviewer
 description: Holistic cross-crate architectural and code review specialist. Spawned by the Main Agent to audit end-to-end vertical slices, cross-crate contract alignment, concurrency invariants, and adherence to AGENTS.md and DESIGN.md across crates, bins, and tools.
 subagent: true
 mainAgent: false
-model: inherit
+model: pro
 tools:
   - view_file
   - run_command
