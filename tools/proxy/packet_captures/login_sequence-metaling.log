@@ -1,0 +1,45 @@
+================================================================================
+Ragnarok Online Packet Proxy - Global Sequence Log
+Target PACKETVER: 20260219
+Generated: 2026-10-18 02:47:19.576 UTC
+Total Packets Recorded: 27
+================================================================================
+
+Chronological Packet Sequence:
+#      Timestamp (UTC)         Server  Session  Direction          Opcode                   Len    Details
+--------------------------------------------------------------------------------------------------------------
+1      2026-10-18 02:46:32.866 Login   #1       CLIENT -> SERVER   0x0064 (CA_LOGIN)        55     [IMPLEMENTED] Decoded: Intent(Login { username: "test", password: "password", client_version: 2147483648, client_type: 0 })
+2      2026-10-18 02:46:32.873 Login   #1       SERVER -> CLIENT   0x0ac4 (AC_ACCEPT_LOGIN) 224    [IMPLEMENTED] payload: [d9 0c 1e 2e 80 84 1e 00 c2 08 1e 2e 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+188 bytes)] |................................|
+3      2026-10-18 02:46:36.553 Char    #2       CLIENT -> SERVER   0x0065 (CH_ENTER)        17     [IMPLEMENTED] Decoded: Intent(EnterCharServer { account_id: AccountId(2000000), login_id1: 773721305, login_id2: 773720258, client_version: 0, sex: Male })
+4      2026-10-18 02:46:36.560 Char    #2       SERVER -> CLIENT   0x8480                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [1e 00] |..|
+5      2026-10-18 02:46:36.563 Char    #2       SERVER -> CLIENT   0x082d (HC_ACCEPT_ENTER2) 29     [IMPLEMENTED] payload: [1d 00 0f 00 0f 0f 0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00] |...........................|
+6      2026-10-18 02:46:36.563 Char    #2       SERVER -> CLIENT   0x006b (HC_ACCEPT_ENTER) 202    [IMPLEMENTED] payload: [0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f0 49 02 00 00 00 00 00 00 ... (+166 bytes)] |........................I.......|
+7      2026-10-18 02:46:36.563 Char    #2       SERVER -> CLIENT   0x09a0 (HC_CHARLIST_NOTIFY) 6      [IMPLEMENTED] payload: [05 00 00 00] |....|
+8      2026-10-18 02:46:36.563 Char    #2       SERVER -> CLIENT   0x020d (HC_BLOCK_CHARACTER) 4      [IMPLEMENTED] payload: []
+9      2026-10-18 02:46:36.563 Char    #2       SERVER -> CLIENT   0x08b9 (HC_SECOND_PASSWD_LOGIN) 12     [IMPLEMENTED] payload: [00 00 00 00 80 84 1e 00 00 00] |..........|
+10     2026-10-18 02:46:36.578 Char    #2       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+11     2026-10-18 02:46:36.578 Char    #2       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+12     2026-10-18 02:46:36.578 Char    #2       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+13     2026-10-18 02:46:36.578 Char    #2       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+14     2026-10-18 02:46:36.578 Char    #2       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+15     2026-10-18 02:46:36.583 Char    #2       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
+16     2026-10-18 02:46:36.629 Char    #2       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
+17     2026-10-18 02:46:36.629 Char    #2       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
+18     2026-10-18 02:46:36.629 Char    #2       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
+19     2026-10-18 02:46:36.629 Char    #2       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
+20     2026-10-18 02:46:38.826 Char    #2       CLIENT -> SERVER   0x0187 (PING)            6      [IMPLEMENTED] Decoded: Intent(CharPing { account_id: AccountId(2000000) })
+21     2026-10-18 02:46:47.061 Char    #2       CLIENT -> SERVER   0x0a39 (CH_MAKE_CHAR)    36     [IMPLEMENTED] Decoded: Intent(CreateCharacter { name: "test2", slot: 1, hair_color: 0, hair_style: 15, starting_job: 0, sex: Male })
+22     2026-10-18 02:46:47.101 Char    #2       SERVER -> CLIENT   0x0b6f (HC_ACK_MAKE_CHAR) 177    [IMPLEMENTED] payload: [f1 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
+23     2026-10-18 02:46:50.833 Char    #2       CLIENT -> SERVER   0x0187 (PING)            6      [IMPLEMENTED] Decoded: Intent(CharPing { account_id: AccountId(2000000) })
+24     2026-10-18 02:46:55.017 Char    #2       CLIENT -> SERVER   0x0827 (CH_DELETE_CHAR3_RESERVED) 6      [IMPLEMENTED] Decoded: Intent(ReserveDeleteCharacter { char_id: CharId(150001) })
+25     2026-10-18 02:46:55.089 Char    #2       SERVER -> CLIENT   0x0828 (HC_DELETE_CHAR3_RESERVED) 14     [IMPLEMENTED] payload: [f1 49 02 00 01 00 00 00 80 51 01 00] |.I.......Q..|
+26     2026-10-18 02:46:57.459 Char    #2       CLIENT -> SERVER   0x0066 (CH_SELECT_CHAR)  3      [IMPLEMENTED] Decoded: Intent(SelectCharacter { slot: 0 })
+27     2026-10-18 02:46:57.546 Char    #2       SERVER -> CLIENT   0x0ac5 (HC_NOTIFY_ZONESVR) 156    [IMPLEMENTED] payload: [f0 49 02 00 70 72 6f 6e 74 65 72 61 2e 67 61 74 00 00 00 00 7f 00 00 01 01 14 00 00 00 00 00 00 ... (+122 bytes)] |.I..prontera.gat................|
+
+================================================================================
+Summary by Server:
+  Login Server: 2 packets
+  Char Server:  25 packets
+  Map Server:   0 packets
+  Total:        27 packets
+================================================================================
