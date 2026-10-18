@@ -23,9 +23,9 @@
 ## 3. Network Topology & Protocol-to-Logic Channel Bridge
 
 ### 3.1 Client TCP Boundaries
-* **`login-server` (TCP `:6900`):** Accepts transient connections, decodes `CA_LOGIN`, issues a `SessionTicket`, returns `AC_ACCEPT_LOGIN` containing available character servers, and closes the connection.
-* **`char-server` (TCP `:6121`):** Accepts transient connections, decodes `CH_ENTER`, verifies the `SessionTicket`, echoes the 4-byte `AccountId`, returns `HC_ACCEPT_ENTER` and character list packets, handles `CH_SELECT_CHAR` / `CH_MAKE_CHAR` / `CH_DELETE_CHAR`, returns `HC_NOTIFY_ZONESVR` pointing to `map-server`, and closes the connection.
-* **`map-server` (TCP `:5121`):** Accepts persistent gameplay connections, decodes `CZ_ENTER`, echoes the 4-byte `AccountId`, returns `ZC_ACCEPT_ENTER`, handles `CZ_NOTIFY_ACTORINIT` and `CZ_REQUEST_TIME`, and broadcasts AoI events.
+* **`login-server` (TCP `:6900`):** Accepts connections, decodes `CA_LOGIN`, issues a `SessionTicket`, returns `AC_ACCEPT_LOGIN` containing available character servers, and keeps the TCP connection open until the client initiates socket closure.
+* **`char-server` (TCP `:6121`):** Accepts connections, decodes `CH_ENTER`, verifies the `SessionTicket`, echoes the 4-byte `AccountId`, returns `HC_ACCEPT_ENTER` and character list packets, handles `CH_SELECT_CHAR` / `CH_MAKE_CHAR` / `CH_DELETE_CHAR`, returns `HC_NOTIFY_ZONESVR` pointing to `map-server`, and keeps the TCP connection open until the client initiates socket closure.
+* **`map-server` (TCP `:5121`):** Accepts gameplay connections, decodes `CZ_ENTER`, echoes the 4-byte `AccountId`, returns `ZC_ACCEPT_ENTER`, handles `CZ_NOTIFY_ACTORINIT` and `CZ_REQUEST_TIME`, and broadcasts AoI events.
 
 ### 3.2 Inter-Server Internal Axum HTTP APIs
 Server binaries coordinate over internal HTTP endpoints using JSON payloads from `crates/ro-contracts/src/http.rs`:
@@ -53,3 +53,12 @@ Server binaries coordinate over internal HTTP endpoints using JSON payloads from
    * `login-server` spawns an ephemeral `LoginSessionActor` per connection.
    * `char-server` spawns an ephemeral `CharSessionActor` per connection.
    * `map-server` runs a long-lived `MapWorldActor` per map instance owning a `ro-engine` `World` and deterministic tick timer.
+
+### 3.4 Client-Initiated Socket Lifecycle & Handoff Invariant
+1. **Client-Initiated Connection Establishment:** All server binaries bind to passive TCP listener sockets. The client initiates all outbound TCP handshakes.
+2. **Client-Initiated Handoff Teardown:** During normal inter-server state transitions, the client initiates connection teardown.
+   * After transmitting `AC_ACCEPT_LOGIN` (`0x0ac4`), [`login-server`](file:///Users/rmpader/code_projects/metaling/bins/login-server) must keep the TCP stream open. The client closes the socket after the user confirms a character server selection.
+   * After transmitting `HC_NOTIFY_ZONESVR` (`0x0ac5`), [`char-server`](file:///Users/rmpader/code_projects/metaling/bins/char-server) must keep the TCP stream open. The client closes the socket after parsing zone credentials and transitioning to [`map-server`](file:///Users/rmpader/code_projects/metaling/bins/map-server).
+   * Server binaries must never proactively close the TCP socket (`writer.shutdown()`, `set_eof`, or dropping session workers) upon completing a successful handoff. Proactive server closure causes the official client to detect a network disconnect and abort the handoff.
+   * Session tasks in `bins/*/src/session.rs` must maintain the reader loop until the client transmits an EOF (`read_buf` returns `Ok(0)`) or an I/O error occurs.
+3. **Permitted Server-Initiated Socket Teardown:** Servers terminate client connections exclusively on framing corruption, unrecoverable packet parse failures, administrative kicks or bans, server process shutdown, and session idle timeouts.
