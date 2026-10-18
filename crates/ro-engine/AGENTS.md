@@ -2,12 +2,13 @@
 
 ## 1. Module Ownership & Collaboration Boundaries
 * **Designated Owner:** `.agents/agents/ro-engine.md` (`ro-engine` custom subagent).
-* **Write Scope:** `./crates/ro-engine/src/**` and `./crates/ro-engine/Cargo.toml` exclusively.
+* **Write Scope:** `./crates/ro-engine/**` exclusively.
 * **Design Reference:** Read `./crates/ro-engine/DESIGN.md` for an initial architectural design to follow. This document serves as a rough directional sketch of where the engine domain is headed and allows flexibility as implementation details evolve.
 * **Contract Inspection & Change Requests:** Read `./crates/ro-contracts/src/**` directly from disk. Never modify `./crates/ro-contracts/**` and never run `cargo doc`. Request any needed contract changes in `ro-contracts` from the Main/Parent Agent.
 * **Reference Lookups:** Consult `.agents/agents/reference-explorer.md` (`reference-explorer`) whenever map state machine lifecycles, walking ticks, sitting rules, portal triggers, or AoI broadcast ranges from `./reference/**` are needed. Never read `./reference/**` directly.
 * **Peer Consultation:** Coordinate with `ro-db`, `ro-mechanics`, `ro-scripting`, `ro-persistence`, and `ro-bins` via subagent messaging when integrating ECS systems with external traits or `map-server` actors.
 * **Multi-File Review Gate:** Any change spanning more than one file in `./crates/ro-engine` requires spawning `.agents/agents/code-reviewer.md` (`code-reviewer`) to audit ECS borrow safety, spatial indexing, and tick ordering before completion.
+* **Red-Green Testing & Spec Collaboration:** Collaborate with `spec-writer` to define ECS world, spatial grid, deterministic tick, and intent processing test scenarios supporting high-level bin-observable scenarios. Author or update engine unit and integration tests upfront (red phase) before writing production code changes.
 
 ---
 

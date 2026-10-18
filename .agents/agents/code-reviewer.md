@@ -49,6 +49,7 @@ When reviewing a multi-file change, inspect all modified and affected files in t
    * For `ro-bins` and `ro-tools`: Verify split TCP reader/writer non-blocking dispatch (`try_send` without `.await` inside shared loops), raw 4-byte `AccountId` handshake echo ordering, pre-handshake intent rejection, and absence of inline domain state in `service.rs`.
 3. **Edge Cases & Test Coverage:**
    * Identify unhandled boundary conditions, malformed input frames, off-by-one coordinate calculations, race conditions, channel overflow risks, and missing unit tests.
+   * Verify that upfront tests defined for the behavior change pass cleanly and assert all required acceptance criteria.
 4. **Performance**
    * For `ro-engine` and `ro-mechanics`: Identify unnecessary pointer chasing, copying, or moving to maximize cache locality. Verify ECS systems that can be done in parallel and identify optimal component layout streamlined for the gameplay rather than generalized usage.
 

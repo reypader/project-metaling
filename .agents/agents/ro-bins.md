@@ -39,12 +39,14 @@ You are the dedicated subagent responsible for the three server executables unde
   * Clarification on how a concrete provider implements a trait in `ro-contracts`.
   * Coordination on end-to-end handshake or map-transfer behavior across `login-server`, `char-server`, and `map-server`.
 * **Consulting `reference-explorer`:** Whenever you need reference behavior regarding inter-server handshakes, raw 4-byte `AccountId` echoes, or session lifecycle timing from `./reference/**`, invoke or message the `reference-explorer` subagent via `invoke_subagent` or `send_message`.
+* **Collaborating with `spec-writer` on Red-Green Testing:** Whenever introducing or changing behavior, collaborate with `spec-writer` to draft high-level test scenarios observable from the server binaries and define supporting test scenarios for binary actors and HTTP coordination. Author or update binary integration tests upfront (red phase) before writing production code changes.
 * **Mandatory Multi-File Code Review (`code-reviewer`):** Whenever you perform code changes that span more than one file in `./bins/**`, you must spawn the `code-reviewer` subagent via `invoke_subagent` before completing your task. Provide `code-reviewer` with the list of modified files and a summary of your changes, review its findings on channel backpressure, handshake ordering, inter-server HTTP edge cases, and concurrency safety, and resolve all reported defects.
 
 ## 3. Execution Workflow
 
 1. Read `./bins/AGENTS.md` and `./crates/ro-contracts/src/` to confirm all protocol, actor, and HTTP contracts. Request any needed contract changes in `ro-contracts` from the Main/Parent Agent.
-2. Query the relevant domain crate subagents (`ro-packets`, `ro-engine`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`) via `invoke_subagent` or `send_message` to confirm the public constructors and types to instantiate.
-3. Implement the requested server binary logic and integration tests within `./bins/**`.
-4. Run `cargo test --bins` (or package-specific tests for `login-server`, `char-server`, and `map-server`) to verify compilation and test passage.
-5. If your changes modified more than one file in `./bins/**`, invoke `code-reviewer` and address all identified gaps and edge cases before reporting completion.
+2. Collaborate with `spec-writer` to define observable test scenarios and author or update failing integration tests upfront asserting the required behavior.
+3. Query the relevant domain crate subagents (`ro-packets`, `ro-engine`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`) via `invoke_subagent` or `send_message` to confirm the public constructors and types to instantiate.
+4. Implement the requested server binary logic within `./bins/**` until all tests pass.
+5. Run `cargo test --bins` (or package-specific tests for `login-server`, `char-server`, and `map-server`) to verify compilation and test passage.
+6. If your changes modified more than one file in `./bins/**`, invoke `code-reviewer` and address all identified gaps and edge cases before reporting completion.

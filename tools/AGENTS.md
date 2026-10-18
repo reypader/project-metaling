@@ -7,6 +7,7 @@
 * **Peer Subagent Integration:** Never read or modify implementation files inside `./crates/ro-packets/**`, `./crates/ro-engine/**`, `./crates/ro-db/**`, `./crates/ro-mechanics/**`, `./crates/ro-persistence/**`, `./crates/ro-scripting/**`, or `./bins/**`. Invoke or message `ro-packets` and `ro-bins` via `invoke_subagent` or `send_message` whenever you need codec constructors, framing behavior, or server port/handshake details.
 * **Reference Lookups:** Consult `.agents/agents/reference-explorer.md` (`reference-explorer`) whenever wire framing or opcode specifications from `./reference/**` are needed. Never read `./reference/**` directly.
 * **Multi-File Review Gate:** Any change spanning more than one file in `./tools/**` requires spawning `.agents/agents/code-reviewer.md` (`code-reviewer`) to audit stream forwarding, framing synchronization, and edge cases before completion.
+* **Red-Green Testing & Spec Collaboration:** Collaborate with `spec-writer` to define packet forwarding, proxy inspection, and telemetry test scenarios supporting high-level bin-observable scenarios. Author or update proxy integration tests upfront (red phase) before writing production code changes.
 
 ---
 

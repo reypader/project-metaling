@@ -17,11 +17,17 @@ If you are operating at the workspace root, you are the **Main Agent**.
 * **Your Job:**
   1. Consult the `reference-explorer` subagent via `invoke_subagent` whenever reference specifications from `./reference/**` are required to design or amend contracts.
   2. Arbitrate whether a new cross-domain contract (trait, event struct, or DTO) is needed in `crates/ro-contracts`, update `crates/ro-contracts`, and verify compilation via `cargo check -p ro-contracts`.
-  3. Delegate crate implementation tasks to the dedicated crate subagents (`ro-packets`, `ro-engine`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`) via `invoke_subagent`.
-  4. Delegate server binary coordination (`login-server`, `char-server`, `map-server`) to `ro-bins` and auxiliary tooling tasks (`proxy`) to `ro-tools` via `invoke_subagent`.
-  5. Delegate holistic cross-crate architectural and vertical-slice reviews to `architectural-code-reviewer` via `invoke_subagent`.
-  6. Delegate all temporary script writing, data parsing, format conversions, and bulk edits to `utility-scripter` via `invoke_subagent`.
-  7. Delegate external web research, documentation fetching, and link crawling to `web-researcher` via `invoke_subagent`.
+  3. Coordinate the red-green testing workflow whenever introducing or modifying behavior:
+     * Consult specialized domain subagents (`ro-packets`, `ro-engine`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`, `ro-bins`, `ro-tools`) for domain context.
+     * Spawn `spec-writer` (`pro` tier) via `invoke_subagent` before writing plans to draft high-level test scenarios observable from `bins`.
+     * Ensure specialized subagents collaborate with `spec-writer` to define supporting scoped test scenarios.
+     * Invoke `architectural-code-reviewer` (`pro` tier) to review the test scenarios for overall completeness and adherence to the design.
+     * Ensure tests asserting the behavior are written or updated upfront before making production code changes.
+  4. Delegate crate implementation tasks to the dedicated crate subagents (`ro-packets`, `ro-engine`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`) via `invoke_subagent`.
+  5. Delegate server binary coordination (`login-server`, `char-server`, `map-server`) to `ro-bins` and auxiliary tooling tasks (`proxy`) to `ro-tools` via `invoke_subagent`.
+  6. Delegate holistic cross-crate architectural and vertical-slice reviews to `architectural-code-reviewer` via `invoke_subagent`.
+  7. Delegate all temporary script writing, data parsing, format conversions, and bulk edits to `utility-scripter` via `invoke_subagent`.
+  8. Delegate external web research, documentation fetching, and link crawling to `web-researcher` via `invoke_subagent`.
 
 #### Mandatory Operating Rules for the Main Agent:
 1. **Strict Interface Purity in `crates/ro-contracts`:**
@@ -34,12 +40,15 @@ If you are operating at the workspace root, you are the **Main Agent**.
    The Main Agent must never author, generate, or execute temporary scratch scripts, one-off file parsers, data extraction scripts, or bulk format converters directly. Whenever script authoring, data extraction, format conversion, or bulk file editing is needed, the Main Agent must invoke the `utility-scripter` subagent via `invoke_subagent`.
 5. **Mandatory Web Research Delegation (`web-researcher`):**
    The Main Agent must never perform web searches, web page fetching, or link crawling directly. Whenever external documentation, web references, or library research are needed, the Main Agent must invoke the `web-researcher` subagent via `invoke_subagent`.
+6. **Mandatory Red-Green Testing Protocol:**
+   Whenever the user requests introducing or changing behavior, the Main Agent must enforce red-green testing. Acceptance criteria and tests must be established and written upfront before modifying production code. The Main Agent must consult domain subagents, then spawn `spec-writer` (`pro` tier) to draft high-level bin-observable test scenarios before authoring plans. The Main Agent directs domain subagents to work with `spec-writer` on supporting domain scenarios, submits all scenarios to `architectural-code-reviewer` for verification, and ensures tests are authored and failing before authorizing implementation.
 
 ### Role 2: Custom Subagents (`./.agents/agents/*.md`)
 Each submodule in the workspace is served by a dedicated custom subagent configured in `./.agents/agents/<name>.md`:
 
 | Subagent Name | Config File | Model Tier | Owned Scope | Responsibility |
 | :--- | :--- | :--- | :--- | :--- |
+| **`spec-writer`** | `.agents/agents/spec-writer.md` | `pro` | Workspace specifications & test scenarios | High-level bin-observable test scenarios, domain test scenario definition with specialized agents, test acceptance criteria |
 | **`ro-packets`** | `.agents/agents/ro-packets.md` | `flash` | `./crates/ro-packets/**` | Binary wire framing, `PACKETVER = 20260219` opcodes, packet parsing, event encoding, `WBUFPOS`/`WBUFPOS2` bit-packing |
 | **`ro-engine`** | `.agents/agents/ro-engine.md` | `flash` | `./crates/ro-engine/**` | Deterministic ECS `World`, `8x8` `SpatialGrid`, A* pathfinding, AoI broadcasting, entity lifecycles, map tick loop |
 | **`ro-db`** | `.agents/agents/ro-db.md` | `flash` | `./crates/ro-db/**` | `.gat`/`.rsw` walkability grids, Renewal YAML loaders (`item_db`, `mob_db`, `skill_db`), spawn/warp file parsers |
@@ -50,7 +59,7 @@ Each submodule in the workspace is served by a dedicated custom subagent configu
 | **`ro-tools`** | `.agents/agents/ro-tools.md` | `flash` | `./tools/**` | `tools/proxy` TCP packet logging/forwarding proxy and auxiliary diagnostic utilities |
 | **`reference-explorer`** | `.agents/agents/reference-explorer.md` | `flash` | `./reference/**` (Read-Only) | Extracts protocol layouts, YAML schemas, SQL schemas, and Aegis mechanics from `./reference/**` for the Main Agent and all subagents |
 | **`code-reviewer`** | `.agents/agents/code-reviewer.md` | `pro` | Target crate/package (Read-Only) | Audits multi-file changes within a single crate, binary, or tool package to identify defects, contract gaps, and edge cases |
-| **`architectural-code-reviewer`** | `.agents/agents/architectural-code-reviewer.md` | `pro` | `./crates/**`, `./bins/**`, `./tools/**` (Read-Only) | Spawned by the Main Agent to audit end-to-end vertical slices, cross-crate integration, and alignment with `AGENTS.md` and `DESIGN.md` |
+| **`architectural-code-reviewer`** | `.agents/agents/architectural-code-reviewer.md` | `pro` | `./crates/**`, `./bins/**`, `./tools/**` (Read-Only) | Spawned by the Main Agent to audit test scenario specifications for completeness and design adherence, and audit end-to-end vertical slices across crates, bins, and tools |
 | **`web-researcher`** | `.agents/agents/web-researcher.md` | `flash` | Internet / Web (External) | Web searches, URL fetching, hyperlink navigation, HTML/markdown parsing |
 | **`utility-scripter`** | `.agents/agents/utility-scripter.md` | `flash` | Scratch directory & delegated files | Temporary scratch scripts, one-off file parsers, bulk editors, format converters |
 
@@ -58,13 +67,15 @@ Each submodule in the workspace is served by a dedicated custom subagent configu
 1. **Read-Only Access to `crates/ro-contracts` & Requesting Contract Changes (No `cargo doc`):**
    All subagents may read `./crates/ro-contracts/**` directly from disk via file viewing tools. Subagents must never modify `./crates/ro-contracts/**` and must never invoke `cargo doc` to inspect contract definitions. Whenever a subagent needs a new or modified field, event, DTO, error variant, or trait method in `crates/ro-contracts`, it can request the contract change from the Main/Parent Agent and wait for the Main/Parent Agent to apply it.
 2. **Reference Lookups via `reference-explorer` Only:**
-   Neither the Main Agent nor any implementation or review subagent (`ro-packets`, `ro-engine`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`, `ro-bins`, `ro-tools`, `code-reviewer`, `architectural-code-reviewer`) may read `./reference/**` directly. Whenever reference information is needed, the agent must invoke or message `reference-explorer`.
+   Neither the Main Agent nor any implementation or review subagent (`ro-packets`, `ro-engine`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`, `ro-bins`, `ro-tools`, `code-reviewer`, `architectural-code-reviewer`, `spec-writer`) may read `./reference/**` directly. Whenever reference information is needed, the agent must invoke or message `reference-explorer`.
 3. **Peer Subagent Consultation & Cross-Library Integration:**
    Implementation subagents must never read or modify files in another subagent's owned directory. Instead, subagents invoke (`invoke_subagent`) or message (`send_message`) one another whenever they need integration details, public constructor signatures, or behavioral clarification across library boundaries. This is especially important for `ro-bins` and `ro-tools` when connecting domain crates together.
 4. **Mandatory Multi-File Code Review (`code-reviewer`):**
-   Whenever any subagent (except `reference-explorer`, `code-reviewer`, and `architectural-code-reviewer`) performs code changes spanning more than one file in a crate or package, that subagent must spawn `code-reviewer` (`pro` tier) via `invoke_subagent` to review the changes, highlight gaps and edge cases, and resolve all findings before finishing.
+   Whenever any subagent (except `reference-explorer`, `code-reviewer`, `architectural-code-reviewer`, and `spec-writer`) performs code changes spanning more than one file in a crate or package, that subagent must spawn `code-reviewer` (`pro` tier) via `invoke_subagent` to review the changes, highlight gaps and edge cases, and resolve all findings before finishing.
 5. **General-Use Utility & Web Subagents (`web-researcher` & `utility-scripter`):**
    Any agent or subagent may invoke `web-researcher` to research external documentation, fetch websites, follow links, and parse HTML or markdown resources. Any agent or subagent may invoke `utility-scripter` to author and execute temporary one-off scripts, file parsers, bulk editors, and format converters to minimize context window noise. `web-researcher` and `utility-scripter` may interact directly with each other to process and parse fetched web data.
+6. **Participation in Red-Green Testing Workflow:**
+   When introducing or changing behavior, specialized subagents must collaborate with `spec-writer` to define test scenarios within their own scope to support high-level bin-observable scenarios. Specialized subagents must author or update tests upfront asserting this behavior before modifying production code, confirming that tests fail before implementing logic.
 
 ---
 
@@ -98,6 +109,7 @@ When implementing a feature or fixing a bug, the Main Agent uses this matrix to 
 
 | Behavior / Responsibility | Owner Scope | Contract Interface (`crates/ro-contracts`) | Upstream Caller / Consumer |
 | :--- | :--- | :--- | :--- |
+| **High-level bin-observable test scenarios, domain test scenario coordination, acceptance criteria** | `spec-writer` | Test scenario specifications, observable bin assertions, domain test definitions | Main Agent, all domain crates, `bins/*`, and `tools/*` |
 | **Cross-crate IDs, DTOs, Intents, Events, & Traits** | `crates/ro-contracts` (Main Agent) | `ids.rs`, `packet.rs`, `map.rs`, `http.rs`, repository & engine traits | All domain crates, `bins/*`, and `tools/*` |
 | **TCP framing, opcode length table, byte parsing, event encoding, `WBUFPOS`/`WBUFPOS2` bit-packing** | `crates/ro-packets` (`ro-packets`) | `PacketLengthTable`, `PacketIntentParser`, `EventEncoder`, `RawPacket` | `bins/{login,char,map}-server/src/session.rs`, `tools/proxy` |
 | **`.gat`/`.rsw` walkability grids, `item_db`/`mob_db`/`skill_db` YAML loading, spawn/warp file parsing** | `crates/ro-db` (`ro-db`) | `MapWalkability`, static blueprint DTOs, and database provider traits | Initialized by `bins/map-server`, queried by `crates/ro-engine` |
@@ -109,12 +121,14 @@ When implementing a feature or fixing a bug, the Main Agent uses this matrix to 
 | **RO packet logging & TCP forwarding proxy across `:6900`, `:6121`, `:5121`** | `tools/*` (`ro-tools`) | Consumes `PacketLengthTable` and packet framing traits | Executed as standalone diagnostic tooling |
 
 ### 2.2 Multi-Subagent Delegation Sequencing
-When a roadmap deliverable spans multiple crates, the Main Agent executes work in five stages:
-* **Stage 1 (Reference Consultation & Contracts First):** Consult `reference-explorer` if reference specs are needed, update `crates/ro-contracts` with all required traits, DTOs, and enum variants, and run `cargo check -p ro-contracts` to verify compilation.
-* **Stage 2 (Leaf Providers in Parallel):** Invoke subagents for leaf crates (`ro-packets`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`) concurrently via `invoke_subagent`.
-* **Stage 3 (Engine Integration):** Invoke `ro-engine` to implement ECS systems consuming the contract traits. (When all contract traits are finalized in Stage 1, Stage 3 may run concurrently with Stage 2.)
-* **Stage 4 (Binary & Tooling Wiring):** Invoke `ro-bins` (and `ro-tools` when applicable) via `invoke_subagent` to connect the concrete providers from `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`, `ro-packets`, and `ro-engine`, consulting peer subagents as needed and running workspace integration tests.
-* **Stage 5 (Holistic Architectural Review):** Invoke `architectural-code-reviewer` (`pro` tier) via `invoke_subagent` to audit the end-to-end vertical slice across crates, binaries, and tools, and delegate any required remediation to the owning subagents before completing the milestone.
+When introducing or changing behavior across crates and binaries, the Main Agent executes work in seven stages:
+* **Stage 1 (Domain Consultation & Contracts First):** Consult `reference-explorer` if reference specs are needed. Consult domain subagents (`ro-packets`, `ro-engine`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`, `ro-bins`, `ro-tools`) for requirements and feasibility. Update `crates/ro-contracts` with required traits, DTOs, and enum variants, and run `cargo check -p ro-contracts` to verify compilation.
+* **Stage 2 (High-Level Scenario Specification via `spec-writer`):** Before authoring implementation plans, the Main Agent spawns `spec-writer` (`pro` tier) via `invoke_subagent` to draft high-level test scenarios observable from the server binaries (`bins`).
+* **Stage 3 (Scoped Domain Scenario Collaboration):** Each specialized subagent collaborates with `spec-writer` to define scoped unit and integration test scenarios within its own domain to support the high-level bin scenarios.
+* **Stage 4 (Architectural Scenario Review):** The Main Agent invokes `architectural-code-reviewer` (`pro` tier) via `invoke_subagent` to audit all test scenarios for overall completeness and adherence to `DESIGN.md` and `AGENTS.md`.
+* **Stage 5 (Upfront Test Authoring; Red Phase):** Specialized subagents write or update unit and integration tests across bins and crates to assert the new behavior upfront before making production changes. Tests must run and fail against current code.
+* **Stage 6 (Implementation & Wiring; Green Phase):** Invoke leaf crate subagents (`ro-packets`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`) and `ro-engine`, then invoke `ro-bins` (and `ro-tools` when applicable) to connect concrete providers and implement logic until all tests pass.
+* **Stage 7 (Holistic Architectural Review):** Subagents invoke `code-reviewer` for multi-file crate changes. Once all tests pass and components are integrated, the Main Agent invokes `architectural-code-reviewer` (`pro` tier) to audit the end-to-end vertical slice across crates, binaries, and tools before completing the milestone.
 
 ---
 

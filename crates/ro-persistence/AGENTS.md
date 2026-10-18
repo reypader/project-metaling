@@ -2,12 +2,13 @@
 
 ## 1. Module Ownership & Collaboration Boundaries
 * **Designated Owner:** `.agents/agents/ro-persistence.md` (`ro-persistence` custom subagent).
-* **Write Scope:** `./crates/ro-persistence/src/**`, `./crates/ro-persistence/migrations/**`, and `./crates/ro-persistence/Cargo.toml` exclusively.
+* **Write Scope:** `./crates/ro-persistence/**` exclusively.
 * **Design Reference:** Read `./crates/ro-persistence/DESIGN.md` for an initial architectural design to follow. This document serves as a rough directional sketch of where the persistence domain is headed and allows flexibility as implementation details evolve.
 * **Contract Inspection & Change Requests:** Read `./crates/ro-contracts/src/**` directly from disk. Never modify `./crates/ro-contracts/**` and never run `cargo doc`. Request any needed contract changes in `ro-contracts` from the Main/Parent Agent.
 * **Reference Lookups:** Consult `.agents/agents/reference-explorer.md` (`reference-explorer`) whenever SQL table schemas, column types, or repository patterns from `./reference/**` are needed. Never read `./reference/**` directly.
 * **Peer Consultation:** Coordinate with `ro-bins` via subagent messaging when integrating `InMemoryStubRepo` and `PostgresRepo` into `login-server`, `char-server`, and `map-server`.
 * **Multi-File Review Gate:** Any change spanning more than one file in `./crates/ro-persistence` requires spawning `.agents/agents/code-reviewer.md` (`code-reviewer`) to audit SQL constraints, thread safety, and edge cases before completion.
+* **Red-Green Testing & Spec Collaboration:** Collaborate with `spec-writer` to define repository CRUD, authentication query, character persistence, and schema migration test scenarios supporting high-level bin-observable scenarios. Author or update persistence unit and integration tests upfront (red phase) before writing production code changes.
 
 ---
 

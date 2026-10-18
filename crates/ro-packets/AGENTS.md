@@ -2,11 +2,12 @@
 
 ## 1. Module Ownership & Collaboration Boundaries
 * **Designated Owner:** `.agents/agents/ro-packets.md` (`ro-packets` custom subagent).
-* **Write Scope:** `./crates/ro-packets/src/**` and `./crates/ro-packets/Cargo.toml` exclusively.
+* **Write Scope:** `./crates/ro-packets/**` exclusively.
 * **Contract Inspection & Change Requests:** Read `./crates/ro-contracts/src/**` directly from disk. Never modify `./crates/ro-contracts/**` and never run `cargo doc`. Request any needed contract changes in `ro-contracts` from the Main/Parent Agent.
 * **Reference Lookups:** Consult `.agents/agents/reference-explorer.md` (`reference-explorer`) whenever opcode definitions, shuffled packet tables, or struct layouts from `./reference/**` are needed. Never read `./reference/**` directly.
 * **Peer Consultation:** Coordinate directly with `ro-bins` and `ro-tools` via subagent messaging when integrating packet codecs with server session workers or proxy tools.
 * **Multi-File Review Gate:** Any change spanning more than one file in `./crates/ro-packets` requires spawning `.agents/agents/code-reviewer.md` (`code-reviewer`) to audit protocol framing and edge cases before completion.
+* **Red-Green Testing & Spec Collaboration:** Collaborate with `spec-writer` to define packet decoding, frame validation, bit-packing, and event encoding test scenarios supporting high-level bin-observable scenarios. Author or update unit and framing tests upfront (red phase) before writing production code changes.
 
 ---
 

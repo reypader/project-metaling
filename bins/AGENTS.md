@@ -7,6 +7,7 @@
 * **Peer Subagent Integration:** Never read or modify implementation files inside `./crates/ro-packets/**`, `./crates/ro-engine/**`, `./crates/ro-db/**`, `./crates/ro-mechanics/**`, `./crates/ro-persistence/**`, `./crates/ro-scripting/**`, or `./tools/**`. Invoke or message the corresponding crate subagents via `invoke_subagent` or `send_message` whenever you need public constructor signatures, concrete provider types, or integration details.
 * **Reference Lookups:** Consult `.agents/agents/reference-explorer.md` (`reference-explorer`) whenever reference handshake or session lifecycle behavior from `./reference/**` is needed. Never read `./reference/**` directly.
 * **Multi-File Review Gate:** Any change spanning more than one file in `./bins/**` requires spawning `.agents/agents/code-reviewer.md` (`code-reviewer`) to audit actor concurrency, handshake sequencing, and HTTP edge cases before completion.
+* **Red-Green Testing & Spec Collaboration:** Collaborate with `spec-writer` to define integration test scenarios observable from the server binaries and scoped test scenarios for binary session actors and HTTP endpoints. Author or update binary integration tests upfront (red phase) before writing production code changes.
 
 ---
 

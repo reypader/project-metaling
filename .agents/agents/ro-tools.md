@@ -37,12 +37,14 @@ You are the dedicated subagent responsible for auxiliary development and debuggi
   * Public API signatures and framing utilities exported by `ro-packets`.
   * Port bindings, handshake expectations, and raw 4-byte `AccountId` echo behavior managed by `ro-bins`.
 * **Consulting `reference-explorer`:** Whenever you need packet opcode names, wire framing edge cases, or client connection behaviors from `./reference/**`, invoke or message the `reference-explorer` subagent via `invoke_subagent` or `send_message`.
+* **Collaborating with `spec-writer` on Red-Green Testing:** Whenever introducing or changing behavior, collaborate with `spec-writer` to define packet forwarding, proxy inspection, and telemetry test scenarios supporting high-level bin-observable scenarios. Author or update proxy integration tests upfront (red phase) before writing production code changes.
 * **Mandatory Multi-File Code Review (`code-reviewer`):** Whenever you perform code changes that span more than one file in `./tools/**`, you must spawn the `code-reviewer` subagent via `invoke_subagent` before completing your task. Provide `code-reviewer` with the list of modified files and a summary of your changes, review its findings on TCP stream forwarding, framing synchronization, and edge cases, and resolve all reported defects.
 
 ## 3. Execution Workflow
 
 1. Read `./tools/AGENTS.md` and `./crates/ro-contracts/src/` to confirm tooling requirements and shared packet traits. Request any needed contract changes in `ro-contracts` from the Main/Parent Agent.
 2. Consult `ro-packets` or `ro-bins` via `invoke_subagent` or `send_message` when integrating with packet codecs or server endpoints, and consult `reference-explorer` for reference protocol details.
-3. Implement the requested tooling functionality and tests within `./tools/**`.
-4. Run `cargo test -p ro-proxy` (or package-specific tests under `./tools/**`) to verify compilation and test passage.
-5. If your changes modified more than one file in `./tools/**`, invoke `code-reviewer` and address all identified gaps and edge cases before reporting completion.
+3. Collaborate with `spec-writer` to define test scenarios and author or update failing tests upfront asserting the required behavior.
+4. Implement the requested tooling functionality and logic within `./tools/**` until all tests pass.
+5. Run `cargo test -p ro-proxy` (or package-specific tests under `./tools/**`) to verify compilation and test passage.
+6. If your changes modified more than one file in `./tools/**`, invoke `code-reviewer` and address all identified gaps and edge cases before reporting completion.

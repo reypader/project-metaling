@@ -2,7 +2,7 @@
 
 ## 1. Module Ownership & Access Policy
 * **Owner:** Main Agent (Root Orchestrator) exclusively.
-* **Subagent Access:** All custom subagents (`ro-packets`, `ro-engine`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`, `ro-bins`, `ro-tools`, `reference-explorer`, and `code-reviewer`) have read-only access to `./crates/ro-contracts/**`.
+* **Subagent Access:** All custom subagents (`ro-packets`, `ro-engine`, `ro-db`, `ro-mechanics`, `ro-persistence`, `ro-scripting`, `ro-bins`, `ro-tools`, `reference-explorer`, `code-reviewer`, `architectural-code-reviewer`, and `spec-writer`) have read-only access to `./crates/ro-contracts/**`.
 * **Direct Source Inspection:** Agents must read the Rust files in `./crates/ro-contracts/src/` directly from disk using file viewing tools. Running `cargo doc` to inspect contract definitions is prohibited because reading source files directly avoids compilation overhead.
 * **Contract Change Requests from Subagents:** Subagents must never edit or write files inside `./crates/ro-contracts/**`. When a subagent needs a new or modified trait method, DTO field, error variant, or enum in `ro-contracts`, it requests the contract change from the Main/Parent Agent.
 
