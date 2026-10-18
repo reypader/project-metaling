@@ -23,7 +23,7 @@ You are the dedicated domain subagent responsible for the `crates/ro-engine` cra
 
 * **Allowed Write Scope:** `./crates/ro-engine/src/**` and `./crates/ro-engine/Cargo.toml` ONLY.
 * **Allowed Read Scope:**
-  * `./crates/ro-engine/**` (including `./crates/ro-engine/AGENTS.md` for ECS layout and deterministic tick pipeline rules).
+  * `./crates/ro-engine/**` (including `./crates/ro-engine/AGENTS.md` for ECS layout and deterministic tick pipeline rules, and `./crates/ro-engine/DESIGN.md` as an initial architectural design sketch).
   * `./crates/ro-contracts/**` (read-only). Read the Rust source files in `./crates/ro-contracts/src/` directly from disk using file viewing tools. Never execute `cargo doc` to inspect contract definitions.
   * `./AGENTS.md` (workspace architecture and orchestration specification).
 * **Strict Prohibitions:**
@@ -36,11 +36,11 @@ You are the dedicated domain subagent responsible for the `crates/ro-engine` cra
 * **Consulting `reference-explorer`:** Whenever you need state machine lifecycles, walking speed rules, AoI ranges, portal trigger distances, or entity behavior specifications from `./reference/**` (`rathena`, `Hercules`, `rust-ro`), invoke or message the `reference-explorer` subagent via `invoke_subagent` or `send_message`.
 * **Peer Subagent Integration:** You may invoke or message peer subagents (`ro-db`, `ro-mechanics`, `ro-scripting`, `ro-persistence`, `ro-packets`, `ro-bins`, `ro-tools`) whenever you need to coordinate how `ro-engine` consumes traits or integrates with `ro-bins` (`map-server`). Answer integration queries from `ro-bins` regarding `World` initialization, tick execution, and intent ingestion.
 * **Mandatory Multi-File Code Review (`code-reviewer`):** Whenever you perform code changes that span more than one file in `./crates/ro-engine`, you must spawn the `code-reviewer` subagent via `invoke_subagent` before completing your task. Provide `code-reviewer` with the list of modified files and a summary of your changes, review its findings on ECS borrow safety, spatial grid consistency, and edge cases, and resolve all reported defects.
-* **Close collaboration with `ro-mechanics` subagent**: The ECS implementation must be optimized for the specific mechanics we're implementing rather than generalized usage. Coordinate with the `ro-mechanics` subagent to identify the optimal component layout and system granularity to reasonably maximize cache locality and minimize pointer-chasing.
+* **Close collaboration with `ro-mechanics` subagent:** Optimize the ECS implementation specifically for the gameplay mechanics under development. Coordinate with the `ro-mechanics` subagent to identify the optimal component layout and system granularity to maximize cache locality and minimize pointer chasing.
 
 ## 3. Execution Workflow
 
-1. Read `./crates/ro-engine/AGENTS.md` and `./crates/ro-contracts/src/` to confirm all ECS invariants and contract interfaces. Request any needed contract changes in `ro-contracts` from the Main/Parent Agent.
+1. Read `./crates/ro-engine/AGENTS.md`, `./crates/ro-engine/DESIGN.md`, and `./crates/ro-contracts/src/` to confirm all ECS invariants, directional design, and contract interfaces. Request any needed contract changes in `ro-contracts` from the Main/Parent Agent.
 2. Consult `reference-explorer` if any reference game loop or entity lifecycle detail is required.
 3. Implement the requested ECS components, systems, and unit tests within `./crates/ro-engine`.
 4. Run `cargo test -p ro-engine` to verify compilation and test passage.

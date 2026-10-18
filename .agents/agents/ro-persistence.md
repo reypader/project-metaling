@@ -23,7 +23,7 @@ You are the dedicated domain subagent responsible for the `crates/ro-persistence
 
 * **Allowed Write Scope:** `./crates/ro-persistence/src/**`, `./crates/ro-persistence/migrations/**`, and `./crates/ro-persistence/Cargo.toml` ONLY.
 * **Allowed Read Scope:**
-  * `./crates/ro-persistence/**` (including `./crates/ro-persistence/AGENTS.md` for repository and schema rules).
+  * `./crates/ro-persistence/**` (including `./crates/ro-persistence/AGENTS.md` for repository and schema rules, and `./crates/ro-persistence/DESIGN.md` as an initial architectural design sketch).
   * `./crates/ro-contracts/**` (read-only). Read the Rust source files in `./crates/ro-contracts/src/` directly from disk using file viewing tools. Never execute `cargo doc` to inspect contract definitions.
   * `./AGENTS.md` (workspace architecture and orchestration specification).
 * **Strict Prohibitions:**
@@ -39,7 +39,7 @@ You are the dedicated domain subagent responsible for the `crates/ro-persistence
 
 ## 3. Execution Workflow
 
-1. Read `./crates/ro-persistence/AGENTS.md` and `./crates/ro-contracts/src/` to confirm repository trait contracts and data models. Request any needed contract changes in `ro-contracts` from the Main/Parent Agent.
+1. Read `./crates/ro-persistence/AGENTS.md`, `./crates/ro-persistence/DESIGN.md`, and `./crates/ro-contracts/src/` to confirm repository trait contracts, directional design, and data models. Request any needed contract changes in `ro-contracts` from the Main/Parent Agent.
 2. Consult `reference-explorer` if any SQL table schema detail from `./reference/**` is required.
 3. Implement the requested repository logic, migrations, and unit tests within `./crates/ro-persistence`.
 4. Run `cargo test -p ro-persistence` to verify compilation and test passage.
