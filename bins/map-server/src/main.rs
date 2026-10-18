@@ -1,3 +1,7 @@
+mod config;
+
+pub use config::MapConfig;
+
 use std::net::SocketAddr;
 
 use anyhow::Context;
@@ -46,9 +50,10 @@ async fn accept_transfer(
 async fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt::init();
 
+    let config = MapConfig::from_env();
     info!(
-        "Starting map-server (Target PACKETVER: {}, Client TCP: 5121, Internal HTTP: 5122)",
-        TARGET_PACKETVER
+        "Starting map-server (Target PACKETVER: {}, Client TCP: {}, Internal HTTP: {}, Advertised Port: {})",
+        TARGET_PACKETVER, config.client_port, config.http_port, config.advertised_port
     );
 
     let service_handle = MapServiceHandle::new();
@@ -58,7 +63,7 @@ async fn main() -> anyhow::Result<()> {
         .route("/api/v1/transfers/accept", post(accept_transfer))
         .with_state(service_handle.clone());
 
-    let http_addr: SocketAddr = "0.0.0.0:5122"
+    let http_addr: SocketAddr = format!("0.0.0.0:{}", config.http_port)
         .parse()
         .context("Failed to parse map-server HTTP address")?;
     let http_listener = TcpListener::bind(http_addr)
@@ -66,7 +71,7 @@ async fn main() -> anyhow::Result<()> {
         .with_context(|| format!("Failed to bind map-server HTTP listener to {}", http_addr))?;
     info!("Map HTTP internal API listening on {}", http_addr);
 
-    let client_addr: SocketAddr = "0.0.0.0:5121"
+    let client_addr: SocketAddr = format!("0.0.0.0:{}", config.client_port)
         .parse()
         .context("Failed to parse map-server client TCP address")?;
     let client_listener = TcpListener::bind(client_addr)

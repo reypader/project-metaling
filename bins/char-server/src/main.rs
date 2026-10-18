@@ -1,5 +1,8 @@
+mod config;
 mod service;
 mod session;
+
+pub use config::CharConfig;
 
 use std::{net::SocketAddr, sync::Arc};
 
@@ -80,13 +83,14 @@ async fn prepare_transfer(
 async fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt::init();
 
+    let config = CharConfig::from_env();
     info!(
-        "Starting char-server (Target PACKETVER: {}, Client TCP: 6121, Internal HTTP: 6122)",
-        TARGET_PACKETVER
+        "Starting char-server (Target PACKETVER: {}, Client TCP: {}, Internal HTTP: {}, Advertised Port: {}, Default Map Port: {})",
+        TARGET_PACKETVER, config.client_port, config.http_port, config.advertised_port, config.default_map_port
     );
 
     let char_repo = Arc::new(InMemoryStubRepo::new());
-    let service_handle = CharServiceHandle::new(char_repo);
+    let service_handle = CharServiceHandle::with_default_map_port(char_repo, config.default_map_port);
 
     let http_router = Router::new()
         .route("/api/v1/health", get(health_check))
@@ -94,7 +98,7 @@ async fn main() -> anyhow::Result<()> {
         .route("/api/v1/transfers/prepare", post(prepare_transfer))
         .with_state(service_handle.clone());
 
-    let http_addr: SocketAddr = "0.0.0.0:6122"
+    let http_addr: SocketAddr = format!("0.0.0.0:{}", config.http_port)
         .parse()
         .context("Failed to parse char-server HTTP address")?;
     let http_listener = TcpListener::bind(http_addr)
@@ -102,7 +106,7 @@ async fn main() -> anyhow::Result<()> {
         .with_context(|| format!("Failed to bind char-server HTTP listener to {}", http_addr))?;
     info!("Character HTTP internal API listening on {}", http_addr);
 
-    let client_addr: SocketAddr = "0.0.0.0:6121"
+    let client_addr: SocketAddr = format!("0.0.0.0:{}", config.client_port)
         .parse()
         .context("Failed to parse char-server client TCP address")?;
     let client_listener = TcpListener::bind(client_addr)

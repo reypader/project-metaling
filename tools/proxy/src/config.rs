@@ -16,16 +16,16 @@ pub struct ProxyArgs {
     #[arg(short = 't', short_alias = 'i', long = "target-ip", alias = "ip", default_value = "127.0.0.1")]
     pub target_ip: String,
 
-    /// Login server target in "host:port" format (defaults to <target-ip>:6900)
-    #[arg(short = 'l', long = "login")]
+    /// Login server target in "host:port" format (defaults to PROXY_LOGIN_TARGET or <target-ip>:6900)
+    #[arg(short = 'l', long = "login", env = "PROXY_LOGIN_TARGET")]
     pub login: Option<String>,
 
-    /// Char server target in "host:port" format (defaults to <target-ip>:6121)
-    #[arg(short = 'c', long = "char")]
+    /// Char server target in "host:port" format (defaults to PROXY_CHAR_TARGET or <target-ip>:6121)
+    #[arg(short = 'c', long = "char", env = "PROXY_CHAR_TARGET")]
     pub char_server: Option<String>,
 
-    /// Map server target in "host:port" format (defaults to <target-ip>:5121)
-    #[arg(short = 'm', long = "map")]
+    /// Map server target in "host:port" format (defaults to PROXY_MAP_TARGET or <target-ip>:5121)
+    #[arg(short = 'm', long = "map", env = "PROXY_MAP_TARGET")]
     pub map_server: Option<String>,
 
     /// Address to bind proxy listeners
@@ -145,11 +145,31 @@ pub fn resolve_target(
 
 impl ProxyArgs {
     pub fn build_config(&self) -> Result<ProxyConfig> {
-        let login_target = resolve_target(self.login.as_deref(), &self.target_ip, DEFAULT_LOGIN_PORT)
+        let login_env = std::env::var("PROXY_LOGIN_TARGET").ok();
+        let login_input = self
+            .login
+            .as_deref()
+            .filter(|s| !s.trim().is_empty())
+            .or_else(|| login_env.as_deref().filter(|s| !s.trim().is_empty()));
+        let login_target = resolve_target(login_input, &self.target_ip, DEFAULT_LOGIN_PORT)
             .context("Failed to resolve Login server target address")?;
-        let char_target = resolve_target(self.char_server.as_deref(), &self.target_ip, DEFAULT_CHAR_PORT)
+
+        let char_env = std::env::var("PROXY_CHAR_TARGET").ok();
+        let char_input = self
+            .char_server
+            .as_deref()
+            .filter(|s| !s.trim().is_empty())
+            .or_else(|| char_env.as_deref().filter(|s| !s.trim().is_empty()));
+        let char_target = resolve_target(char_input, &self.target_ip, DEFAULT_CHAR_PORT)
             .context("Failed to resolve Char server target address")?;
-        let map_target = resolve_target(self.map_server.as_deref(), &self.target_ip, DEFAULT_MAP_PORT)
+
+        let map_env = std::env::var("PROXY_MAP_TARGET").ok();
+        let map_input = self
+            .map_server
+            .as_deref()
+            .filter(|s| !s.trim().is_empty())
+            .or_else(|| map_env.as_deref().filter(|s| !s.trim().is_empty()));
+        let map_target = resolve_target(map_input, &self.target_ip, DEFAULT_MAP_PORT)
             .context("Failed to resolve Map server target address")?;
 
         let log_file = self
