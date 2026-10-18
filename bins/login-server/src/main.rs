@@ -1,5 +1,8 @@
+mod config;
 mod service;
 mod session;
+
+pub use config::LoginConfig;
 
 use std::{net::SocketAddr, sync::Arc};
 
@@ -85,17 +88,22 @@ pub fn create_http_router(service: LoginServiceHandle) -> Router {
 async fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt::init();
 
+    let config = LoginConfig::from_env();
     info!(
-        "Starting login-server (Target PACKETVER: {}, Client TCP: 6900, Internal HTTP: 6901)",
-        TARGET_PACKETVER
+        "Starting login-server (Target PACKETVER: {}, Client TCP: {}, Internal HTTP: {}, Advertised Char Port: {})",
+        TARGET_PACKETVER, config.client_port, config.http_port, config.advertised_char_port
     );
 
     let account_repo = Arc::new(InMemoryStubRepo::new());
-    let service_handle = LoginService::new(account_repo);
+    let service_handle = LoginService::with_ttl_and_char_port(
+        account_repo,
+        std::time::Duration::from_secs(300),
+        config.advertised_char_port,
+    );
 
     let http_router = create_http_router(service_handle.clone());
 
-    let http_addr: SocketAddr = "0.0.0.0:6901"
+    let http_addr: SocketAddr = format!("0.0.0.0:{}", config.http_port)
         .parse()
         .context("Failed to parse login HTTP address")?;
     let http_listener = TcpListener::bind(http_addr)
@@ -103,7 +111,7 @@ async fn main() -> anyhow::Result<()> {
         .with_context(|| format!("Failed to bind login HTTP listener to {}", http_addr))?;
     info!("Login HTTP internal API listening on {}", http_addr);
 
-    let client_addr: SocketAddr = "0.0.0.0:6900"
+    let client_addr: SocketAddr = format!("0.0.0.0:{}", config.client_port)
         .parse()
         .context("Failed to parse login client TCP address")?;
     let client_listener = TcpListener::bind(client_addr)

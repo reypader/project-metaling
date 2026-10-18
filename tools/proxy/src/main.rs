@@ -49,15 +49,39 @@ async fn main() -> Result<()> {
 
     let recorder = Arc::new(PacketSequenceRecorder::new());
 
-    let login_listener = TcpListener::bind(&login_bind)
-        .await
-        .with_context(|| format!("Failed to bind Login listener on {}", login_bind))?;
-    let char_listener = TcpListener::bind(&char_bind)
-        .await
-        .with_context(|| format!("Failed to bind Char listener on {}", char_bind))?;
-    let map_listener = TcpListener::bind(&map_bind)
-        .await
-        .with_context(|| format!("Failed to bind Map listener on {}", map_bind))?;
+    let login_listener = match TcpListener::bind(&login_bind).await {
+        Ok(listener) => listener,
+        Err(err) => {
+            if err.kind() == std::io::ErrorKind::AddrInUse {
+                error!("Failed to bind Login listener on {}: Address already in use", login_bind);
+            } else {
+                error!("Failed to bind Login listener on {}: {}", login_bind, err);
+            }
+            return Err(err).with_context(|| format!("Failed to bind Login listener on {}", login_bind));
+        }
+    };
+    let char_listener = match TcpListener::bind(&char_bind).await {
+        Ok(listener) => listener,
+        Err(err) => {
+            if err.kind() == std::io::ErrorKind::AddrInUse {
+                error!("Failed to bind Char listener on {}: Address already in use", char_bind);
+            } else {
+                error!("Failed to bind Char listener on {}: {}", char_bind, err);
+            }
+            return Err(err).with_context(|| format!("Failed to bind Char listener on {}", char_bind));
+        }
+    };
+    let map_listener = match TcpListener::bind(&map_bind).await {
+        Ok(listener) => listener,
+        Err(err) => {
+            if err.kind() == std::io::ErrorKind::AddrInUse {
+                error!("Failed to bind Map listener on {}: Address already in use", map_bind);
+            } else {
+                error!("Failed to bind Map listener on {}: {}", map_bind, err);
+            }
+            return Err(err).with_context(|| format!("Failed to bind Map listener on {}", map_bind));
+        }
+    };
 
     let login_target = config.login_target;
     let login_recorder = recorder.clone();
@@ -83,11 +107,34 @@ async fn main() -> Result<()> {
         }
     });
 
+    let shutdown_signal = async {
+        #[cfg(unix)]
+        {
+            let mut sigterm = match tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate()) {
+                Ok(sig) => sig,
+                Err(err) => {
+                    error!("Failed to register SIGTERM handler: {}", err);
+                    let _ = tokio::signal::ctrl_c().await;
+                    return;
+                }
+            };
+            tokio::select! {
+                _ = tokio::signal::ctrl_c() => info!("Shutdown signal (SIGINT) received, closing proxy"),
+                _ = sigterm.recv() => info!("Shutdown signal (SIGTERM) received, closing proxy"),
+            }
+        }
+        #[cfg(not(unix))]
+        {
+            let _ = tokio::signal::ctrl_c().await;
+            info!("Shutdown signal (SIGINT) received, closing proxy");
+        }
+    };
+
     tokio::select! {
         _ = login_task => info!("Login proxy task terminated"),
         _ = char_task => info!("Char proxy task terminated"),
         _ = map_task => info!("Map proxy task terminated"),
-        _ = tokio::signal::ctrl_c() => info!("Shutdown signal received, closing proxy"),
+        _ = shutdown_signal => {},
     }
 
     let now = std::time::SystemTime::now();

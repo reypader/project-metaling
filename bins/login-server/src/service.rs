@@ -66,9 +66,17 @@ impl LoginService {
     }
 
     pub fn with_ttl(account_repo: Arc<dyn AccountRepository>, session_ttl: Duration) -> Self {
+        Self::with_ttl_and_char_port(account_repo, session_ttl, 6121)
+    }
+
+    pub fn with_ttl_and_char_port(
+        account_repo: Arc<dyn AccountRepository>,
+        session_ttl: Duration,
+        advertised_char_port: u16,
+    ) -> Self {
         let default_char_server = CharServerInfo {
             ip: [127, 0, 0, 1],
-            port: 6121,
+            port: advertised_char_port,
             name: "Metaling-Char".to_string(),
             users: 0,
             server_type: 0,

@@ -27,6 +27,7 @@ struct RegisteredMapServer {
 struct CharSharedState {
     char_repo: Arc<dyn CharacterRepository>,
     map_servers: Vec<RegisteredMapServer>,
+    default_map_port: u16,
 }
 
 /// Shared handle used by `char-server` TCP listener and internal HTTP endpoints.
@@ -39,11 +40,18 @@ pub struct CharServiceHandle {
 
 impl CharServiceHandle {
     pub fn new(char_repo: Arc<dyn CharacterRepository>) -> Self {
+        Self::with_default_map_port(char_repo, 5121)
+    }
+
+    pub fn with_default_map_port(
+        char_repo: Arc<dyn CharacterRepository>,
+        default_map_port: u16,
+    ) -> Self {
         let default_map_server = RegisteredMapServer {
             name: "metaling-map-default".to_string(),
             maps: vec!["prontera.gat".to_string()],
             host: [127, 0, 0, 1],
-            port: 5121,
+            port: default_map_port,
         };
 
         Self {
@@ -51,6 +59,7 @@ impl CharServiceHandle {
             shared: Arc::new(RwLock::new(CharSharedState {
                 char_repo,
                 map_servers: vec![default_map_server],
+                default_map_port,
             })),
             start_time: Instant::now(),
         }
@@ -423,7 +432,7 @@ impl CharSessionActor {
                         .iter()
                         .find(|srv| srv.maps.contains(&target_char.last_map))
                         .map(|srv| (srv.host, srv.port))
-                        .unwrap_or(([127, 0, 0, 1], 5121))
+                        .unwrap_or(([127, 0, 0, 1], state.default_map_port))
                 };
 
                 let event = ServerEvent::CharacterSelected {
