@@ -959,6 +959,7 @@ impl PacketOpcode {
     pub const CZ_NPC_BARTER_MARKET_CLOSE: Self = Self(0x0b12);
     pub const CZ_REQ_OPEN_MSGBOX_EXTEND_BODYITEM_SIZE: Self = Self(0x0b14);
     pub const CZ_REQ_EXTEND_BODYITEM_SIZE: Self = Self(0x0b16);
+    pub const ZC_INVENTORY_EXPANSION_INFO: Self = Self(0x0b18);
     pub const CZ_CLOSE_MSGBOX_EXTEND_BODYITEM_SIZE: Self = Self(0x0b19);
     pub const CZ_PING_LIVE: Self = Self(0x0b1c);
     pub const CZ_SHORTCUT_KEY_CHANGE2: Self = Self(0x0b21);
@@ -1953,6 +1954,7 @@ impl PacketOpcode {
             0x0b12 => Some("CZ_NPC_BARTER_MARKET_CLOSE"),
             0x0b14 => Some("CZ_REQ_OPEN_MSGBOX_EXTEND_BODYITEM_SIZE"),
             0x0b16 => Some("CZ_REQ_EXTEND_BODYITEM_SIZE"),
+            0x0b18 => Some("ZC_INVENTORY_EXPANSION_INFO"),
             0x0b19 => Some("CZ_CLOSE_MSGBOX_EXTEND_BODYITEM_SIZE"),
             0x0b1c => Some("CZ_PING_LIVE"),
             0x0b21 => Some("CZ_SHORTCUT_KEY_CHANGE2"),
@@ -2401,7 +2403,14 @@ pub enum ServerEvent {
         char_id: CharId,
         result: u32,
     },
+    Aid {
+        account_id: AccountId,
+    },
+    InventoryExpansionInfo {
+        expansion_size: i16,
+    },
     AcceptEnter {
+        account_id: AccountId,
         server_tick: u32,
         pos: MapPosition,
     },

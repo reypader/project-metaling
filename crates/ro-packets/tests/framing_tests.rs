@@ -259,15 +259,21 @@ fn test_event_encoder_integration() {
     let ver = ro_contracts::TARGET_PACKETVER;
     let mut decoder = PacketDecoder::default();
 
-    // 1. AcceptEnter (0x02eb)
+    // 1. AcceptEnter (23-byte burst: 0x0283, 0x0b18, 0x02eb)
     let event = ServerEvent::AcceptEnter {
+        account_id: AccountId(2000001),
         server_tick: 1111,
         pos: MapPosition { x: 50, y: 60, dir: 1 },
     };
     let bytes = encoder.encode_event(&event, ver).unwrap();
+    assert_eq!(bytes.len(), 23);
     let mut stream = BytesMut::from(bytes.as_ref());
-    let raw = decoder.decode(&mut stream).unwrap().unwrap();
-    assert_eq!(raw.opcode, PacketOpcode(0x02eb));
+    let raw1 = decoder.decode(&mut stream).unwrap().unwrap();
+    assert_eq!(raw1.opcode, PacketOpcode::ZC_AID);
+    let raw2 = decoder.decode(&mut stream).unwrap().unwrap();
+    assert_eq!(raw2.opcode, PacketOpcode::ZC_INVENTORY_EXPANSION_INFO);
+    let raw3 = decoder.decode(&mut stream).unwrap().unwrap();
+    assert_eq!(raw3.opcode, PacketOpcode::ZC_ACCEPT_ENTER);
 
     // 2. LoginAccepted (0x0ac4)
     let event = ServerEvent::LoginAccepted {
@@ -570,16 +576,24 @@ fn test_modern_event_encoder_roundtrip() {
     let ver = 20260219;
     let mut decoder = PacketDecoder::new(RathenaPacketLengthTable, ver);
 
-    // 1. ZC_ACCEPT_ENTER_MODERN (0x02eb, 13 bytes)
+    // 1. ZC_ACCEPT_ENTER_MODERN burst (23 bytes: 0x0283, 0x0b18, 0x02eb)
     let event = ServerEvent::AcceptEnter {
+        account_id: AccountId(2000001),
         server_tick: 7777,
         pos: MapPosition { x: 55, y: 66, dir: 3 },
     };
     let bytes = encoder.encode_event(&event, ver).unwrap();
+    assert_eq!(bytes.len(), 23);
     let mut stream = BytesMut::from(bytes.as_ref());
-    let raw = decoder.decode(&mut stream).unwrap().unwrap();
-    assert_eq!(raw.opcode, PacketOpcode(0x02eb));
-    assert_eq!(raw.payload_len(), 11);
+    let raw1 = decoder.decode(&mut stream).unwrap().unwrap();
+    assert_eq!(raw1.opcode, PacketOpcode::ZC_AID);
+    assert_eq!(raw1.payload_len(), 4);
+    let raw2 = decoder.decode(&mut stream).unwrap().unwrap();
+    assert_eq!(raw2.opcode, PacketOpcode::ZC_INVENTORY_EXPANSION_INFO);
+    assert_eq!(raw2.payload_len(), 2);
+    let raw3 = decoder.decode(&mut stream).unwrap().unwrap();
+    assert_eq!(raw3.opcode, PacketOpcode(0x02eb));
+    assert_eq!(raw3.payload_len(), 11);
 
     // 2. ZC_NOTIFY_MOVE_MODERN (0x09fd, 114 bytes dynamic)
     let event = ServerEvent::EntityMoved {

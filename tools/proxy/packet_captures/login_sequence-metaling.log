@@ -1,41 +1,44 @@
 ================================================================================
 Ragnarok Online Packet Proxy - Global Sequence Log
 Target PACKETVER: 20260219
-Generated: 2026-10-18 03:25:29.663 UTC
-Total Packets Recorded: 23
+Generated: 2026-10-18 06:24:44.411 UTC
+Total Packets Recorded: 26
 ================================================================================
 
 Chronological Packet Sequence:
 #      Timestamp (UTC)         Server  Session  Direction          Opcode                   Len    Details
 --------------------------------------------------------------------------------------------------------------
-1      2026-10-18 03:25:12.348 Login   #1       CLIENT -> SERVER   0x0064 (CA_LOGIN)        55     [IMPLEMENTED] Decoded: Intent(Login { username: "test", password: "PASSWORD", client_version: 2147483648, client_type: 0 })
-2      2026-10-18 03:25:12.353 Login   #1       SERVER -> CLIENT   0x083e (AC_REFUSE_LOGIN) 26     [IMPLEMENTED] payload: [01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00] |........................|
-3      2026-10-18 03:25:17.733 Login   #2       CLIENT -> SERVER   0x0064 (CA_LOGIN)        55     [IMPLEMENTED] Decoded: Intent(Login { username: "test", password: "password", client_version: 2147483648, client_type: 0 })
-4      2026-10-18 03:25:17.738 Login   #2       SERVER -> CLIENT   0x0ac4 (AC_ACCEPT_LOGIN) 224    [IMPLEMENTED] payload: [c1 c9 93 27 80 84 1e 00 ea d5 93 27 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+188 bytes)] |...'.......'....................|
-5      2026-10-18 03:25:18.895 Char    #3       CLIENT -> SERVER   0x0065 (CH_ENTER)        17     [IMPLEMENTED] Decoded: Intent(EnterCharServer { account_id: AccountId(2000000), login_id1: 663996865, login_id2: 663999978, client_version: 0, sex: Male })
-6      2026-10-18 03:25:18.899 Char    #3       SERVER -> CLIENT   0x8480                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [1e 00] |..|
-7      2026-10-18 03:25:18.901 Char    #3       SERVER -> CLIENT   0x082d (HC_ACCEPT_ENTER2) 29     [IMPLEMENTED] payload: [1d 00 0f 00 0f 0f 0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00] |...........................|
-8      2026-10-18 03:25:18.901 Char    #3       SERVER -> CLIENT   0x006b (HC_ACCEPT_ENTER) 202    [IMPLEMENTED] payload: [0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f0 49 02 00 00 00 00 00 00 ... (+166 bytes)] |........................I.......|
-9      2026-10-18 03:25:18.901 Char    #3       SERVER -> CLIENT   0x09a0 (HC_CHARLIST_NOTIFY) 6      [IMPLEMENTED] payload: [05 00 00 00] |....|
-10     2026-10-18 03:25:18.901 Char    #3       SERVER -> CLIENT   0x020d (HC_BLOCK_CHARACTER) 4      [IMPLEMENTED] payload: []
-11     2026-10-18 03:25:18.901 Char    #3       SERVER -> CLIENT   0x08b9 (HC_SECOND_PASSWD_LOGIN) 12     [IMPLEMENTED] payload: [00 00 00 00 80 84 1e 00 00 00] |..........|
-12     2026-10-18 03:25:18.908 Char    #3       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
-13     2026-10-18 03:25:18.908 Char    #3       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
-14     2026-10-18 03:25:18.908 Char    #3       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
-15     2026-10-18 03:25:18.908 Char    #3       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
-16     2026-10-18 03:25:18.908 Char    #3       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
-17     2026-10-18 03:25:18.913 Char    #3       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
-18     2026-10-18 03:25:18.969 Char    #3       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
-19     2026-10-18 03:25:18.969 Char    #3       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
-20     2026-10-18 03:25:18.969 Char    #3       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
-21     2026-10-18 03:25:18.969 Char    #3       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
-22     2026-10-18 03:25:20.782 Char    #3       CLIENT -> SERVER   0x0066 (CH_SELECT_CHAR)  3      [IMPLEMENTED] Decoded: Intent(SelectCharacter { slot: 0 })
-23     2026-10-18 03:25:20.849 Char    #3       SERVER -> CLIENT   0x0ac5 (HC_NOTIFY_ZONESVR) 156    [IMPLEMENTED] payload: [f0 49 02 00 70 72 6f 6e 74 65 72 61 2e 67 61 74 00 00 00 00 7f 00 00 01 01 14 00 00 00 00 00 00 ... (+122 bytes)] |.I..prontera.gat................|
+1      2026-10-18 06:24:08.666 Login   #1       CLIENT -> SERVER   0x0064 (CA_LOGIN)        55     [IMPLEMENTED] Decoded: Intent(Login { username: "test", password: "PASSWORD", client_version: 2147483648, client_type: 0 })
+2      2026-10-18 06:24:08.669 Login   #1       SERVER -> CLIENT   0x083e (AC_REFUSE_LOGIN) 26     [IMPLEMENTED] payload: [01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00] |........................|
+3      2026-10-18 06:24:12.348 Login   #2       CLIENT -> SERVER   0x0064 (CA_LOGIN)        55     [IMPLEMENTED] Decoded: Intent(Login { username: "test", password: "password", client_version: 2147483648, client_type: 0 })
+4      2026-10-18 06:24:12.352 Login   #2       SERVER -> CLIENT   0x0ac4 (AC_ACCEPT_LOGIN) 224    [IMPLEMENTED] payload: [49 14 9c 0f 80 84 1e 00 72 10 9c 0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+188 bytes)] |I.......r.......................|
+5      2026-10-18 06:24:13.372 Char    #3       CLIENT -> SERVER   0x0065 (CH_ENTER)        17     [IMPLEMENTED] Decoded: Intent(EnterCharServer { account_id: AccountId(2000000), login_id1: 261887049, login_id2: 261886066, client_version: 0, sex: Male })
+6      2026-10-18 06:24:13.376 Char    #3       SERVER -> CLIENT   0x8480                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [1e 00] |..|
+7      2026-10-18 06:24:13.378 Char    #3       SERVER -> CLIENT   0x082d (HC_ACCEPT_ENTER2) 29     [IMPLEMENTED] payload: [1d 00 0f 00 0f 0f 0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00] |...........................|
+8      2026-10-18 06:24:13.378 Char    #3       SERVER -> CLIENT   0x006b (HC_ACCEPT_ENTER) 202    [IMPLEMENTED] payload: [0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f0 49 02 00 00 00 00 00 00 ... (+166 bytes)] |........................I.......|
+9      2026-10-18 06:24:13.378 Char    #3       SERVER -> CLIENT   0x09a0 (HC_CHARLIST_NOTIFY) 6      [IMPLEMENTED] payload: [05 00 00 00] |....|
+10     2026-10-18 06:24:13.378 Char    #3       SERVER -> CLIENT   0x020d (HC_BLOCK_CHARACTER) 4      [IMPLEMENTED] payload: []
+11     2026-10-18 06:24:13.378 Char    #3       SERVER -> CLIENT   0x08b9 (HC_SECOND_PASSWD_LOGIN) 12     [IMPLEMENTED] payload: [00 00 00 00 80 84 1e 00 00 00] |..........|
+12     2026-10-18 06:24:13.390 Char    #3       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+13     2026-10-18 06:24:13.390 Char    #3       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+14     2026-10-18 06:24:13.390 Char    #3       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+15     2026-10-18 06:24:13.390 Char    #3       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+16     2026-10-18 06:24:13.390 Char    #3       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+17     2026-10-18 06:24:13.393 Char    #3       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
+18     2026-10-18 06:24:13.436 Char    #3       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
+19     2026-10-18 06:24:13.436 Char    #3       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
+20     2026-10-18 06:24:13.436 Char    #3       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
+21     2026-10-18 06:24:13.436 Char    #3       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f0 49 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
+22     2026-10-18 06:24:14.590 Char    #3       CLIENT -> SERVER   0x0066 (CH_SELECT_CHAR)  3      [IMPLEMENTED] Decoded: Intent(SelectCharacter { slot: 0 })
+23     2026-10-18 06:24:14.604 Char    #3       SERVER -> CLIENT   0x0ac5 (HC_NOTIFY_ZONESVR) 156    [IMPLEMENTED] payload: [f0 49 02 00 70 72 6f 6e 74 65 72 61 2e 67 61 74 00 00 00 00 7f 00 00 01 01 14 00 00 00 00 00 00 ... (+122 bytes)] |.I..prontera.gat................|
+24     2026-10-18 06:24:14.621 Map     #4       CLIENT -> SERVER   0x0436 (CZ_ENTER)        23     [IMPLEMENTED] Decoded: Intent(EnterMap { account_id: AccountId(2000000), char_id: CharId(150000), login_id1: 261887049, client_tick: 4028630224, sex: Male })
+25     2026-10-18 06:24:14.624 Map     #4       SERVER -> CLIENT   0x8480                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [1e 00] |..|
+26     2026-10-18 06:24:14.626 Map     #4       SERVER -> CLIENT   0x02eb (ZC_ACCEPT_ENTER) 13     [IMPLEMENTED] payload: [08 7f 00 00 27 0b f0 05 05 00 00] |....'......|
 
 ================================================================================
 Summary by Server:
   Login Server: 4 packets
   Char Server:  19 packets
-  Map Server:   0 packets
-  Total:        23 packets
+  Map Server:   3 packets
+  Total:        26 packets
 ================================================================================

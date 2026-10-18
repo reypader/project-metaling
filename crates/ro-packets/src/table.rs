@@ -971,6 +971,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0b12 => Some(Fixed(2)),
         0x0b14 => Some(Fixed(2)),
         0x0b16 => Some(Fixed(2)),
+        0x0b18 => Some(Fixed(4)), // ZC_INVENTORY_EXPANSION_INFO
         0x0b19 => Some(Fixed(2)),
         0x0b1c => Some(Fixed(2)),
         0x0b21 => Some(Fixed(13)),
@@ -1060,6 +1061,8 @@ mod tests {
         assert_eq!(table.packet_length(PacketOpcode(0x0b72), ver), Some(PacketLength::Dynamic));
         assert_eq!(table.packet_length(PacketOpcode(0x00b3), ver), Some(PacketLength::Fixed(3)));
         assert_eq!(table.packet_length(PacketOpcode(0x0829), ver), Some(PacketLength::Fixed(12)));
+        assert_eq!(table.packet_length(PacketOpcode::ZC_INVENTORY_EXPANSION_INFO, ver), Some(PacketLength::Fixed(4)));
+        assert_eq!(table.packet_length(PacketOpcode::ZC_AID, ver), Some(PacketLength::Fixed(6)));
         assert_eq!(table.packet_length(PacketOpcode(0x099d), ver), None);
     }
 

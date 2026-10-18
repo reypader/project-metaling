@@ -12,7 +12,7 @@ use tokio::{
     net::TcpStream,
     sync::mpsc,
 };
-use tokio_util::codec::Decoder;
+use tokio_util::{codec::Decoder, sync::CancellationToken};
 use tracing::{debug, error, info, warn};
 
 use crate::service::{MapServiceHandle, WorldCommand};
@@ -30,6 +30,10 @@ pub async fn handle_client_session(
 
     let (mut reader, mut writer) = socket.into_split();
     let (outbound_tx, mut outbound_rx) = mpsc::channel::<Bytes>(64);
+    let mut outbound_tx = Some(outbound_tx);
+
+    let cancel_token = CancellationToken::new();
+    let cancel_token_writer = cancel_token.clone();
 
     let mut writer_task = tokio::spawn(async move {
         while let Some(bytes) = outbound_rx.recv().await {
@@ -38,6 +42,7 @@ pub async fn handle_client_session(
                     "Failed to write outbound bytes to {:?} ({}): {}",
                     session_id, peer_addr, err
                 );
+                cancel_token_writer.cancel();
                 return;
             }
             if let Err(err) = writer.flush().await {
@@ -45,9 +50,11 @@ pub async fn handle_client_session(
                     "Failed to flush outbound bytes to {:?} ({}): {}",
                     session_id, peer_addr, err
                 );
+                cancel_token_writer.cancel();
                 return;
             }
         }
+        cancel_token_writer.cancel();
     });
 
     let mut decoder = PacketDecoder::new(RathenaPacketLengthTable, TARGET_PACKETVER);
@@ -59,23 +66,34 @@ pub async fn handle_client_session(
     let mut world_tx: Option<mpsc::Sender<WorldCommand>> = None;
 
     'session_loop: loop {
-        match reader.read_buf(&mut buffer).await {
-            Ok(0) => {
-                info!("Client {:?} ({}) closed connection", session_id, peer_addr);
-                break 'session_loop;
-            }
-            Ok(bytes_read) => {
-                debug!(
-                    "Read {} bytes from client {:?} ({})",
-                    bytes_read, session_id, peer_addr
-                );
-            }
-            Err(err) => {
-                error!(
-                    "Socket read error from client {:?} ({}): {}",
-                    session_id, peer_addr, err
+        tokio::select! {
+            _ = cancel_token.cancelled() => {
+                info!(
+                    "Session {:?} ({}) writer task finished or outbound queue closed; terminating session",
+                    session_id, peer_addr
                 );
                 break 'session_loop;
+            }
+            read_result = reader.read_buf(&mut buffer) => {
+                match read_result {
+                    Ok(0) => {
+                        info!("Client {:?} ({}) closed connection", session_id, peer_addr);
+                        break 'session_loop;
+                    }
+                    Ok(bytes_read) => {
+                        debug!(
+                            "Read {} bytes from client {:?} ({})",
+                            bytes_read, session_id, peer_addr
+                        );
+                    }
+                    Err(err) => {
+                        error!(
+                            "Socket read error from client {:?} ({}): {}",
+                            session_id, peer_addr, err
+                        );
+                        break 'session_loop;
+                    }
+                }
             }
         }
 
@@ -107,19 +125,18 @@ pub async fn handle_client_session(
                                 continue;
                             }
 
+                            let Some(tx) = outbound_tx.take() else {
+                                warn!(
+                                    "Session {:?} ({}) outbound sender unavailable for EnterMap",
+                                    session_id, peer_addr
+                                );
+                                continue;
+                            };
+
                             let entered_account_id = *account_id;
                             let entered_char_id = *char_id;
                             authenticated_account = Some(entered_account_id);
                             authenticated_char = Some(entered_char_id);
-
-                            let echo = Bytes::copy_from_slice(&entered_account_id.0.to_le_bytes());
-                            if outbound_tx.try_send(echo).is_err() {
-                                error!(
-                                    "Outbound queue full when echoing AccountId to {}",
-                                    peer_addr
-                                );
-                                break 'session_loop;
-                            }
 
                             let target_world_tx = service.resolve_world_for_character(entered_char_id);
                             let session_intent = SessionIntent::new(
@@ -132,8 +149,9 @@ pub async fn handle_client_session(
                             if let Err(err) = target_world_tx
                                 .send(WorldCommand::JoinSession {
                                     session_id,
+                                    account_id: entered_account_id,
                                     char_id: entered_char_id,
-                                    outbound_tx: outbound_tx.clone(),
+                                    outbound_tx: tx,
                                     initial_intent: session_intent,
                                 })
                                 .await
@@ -180,6 +198,8 @@ pub async fn handle_client_session(
             }
         }
     }
+
+    cancel_token.cancel();
 
     if let Some(tx) = &world_tx {
         let leave_cmd = WorldCommand::LeaveSession { session_id };

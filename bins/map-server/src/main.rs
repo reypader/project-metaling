@@ -1,6 +1,3 @@
-mod service;
-mod session;
-
 use std::net::SocketAddr;
 
 use anyhow::Context;
@@ -12,13 +9,11 @@ use axum::{
 use tokio::net::TcpListener;
 use tracing::{error, info, warn};
 
+use map_server::{handle_client_session, MapServiceHandle};
 use ro_contracts::{
     HealthResponse, PrepareMapTransferRequest, PrepareMapTransferResponse, ServerStatus,
     ServerType, TARGET_PACKETVER,
 };
-
-use service::MapServiceHandle;
-use session::handle_client_session;
 
 async fn health_check(
     State(service): State<MapServiceHandle>,
@@ -151,23 +146,24 @@ mod tests {
         client.write_all(&cz_enter_bytes).await.unwrap();
         client.flush().await.unwrap();
 
-        let mut account_id_buf = [0u8; 4];
-        client.read_exact(&mut account_id_buf).await.unwrap();
-        assert_eq!(u32::from_le_bytes(account_id_buf), 2000000);
-
         let mut decoder = PacketDecoder::new(RathenaPacketLengthTable, TARGET_PACKETVER);
         let mut buffer = BytesMut::with_capacity(2048);
 
-        let mut accept_raw = None;
-        while accept_raw.is_none() {
+        let mut burst_packets = Vec::new();
+        while burst_packets.len() < 3 {
             let n = client.read_buf(&mut buffer).await.unwrap();
             assert!(n > 0);
-            if let Some(raw) = decoder.decode(&mut buffer).unwrap() {
-                accept_raw = Some(raw);
+            while let Some(raw) = decoder.decode(&mut buffer).unwrap() {
+                burst_packets.push(raw);
             }
         }
-        let raw = accept_raw.unwrap();
-        assert_eq!(raw.opcode, PacketOpcode::ZC_ACCEPT_ENTER);
+        assert_eq!(burst_packets[0].opcode, PacketOpcode::ZC_AID);
+        assert_eq!(&burst_packets[0].payload[0..4], &2000000u32.to_le_bytes());
+        assert_eq!(
+            burst_packets[1].opcode,
+            PacketOpcode::ZC_INVENTORY_EXPANSION_INFO
+        );
+        assert_eq!(burst_packets[2].opcode, PacketOpcode::ZC_ACCEPT_ENTER);
 
         client.write_all(&[0x7d, 0x00]).await.unwrap();
         client.flush().await.unwrap();
@@ -225,23 +221,24 @@ mod tests {
         client.write_all(&cz_enter_bytes).await.unwrap();
         client.flush().await.unwrap();
 
-        let mut account_id_buf = [0u8; 4];
-        client.read_exact(&mut account_id_buf).await.unwrap();
-        assert_eq!(u32::from_le_bytes(account_id_buf), 2000000);
-
         let mut decoder = PacketDecoder::new(RathenaPacketLengthTable, TARGET_PACKETVER);
         let mut buffer = BytesMut::with_capacity(2048);
 
-        let mut accept_raw = None;
-        while accept_raw.is_none() {
+        let mut burst_packets = Vec::new();
+        while burst_packets.len() < 3 {
             let n = client.read_buf(&mut buffer).await.unwrap();
             assert!(n > 0);
-            if let Some(raw) = decoder.decode(&mut buffer).unwrap() {
-                accept_raw = Some(raw);
+            while let Some(raw) = decoder.decode(&mut buffer).unwrap() {
+                burst_packets.push(raw);
             }
         }
-        let raw = accept_raw.unwrap();
-        assert_eq!(raw.opcode, PacketOpcode::ZC_ACCEPT_ENTER);
+        assert_eq!(burst_packets[0].opcode, PacketOpcode::ZC_AID);
+        assert_eq!(&burst_packets[0].payload[0..4], &2000000u32.to_le_bytes());
+        assert_eq!(
+            burst_packets[1].opcode,
+            PacketOpcode::ZC_INVENTORY_EXPANSION_INFO
+        );
+        assert_eq!(burst_packets[2].opcode, PacketOpcode::ZC_ACCEPT_ENTER);
 
         let restart_bytes = vec![0xb2, 0x00, 0x01];
         client.write_all(&restart_bytes).await.unwrap();
@@ -256,7 +253,7 @@ mod tests {
             }
         }
         let raw = ack_raw.unwrap();
-        assert_eq!(raw.opcode, PacketOpcode(0x00b3));
+        assert_eq!(raw.opcode, PacketOpcode::ZC_RESTART_ACK);
         assert_eq!(raw.payload.as_ref(), &[1]);
     }
 

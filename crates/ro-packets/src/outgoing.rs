@@ -434,6 +434,30 @@ pub fn encode_hc_notify_zonesvr(
     buf.freeze()
 }
 
+/// Encodes `ZC_AID` (0x0283), fixed 6 bytes.
+///
+/// Packet structure:
+/// - 0..2: opcode (0x0283)
+/// - 2..6: account_id (u32 LE)
+pub fn encode_zc_aid(account_id: AccountId) -> Bytes {
+    let mut buf = BytesMut::with_capacity(6);
+    buf.put_u16_le(PacketOpcode::ZC_AID.raw());
+    buf.put_u32_le(account_id.0);
+    buf.freeze()
+}
+
+/// Encodes `ZC_INVENTORY_EXPANSION_INFO` (0x0b18), fixed 4 bytes.
+///
+/// Packet structure:
+/// - 0..2: opcode (0x0b18)
+/// - 2..4: expansion_size (i16 LE)
+pub fn encode_zc_inventory_expansion_info(expansion_size: i16) -> Bytes {
+    let mut buf = BytesMut::with_capacity(4);
+    buf.put_u16_le(PacketOpcode::ZC_INVENTORY_EXPANSION_INFO.raw());
+    buf.put_i16_le(expansion_size);
+    buf.freeze()
+}
+
 /// Encodes `ZC_ACCEPT_ENTER` (0x02eb).
 pub fn encode_zc_accept_enter(
     start_time: u32,
@@ -455,7 +479,7 @@ pub fn encode_zc_accept_enter2(
     font: u16,
 ) -> Bytes {
     let mut buf = BytesMut::with_capacity(13);
-    buf.put_u16_le(0x02eb);
+    buf.put_u16_le(PacketOpcode::ZC_ACCEPT_ENTER.raw());
     buf.put_u32_le(start_time);
     buf.put_slice(&pack_pos_dir(pos.x, pos.y, pos.dir));
     buf.put_u8(x_size);
@@ -918,8 +942,20 @@ impl EventEncoder for ModernEventEncoder {
                 *map_host,
                 *map_port,
             )),
-            ServerEvent::AcceptEnter { server_tick, pos } => {
-                Ok(encode_zc_accept_enter2(*server_tick, *pos, 5, 5, 0))
+            ServerEvent::AcceptEnter {
+                account_id,
+                server_tick,
+                pos,
+            } => {
+                let mut buf = BytesMut::with_capacity(23);
+                buf.extend_from_slice(&encode_zc_aid(*account_id));
+                buf.extend_from_slice(&encode_zc_inventory_expansion_info(0));
+                buf.extend_from_slice(&encode_zc_accept_enter(*server_tick, *pos, 5, 5));
+                Ok(buf.freeze())
+            }
+            ServerEvent::Aid { account_id } => Ok(encode_zc_aid(*account_id)),
+            ServerEvent::InventoryExpansionInfo { expansion_size } => {
+                Ok(encode_zc_inventory_expansion_info(*expansion_size))
             }
             ServerEvent::TimeSynchronized { server_tick } => {
                 Ok(encode_zc_notify_time(*server_tick))
@@ -1009,6 +1045,10 @@ impl EventEncoder for ModernEventEncoder {
                 }
             }
             ServerEvent::RestartAck { result } => Ok(encode_zc_restart_ack(*result)),
+            #[allow(unreachable_patterns)]
+            unsupported => Err(PacketCodecError::UnsupportedEvent(format!(
+                "{unsupported:?}"
+            ))),
         }
     }
 }
@@ -1044,6 +1084,8 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
             | PacketOpcode::ZC_NOTIFY_STANDENTRY
             | PacketOpcode::AC_ACCEPT_LOGIN
             | PacketOpcode::HC_NOTIFY_ZONESVR
+            | PacketOpcode::ZC_AID
+            | PacketOpcode::ZC_INVENTORY_EXPANSION_INFO
     )
 }
 
@@ -1237,14 +1279,29 @@ mod tests {
         let encoder = Phase0EventEncoder;
         let ver = ro_contracts::TARGET_PACKETVER;
 
-        // 1. AcceptEnter -> 0x02eb (13 bytes)
+        // 1. AcceptEnter -> 23-byte burst (0x0283, 0x0b18, 0x02eb)
         let event = ServerEvent::AcceptEnter {
+            account_id: AccountId(2000000),
             server_tick: 5000,
             pos: MapPosition { x: 100, y: 120, dir: 4 },
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();
-        assert_eq!(bytes.len(), 13);
-        assert_eq!(&bytes[0..2], &0x02ebu16.to_le_bytes());
+        assert_eq!(bytes.len(), 23);
+        assert_eq!(&bytes[0..2], &PacketOpcode::ZC_AID.raw().to_le_bytes());
+
+        // 1b. Aid -> 0x0283 (6 bytes)
+        let event = ServerEvent::Aid {
+            account_id: AccountId(2000000),
+        };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(bytes.len(), 6);
+        assert_eq!(&bytes[0..2], &PacketOpcode::ZC_AID.raw().to_le_bytes());
+
+        // 1c. InventoryExpansionInfo -> 0x0b18 (4 bytes)
+        let event = ServerEvent::InventoryExpansionInfo { expansion_size: 0 };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(bytes.len(), 4);
+        assert_eq!(&bytes[0..2], &PacketOpcode::ZC_INVENTORY_EXPANSION_INFO.raw().to_le_bytes());
 
         // 2. TimeSynchronized -> 0x007f (6 bytes)
         let event = ServerEvent::TimeSynchronized { server_tick: 9999 };
@@ -1549,14 +1606,29 @@ mod tests {
         let encoder = ModernEventEncoder;
         let ver = 20260219;
 
-        // 1. AcceptEnter -> 0x02eb (ZC_ACCEPT_ENTER_MODERN)
+        // 1. AcceptEnter -> 23-byte burst (ZC_ACCEPT_ENTER_MODERN atomic burst)
         let event = ServerEvent::AcceptEnter {
+            account_id: AccountId(2000000),
             server_tick: 5000,
             pos: MapPosition { x: 100, y: 120, dir: 4 },
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();
-        assert_eq!(bytes.len(), 13);
-        assert_eq!(&bytes[0..2], &0x02ebu16.to_le_bytes());
+        assert_eq!(bytes.len(), 23);
+        assert_eq!(&bytes[0..2], &PacketOpcode::ZC_AID.raw().to_le_bytes());
+
+        // 1b. Aid -> 0x0283 (6 bytes)
+        let event = ServerEvent::Aid {
+            account_id: AccountId(2000000),
+        };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(bytes.len(), 6);
+        assert_eq!(&bytes[0..2], &PacketOpcode::ZC_AID.raw().to_le_bytes());
+
+        // 1c. InventoryExpansionInfo -> 0x0b18 (4 bytes)
+        let event = ServerEvent::InventoryExpansionInfo { expansion_size: 0 };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(bytes.len(), 4);
+        assert_eq!(&bytes[0..2], &PacketOpcode::ZC_INVENTORY_EXPANSION_INFO.raw().to_le_bytes());
 
         // 2. TimeSynchronized -> 0x007f (ZC_NOTIFY_TIME)
         let event = ServerEvent::TimeSynchronized { server_tick: 9999 };
@@ -1670,6 +1742,8 @@ mod tests {
             PacketOpcode::ZC_NOTIFY_STANDENTRY,
             PacketOpcode::AC_ACCEPT_LOGIN,
             PacketOpcode::HC_NOTIFY_ZONESVR,
+            PacketOpcode::ZC_AID,
+            PacketOpcode::ZC_INVENTORY_EXPANSION_INFO,
         ];
 
         for op in implemented {

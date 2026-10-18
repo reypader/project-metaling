@@ -117,7 +117,7 @@ When implementing a feature or fixing a bug, the Main Agent uses this matrix to 
 | **Account authentication, character slot CRUD, in-memory stub repo (Phases 0 to 3), PostgreSQL `sqlx` repo (Phase 4+)** | `crates/ro-persistence` (`ro-persistence`) | `AccountRepository`, `CharacterRepository`, `CharacterSummary` | Injected into `LoginService`, `CharService`, and `MapService` |
 | **NPC conversation execution (`mes`, `next`, `select`, `warp`) & item script evaluation** | `crates/ro-scripting` (`ro-scripting`) | Script VM runner traits and script suspension/resumption events | Invoked by `crates/ro-engine` during entity interaction phases |
 | **ECS `World`, `8x8` `SpatialGrid`, A* pathfinding over `MapWalkability`, AoI calculation, entity lifecycle, deterministic tick loop** | `crates/ro-engine` (`ro-engine`) | Consumes `ClientIntent` (with session/character context), emits `ScopedServerEvent` | Hosted and ticked by `bins/map-server` (`MapService`) |
-| **TCP listener loops, raw 4-byte `AccountId` echo, `session.rs` channel bridge, Axum HTTP routers/clients, service dependency injection** | `bins/*` (`ro-bins`) | Consumes `crates/ro-contracts` traits and connects concrete domain types | Executed directly as server binaries |
+| **TCP listener loops, char-server raw 4-byte `AccountId` echo, `session.rs` channel bridge, Axum HTTP routers/clients, service dependency injection** | `bins/*` (`ro-bins`) | Consumes `crates/ro-contracts` traits and connects concrete domain types | Executed directly as server binaries |
 | **RO packet logging & TCP forwarding proxy across `:6900`, `:6121`, `:5121`** | `tools/*` (`ro-tools`) | Consumes `PacketLengthTable` and packet framing traits | Executed as standalone diagnostic tooling |
 
 ### 2.2 Multi-Subagent Delegation Sequencing
@@ -177,7 +177,7 @@ Only the `reference-explorer` subagent may inspect `./reference/**`. The Main Ag
 * **Deliverables:**
   1. `login-server` (`:6900`): Handle `CA_LOGIN`, issue session token `(AccountId, LoginId1, LoginId2)`, send `AC_ACCEPT_LOGIN` with `char-server` IP/port, and keep the TCP stream open for client-initiated closure.
   2. `char-server` (`:6121`): Handle `CH_ENTER`, echo raw 4-byte `AccountId`, send `HC_ACCEPT_ENTER` (and character page packets for modern `PACKETVER`) with 1 hardcoded stub character, handle `CH_SELECT_CHAR`, reply with `HC_NOTIFY_ZONESVR` (`prontera.gat`, `map-server` IP/port), and keep the TCP stream open for client-initiated closure.
-  3. `map-server` (`:5121`): Handle `CZ_ENTER`, echo 4-byte `AccountId` + `ZC_ACCEPT_ENTER` (spawn coords + server tick), handle `CZ_NOTIFY_ACTORINIT` (`0x007D` "Map Loaded"), respond with initial actor state (`ZC_NOTIFY_NEWENTRY` / `ZC_PAR_CHANGE`), and reply to `CZ_REQUEST_TIME` (`0x0360`) with `ZC_NOTIFY_TIME` so the client does not time out.
+  3. `map-server` (`:5121`): Handle `CZ_ENTER`, respond with `ZC_AID` (`0x0283`) + `ZC_INVENTORY_EXPANSION_INFO` (`0x0b18`) + `ZC_ACCEPT_ENTER` (`0x02eb`, spawn coords + server tick), handle `CZ_NOTIFY_ACTORINIT` (`0x007D` "Map Loaded"), respond with initial actor state (`ZC_NOTIFY_NEWENTRY` / `ZC_PAR_CHANGE`), and reply to `CZ_REQUEST_TIME` (`0x0360`) with `ZC_NOTIFY_TIME` so the client does not time out.
   4. All other incoming packets log their opcode + payload length and are safely ignored.
 
 ### Phase 1: Map Movement & Sitting

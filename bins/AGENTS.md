@@ -17,7 +17,7 @@
    * `MapService` (`bins/map-server`) must delegate map state, spawn coordinates, entity tracking, server tick generation, movement, and AoI event emission to `crates/ro-engine`. `MapService` runs the tick timer, feeds session-authenticated intents into `crates/ro-engine`, coordinates map transfers, and routes emitted `ScopedServerEvent` payloads to client sessions.
 2. **Protocol Framing vs. Session Context:**
    * `crates/ro-packets` owns wire-level framing and opcode-to-struct decoding and encoding.
-   * `bins/*/src/session.rs` owns the live `TcpStream`, the raw 4-byte `AccountId` handshake echo required by `CH_ENTER` and `CZ_ENTER`, and per-connection session state (`SessionId`, authenticated `AccountId`, and `CharId`).
+   * `bins/*/src/session.rs` owns the live `TcpStream`, the char-server raw 4-byte `AccountId` handshake echo required by `CH_ENTER` (map-server uses framed `ZC_AID` 0x0283), and per-connection session state (`SessionId`, authenticated `AccountId`, and `CharId`).
 
 ---
 
@@ -26,7 +26,7 @@
 ### 3.1 Client TCP Boundaries
 * **`login-server` (TCP `:6900`):** Accepts connections, decodes `CA_LOGIN`, issues a `SessionTicket`, returns `AC_ACCEPT_LOGIN` containing available character servers, and keeps the TCP connection open until the client initiates socket closure.
 * **`char-server` (TCP `:6121`):** Accepts connections, decodes `CH_ENTER`, verifies the `SessionTicket`, echoes the 4-byte `AccountId`, returns `HC_ACCEPT_ENTER` and character list packets, handles `CH_SELECT_CHAR` / `CH_MAKE_CHAR` / `CH_DELETE_CHAR`, returns `HC_NOTIFY_ZONESVR` pointing to `map-server`, and keeps the TCP connection open until the client initiates socket closure.
-* **`map-server` (TCP `:5121`):** Accepts gameplay connections, decodes `CZ_ENTER`, echoes the 4-byte `AccountId`, returns `ZC_ACCEPT_ENTER`, handles `CZ_NOTIFY_ACTORINIT` and `CZ_REQUEST_TIME`, and broadcasts AoI events.
+* **`map-server` (TCP `:5121`):** Accepts gameplay connections, decodes `CZ_ENTER`, responds with `ZC_AID` (`0x0283`) + `ZC_INVENTORY_EXPANSION_INFO` (`0x0b18`) + `ZC_ACCEPT_ENTER` (`0x02eb`), handles `CZ_NOTIFY_ACTORINIT` and `CZ_REQUEST_TIME`, and broadcasts AoI events.
 
 ### 3.2 Inter-Server Internal Axum HTTP APIs
 Server binaries coordinate over internal HTTP endpoints using JSON payloads from `crates/ro-contracts/src/http.rs`:
@@ -48,7 +48,7 @@ Server binaries coordinate over internal HTTP endpoints using JSON payloads from
    * Splits `TcpStream` into `OwnedReadHalf` and `OwnedWriteHalf` so inbound packet decoding and outbound socket writes never block each other.
    * Uses `PacketDecoder` and `PacketIntentParser` to decode incoming bytes into `ClientIntent` and wraps them in a `SessionIntent` envelope containing `(SessionId, Option<AccountId>, Option<CharId>, ClientIntent)`.
    * Rejects post-handshake intents until the session completes `EnterCharServer` or `EnterMap`.
-   * Queues the raw 4-byte `AccountId` payload to the outbound writer immediately upon receiving `ClientIntent::EnterCharServer` or `ClientIntent::EnterMap`.
+   * Queues the raw 4-byte `AccountId` payload to the outbound writer immediately upon receiving `ClientIntent::EnterCharServer` (char-server only; map-server uses framed `ZC_AID` 0x0283 via event encoder).
 2. **Non-Blocking Outbound Dispatch & Actor Lifetimes:**
    * Logic actors must use non-blocking `try_send` to push outbound bytes or events to a session's outbound writer queue, disconnecting overflowed sessions so a slow client never stalls shared loops.
    * `login-server` spawns an ephemeral `LoginSessionActor` per connection.

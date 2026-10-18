@@ -9,7 +9,7 @@ use std::{
 
 use bytes::Bytes;
 use ro_contracts::{
-    ids::{CharId, MapPosition, SessionId},
+    ids::{AccountId, CharId, MapPosition, SessionId},
     packet::{ClientIntent, EventEncoder, ServerEvent, SessionIntent},
     TARGET_PACKETVER,
 };
@@ -21,6 +21,7 @@ use tracing::{error, info, warn};
 pub enum WorldCommand {
     JoinSession {
         session_id: SessionId,
+        account_id: AccountId,
         char_id: CharId,
         outbound_tx: mpsc::Sender<Bytes>,
         initial_intent: SessionIntent,
@@ -186,6 +187,7 @@ impl Default for MapServiceHandle {
 }
 
 struct ConnectedPlayer {
+    account_id: AccountId,
     char_id: CharId,
     pos: MapPosition,
     outbound_tx: mpsc::Sender<Bytes>,
@@ -245,6 +247,7 @@ impl MapWorldActor {
         match cmd {
             WorldCommand::JoinSession {
                 session_id,
+                account_id,
                 char_id,
                 outbound_tx,
                 initial_intent,
@@ -252,6 +255,7 @@ impl MapWorldActor {
                 self.sessions.insert(
                     session_id,
                     ConnectedPlayer {
+                        account_id,
                         char_id,
                         pos: self.default_pos,
                         outbound_tx,
@@ -290,13 +294,14 @@ impl MapWorldActor {
                     "Map '{}' accepted entry for session {:?} (account {}, char {})",
                     self.map_name, session_id, account_id.0, char_id.0
                 );
-                let pos = self
+                let (resolved_account_id, pos) = self
                     .sessions
                     .get(&session_id)
-                    .map(|p| p.pos)
-                    .unwrap_or(self.default_pos);
+                    .map(|p| (p.account_id, p.pos))
+                    .unwrap_or((account_id, self.default_pos));
 
                 let enter_event = ServerEvent::AcceptEnter {
+                    account_id: resolved_account_id,
                     server_tick: self.server_tick,
                     pos,
                 };
@@ -325,6 +330,7 @@ impl MapWorldActor {
                     hair_color: 1,
                 };
                 self.send_unicast(session_id, &appear_event);
+                self.broadcast_aoi(session_id, pos, &appear_event);
 
                 let par_event = ServerEvent::ParameterChanged {
                     var_id: 0,
@@ -381,6 +387,38 @@ impl MapWorldActor {
                 );
                 self.sessions.remove(&session_id);
             }
+        }
+    }
+
+    /// Encodes a `ServerEvent` and broadcasts it to all sessions within AoI (excluding the source session).
+    fn broadcast_aoi(&mut self, source_session: SessionId, pos: MapPosition, event: &ServerEvent) {
+        let bytes = match self.encoder.encode_event(event, TARGET_PACKETVER) {
+            Ok(b) => b,
+            Err(err) => {
+                error!("Failed to encode broadcast event {:?}: {}", event, err);
+                return;
+            }
+        };
+
+        let mut disconnected = Vec::new();
+        for (&session_id, player) in &self.sessions {
+            if session_id == source_session {
+                continue;
+            }
+            let dx = (player.pos.x as i32 - pos.x as i32).abs();
+            let dy = (player.pos.y as i32 - pos.y as i32).abs();
+            if dx <= 14 && dy <= 14 {
+                if player.outbound_tx.try_send(bytes.clone()).is_err() {
+                    warn!(
+                        "Session {:?} (char {}) outbound queue full or closed on map '{}'; removing session",
+                        session_id, player.char_id.0, self.map_name
+                    );
+                    disconnected.push(session_id);
+                }
+            }
+        }
+        for session_id in disconnected {
+            self.sessions.remove(&session_id);
         }
     }
 }
