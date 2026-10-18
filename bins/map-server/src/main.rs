@@ -187,4 +187,64 @@ mod tests {
         let raw = time_raw.unwrap();
         assert_eq!(raw.opcode, PacketOpcode::ZC_NOTIFY_TIME);
     }
+
+    #[tokio::test]
+    async fn test_map_restart_to_char_select() {
+        let service_handle = MapServiceHandle::new();
+
+        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let server_addr = listener.local_addr().unwrap();
+
+        tokio::spawn(async move {
+            let (socket, peer_addr) = listener.accept().await.unwrap();
+            handle_client_session(socket, peer_addr, service_handle).await;
+        });
+
+        let mut client = TcpStream::connect(server_addr).await.unwrap();
+
+        let mut cz_enter_bytes = vec![0x36, 0x04];
+        cz_enter_bytes.extend_from_slice(&2000000u32.to_le_bytes());
+        cz_enter_bytes.extend_from_slice(&150002u32.to_le_bytes());
+        cz_enter_bytes.extend_from_slice(&1u32.to_le_bytes());
+        cz_enter_bytes.extend_from_slice(&12345u32.to_le_bytes());
+        cz_enter_bytes.extend_from_slice(&[0u8; 4]);
+        cz_enter_bytes.push(0);
+
+        client.write_all(&cz_enter_bytes).await.unwrap();
+        client.flush().await.unwrap();
+
+        let mut account_id_buf = [0u8; 4];
+        client.read_exact(&mut account_id_buf).await.unwrap();
+        assert_eq!(u32::from_le_bytes(account_id_buf), 2000000);
+
+        let mut decoder = PacketDecoder::new(RathenaPacketLengthTable, TARGET_PACKETVER);
+        let mut buffer = BytesMut::with_capacity(2048);
+
+        let mut accept_raw = None;
+        while accept_raw.is_none() {
+            let n = client.read_buf(&mut buffer).await.unwrap();
+            assert!(n > 0);
+            if let Some(raw) = decoder.decode(&mut buffer).unwrap() {
+                accept_raw = Some(raw);
+            }
+        }
+        let raw = accept_raw.unwrap();
+        assert_eq!(raw.opcode, PacketOpcode::ZC_ACCEPT_ENTER);
+
+        let restart_bytes = vec![0xb2, 0x00, 0x01];
+        client.write_all(&restart_bytes).await.unwrap();
+        client.flush().await.unwrap();
+
+        let mut ack_raw = None;
+        while ack_raw.is_none() {
+            let n = client.read_buf(&mut buffer).await.unwrap();
+            assert!(n > 0);
+            if let Some(raw) = decoder.decode(&mut buffer).unwrap() {
+                ack_raw = Some(raw);
+            }
+        }
+        let raw = ack_raw.unwrap();
+        assert_eq!(raw.opcode, PacketOpcode(0x00b3));
+        assert_eq!(raw.payload.as_ref(), &[1]);
+    }
 }

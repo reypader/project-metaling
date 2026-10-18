@@ -258,6 +258,22 @@ impl MapWorldActor {
                 };
                 self.send_unicast(session_id, &time_event);
             }
+            ClientIntent::Restart { restart_type } => {
+                if restart_type == 1 {
+                    info!(
+                        "Map '{}' returning session {:?} to character selection",
+                        self.map_name, session_id
+                    );
+                    let restart_ack = ServerEvent::RestartAck { result: 1 };
+                    self.send_unicast(session_id, &restart_ack);
+                    self.sessions.remove(&session_id);
+                } else {
+                    warn!(
+                        "Map '{}' received unsupported restart_type {} from {:?}",
+                        self.map_name, restart_type, session_id
+                    );
+                }
+            }
             unhandled => {
                 warn!(
                     "Map '{}' received unhandled intent from {:?}: {:?}",

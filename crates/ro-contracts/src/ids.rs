@@ -52,6 +52,7 @@ pub struct CharacterSummary {
     pub hair_color: u16,
     pub last_map: String,
     pub last_pos: MapPosition,
+    pub delete_date: Option<u64>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

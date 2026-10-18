@@ -295,7 +295,7 @@ fn test_event_encoder_integration() {
     let raw = decoder.decode(&mut stream).unwrap().unwrap();
     assert_eq!(raw.opcode, PacketOpcode(0x083e));
 
-    // 4. CharacterListLoaded (produces HC_ACCEPT_ENTER + HC_ACK_CHARINFO_PER_PAGE)
+    // 4. CharacterListLoaded (produces 5-packet burst: 0x082d, 0x006b, 0x09a0, 0x020d, 0x08b9)
     let event = ServerEvent::CharacterListLoaded {
         account_id: AccountId(2000001),
         total_slots: 9,
@@ -312,17 +312,48 @@ fn test_event_encoder_integration() {
             hair_color: 5,
             last_map: "morocc.gat".to_string(),
             last_pos: MapPosition { x: 150, y: 150, dir: 4 },
+            delete_date: None,
         }],
     };
     let bytes = encoder.encode_event(&event, ver).unwrap();
     let mut stream = BytesMut::from(bytes.as_ref());
     let raw1 = decoder.decode(&mut stream).unwrap().unwrap();
-    assert_eq!(raw1.opcode, PacketOpcode(0x006b));
+    assert_eq!(raw1.opcode, PacketOpcode(0x082d));
     let raw2 = decoder.decode(&mut stream).unwrap().unwrap();
-    assert_eq!(raw2.opcode, PacketOpcode(0x099d));
+    assert_eq!(raw2.opcode, PacketOpcode(0x006b));
+    let raw3 = decoder.decode(&mut stream).unwrap().unwrap();
+    assert_eq!(raw3.opcode, PacketOpcode(0x09a0));
+    let raw4 = decoder.decode(&mut stream).unwrap().unwrap();
+    assert_eq!(raw4.opcode, PacketOpcode(0x020d));
+    let raw5 = decoder.decode(&mut stream).unwrap().unwrap();
+    assert_eq!(raw5.opcode, PacketOpcode(0x08b9));
     assert!(stream.is_empty());
 
-    // 5. CharacterSelected
+    // 5. CharacterPageLoaded (produces HC_ACK_CHARINFO_PER_PAGE: 0x0b72)
+    let page_event = ServerEvent::CharacterPageLoaded {
+        characters: vec![CharacterSummary {
+            char_id: CharId(150001),
+            account_id: AccountId(2000001),
+            slot: 0,
+            name: "Valkyrie".to_string(),
+            sex: Sex::Female,
+            job_class: 4001,
+            base_level: 99,
+            job_level: 70,
+            hair_style: 3,
+            hair_color: 5,
+            last_map: "morocc.gat".to_string(),
+            last_pos: MapPosition { x: 150, y: 150, dir: 4 },
+            delete_date: None,
+        }],
+    };
+    let page_bytes = encoder.encode_event(&page_event, ver).unwrap();
+    let mut page_stream = BytesMut::from(page_bytes.as_ref());
+    let raw_page = decoder.decode(&mut page_stream).unwrap().unwrap();
+    assert_eq!(raw_page.opcode, PacketOpcode(0x0b72));
+    assert!(page_stream.is_empty());
+
+    // 6. CharacterSelected
     let event = ServerEvent::CharacterSelected {
         char_id: CharId(150001),
         map_name: "prontera.gat".to_string(),

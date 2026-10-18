@@ -40,7 +40,7 @@ pub async fn handle_client_session(
     let intent_tx = service.spawn_session_actor(session_id, event_tx);
 
     let frame_tx_for_events = frame_tx.clone();
-    tokio::spawn(async move {
+    let mut forwarder_task = tokio::spawn(async move {
         while let Some(event) = event_rx.recv().await {
             if frame_tx_for_events
                 .send(OutboundFrame::Event(event))
@@ -52,7 +52,7 @@ pub async fn handle_client_session(
         }
     });
 
-    let writer_task = tokio::spawn(async move {
+    let mut writer_task = tokio::spawn(async move {
         let encoder = Phase0EventEncoder;
         while let Some(frame) = frame_rx.recv().await {
             match frame {
@@ -104,11 +104,11 @@ pub async fn handle_client_session(
     let parser = Phase0IntentParser;
     let mut authenticated_account: Option<AccountId> = None;
 
-    loop {
+    'session_loop: loop {
         match reader.read_buf(&mut buffer).await {
             Ok(0) => {
                 info!("Client {:?} ({}) closed connection", session_id, peer_addr);
-                break;
+                break 'session_loop;
             }
             Ok(bytes_read) => {
                 debug!(
@@ -121,7 +121,7 @@ pub async fn handle_client_session(
                     "Socket read error from client {:?} ({}): {}",
                     session_id, peer_addr, err
                 );
-                break;
+                break 'session_loop;
             }
         }
 
@@ -129,8 +129,7 @@ pub async fn handle_client_session(
             Ok(frame) => frame,
             Err(err) => {
                 error!("Packet framing error from {}: {}", peer_addr, err);
-                let _ = writer_task.await;
-                return;
+                break 'session_loop;
             }
         } {
             match parser.parse_intent(&raw_packet, TARGET_PACKETVER) {
@@ -141,6 +140,13 @@ pub async fn handle_client_session(
                     );
 
                     if let ClientIntent::EnterCharServer { account_id, .. } = &intent {
+                        if authenticated_account.is_some() {
+                            warn!(
+                                "Session {:?} ({}) sent duplicate EnterCharServer after authentication; ignoring",
+                                session_id, peer_addr
+                            );
+                            continue;
+                        }
                         authenticated_account = Some(*account_id);
                         let echo = Bytes::copy_from_slice(&account_id.0.to_le_bytes());
                         if frame_tx.try_send(OutboundFrame::RawBytes(echo)).is_err() {
@@ -148,23 +154,20 @@ pub async fn handle_client_session(
                                 "Outbound queue full when echoing AccountId to {}",
                                 peer_addr
                             );
-                            let _ = writer_task.await;
-                            return;
+                            break 'session_loop;
                         }
                     } else if authenticated_account.is_none() {
                         warn!(
                             "Session {:?} ({}) sent {:?} prior to EnterCharServer handshake",
                             session_id, peer_addr, intent
                         );
-                        let _ = writer_task.await;
-                        return;
+                        break 'session_loop;
                     }
 
                     let session_intent =
                         SessionIntent::new(session_id, authenticated_account, None, intent);
                     if intent_tx.send(session_intent).await.is_err() {
-                        let _ = writer_task.await;
-                        return;
+                        break 'session_loop;
                     }
                 }
                 Ok(None) => {
@@ -183,5 +186,22 @@ pub async fn handle_client_session(
 
     drop(intent_tx);
     drop(frame_tx);
-    let _ = writer_task.await;
+
+    if tokio::time::timeout(std::time::Duration::from_millis(500), &mut forwarder_task)
+        .await
+        .is_err()
+    {
+        forwarder_task.abort();
+    }
+
+    if tokio::time::timeout(std::time::Duration::from_millis(1000), &mut writer_task)
+        .await
+        .is_err()
+    {
+        warn!(
+            "Session {:?} ({}) writer task timed out during termination",
+            session_id, peer_addr
+        );
+        writer_task.abort();
+    }
 }

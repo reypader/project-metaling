@@ -200,7 +200,21 @@ pub fn encode_character_info(buf: &mut BytesMut, c: &CharacterSummary) {
     buf.put_u8(c.hair_color as u8); // hairColor
     buf.put_i16_le(0); // bIsChangedCharName
     buf.put_slice(&write_fixed_string::<16>(&c.last_map)); // mapName
-    buf.put_i32_le(0); // DelRevDate
+    let del_rev_date = match c.delete_date {
+        Some(ts) => {
+            let now = std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .map(|d| d.as_secs())
+                .unwrap_or(0);
+            if ts > now {
+                (ts - now).min(i32::MAX as u64) as i32
+            } else {
+                -1
+            }
+        }
+        None => 0,
+    };
+    buf.put_i32_le(del_rev_date); // DelRevDate
     buf.put_i32_le(0); // robePalette
     buf.put_i32_le(0); // chr_slot_changeCnt
     buf.put_i32_le(0); // chr_name_changeCnt
@@ -251,7 +265,7 @@ pub fn encode_hc_accept_enter2(
     total_slots: u8,
 ) -> Bytes {
     let mut buf = BytesMut::with_capacity(29);
-    buf.put_u16_le(0x082d);
+    buf.put_u16_le(PacketOpcode::HC_ACCEPT_ENTER2.raw());
     buf.put_u16_le(29);
     buf.put_u8(normal_slots);
     buf.put_u8(premium_slots);
@@ -262,26 +276,76 @@ pub fn encode_hc_accept_enter2(
     buf.freeze()
 }
 
-/// Encodes `HC_ACK_CHARINFO_PER_PAGE` (0x099d).
+/// Encodes `HC_ACK_CHARINFO_PER_PAGE` (0x0b72).
 ///
 /// Dynamic packet structure: 4 + 175 * count.
+/// When count is 3, appends a second 4-byte empty frame per rAthena termination rules.
 pub fn encode_hc_ack_charinfo_per_page(characters: &[CharacterSummary]) -> Bytes {
-    let total_len = 4 + characters.len() * 175;
-    let mut buf = BytesMut::with_capacity(total_len);
-    buf.put_u16_le(0x099d);
-    buf.put_u16_le(total_len as u16);
+    let base_len = 4 + characters.len() * 175;
+    let extra_term = if characters.len() == 3 { 4 } else { 0 };
+    let mut buf = BytesMut::with_capacity(base_len + extra_term);
+    buf.put_u16_le(PacketOpcode::HC_ACK_CHARINFO_PER_PAGE.raw());
+    buf.put_u16_le(base_len as u16);
 
     for c in characters {
         encode_character_info(&mut buf, c);
     }
 
+    if characters.len() == 3 {
+        buf.put_u16_le(PacketOpcode::HC_ACK_CHARINFO_PER_PAGE.raw());
+        buf.put_u16_le(4);
+    }
+
     buf.freeze()
 }
 
-/// Encodes `HC_NOTIFY_ZONESVR` (0x0071).
-///
-/// Fixed packet structure (28 bytes):
-/// - 0..2: opcode (0x0071)
+/// Encodes `HC_ACCEPT_MAKECHAR` (0x0b6f), fixed 177 bytes.
+pub fn encode_hc_accept_makechar(character: &CharacterSummary) -> Bytes {
+    let mut buf = BytesMut::with_capacity(177);
+    buf.put_u16_le(PacketOpcode::HC_ACCEPT_MAKECHAR.raw());
+    encode_character_info(&mut buf, character);
+    buf.freeze()
+}
+
+/// Encodes `HC_REFUSE_MAKECHAR` (0x006e), fixed 3 bytes.
+pub fn encode_hc_refuse_makechar(error_code: u8) -> Bytes {
+    let mut buf = BytesMut::with_capacity(3);
+    buf.put_u16_le(PacketOpcode::HC_REFUSE_MAKECHAR.raw());
+    buf.put_u8(error_code);
+    buf.freeze()
+}
+
+/// Encodes `HC_DELETE_CHAR3_RESERVED` (0x0828), fixed 14 bytes.
+pub fn encode_hc_delete_char3_reserved(
+    char_id: CharId,
+    result: u32,
+    delete_delay_seconds: u32,
+) -> Bytes {
+    let mut buf = BytesMut::with_capacity(14);
+    buf.put_u16_le(PacketOpcode::HC_DELETE_CHAR3_RESERVED.raw());
+    buf.put_u32_le(char_id.0);
+    buf.put_u32_le(result);
+    buf.put_u32_le(delete_delay_seconds);
+    buf.freeze()
+}
+
+/// Encodes `HC_DELETE_CHAR3_CANCEL` (0x082c), fixed 10 bytes.
+pub fn encode_hc_delete_char3_cancel(char_id: CharId, result: u32) -> Bytes {
+    let mut buf = BytesMut::with_capacity(10);
+    buf.put_u16_le(PacketOpcode::HC_DELETE_CHAR3_CANCEL.raw());
+    buf.put_u32_le(char_id.0);
+    buf.put_u32_le(result);
+    buf.freeze()
+}
+
+/// Encodes `ZC_RESTART_ACK` (0x00b3), fixed 3 bytes.
+pub fn encode_zc_restart_ack(result: u8) -> Bytes {
+    let mut buf = BytesMut::with_capacity(3);
+    buf.put_u16_le(PacketOpcode::ZC_RESTART_ACK.raw());
+    buf.put_u8(result);
+    buf.freeze()
+}
+
 /// Encodes `HC_NOTIFY_ZONESVR` (0x0ac5 for modern PACKETVER >= 20170315, 156 bytes).
 ///
 /// Packet structure:
@@ -727,14 +791,55 @@ impl EventEncoder for ModernEventEncoder {
                 Ok(encode_ac_refuse_login_modern(*error_code as u32, ""))
             }
             ServerEvent::CharacterListLoaded {
+                account_id,
                 total_slots,
                 characters,
-                ..
             } => {
                 let mut buf = BytesMut::new();
-                buf.extend_from_slice(&encode_hc_accept_enter(*total_slots, 0, 0, &[]));
-                buf.extend_from_slice(&encode_hc_ack_charinfo_per_page(characters));
+                buf.extend_from_slice(&encode_hc_accept_enter2(
+                    *total_slots,
+                    0,
+                    *total_slots,
+                    *total_slots,
+                    *total_slots,
+                ));
+                buf.extend_from_slice(&encode_hc_accept_enter(
+                    *total_slots,
+                    0,
+                    0,
+                    characters,
+                ));
+                let pages = ((*total_slots as u32) / 3).max(1);
+                buf.put_u16_le(PacketOpcode::HC_CHARLIST_NOTIFY.raw());
+                buf.put_u32_le(pages);
+                buf.put_u16_le(PacketOpcode::HC_BLOCK_CHARACTER.raw());
+                buf.put_u16_le(4);
+                buf.put_u16_le(PacketOpcode::HC_SECOND_PASSWD_LOGIN.raw());
+                buf.put_u32_le(0);
+                buf.put_u32_le(account_id.0);
+                buf.put_u16_le(0);
                 Ok(buf.freeze())
+            }
+            ServerEvent::CharacterPageLoaded { characters } => {
+                Ok(encode_hc_ack_charinfo_per_page(characters))
+            }
+            ServerEvent::CharacterCreated { character } => {
+                Ok(encode_hc_accept_makechar(character))
+            }
+            ServerEvent::CharacterCreateRefused { error_code } => {
+                Ok(encode_hc_refuse_makechar(*error_code))
+            }
+            ServerEvent::CharacterDeleteReserved {
+                char_id,
+                result,
+                delete_delay_seconds,
+            } => Ok(encode_hc_delete_char3_reserved(
+                *char_id,
+                *result,
+                *delete_delay_seconds,
+            )),
+            ServerEvent::CharacterDeleteCancelled { char_id, result } => {
+                Ok(encode_hc_delete_char3_cancel(*char_id, *result))
             }
             ServerEvent::CharacterSelected {
                 char_id,
@@ -837,6 +942,7 @@ impl EventEncoder for ModernEventEncoder {
                     )))
                 }
             }
+            ServerEvent::RestartAck { result } => Ok(encode_zc_restart_ack(*result)),
         }
     }
 }
@@ -858,6 +964,14 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
             | PacketOpcode::AC_REFUSE_LOGIN
             | PacketOpcode::ZC_NOTIFY_ACT
             | PacketOpcode::HC_ACK_CHARINFO_PER_PAGE
+            | PacketOpcode::HC_ACCEPT_MAKECHAR
+            | PacketOpcode::HC_REFUSE_MAKECHAR
+            | PacketOpcode::HC_DELETE_CHAR3_RESERVED
+            | PacketOpcode::HC_DELETE_CHAR3_CANCEL
+            | PacketOpcode::ZC_RESTART_ACK
+            | PacketOpcode::HC_CHARLIST_NOTIFY
+            | PacketOpcode::HC_BLOCK_CHARACTER
+            | PacketOpcode::HC_SECOND_PASSWD_LOGIN
             | PacketOpcode::ZC_NOTIFY_MOVE
             | PacketOpcode::ZC_NOTIFY_NEWENTRY
             | PacketOpcode::ZC_NOTIFY_STANDENTRY
@@ -1180,17 +1294,28 @@ mod tests {
                 hair_color: 2,
                 last_map: "prontera.gat".to_string(),
                 last_pos: MapPosition { x: 50, y: 50, dir: 0 },
+                delete_date: None,
             }],
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();
-        // Starts with HC_ACCEPT_ENTER (27 bytes)
-        assert_eq!(&bytes[0..2], &0x006bu16.to_le_bytes());
-        assert_eq!(&bytes[2..4], &27u16.to_le_bytes());
-        assert_eq!(bytes[4], 9);
-        // Followed by HC_ACK_CHARINFO_PER_PAGE (4 + 175 = 179 bytes)
-        assert_eq!(&bytes[27..29], &0x099du16.to_le_bytes());
-        assert_eq!(&bytes[29..31], &179u16.to_le_bytes());
-        assert_eq!(bytes.len(), 27 + 179);
+        // 1. HC_ACCEPT_ENTER2 (29 bytes)
+        assert_eq!(&bytes[0..2], &0x082du16.to_le_bytes());
+        assert_eq!(&bytes[2..4], &29u16.to_le_bytes());
+        // 2. HC_ACCEPT_ENTER (27 + 175 = 202 bytes)
+        assert_eq!(&bytes[29..31], &0x006bu16.to_le_bytes());
+        assert_eq!(&bytes[31..33], &202u16.to_le_bytes());
+        // 3. HC_CHARLIST_NOTIFY (6 bytes, pages = (9/3).max(1) = 3)
+        assert_eq!(&bytes[231..233], &0x09a0u16.to_le_bytes());
+        assert_eq!(&bytes[233..237], &3u32.to_le_bytes());
+        // 4. HC_BLOCK_CHARACTER (4 bytes)
+        assert_eq!(&bytes[237..239], &0x020du16.to_le_bytes());
+        assert_eq!(&bytes[239..241], &4u16.to_le_bytes());
+        // 5. HC_SECOND_PASSWD_LOGIN (12 bytes)
+        assert_eq!(&bytes[241..243], &0x08b9u16.to_le_bytes());
+        assert_eq!(&bytes[243..247], &0u32.to_le_bytes());
+        assert_eq!(&bytes[247..251], &2000001u32.to_le_bytes());
+        assert_eq!(&bytes[251..253], &0u16.to_le_bytes());
+        assert_eq!(bytes.len(), 253);
 
         // 12. CharacterSelected
         let event = ServerEvent::CharacterSelected {
@@ -1203,6 +1328,152 @@ mod tests {
         assert_eq!(&bytes[0..2], &0x0ac5u16.to_le_bytes());
         assert_eq!(bytes.len(), 156);
         assert_eq!(&bytes[2..6], &150001u32.to_le_bytes());
+
+        // 13. CharacterPageLoaded
+        let event = ServerEvent::CharacterPageLoaded {
+            characters: vec![CharacterSummary {
+                char_id: CharId(150002),
+                account_id: AccountId(2000001),
+                slot: 1,
+                name: "Mage".to_string(),
+                sex: Sex::Female,
+                job_class: 1,
+                base_level: 10,
+                job_level: 5,
+                hair_style: 2,
+                hair_color: 3,
+                last_map: "geffen.gat".to_string(),
+                last_pos: MapPosition { x: 100, y: 100, dir: 2 },
+                delete_date: None,
+            }],
+        };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(&bytes[0..2], &0x0b72u16.to_le_bytes());
+        assert_eq!(bytes.len(), 4 + 175);
+
+        // 14. CharacterCreated
+        let event = ServerEvent::CharacterCreated {
+            character: CharacterSummary {
+                char_id: CharId(150003),
+                account_id: AccountId(2000001),
+                slot: 2,
+                name: "Thief".to_string(),
+                sex: Sex::Male,
+                job_class: 6,
+                base_level: 1,
+                job_level: 1,
+                hair_style: 4,
+                hair_color: 1,
+                last_map: "morocc.gat".to_string(),
+                last_pos: MapPosition { x: 50, y: 50, dir: 0 },
+                delete_date: None,
+            },
+        };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(&bytes[0..2], &0x0b6fu16.to_le_bytes());
+        assert_eq!(bytes.len(), 177);
+
+        // 15. CharacterCreateRefused
+        let event = ServerEvent::CharacterCreateRefused { error_code: 0x00 };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(bytes.as_ref(), &[0x6e, 0x00, 0x00]);
+
+        // 16. CharacterDeleteReserved (wire trace: 28 08 f4 49 02 00 01 00 00 00 80 51 01 00)
+        let event = ServerEvent::CharacterDeleteReserved {
+            char_id: CharId(150004),
+            result: 1,
+            delete_delay_seconds: 86400,
+        };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        let expected_del_res: [u8; 14] = [
+            0x28, 0x08, 0xf4, 0x49, 0x02, 0x00, 0x01, 0x00, 0x00, 0x00, 0x80, 0x51, 0x01, 0x00,
+        ];
+        assert_eq!(bytes.as_ref(), &expected_del_res);
+
+        // 17. CharacterDeleteCancelled
+        let event = ServerEvent::CharacterDeleteCancelled {
+            char_id: CharId(150004),
+            result: 1,
+        };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(&bytes[0..2], &0x082cu16.to_le_bytes());
+        assert_eq!(&bytes[2..6], &150004u32.to_le_bytes());
+        assert_eq!(&bytes[6..10], &1u32.to_le_bytes());
+
+        // 18. RestartAck (wire trace: b3 00 01)
+        let event = ServerEvent::RestartAck { result: 1 };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(bytes.as_ref(), &[0xb3, 0x00, 0x01]);
+    }
+
+    #[test]
+    fn test_encode_character_info_with_delete_date() {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_secs();
+        let delete_ts = now + 86400;
+        let mut c = CharacterSummary {
+            char_id: CharId(150004),
+            account_id: AccountId(2000001),
+            slot: 3,
+            name: "test5".to_string(),
+            sex: Sex::Female,
+            job_class: 0,
+            base_level: 1,
+            job_level: 1,
+            hair_style: 22,
+            hair_color: 0,
+            last_map: "prontera.gat".to_string(),
+            last_pos: MapPosition { x: 50, y: 50, dir: 0 },
+            delete_date: Some(delete_ts),
+        };
+
+        // Active reservation: positive remaining seconds
+        let mut buf = BytesMut::new();
+        encode_character_info(&mut buf, &c);
+        assert_eq!(buf.len(), 175);
+        let remaining_secs = i32::from_le_bytes(buf[158..162].try_into().unwrap());
+        assert!((86395..=86400).contains(&remaining_secs));
+
+        // Expired reservation: must be -1, not 0
+        c.delete_date = Some(now - 100);
+        let mut buf_expired = BytesMut::new();
+        encode_character_info(&mut buf_expired, &c);
+        let expired_secs = i32::from_le_bytes(buf_expired[158..162].try_into().unwrap());
+        assert_eq!(expired_secs, -1);
+
+        // No reservation: must be 0
+        c.delete_date = None;
+        let mut buf_none = BytesMut::new();
+        encode_character_info(&mut buf_none, &c);
+        let none_secs = i32::from_le_bytes(buf_none[158..162].try_into().unwrap());
+        assert_eq!(none_secs, 0);
+    }
+
+    #[test]
+    fn test_encode_hc_ack_charinfo_per_page_three_chars_termination() {
+        let make_char = |slot: u8| CharacterSummary {
+            char_id: CharId(150000 + slot as u32),
+            account_id: AccountId(2000001),
+            slot,
+            name: format!("char{}", slot),
+            sex: Sex::Male,
+            job_class: 0,
+            base_level: 1,
+            job_level: 1,
+            hair_style: 1,
+            hair_color: 1,
+            last_map: "prontera.gat".to_string(),
+            last_pos: MapPosition { x: 10, y: 10, dir: 0 },
+            delete_date: None,
+        };
+        let chars = vec![make_char(0), make_char(1), make_char(2)];
+        let bytes = encode_hc_ack_charinfo_per_page(&chars);
+        assert_eq!(bytes.len(), 533);
+        assert_eq!(&bytes[0..2], &0x0b72u16.to_le_bytes());
+        assert_eq!(&bytes[2..4], &529u16.to_le_bytes());
+        assert_eq!(&bytes[529..533], &[0x72, 0x0b, 0x04, 0x00]);
     }
 
     #[test]
@@ -1317,6 +1588,14 @@ mod tests {
             PacketOpcode::AC_REFUSE_LOGIN,
             PacketOpcode::ZC_NOTIFY_ACT,
             PacketOpcode::HC_ACK_CHARINFO_PER_PAGE,
+            PacketOpcode::HC_ACCEPT_MAKECHAR,
+            PacketOpcode::HC_REFUSE_MAKECHAR,
+            PacketOpcode::HC_DELETE_CHAR3_RESERVED,
+            PacketOpcode::HC_DELETE_CHAR3_CANCEL,
+            PacketOpcode::ZC_RESTART_ACK,
+            PacketOpcode::HC_CHARLIST_NOTIFY,
+            PacketOpcode::HC_BLOCK_CHARACTER,
+            PacketOpcode::HC_SECOND_PASSWD_LOGIN,
             PacketOpcode::ZC_NOTIFY_MOVE,
             PacketOpcode::ZC_NOTIFY_NEWENTRY,
             PacketOpcode::ZC_NOTIFY_STANDENTRY,

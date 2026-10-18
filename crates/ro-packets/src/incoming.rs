@@ -387,6 +387,182 @@ impl CzReqNamePacket {
     }
 }
 
+/// Decoded representation of `CH_MAKE_CHAR` (0x0a39).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ChMakeCharPacket {
+    pub name: String,
+    pub slot: u8,
+    pub hair_color: u16,
+    pub hair_style: u16,
+    pub starting_job: u32,
+    pub sex: Sex,
+}
+
+impl ChMakeCharPacket {
+    pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
+        if raw.payload.len() < 34 {
+            return Err(PacketCodecError::MalformedHeader(format!(
+                "CH_MAKE_CHAR payload expected 34 bytes, got {}",
+                raw.payload.len()
+            )));
+        }
+
+        let name = read_fixed_string(&raw.payload[0..24]);
+        let slot = raw.payload[24];
+        let hair_color = u16::from_le_bytes(raw.payload[25..27].try_into().unwrap());
+        let hair_style = u16::from_le_bytes(raw.payload[27..29].try_into().unwrap());
+        let starting_job = u32::from_le_bytes(raw.payload[29..33].try_into().unwrap());
+        let sex = match raw.payload[33] {
+            0 => Sex::Female,
+            1 => Sex::Male,
+            2 => Sex::Server,
+            other => {
+                return Err(PacketCodecError::MalformedHeader(format!(
+                    "Invalid sex {other} in CH_MAKE_CHAR"
+                )));
+            }
+        };
+
+        Ok(Self {
+            name,
+            slot,
+            hair_color,
+            hair_style,
+            starting_job,
+            sex,
+        })
+    }
+
+    pub fn to_intent(&self) -> ClientIntent {
+        ClientIntent::CreateCharacter {
+            name: self.name.clone(),
+            slot: self.slot,
+            hair_color: self.hair_color,
+            hair_style: self.hair_style,
+            starting_job: self.starting_job,
+            sex: self.sex,
+        }
+    }
+}
+
+/// Decoded representation of `CH_DELETE_CHAR3_RESERVED` (0x0827).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ChDeleteChar3ReservedPacket {
+    pub char_id: CharId,
+}
+
+impl ChDeleteChar3ReservedPacket {
+    pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
+        if raw.payload.len() < 4 {
+            return Err(PacketCodecError::MalformedHeader(format!(
+                "CH_DELETE_CHAR3_RESERVED payload expected at least 4 bytes, got {}",
+                raw.payload.len()
+            )));
+        }
+
+        let char_id = CharId(u32::from_le_bytes(raw.payload[0..4].try_into().unwrap()));
+        Ok(Self { char_id })
+    }
+
+    pub fn to_intent(&self) -> ClientIntent {
+        ClientIntent::ReserveDeleteCharacter {
+            char_id: self.char_id,
+        }
+    }
+}
+
+/// Decoded representation of `CH_DELETE_CHAR3_CANCEL` (0x082b).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ChDeleteChar3CancelPacket {
+    pub char_id: CharId,
+}
+
+impl ChDeleteChar3CancelPacket {
+    pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
+        if raw.payload.len() < 4 {
+            return Err(PacketCodecError::MalformedHeader(format!(
+                "CH_DELETE_CHAR3_CANCEL payload expected at least 4 bytes, got {}",
+                raw.payload.len()
+            )));
+        }
+
+        let char_id = CharId(u32::from_le_bytes(raw.payload[0..4].try_into().unwrap()));
+        Ok(Self { char_id })
+    }
+
+    pub fn to_intent(&self) -> ClientIntent {
+        ClientIntent::CancelDeleteCharacter {
+            char_id: self.char_id,
+        }
+    }
+}
+
+/// Decoded representation of `CH_CHARLIST_REQ` (0x09a1).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct ChCharListReqPacket;
+
+impl ChCharListReqPacket {
+    pub fn decode(_raw: &RawPacket) -> Result<Self, PacketCodecError> {
+        Ok(Self)
+    }
+
+    pub fn to_intent(&self) -> ClientIntent {
+        ClientIntent::RequestCharacterList
+    }
+}
+
+/// Decoded representation of `PING` (0x0187).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PingPacket {
+    pub account_id: AccountId,
+}
+
+impl PingPacket {
+    pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
+        if raw.payload.len() < 4 {
+            return Err(PacketCodecError::MalformedHeader(format!(
+                "PING payload expected at least 4 bytes, got {}",
+                raw.payload.len()
+            )));
+        }
+
+        let account_id = AccountId(u32::from_le_bytes(raw.payload[0..4].try_into().unwrap()));
+        Ok(Self { account_id })
+    }
+
+    pub fn to_intent(&self) -> ClientIntent {
+        ClientIntent::CharPing {
+            account_id: self.account_id,
+        }
+    }
+}
+
+/// Decoded representation of `CZ_RESTART` (0x00b2).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct CzRestartPacket {
+    pub restart_type: u8,
+}
+
+impl CzRestartPacket {
+    pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
+        if raw.payload.is_empty() {
+            return Err(PacketCodecError::MalformedHeader(
+                "CZ_RESTART payload expected at least 1 byte".to_string(),
+            ));
+        }
+
+        Ok(Self {
+            restart_type: raw.payload[0],
+        })
+    }
+
+    pub fn to_intent(&self) -> ClientIntent {
+        ClientIntent::Restart {
+            restart_type: self.restart_type,
+        }
+    }
+}
+
 /// Enumeration of all recognized decoded client frames across login, char, and map servers.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum DecodedFrame {
@@ -413,6 +589,30 @@ pub fn decode_frame(raw: &RawPacket, packetver: u32) -> Result<DecodedFrame, Pac
         }
         0x0066 => {
             let p = ChSelectCharPacket::decode(raw)?;
+            Ok(DecodedFrame::Intent(p.to_intent()))
+        }
+        0x0a39 => {
+            let p = ChMakeCharPacket::decode(raw)?;
+            Ok(DecodedFrame::Intent(p.to_intent()))
+        }
+        0x0827 => {
+            let p = ChDeleteChar3ReservedPacket::decode(raw)?;
+            Ok(DecodedFrame::Intent(p.to_intent()))
+        }
+        0x082b => {
+            let p = ChDeleteChar3CancelPacket::decode(raw)?;
+            Ok(DecodedFrame::Intent(p.to_intent()))
+        }
+        0x09a1 => {
+            let p = ChCharListReqPacket::decode(raw)?;
+            Ok(DecodedFrame::Intent(p.to_intent()))
+        }
+        0x0187 => {
+            let p = PingPacket::decode(raw)?;
+            Ok(DecodedFrame::Intent(p.to_intent()))
+        }
+        0x00b2 => {
+            let p = CzRestartPacket::decode(raw)?;
             Ok(DecodedFrame::Intent(p.to_intent()))
         }
         0x0436 => {
@@ -471,6 +671,12 @@ impl PacketIntentParser for Phase0IntentParser {
             0x0064 | 0x0277 => Ok(Some(CaLoginPacket::decode(raw)?.to_intent())),
             0x0065 => Ok(Some(ChEnterPacket::decode(raw)?.to_intent())),
             0x0066 => Ok(Some(ChSelectCharPacket::decode(raw)?.to_intent())),
+            0x0a39 => Ok(Some(ChMakeCharPacket::decode(raw)?.to_intent())),
+            0x0827 => Ok(Some(ChDeleteChar3ReservedPacket::decode(raw)?.to_intent())),
+            0x082b => Ok(Some(ChDeleteChar3CancelPacket::decode(raw)?.to_intent())),
+            0x09a1 => Ok(Some(ChCharListReqPacket::decode(raw)?.to_intent())),
+            0x0187 => Ok(Some(PingPacket::decode(raw)?.to_intent())),
+            0x00b2 => Ok(Some(CzRestartPacket::decode(raw)?.to_intent())),
             0x0436 => Ok(Some(CzEnterPacket::decode(raw)?.to_intent())),
             0x007d => Ok(Some(CzNotifyActorInitPacket::decode(raw)?.to_intent())),
             0x0360 => Ok(Some(CzRequestTimePacket::decode(raw)?.to_intent())),
@@ -828,5 +1034,92 @@ mod tests {
                 sex: Sex::Male,
             }
         );
+    }
+
+    #[test]
+    fn test_character_and_session_incoming_packets() {
+        let parser = Phase0IntentParser;
+        let ver = ro_contracts::TARGET_PACKETVER;
+
+        // 1. CH_MAKE_CHAR (0x0a39) from login_sequence.log
+        let make_char_bytes: [u8; 36] = [
+            0x39, 0x0a, 0x74, 0x65, 0x73, 0x74, 0x35, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00,
+            0x00, 0x16, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        ];
+        let raw_make = RawPacket::new(PacketOpcode(0x0a39), Bytes::copy_from_slice(&make_char_bytes[2..]));
+        let intent_make = parser.parse_intent(&raw_make, ver).unwrap().unwrap();
+        assert_eq!(
+            intent_make,
+            ClientIntent::CreateCharacter {
+                name: "test5".to_string(),
+                slot: 4,
+                hair_color: 0,
+                hair_style: 22,
+                starting_job: 0,
+                sex: Sex::Female,
+            }
+        );
+        let frame_make = decode_frame(&raw_make, ver).unwrap();
+        assert_eq!(frame_make, DecodedFrame::Intent(intent_make));
+
+        // 2. CH_DELETE_CHAR3_RESERVED (0x0827) from login_sequence.log
+        let del_res_bytes: [u8; 6] = [0x27, 0x08, 0xf4, 0x49, 0x02, 0x00];
+        let raw_del_res = RawPacket::new(PacketOpcode(0x0827), Bytes::copy_from_slice(&del_res_bytes[2..]));
+        let intent_del_res = parser.parse_intent(&raw_del_res, ver).unwrap().unwrap();
+        assert_eq!(
+            intent_del_res,
+            ClientIntent::ReserveDeleteCharacter {
+                char_id: CharId(150004),
+            }
+        );
+        let frame_del_res = decode_frame(&raw_del_res, ver).unwrap();
+        assert_eq!(frame_del_res, DecodedFrame::Intent(intent_del_res));
+
+        // 3. CH_DELETE_CHAR3_CANCEL (0x082b)
+        let del_cancel_bytes: [u8; 6] = [0x2b, 0x08, 0xf4, 0x49, 0x02, 0x00];
+        let raw_del_cancel = RawPacket::new(PacketOpcode(0x082b), Bytes::copy_from_slice(&del_cancel_bytes[2..]));
+        let intent_del_cancel = parser.parse_intent(&raw_del_cancel, ver).unwrap().unwrap();
+        assert_eq!(
+            intent_del_cancel,
+            ClientIntent::CancelDeleteCharacter {
+                char_id: CharId(150004),
+            }
+        );
+        let frame_del_cancel = decode_frame(&raw_del_cancel, ver).unwrap();
+        assert_eq!(frame_del_cancel, DecodedFrame::Intent(intent_del_cancel));
+
+        // 4. CH_CHARLIST_REQ (0x09a1)
+        let raw_charlist = RawPacket::new(PacketOpcode(0x09a1), Bytes::new());
+        let intent_charlist = parser.parse_intent(&raw_charlist, ver).unwrap().unwrap();
+        assert_eq!(intent_charlist, ClientIntent::RequestCharacterList);
+        let frame_charlist = decode_frame(&raw_charlist, ver).unwrap();
+        assert_eq!(frame_charlist, DecodedFrame::Intent(intent_charlist));
+
+        // 5. PING (0x0187)
+        let ping_bytes: [u8; 6] = [0x87, 0x01, 0x01, 0x00, 0x1f, 0x00];
+        let raw_ping = RawPacket::new(PacketOpcode(0x0187), Bytes::copy_from_slice(&ping_bytes[2..]));
+        let intent_ping = parser.parse_intent(&raw_ping, ver).unwrap().unwrap();
+        assert_eq!(
+            intent_ping,
+            ClientIntent::CharPing {
+                account_id: AccountId(2031617),
+            }
+        );
+        let frame_ping = decode_frame(&raw_ping, ver).unwrap();
+        assert_eq!(frame_ping, DecodedFrame::Intent(intent_ping));
+
+        // 6. CZ_RESTART (0x00b2) from login_sequence.log
+        let restart_bytes: [u8; 3] = [0xb2, 0x00, 0x01];
+        let raw_restart = RawPacket::new(PacketOpcode(0x00b2), Bytes::copy_from_slice(&restart_bytes[2..]));
+        let intent_restart = parser.parse_intent(&raw_restart, ver).unwrap().unwrap();
+        assert_eq!(
+            intent_restart,
+            ClientIntent::Restart {
+                restart_type: 1,
+            }
+        );
+        let frame_restart = decode_frame(&raw_restart, ver).unwrap();
+        assert_eq!(frame_restart, DecodedFrame::Intent(intent_restart));
     }
 }

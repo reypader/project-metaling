@@ -2,12 +2,14 @@
 //! Owned exclusively by the Main Orchestrator Agent.
 
 pub mod account;
+pub mod character;
 pub mod http;
 pub mod ids;
 pub mod map;
 pub mod packet;
 
 pub use account::*;
+pub use character::*;
 pub use http::*;
 pub use ids::*;
 pub use map::*;

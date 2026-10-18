@@ -404,6 +404,127 @@ impl PacketLogger {
         }
     }
 
+    /// Flushes any remaining bytes in the decode buffer when the connection terminates.
+    /// Trailing complete or partial frames are logged so unparsed wire bytes are recorded.
+    pub fn flush(&mut self) {
+        while !self.buffer.is_empty() {
+            if self.buffer.len() >= 2 {
+                match self.decoder.decode(&mut self.buffer) {
+                    Ok(Some(raw_packet)) => {
+                        self.log_raw_packet(&raw_packet);
+                    }
+                    Ok(None) => {
+                        let head_opcode = u16::from_le_bytes([self.buffer[0], self.buffer[1]]);
+                        let opcode = PacketOpcode(head_opcode);
+                        let consumed_bytes = self.buffer.len();
+                        let raw_payload = if consumed_bytes > 2 {
+                            &self.buffer[2..consumed_bytes]
+                        } else {
+                            &[]
+                        };
+                        let payload_preview = format_hex_preview(raw_payload);
+                        let seq = self.tracker.next_seq();
+
+                        debug!(
+                            target: "proxy",
+                            "[{:?} Session #{}] [Seq #{:<3}] [{}] {} len={} [TRAILING PARTIAL FRAME on EOF], payload: {}",
+                            self.server_type,
+                            self.session_id,
+                            seq,
+                            self.direction,
+                            opcode,
+                            consumed_bytes,
+                            payload_preview
+                        );
+
+                        self.tracker.record(PacketSequenceEntry {
+                            seq,
+                            direction: self.direction,
+                            opcode,
+                            length: consumed_bytes,
+                            detail: format!(
+                                "[TRAILING PARTIAL FRAME on EOF, {} bytes] payload: {}",
+                                consumed_bytes, payload_preview
+                            ),
+                        });
+
+                        self.buffer.clear();
+                    }
+                    Err(_) => {
+                        let head_opcode = u16::from_le_bytes([self.buffer[0], self.buffer[1]]);
+                        let opcode = PacketOpcode(head_opcode);
+
+                        let advance_bytes = find_resync_offset(
+                            &self.buffer,
+                            &RathenaPacketLengthTable,
+                            TARGET_PACKETVER,
+                        );
+                        let consumed_bytes = std::cmp::min(self.buffer.len(), advance_bytes);
+                        let raw_payload = if consumed_bytes > 2 {
+                            &self.buffer[2..consumed_bytes]
+                        } else {
+                            &[]
+                        };
+                        let payload_preview = format_hex_preview(raw_payload);
+
+                        let seq = self.tracker.next_seq();
+                        debug!(
+                            target: "proxy",
+                            "[{:?} Session #{}] [Seq #{:<3}] [{}] {} len={} [UNKNOWN / UNMAPPED in table.rs on EOF], payload: {}",
+                            self.server_type,
+                            self.session_id,
+                            seq,
+                            self.direction,
+                            opcode,
+                            consumed_bytes,
+                            payload_preview
+                        );
+
+                        self.tracker.record(PacketSequenceEntry {
+                            seq,
+                            direction: self.direction,
+                            opcode,
+                            length: consumed_bytes,
+                            detail: format!(
+                                "[UNKNOWN / UNMAPPED in table.rs, {} bytes] payload: {}",
+                                consumed_bytes, payload_preview
+                            ),
+                        });
+
+                        self.buffer.advance(consumed_bytes);
+                    }
+                }
+            } else {
+                let single_byte = self.buffer[0];
+                let seq = self.tracker.next_seq();
+                let payload_preview = format_hex_preview(&[single_byte]);
+
+                debug!(
+                    target: "proxy",
+                    "[{:?} Session #{}] [Seq #{:<3}] [{}] Trailing single byte 0x{:02x} on EOF",
+                    self.server_type,
+                    self.session_id,
+                    seq,
+                    self.direction,
+                    single_byte
+                );
+
+                self.tracker.record(PacketSequenceEntry {
+                    seq,
+                    direction: self.direction,
+                    opcode: PacketOpcode(single_byte as u16),
+                    length: 1,
+                    detail: format!(
+                        "[TRAILING BYTE on EOF, 1 byte] payload: {}",
+                        payload_preview
+                    ),
+                });
+
+                self.buffer.clear();
+            }
+        }
+    }
+
     fn log_raw_packet(&mut self, raw: &RawPacket) {
         let seq = self.tracker.next_seq();
         let opcode = raw.opcode;
@@ -460,6 +581,12 @@ impl PacketLogger {
             length: total_len,
             detail,
         });
+    }
+}
+
+impl Drop for PacketLogger {
+    fn drop(&mut self) {
+        self.flush();
     }
 }
 
@@ -549,7 +676,7 @@ pub fn find_resync_offset(
 
     // 2. Chain validation: Scan forward for an offset K whose predicted packet length
     // points to a second valid opcode (or exact buffer end), confirming a multi-packet sequence.
-    for offset in 2..buffer.len().saturating_sub(1) {
+    for offset in 1..buffer.len().saturating_sub(1) {
         let op = u16::from_le_bytes([buffer[offset], buffer[offset + 1]]);
         if let Some(pkt_len) = table.packet_length(PacketOpcode(op), packetver) {
             match pkt_len {
@@ -558,10 +685,10 @@ pub fn find_resync_offset(
                     if buffer.len() >= next_offset + 2 {
                         let follow_op = u16::from_le_bytes([buffer[next_offset], buffer[next_offset + 1]]);
                         if table.packet_length(PacketOpcode(follow_op), packetver).is_some() {
-                            return offset; // Validated by two consecutive packets!
+                            return offset;
                         }
                     } else if next_offset == buffer.len() {
-                        return offset; // Packet cleanly completes the buffer
+                        return offset;
                     }
                 }
                 PacketLength::Dynamic => {
@@ -584,8 +711,8 @@ pub fn find_resync_offset(
         }
     }
 
-    // 3. Fallback: single opcode match if chain confirmation wasn't possible
-    for offset in 2..buffer.len().saturating_sub(1) {
+    // 3. Fallback: single opcode match if chain confirmation was not possible
+    for offset in 1..buffer.len().saturating_sub(1) {
         let next_op = u16::from_le_bytes([buffer[offset], buffer[offset + 1]]);
         if table.packet_length(PacketOpcode(next_op), packetver).is_some() {
             return offset;
@@ -899,5 +1026,110 @@ mod tests {
         assert_eq!(global_entries[0].server_type, ServerType::Login);
         assert_eq!(global_entries[0].direction, PacketDirection::ClientToServer);
         assert_eq!(global_entries[0].opcode, PacketOpcode(0x0064));
+    }
+
+    #[test]
+    fn test_find_resync_offset_recovers_at_odd_byte_offset() {
+        let table = RathenaPacketLengthTable;
+        let ver = TARGET_PACKETVER;
+
+        // Buffer starts with 1 stray byte at offset 0, followed by valid 0x007d and 0x007f packets.
+        let buffer = [
+            0xAA,                               // 1 stray byte at offset 0
+            0x7d, 0x00,                         // Real packet 1: CZ_NOTIFY_ACTORINIT (offset 1, len 2)
+            0x7f, 0x00, 0x01, 0x02, 0x03, 0x04, // Real packet 2: ZC_NOTIFY_TIME (offset 3, len 6)
+        ];
+
+        let resync_offset = find_resync_offset(&buffer, &table, ver);
+        assert_eq!(resync_offset, 1);
+
+        let tracker = Arc::new(SessionSequenceTracker::new());
+        let mut logger = PacketLogger::new(
+            ServerType::Map,
+            1,
+            PacketDirection::ClientToServer,
+            tracker.clone(),
+        );
+
+        logger.feed_and_log(&buffer);
+        assert!(logger.buffer.is_empty());
+
+        let flow = tracker.format_sequence_flow();
+        assert!(flow.contains("Seq #1"));
+        assert!(flow.contains("0x7daa"));
+        assert!(flow.contains("[UNKNOWN / UNMAPPED in table.rs, 1 bytes]"));
+        assert!(flow.contains("Seq #2"));
+        assert!(flow.contains("0x007d (CZ_NOTIFY_ACTORINIT)"));
+        assert!(flow.contains("Seq #3"));
+        assert!(flow.contains("0x007f (ZC_NOTIFY_TIME)"));
+    }
+
+    #[test]
+    fn test_packet_logger_flush_on_connection_close() {
+        let tracker = Arc::new(SessionSequenceTracker::new());
+        let mut logger = PacketLogger::new(
+            ServerType::Login,
+            1,
+            PacketDirection::ClientToServer,
+            tracker.clone(),
+        );
+
+        // Feed partial CA_LOGIN frame (10 bytes out of 55 bytes)
+        let partial_frame = [0x64, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08];
+        logger.feed_and_log(&partial_frame);
+        assert_eq!(logger.buffer.len(), 10);
+        assert_eq!(tracker.packet_count(), 0);
+
+        logger.flush();
+        assert!(logger.buffer.is_empty());
+        assert_eq!(tracker.packet_count(), 1);
+
+        let flow = tracker.format_sequence_flow();
+        assert!(flow.contains("Seq #1"));
+        assert!(flow.contains("0x0064 (CA_LOGIN)"));
+        assert!(flow.contains("[TRAILING PARTIAL FRAME on EOF, 10 bytes]"));
+    }
+
+    #[test]
+    fn test_packet_logger_drop_flushes_buffer() {
+        let tracker = Arc::new(SessionSequenceTracker::new());
+        {
+            let mut logger = PacketLogger::new(
+                ServerType::Login,
+                1,
+                PacketDirection::ClientToServer,
+                tracker.clone(),
+            );
+            // Feed partial bytes
+            logger.feed_and_log(&[0x64, 0x00, 0xAA, 0xBB]);
+            assert_eq!(tracker.packet_count(), 0);
+            // logger drops here at end of scope
+        }
+
+        assert_eq!(tracker.packet_count(), 1);
+        let flow = tracker.format_sequence_flow();
+        assert!(flow.contains("[TRAILING PARTIAL FRAME on EOF, 4 bytes]"));
+    }
+
+    #[test]
+    fn test_packet_logger_flush_single_trailing_byte() {
+        let tracker = Arc::new(SessionSequenceTracker::new());
+        let mut logger = PacketLogger::new(
+            ServerType::Char,
+            1,
+            PacketDirection::ServerToClient,
+            tracker.clone(),
+        );
+
+        logger.feed_and_log(&[0x42]);
+        assert_eq!(logger.buffer.len(), 1);
+        assert_eq!(tracker.packet_count(), 0);
+
+        logger.flush();
+        assert!(logger.buffer.is_empty());
+        assert_eq!(tracker.packet_count(), 1);
+
+        let flow = tracker.format_sequence_flow();
+        assert!(flow.contains("[TRAILING BYTE on EOF, 1 byte]"));
     }
 }

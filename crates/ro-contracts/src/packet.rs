@@ -56,6 +56,7 @@ impl PacketOpcode {
     pub const ZC_PAR_CHANGE: Self = Self(0x00b0);
     pub const ZC_LONGPAR_CHANGE: Self = Self(0x00b1);
     pub const CZ_RESTART: Self = Self(0x00b2);
+    pub const ZC_RESTART_ACK: Self = Self(0x00b3);
     pub const CZ_CHOOSE_MENU: Self = Self(0x00b8);
     pub const CZ_REQ_NEXT_SCRIPT: Self = Self(0x00b9);
     pub const CZ_REQ_STATUS: Self = Self(0x00ba);
@@ -816,7 +817,6 @@ impl PacketOpcode {
     pub const CZ_CLAN_CHAT: Self = Self(0x098d);
     pub const CZ_REQ_WEAR_EQUIP: Self = Self(0x0998);
     pub const ZC_NOTIFY_MAPPROPERTY2: Self = Self(0x099b);
-    pub const HC_ACK_CHARINFO_PER_PAGE: Self = Self(0x099d);
     pub const ZC_SKILL_ENTRY4: Self = Self(0x099f);
     pub const HC_CHARLIST_NOTIFY: Self = Self(0x09a0);
     pub const CH_CHARLIST_REQ: Self = Self(0x09a1);
@@ -979,6 +979,7 @@ impl PacketOpcode {
     pub const CZ_SE_CASHSHOP_OPEN2: Self = Self(0x0b6d);
     pub const HC_ACK_MAKE_CHAR: Self = Self(0x0b6f);
     pub const HC_ACK_CHANGE_CHARACTER_SLOT: Self = Self(0x0b70);
+    pub const HC_ACK_CHARINFO_PER_PAGE: Self = Self(0x0b72);
     pub const CZ_CLOSE_REFORM_UI: Self = Self(0x0b90);
     pub const CZ_ITEM_REFORM: Self = Self(0x0b91);
     pub const CZ_DULL_0X0B93: Self = Self(0x0b93);
@@ -1049,6 +1050,7 @@ impl PacketOpcode {
             0x00b0 => Some("ZC_PAR_CHANGE"),
             0x00b1 => Some("ZC_LONGPAR_CHANGE"),
             0x00b2 => Some("CZ_RESTART"),
+            0x00b3 => Some("ZC_RESTART_ACK"),
             0x00b8 => Some("CZ_CHOOSE_MENU"),
             0x00b9 => Some("CZ_REQ_NEXT_SCRIPT"),
             0x00ba => Some("CZ_REQ_STATUS"),
@@ -1809,7 +1811,6 @@ impl PacketOpcode {
             0x098d => Some("CZ_CLAN_CHAT"),
             0x0998 => Some("CZ_REQ_WEAR_EQUIP"),
             0x099b => Some("ZC_NOTIFY_MAPPROPERTY2"),
-            0x099d => Some("HC_ACK_CHARINFO_PER_PAGE"),
             0x099f => Some("ZC_SKILL_ENTRY4"),
             0x09a0 => Some("HC_CHARLIST_NOTIFY"),
             0x09a1 => Some("CH_CHARLIST_REQ"),
@@ -1972,6 +1973,7 @@ impl PacketOpcode {
             0x0b6d => Some("CZ_SE_CASHSHOP_OPEN2"),
             0x0b6f => Some("HC_ACK_MAKE_CHAR"),
             0x0b70 => Some("HC_ACK_CHANGE_CHARACTER_SLOT"),
+            0x0b72 => Some("HC_ACK_CHARINFO_PER_PAGE"),
             0x0b90 => Some("CZ_CLOSE_REFORM_UI"),
             0x0b91 => Some("CZ_ITEM_REFORM"),
             0x0b93 => Some("CZ_DULL_0X0B93"),
@@ -2115,8 +2117,26 @@ pub enum ClientIntent {
         client_version: u16,
         sex: Sex,
     },
+    RequestCharacterList,
     SelectCharacter {
         slot: u8,
+    },
+    CreateCharacter {
+        name: String,
+        slot: u8,
+        hair_color: u16,
+        hair_style: u16,
+        starting_job: u32,
+        sex: Sex,
+    },
+    ReserveDeleteCharacter {
+        char_id: CharId,
+    },
+    CancelDeleteCharacter {
+        char_id: CharId,
+    },
+    CharPing {
+        account_id: AccountId,
     },
     EnterMap {
         account_id: AccountId,
@@ -2143,6 +2163,9 @@ pub enum ClientIntent {
     },
     RequestEntityName {
         entity_id: u32,
+    },
+    Restart {
+        restart_type: u8,
     },
 }
 
@@ -2225,11 +2248,29 @@ pub enum ServerEvent {
         total_slots: u8,
         characters: Vec<CharacterSummary>,
     },
+    CharacterPageLoaded {
+        characters: Vec<CharacterSummary>,
+    },
     CharacterSelected {
         char_id: CharId,
         map_name: String,
         map_host: [u8; 4],
         map_port: u16,
+    },
+    CharacterCreated {
+        character: CharacterSummary,
+    },
+    CharacterCreateRefused {
+        error_code: u8,
+    },
+    CharacterDeleteReserved {
+        char_id: CharId,
+        result: u32,
+        delete_delay_seconds: u32,
+    },
+    CharacterDeleteCancelled {
+        char_id: CharId,
+        result: u32,
     },
     AcceptEnter {
         server_tick: u32,
@@ -2264,6 +2305,9 @@ pub enum ServerEvent {
     ParameterChanged {
         var_id: u16,
         value: i32,
+    },
+    RestartAck {
+        result: u8,
     },
 }
 

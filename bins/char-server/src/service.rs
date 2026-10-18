@@ -4,21 +4,23 @@ use std::sync::{
 };
 
 use ro_contracts::{
-    ids::{AccountId, CharId, CharacterSummary, MapPosition, SessionId, Sex},
+    character::{CharacterRepository, CreateCharacterRequest},
+    ids::{AccountId, SessionId},
     packet::{ClientIntent, ServerEvent, SessionIntent},
 };
 use tokio::sync::mpsc;
-use tracing::{info, warn};
+use tracing::{error, info, warn};
 
 #[derive(Clone)]
 struct RegisteredMapServer {
+    name: String,
     maps: Vec<String>,
     host: [u8; 4],
     port: u16,
 }
 
 struct CharSharedState {
-    characters: Vec<CharacterSummary>,
+    char_repo: Arc<dyn CharacterRepository>,
     map_servers: Vec<RegisteredMapServer>,
 }
 
@@ -30,27 +32,9 @@ pub struct CharServiceHandle {
 }
 
 impl CharServiceHandle {
-    pub fn new() -> Self {
-        let stub_character = CharacterSummary {
-            char_id: CharId(150001),
-            account_id: AccountId(2000000),
-            slot: 0,
-            name: "Novice".to_string(),
-            sex: Sex::Male,
-            job_class: 0,
-            base_level: 1,
-            job_level: 1,
-            hair_style: 1,
-            hair_color: 1,
-            last_map: "prontera.gat".to_string(),
-            last_pos: MapPosition {
-                x: 156,
-                y: 191,
-                dir: 0,
-            },
-        };
-
+    pub fn new(char_repo: Arc<dyn CharacterRepository>) -> Self {
         let default_map_server = RegisteredMapServer {
+            name: "metaling-map-default".to_string(),
             maps: vec!["prontera.gat".to_string()],
             host: [127, 0, 0, 1],
             port: 5121,
@@ -59,7 +43,7 @@ impl CharServiceHandle {
         Self {
             next_session_id: Arc::new(AtomicU64::new(1)),
             shared: Arc::new(RwLock::new(CharSharedState {
-                characters: vec![stub_character],
+                char_repo,
                 map_servers: vec![default_map_server],
             })),
         }
@@ -81,7 +65,23 @@ impl CharServiceHandle {
             maps.len()
         );
         if let Ok(mut state) = self.shared.write() {
-            state.map_servers.push(RegisteredMapServer { maps, host, port });
+            if let Some(existing) = state
+                .map_servers
+                .iter_mut()
+                .find(|srv| (srv.host == host && srv.port == port) || srv.name == name)
+            {
+                existing.name = name;
+                existing.maps = maps;
+                existing.host = host;
+                existing.port = port;
+            } else {
+                state.map_servers.push(RegisteredMapServer {
+                    name,
+                    maps,
+                    host,
+                    port,
+                });
+            }
         }
     }
 
@@ -92,10 +92,15 @@ impl CharServiceHandle {
         outbound_tx: mpsc::Sender<ServerEvent>,
     ) -> mpsc::Sender<SessionIntent> {
         let (intent_tx, intent_rx) = mpsc::channel(16);
+        let char_repo = {
+            let state = self.shared.read().expect("CharSharedState lock poisoned");
+            Arc::clone(&state.char_repo)
+        };
         let actor = CharSessionActor {
             session_id,
             authenticated_account: None,
             shared: Arc::clone(&self.shared),
+            char_repo,
             outbound_tx,
         };
         tokio::spawn(async move {
@@ -107,7 +112,7 @@ impl CharServiceHandle {
 
 impl Default for CharServiceHandle {
     fn default() -> Self {
-        Self::new()
+        Self::new(Arc::new(ro_persistence::InMemoryStubRepo::new()))
     }
 }
 
@@ -116,6 +121,7 @@ struct CharSessionActor {
     session_id: SessionId,
     authenticated_account: Option<AccountId>,
     shared: Arc<RwLock<CharSharedState>>,
+    char_repo: Arc<dyn CharacterRepository>,
     outbound_tx: mpsc::Sender<ServerEvent>,
 }
 
@@ -137,15 +143,20 @@ impl CharSessionActor {
                 );
                 self.authenticated_account = Some(account_id);
 
-                let characters = self
-                    .shared
-                    .read()
-                    .map(|s| s.characters.clone())
-                    .unwrap_or_default();
+                let characters = match self.char_repo.list_by_account(account_id).await {
+                    Ok(chars) => chars,
+                    Err(err) => {
+                        error!(
+                            "Session {:?} failed to list characters for account id {}: {}",
+                            self.session_id, account_id.0, err
+                        );
+                        Vec::new()
+                    }
+                };
 
                 let event = ServerEvent::CharacterListLoaded {
                     account_id,
-                    total_slots: 3,
+                    total_slots: 15,
                     characters,
                 };
                 if self.outbound_tx.try_send(event).is_err() {
@@ -157,6 +168,159 @@ impl CharSessionActor {
                 }
                 true
             }
+            ClientIntent::RequestCharacterList => {
+                let Some(account_id) = self.authenticated_account.or(session_intent.account_id)
+                else {
+                    warn!(
+                        "Session {:?} sent RequestCharacterList before EnterCharServer; ignoring",
+                        self.session_id
+                    );
+                    return false;
+                };
+
+                info!(
+                    "Session {:?} loading character page for account id {}",
+                    self.session_id, account_id.0
+                );
+
+                let characters = match self.char_repo.list_by_account(account_id).await {
+                    Ok(chars) => chars,
+                    Err(err) => {
+                        error!(
+                            "Session {:?} failed to list character page for account id {}: {}",
+                            self.session_id, account_id.0, err
+                        );
+                        Vec::new()
+                    }
+                };
+
+                let event = ServerEvent::CharacterPageLoaded { characters };
+                if self.outbound_tx.try_send(event).is_err() {
+                    warn!(
+                        "Session {:?} outbound queue full or closed; dropping char session",
+                        self.session_id
+                    );
+                    return false;
+                }
+                true
+            }
+            ClientIntent::CreateCharacter {
+                name,
+                slot,
+                hair_color,
+                hair_style,
+                starting_job,
+                sex,
+            } => {
+                let Some(account_id) = self.authenticated_account.or(session_intent.account_id)
+                else {
+                    warn!(
+                        "Session {:?} sent CreateCharacter before EnterCharServer; ignoring",
+                        self.session_id
+                    );
+                    return false;
+                };
+
+                info!(
+                    "Session {:?} (account {}) creating character '{}' in slot {}",
+                    self.session_id, account_id.0, name, slot
+                );
+
+                let req = CreateCharacterRequest {
+                    account_id,
+                    name,
+                    slot,
+                    hair_color,
+                    hair_style,
+                    starting_job,
+                    sex,
+                };
+
+                let event = match self.char_repo.create_character(req, 15).await {
+                    Ok(character) => ServerEvent::CharacterCreated { character },
+                    Err(err) => ServerEvent::CharacterCreateRefused {
+                        error_code: err.wire_error_code(),
+                    },
+                };
+
+                if self.outbound_tx.try_send(event).is_err() {
+                    warn!(
+                        "Session {:?} outbound queue full or closed; dropping char session",
+                        self.session_id
+                    );
+                    return false;
+                }
+                true
+            }
+            ClientIntent::ReserveDeleteCharacter { char_id } => {
+                let Some(account_id) = self.authenticated_account.or(session_intent.account_id)
+                else {
+                    warn!(
+                        "Session {:?} sent ReserveDeleteCharacter before EnterCharServer; ignoring",
+                        self.session_id
+                    );
+                    return false;
+                };
+
+                info!(
+                    "Session {:?} (account {}) requesting deletion reservation for char id {}",
+                    self.session_id, account_id.0, char_id.0
+                );
+
+                let outcome = self
+                    .char_repo
+                    .reserve_delete(account_id, char_id, 86_400)
+                    .await;
+                let (result, delete_delay_seconds) = outcome.wire_fields();
+
+                let event = ServerEvent::CharacterDeleteReserved {
+                    char_id,
+                    result,
+                    delete_delay_seconds,
+                };
+
+                if self.outbound_tx.try_send(event).is_err() {
+                    warn!(
+                        "Session {:?} outbound queue full or closed on CharacterDeleteReserved",
+                        self.session_id
+                    );
+                    return false;
+                }
+                true
+            }
+            ClientIntent::CancelDeleteCharacter { char_id } => {
+                let Some(account_id) = self.authenticated_account.or(session_intent.account_id)
+                else {
+                    warn!(
+                        "Session {:?} sent CancelDeleteCharacter before EnterCharServer; ignoring",
+                        self.session_id
+                    );
+                    return false;
+                };
+
+                info!(
+                    "Session {:?} (account {}) cancelling deletion reservation for char id {}",
+                    self.session_id, account_id.0, char_id.0
+                );
+
+                let cancelled = self.char_repo.cancel_delete(account_id, char_id).await;
+                let result = if cancelled { 1 } else { 2 };
+
+                let event = ServerEvent::CharacterDeleteCancelled {
+                    char_id,
+                    result,
+                };
+
+                if self.outbound_tx.try_send(event).is_err() {
+                    warn!(
+                        "Session {:?} outbound queue full or closed on CharacterDeleteCancelled",
+                        self.session_id
+                    );
+                    return false;
+                }
+                true
+            }
+            ClientIntent::CharPing { .. } => true,
             ClientIntent::SelectCharacter { slot } => {
                 let Some(account_id) = self.authenticated_account.or(session_intent.account_id)
                 else {
@@ -172,23 +336,34 @@ impl CharSessionActor {
                     self.session_id, account_id.0, slot
                 );
 
-                let (target_char, map_host, map_port) = {
-                    let state = self.shared.read().expect("CharSharedState lock poisoned");
-                    let ch = state
-                        .characters
-                        .iter()
-                        .find(|c| c.slot == slot)
-                        .cloned()
-                        .unwrap_or_else(|| state.characters[0].clone());
+                let target_char = match self.char_repo.find_by_slot(account_id, slot).await {
+                    Ok(Some(ch)) => Some(ch),
+                    Ok(None) => None,
+                    Err(err) => {
+                        error!(
+                            "Session {:?} failed to query slot {} for account {}: {}",
+                            self.session_id, slot, account_id.0, err
+                        );
+                        None
+                    }
+                };
 
-                    let (host, port) = state
+                let Some(target_char) = target_char else {
+                    warn!(
+                        "Session {:?} (account {}) requested slot {} with no character found",
+                        self.session_id, account_id.0, slot
+                    );
+                    return true;
+                };
+
+                let (map_host, map_port) = {
+                    let state = self.shared.read().expect("CharSharedState lock poisoned");
+                    state
                         .map_servers
                         .iter()
-                        .find(|srv| srv.maps.contains(&ch.last_map))
+                        .find(|srv| srv.maps.contains(&target_char.last_map))
                         .map(|srv| (srv.host, srv.port))
-                        .unwrap_or(([127, 0, 0, 1], 5121));
-
-                    (ch, host, port)
+                        .unwrap_or(([127, 0, 0, 1], 5121))
                 };
 
                 let event = ServerEvent::CharacterSelected {

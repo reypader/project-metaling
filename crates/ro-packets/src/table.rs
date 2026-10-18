@@ -68,6 +68,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x00b0 => Some(Fixed(8)), // ZC_PAR_CHANGE
         0x00b1 => Some(Fixed(8)), // ZC_LONGPAR_CHANGE
         0x00b2 => Some(Fixed(3)),
+        0x00b3 => Some(Fixed(3)), // ZC_RESTART_ACK
         0x00b8 => Some(Fixed(7)),
         0x00b9 => Some(Fixed(6)),
         0x00ba => Some(Fixed(2)),
@@ -672,7 +673,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0825 => Some(Dynamic), // CA_SSO_LOGIN_REQ
         0x0827 => Some(Fixed(6)), // CH_DELETE_CHAR3_RESERVED
         0x0828 => Some(Fixed(14)), // HC_DELETE_CHAR3_RESERVED
-        0x0829 => Some(Fixed(10)), // CH_DELETE_CHAR3
+        0x0829 => Some(Fixed(12)), // CH_DELETE_CHAR3
         0x082a => Some(Fixed(10)), // HC_DELETE_CHAR3
         0x082b => Some(Fixed(6)), // CH_DELETE_CHAR3_CANCEL
         0x082c => Some(Fixed(10)), // HC_DELETE_CHAR3_CANCEL
@@ -828,7 +829,6 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x098d => Some(Dynamic),
         0x0998 => Some(Fixed(8)),
         0x099b => Some(Fixed(8)),
-        0x099d => Some(Dynamic), // HC_ACK_CHARINFO_PER_PAGE
         0x099f => Some(Fixed(22)),
         0x09a0 => Some(Fixed(6)), // HC_CHARLIST_NOTIFY
         0x09a1 => Some(Fixed(2)), // CH_CHARLIST_REQ
@@ -991,6 +991,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0b6d => Some(Fixed(6)),
         0x0b6f => Some(Fixed(177)), // HC_ACCEPT_MAKECHAR
         0x0b70 => Some(Dynamic), // HC_ACK_CHANGE_CHARACTER_SLOT
+        0x0b72 => Some(Dynamic), // HC_ACK_CHARINFO_PER_PAGE
         0x0b90 => Some(Fixed(2)),
         0x0b91 => Some(Fixed(8)),
         0x0b93 => Some(Fixed(12)),
@@ -1056,6 +1057,10 @@ mod tests {
         assert_eq!(table.packet_length(PacketOpcode(0x09ff), ver), Some(PacketLength::Dynamic));
         assert_eq!(table.packet_length(PacketOpcode(0x09fd), ver), Some(PacketLength::Dynamic));
         assert_eq!(table.packet_length(PacketOpcode(0x0af7), ver), Some(PacketLength::Dynamic));
+        assert_eq!(table.packet_length(PacketOpcode(0x0b72), ver), Some(PacketLength::Dynamic));
+        assert_eq!(table.packet_length(PacketOpcode(0x00b3), ver), Some(PacketLength::Fixed(3)));
+        assert_eq!(table.packet_length(PacketOpcode(0x0829), ver), Some(PacketLength::Fixed(12)));
+        assert_eq!(table.packet_length(PacketOpcode(0x099d), ver), None);
     }
 
     #[test]

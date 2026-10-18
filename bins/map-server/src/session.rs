@@ -31,7 +31,7 @@ pub async fn handle_client_session(
     let (mut reader, mut writer) = socket.into_split();
     let (outbound_tx, mut outbound_rx) = mpsc::channel::<Bytes>(64);
 
-    let writer_task = tokio::spawn(async move {
+    let mut writer_task = tokio::spawn(async move {
         while let Some(bytes) = outbound_rx.recv().await {
             if let Err(err) = writer.write_all(&bytes).await {
                 error!(
@@ -58,11 +58,11 @@ pub async fn handle_client_session(
     let mut authenticated_char: Option<CharId> = None;
     let mut world_tx: Option<mpsc::Sender<WorldCommand>> = None;
 
-    loop {
+    'session_loop: loop {
         match reader.read_buf(&mut buffer).await {
             Ok(0) => {
                 info!("Client {:?} ({}) closed connection", session_id, peer_addr);
-                break;
+                break 'session_loop;
             }
             Ok(bytes_read) => {
                 debug!(
@@ -75,7 +75,7 @@ pub async fn handle_client_session(
                     "Socket read error from client {:?} ({}): {}",
                     session_id, peer_addr, err
                 );
-                break;
+                break 'session_loop;
             }
         }
 
@@ -83,12 +83,7 @@ pub async fn handle_client_session(
             Ok(frame) => frame,
             Err(err) => {
                 error!("Packet framing error from {}: {}", peer_addr, err);
-                if let Some(tx) = &world_tx {
-                    let _ = tx.try_send(WorldCommand::LeaveSession { session_id });
-                }
-                drop(outbound_tx);
-                let _ = writer_task.await;
-                return;
+                break 'session_loop;
             }
         } {
             match parser.parse_intent(&raw_packet, TARGET_PACKETVER) {
@@ -104,6 +99,14 @@ pub async fn handle_client_session(
                             char_id,
                             ..
                         } => {
+                            if authenticated_account.is_some() {
+                                warn!(
+                                    "Session {:?} ({}) sent duplicate EnterMap after authentication; ignoring",
+                                    session_id, peer_addr
+                                );
+                                continue;
+                            }
+
                             let entered_account_id = *account_id;
                             let entered_char_id = *char_id;
                             authenticated_account = Some(entered_account_id);
@@ -115,9 +118,7 @@ pub async fn handle_client_session(
                                     "Outbound queue full when echoing AccountId to {}",
                                     peer_addr
                                 );
-                                drop(outbound_tx);
-                                let _ = writer_task.await;
-                                return;
+                                break 'session_loop;
                             }
 
                             let target_world_tx = service.resolve_world_for_character(entered_char_id);
@@ -138,9 +139,7 @@ pub async fn handle_client_session(
                                 .await
                             {
                                 error!("Failed to join MapWorldActor: {}", err);
-                                drop(outbound_tx);
-                                let _ = writer_task.await;
-                                return;
+                                break 'session_loop;
                             }
                             world_tx = Some(target_world_tx);
                         }
@@ -150,9 +149,7 @@ pub async fn handle_client_session(
                                     "Session {:?} ({}) sent {:?} prior to EnterMap handshake",
                                     session_id, peer_addr, intent
                                 );
-                                drop(outbound_tx);
-                                let _ = writer_task.await;
-                                return;
+                                break 'session_loop;
                             };
 
                             let session_intent = SessionIntent::new(
@@ -165,9 +162,7 @@ pub async fn handle_client_session(
                                 tx.send(WorldCommand::PlayerIntent(session_intent)).await
                             {
                                 error!("Failed to send intent to MapWorldActor: {}", err);
-                                drop(outbound_tx);
-                                let _ = writer_task.await;
-                                return;
+                                break 'session_loop;
                             }
                         }
                     }
@@ -190,5 +185,15 @@ pub async fn handle_client_session(
         let _ = tx.try_send(WorldCommand::LeaveSession { session_id });
     }
     drop(outbound_tx);
-    let _ = writer_task.await;
+
+    if tokio::time::timeout(std::time::Duration::from_millis(1000), &mut writer_task)
+        .await
+        .is_err()
+    {
+        warn!(
+            "Session {:?} ({}) writer task timed out during termination",
+            session_id, peer_addr
+        );
+        writer_task.abort();
+    }
 }
