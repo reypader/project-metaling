@@ -52,6 +52,10 @@ When reviewing a multi-file change, inspect all modified and affected files in t
    * Verify that upfront tests defined for the behavior change pass cleanly and assert all required acceptance criteria.
 4. **Performance**
    * For `ro-engine` and `ro-mechanics`: Identify unnecessary pointer chasing, copying, or moving to maximize cache locality. Verify ECS systems that can be done in parallel and identify optimal component layout streamlined for the gameplay rather than generalized usage.
+5. **Code Sanity**
+   * Code should never use in-lined fully qualified names and instead use `use`. If naming collision might occur, qualify only to the nearest namespace to resolve the collision.
+   * Watch for cyclomastic complexity. Functions and methods should return early to prevent deeply nested blocks.
+   * Discourage usage of `unwrap`, or any points of panic. At most, a problematic processing should lead to a terminated connection or a dropped packet unless it might introduce an inconsistent system state.
 
 ## 3. Output Format
 
