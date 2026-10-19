@@ -3,7 +3,7 @@ name: ro-db
 description: Domain specialist for crates/ro-db covering .gat/.rsw map walkability grids, Renewal YAML database loaders (item_db, mob_db, skill_db), and NPC spawn/warp file parsers.
 subagent: true
 mainAgent: false
-model: flash
+model: pro
 tools:
   - view_file
   - replace_file_content

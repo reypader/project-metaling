@@ -3,7 +3,7 @@ name: ro-engine
 description: Domain specialist for crates/ro-engine covering the deterministic ECS World, 8x8 SpatialGrid, A* pathfinding, entity lifecycles, AoI broadcasting, and map tick loop.
 subagent: true
 mainAgent: false
-model: flash
+model: pro
 tools:
   - view_file
   - replace_file_content

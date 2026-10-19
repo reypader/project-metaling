@@ -3,7 +3,7 @@ name: ro-persistence
 description: Domain specialist for crates/ro-persistence covering InMemoryStubRepo, PostgreSQL sqlx repositories, SQL migrations, and account/character CRUD operations.
 subagent: true
 mainAgent: false
-model: flash
+model: pro
 tools:
   - view_file
   - replace_file_content

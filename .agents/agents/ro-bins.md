@@ -3,7 +3,7 @@ name: ro-bins
 description: Specialist for bins/ (login-server, char-server, map-server) managing TCP session supervision, protocol-to-logic actor channels, inter-server Axum HTTP APIs, and cross-crate dependency injection.
 subagent: true
 mainAgent: false
-model: flash
+model: pro
 tools:
   - view_file
   - replace_file_content
