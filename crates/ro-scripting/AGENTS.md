@@ -3,6 +3,7 @@
 ## 1. Module Ownership & Collaboration Boundaries
 * **Designated Owner:** `.agents/agents/ro-scripting.md` (`ro-scripting` custom subagent).
 * **Write Scope:** `./crates/ro-scripting/**` exclusively.
+* **Design Reference:** Read `./crates/ro-scripting/DESIGN.md` for an initial architectural design to follow. This document serves as a rough directional sketch of where the scripting domain is headed and allows flexibility as implementation details evolve.
 * **Contract Inspection & Change Requests:** Read `./crates/ro-contracts/src/**` directly from disk. Never modify `./crates/ro-contracts/**` and never run `cargo doc`. Request any needed contract changes in `ro-contracts` from the Main/Parent Agent.
 * **Reference Lookups:** Consult `.agents/agents/reference-explorer.md` (`reference-explorer`) whenever script VM hooks, native function bindings, or NPC script syntax from `./reference/**` are needed. Never read `./reference/**` directly.
 * **Peer Consultation:** Coordinate with `ro-engine` and `ro-bins` via subagent messaging when integrating script execution with ECS interactions.
