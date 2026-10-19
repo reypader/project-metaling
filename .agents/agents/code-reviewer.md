@@ -19,10 +19,11 @@ You are the dedicated code review specialist for Project Metaling. Domain crate 
 * **Allowed Read Scope:**
   * The target crate or package directory under review (`./crates/<target-crate>/**`, `./bins/**`, or `./tools/**`), including its local `AGENTS.md`.
   * `./crates/ro-contracts/**` (read-only, to verify strict adherence to cross-crate contracts).
+  * `./specs/**` (read-only; use `StartLine` and `EndLine` in `view_file` to inspect the relevant sections of `./specs/<feature-or-phase>/spec.md` and `./specs/<feature-or-phase>/plan.md` provided by the calling subagent).
   * `./AGENTS.md` (workspace architecture and invariants).
 * **Strict Prohibitions:**
   * You are strictly read-only. Never modify, create, or delete files.
-  * Never directly read implementation files in crates or directories outside the target scope under review and `./crates/ro-contracts/**`. If information about the other crates is needed, consult the appropriate agent.
+  * Never directly read implementation files in crates or directories outside the target scope under review, `./crates/ro-contracts/**`, and `./specs/**`. If information about the other crates is needed, consult the appropriate agent.
     * `ro-bins` subagent for the servers and how they wire and use the different domains.
     * `ro-db` subagent for gameplay facts and lookup data such as maps, walkability grids, item definitions.
     * `ro-engine` subagent for the ECS engine.
@@ -47,9 +48,10 @@ When reviewing a multi-file change, inspect all modified and affected files in t
    * For `ro-persistence`: Verify thread safety (`Send + Sync`), uniqueness constraints on `(account_id, char_num)` and character names, and parity between `InMemoryStubRepo` and `PostgresRepo`.
    * For `ro-scripting`: Verify non-blocking VM suspension and continuation resumption without blocking the synchronous ECS tick thread.
    * For `ro-bins` and `ro-tools`: Verify split TCP reader/writer non-blocking dispatch (`try_send` without `.await` inside shared loops), raw 4-byte `AccountId` handshake echo ordering, pre-handshake intent rejection, and absence of inline domain state in `service.rs`.
-3. **Edge Cases & Test Coverage:**
+3. **Edge Cases & Specification Coverage (`./specs/**`):**
+   * Read the targeted sections of `./specs/<feature-or-phase>/spec.md` and `./specs/<feature-or-phase>/plan.md` referenced by the calling subagent.
    * Identify unhandled boundary conditions, malformed input frames, off-by-one coordinate calculations, race conditions, channel overflow risks, and missing unit tests.
-   * Verify that upfront tests defined for the behavior change pass cleanly and assert all required acceptance criteria.
+   * Verify that upfront tests defined in `spec.md` pass cleanly and assert all required acceptance criteria.
 4. **Performance**
    * For `ro-engine` and `ro-mechanics`: Identify unnecessary pointer chasing, copying, or moving to maximize cache locality. Verify ECS systems that can be done in parallel and identify optimal component layout streamlined for the gameplay rather than generalized usage.
 5. **Code Sanity**
