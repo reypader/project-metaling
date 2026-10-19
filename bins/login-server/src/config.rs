@@ -1,3 +1,5 @@
+use clap::{error::ErrorKind, Parser};
+
 /// Configuration for `login-server` network ports and database connection.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LoginConfig {
@@ -18,66 +20,33 @@ impl Default for LoginConfig {
     }
 }
 
-fn get_cli_arg(args: &[String], short: Option<&str>, long: &str) -> Option<u16> {
-    let mut iter = args.iter();
-    while let Some(arg) = iter.next() {
-        if let Some(short_flag) = short {
-            if arg == short_flag {
-                if let Some(val) = iter.next() {
-                    if let Ok(port) = val.parse::<u16>() {
-                        return Some(port);
-                    }
-                }
-            }
-            let prefix = format!("{short_flag}=");
-            if let Some(rest) = arg.strip_prefix(&prefix) {
-                if let Ok(port) = rest.parse::<u16>() {
-                    return Some(port);
-                }
-            }
-        }
-        if arg == long {
-            if let Some(val) = iter.next() {
-                if let Ok(port) = val.parse::<u16>() {
-                    return Some(port);
-                }
-            }
-        }
-        let prefix = format!("{long}=");
-        if let Some(rest) = arg.strip_prefix(&prefix) {
-            if let Ok(port) = rest.parse::<u16>() {
-                return Some(port);
-            }
-        }
-    }
-    None
-}
+/// Command-line arguments for `login-server`.
+#[derive(Parser, Debug, Default)]
+#[command(name = "login-server", about = "Metaling login server")]
+struct LoginCliArgs {
+    /// Client TCP listening port.
+    #[arg(short = 'p', long = "port")]
+    port: Option<u16>,
 
-fn get_cli_arg_string(args: &[String], short: Option<&str>, long: &str) -> Option<String> {
-    let mut iter = args.iter();
-    while let Some(arg) = iter.next() {
-        if let Some(short_flag) = short {
-            if arg == short_flag {
-                if let Some(val) = iter.next() {
-                    return Some(val.clone());
-                }
-            }
-            let prefix = format!("{short_flag}=");
-            if let Some(rest) = arg.strip_prefix(&prefix) {
-                return Some(rest.to_string());
-            }
-        }
-        if arg == long {
-            if let Some(val) = iter.next() {
-                return Some(val.clone());
-            }
-        }
-        let prefix = format!("{long}=");
-        if let Some(rest) = arg.strip_prefix(&prefix) {
-            return Some(rest.to_string());
-        }
-    }
-    None
+    /// Internal HTTP API listening port.
+    #[arg(long = "http-port")]
+    http_port: Option<u16>,
+
+    /// Port advertised to clients for character server redirection.
+    #[arg(
+        long = "advertised-port",
+        visible_alias = "char-port",
+        visible_alias = "advertised-char-port"
+    )]
+    advertised_char_port: Option<u16>,
+
+    /// PostgreSQL database connection URL.
+    #[arg(long = "database-url", visible_alias = "account-database-url")]
+    database_url: Option<String>,
+
+    /// Host advertised to clients for character server redirection.
+    #[arg(long = "char-host")]
+    char_host: Option<String>,
 }
 
 impl LoginConfig {
@@ -87,24 +56,37 @@ impl LoginConfig {
         S: AsRef<str>,
         F: Fn(&str) -> Option<String>,
     {
-        let args_vec: Vec<String> = args.into_iter().map(|s| s.as_ref().to_string()).collect();
+        let mut args_vec: Vec<String> = args.into_iter().map(|s| s.as_ref().to_string()).collect();
+        if args_vec.is_empty() || args_vec[0].starts_with('-') {
+            args_vec.insert(0, "login-server".to_string());
+        }
+
+        let parsed = match LoginCliArgs::try_parse_from(&args_vec) {
+            Ok(args) => args,
+            Err(err) => match err.kind() {
+                ErrorKind::DisplayHelp | ErrorKind::DisplayVersion => err.exit(),
+                _ => LoginCliArgs::default(),
+            },
+        };
         let defaults = Self::default();
 
-        let client_port = get_cli_arg(&args_vec, Some("-p"), "--port")
+        let client_port = parsed
+            .port
             .or_else(|| env("LOGIN_PORT").and_then(|v| v.parse().ok()))
             .unwrap_or(defaults.client_port);
 
-        let http_port = get_cli_arg(&args_vec, None, "--http-port")
+        let http_port = parsed
+            .http_port
             .or_else(|| env("LOGIN_HTTP_PORT").and_then(|v| v.parse().ok()))
             .unwrap_or(defaults.http_port);
 
-        let advertised_char_port = get_cli_arg(&args_vec, None, "--advertised-port")
-            .or_else(|| get_cli_arg(&args_vec, None, "--char-port"))
-            .or_else(|| get_cli_arg(&args_vec, None, "--advertised-char-port"))
+        let advertised_char_port = parsed
+            .advertised_char_port
             .or_else(|| env("CHAR_ADVERTISED_PORT").and_then(|v| v.parse().ok()))
             .unwrap_or(defaults.advertised_char_port);
 
-        let database_url = get_cli_arg_string(&args_vec, None, "--database-url")
+        let database_url = parsed
+            .database_url
             .or_else(|| env("DATABASE_URL"))
             .unwrap_or(defaults.database_url);
 
@@ -126,6 +108,7 @@ mod tests {
     use super::*;
     use std::collections::HashMap;
     use std::sync::Arc;
+    use std::time::Duration;
     use ro_contracts::packet::ServerEvent;
     use ro_persistence::PostgresRepo;
     use crate::service::LoginService;
@@ -221,7 +204,7 @@ mod tests {
         let _ = repo.seed_test_data().await;
         let service = LoginService::with_ttl_and_char_port(
             Arc::new(repo),
-            std::time::Duration::from_secs(300),
+            Duration::from_secs(300),
             cfg.advertised_char_port,
         );
         let event = service.process_login("test", "password", 0x80000000, 0).await;

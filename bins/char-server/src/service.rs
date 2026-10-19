@@ -7,7 +7,9 @@ use std::{
 };
 
 use ro_contracts::{
-    character::{CharacterRepository, CreateCharacterRequest},
+    character::{
+        CancelDeleteOutcome, CharacterRepository, CreateCharacterRequest, DeleteReserveOutcome,
+    },
     ids::{AccountId, SessionId},
     packet::{ClientIntent, ServerEvent, SessionIntent},
 };
@@ -322,7 +324,7 @@ impl CharSessionActor {
                             "Session {:?} (account {}) repository error reserving deletion for char id {}: {}",
                             self.session_id, account_id.0, char_id.0, err
                         );
-                        ro_contracts::character::DeleteReserveOutcome::NotFoundOrDbError.wire_fields()
+                        DeleteReserveOutcome::NotFoundOrDbError.wire_fields()
                     }
                 };
 
@@ -363,7 +365,7 @@ impl CharSessionActor {
                             "Session {:?} (account {}) repository error cancelling deletion for char id {}: {}",
                             self.session_id, account_id.0, char_id.0, err
                         );
-                        ro_contracts::character::CancelDeleteOutcome::NotFound.wire_result()
+                        CancelDeleteOutcome::NotFound.wire_result()
                     }
                 };
 

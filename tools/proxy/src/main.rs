@@ -1,7 +1,7 @@
-use std::sync::Arc;
+use std::{io::ErrorKind, sync::Arc, time::SystemTime};
 use anyhow::{Context, Result};
 use clap::Parser;
-use ro_contracts::http::ServerType;
+use ro_contracts::{http::ServerType, TARGET_PACKETVER};
 use ro_proxy::{
     config::{format_host_port, ProxyArgs},
     forwarder::run_proxy_server,
@@ -31,7 +31,7 @@ async fn main() -> Result<()> {
     info!("============================================================");
     info!(
         "Starting Ragnarok Online Packet Proxy (Target PACKETVER: {})",
-        ro_contracts::TARGET_PACKETVER
+        TARGET_PACKETVER
     );
     info!(
         "  Login Proxy: {} -> Target {}",
@@ -52,7 +52,7 @@ async fn main() -> Result<()> {
     let login_listener = match TcpListener::bind(&login_bind).await {
         Ok(listener) => listener,
         Err(err) => {
-            if err.kind() == std::io::ErrorKind::AddrInUse {
+            if err.kind() == ErrorKind::AddrInUse {
                 error!("Failed to bind Login listener on {}: Address already in use", login_bind);
             } else {
                 error!("Failed to bind Login listener on {}: {}", login_bind, err);
@@ -63,7 +63,7 @@ async fn main() -> Result<()> {
     let char_listener = match TcpListener::bind(&char_bind).await {
         Ok(listener) => listener,
         Err(err) => {
-            if err.kind() == std::io::ErrorKind::AddrInUse {
+            if err.kind() == ErrorKind::AddrInUse {
                 error!("Failed to bind Char listener on {}: Address already in use", char_bind);
             } else {
                 error!("Failed to bind Char listener on {}: {}", char_bind, err);
@@ -74,7 +74,7 @@ async fn main() -> Result<()> {
     let map_listener = match TcpListener::bind(&map_bind).await {
         Ok(listener) => listener,
         Err(err) => {
-            if err.kind() == std::io::ErrorKind::AddrInUse {
+            if err.kind() == ErrorKind::AddrInUse {
                 error!("Failed to bind Map listener on {}: Address already in use", map_bind);
             } else {
                 error!("Failed to bind Map listener on {}: {}", map_bind, err);
@@ -110,7 +110,9 @@ async fn main() -> Result<()> {
     let shutdown_signal = async {
         #[cfg(unix)]
         {
-            let mut sigterm = match tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate()) {
+            use tokio::signal::unix::{signal, SignalKind};
+
+            let mut sigterm = match signal(SignalKind::terminate()) {
                 Ok(sig) => sig,
                 Err(err) => {
                     error!("Failed to register SIGTERM handler: {}", err);
@@ -137,7 +139,7 @@ async fn main() -> Result<()> {
         _ = shutdown_signal => {},
     }
 
-    let now = std::time::SystemTime::now();
+    let now = SystemTime::now();
     let log_path = config
         .log_file
         .unwrap_or_else(|| generate_log_filename(now));

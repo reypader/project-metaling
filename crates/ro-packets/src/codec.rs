@@ -3,11 +3,14 @@
 //! Handles 2-byte little-endian opcode inspection, length table lookup,
 //! fixed vs variable length packet framing, and graceful unknown packet consumption.
 
+use std::io;
+
 use bytes::{Bytes, BytesMut};
 use ro_contracts::packet::{
     PacketCodecError, PacketLength, PacketLengthTable, PacketOpcode, RawPacket, MAX_PACKET_SIZE,
 };
-use tokio_util::codec::Decoder;
+use ro_contracts::TARGET_PACKETVER;
+use tokio_util::codec::{Decoder, Encoder};
 
 use crate::incoming::{decode_frame, DecodedFrame};
 use crate::table::RathenaPacketLengthTable;
@@ -24,7 +27,7 @@ impl PacketDecoder<RathenaPacketLengthTable> {
     pub fn new_default() -> Self {
         Self {
             length_table: RathenaPacketLengthTable,
-            packetver: ro_contracts::TARGET_PACKETVER,
+            packetver: TARGET_PACKETVER,
         }
     }
 }
@@ -149,8 +152,8 @@ impl<T: PacketLengthTable> Decoder for PacketDecoder<T> {
 #[derive(Debug, Default, Clone, Copy)]
 pub struct PacketEncoder;
 
-impl tokio_util::codec::Encoder<Bytes> for PacketEncoder {
-    type Error = std::io::Error;
+impl Encoder<Bytes> for PacketEncoder {
+    type Error = io::Error;
 
     fn encode(&mut self, item: Bytes, dst: &mut BytesMut) -> Result<(), Self::Error> {
         dst.extend_from_slice(&item);
@@ -211,7 +214,7 @@ mod tests {
         assert!(buf.is_empty());
 
         // Decodes into Unhandled frame rather than failing or dropping connection.
-        let frame = decode_frame(&packet, ro_contracts::TARGET_PACKETVER).unwrap();
+        let frame = decode_frame(&packet, TARGET_PACKETVER).unwrap();
         match frame {
             DecodedFrame::Unhandled { opcode, len } => {
                 assert_eq!(opcode, PacketOpcode(0x00b9));

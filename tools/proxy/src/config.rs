@@ -1,3 +1,5 @@
+use std::{env, net::Ipv6Addr};
+
 use anyhow::{Context, Result};
 use clap::Parser;
 
@@ -76,7 +78,7 @@ pub fn format_host_port(host: &str, port: u16) -> String {
         }
         return format!("{}:{}", host, port);
     }
-    if host.parse::<std::net::Ipv6Addr>().is_ok() || (host.contains(':') && !host.contains('.')) {
+    if host.parse::<Ipv6Addr>().is_ok() || (host.contains(':') && !host.contains('.')) {
         format!("[{}]:{}", host, port)
     } else {
         format!("{}:{}", host, port)
@@ -114,7 +116,7 @@ pub fn resolve_target(
                 }
             }
 
-            if let Ok(ipv6) = s.parse::<std::net::Ipv6Addr>() {
+            if let Ok(ipv6) = s.parse::<Ipv6Addr>() {
                 return Ok(format!("[{}]:{}", ipv6, default_port));
             }
 
@@ -145,7 +147,7 @@ pub fn resolve_target(
 
 impl ProxyArgs {
     pub fn build_config(&self) -> Result<ProxyConfig> {
-        let login_env = std::env::var("PROXY_LOGIN_TARGET").ok();
+        let login_env = env::var("PROXY_LOGIN_TARGET").ok();
         let login_input = self
             .login
             .as_deref()
@@ -154,7 +156,7 @@ impl ProxyArgs {
         let login_target = resolve_target(login_input, &self.target_ip, DEFAULT_LOGIN_PORT)
             .context("Failed to resolve Login server target address")?;
 
-        let char_env = std::env::var("PROXY_CHAR_TARGET").ok();
+        let char_env = env::var("PROXY_CHAR_TARGET").ok();
         let char_input = self
             .char_server
             .as_deref()
@@ -163,7 +165,7 @@ impl ProxyArgs {
         let char_target = resolve_target(char_input, &self.target_ip, DEFAULT_CHAR_PORT)
             .context("Failed to resolve Char server target address")?;
 
-        let map_env = std::env::var("PROXY_MAP_TARGET").ok();
+        let map_env = env::var("PROXY_MAP_TARGET").ok();
         let map_input = self
             .map_server
             .as_deref()

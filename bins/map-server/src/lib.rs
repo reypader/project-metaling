@@ -1,5 +1,56 @@
+pub mod config;
 pub mod service;
 pub mod session;
 
+pub use config::MapConfig;
 pub use service::{is_valid_map_name, MapServiceHandle, WorldCommand};
 pub use session::handle_client_session;
+
+use axum::{
+    extract::State,
+    routing::{get, post},
+    Json, Router,
+};
+use ro_contracts::{
+    HealthResponse, PrepareMapTransferRequest, PrepareMapTransferResponse, ServerStatus,
+    ServerType, TARGET_PACKETVER,
+};
+use tracing::info;
+
+pub async fn health_check(
+    State(service): State<MapServiceHandle>,
+) -> Json<HealthResponse> {
+    Json(HealthResponse {
+        status: ServerStatus::Ready,
+        server_type: ServerType::Map,
+        server_name: "metaling-map".to_string(),
+        uptime_seconds: service.uptime_seconds(),
+        active_connections: 0,
+        target_packetver: TARGET_PACKETVER,
+    })
+}
+
+pub async fn accept_transfer(
+    State(service): State<MapServiceHandle>,
+    Json(payload): Json<PrepareMapTransferRequest>,
+) -> Json<PrepareMapTransferResponse> {
+    info!(
+        "Map-server processing transfer reservation for character id {} on map {}",
+        payload.char_id.0, payload.destination_map
+    );
+
+    let accepted = service.accept_transfer(
+        payload.char_id,
+        payload.destination_map,
+        Some(payload.destination_pos),
+    );
+
+    Json(PrepareMapTransferResponse { accepted })
+}
+
+pub fn create_http_router(service_handle: MapServiceHandle) -> Router {
+    Router::new()
+        .route("/api/v1/health", get(health_check))
+        .route("/api/v1/transfers/accept", post(accept_transfer))
+        .with_state(service_handle)
+}

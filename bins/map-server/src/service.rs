@@ -1,5 +1,6 @@
 use std::{
     collections::HashMap,
+    mem,
     sync::{
         atomic::{AtomicU64, Ordering},
         Arc, RwLock,
@@ -240,6 +241,7 @@ struct MapWorldActor {
     char_repo: Arc<dyn CharacterRepository>,
     sessions: HashMap<SessionId, ConnectedPlayer>,
     pending_intents: Vec<SessionIntent>,
+    scratch_intents: Vec<SessionIntent>,
     encoder: Phase0EventEncoder,
 }
 
@@ -256,6 +258,7 @@ impl MapWorldActor {
             char_repo,
             sessions: HashMap::new(),
             pending_intents: Vec::with_capacity(64),
+            scratch_intents: Vec::with_capacity(64),
             encoder: Phase0EventEncoder,
         }
     }
@@ -335,10 +338,13 @@ impl MapWorldActor {
         if self.pending_intents.is_empty() {
             return;
         }
-        let intents: Vec<SessionIntent> = self.pending_intents.drain(..).collect();
-        for session_intent in intents {
+        mem::swap(&mut self.pending_intents, &mut self.scratch_intents);
+        let mut scratch = mem::take(&mut self.scratch_intents);
+        for session_intent in scratch.drain(..) {
             self.process_intent(session_intent);
         }
+        scratch.clear();
+        self.scratch_intents = scratch;
     }
 
     fn process_intent(&mut self, session_intent: SessionIntent) {
