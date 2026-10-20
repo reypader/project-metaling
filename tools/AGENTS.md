@@ -1,13 +1,13 @@
 # `tools/` Module Rules (Packet Proxy & Diagnostic Utilities)
 
-## 1. Module Ownership & Collaboration Boundaries
-* **Designated Owner:** `.agents/agents/ro-tools.md` (`ro-tools` custom subagent).
-* **Write Scope:** `./tools/**` (including `./tools/proxy/**` and `./tools/docker/**`) exclusively.
-* **Contract Inspection & Change Requests:** Read `./crates/ro-contracts/src/**` directly from disk. Never modify `./crates/ro-contracts/**` and never run `cargo doc`. Request any needed contract changes in `ro-contracts` from the Main/Parent Agent.
-* **Peer Subagent Integration:** Never read or modify implementation files inside `./crates/ro-packets/**`, `./crates/ro-engine/**`, `./crates/ro-db/**`, `./crates/ro-mechanics/**`, `./crates/ro-persistence/**`, `./crates/ro-scripting/**`, or `./bins/**`. Invoke or message `ro-packets`, `ro-persistence`, and `ro-bins` via `invoke_subagent` or `send_message` whenever you need codec constructors, SQL initialization paths, framing behavior, or server port/handshake details.
-* **Reference Lookups:** Consult `.agents/agents/reference-explorer.md` (`reference-explorer`) whenever wire framing, Docker conventions, or opcode specifications from `./reference/**` are needed. Never read `./reference/**` directly.
-* **Multi-File Review Gate:** Any change spanning more than one file in `./tools/**` requires spawning `.agents/agents/code-reviewer.md` (`code-reviewer`) to audit stream forwarding, framing synchronization, and edge cases before completion.
-* **Red-Green Testing & Spec Collaboration:** Collaborate with `spec-writer` to define packet forwarding, proxy inspection, and telemetry test scenarios supporting high-level bin-observable scenarios. Author or update proxy integration tests upfront (red phase) before writing production code changes.
+## 1. Module Scope & Operational Guidelines
+* **Role & Scope:** Governs auxiliary development, packet forwarding, inspection proxies (`tools/proxy`), and Docker Compose container infrastructure (`tools/docker`) under `./tools/**`.
+* **Direct Inspection:** Agents working on `./tools/**` inspect packet codecs (`ro-packets`), SQL initialization scripts (`ro-persistence`), server entrypoints (`bins/*`), contracts, and reference catalogs directly from disk without messaging barriers.
+* **Contract Compliance:** Inspect `./crates/ro-contracts/src/**` directly from disk. If a shared contract requires modification, update it according to task requirements and verify with `cargo check -p ro-contracts`.
+* **Reference Access:** Consult `./reference/catalog/` or the `reference-explorer` subagent whenever wire framing, Docker conventions, or opcode specifications are required.
+* **Multi-File Review Gate:** Any change spanning more than one file in `./tools/**` requires invoking `code-reviewer` to audit stream forwarding, framing synchronization, and edge cases before completion.
+* **Verification Command:** Run `cargo test -p ro-proxy` (or package-specific tests under `./tools/**`) to verify compilation and test passage.
+* **Scripting Delegation:** Delegate one-off testing scripts or packet dump formatters to `utility-scripter`. Utility scripting is exempt from code and architectural reviews.
 
 ---
 

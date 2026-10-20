@@ -1,13 +1,14 @@
 # `bins/` Module Rules (Server Binaries & Inter-Server Coordination)
 
-## 1. Module Ownership & Collaboration Boundaries
-* **Designated Owner:** `.agents/agents/ro-bins.md` (`ro-bins` custom subagent).
-* **Write Scope:** `./bins/login-server/**`, `./bins/char-server/**`, and `./bins/map-server/**` exclusively.
-* **Contract Inspection & Change Requests:** Read `./crates/ro-contracts/src/**` directly from disk. Never modify `./crates/ro-contracts/**` and never run `cargo doc`. Request any needed contract changes in `ro-contracts` from the Main/Parent Agent.
-* **Peer Subagent Integration:** Never read or modify implementation files inside `./crates/ro-packets/**`, `./crates/ro-engine/**`, `./crates/ro-db/**`, `./crates/ro-mechanics/**`, `./crates/ro-persistence/**`, `./crates/ro-scripting/**`, or `./tools/**`. Invoke or message the corresponding crate subagents via `invoke_subagent` or `send_message` whenever you need public constructor signatures, concrete provider types, or integration details.
-* **Reference Lookups:** Consult `.agents/agents/reference-explorer.md` (`reference-explorer`) whenever reference handshake or session lifecycle behavior from `./reference/**` is needed. Never read `./reference/**` directly.
-* **Multi-File Review Gate:** Any change spanning more than one file in `./bins/**` requires spawning `.agents/agents/code-reviewer.md` (`code-reviewer`) to audit actor concurrency, handshake sequencing, and HTTP edge cases before completion.
-* **Red-Green Testing & Spec Collaboration:** Collaborate with `spec-writer` to define integration test scenarios observable from the server binaries and scoped test scenarios for binary session actors and HTTP endpoints. Author or update binary integration tests upfront (red phase) before writing production code changes.
+## 1. Module Scope & Operational Guidelines
+* **Role & Scope:** Governs the three server executables under `./bins/**` (`./bins/login-server/**`, `./bins/char-server/**`, and `./bins/map-server/**`) and inter-server communication.
+* **Direct Inspection:** Agents working on `./bins/**` read all library crates (`./crates/**`), contracts, tools, specs, and reference catalogs directly from disk. Never use inter-agent messaging to discover public signatures, constructors, or type definitions.
+* **Binary Restraint:** Keep binary entrypoints restricted to bootstrap configuration, dependency injection, Axum HTTP routing, TCP session supervision, raw 4-byte `AccountId` handshake echoes, and actor channel coordination (`LoginSessionActor`, `CharSessionActor`, `MapWorldActor`). Inline gameplay state machines, bespoke wire decoders, and hardcoded entity repositories inside `./bins/**` are prohibited.
+* **Contract Compliance:** Inspect `./crates/ro-contracts/src/**` directly from disk. If a shared contract requires modification, update it according to task requirements and verify with `cargo check -p ro-contracts`.
+* **Reference Access:** Consult `./reference/catalog/` or the `reference-explorer` subagent whenever protocol or handshake specifications are required.
+* **Multi-File Review Gate:** Any change spanning more than one file in `./bins/**` requires invoking `code-reviewer` to audit actor concurrency, handshake sequencing, and HTTP edge cases before completion.
+* **Verification Commands:** Run `cargo test --bins` or package-specific tests (`cargo test -p login-server`, `cargo test -p char-server`, `cargo test -p map-server`) to verify compilation and test passage.
+* **Scripting Delegation:** Delegate one-off scripts, parsers, and data transformers to `utility-scripter`. Utility scripting is exempt from code and architectural reviews.
 
 ---
 

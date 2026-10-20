@@ -1,13 +1,14 @@
 # `crates/ro-mechanics` Module Rules (Pure Combat & Stat Math)
 
-## 1. Module Ownership & Collaboration Boundaries
-* **Designated Owner:** `.agents/agents/ro-mechanics.md` (`ro-mechanics` custom subagent).
-* **Write Scope:** `./crates/ro-mechanics/**` exclusively.
-* **Contract Inspection & Change Requests:** Read `./crates/ro-contracts/src/**` directly from disk. Never modify `./crates/ro-contracts/**` and never run `cargo doc`. Request any needed contract changes in `ro-contracts` from the Main/Parent Agent.
-* **Reference Lookups:** Consult `.agents/agents/reference-explorer.md` (`reference-explorer`) whenever Aegis or Renewal stat formulas, ASPD derivations, elemental/size/race tables, or skill ratios from `./reference/**` are needed. Never read `./reference/**` directly.
-* **Peer Consultation:** Coordinate with `ro-engine` and `ro-bins` via subagent messaging when integrating combat and status calculation traits.
-* **Multi-File Review Gate:** Any change spanning more than one file in `./crates/ro-mechanics` requires spawning `.agents/agents/code-reviewer.md` (`code-reviewer`) to audit integer truncation order and arithmetic edge cases before completion.
-* **Red-Green Testing & Spec Collaboration:** Collaborate with `spec-writer` to define stat derivation, combat damage formula, and status modifier test scenarios supporting high-level bin-observable scenarios. Author or update mechanics unit and integration tests upfront (red phase) before writing production code changes.
+## 1. Module Scope & Operational Guidelines
+* **Role & Scope:** Governs pure stateless Aegis and Renewal stat derivations, elemental/size/race modifier tables, and combat damage formulas under `./crates/ro-mechanics/**`.
+* **Direct Inspection:** Agents working on `./crates/ro-mechanics/**` inspect engine callers (`ro-engine`), contracts, and reference catalogs directly from disk without messaging barriers.
+* **Engine Synergy:** Coordinate data types with `ro-engine` to ensure stat blocks and combat context structs align with ECS component layout, maximizing cache locality and minimizing pointer chasing.
+* **Contract Compliance:** Inspect `./crates/ro-contracts/src/**` directly from disk. If a shared contract requires modification, update it according to task requirements and verify with `cargo check -p ro-contracts`.
+* **Reference Access:** Consult `./reference/catalog/` or the `reference-explorer` subagent whenever Aegis or Renewal stat formulas, ASPD tables, modifier tables, or skill ratios are required.
+* **Multi-File Review Gate:** Any change spanning more than one file in `./crates/ro-mechanics` requires invoking `code-reviewer` to audit integer truncation order and arithmetic edge cases before completion.
+* **Verification Command:** Run `cargo test -p ro-mechanics` to verify compilation and test passage.
+* **Scripting Delegation:** Delegate one-off formula verification or test vector generation scripts to `utility-scripter`. Utility scripting is exempt from code and architectural reviews.
 
 ---
 

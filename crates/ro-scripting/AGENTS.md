@@ -1,14 +1,14 @@
 # `crates/ro-scripting` Module Rules (NPC & Item Script VM Adapter)
 
-## 1. Module Ownership & Collaboration Boundaries
-* **Designated Owner:** `.agents/agents/ro-scripting.md` (`ro-scripting` custom subagent).
-* **Write Scope:** `./crates/ro-scripting/**` exclusively.
-* **Design Reference:** Read `./crates/ro-scripting/DESIGN.md` for an initial architectural design to follow. This document serves as a rough directional sketch of where the scripting domain is headed and allows flexibility as implementation details evolve.
-* **Contract Inspection & Change Requests:** Read `./crates/ro-contracts/src/**` directly from disk. Never modify `./crates/ro-contracts/**` and never run `cargo doc`. Request any needed contract changes in `ro-contracts` from the Main/Parent Agent.
-* **Reference Lookups:** Consult `.agents/agents/reference-explorer.md` (`reference-explorer`) whenever script VM hooks, native function bindings, or NPC script syntax from `./reference/**` are needed. Never read `./reference/**` directly.
-* **Peer Consultation:** Coordinate with `ro-engine` and `ro-bins` via subagent messaging when integrating script execution with ECS interactions.
-* **Multi-File Review Gate:** Any change spanning more than one file in `./crates/ro-scripting` requires spawning `.agents/agents/code-reviewer.md` (`code-reviewer`) to audit VM continuation safety and edge cases before completion.
-* **Red-Green Testing & Spec Collaboration:** Collaborate with `spec-writer` to define NPC dialogue, warp execution, and item bonus script VM test scenarios supporting high-level bin-observable scenarios. Author or update scripting unit and integration tests upfront (red phase) before writing production code changes.
+## 1. Module Scope & Operational Guidelines
+* **Role & Scope:** Governs the `rathena-script-lang-interpreter` VM adapter, non-blocking NPC dialog suspension/resumption, and item scripts under `./crates/ro-scripting/**`.
+* **Design Reference:** Read `./crates/ro-scripting/DESIGN.md` for architectural design direction.
+* **Direct Inspection:** Agents working on `./crates/ro-scripting/**` inspect engine callers (`ro-engine`), contracts, and reference catalogs directly from disk without messaging barriers.
+* **Contract Compliance:** Inspect `./crates/ro-contracts/src/**` directly from disk. If a shared contract requires modification, update it according to task requirements and verify with `cargo check -p ro-contracts`.
+* **Reference Access:** Consult `./reference/catalog/` or the `reference-explorer` subagent whenever script VM hooks, native function bindings, or NPC script syntax are required.
+* **Multi-File Review Gate:** Any change spanning more than one file in `./crates/ro-scripting` requires invoking `code-reviewer` to audit VM continuation safety and edge cases before completion.
+* **Verification Command:** Run `cargo test -p ro-scripting` to verify compilation and test passage.
+* **Scripting Delegation:** Delegate one-off script syntax parsers or test script converters to `utility-scripter`. Utility scripting is exempt from code and architectural reviews.
 
 ---
 

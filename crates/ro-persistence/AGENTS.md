@@ -1,14 +1,14 @@
 # `crates/ro-persistence` Module Rules (PostgreSQL & Repositories)
 
-## 1. Module Ownership & Collaboration Boundaries
-* **Designated Owner:** `.agents/agents/ro-persistence.md` (`ro-persistence` custom subagent).
-* **Write Scope:** `./crates/ro-persistence/**` exclusively.
-* **Design Reference:** Read `./crates/ro-persistence/DESIGN.md` for an initial architectural design to follow. This document serves as a rough directional sketch of where the persistence domain is headed and allows flexibility as implementation details evolve.
-* **Contract Inspection & Change Requests:** Read `./crates/ro-contracts/src/**` directly from disk. Never modify `./crates/ro-contracts/**` and never run `cargo doc`. Request any needed contract changes in `ro-contracts` from the Main/Parent Agent.
-* **Reference Lookups:** Consult `.agents/agents/reference-explorer.md` (`reference-explorer`) whenever SQL table schemas, column types, or repository patterns from `./reference/**` are needed. Never read `./reference/**` directly.
-* **Peer Consultation:** Coordinate with `ro-bins` via subagent messaging when integrating `PostgresRepo` into `login-server`, `char-server`, and `map-server`.
-* **Multi-File Review Gate:** Any change spanning more than one file in `./crates/ro-persistence` requires spawning `.agents/agents/code-reviewer.md` (`code-reviewer`) to audit SQL constraints, thread safety, and edge cases before completion.
-* **Red-Green Testing & Spec Collaboration:** Collaborate with `spec-writer` to define repository CRUD, authentication query, character persistence, and schema migration test scenarios supporting high-level bin-observable scenarios. Author or update persistence unit and integration tests upfront (red phase) before writing production code changes.
+## 1. Module Scope & Operational Guidelines
+* **Role & Scope:** Governs database persistence, `InMemoryStubRepo`, PostgreSQL `sqlx` repository implementations (`PostgresRepo`), SQL migrations, and account/character CRUD operations under `./crates/ro-persistence/**`.
+* **Design Reference:** Read `./crates/ro-persistence/DESIGN.md` for architectural design direction.
+* **Direct Inspection:** Agents working on `./crates/ro-persistence/**` inspect server callers (`bins/*`), docker configs (`tools/docker`), contracts, and reference catalogs directly from disk without messaging barriers.
+* **Contract Compliance:** Inspect `./crates/ro-contracts/src/**` directly from disk. If a shared contract requires modification, update it according to task requirements and verify with `cargo check -p ro-contracts`.
+* **Reference Access:** Consult `./reference/catalog/` or the `reference-explorer` subagent whenever relational table schemas, column types, or repository patterns are required.
+* **Multi-File Review Gate:** Any change spanning more than one file in `./crates/ro-persistence` requires invoking `code-reviewer` to audit SQL constraints, thread safety, and edge cases before completion.
+* **Verification Command:** Run `cargo test -p ro-persistence` to verify compilation and test passage.
+* **Scripting Delegation:** Delegate one-off migration scripts, seed data parsers, or SQL conversion scripts to `utility-scripter`. Utility scripting is exempt from code and architectural reviews.
 
 ---
 

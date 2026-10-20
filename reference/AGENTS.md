@@ -4,23 +4,23 @@
 The `./reference` directory houses both gitignored upstream reference repositories and the version-controlled Project Metaling knowledge catalog (`./reference/catalog/`).
 
 * **`reference-explorer` (`.agents/agents/reference-explorer.md`):**
-  * Strictly read-only across `./reference/**`.
+  * The dedicated reference exploration and knowledge curation specialist.
   * Consults `./reference/catalog/INDEX.md` and domain topic files first before traversing raw upstream repositories.
-  * Extracts uncached protocol layouts, YAML schemas, SQL schemas, and Aegis mechanics from the cloned upstream repositories and delegates catalog persistence to `reference-curator`.
-* **`reference-curator` (`.agents/agents/reference-curator.md`):**
-  * Owns read and write operations for `./reference/catalog/**` and `./reference/sync-references.sh`.
-  * Records, deduplicates, formats, and indexes specifications provided by `reference-explorer`.
-  * Never traverses raw upstream repositories directly.
-* **All Other Agents & Subagents:**
-  * Must never read or modify `./reference/**` directly (except the Main Agent maintaining `./reference/AGENTS.md`). Always query `reference-explorer`.
+  * Extracts uncached protocol layouts, YAML schemas, SQL schemas, and Aegis mechanics from the cloned upstream repositories.
+  * Authors, updates, deduplicates, and organizes specifications in `./reference/catalog/**` and maintains `./reference/sync-references.sh`.
+  * Delegates complex scratch parsing scripts or bulk header transformations to `utility-scripter`.
+* **Workspace Access:**
+  * All agents may read `./reference/catalog/**` directly to inspect curated packet formats, schemas, and formulas.
+  * When reference behavior is uncached or requires upstream exploration, agents consult `reference-explorer`.
+  * Scratch scripting is delegated to `utility-scripter` and is exempt from code and architectural reviews.
 
 ## 2. Directory Layout
 
 ```text
 reference/
-├── AGENTS.md                        # [Main Agent] Reference governance & catalog rules
-├── sync-references.sh               # [reference-curator] Clones or updates gitignored upstream repos
-├── catalog/                         # [reference-curator (R/W), reference-explorer (R/O)] Tracked knowledge base
+├── AGENTS.md                        # Reference governance & catalog rules
+├── sync-references.sh               # [reference-explorer] Clones or updates gitignored upstream repos
+├── catalog/                         # [reference-explorer] Tracked knowledge base
 │   ├── INDEX.md                     # Master lookup table mapping topics/opcodes to catalog files
 │   ├── packets/                     # Wire protocol & packet layout specifications (PACKETVER = 20260219)
 │   │   ├── login.md                 # Login server (CA_* / AC_*) packet layouts
