@@ -166,3 +166,12 @@ Target client version: `PACKETVER = 20260219`. Packet entries are sorted by asce
 | :--- | :--- | :--- | :--- | :--- |
 | `0` | `2` | `u16` | `packet_id` | Always `0x0b18` |
 | `2` | `2` | `u16` | `expansion_size` | Additional inventory capacity (`0` default) |
+
+## Player Wire Identifiers (Policy)
+
+* **Provenance:** `rathena` `src/map/pc.cpp:1444` (`sd->id = account_id`), `src/map/clif.cpp` (`clif_set_unit_idle` ~L1129, `clif_spawn_unit`, `clif_set_unit_walking` L1369-1380, `clif_clearunit_area` L970, `clif_name` L9927, `clif_sitting` L5329, `clif_parse_GetCharNameRequest` L11471), capture `tools/proxy/packet_captures/login_sequence-rathena.log` lines 28, 110. Applies to `PACKETVER = 20260219`.
+* **Rule:** For a player (`BL_PC`), the in-map object id `bl.id` is the **account_id**. Every map-wire "unit id" field for a player carries `account_id`: `ZC_NOTIFY_VANISH.gid`, `ZC_NOTIFY_ACT.srcID`/`targetID`, `ZC_CHANGE_DIRECTION.srcId`, `ZC_ACK_REQNAMEALL.gid`, `CZ_REQNAME` target, `CZ_REQUEST_ACT` target, and the `AID` field of `0x09fd`/`0x09fe`/`0x09ff`.
+* **`char_id` appears only in** the `GID` field of `0x09fd`/`0x09fe`/`0x09ff` (players only; `0` for mobs/NPCs/pets) and in `ZC_ACK_REQNAME_BYGID` (`0x0af7`, answer to a char-id lookup, not to `CZ_REQNAME`).
+* **Capture proof:** `CZ_ENTER` carried `account_id = 2000000`, `char_id = 150000`; the later `CZ_REQNAME` for the player's own entity carried `entity_id = 2000000` (account_id).
+* **Disguise quirk:** rAthena sends `-bl.id` (negated) in `0x0a30.gid` for a self-name-request while disguised and accepts negative ids in `CZ_REQNAME`/`CZ_REQUEST_ACT`; irrelevant unless disguises are implemented.
+* Layouts of the entity/AoI packets: [map_units.md](./map_units.md).

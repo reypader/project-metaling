@@ -1,7 +1,4 @@
 //! Coordinate bit-packing helpers for Ragnarok Online protocol.
-//!
-//! Follows definitions from `reference/rathena/src/map/clif.cpp`
-//! (`WBUFPOS`, `RBUFPOS`, `WBUFPOS2`, `RBUFPOS2`) and `reference/rust-ro/lib/packets/`.
 
 use ro_contracts::ids::MapPosition;
 
@@ -39,8 +36,6 @@ pub fn unpack_map_position(buf: &[u8; 3]) -> MapPosition {
 }
 
 /// Packs movement trajectory (x0, y0) -> (x1, y1) with sub-coordinates (sx0, sy0) into 6 bytes.
-///
-/// Follows `WBUFPOS2` from `reference/rathena/src/map/clif.cpp`.
 pub fn pack_pos2(x0: u16, y0: u16, x1: u16, y1: u16, sx0: u8, sy0: u8) -> [u8; 6] {
     let mut buf = [0u8; 6];
     buf[0] = (x0 >> 2) as u8;
@@ -53,8 +48,6 @@ pub fn pack_pos2(x0: u16, y0: u16, x1: u16, y1: u16, sx0: u8, sy0: u8) -> [u8; 6
 }
 
 /// Unpacks 6-byte movement trajectory into (x0, y0, x1, y1, sx0, sy0).
-///
-/// Follows `RBUFPOS2` from `reference/rathena/src/map/clif.cpp`.
 pub fn unpack_pos2(buf: &[u8; 6]) -> (u16, u16, u16, u16, u8, u8) {
     let x0 = (((buf[0] as u16) & 0xff) << 2) | ((buf[1] as u16) >> 6);
     let y0 = (((buf[1] as u16) & 0x3f) << 4) | ((buf[2] as u16) >> 4);
@@ -96,7 +89,6 @@ mod tests {
         let dir: u8 = 6;
         let packed = pack_pos_dir(x, y, dir);
 
-        // Verification against rust-ro test vector in reference/rust-ro/lib/packets/src/lib.rs
         let mut expected = [0u8; 3];
         expected[0] = (x >> 2) as u8;
         expected[1] = ((x << 6) as u8) | (((y >> 4) & 0x3F) as u8);

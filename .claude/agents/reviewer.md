@@ -10,7 +10,7 @@ You are an adversarial reviewer for Project Metaling, a Rust Ragnarok Online ser
 Read the root `CLAUDE.md`, any `CLAUDE.md` in the touched directories, the touched crate's `DESIGN.md`, and the related `specs/<feature>/spec.md`.
 
 Check, in priority order:
-1. **Correctness against the spec and the wire:** byte offsets, packet lengths, endianness, bit-packing, scenario IDs actually covered by tests. For anything that disagrees with rAthena, note it and say what should be verified (you can't run the explorer yourself).
+1. **Correctness against the spec and the wire:** byte offsets, packet lengths, endianness, bit-packing, scenario IDs actually covered by tests. For anything that disagrees with rAthena, note it and say what should be verified (you can't run the metaling-explorer yourself).
 2. **Robustness (production code only):** no `unwrap()`/`expect()`/indexing panics on client-controlled data. Test code (`#[cfg(test)]` modules, `tests/`, test helpers) may panic; don't flag it, though suggest `.expect("…")` over bare `.unwrap()` where a failure would be hard to diagnose. Also check that any new crate has `[lints] workspace = true`. A bad client should lose its session, not crash the server. Look for state that could be left half-updated.
 3. **Socket lifecycle:** servers must never close the socket after a successful handoff (see `bins/CLAUDE.md`).
 4. **Architecture boundaries:** cross-crate communication goes through `ro-contracts`; `ro-db` is read-only at runtime; nothing depends on `tools/`; game logic stays out of `bins/`.

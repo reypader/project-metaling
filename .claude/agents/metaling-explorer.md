@@ -1,5 +1,5 @@
 ---
-name: explorer
+name: metaling-explorer
 description: Looks up facts the reference catalog doesn't have yet, in the reference repos (rAthena, rust-ro, rathena script interpreter) or on the web — packet layouts, opcodes, formulas, DB schemas, script builtins — and writes the findings back to reference/catalog. Use after the catalog misses, or for web research.
 model: sonnet
 tools: Read, Grep, Glob, Bash, Edit, Write, WebSearch, WebFetch

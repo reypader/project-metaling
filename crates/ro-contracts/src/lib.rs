@@ -19,5 +19,4 @@ pub use map::*;
 pub use packet::*;
 pub use repository::*;
 
-/// Target client version from `reference/rathena/src/config/packets.hpp`.
 pub const TARGET_PACKETVER: u32 = 20260219;

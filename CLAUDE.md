@@ -39,8 +39,8 @@ Located via env vars only: `RATHENA_PATH`, `RUSTRO_PATH`, `RATHENA_SCRIPT_INTERP
 
 ## Rules
 
-- **Reference lookups:** read `reference/catalog/INDEX.md` and the linked entry directly. Spawn `explorer` only when the catalog doesn't answer the question, or for web research; it writes new findings back. Don't browse the reference trees or the web from the main session. Batch independent lookups into parallel `explorer` calls.
-- **Scripts:** do short scripts inline. Data extraction from reference repos goes to `explorer`. Other exploratory or large-output scripting where only the result matters goes to a general-purpose subagent with `model: sonnet`. Keep scratch files out of the repo.
+- **Reference lookups:** read `reference/catalog/INDEX.md` and the linked entry directly. Spawn `metaling-explorer` only when the catalog doesn't answer the question, or for web research; it writes new findings back. Don't browse the reference trees or the web from the main session. Batch independent lookups into parallel `metaling-explorer` calls.
+- **Scripts:** do short scripts inline. Data extraction from reference repos goes to `metaling-explorer`. Other exploratory or large-output scripting where only the result matters goes to a general-purpose subagent with `model: sonnet`. Keep scratch files out of the repo.
 - **Review once per milestone or feature:** when a `plan.md` milestone or feature is complete, run the `reviewer` agent over its full diff. For large milestones, also run `/code-review`. For small edits, `./verify.sh` plus self-review is enough.
 - **No `unwrap()`/`expect()` in production code** (enforced by the workspace `clippy::unwrap_used`/`expect_used` lints; `clippy.toml` exempts tests). On bad client input, drop that session instead of panicking the server, as long as shared state stays consistent. New crates need `[lints] workspace = true`. Integration test files with helper fns need a file-level `#![allow(clippy::unwrap_used, clippy::expect_used)]`.
 - **In tests, prefer `.expect("what should have happened")`** over bare `.unwrap()` so failures explain themselves.

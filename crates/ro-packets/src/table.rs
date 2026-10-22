@@ -1,8 +1,4 @@
 //! Packet length lookup table for `TARGET_PACKETVER = 20260219`.
-//!
-//! Follows definitions from `reference/rathena/src/map/clif_packetdb.hpp`,
-//! `reference/rathena/src/map/clif_shuffle.hpp`, `reference/rathena/src/common/packets.hpp`,
-//! and `reference/rust-ro/lib/packets/`.
 
 use ro_contracts::packet::{PacketLength, PacketLengthTable, PacketOpcode};
 

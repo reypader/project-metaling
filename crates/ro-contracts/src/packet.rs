@@ -1,6 +1,4 @@
 //! Client packet abstractions, wire framing, and decoded intents.
-//!
-//! Patterned after `reference/rust-ro/lib/packets/` and `reference/rathena/src/config/packets.hpp`.
 
 use bytes::Bytes;
 use std::fmt;
