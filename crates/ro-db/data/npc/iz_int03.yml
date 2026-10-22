@@ -1,0 +1,90 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: iz_int03#intro_start
+  X: 18
+  "Y": 30
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 6
+    "Y": 6
+  DuplicateOf: iz_int#intro_start
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:52
+- Name: iz_int03#intro_evt02
+  X: 51
+  "Y": 30
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: iz_int#intro_evt02
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:63
+- Name: Wounded Swordsman#intro_npc01_iz_int03
+  X: 56
+  "Y": 32
+  Dir: 3
+  Sprite: 687
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: Wounded Swordsman#intro_npc01_iz_int
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:85
+- Name: Wounded Swordsman#intro_npc02_iz_int03
+  X: 56
+  "Y": 32
+  Dir: 3
+  Sprite: 688
+  DuplicateOf: Wounded Swordsman#intro_npc02_iz_int
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:128
+- Name: "#room_out03"
+  X: 27
+  "Y": 30
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: iz_int03
+    X: 51
+    "Y": 30
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:60
+- Name: "#room_in03"
+  X: 47
+  "Y": 30
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: iz_int03
+    X: 22
+    "Y": 30
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:66
+- Name: "#ship_out03"
+  X: 56
+  "Y": 15
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#ship_out"
+  Kind: Script
+  Source: npc/re/warps/cities/izlude.txt:80

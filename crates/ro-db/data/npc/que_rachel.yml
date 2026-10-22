@@ -1,0 +1,219 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Window#ra_temple
+  X: 63
+  "Y": 82
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:4535
+- Name: zawa01
+  X: 60
+  "Y": 80
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:4546
+- Name: zawa02
+  X: 59
+  "Y": 112
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 10
+    "Y": 10
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:4557
+- Name: zawa03
+  X: 94
+  "Y": 139
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 10
+    "Y": 10
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:4571
+- Name: zawa04
+  X: 132
+  "Y": 70
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 10
+    "Y": 10
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:4582
+- Name: Bloody Spot
+  X: 28
+  "Y": 315
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:4599
+- Name: nemma01
+  X: 170
+  "Y": 37
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:4669
+- Name: nemma02
+  X: 175
+  "Y": 37
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: nemma01
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:4698
+- Name: nemma03
+  X: 180
+  "Y": 37
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: nemma01
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:4699
+- Name: nemma04
+  X: 165
+  "Y": 37
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: nemma01
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:4700
+- Name: nemma05
+  X: 160
+  "Y": 37
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: nemma01
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:4701
+- Name: Quest Temple Exit#ra_tem
+  X: 169
+  "Y": 18
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:4703
+- Name: rachel77
+  X: 130
+  "Y": 93
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: que_rachel
+    X: 239
+    "Y": 258
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:113
+- Name: rachel78
+  X: 206
+  "Y": 93
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: que_rachel
+    X: 312
+    "Y": 258
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:114
+- Name: rachel79
+  X: 275
+  "Y": 332
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: que_rachel
+    X: 27
+    "Y": 305
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:115
+- Name: rachel80
+  X: 239
+  "Y": 253
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: que_rachel
+    X: 130
+    "Y": 88
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:116
+- Name: rachel81
+  X: 312
+  "Y": 253
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: que_rachel
+    X: 206
+    "Y": 88
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:117
+- Name: rachel82
+  X: 27
+  "Y": 299
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: que_rachel
+    X: 275
+    "Y": 328
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:118

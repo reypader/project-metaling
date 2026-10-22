@@ -1,0 +1,163 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#ve_find_1"
+  X: 351
+  "Y": 219
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:5352
+- Name: "#ve_find_2"
+  X: 223
+  "Y": 51
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:5364
+- Name: "#ve_01"
+  X: 152
+  "Y": 134
+  Dir: 3
+  Sprite: 111
+  Trigger:
+    X: 10
+    "Y": 10
+  DuplicateOf: ve_find
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:5424
+- Name: "#ve_02"
+  X: 256
+  "Y": 228
+  Dir: 3
+  Sprite: 111
+  Trigger:
+    X: 10
+    "Y": 10
+  DuplicateOf: ve_find
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:5425
+- Name: "#ve_03"
+  X: 85
+  "Y": 189
+  Dir: 3
+  Sprite: 111
+  Trigger:
+    X: 10
+    "Y": 10
+  DuplicateOf: ve_find
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:5426
+- Name: "#ve_04"
+  X: 282
+  "Y": 268
+  Dir: 3
+  Sprite: 111
+  Trigger:
+    X: 10
+    "Y": 10
+  DuplicateOf: ve_find
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:5427
+- Name: "#ve_01_t"
+  X: 1
+  "Y": 1
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:5429
+- Name: "#ve_02_t"
+  X: 1
+  "Y": 1
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:5440
+- Name: "#ve_03_t"
+  X: 1
+  "Y": 1
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:5451
+- Name: "#ve_04_t"
+  X: 1
+  "Y": 1
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:5462
+- Name: thor_v1-1
+  X: 168
+  "Y": 240
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: thor_v01
+    X: 21
+    "Y": 229
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/thor_v.txt:15
+- Name: "#wp120087"
+  X: 197
+  "Y": 242
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:256
+- Name: "#tr120087"
+  X: 197
+  "Y": 242
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:517
+- Name: Signpost#Thor Volcano
+  X: 172
+  "Y": 239
+  Dir: 0
+  Sprite: 837
+  Kind: Script
+  Source: npc/re/other/adven_boards.txt:1901
+- Name: Map Examiner Dew#85
+  X: 348
+  "Y": 230
+  Dir: 5
+  Sprite: 707
+  Kind: Script
+  Source: npc/re/quests/juno_monster_society.txt:3704
+- Name: ve_fild3-1
+  X: 355
+  "Y": 223
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ve_fild04
+    X: 49
+    "Y": 249
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/veins_fild.txt:26

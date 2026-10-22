@@ -1,0 +1,379 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Moscovia P.R. Officer#2
+  X: 166
+  "Y": 53
+  Dir: 4
+  Sprite: 960
+  Kind: Script
+  Source: npc/cities/moscovia.txt:95
+- Name: Soldier#mosk1
+  X: 253
+  "Y": 166
+  Dir: 4
+  Sprite: 966
+  Kind: Script
+  Source: npc/cities/moscovia.txt:122
+- Name: Kafra Employee
+  UniqueName: kaf_mosk
+  X: 223
+  "Y": 191
+  Dir: 3
+  Sprite: 114
+  Kind: Script
+  Source: npc/kafras/kafras.txt:426
+- Name: Fruit Gardener#mosk
+  X: 152
+  "Y": 71
+  Dir: 4
+  Sprite: 968
+  Kind: Shop
+  Source: npc/merchants/shops.txt:220
+- Name: Vendor from Milk Ranch#m
+  X: 199
+  "Y": 110
+  Dir: 3
+  Sprite: 959
+  Kind: Shop
+  Source: npc/merchants/shops.txt:221
+- Name: Berbayeff#npc
+  X: 171
+  "Y": 71
+  Dir: 3
+  Sprite: 968
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:39
+- Name: Bulletin Board#npc
+  X: 135
+  "Y": 52
+  Dir: 0
+  Sprite: 837
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:259
+- Name: Mr. Ibanoff#npc
+  X: 135
+  "Y": 49
+  Dir: 5
+  Sprite: 964
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:279
+- Name: Find#ship
+  X: 136
+  "Y": 46
+  Dir: 4
+  Sprite: 844
+  Trigger:
+    X: 4
+    "Y": 4
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:2598
+- Name: Acorn Dealer#mos
+  X: 208
+  "Y": 182
+  Dir: 7
+  Sprite: 967
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:4048
+- Name: "#nowinterplz"
+  X: 224
+  "Y": 190
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:5469
+- Name: A Little Girl#mos1
+  X: 252
+  "Y": 203
+  Dir: 5
+  Sprite: 958
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:5510
+- Name: A Young Man#mos2
+  X: 233
+  "Y": 204
+  Dir: 3
+  Sprite: 968
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:5547
+- Name: A Middle-Aged Man#mos3
+  X: 219
+  "Y": 229
+  Dir: 5
+  Sprite: 964
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:5581
+- Name: A Little Boy#mos4
+  X: 255
+  "Y": 203
+  Dir: 3
+  Sprite: 962
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:5617
+- Name: A Lady#mos5
+  X: 204
+  "Y": 188
+  Dir: 5
+  Sprite: 959
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:5674
+- Name: A Lady#mos6
+  X: 167
+  "Y": 97
+  Dir: 3
+  Sprite: 961
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:5711
+- Name: A Little Boy#mos7
+  X: 202
+  "Y": 102
+  Dir: 3
+  Sprite: 962
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:5752
+- Name: A Young Man#mos8
+  X: 220
+  "Y": 172
+  Dir: 3
+  Sprite: 968
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:5800
+- Name: A Man#mos9
+  X: 253
+  "Y": 175
+  Dir: 3
+  Sprite: 964
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:5836
+- Name: A Lady#mos10
+  X: 168
+  "Y": 135
+  Dir: 3
+  Sprite: 961
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:5877
+- Name: A Lady#mos11
+  X: 192
+  "Y": 80
+  Dir: 3
+  Sprite: 959
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:5915
+- Name: A Young Man#mos12
+  X: 211
+  "Y": 215
+  Dir: 5
+  Sprite: 967
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:5955
+- Name: A Man#mos13
+  X: 149
+  "Y": 112
+  Dir: 3
+  Sprite: 964
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:5995
+- Name: A Young Man#mos14
+  X: 196
+  "Y": 71
+  Dir: 3
+  Sprite: 968
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:6034
+- Name: A Man#mos15
+  X: 234
+  "Y": 168
+  Dir: 5
+  Sprite: 964
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:6073
+- Name: A Little Boy#mos16
+  X: 228
+  "Y": 80
+  Dir: 3
+  Sprite: 962
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:6114
+- Name: Irina#edq
+  X: 211
+  "Y": 93
+  Dir: 3
+  Sprite: 958
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:6229
+- Name: The Blacksmith#rus06
+  X: 178
+  "Y": 127
+  Dir: 0
+  Sprite: 63
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:7185
+- Name: Vassili Grandpapa#rus07
+  X: 206
+  "Y": 81
+  Dir: 0
+  Sprite: 712
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:7467
+- Name: Ryubaba#rus08
+  X: 213
+  "Y": 216
+  Dir: 3
+  Sprite: 960
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:7735
+- Name: Little Boy#rus09
+  X: 223
+  "Y": 210
+  Dir: 3
+  Sprite: 962
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:8064
+- Name: Worried Mother#rus19
+  X: 166
+  "Y": 145
+  Dir: 1
+  Sprite: 961
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:8299
+- Name: moskwarp1001
+  X: 256
+  "Y": 138
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mosk_in
+    X: 96
+    "Y": 61
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/moscovia.txt:19
+- Name: moskwarp1005
+  X: 185
+  "Y": 188
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mosk_in
+    X: 15
+    "Y": 179
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/moscovia.txt:24
+- Name: moskwarp1007
+  X: 203
+  "Y": 171
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mosk_in
+    X: 86
+    "Y": 180
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/moscovia.txt:26
+- Name: moskwarp1009
+  X: 223
+  "Y": 174
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mosk_in
+    X: 14
+    "Y": 246
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/moscovia.txt:29
+- Name: moskwarp1011
+  X: 229
+  "Y": 208
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mosk_in
+    X: 142
+    "Y": 178
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/moscovia.txt:32
+- Name: moskwarp1015
+  X: 256
+  "Y": 179
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mosk_in
+    X: 211
+    "Y": 114
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/moscovia.txt:37
+- Name: moskwarp1021
+  X: 205
+  "Y": 98
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mosk_in
+    X: 214
+    "Y": 255
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/moscovia.txt:42
+- Name: Moscovia Guide#01mosc
+  X: 161
+  "Y": 76
+  Dir: 3
+  Sprite: 959
+  Kind: Script
+  Source: npc/re/guides/guides_moscovia.txt:18
+- Name: Moscovia Guide#02mosc
+  X: 226
+  "Y": 191
+  Dir: 4
+  Sprite: 959
+  DuplicateOf: Moscovia Guide#01mosc
+  Kind: Script
+  Source: npc/re/guides/guides_moscovia.txt:103
+- Name: Guild Warehouse Manager#moscovia
+  X: 211
+  "Y": 200
+  Dir: 5
+  Sprite: 896
+  DuplicateOf: GuildWarehouse
+  Kind: Script
+  Source: npc/re/merchants/guild_warehouse.txt:103
+- Name: Eden Teleport Officer#26
+  X: 209
+  "Y": 197
+  Dir: 5
+  Sprite: 729
+  DuplicateOf: eto
+  Kind: Script
+  Source: npc/re/quests/eden/eden_common.txt:266

@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Captain Carocc#intro_npc03
+  X: 78
+  "Y": 103
+  Dir: 5
+  Sprite: 873
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:133
+- Name: Lumin#new_ship
+  X: 73
+  "Y": 100
+  Dir: 3
+  Sprite: 639
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:245
+- Name: Sailor#intro_npc04
+  X: 58
+  "Y": 69
+  Dir: 5
+  Sprite: 100
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:334
+- Name: "#intro_to_izlude"
+  X: 49
+  "Y": 57
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/warps/cities/izlude.txt:83

@@ -1,0 +1,97 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Outside Island#Aru
+  X: 212
+  "Y": 184
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 2
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:922
+- Name: Grass Behind#Aru
+  X: 129
+  "Y": 218
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 4
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:958
+- Name: Dead Crow#Aru
+  X: 127
+  "Y": 207
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:972
+- Name: outtoin_01#mo
+  X: 168
+  "Y": 257
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:1149
+- Name: Larjes#Aru
+  X: 259
+  "Y": 218
+  Dir: 3
+  Sprite: 97
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:1197
+- Name: namelesswarp1003
+  X: 252
+  "Y": 130
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nameless_in
+    X: 26
+    "Y": 128
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/nameless.txt:19
+- Name: namelesswarp1005
+  X: 79
+  "Y": 256
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nameless_in
+    X: 12
+    "Y": 172
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/nameless.txt:21
+- Name: namelesswarp1007
+  X: 78
+  "Y": 94
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nameless_in
+    X: 96
+    "Y": 180
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/nameless.txt:23

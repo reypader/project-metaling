@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Feather of Bird
+  X: 201
+  "Y": 360
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_dicastes.txt:1161
+- Name: Continental Guard#man1
+  X: 380
+  "Y": 202
+  Dir: 1
+  Sprite: 852
+  DuplicateOf: Continental Guard#man
+  Kind: Script
+  Source: npc/re/quests/quests_morocc.txt:50
+- Name: Ascetic#2aco
+  X: 41
+  "Y": 355
+  Dir: 4
+  Sprite: 95
+  Kind: Script
+  Source: npc/re/jobs/1-1/acolyte.txt:190
+- Name: mocf001
+  X: 198
+  "Y": 21
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: morocc
+    X: 160
+    "Y": 294
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/morroc_fild.txt:66

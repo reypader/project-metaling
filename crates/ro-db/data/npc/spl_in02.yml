@@ -1,0 +1,238 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Arc#ep13md_l02
+  X: 236
+  "Y": 92
+  Dir: 5
+  Sprite: 447
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:2366
+- Name: Terra#ep13md_l03
+  X: 239
+  "Y": 93
+  Dir: 3
+  Sprite: 441
+  DuplicateOf: Arc#ep13md_l02
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:2535
+- Name: terrashome_out
+  X: 236
+  "Y": 86
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: splendide
+    X: 285
+    "Y": 139
+    TriggerWhileHidden: false
+  Source: npc/quests/quests_13_2.txt:2549
+- Name: Middle-Ranked Laphine#la
+  X: 139
+  "Y": 65
+  Dir: 3
+  Sprite: 438
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:5707
+- Name: splendide1-2
+  X: 222
+  "Y": 232
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: splendide
+    X: 238
+    "Y": 317
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/splendide.txt:17
+- Name: splendide2-2
+  X: 207
+  "Y": 193
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: splendide
+    X: 228
+    "Y": 299
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/splendide.txt:19
+- Name: splendide3-2
+  X: 180
+  "Y": 221
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: splendide
+    X: 214
+    "Y": 308
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/splendide.txt:21
+- Name: splendide4-2
+  X: 108
+  "Y": 211
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: splendide
+    X: 157
+    "Y": 314
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/splendide.txt:23
+- Name: splendide5-2
+  X: 62
+  "Y": 227
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: splendide
+    X: 119
+    "Y": 322
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/splendide.txt:25
+- Name: splendide6-2
+  X: 234
+  "Y": 64
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: splendide
+    X: 284
+    "Y": 129
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/splendide.txt:27
+- Name: splendide7-2
+  X: 187
+  "Y": 42
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: splendide
+    X: 259
+    "Y": 114
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/splendide.txt:29
+- Name: splendide8-2
+  X: 135
+  "Y": 66
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: splendide
+    X: 284
+    "Y": 228
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/splendide.txt:31
+- Name: splendide9-2
+  X: 139
+  "Y": 91
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: splendide
+    X: 297
+    "Y": 250
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/splendide.txt:33
+- Name: splendide10-2
+  X: 44
+  "Y": 54
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: splendide
+    X: 133
+    "Y": 70
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/splendide.txt:35
+- Name: Assistant#Warlock1
+  X: 77
+  "Y": 107
+  Dir: 5
+  Sprite: 446
+  Kind: Script
+  Source: npc/re/jobs/3-1/warlock.txt:215
+- Name: Yoop#Warlock
+  X: 60
+  "Y": 231
+  Dir: 5
+  Sprite: 446
+  Kind: Script
+  Source: npc/re/jobs/3-1/warlock.txt:333
+- Name: Assistant#Warlock2
+  X: 84
+  "Y": 103
+  Dir: 3
+  Sprite: 439
+  Kind: Script
+  Source: npc/re/jobs/3-1/warlock.txt:462
+- Name: Assistant#Warlock3
+  X: 78
+  "Y": 110
+  Dir: 5
+  Sprite: 437
+  Kind: Script
+  Source: npc/re/jobs/3-1/warlock.txt:553
+- Name: Guild Master#Warlock
+  X: 80
+  "Y": 108
+  Dir: 5
+  Sprite: 465
+  Kind: Script
+  Source: npc/re/jobs/3-1/warlock.txt:580
+- Name: Valerie#wl
+  X: 81
+  "Y": 102
+  Dir: 4
+  Sprite: 837
+  DuplicateOf: Valerie#sign
+  Kind: Script
+  Source: npc/re/jobs/repair.txt:280

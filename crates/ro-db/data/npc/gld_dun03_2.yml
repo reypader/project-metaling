@@ -1,0 +1,38 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: gdun03a_prtg#abyss
+  X: 238
+  "Y": 274
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_gld
+    X: 252
+    "Y": 247
+    TriggerWhileHidden: false
+  Source: npc/re/warps/guildcastles.txt:27
+- Name: gdun03b_prtg#abyss
+  X: 42
+  "Y": 30
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_gld
+    X: 63
+    "Y": 66
+    TriggerWhileHidden: false
+  Source: npc/re/warps/guildcastles.txt:28

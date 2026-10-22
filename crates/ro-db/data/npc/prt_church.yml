@@ -1,0 +1,376 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Garnet#pront
+  X: 103
+  "Y": 76
+  Dir: 0
+  Sprite: 67
+  Kind: Script
+  Source: npc/cities/prontera.txt:532
+- Name: Henson#pront
+  X: 103
+  "Y": 71
+  Dir: 0
+  Sprite: 120
+  Kind: Script
+  Source: npc/cities/prontera.txt:621
+- Name: Nun#prt
+  X: 108
+  "Y": 124
+  Dir: 4
+  Sprite: 79
+  Kind: Shop
+  Source: npc/merchants/shops.txt:251
+- Name: Wedding Staff#w
+  X: 97
+  "Y": 100
+  Dir: 4
+  Sprite: 71
+  Kind: Script
+  Source: npc/other/marriage.txt:28
+- Name: Single Army#Prontera
+  X: 97
+  "Y": 102
+  Dir: 0
+  Sprite: 105
+  Kind: Script
+  Source: npc/other/marriage.txt:487
+- Name: Single Army#Geffen
+  X: 98
+  "Y": 102
+  Dir: 0
+  Sprite: 705
+  Kind: Script
+  Source: npc/other/marriage.txt:504
+- Name: Single Army#Morocc
+  X: 99
+  "Y": 102
+  Dir: 0
+  Sprite: 707
+  Kind: Script
+  Source: npc/other/marriage.txt:522
+- Name: Single Army#Payon
+  X: 100
+  "Y": 102
+  Dir: 0
+  Sprite: 708
+  Kind: Script
+  Source: npc/other/marriage.txt:540
+- Name: Single Army#Amatsu
+  X: 101
+  "Y": 102
+  Dir: 0
+  Sprite: 767
+  Kind: Script
+  Source: npc/other/marriage.txt:558
+- Name: Single Army#Kunlun
+  X: 102
+  "Y": 102
+  Dir: 0
+  Sprite: 780
+  Kind: Script
+  Source: npc/other/marriage.txt:575
+- Name: Bishop#w
+  X: 100
+  "Y": 128
+  Dir: 4
+  Sprite: 60
+  Kind: Script
+  Source: npc/other/marriage.txt:591
+- Name: The King of Rune-Midgarts
+  X: 28
+  "Y": 178
+  Dir: 4
+  Sprite: 108
+  Kind: Script
+  Source: npc/other/marriage.txt:852
+- Name: Divorce Staff
+  X: 20
+  "Y": 179
+  Dir: 4
+  Sprite: 71
+  Kind: Script
+  Source: npc/other/marriage.txt:897
+- Name: Remarry Staff
+  X: 22
+  "Y": 179
+  Dir: 4
+  Sprite: 71
+  Kind: Script
+  Source: npc/other/marriage.txt:944
+- Name: Priest Praupin
+  X: 179
+  "Y": 15
+  Dir: 1
+  Sprite: 110
+  Kind: Script
+  Source: npc/quests/first_class/tu_acolyte.txt:29
+- Name: Praying Man
+  X: 113
+  "Y": 103
+  Dir: 1
+  Sprite: 798
+  Kind: Script
+  Source: npc/quests/seals/brisingamen_seal.txt:1400
+- Name: "#sazekan"
+  X: 115
+  "Y": 122
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_church
+    X: 168
+    "Y": 106
+    TriggerWhileHidden: false
+  Source: npc/quests/quests_prontera.txt:2174
+- Name: "#prtchhall"
+  X: 166
+  "Y": 106
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_church
+    X: 112
+    "Y": 122
+    TriggerWhileHidden: false
+  Source: npc/quests/quests_prontera.txt:2175
+- Name: Father Bamph
+  X: 185
+  "Y": 106
+  Dir: 3
+  Sprite: 60
+  Kind: Script
+  Source: npc/quests/quests_prontera.txt:2177
+- Name: Father Biscuss
+  X: 184
+  "Y": 110
+  Dir: 3
+  Sprite: 60
+  Kind: Script
+  Source: npc/quests/quests_prontera.txt:2963
+- Name: "#gototomb"
+  X: 177
+  "Y": 113
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_prontera.txt:3044
+- Name: Father Biscuss#tomb
+  X: 23
+  "Y": 89
+  Dir: 3
+  Sprite: 60
+  Kind: Script
+  Source: npc/quests/quests_prontera.txt:3051
+- Name: Father Bamph#tomb
+  X: 16
+  "Y": 114
+  Dir: 4
+  Sprite: 60
+  Kind: Script
+  Source: npc/quests/quests_prontera.txt:3071
+- Name: "#prince1"
+  X: 19
+  "Y": 111
+  Dir: 5
+  Sprite: 887
+  Kind: Script
+  Source: npc/quests/quests_prontera.txt:3156
+- Name: "#prince2"
+  X: 21
+  "Y": 111
+  Dir: 5
+  Sprite: 887
+  Kind: Script
+  Source: npc/quests/quests_prontera.txt:3193
+- Name: "#prince3"
+  X: 24
+  "Y": 111
+  Dir: 5
+  Sprite: 887
+  Kind: Script
+  Source: npc/quests/quests_prontera.txt:3258
+- Name: Bard#sch
+  X: 89
+  "Y": 108
+  Dir: 6
+  Sprite: 741
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:731
+- Name: High Bishop#prst
+  X: 16
+  "Y": 41
+  Dir: 4
+  Sprite: 60
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:35
+- Name: Sister Cecilia
+  X: 27
+  "Y": 24
+  Dir: 1
+  Sprite: 79
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:535
+- Name: Crusader
+  X: 95
+  "Y": 127
+  Dir: 3
+  Sprite: 745
+  Kind: Script
+  Source: npc/jobs/2-2/crusader.txt:454
+- Name: Cleric
+  X: 173
+  "Y": 23
+  Dir: 4
+  Sprite: 79
+  Kind: Script
+  Source: npc/quests/skills/acolyte_skills.txt:18
+- Name: Pastor#1011
+  X: 87
+  "Y": 127
+  Dir: 3
+  Sprite: 755
+  Kind: Script
+  Source: npc/quests/skills/crusader_skills.txt:581
+- Name: Sister Linus
+  X: 111
+  "Y": 112
+  Dir: 1
+  Sprite: 79
+  Kind: Script
+  Source: npc/quests/skills/priest_skills.txt:17
+- Name: prtch001
+  X: 100
+  "Y": 56
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 7
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prontera
+    X: 234
+    "Y": 314
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/prontera.txt:72
+- Name: prtch01
+  X: 109
+  "Y": 81
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: prt_church
+    X: 172
+    "Y": 19
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/prontera.txt:73
+- Name: prtch01-1
+  X: 168
+  "Y": 19
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: prt_church
+    X: 105
+    "Y": 81
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/prontera.txt:74
+- Name: prtch02
+  X: 31
+  "Y": 19
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: prt_church
+    X: 94
+    "Y": 81
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/prontera.txt:75
+- Name: prtch02-1
+  X: 90
+  "Y": 81
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: prt_church
+    X: 27
+    "Y": 19
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/prontera.txt:76
+- Name: Vending Machine for Nov#prt
+  X: 187
+  "Y": 27
+  Dir: 3
+  Sprite: 564
+  DuplicateOf: novice_vending_machine#main
+  Kind: Script
+  Source: npc/re/merchants/novice_vending_machine.txt:92
+- Name: Eden Teleport Officer#7
+  X: 103
+  "Y": 78
+  Dir: 3
+  Sprite: 729
+  DuplicateOf: eto
+  Kind: Script
+  Source: npc/re/quests/eden/eden_common.txt:247
+- Name: Cleric#aco
+  X: 184
+  "Y": 41
+  Dir: 4
+  Sprite: 60
+  Kind: Script
+  Source: npc/re/jobs/1-1/acolyte.txt:16
+- Name: Praying Minister#arch
+  X: 103
+  "Y": 88
+  Dir: 3
+  Sprite: 60
+  Kind: Script
+  Source: npc/re/jobs/3-1/archbishop.txt:30
+- Name: Valerie#prst
+  X: 19
+  "Y": 36
+  Dir: 4
+  Sprite: 837
+  DuplicateOf: Valerie#sign
+  Kind: Script
+  Source: npc/re/jobs/repair.txt:268
+- Name: Valerie#arch
+  X: 103
+  "Y": 86
+  Dir: 4
+  Sprite: 837
+  DuplicateOf: Valerie#sign
+  Kind: Script
+  Source: npc/re/jobs/repair.txt:275

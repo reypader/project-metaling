@@ -1,0 +1,108 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Cottage Keeper#kh
+  X: 93
+  "Y": 210
+  Dir: 4
+  Sprite: 85
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:1968
+- Name: Door#kh2
+  X: 75
+  "Y": 218
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:2019
+- Name: Door#kh1
+  X: 109
+  "Y": 218
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:2073
+- Name: "#wp120054"
+  X: 142
+  "Y": 191
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:263
+- Name: "#tr120054"
+  X: 142
+  "Y": 191
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:524
+- Name: yunfild03
+  X: 18
+  "Y": 337
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_fild03
+    X: 381
+    "Y": 331
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/yuno_fild.txt:23
+- Name: newjun12a
+  X: 70
+  "Y": 23
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_fild08
+    X: 74
+    "Y": 374
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/yuno_fild.txt:58
+- Name: newjun13a
+  X: 294
+  "Y": 24
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_fild08
+    X: 286
+    "Y": 384
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/yuno_fild.txt:60
+- Name: hu004a
+  X: 117
+  "Y": 375
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: hu_fild04
+    X: 122
+    "Y": 35
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/yuno_fild.txt:78

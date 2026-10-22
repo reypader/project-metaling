@@ -1,0 +1,66 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Shawn McCurdy#rockrdg2
+  X: 347
+  "Y": 216
+  Dir: 5
+  Sprite: 10215
+  Kind: Script
+  Source: npc/re/quests/quests_rockridge.txt:1516
+- Name: Concaved Rock#revt09
+  X: 279
+  "Y": 313
+  Dir: 3
+  Sprite: 10042
+  Kind: Script
+  Source: npc/re/quests/quests_rockridge.txt:1815
+- Name: Albert Ford#rockrdg2
+  X: 295
+  "Y": 309
+  Dir: 3
+  Sprite: 10214
+  Kind: Script
+  Source: npc/re/quests/quests_rockridge.txt:1871
+- Name: Frail Ghast#rockdaily
+  X: 295
+  "Y": 328
+  Dir: 5
+  Sprite: 10231
+  Kind: Script
+  Source: npc/re/quests/quests_rockridge.txt:4777
+- Name: rockrdg2#rockmi1
+  X: 304
+  "Y": 350
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: rockmi1
+    X: 247
+    "Y": 19
+    TriggerWhileHidden: true
+  Source: npc/re/warps/dungeons/rockmi1.txt:7
+- Name: rockrdg2#rockrdg1
+  X: 27
+  "Y": 207
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: rockrdg1
+    X: 367
+    "Y": 206
+    TriggerWhileHidden: true
+  Source: npc/re/warps/fields/rockridge_fild.txt:13

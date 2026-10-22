@@ -1,0 +1,77 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Guide
+  X: 149
+  "Y": 78
+  Dir: 4
+  Sprite: 90
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:164
+- Name: Guide#reward
+  X: 140
+  "Y": 78
+  Dir: 4
+  Sprite: 831
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:413
+- Name: WarpThana0b
+  X: 149
+  "Y": 33
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: hu_fild01
+    X: 140
+    "Y": 158
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/tha_t.txt:20
+- Name: WarpThana1a
+  X: 150
+  "Y": 150
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: tha_t02
+    X: 149
+    "Y": 130
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/tha_t.txt:23
+- Name: Guide#Thanatos1
+  X: 142
+  "Y": 78
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/other/adven_boards.txt:2483
+- Name: Guide#Thanatos2
+  X: 156
+  "Y": 78
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Guide#Thanatos1
+  Kind: Script
+  Source: npc/re/other/adven_boards.txt:2708
+- Name: "#shadowc02"
+  X: 149
+  "Y": 228
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/jobs/3-2/shadow_chaser.txt:2493

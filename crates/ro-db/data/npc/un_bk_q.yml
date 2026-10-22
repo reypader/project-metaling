@@ -1,0 +1,1382 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Bunker Sayhu#EP15.2MR
+  X: 103
+  "Y": 147
+  Dir: 4
+  Sprite: 750
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:3494
+- Name: Dr.Fresa#EP15.2MR
+  X: 93
+  "Y": 168
+  Dir: 4
+  Sprite: 10078
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:3636
+- Name: Bioengineer Touring#EP15.2MR
+  X: 213
+  "Y": 303
+  Dir: 4
+  Sprite: 98
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:3828
+- Name: Mechanician Al#EP15.2MR
+  X: 82
+  "Y": 323
+  Dir: 2
+  Sprite: 851
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:3930
+- Name: Facilities manager Remodeling#EP15.2MR
+  X: 347
+  "Y": 217
+  Dir: 4
+  Sprite: 855
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:4103
+- Name: Chemical Substance Specialist Karsten#EP15.2MR
+  X: 86
+  "Y": 121
+  Dir: 4
+  Sprite: 749
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:4217
+- Name: Mechanician Mugeosi#EP15.2MR
+  X: 56
+  "Y": 286
+  Dir: 4
+  Sprite: 851
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:4338
+- Name: Zone C-0 Facilities man#EP15.2MR
+  X: 212
+  "Y": 294
+  Dir: 6
+  Sprite: 854
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:4468
+- Name: Zone F-1 Facilities man#EP15.2MR
+  X: 223
+  "Y": 217
+  Dir: 4
+  Sprite: 854
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:4526
+- Name: Zone F-2 Facilities man#EP15.2MR
+  X: 372
+  "Y": 217
+  Dir: 6
+  Sprite: 854
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:4587
+- Name: Zone I-0 Facilities man#EP15.2MR
+  X: 389
+  "Y": 276
+  Dir: 6
+  Sprite: 854
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:4642
+- Name: Zone Z-0 Facilities man#EP15.2MR
+  X: 291
+  "Y": 158
+  Dir: 4
+  Sprite: 854
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:4697
+- Name: Bioengineer Ebrik#EP15.2MR
+  X: 220
+  "Y": 350
+  Dir: 4
+  Sprite: 83
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:4755
+- Name: Grape System#EP15.2MR
+  X: 333
+  "Y": 333
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:4877
+- Name: Nurse Lapplad#EP15.2MR
+  X: 276
+  "Y": 243
+  Dir: 4
+  Sprite: 478
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:4918
+- Name: Patient#EP15.2MR_01
+  X: 286
+  "Y": 254
+  Dir: 4
+  Sprite: 887
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5093
+- Name: Patient#EP15.2MR_02
+  X: 296
+  "Y": 252
+  Dir: 4
+  Sprite: 457
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5101
+- Name: Patient#EP15.2MR_03
+  X: 316
+  "Y": 231
+  Dir: 4
+  Sprite: 849
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5108
+- Name: Patient#EP15.2MR_04
+  X: 281
+  "Y": 226
+  Dir: 4
+  Sprite: 584
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5116
+- Name: Patient#EP15.2MR_05
+  X: 320
+  "Y": 249
+  Dir: 4
+  Sprite: 585
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5124
+- Name: Patient#EP15.2MR_06
+  X: 306
+  "Y": 233
+  Dir: 4
+  Sprite: 849
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5132
+- Name: Patient#EP15.2MR_07
+  X: 310
+  "Y": 261
+  Dir: 4
+  Sprite: 887
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5140
+- Name: Transportation Executive Ernon#EP15.2MR
+  X: 279
+  "Y": 294
+  Dir: 4
+  Sprite: 869
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5148
+- Name: Distribution Chief Avrandi#EP15.2MR
+  X: 72
+  "Y": 53
+  Dir: 4
+  Sprite: 778
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5327
+- Name: Machine Warehouse
+  X: 22
+  "Y": 279
+  Dir: 4
+  Sprite: 858
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5389
+- Name: L-1 Zone#J0
+  X: 22
+  "Y": 259
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5390
+- Name: J-0 Zone#L1
+  X: 25
+  "Y": 193
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5391
+- Name: Control room#Left
+  X: 58
+  "Y": 185
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5392
+- Name: b_Monitoring room#L1Left
+  X: 58
+  "Y": 171
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5393
+- Name: B-1 Warehouse
+  X: 49
+  "Y": 137
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5394
+- Name: A-0 Zone#L1
+  X: 58
+  "Y": 121
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5395
+- Name: L-1 Zone#A0
+  X: 71
+  "Y": 121
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5396
+- Name: H-0 Zone#Left
+  X: 78
+  "Y": 125
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5397
+- Name: b_Monitoring room#A0Center
+  X: 101
+  "Y": 122
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5398
+- Name: H-0 Zone#Right
+  X: 122
+  "Y": 125
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5399
+- Name: L-2 Zone#A0
+  X: 126
+  "Y": 121
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5400
+- Name: A-0 Zone#L2
+  X: 141
+  "Y": 115
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5401
+- Name: b_Monitoring room#L2Right
+  X: 139
+  "Y": 171
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5402
+- Name: Control room#Right
+  X: 139
+  "Y": 187
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5403
+- Name: K-0 Zone#L2
+  X: 173
+  "Y": 193
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5404
+- Name: L-2 Zone#K0
+  X: 171
+  "Y": 233
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5405
+- Name: A-0 Zone#H0Left
+  X: 278
+  "Y": 193
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5406
+- Name: Z-0 Zone#H0
+  X: 300
+  "Y": 194
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5407
+- Name: Temporary Clinic#H0
+  X: 301
+  "Y": 204
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5408
+- Name: A-0 Zone#H0Right
+  X: 317
+  "Y": 193
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5409
+- Name: G-2 Zone#H0
+  X: 322
+  "Y": 203
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5410
+- Name: H-0 Zone#H0
+  X: 340
+  "Y": 203
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5411
+- Name: F-2 Zone#G2
+  X: 349
+  "Y": 217
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5412
+- Name: Temporary Clinic#G2
+  X: 339
+  "Y": 239
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5413
+- Name: I-0 Zone#G2
+  X: 368
+  "Y": 267
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5414
+- Name: G-2 Zone#I0
+  X: 388
+  "Y": 266
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5415
+- Name: G-1 Zone#H0
+  X: 273
+  "Y": 203
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5416
+- Name: H-0 Zone#G1
+  X: 260
+  "Y": 203
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5417
+- Name: F-1 Zone#G1
+  X: 247
+  "Y": 217
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5418
+- Name: G-1 Zone#F1
+  X: 228
+  "Y": 217
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5419
+- Name: Temporary Clinic#G1
+  X: 256
+  "Y": 239
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5420
+- Name: C-0 Zone#G1
+  X: 219
+  "Y": 265
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5421
+- Name: G-1 Zone#C0
+  X: 214
+  "Y": 283
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5422
+- Name: Farm#C0
+  X: 215
+  "Y": 303
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5423
+- Name: H-0 Zone#Z0
+  X: 300
+  "Y": 184
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5424
+- Name: Z-2 Zone#Z0
+  X: 365
+  "Y": 167
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5425
+- Name: Z-0 Zone#Z2
+  X: 27
+  "Y": 55
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5426
+- Name: Z-1 Zone#Z0
+  X: 230
+  "Y": 167
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5427
+- Name: Z-0 Zone#Z1
+  X: 164
+  "Y": 55
+  Dir: 4
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5428
+- Name: Off Limits#01
+  X: 101
+  "Y": 92
+  Dir: 8
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5429
+- Name: Off Limits#02
+  X: 94
+  "Y": 92
+  Dir: 8
+  Sprite: 858
+  DuplicateOf: Machine Warehouse
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5430
+- Name: Dimension move Portal#EP15.2MR
+  X: 97
+  "Y": 84
+  Dir: 4
+  Sprite: 10007
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5433
+- Name: Mechanician Bukal#EP15.2MR
+  X: 100
+  "Y": 312
+  Dir: 6
+  Sprite: 851
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5512
+- Name: Researcher Grum#EP15.2MR
+  X: 76
+  "Y": 175
+  Dir: 4
+  Sprite: 982
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5559
+- Name: Adventurer Jean#EP15.2MR
+  X: 297
+  "Y": 287
+  Dir: 6
+  Sprite: 896
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5606
+- Name: Cafeteria Lady#EP15.2MR
+  X: 318
+  "Y": 299
+  Dir: 2
+  Sprite: 979
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5656
+- Name: Adventurer Breezin#EP15.2MR
+  X: 102
+  "Y": 97
+  Dir: 2
+  Sprite: 474
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5694
+- Name: Access Control Guard#EP15.2MR
+  X: 313
+  "Y": 280
+  Dir: 8
+  Sprite: 899
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5738
+- Name: Access Control Guard#EP15.2MR2
+  X: 280
+  "Y": 280
+  Dir: 8
+  Sprite: 899
+  DuplicateOf: Access Control Guard#EP15.2MR
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5787
+- Name: Access Control Guard#EP15.2MR3
+  X: 255
+  "Y": 236
+  Dir: 2
+  Sprite: 899
+  DuplicateOf: Access Control Guard#EP15.2MR
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5788
+- Name: Access Control Guard#EP15.2MR4
+  X: 298
+  "Y": 203
+  Dir: 4
+  Sprite: 899
+  DuplicateOf: Access Control Guard#EP15.2MR
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5789
+- Name: Access Control Guard#EP15.2MR5
+  X: 340
+  "Y": 235
+  Dir: 6
+  Sprite: 899
+  DuplicateOf: Access Control Guard#EP15.2MR
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5790
+- Name: Facilities manager Jiko#EP15.2MR
+  X: 98
+  "Y": 246
+  Dir: 8
+  Sprite: 854
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5792
+- Name: Nurse#EP15.2MR1
+  X: 313
+  "Y": 261
+  Dir: 2
+  Sprite: 569
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5838
+- Name: Nurse#EP15.2MR2
+  X: 322
+  "Y": 249
+  Dir: 2
+  Sprite: 569
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5845
+- Name: Nurse#EP15.2MR3
+  X: 316
+  "Y": 233
+  Dir: 4
+  Sprite: 569
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5852
+- Name: Nurse#EP15.2MR4
+  X: 304
+  "Y": 233
+  Dir: 4
+  Sprite: 569
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5859
+- Name: Nurse#EP15.2MR5
+  X: 283
+  "Y": 226
+  Dir: 2
+  Sprite: 569
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5866
+- Name: Nurse#EP15.2MR6
+  X: 284
+  "Y": 255
+  Dir: 4
+  Sprite: 569
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5873
+- Name: Nurse#EP15.2MR7
+  X: 296
+  "Y": 254
+  Dir: 4
+  Sprite: 569
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5880
+- Name: Bioengineer#EP15.2MR1
+  X: 240
+  "Y": 380
+  Dir: 8
+  Sprite: 750
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5887
+- Name: Bioengineer#EP15.2MR2
+  X: 274
+  "Y": 380
+  Dir: 8
+  Sprite: 750
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5897
+- Name: Bioengineer#EP15.2MR3
+  X: 327
+  "Y": 360
+  Dir: 6
+  Sprite: 750
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5907
+- Name: Bioengineer#EP15.2MR4
+  X: 316
+  "Y": 351
+  Dir: 4
+  Sprite: 750
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5917
+- Name: Bioengineer#EP15.2MR5
+  X: 249
+  "Y": 344
+  Dir: 2
+  Sprite: 750
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5927
+- Name: Memory Record player#EP15.2MR
+  X: 103
+  "Y": 393
+  Dir: 4
+  Sprite: 10043
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:5937
+- Name: Discarded Mechanical Device#EP15.2MR
+  X: 108
+  "Y": 243
+  Dir: 4
+  Sprite: 10043
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:6128
+- Name: Warehouse Keeper Pik#EP15.2MR
+  X: 34
+  "Y": 138
+  Dir: 4
+  Sprite: 99
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:6248
+- Name: Guard#EP15.2MR
+  X: 91
+  "Y": 283
+  Dir: 2
+  Sprite: 899
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:6294
+- Name: Chemical Substance Specialist Kori#EP15.2MR
+  X: 56
+  "Y": 192
+  Dir: 4
+  Sprite: 749
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:6341
+- Name: Adventurer Bamdaku#EP15.2MR
+  X: 161
+  "Y": 193
+  Dir: 6
+  Sprite: 750
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:6387
+- Name: Adventurer Dally#EP15.2MR
+  X: 248
+  "Y": 258
+  Dir: 2
+  Sprite: 882
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:6433
+- Name: Machine Warehouse#J-0
+  X: 41
+  "Y": 275
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:127
+- Name: J-0#Machine Warehouse
+  X: 24
+  "Y": 276
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:141
+- Name: J-0#L-1
+  X: 24
+  "Y": 256
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:149
+- Name: L-1#J-0
+  X: 23
+  "Y": 190
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:157
+- Name: L-1#D-1
+  X: 31
+  "Y": 196
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:165
+- Name: D-1#L-1
+  X: 21
+  "Y": 375
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:173
+- Name: L-1#D-2
+  X: 51
+  "Y": 196
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:181
+- Name: D-2#L-1
+  X: 67
+  "Y": 375
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:189
+- Name: L-1#Control room
+  X: 60
+  "Y": 183
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:197
+- Name: Control room#L-1
+  X: 71
+  "Y": 236
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:205
+- Name: L-1#b_Monitoring room_
+  X: 60
+  "Y": 169
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:213
+- Name: b_Monitoring room#L-1
+  X: 69
+  "Y": 167
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:221
+- Name: L-1#B-1
+  X: 47
+  "Y": 135
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:234
+- Name: B-1#L-1
+  X: 40
+  "Y": 135
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:242
+- Name: L-1#A-0
+  X: 57
+  "Y": 118
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:250
+- Name: A-0#L-1
+  X: 69
+  "Y": 118
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:258
+- Name: A-0#b_Monitoring room_
+  X: 97
+  "Y": 124
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:266
+- Name: Monitoring room#A-0
+  X: 97
+  "Y": 141
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:274
+- Name: A-0#L-2
+  X: 128
+  "Y": 118
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:287
+- Name: L-2#A-0
+  X: 140
+  "Y": 118
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:295
+- Name: L-2#b_Monitoring room_
+  X: 137
+  "Y": 168
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:303
+- Name: b_Monitoring room#L-2
+  X: 126
+  "Y": 168
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:311
+- Name: L-2#Control room
+  X: 137
+  "Y": 185
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:325
+- Name: Control room#L-2
+  X: 124
+  "Y": 236
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:333
+- Name: L-2#E-1
+  X: 147
+  "Y": 196
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:341
+- Name: E-1#L-2
+  X: 105
+  "Y": 375
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:349
+- Name: L-2#E-2
+  X: 167
+  "Y": 196
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:357
+- Name: E-2#L-2
+  X: 151
+  "Y": 375
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:365
+- Name: L-2#K-0
+  X: 174
+  "Y": 190
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:373
+- Name: K-0#L-2
+  X: 169
+  "Y": 230
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:381
+- Name: Farm#C-0
+  X: 213
+  "Y": 346
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:389
+- Name: C-0#Farm
+  X: 216
+  "Y": 300
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:403
+- Name: C-0#G-1
+  X: 216
+  "Y": 280
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:416
+- Name: G-1#C-0
+  X: 217
+  "Y": 262
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:424
+- Name: G-1#M-0
+  X: 249
+  "Y": 268
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:432
+- Name: M-0#G-1
+  X: 389
+  "Y": 377
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:440
+- Name: G-1#Cafeteria
+  X: 258
+  "Y": 262
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:448
+- Name: Cafeteria#G-1
+  X: 271
+  "Y": 290
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:456
+- Name: Clinic#G-1
+  X: 269
+  "Y": 236
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:470
+- Name: G-1#F-1
+  X: 245
+  "Y": 214
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:490
+- Name: F-1#G-1
+  X: 230
+  "Y": 214
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:498
+- Name: G-1#H-0
+  X: 262
+  "Y": 200
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:506
+- Name: H-0#G-1
+  X: 271
+  "Y": 200
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:514
+- Name: LeftA-0#LeftH-0
+  X: 75
+  "Y": 128
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:522
+- Name: LeftH-0#LeftA-0
+  X: 275
+  "Y": 191
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:530
+- Name: RightA-0#RightH-0
+  X: 119
+  "Y": 128
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:538
+- Name: RightH-0#RightA-0
+  X: 320
+  "Y": 191
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:546
+- Name: Clinic#H-0
+  X: 297
+  "Y": 221
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:554
+- Name: H-0#G-2
+  X: 324
+  "Y": 200
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:574
+- Name: G-2#H-0
+  X: 339
+  "Y": 200
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:582
+- Name: G-2#F-2
+  X: 350
+  "Y": 214
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:590
+- Name: F-2#G-2
+  X: 365
+  "Y": 214
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:598
+- Name: Clinic#G-2
+  X: 326
+  "Y": 236
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:606
+- Name: Cafeteria#G-2
+  X: 324
+  "Y": 290
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:626
+- Name: G-2#Cafeteria
+  X: 337
+  "Y": 262
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:640
+- Name: G-2#N-0
+  X: 343
+  "Y": 270
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:648
+- Name: N-0#G-2
+  X: 381
+  "Y": 325
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:656
+- Name: G-2#I-0
+  X: 370
+  "Y": 264
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:664
+- Name: I-0#G-2
+  X: 385
+  "Y": 264
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:672
+- Name: H-0#Z-0
+  X: 297
+  "Y": 192
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:680
+- Name: Z-0#H-0
+  X: 297
+  "Y": 186
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:688
+- Name: Z-0#Z-1
+  X: 229
+  "Y": 163
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:696
+- Name: Z-1#Z-0
+  X: 164
+  "Y": 51
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:704
+- Name: Z-0#Z-2
+  X: 366
+  "Y": 164
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:712
+- Name: Z-2#Z-0
+  X: 27
+  "Y": 52
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/verus.txt:720

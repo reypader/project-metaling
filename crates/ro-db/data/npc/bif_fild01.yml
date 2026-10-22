@@ -1,0 +1,103 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Laphine Soldier#mist
+  X: 158
+  "Y": 340
+  Dir: 5
+  Sprite: 447
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:20
+- Name: Log Tunnel
+  X: 161
+  "Y": 355
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:136
+- Name: Mysterious Flower#ep14_1
+  X: 38
+  "Y": 374
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:1009
+- Name: "#wp120091"
+  X: 147
+  "Y": 64
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:171
+- Name: "#tr120091"
+  X: 147
+  "Y": 64
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:432
+- Name: Expedition Guide#05
+  X: 314
+  "Y": 155
+  Dir: 6
+  Sprite: 852
+  DuplicateOf: Expedition Guide#01
+  Kind: Script
+  Source: npc/re/other/dimensional_gap.txt:45
+- Name: Expedition Guide#06
+  X: 320
+  "Y": 154
+  Dir: 4
+  Sprite: 852
+  DuplicateOf: Expedition Guide#02
+  Kind: Script
+  Source: npc/re/other/dimensional_gap.txt:46
+- Name: Cheshire#ep14_1_xq04
+  X: 335
+  "Y": 168
+  Dir: 3
+  Sprite: 497
+  Kind: Script
+  Source: npc/re/quests/quests_mora.txt:1564
+- Name: Lope#pa
+  X: 132
+  "Y": 338
+  Dir: 3
+  Sprite: 461
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/quests/quests_mora.txt:2396
+- Name: bifrost_field0002
+  X: 318
+  "Y": 48
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: splendide
+    X: 271
+    "Y": 382
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/bif_fild.txt:18
+- Name: Transport Device#03
+  X: 318
+  "Y": 159
+  Dir: 4
+  Sprite: 10007
+  Kind: Script
+  Source: npc/re/warps/other/dimensional_gap.txt:35

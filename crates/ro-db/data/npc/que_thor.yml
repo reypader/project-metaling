@@ -1,0 +1,59 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Little Curdie
+  X: 36
+  "Y": 66
+  Dir: 5
+  Sprite: 941
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:3174
+- Name: Guard#vol
+  UniqueName: VeinsGuard
+  X: 145
+  "Y": 66
+  Dir: 3
+  Sprite: 939
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:6230
+- Name: Guard#vol2
+  X: 136
+  "Y": 66
+  Dir: 3
+  Sprite: 939
+  DuplicateOf: VeinsGuard
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:6285
+- Name: Guard#vol3
+  X: 127
+  "Y": 60
+  Dir: 5
+  Sprite: 939
+  DuplicateOf: VeinsGuard
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:6286
+- Name: "#tov_1"
+  X: 69
+  "Y": 56
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7264
+- Name: "#tov_2"
+  X: 187
+  "Y": 56
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7270

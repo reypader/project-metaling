@@ -1,0 +1,923 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Airship Staff#ein01
+  X: 94
+  "Y": 267
+  Dir: 3
+  Sprite: 91
+  Kind: Script
+  Source: npc/airports/einbroch.txt:93
+- Name: Mark#ein
+  X: 218
+  "Y": 198
+  Dir: 5
+  Sprite: 855
+  Kind: Script
+  Source: npc/cities/einbroch.txt:35
+- Name: Morei#ein
+  X: 175
+  "Y": 196
+  Dir: 5
+  Sprite: 854
+  Kind: Script
+  Source: npc/cities/einbroch.txt:127
+- Name: Oberu#ein
+  X: 173
+  "Y": 229
+  Dir: 5
+  Sprite: 855
+  DuplicateOf: Mark#ein
+  Kind: Script
+  Source: npc/cities/einbroch.txt:171
+- Name: Khemko#ein
+  X: 176
+  "Y": 172
+  Dir: 5
+  Sprite: 855
+  DuplicateOf: Mark#ein
+  Kind: Script
+  Source: npc/cities/einbroch.txt:172
+- Name: Train Station Staff#ein1
+  UniqueName: EinbrochTrain
+  X: 232
+  "Y": 272
+  Dir: 3
+  Sprite: 852
+  Kind: Script
+  Source: npc/cities/einbroch.txt:174
+- Name: Train Station Staff#ein2
+  X: 252
+  "Y": 301
+  Dir: 3
+  Sprite: 852
+  DuplicateOf: EinbrochTrain
+  Kind: Script
+  Source: npc/cities/einbroch.txt:233
+- Name: Leslie#ein_1
+  X: 259
+  "Y": 326
+  Dir: 3
+  Sprite: 846
+  Kind: Script
+  Source: npc/cities/einbroch.txt:235
+- Name: Tan#ein
+  X: 236
+  "Y": 191
+  Dir: 3
+  Sprite: 855
+  Kind: Script
+  Source: npc/cities/einbroch.txt:257
+- Name: Little Toby#ein-1
+  X: 228
+  "Y": 121
+  Dir: 5
+  Sprite: 855
+  Kind: Script
+  Source: npc/cities/einbroch.txt:281
+- Name: Airship Engineer#ein-1
+  X: 40
+  "Y": 116
+  Dir: 1
+  Sprite: 855
+  Kind: Script
+  Source: npc/cities/einbroch.txt:304
+- Name: Centzu#ein
+  X: 294
+  "Y": 312
+  Dir: 3
+  Sprite: 854
+  Kind: Script
+  Source: npc/cities/einbroch.txt:368
+- Name: Khowropher#ein
+  X: 232
+  "Y": 255
+  Dir: 5
+  Sprite: 847
+  Kind: Script
+  Source: npc/cities/einbroch.txt:393
+- Name: Khetine#ein
+  X: 143
+  "Y": 109
+  Dir: 5
+  Sprite: 855
+  Kind: Script
+  Source: npc/cities/einbroch.txt:418
+- Name: Sleik#ein
+  X: 229
+  "Y": 149
+  Dir: 3
+  Sprite: 854
+  Kind: Script
+  Source: npc/cities/einbroch.txt:436
+- Name: Bulletin Board#ein1
+  X: 244
+  "Y": 255
+  Dir: 5
+  Sprite: 858
+  Kind: Script
+  Source: npc/cities/einbroch.txt:786
+- Name: Bulletin Board#ein2
+  X: 253
+  "Y": 203
+  Dir: 5
+  Sprite: 858
+  Kind: Script
+  Source: npc/cities/einbroch.txt:793
+- Name: Bulletin Board#ein3
+  X: 68
+  "Y": 206
+  Dir: 5
+  Sprite: 858
+  Kind: Script
+  Source: npc/cities/einbroch.txt:800
+- Name: Bulletin Board#ein4
+  X: 90
+  "Y": 84
+  Dir: 5
+  Sprite: 858
+  Kind: Script
+  Source: npc/cities/einbroch.txt:807
+- Name: Bulletin Board#ein5
+  X: 101
+  "Y": 106
+  Dir: 5
+  Sprite: 858
+  Kind: Script
+  Source: npc/cities/einbroch.txt:814
+- Name: Bulletin Board#ein6
+  X: 220
+  "Y": 208
+  Dir: 5
+  Sprite: 858
+  Kind: Script
+  Source: npc/cities/einbroch.txt:821
+- Name: Bulletin Board#ein7
+  X: 132
+  "Y": 76
+  Dir: 5
+  Sprite: 858
+  Kind: Script
+  Source: npc/cities/einbroch.txt:828
+- Name: Bulletin Board#ein11
+  X: 152
+  "Y": 46
+  Dir: 5
+  Sprite: 858
+  Kind: Script
+  Source: npc/cities/einbroch.txt:835
+- Name: Bulletin Board#ein22
+  X: 235
+  "Y": 141
+  Dir: 5
+  Sprite: 858
+  Kind: Script
+  Source: npc/cities/einbroch.txt:843
+- Name: Bulletin Board#ein33
+  X: 162
+  "Y": 256
+  Dir: 5
+  Sprite: 858
+  Kind: Script
+  Source: npc/cities/einbroch.txt:850
+- Name: Bulletin Board#ein44
+  X: 183
+  "Y": 174
+  Dir: 5
+  Sprite: 858
+  Kind: Script
+  Source: npc/cities/einbroch.txt:858
+- Name: Bulletin Board#ein55
+  X: 104
+  "Y": 202
+  Dir: 5
+  Sprite: 858
+  Kind: Script
+  Source: npc/cities/einbroch.txt:866
+- Name: Vote Timer#ein
+  X: 246
+  "Y": 70
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/kafras/dts_warper.txt:60
+- Name: Vote Timer2#ein
+  X: 245
+  "Y": 71
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/kafras/dts_warper.txt:232
+- Name: Vote Timer3#ein
+  X: 246
+  "Y": 71
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/kafras/dts_warper.txt:254
+- Name: Vote Timer4#ein
+  X: 247
+  "Y": 71
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/kafras/dts_warper.txt:277
+- Name: Scrutiny Association#6
+  X: 248
+  "Y": 71
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/kafras/dts_warper.txt:1132
+- Name: Scrutiny Association#7
+  X: 249
+  "Y": 71
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/kafras/dts_warper.txt:1155
+- Name: Kafra Employee#ein2
+  UniqueName: kaf_einbroch
+  X: 242
+  "Y": 205
+  Dir: 5
+  Sprite: 860
+  Kind: Script
+  Source: npc/kafras/kafras.txt:479
+- Name: Kafra Employee#ein1
+  UniqueName: kaf_einbroch2
+  X: 59
+  "Y": 203
+  Dir: 6
+  Sprite: 861
+  Kind: Script
+  Source: npc/kafras/kafras.txt:492
+- Name: Flu Mask Dealer#ein
+  X: 138
+  "Y": 66
+  Dir: 4
+  Sprite: 850
+  Kind: Shop
+  Source: npc/merchants/shops.txt:103
+- Name: Paddler#ein
+  X: 82
+  "Y": 199
+  Dir: 4
+  Sprite: 855
+  Kind: Shop
+  Source: npc/merchants/shops.txt:104
+- Name: Chef Assistant#ein
+  X: 224
+  "Y": 207
+  Dir: 5
+  Sprite: 83
+  Kind: Shop
+  Source: npc/merchants/shops.txt:298
+- Name: Mailbox#ein
+  X: 231
+  "Y": 215
+  Dir: 0
+  Sprite: 888
+  DuplicateOf: MailBox
+  Kind: Script
+  Source: npc/other/mail.txt:101
+- Name: Mailbox#2ein
+  X: 77
+  "Y": 202
+  Dir: 0
+  Sprite: 888
+  DuplicateOf: MailBox
+  Kind: Script
+  Source: npc/other/mail.txt:102
+- Name: Ledrion#einbroch
+  X: 107
+  "Y": 93
+  Dir: 3
+  Sprite: 109
+  DuplicateOf: RelayLedrion
+  Kind: Script
+  Source: npc/quests/partyrelay.txt:3100
+- Name: Gatan#einbroch
+  X: 260
+  "Y": 128
+  Dir: 3
+  Sprite: 86
+  DuplicateOf: RelayGatan
+  Kind: Script
+  Source: npc/quests/partyrelay.txt:3101
+- Name: Bafhail#einbroch
+  X: 251
+  "Y": 178
+  Dir: 3
+  Sprite: 731
+  DuplicateOf: RelayBafhail
+  Kind: Script
+  Source: npc/quests/partyrelay.txt:3102
+- Name: Lospii#einbroch
+  X: 173
+  "Y": 72
+  Dir: 3
+  Sprite: 706
+  DuplicateOf: RelayLospii
+  Kind: Script
+  Source: npc/quests/partyrelay.txt:3103
+- Name: Uwe Kleine#ein
+  X: 215
+  "Y": 180
+  Dir: 6
+  Sprite: 85
+  Kind: Script
+  Source: npc/quests/quests_ein.txt:477
+- Name: Einbroch Smog Alert
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/quests/quests_ein.txt:3214
+- Name: Liotzburg#ein
+  X: 132
+  "Y": 84
+  Dir: 3
+  Sprite: 853
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_ein.txt:3372
+- Name: Laboratory Soldier#ein-1
+  X: 51
+  "Y": 46
+  Dir: 5
+  Sprite: 852
+  Kind: Script
+  Source: npc/quests/quests_ein.txt:5367
+- Name: Laboratory Soldier#ein-2
+  X: 51
+  "Y": 56
+  Dir: 5
+  Sprite: 852
+  Kind: Script
+  Source: npc/quests/quests_ein.txt:5376
+- Name: Security#ein
+  X: 51
+  "Y": 52
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/quests/quests_ein.txt:5682
+- Name: Keneshiotz#ein
+  X: 188
+  "Y": 72
+  Dir: 3
+  Sprite: 855
+  Kind: Script
+  Source: npc/quests/quests_ein.txt:7212
+- Name: Kesunboss#ein
+  X: 208
+  "Y": 208
+  Dir: 3
+  Sprite: 850
+  Kind: Script
+  Source: npc/quests/quests_ein.txt:7261
+- Name: Laboratory Guard#reken
+  X: 55
+  "Y": 52
+  Dir: 3
+  Sprite: 852
+  Kind: Script
+  Source: npc/quests/quests_lighthalzen.txt:11061
+- Name: Suspicious Man#nq
+  X: 184
+  "Y": 194
+  Dir: 3
+  Sprite: 881
+  Kind: Script
+  Source: npc/jobs/1-1e/ninja.txt:377
+- Name: ein_fa01
+  X: 132
+  "Y": 79
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ein_in01
+    X: 17
+    "Y": 213
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/einbroch.txt:22
+- Name: ein_fa02a
+  X: 179
+  "Y": 73
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ein_in01
+    X: 81
+    "Y": 203
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/einbroch.txt:25
+- Name: ein_to01
+  X: 214
+  "Y": 263
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: einbroch
+    X: 233
+    "Y": 315
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/einbroch.txt:31
+- Name: ein_to01a
+  X: 233
+  "Y": 312
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: einbroch
+    X: 214
+    "Y": 260
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/einbroch.txt:32
+- Name: ein_to02
+  X: 250
+  "Y": 263
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: einbroch
+    X: 269
+    "Y": 315
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/einbroch.txt:33
+- Name: ein_to02a
+  X: 269
+  "Y": 312
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: einbroch
+    X: 250
+    "Y": 260
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/einbroch.txt:34
+- Name: ein_wp01
+  X: 216
+  "Y": 214
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ein_in01
+    X: 108
+    "Y": 17
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/einbroch.txt:40
+- Name: ein_h01
+  X: 257
+  "Y": 199
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ein_in01
+    X: 198
+    "Y": 224
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/einbroch.txt:47
+- Name: ein_ho01
+  X: 278
+  "Y": 233
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ein_in01
+    X: 107
+    "Y": 95
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/einbroch.txt:66
+- Name: ein_ho03
+  X: 290
+  "Y": 222
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ein_in01
+    X: 121
+    "Y": 80
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/einbroch.txt:70
+- Name: ein_kf01
+  X: 129
+  "Y": 229
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ein_in01
+    X: 14
+    "Y": 147
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/einbroch.txt:77
+- Name: ein_jb01
+  X: 255
+  "Y": 107
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ein_in01
+    X: 14
+    "Y": 17
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/einbroch.txt:90
+- Name: ein_fd01
+  X: 157
+  "Y": 331
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ein_fild04
+    X: 184
+    "Y": 31
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/einbroch.txt:99
+- Name: ein_fd02
+  X: 150
+  "Y": 25
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ein_fild08
+    X: 164
+    "Y": 377
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/einbroch.txt:101
+- Name: ein_ap01
+  X: 92
+  "Y": 281
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: airplane
+    X: 224
+    "Y": 64
+    TriggerWhileHidden: false
+  Source: npc/warps/other/airplane.txt:28
+- Name: ein_ap02
+  X: 64
+  "Y": 234
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: airport
+    X: 138
+    "Y": 51
+    TriggerWhileHidden: false
+  Source: npc/warps/other/airplane.txt:29
+- Name: ein_ap05a
+  X: 64
+  "Y": 207
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: airport
+    X: 143
+    "Y": 17
+    TriggerWhileHidden: false
+  Source: npc/warps/other/airplane.txt:36
+- Name: gswarp1
+  X: 136
+  "Y": 199
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: que_ng
+    X: 138
+    "Y": 167
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:133
+- Name: Einbroch Guide#ein01
+  UniqueName: GuideEinbroch
+  X: 72
+  "Y": 202
+  Dir: 4
+  Sprite: 852
+  Kind: Script
+  Source: npc/re/guides/guides_einbroch.txt:17
+- Name: Einbroch Guide#ein02
+  X: 155
+  "Y": 43
+  Dir: 4
+  Sprite: 852
+  DuplicateOf: GuideEinbroch
+  Kind: Script
+  Source: npc/re/guides/guides_einbroch.txt:211
+- Name: Einbroch Guide#ein03
+  X: 162
+  "Y": 317
+  Dir: 4
+  Sprite: 852
+  DuplicateOf: GuideEinbroch
+  Kind: Script
+  Source: npc/re/guides/guides_einbroch.txt:212
+- Name: Einbroch Guide#ein04
+  X: 252
+  "Y": 320
+  Dir: 3
+  Sprite: 852
+  DuplicateOf: GuideEinbroch
+  Kind: Script
+  Source: npc/re/guides/guides_einbroch.txt:213
+- Name: Kafra Teleportation#einbroch
+  X: 246
+  "Y": 205
+  Dir: 5
+  Sprite: 10242
+  Kind: Script
+  Source: npc/re/kafras/Kafra_Teleportation_Services.txt:307
+- Name: Zonda Teleportation#einbroch
+  X: 248
+  "Y": 205
+  Dir: 3
+  Sprite: 10243
+  DuplicateOf: ZondaTeleportationServices
+  Kind: Script
+  Source: npc/re/kafras/Zonda_Teleportation_Services.txt:86
+- Name: Gemstone Bagger#08
+  X: 222
+  "Y": 206
+  Dir: 5
+  Sprite: 855
+  DuplicateOf: "#GemstoneBagger"
+  Kind: Script
+  Source: npc/re/merchants/Gemstone_Bagger.txt:39
+- Name: Guild Warehouse Manager#einbroch
+  X: 238
+  "Y": 203
+  Dir: 3
+  Sprite: 896
+  DuplicateOf: GuildWarehouse
+  Kind: Script
+  Source: npc/re/merchants/guild_warehouse.txt:93
+- Name: Black Marketeer#ein
+  X: 122
+  "Y": 250
+  Dir: 4
+  Sprite: 49
+  Kind: Shop
+  Source: npc/re/merchants/shops.txt:55
+- Name: Eden Teleport Officer#20
+  X: 250
+  "Y": 211
+  Dir: 4
+  Sprite: 729
+  DuplicateOf: eto
+  Kind: Script
+  Source: npc/re/quests/eden/eden_common.txt:260
+- Name: Carbonated Water Vending Machine#ein
+  X: 249
+  "Y": 186
+  Dir: 3
+  Sprite: 10375
+  DuplicateOf: Carbonated Water Vending Machine#ra
+  Kind: Script
+  Source: npc/re/quests/juno_monster_society.txt:27
+- Name: Assistant Remain#ein
+  X: 246
+  "Y": 186
+  Dir: 5
+  Sprite: 415
+  Kind: Script
+  Source: npc/re/quests/juno_monster_society.txt:252
+- Name: "#16nego15"
+  X: 239
+  "Y": 269
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 3
+    "Y": 0
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:1404
+- Name: "#16nego16"
+  X: 226
+  "Y": 276
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 3
+    "Y": 0
+  DuplicateOf: "#16nego15"
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:1411
+- Name: Unusual person#16nego01
+  X: 239
+  "Y": 269
+  Dir: 3
+  Sprite: 10179
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:1413
+- Name: Very small hole#16nego0
+  X: 270
+  "Y": 267
+  Dir: 5
+  Sprite: 550
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:1708
+- Name: Lazy#16nego06
+  X: 270
+  "Y": 268
+  Dir: 3
+  Sprite: 10179
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:1729
+- Name: Arivero Yurhik#TFQ13
+  X: 262
+  "Y": 42
+  Dir: 4
+  Sprite: 632
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:8945
+- Name: Einbroch Prohibition equipment
+  X: 260
+  "Y": 40
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:9037
+- Name: Teleport Prohibition equipment#4
+  X: 260
+  "Y": 40
+  Dir: 0
+  Sprite: 406
+  State: Cloaked
+  DuplicateOf: dummy_cloaked_npc
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:9047
+- Name: Flower Girl#16.2rm
+  X: 167
+  "Y": 160
+  Dir: 3
+  Sprite: 62
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:9296
+- Name: Huge Tree#16.2rm
+  X: 162
+  "Y": 153
+  Dir: 3
+  Sprite: 858
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:9404
+- Name: Coughing young man#ITB
+  X: 149
+  "Y": 242
+  Dir: 5
+  Sprite: 798
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/quests/quests_illusion_dungeons.txt:11826
+- Name: "#171_EINBR_EV"
+  X: 51
+  "Y": 197
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/quests/quests_17_1.txt:181
+- Name: Lazy#171_einbr
+  X: 42
+  "Y": 208
+  Dir: 3
+  Sprite: 10179
+  Kind: Script
+  Source: npc/re/quests/quests_17_1.txt:192
+- Name: Kaya Tos#171_einbr
+  X: 41
+  "Y": 204
+  Dir: 7
+  Sprite: 10299
+  Kind: Script
+  Source: npc/re/quests/quests_17_1.txt:435
+- Name: Aas#171_einbr
+  X: 39
+  "Y": 205
+  Dir: 7
+  Sprite: 10300
+  Kind: Script
+  Source: npc/re/quests/quests_17_1.txt:446
+- Name: Cat Paw Shrimp Merchant#ein
+  X: 164
+  "Y": 316
+  Dir: 3
+  Sprite: 495
+  DuplicateOf: Cat Paw Shrimp Merchant#iz
+  Kind: Script
+  Source: npc/re/custom/lasagna/lasagna_npcs.txt:1321
+- Name: Bouncer
+  X: 54
+  "Y": 97
+  Dir: 3
+  Sprite: 10062
+  Kind: Script
+  Source: npc/re/jobs/2e/rebellion.txt:53
+- Name: ein_to_pub
+  X: 302
+  "Y": 331
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: pub_cat
+    X: 49
+    "Y": 27
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/einbroch.txt:28

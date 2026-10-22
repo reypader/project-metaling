@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: PyramidsN2-1
+  X: 195
+  "Y": 8
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 3
+  Kind: Warp
+  Warp:
+    Map: moc_prydn1
+    X: 220
+    "Y": 9
+    TriggerWhileHidden: false
+  Source: npc/re/warps/dungeons/moc_pryd.txt:16

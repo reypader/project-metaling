@@ -1,0 +1,72 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#li_Varmunt"
+  X: 21
+  "Y": 31
+  Dir: 5
+  Sprite: 755
+  Kind: Script
+  Source: npc/quests/quests_lighthalzen.txt:3812
+- Name: "#li_researcher"
+  X: 29
+  "Y": 24
+  Dir: 3
+  Sprite: 754
+  Kind: Script
+  Source: npc/quests/quests_lighthalzen.txt:3948
+- Name: "#li_Man"
+  X: 99
+  "Y": 74
+  Dir: 5
+  Sprite: 48
+  Kind: Script
+  Source: npc/quests/quests_lighthalzen.txt:4115
+- Name: "#li_bird"
+  X: 90
+  "Y": 71
+  Dir: 5
+  Sprite: 1019
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/quests_lighthalzen.txt:4251
+- Name: "#li_end"
+  X: 94
+  "Y": 24
+  Dir: 0
+  Sprite: 111
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_lighthalzen.txt:6206
+- Name: "#li_toin01"
+  X: 97
+  "Y": 33
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lhz_in01
+    X: 43
+    "Y": 120
+    TriggerWhileHidden: false
+  Source: npc/quests/quests_lighthalzen.txt:6233
+- Name: File#li
+  X: 89
+  "Y": 15
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_lighthalzen.txt:6236

@@ -1,0 +1,867 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Kong#malang
+  X: 219
+  "Y": 86
+  Dir: 4
+  Sprite: 545
+  Kind: Script
+  Source: npc/re/cities/malangdo.txt:217
+- Name: Innkeeper#malang
+  X: 147
+  "Y": 117
+  Dir: 3
+  Sprite: 554
+  Kind: Script
+  Source: npc/re/cities/malangdo.txt:289
+- Name: Minstrel#mal
+  X: 151
+  "Y": 120
+  Dir: 3
+  Sprite: 479
+  Kind: Script
+  Source: npc/re/cities/malangdo.txt:335
+- Name: Wanderer#mal
+  X: 149
+  "Y": 120
+  Dir: 5
+  Sprite: 485
+  Trigger:
+    X: 5
+    "Y": 1
+  Kind: Script
+  Source: npc/re/cities/malangdo.txt:344
+- Name: Cat Trainer#mal1
+  X: 216
+  "Y": 168
+  Dir: 3
+  Sprite: 558
+  Trigger:
+    X: 0
+    "Y": 8
+  Kind: Script
+  Source: npc/re/cities/malangdo.txt:372
+- Name: Cat Trainer#mal2
+  X: 164
+  "Y": 203
+  Dir: 3
+  Sprite: 853
+  Kind: Script
+  Source: npc/re/cities/malangdo.txt:404
+- Name: Malangdo Guide#Malangdo
+  X: 218
+  "Y": 101
+  Dir: 3
+  Sprite: 546
+  Kind: Script
+  Source: npc/re/guides/guides_malangdo.txt:7
+- Name: Point Merchant#Malangdo
+  X: 214
+  "Y": 163
+  Dir: 5
+  Sprite: 700
+  DuplicateOf: pss
+  Kind: Script
+  Source: npc/re/merchants/3rd_trader.txt:135
+- Name: Holink#mal_cash
+  X: 221
+  "Y": 174
+  Dir: 6
+  Sprite: 559
+  Kind: Script
+  Source: npc/re/merchants/advanced_refiner.txt:14
+- Name: Jeremy#pa0829
+  X: 215
+  "Y": 166
+  Dir: 4
+  Sprite: 553
+  DuplicateOf: CardSeparation_mal
+  Kind: Script
+  Source: npc/re/merchants/card_separation.txt:366
+- Name: Richard#pa0829
+  X: 208
+  "Y": 166
+  Dir: 6
+  Sprite: 559
+  DuplicateOf: CardSeparation_mal
+  Kind: Script
+  Source: npc/re/merchants/card_separation.txt:367
+- Name: Coin Exchanger CX-1
+  X: 220
+  "Y": 167
+  Dir: 5
+  Sprite: 564
+  Kind: Script
+  Source: npc/re/merchants/coin_exchange.txt:21
+- Name: Special Vending Machine
+  X: 218
+  "Y": 165
+  Dir: 5
+  Sprite: 562
+  Kind: Script
+  Source: npc/re/merchants/coin_exchange.txt:112
+- Name: Dark Merchant K
+  X: 236
+  "Y": 179
+  Dir: 5
+  Sprite: 554
+  Kind: Script
+  Source: npc/re/merchants/coin_exchange.txt:182
+- Name: Dark MachineTX100
+  X: 233
+  "Y": 180
+  Dir: 3
+  Sprite: 564
+  Kind: Script
+  Source: npc/re/merchants/coin_exchange.txt:227
+- Name: Can Agency Guard
+  X: 175
+  "Y": 145
+  Dir: 4
+  Sprite: 549
+  Kind: Script
+  Source: npc/re/merchants/coin_exchange.txt:348
+- Name: Wandering Merchant#mal
+  X: 162
+  "Y": 146
+  Dir: 5
+  Sprite: 495
+  Kind: Script
+  Source: npc/re/merchants/coin_exchange.txt:574
+- Name: Stinky Merchant
+  X: 173
+  "Y": 145
+  Dir: 4
+  Sprite: 496
+  Kind: Script
+  Source: npc/re/merchants/coin_exchange.txt:705
+- Name: Roving Merchant
+  X: 150
+  "Y": 135
+  Dir: 5
+  Sprite: 495
+  Kind: Script
+  Source: npc/re/merchants/coin_exchange.txt:756
+- Name: Mayomayo#mal
+  X: 213
+  "Y": 167
+  Dir: 4
+  Sprite: 555
+  Kind: Script
+  Source: npc/re/merchants/enchan_mal.txt:22
+- Name: Gemstone Bagger#16
+  X: 233
+  "Y": 160
+  Dir: 3
+  Sprite: 560
+  DuplicateOf: "#GemstoneBagger"
+  Kind: Script
+  Source: npc/re/merchants/Gemstone_Bagger.txt:47
+- Name: Fashion Stone#stone
+  X: 115
+  "Y": 154
+  Dir: 3
+  Sprite: 858
+  Kind: Script
+  Source: npc/re/merchants/malangdo_costume.txt:479
+- Name: Mysterious Cookie Shop#stone
+  X: 124
+  "Y": 152
+  Dir: 3
+  Sprite: 10031
+  Kind: Script
+  Source: npc/re/merchants/mysterious_cookie_shop.txt:7
+- Name: Fashion Stone Mannequin#Models1
+  X: 116
+  "Y": 152
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/merchants/mysterious_cookie_shop.txt:57
+- Name: Fashion Stone Mannequin#Models2
+  X: 118
+  "Y": 152
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/merchants/mysterious_cookie_shop.txt:67
+- Name: Fashion Stone Mannequin#Models3
+  X: 120
+  "Y": 152
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/merchants/mysterious_cookie_shop.txt:78
+- Name: Fashion Stone Mannequin#Models4
+  X: 122
+  "Y": 152
+  Dir: 7
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/merchants/mysterious_cookie_shop.txt:88
+- Name: Clink#mal_normal
+  X: 224
+  "Y": 172
+  Dir: 6
+  Sprite: 544
+  Kind: Script
+  Source: npc/re/merchants/refine.txt:403
+- Name: Tool Dealer Myo
+  X: 232
+  "Y": 163
+  Dir: 5
+  Sprite: 560
+  Kind: Shop
+  Source: npc/re/merchants/shops.txt:106
+- Name: Signpost#Starlight Reef
+  X: 77
+  "Y": 238
+  Dir: 0
+  Sprite: 837
+  Kind: Script
+  Source: npc/re/other/adven_boards.txt:2042
+- Name: Storekeeper#mal
+  X: 184
+  "Y": 139
+  Dir: 4
+  Sprite: 560
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:312
+- Name: Crack#mal1
+  X: 114
+  "Y": 157
+  Dir: 0
+  Sprite: 550
+  DuplicateOf: Crack#mal0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1393
+- Name: Crack#mal2
+  X: 284
+  "Y": 237
+  Dir: 0
+  Sprite: 550
+  DuplicateOf: Crack#mal0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1394
+- Name: Crack#mal3
+  X: 134
+  "Y": 150
+  Dir: 0
+  Sprite: 550
+  DuplicateOf: Crack#mal0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1395
+- Name: Crack#mal4
+  X: 173
+  "Y": 199
+  Dir: 0
+  Sprite: 550
+  DuplicateOf: Crack#mal0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1396
+- Name: Crack#mal5
+  X: 233
+  "Y": 197
+  Dir: 0
+  Sprite: 550
+  DuplicateOf: Crack#mal0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1397
+- Name: Crack#mal6
+  X: 137
+  "Y": 239
+  Dir: 0
+  Sprite: 550
+  DuplicateOf: Crack#mal0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1398
+- Name: Crack#mal7
+  X: 239
+  "Y": 157
+  Dir: 0
+  Sprite: 550
+  DuplicateOf: Crack#mal0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1399
+- Name: Crack#mal8
+  X: 221
+  "Y": 155
+  Dir: 0
+  Sprite: 550
+  DuplicateOf: Crack#mal0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1400
+- Name: Crack#mal9
+  X: 217
+  "Y": 109
+  Dir: 0
+  Sprite: 550
+  DuplicateOf: Crack#mal0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1401
+- Name: Crack#mal10
+  X: 162
+  "Y": 183
+  Dir: 0
+  Sprite: 550
+  DuplicateOf: Crack#mal0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1402
+- Name: Suspicious Sand Pile#1
+  X: 221
+  "Y": 139
+  Dir: 0
+  Sprite: 557
+  DuplicateOf: Suspicious Sand Pile#0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1931
+- Name: Suspicious Sand Pile#2
+  X: 208
+  "Y": 174
+  Dir: 0
+  Sprite: 557
+  DuplicateOf: Suspicious Sand Pile#0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1932
+- Name: Suspicious Sand Pile#3
+  X: 191
+  "Y": 223
+  Dir: 0
+  Sprite: 557
+  DuplicateOf: Suspicious Sand Pile#0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1933
+- Name: Suspicious Sand Pile#4
+  X: 150
+  "Y": 195
+  Dir: 0
+  Sprite: 557
+  DuplicateOf: Suspicious Sand Pile#0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1934
+- Name: Suspicious Sand Pile#5
+  X: 116
+  "Y": 196
+  Dir: 0
+  Sprite: 557
+  DuplicateOf: Suspicious Sand Pile#0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1935
+- Name: Suspicious Sand Pile#6
+  X: 178
+  "Y": 145
+  Dir: 0
+  Sprite: 557
+  DuplicateOf: Suspicious Sand Pile#0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1936
+- Name: Suspicious Sand Pile#7
+  X: 142
+  "Y": 120
+  Dir: 0
+  Sprite: 557
+  DuplicateOf: Suspicious Sand Pile#0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1937
+- Name: Suspicious Sand Pile#8
+  X: 136
+  "Y": 122
+  Dir: 0
+  Sprite: 557
+  DuplicateOf: Suspicious Sand Pile#0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1938
+- Name: Suspicious Sand Pile#9
+  X: 152
+  "Y": 143
+  Dir: 0
+  Sprite: 557
+  DuplicateOf: Suspicious Sand Pile#0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1939
+- Name: Suspicious Sand Pile#10
+  X: 242
+  "Y": 175
+  Dir: 0
+  Sprite: 557
+  DuplicateOf: Suspicious Sand Pile#0
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1940
+- Name: 1st Rate Point
+  X: 246
+  "Y": 184
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:2474
+- Name: Portali#mal
+  X: 190
+  "Y": 167
+  Dir: 7
+  Sprite: 546
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:2684
+- Name: Pipielle
+  X: 137
+  "Y": 200
+  Dir: 6
+  Sprite: 549
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:2757
+- Name: Gobonge#ml
+  X: 175
+  "Y": 206
+  Dir: 3
+  Sprite: 561
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:2889
+- Name: Gobulee#ml1
+  X: 181
+  "Y": 205
+  Dir: 3
+  Sprite: 547
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3093
+- Name: Gobyungee#ml1
+  X: 180
+  "Y": 202
+  Dir: 3
+  Sprite: 547
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3100
+- Name: Gosigee#ml1
+  X: 186
+  "Y": 201
+  Dir: 3
+  Sprite: 547
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3106
+- Name: Gonanee#ml2
+  X: 177
+  "Y": 202
+  Dir: 3
+  Sprite: 547
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3117
+- Name: Godoree#ml3
+  X: 183
+  "Y": 202
+  Dir: 3
+  Sprite: 547
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3124
+- Name: Suspious Dealer#ml
+  X: 203
+  "Y": 116
+  Dir: 5
+  Sprite: 543
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3134
+- Name: Very Suspious Dealer#ml1
+  X: 205
+  "Y": 116
+  Dir: 3
+  Sprite: 543
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3143
+- Name: A Foolish Cat#ml
+  X: 197
+  "Y": 120
+  Dir: 5
+  Sprite: 546
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3152
+- Name: "#ml1"
+  X: 196
+  "Y": 120
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3162
+- Name: "#ml2"
+  X: 155
+  "Y": 179
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3221
+- Name: Awfully Suspious Dealer
+  X: 171
+  "Y": 163
+  Dir: 3
+  Sprite: 543
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3240
+- Name: Patrol Leader#ml
+  X: 125
+  "Y": 147
+  Dir: 3
+  Sprite: 545
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3413
+- Name: Crime Prevention Staff#ml
+  X: 129
+  "Y": 146
+  Dir: 3
+  Sprite: 545
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3494
+- Name: Guidance for quest#ml
+  X: 3
+  "Y": 1
+  Dir: 3
+  Sprite: 543
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3517
+- Name: "#Darkweed6"
+  X: 141
+  "Y": 178
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:4122
+- Name: Strange Pile of Sand#7
+  X: 133
+  "Y": 134
+  Dir: 0
+  Sprite: 557
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:4159
+- Name: Strange Pile of Sand#12
+  X: 197
+  "Y": 237
+  Dir: 0
+  Sprite: 557
+  DuplicateOf: Strange Pile of Sand#7
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:4201
+- Name: "#UnderStairs8"
+  X: 232
+  "Y": 131
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:4203
+- Name: Expert Cat#nya_01
+  X: 165
+  "Y": 223
+  Dir: 4
+  Sprite: 561
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:4648
+- Name: "[Meow Team] Charo#nya_11"
+  X: 211
+  "Y": 203
+  Dir: 4
+  Sprite: 560
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:4808
+- Name: "[Meow Team] Rosy#nya_09"
+  X: 214
+  "Y": 204
+  Dir: 3
+  Sprite: 559
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:5162
+- Name: "[Meow Team] Roku#nya_10"
+  X: 215
+  "Y": 201
+  Dir: 3
+  Sprite: 553
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:5207
+- Name: Beginning Compass#nya_02
+  X: 212
+  "Y": 204
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:5390
+- Name: Red Flame Compass#1
+  X: 213
+  "Y": 89
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#malangdo_compass"
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:5583
+- Name: Blue Flame Compass#2
+  X: 128
+  "Y": 103
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#malangdo_compass"
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:5584
+- Name: Gold Flame Compass#3
+  X: 73
+  "Y": 253
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#malangdo_compass"
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:5585
+- Name: Forest Compass#4
+  X: 153
+  "Y": 146
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#malangdo_compass"
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:5586
+- Name: Cloud Compass#5
+  X: 111
+  "Y": 178
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#malangdo_compass"
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:5587
+- Name: Meowbell#nya_12
+  X: 175
+  "Y": 163
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:5589
+- Name: Deckhand Bubi#nya_16
+  X: 176
+  "Y": 165
+  Dir: 3
+  Sprite: 544
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:5664
+- Name: Cat Detective#nya_14
+  X: 172
+  "Y": 178
+  Dir: 7
+  Sprite: 560
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:5680
+- Name: Friend of Detective#mal
+  X: 173
+  "Y": 177
+  Dir: 7
+  Sprite: 559
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:6084
+- Name: Noisy Machine#nya_13
+  X: 174
+  "Y": 175
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:6098
+- Name: Strange Cat#gamer
+  X: 127
+  "Y": 111
+  Dir: 4
+  Sprite: 547
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:7311
+- Name: Eryu#gamer
+  X: 161
+  "Y": 197
+  Dir: 4
+  Sprite: 876
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:7603
+- Name: Stew#gamer
+  X: 230
+  "Y": 197
+  Dir: 4
+  Sprite: 555
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:7819
+- Name: Ketchup#gamer
+  X: 244
+  "Y": 144
+  Dir: 4
+  Sprite: 546
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:8048
+- Name: Eff#gamer
+  X: 181
+  "Y": 119
+  Dir: 7
+  Sprite: 560
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:8237
+- Name: Sign#Cat G Entrance
+  X: 120
+  "Y": 140
+  Dir: 7
+  Sprite: 858
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:10414
+- Name: Notice Board#mal
+  X: 234
+  "Y": 153
+  Dir: 6
+  Sprite: 837
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:10513
+- Name: Con-Chliina Crewman#dom
+  X: 218
+  "Y": 81
+  Dir: 5
+  Sprite: 495
+  DuplicateOf: Con-Chliina Crewman#doi
+  Kind: Script
+  Source: npc/re/custom/lasagna/lasagna_npcs.txt:1372
+- Name: Cat Paw Merchants Notice
+  X: 218
+  "Y": 126
+  Dir: 4
+  Sprite: 857
+  Kind: Script
+  Source: npc/re/guild/invest_main.txt:1258
+- Name: Namis#invest
+  X: 218
+  "Y": 123
+  Dir: 1
+  Sprite: 545
+  Trigger:
+    X: 4
+    "Y": 4
+  Kind: Script
+  Source: npc/re/guild/invest_main.txt:1324
+- Name: Thanks Ticket Machine
+  X: 215
+  "Y": 119
+  Dir: 4
+  Sprite: 564
+  Kind: Script
+  Source: npc/re/guild/invest_main.txt:1464
+- Name: malangdo0001
+  X: 240
+  "Y": 150
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in01
+    X: 11
+    "Y": 17
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:17
+- Name: malangdo0005
+  X: 112
+  "Y": 167
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in01
+    X: 17
+    "Y": 163
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:21
+- Name: malangdo0011
+  X: 113
+  "Y": 151
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in01
+    X: 28
+    "Y": 118
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:27
+- Name: malangdo0015
+  X: 119
+  "Y": 137
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in01
+    X: 36
+    "Y": 216
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:31
+- Name: malangdo0021
+  X: 135
+  "Y": 109
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in01
+    X: 19
+    "Y": 76
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:37
+- Name: malangdo0025
+  X: 135
+  "Y": 276
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in01
+    X: 164
+    "Y": 15
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:41
+- Name: malangdo0027
+  X: 73
+  "Y": 239
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_dun01
+    X: 33
+    "Y": 230
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:43
+- Name: malangdo_ship0001
+  X: 162
+  "Y": 163
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in02
+    X: 58
+    "Y": 61
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:47

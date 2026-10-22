@@ -1,0 +1,817 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Chief Guardsman#payon
+  X: 96
+  "Y": 116
+  Dir: 3
+  Sprite: 708
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/cities/payon.txt:468
+- Name: Chief#payon
+  X: 99
+  "Y": 190
+  Dir: 4
+  Sprite: 107
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/cities/payon.txt:832
+- Name: Guard#payon
+  X: 102
+  "Y": 185
+  Dir: 5
+  Sprite: 708
+  Kind: Script
+  Source: npc/cities/payon.txt:973
+- Name: Fortune Teller
+  X: 117
+  "Y": 128
+  Dir: 5
+  Sprite: 704
+  Kind: Script
+  Source: npc/other/fortune.txt:17
+- Name: Poring Fortune Teller
+  X: 75
+  "Y": 129
+  Dir: 5
+  Sprite: 704
+  Kind: Script
+  Source: npc/other/fortune.txt:1972
+- Name: Ascetic
+  X: 118
+  "Y": 119
+  Dir: 1
+  Sprite: 101
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/other/fortune.txt:2621
+- Name: Nanhyang#1
+  X: 8
+  "Y": 193
+  Dir: 4
+  Sprite: 77
+  Kind: Script
+  Source: npc/quests/newgears/2004_headgears.txt:1168
+- Name: Han Garam
+  X: 139
+  "Y": 124
+  Dir: 3
+  Sprite: 88
+  Kind: Script
+  Source: npc/quests/newgears/2006_headgears.txt:814
+- Name: Marx Hansen#juice
+  X: 188
+  "Y": 146
+  Dir: 5
+  Sprite: 86
+  Kind: Script
+  Source: npc/quests/juice_maker.txt:172
+- Name: Wola
+  X: 167
+  "Y": 149
+  Dir: 3
+  Sprite: 75
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:5688
+- Name: Maid#a1
+  X: 81
+  "Y": 22
+  Dir: 4
+  Sprite: 1170
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:1777
+- Name: Maid#a2
+  X: 81
+  "Y": 22
+  Dir: 4
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:1781
+- Name: Maid#b1
+  X: 79
+  "Y": 22
+  Dir: 4
+  Sprite: 1404
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:1790
+- Name: Maid#b2
+  X: 79
+  "Y": 22
+  Dir: 4
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:1794
+- Name: Maid#c1
+  X: 81
+  "Y": 15
+  Dir: 1
+  Sprite: 1170
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:1803
+- Name: Maid#c2
+  X: 81
+  "Y": 15
+  Dir: 1
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:1807
+- Name: Maid#d1
+  X: 79
+  "Y": 15
+  Dir: 1
+  Sprite: 1404
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:1817
+- Name: Maid#d2
+  X: 79
+  "Y": 15
+  Dir: 1
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:1821
+- Name: Maid#e1
+  X: 8
+  "Y": 31
+  Dir: 4
+  Sprite: 1416
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:1831
+- Name: Maid#e2
+  X: 8
+  "Y": 31
+  Dir: 4
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:1835
+- Name: Maid#f1
+  X: 13
+  "Y": 31
+  Dir: 4
+  Sprite: 1416
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:1851
+- Name: Maid#f2
+  X: 13
+  "Y": 31
+  Dir: 4
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:1855
+- Name: Daewoon#sign
+  X: 11
+  "Y": 31
+  Dir: 4
+  Sprite: 808
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:1870
+- Name: Hunter#htnGM
+  X: 131
+  "Y": 7
+  Dir: 3
+  Sprite: 59
+  Kind: Script
+  Source: npc/jobs/2-1/hunter.txt:626
+- Name: payonwarp031
+  X: 98
+  "Y": 114
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 5
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: payon
+    X: 155
+    "Y": 245
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:62
+- Name: payonwarp032
+  X: 90
+  "Y": 124
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 80
+    "Y": 124
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:63
+- Name: payonwarp033
+  X: 83
+  "Y": 124
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 93
+    "Y": 124
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:64
+- Name: payonwarp034
+  X: 99
+  "Y": 133
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 99
+    "Y": 151
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:65
+- Name: payonwarp035
+  X: 99
+  "Y": 148
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 99
+    "Y": 130
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:66
+- Name: payonwarp036
+  X: 107
+  "Y": 124
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 117
+    "Y": 124
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:67
+- Name: payonwarp037
+  X: 114
+  "Y": 124
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 104
+    "Y": 124
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:68
+- Name: payonwarp039
+  X: 146
+  "Y": 39
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon
+    X: 186
+    "Y": 233
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:72
+- Name: payonwarp040
+  X: 158
+  "Y": 32
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 130
+    "Y": 14
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:73
+- Name: payonwarp041
+  X: 130
+  "Y": 17
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 158
+    "Y": 35
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:74
+- Name: payonwarp042
+  X: 172
+  "Y": 32
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 160
+    "Y": 14
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:75
+- Name: payonwarp043
+  X: 160
+  "Y": 17
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 172
+    "Y": 35
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:76
+- Name: payonwarp044
+  X: 186
+  "Y": 32
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 190
+    "Y": 13
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:77
+- Name: payonwarp045
+  X: 190
+  "Y": 17
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 186
+    "Y": 35
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:78
+- Name: payonwarp062
+  X: 85
+  "Y": 19
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon
+    X: 131
+    "Y": 204
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:104
+- Name: payonwarp063
+  X: 74
+  "Y": 18
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 62
+    "Y": 18
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:105
+- Name: payonwarp064
+  X: 67
+  "Y": 18
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 78
+    "Y": 18
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:106
+- Name: payonwarp065
+  X: 46
+  "Y": 18
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 35
+    "Y": 18
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:107
+- Name: payonwarp066
+  X: 39
+  "Y": 18
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 51
+    "Y": 18
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:108
+- Name: payonwarp067
+  X: 28
+  "Y": 18
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 17
+    "Y": 18
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:109
+- Name: payonwarp068
+  X: 21
+  "Y": 18
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 32
+    "Y": 18
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:110
+- Name: payonwarp070
+  X: 165
+  "Y": 140
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon
+    X: 155
+    "Y": 324
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:114
+- Name: payonwarp071
+  X: 185
+  "Y": 178
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 185
+    "Y": 149
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:115
+- Name: payonwarp072
+  X: 185
+  "Y": 153
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 185
+    "Y": 182
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:116
+- Name: payonwarp074
+  X: 19
+  "Y": 60
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon
+    X: 107
+    "Y": 323
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:120
+- Name: payonwarp075
+  X: 19
+  "Y": 73
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 19
+    "Y": 90
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:121
+- Name: payonwarp076
+  X: 19
+  "Y": 86
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 19
+    "Y": 69
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:122
+- Name: payonwarp077
+  X: 19
+  "Y": 103
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 19
+    "Y": 122
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:123
+- Name: payonwarp078
+  X: 19
+  "Y": 118
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 19
+    "Y": 99
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:124
+- Name: payonwarp079
+  X: 11
+  "Y": 131
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 11
+    "Y": 146
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:125
+- Name: payonwarp080
+  X: 11
+  "Y": 142
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 11
+    "Y": 127
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:126
+- Name: payonwarp081
+  X: 27
+  "Y": 131
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 27
+    "Y": 146
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:127
+- Name: payonwarp082
+  X: 27
+  "Y": 142
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 27
+    "Y": 127
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:128
+- Name: payonwarp083
+  X: 11
+  "Y": 161
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 11
+    "Y": 176
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:129
+- Name: payonwarp084
+  X: 11
+  "Y": 172
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 11
+    "Y": 157
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:130
+- Name: payonwarp085
+  X: 27
+  "Y": 161
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 27
+    "Y": 176
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:131
+- Name: payonwarp086
+  X: 27
+  "Y": 172
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: payon_in03
+    X: 27
+    "Y": 157
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/payon.txt:132
+- Name: Hunter Sherine#ep162
+  X: 194
+  "Y": 39
+  Dir: 3
+  Sprite: 727
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:14663
+- Name: Muyeon#ill_moon_pin
+  X: 33
+  "Y": 95
+  Dir: 3
+  Sprite: 644
+  Kind: Script
+  Source: npc/re/quests/quests_illusion_dungeons.txt:271
+- Name: Jagyeom#ill_moon_pin
+  X: 30
+  "Y": 96
+  Dir: 5
+  Sprite: 901
+  Kind: Script
+  Source: npc/re/quests/quests_illusion_dungeons.txt:557
+- Name: Young Scholar#ill_moon_pin
+  X: 33
+  "Y": 93
+  Dir: 1
+  Sprite: 92
+  Kind: Script
+  Source: npc/re/quests/quests_illusion_dungeons.txt:586
+- Name: Nine Tail Spirit#ill_moon_0
+  X: 30
+  "Y": 96
+  Dir: 5
+  Sprite: 1180
+  SpriteIsMob: true
+  State: Cloaked
+  DuplicateOf: dummy_cloaked_npc
+  Kind: Script
+  Source: npc/re/quests/quests_illusion_dungeons.txt:620
+- Name: Nine Tail Spirit#ill_moon_1
+  X: 35
+  "Y": 96
+  Dir: 3
+  Sprite: 1180
+  SpriteIsMob: true
+  State: Cloaked
+  DuplicateOf: dummy_cloaked_npc
+  Kind: Script
+  Source: npc/re/quests/quests_illusion_dungeons.txt:621
+- Name: Nine Tail Spirit#ill_moon_2
+  X: 30
+  "Y": 93
+  Dir: 7
+  Sprite: 1180
+  SpriteIsMob: true
+  State: Cloaked
+  DuplicateOf: dummy_cloaked_npc
+  Kind: Script
+  Source: npc/re/quests/quests_illusion_dungeons.txt:622
+- Name: Nine Tail Spirit#ill_moon_3
+  X: 35
+  "Y": 93
+  Dir: 1
+  Sprite: 1180
+  SpriteIsMob: true
+  State: Cloaked
+  DuplicateOf: dummy_cloaked_npc
+  Kind: Script
+  Source: npc/re/quests/quests_illusion_dungeons.txt:623

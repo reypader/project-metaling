@@ -1,0 +1,983 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Inn Keeper#Annie
+  X: 376
+  "Y": 69
+  Dir: 4
+  Sprite: 931
+  Kind: Script
+  Source: npc/merchants/inn.txt:110
+- Name: Armor Dealer#ra
+  X: 175
+  "Y": 364
+  Dir: 3
+  Sprite: 919
+  Kind: Shop
+  Source: npc/merchants/shops.txt:264
+- Name: Tool Dealer#ra
+  X: 257
+  "Y": 269
+  Dir: 3
+  Sprite: 919
+  Kind: Shop
+  Source: npc/merchants/shops.txt:265
+- Name: Weapon Dealer#ra
+  X: 176
+  "Y": 389
+  Dir: 3
+  Sprite: 931
+  Kind: Shop
+  Source: npc/merchants/shops.txt:266
+- Name: Fruit Gardener#ra
+  X: 254
+  "Y": 300
+  Dir: 3
+  Sprite: 931
+  Kind: Shop
+  Source: npc/merchants/shops.txt:267
+- Name: Waiter#pc
+  X: 308
+  "Y": 59
+  Dir: 1
+  Sprite: 930
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:207
+- Name: Normal-Looking Man
+  X: 301
+  "Y": 50
+  Dir: 3
+  Sprite: 927
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:258
+- Name: Common-Looking Man
+  X: 301
+  "Y": 52
+  Dir: 3
+  Sprite: 927
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:269
+- Name: Suspicious-Looking Man
+  X: 297
+  "Y": 50
+  Dir: 7
+  Sprite: 926
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:278
+- Name: MealConversation Trigger
+  X: 301
+  "Y": 43
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:288
+- Name: Vincent#ra_in01
+  X: 384
+  "Y": 246
+  Dir: 3
+  Sprite: 47
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:45
+- Name: Manson#ra_in01
+  X: 372
+  "Y": 200
+  Dir: 3
+  Sprite: 929
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:512
+- Name: Katinshuell
+  X: 235
+  "Y": 194
+  Dir: 5
+  Sprite: 931
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:1233
+- Name: Mr. Shendar
+  X: 250
+  "Y": 19
+  Dir: 3
+  Sprite: 929
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:1942
+- Name: Book#ra_in
+  X: 255
+  "Y": 25
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:2619
+- Name: que_sch_jail
+  X: 48
+  "Y": 352
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: morocc
+    X: 56
+    "Y": 89
+    TriggerWhileHidden: false
+  Source: npc/quests/quests_veins.txt:1192
+- Name: Upset Looking Bard#sch
+  X: 50
+  "Y": 387
+  Dir: 4
+  Sprite: 51
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:1194
+- Name: Jesse#sch
+  X: 58
+  "Y": 389
+  Dir: 0
+  Sprite: 707
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:1368
+- Name: Guant Prisoner#sch
+  X: 58
+  "Y": 389
+  Dir: 0
+  Sprite: 929
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:1376
+- Name: Point Merchant#Rachel
+  X: 256
+  "Y": 273
+  Dir: 3
+  Sprite: 700
+  DuplicateOf: pss
+  Kind: Script
+  Source: npc/re/merchants/3rd_trader.txt:137
+- Name: Tool Dealer#Extended_Ra
+  X: 257
+  "Y": 269
+  Dir: 3
+  Sprite: 919
+  Kind: Shop
+  Source: npc/re/merchants/Dealer_Update.txt:170
+- Name: Arrow Merchant#over_arrow_14
+  X: 169
+  "Y": 363
+  Dir: 5
+  Sprite: 634
+  DuplicateOf: "#over_arrow"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:344
+- Name: Ammunition Merchant#over_bullet_14
+  X: 169
+  "Y": 365
+  Dir: 5
+  Sprite: 633
+  DuplicateOf: "#over_bullet"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:345
+- Name: Ninja Tool Merchant#over_kunai_14
+  X: 169
+  "Y": 367
+  Dir: 5
+  Sprite: 636
+  DuplicateOf: "#over_kunai"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:346
+- Name: Mado Gear Merchant#over_madogear_14
+  X: 169
+  "Y": 361
+  Dir: 4
+  Sprite: 10004
+  DuplicateOf: "#over_madogear"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:347
+- Name: Talisman Merchant#over_talisman_14
+  X: 169
+  "Y": 359
+  Dir: 4
+  Sprite: 10234
+  DuplicateOf: "#over_talisman"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:348
+- Name: Stylist#rachel
+  X: 186
+  "Y": 148
+  Dir: 5
+  Sprite: 916
+  Kind: Script
+  Source: npc/re/merchants/Extended_Stylist.txt:85
+- Name: Trap Specialist#ra
+  X: 263
+  "Y": 281
+  Dir: 4
+  Sprite: 66
+  Kind: Shop
+  Source: npc/re/merchants/shops.txt:179
+- Name: Black Marketeer#ra
+  X: 257
+  "Y": 266
+  Dir: 4
+  Sprite: 49
+  Kind: Shop
+  Source: npc/re/merchants/shops.txt:180
+- Name: "#ep18w01_"
+  X: 386
+  "Y": 44
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:10127
+- Name: Employee#ep1800
+  X: 388
+  "Y": 59
+  Dir: 5
+  Sprite: 930
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:10136
+- Name: Employee#ep1801
+  X: 388
+  "Y": 63
+  Dir: 5
+  Sprite: 85
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:10223
+- Name: Cat Paw Shrimp Merchant#ra
+  X: 243
+  "Y": 272
+  Dir: 5
+  Sprite: 495
+  DuplicateOf: Cat Paw Shrimp Merchant#iz
+  Kind: Script
+  Source: npc/re/custom/lasagna/lasagna_npcs.txt:1341
+- Name: Oresa Rava#3rdgc13
+  X: 175
+  "Y": 196
+  Dir: 3
+  Sprite: 866
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:2583
+- Name: Karian#cmd4
+  X: 357
+  "Y": 128
+  Dir: 0
+  Sprite: 486
+  DuplicateOf: Karian#cmd2
+  Kind: Script
+  Source: npc/re/jobs/3-2/minstrel.txt:834
+- Name: "#jmRachelHotel"
+  X: 361
+  "Y": 129
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/jobs/3-2/minstrel.txt:1228
+- Name: Old Woman#job_min
+  X: 358
+  "Y": 130
+  Dir: 4
+  Sprite: 979
+  Kind: Script
+  Source: npc/re/jobs/3-2/minstrel.txt:1243
+- Name: rachel14
+  X: 188
+  "Y": 189
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 263
+    "Y": 144
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:38
+- Name: rachel15
+  X: 296
+  "Y": 144
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 235
+    "Y": 189
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:39
+- Name: rachel16
+  X: 175
+  "Y": 189
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 132
+    "Y": 189
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:40
+- Name: rachel17
+  X: 244
+  "Y": 189
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 291
+    "Y": 189
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:41
+- Name: rachel18
+  X: 235
+  "Y": 21
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 187
+    "Y": 31
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:42
+- Name: rachel19
+  X: 312
+  "Y": 374
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 359
+    "Y": 374
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:43
+- Name: rachel20
+  X: 291
+  "Y": 371
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 225
+    "Y": 380
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:44
+- Name: rachel21
+  X: 381
+  "Y": 200
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 377
+    "Y": 268
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:45
+- Name: rachel22
+  X: 367
+  "Y": 255
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 326
+    "Y": 296
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:46
+- Name: rachel23
+  X: 319
+  "Y": 303
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 381
+    "Y": 320
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:47
+- Name: rachel24
+  X: 178
+  "Y": 370
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 113
+    "Y": 385
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:48
+- Name: rachel25
+  X: 165
+  "Y": 369
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 122
+    "Y": 334
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:49
+- Name: rachel26
+  X: 241
+  "Y": 299
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 193
+    "Y": 312
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:50
+- Name: rachel27
+  X: 185
+  "Y": 303
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 194
+    "Y": 249
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:51
+- Name: rachel28
+  X: 357
+  "Y": 61
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 310
+    "Y": 62
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:52
+- Name: rachel29
+  X: 297
+  "Y": 59
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 339
+    "Y": 116
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:53
+- Name: rachel38
+  X: 237
+  "Y": 202
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: rachel
+    X: 81
+    "Y": 38
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:67
+- Name: rachel39
+  X: 181
+  "Y": 202
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: rachel
+    X: 61
+    "Y": 38
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:68
+- Name: rachel40
+  X: 250
+  "Y": 38
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: rachel
+    X: 217
+    "Y": 60
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:69
+- Name: rachel41
+  X: 295
+  "Y": 348
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: rachel
+    X: 179
+    "Y": 215
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:70
+- Name: rachel42
+  X: 339
+  "Y": 193
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: rachel
+    X: 98
+    "Y": 238
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:71
+- Name: rachel43
+  X: 135
+  "Y": 286
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: rachel
+    X: 216
+    "Y": 164
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:72
+- Name: rachel44
+  X: 171
+  "Y": 355
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: rachel
+    X: 42
+    "Y": 82
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:73
+- Name: rachel45
+  X: 172
+  "Y": 392
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: rachel
+    X: 42
+    "Y": 114
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:74
+- Name: rachel46
+  X: 249
+  "Y": 262
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: rachel
+    X: 83
+    "Y": 73
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:75
+- Name: rachel47
+  X: 386
+  "Y": 39
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: rachel
+    X: 115
+    "Y": 144
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:76
+- Name: rachel48
+  X: 192
+  "Y": 152
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: rachel
+    X: 90
+    "Y": 193
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:77
+- Name: rachel49
+  X: 213
+  "Y": 79
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: rachel
+    X: 108
+    "Y": 195
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:78
+- Name: rachel50
+  X: 259
+  "Y": 144
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 184
+    "Y": 189
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:80
+- Name: rachel51
+  X: 231
+  "Y": 189
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 292
+    "Y": 144
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:81
+- Name: rachel52
+  X: 136
+  "Y": 189
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 179
+    "Y": 189
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:82
+- Name: rachel53
+  X: 287
+  "Y": 189
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 240
+    "Y": 189
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:83
+- Name: rachel54
+  X: 183
+  "Y": 31
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 239
+    "Y": 21
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:84
+- Name: rachel55
+  X: 355
+  "Y": 374
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 308
+    "Y": 374
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:85
+- Name: rachel56
+  X: 221
+  "Y": 380
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 287
+    "Y": 371
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:86
+- Name: rachel57
+  X: 381
+  "Y": 268
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 387
+    "Y": 200
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:87
+- Name: rachel58
+  X: 330
+  "Y": 296
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 371
+    "Y": 255
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:88
+- Name: rachel59
+  X: 381
+  "Y": 324
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 319
+    "Y": 299
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:89
+- Name: rachel60
+  X: 109
+  "Y": 385
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 174
+    "Y": 370
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:90
+- Name: rachel61
+  X: 126
+  "Y": 334
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 169
+    "Y": 369
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:91
+- Name: rachel62
+  X: 197
+  "Y": 312
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 245
+    "Y": 299
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:92
+- Name: rachel63
+  X: 194
+  "Y": 245
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 190
+    "Y": 302
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:93
+- Name: rachel64
+  X: 314
+  "Y": 62
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 361
+    "Y": 61
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:94
+- Name: rachel65
+  X: 339
+  "Y": 120
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_in01
+    X: 297
+    "Y": 63
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:95
+- Name: rachel83
+  X: 309
+  "Y": 70
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: rachel
+    X: 108
+    "Y": 175
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:120
+- Name: rachel85
+  X: 375
+  "Y": 109
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: rachel
+    X: 116
+    "Y": 154
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:122

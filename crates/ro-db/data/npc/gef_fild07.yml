@@ -1,0 +1,125 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#Valkyrie Warp"
+  X: 182
+  "Y": 241
+  Dir: 0
+  Sprite: 111
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:8138
+- Name: "#wp120015"
+  X: 184
+  "Y": 249
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:158
+- Name: "#tr120015"
+  X: 184
+  "Y": 249
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:419
+- Name: Roda Frog#Frog_Cap
+  X: 108
+  "Y": 161
+  Dir: 4
+  Sprite: 1012
+  SpriteIsMob: true
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/quests/newgears/2010_headgears.txt:509
+- Name: "#acmageguide"
+  X: 90
+  "Y": 208
+  Dir: 6
+  Sprite: 111
+  Trigger:
+    X: 7
+    "Y": 7
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:9493
+- Name: Magician's Guild Guide#1
+  X: 89
+  "Y": 208
+  Dir: 6
+  Sprite: 123
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:9524
+- Name: gef025
+  X: 339
+  "Y": 187
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 4
+  Kind: Warp
+  Warp:
+    Map: geffen
+    X: 29
+    "Y": 119
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/geffen_fild.txt:43
+- Name: geff08-1
+  X: 64
+  "Y": 363
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: gef_fild05
+    X: 64
+    "Y": 18
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/geffen_fild.txt:44
+- Name: geff10
+  X: 18
+  "Y": 191
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 4
+  Kind: Warp
+  Warp:
+    Map: gef_fild08
+    X: 357
+    "Y": 187
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/geffen_fild.txt:45
+- Name: geff13
+  X: 40
+  "Y": 19
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gef_fild13
+    X: 41
+    "Y": 369
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/geffen_fild.txt:46

@@ -1,0 +1,57 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: orc02-1
+  X: 180
+  "Y": 15
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: in_orcs01
+    X: 108
+    "Y": 112
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/orcsdun.txt:24
+- Name: orc03-1
+  X: 21
+  "Y": 188
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 8
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: orcsdun01
+    X: 183
+    "Y": 11
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/orcsdun.txt:26
+- Name: "#wp120138"
+  X: 31
+  "Y": 72
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:88
+- Name: "#tr120138"
+  X: 31
+  "Y": 72
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:349

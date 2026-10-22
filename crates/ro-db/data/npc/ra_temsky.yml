@@ -1,0 +1,182 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Priest#1rachel
+  X: 95
+  "Y": 99
+  Dir: 6
+  Sprite: 935
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:6829
+- Name: Male Follower#1rachel
+  UniqueName: ramale
+  X: 93
+  "Y": 97
+  Dir: 6
+  Sprite: 926
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:6835
+- Name: Male Follower#2rachel
+  X: 90
+  "Y": 95
+  Dir: 6
+  Sprite: 926
+  DuplicateOf: ramale
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:6841
+- Name: Male Follower#3rachel
+  X: 98
+  "Y": 59
+  Dir: 6
+  Sprite: 926
+  DuplicateOf: ramale
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:6842
+- Name: Priestess#1rachel
+  X: 104
+  "Y": 99
+  Dir: 4
+  Sprite: 920
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:6844
+- Name: Female Follower#1rachel
+  UniqueName: rafemale
+  X: 106
+  "Y": 97
+  Dir: 4
+  Sprite: 916
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:6850
+- Name: Female Follower#2rachel
+  X: 108
+  "Y": 95
+  Dir: 4
+  Sprite: 916
+  DuplicateOf: rafemale
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:6856
+- Name: Female Follower#3rachel
+  X: 101
+  "Y": 59
+  Dir: 4
+  Sprite: 916
+  DuplicateOf: rafemale
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:6857
+- Name: Pope#rachel
+  X: 99
+  "Y": 99
+  Dir: 5
+  Sprite: 936
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:6859
+- Name: rachel34
+  X: 99
+  "Y": 118
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_temsky
+    X: 99
+    "Y": 140
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:61
+- Name: rachel35
+  X: 112
+  "Y": 143
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_temsky
+    X: 141
+    "Y": 139
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:62
+- Name: rachel36
+  X: 87
+  "Y": 143
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_temsky
+    X: 58
+    "Y": 139
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:63
+- Name: rachel70
+  X: 99
+  "Y": 8
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_temin
+    X: 275
+    "Y": 231
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:103
+- Name: rachel71
+  X: 99
+  "Y": 135
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_temsky
+    X: 99
+    "Y": 113
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:105
+- Name: rachel72
+  X: 137
+  "Y": 139
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_temsky
+    X: 109
+    "Y": 143
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:106
+- Name: rachel73
+  X: 62
+  "Y": 139
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_temsky
+    X: 91
+    "Y": 143
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:107

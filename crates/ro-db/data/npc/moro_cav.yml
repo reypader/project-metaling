@@ -1,0 +1,79 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Yellow Seed#bios
+  X: 50
+  "Y": 64
+  Dir: 5
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:10
+- Name: Wandering Old Man#sara
+  X: 45
+  "Y": 60
+  Dir: 5
+  Sprite: 847
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:91
+- Name: Senior Tracker#a1
+  X: 61
+  "Y": 69
+  Dir: 3
+  Sprite: 730
+  Kind: Script
+  Source: npc/re/instances/MorseCave.txt:11
+- Name: Red Flower#a1
+  X: 57
+  "Y": 69
+  Dir: 3
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/instances/MorseCave.txt:201
+- Name: Guardian Nidhogg#epeom01
+  X: 41
+  "Y": 73
+  Dir: 4
+  Sprite: 510
+  Kind: Script
+  Source: npc/re/instances/TempleOfDemonGod.txt:10
+- Name: Yggdrasil Lookalike#eom_gate
+  X: 45
+  "Y": 75
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/instances/TempleOfDemonGod.txt:110
+- Name: Hero Token Exchanger#1
+  X: 32
+  "Y": 73
+  Dir: 5
+  Sprite: 482
+  Kind: Script
+  Source: npc/re/merchants/moro_cav_exchange.txt:11
+- Name: Expert Enchanter Byrnes
+  X: 34
+  "Y": 65
+  Dir: 5
+  Sprite: 49
+  Kind: Script
+  Source: npc/re/merchants/moro_cav_exchange.txt:101
+- Name: "#ep14_3What caveExit"
+  X: 64
+  "Y": 13
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Warp
+  Warp:
+    Map: moro_vol
+    X: 198
+    "Y": 176
+    TriggerWhileHidden: false
+  Source: npc/re/quests/quests_14_3_bis.txt:3126

@@ -1,0 +1,122 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Trace of Battle#4
+  X: 39
+  "Y": 163
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/first_class/tu_ma_th01.txt:149
+- Name: Trace of Battle#5
+  X: 205
+  "Y": 52
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/first_class/tu_ma_th01.txt:186
+- Name: Trace of Battle#6
+  X: 226
+  "Y": 235
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/first_class/tu_ma_th01.txt:267
+- Name: Trace of Battle#7
+  X: 184
+  "Y": 342
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/first_class/tu_ma_th01.txt:293
+- Name: "#wp120018"
+  X: 188
+  "Y": 218
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:215
+- Name: "#tr120018"
+  X: 188
+  "Y": 218
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:476
+- Name: Talking Dog#para03
+  X: 180
+  "Y": 253
+  Dir: 5
+  Sprite: 972
+  Kind: Script
+  Source: npc/re/quests/eden/eden_quests.txt:604
+- Name: Bill of Birds
+  X: 237
+  "Y": 273
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_dicastes.txt:1170
+- Name: Continental Guard#man2
+  X: 189
+  "Y": 360
+  Dir: 6
+  Sprite: 852
+  DuplicateOf: Continental Guard#man
+  Kind: Script
+  Source: npc/re/quests/quests_morocc.txt:51
+- Name: mocf21
+  X: 212
+  "Y": 29
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: moc_fild17
+    X: 218
+    "Y": 366
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/morroc_fild.txt:84
+- Name: mocf22
+  X: 26
+  "Y": 161
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 10
+  Kind: Warp
+  Warp:
+    Map: moc_fild12
+    X: 286
+    "Y": 168
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/morroc_fild.txt:85
+- Name: mocf23
+  X: 377
+  "Y": 197
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 6
+  Kind: Warp
+  Warp:
+    Map: moc_fild20
+    X: 36
+    "Y": 177
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/morroc_fild.txt:87

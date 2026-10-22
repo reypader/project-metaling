@@ -1,0 +1,2360 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#Whisper_mist"
+  X: 89
+  "Y": 29
+  Dir: 0
+  Sprite: 844
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:173
+- Name: Tom's Garden
+  X: 251
+  "Y": 121
+  Dir: 3
+  Sprite: 858
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:219
+- Name: Tom's Garden Tree
+  X: 247
+  "Y": 123
+  Dir: 0
+  Sprite: 527
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:220
+- Name: Tomba's Garden
+  X: 226
+  "Y": 95
+  Dir: 3
+  Sprite: 858
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:233
+- Name: Tomba's Garden Tree
+  X: 225
+  "Y": 98
+  Dir: 0
+  Sprite: 527
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:234
+- Name: Remi's Garden
+  X: 157
+  "Y": 183
+  Dir: 3
+  Sprite: 858
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:247
+- Name: Remi's Garden Tree
+  X: 159
+  "Y": 184
+  Dir: 0
+  Sprite: 527
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:248
+- Name: Tired Rem's Garden
+  X: 58
+  "Y": 39
+  Dir: 3
+  Sprite: 858
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:261
+- Name: Tired Rem's Garden Tree
+  X: 61
+  "Y": 39
+  Dir: 0
+  Sprite: 527
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:262
+- Name: Ron's Garden
+  X: 227
+  "Y": 179
+  Dir: 3
+  Sprite: 858
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:286
+- Name: Ron's Garden Tree
+  X: 230
+  "Y": 179
+  Dir: 0
+  Sprite: 527
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:287
+- Name: Rover's Garden
+  X: 288
+  "Y": 226
+  Dir: 3
+  Sprite: 858
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:300
+- Name: Rover's Garden Tree
+  X: 285
+  "Y": 225
+  Dir: 0
+  Sprite: 527
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:301
+- Name: Mona's Garden
+  X: 159
+  "Y": 318
+  Dir: 3
+  Sprite: 858
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:314
+- Name: Mona's Garden Tree
+  X: 161
+  "Y": 316
+  Dir: 0
+  Sprite: 527
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:315
+- Name: Namon's Garden
+  X: 205
+  "Y": 300
+  Dir: 3
+  Sprite: 858
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:328
+- Name: Namon's Garden Tree
+  X: 204
+  "Y": 299
+  Dir: 0
+  Sprite: 527
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:329
+- Name: Sad Neoron's Garden
+  X: 219
+  "Y": 232
+  Dir: 3
+  Sprite: 858
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:342
+- Name: Sad Neoron's Garden Tree
+  X: 221
+  "Y": 236
+  Dir: 0
+  Sprite: 527
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:343
+- Name: Spyder's Garden
+  X: 206
+  "Y": 202
+  Dir: 3
+  Sprite: 858
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:356
+- Name: Spyder's Garden Tree
+  X: 206
+  "Y": 200
+  Dir: 0
+  Sprite: 527
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:357
+- Name: Tito's Garden
+  X: 96
+  "Y": 288
+  Dir: 3
+  Sprite: 858
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:384
+- Name: Tito's Garden Tree
+  X: 95
+  "Y": 287
+  Dir: 0
+  Sprite: 527
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:385
+- Name: Pumba's Garden
+  X: 326
+  "Y": 325
+  Dir: 3
+  Sprite: 858
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:398
+- Name: Pumba's Garden Tree
+  X: 324
+  "Y": 325
+  Dir: 0
+  Sprite: 527
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:399
+- Name: Tete's Garden
+  X: 278
+  "Y": 345
+  Dir: 3
+  Sprite: 858
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:412
+- Name: Tete's Garden Tree
+  X: 280
+  "Y": 344
+  Dir: 0
+  Sprite: 527
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:413
+- Name: The Gardeners' Tree
+  X: 345
+  "Y": 186
+  Dir: 0
+  Sprite: 527
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:426
+- Name: Mysterious Flower#1
+  X: 73
+  "Y": 290
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:452
+- Name: Mysterious Flower#2
+  X: 69
+  "Y": 295
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:458
+- Name: Mysterious Flower#3
+  X: 62
+  "Y": 291
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:459
+- Name: Mysterious Flower#4
+  X: 54
+  "Y": 293
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:460
+- Name: Mysterious Flower#5
+  X: 48
+  "Y": 286
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:461
+- Name: Mysterious Flower#6
+  X: 54
+  "Y": 277
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:462
+- Name: Mysterious Flower#7
+  X: 52
+  "Y": 270
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:463
+- Name: Mysterious Flower#8
+  X: 62
+  "Y": 268
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:464
+- Name: Mysterious Flower#9
+  X: 72
+  "Y": 271
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:465
+- Name: Mysterious Flower#10
+  X: 72
+  "Y": 276
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:466
+- Name: Mysterious Flower#11
+  X: 118
+  "Y": 194
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:467
+- Name: Mysterious Flower#12
+  X: 122
+  "Y": 204
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:468
+- Name: Mysterious Flower#13
+  X: 137
+  "Y": 209
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:469
+- Name: Mysterious Flower#14
+  X: 144
+  "Y": 203
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:470
+- Name: Mysterious Flower#15
+  X: 146
+  "Y": 186
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:471
+- Name: Mysterious Flower#16
+  X: 142
+  "Y": 182
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:472
+- Name: Mysterious Flower#17
+  X: 132
+  "Y": 179
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:473
+- Name: Mysterious Flower#18
+  X: 123
+  "Y": 184
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:474
+- Name: Mysterious Flower#19
+  X: 194
+  "Y": 118
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:475
+- Name: Mysterious Flower#20
+  X: 188
+  "Y": 109
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:476
+- Name: Mysterious Flower#21
+  X: 193
+  "Y": 94
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:477
+- Name: Mysterious Flower#22
+  X: 205
+  "Y": 92
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:478
+- Name: Mysterious Flower#23
+  X: 213
+  "Y": 96
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:479
+- Name: Mysterious Flower#24
+  X: 216
+  "Y": 103
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:480
+- Name: Mysterious Flower#25
+  X: 212
+  "Y": 116
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:481
+- Name: Mysterious Flower#26
+  X: 207
+  "Y": 120
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:482
+- Name: Mysterious Flower#27
+  X: 169
+  "Y": 310
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:483
+- Name: Mysterious Flower#28
+  X: 172
+  "Y": 296
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:484
+- Name: Mysterious Flower#30
+  X: 191
+  "Y": 301
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:485
+- Name: Mysterious Flower#31
+  X: 195
+  "Y": 301
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:486
+- Name: Mysterious Flower#32
+  X: 192
+  "Y": 316
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:487
+- Name: Mysterious Flower#33
+  X: 187
+  "Y": 320
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:488
+- Name: Mysterious Flower#34
+  X: 174
+  "Y": 318
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:489
+- Name: Mysterious Flower#35
+  X: 308
+  "Y": 136
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:490
+- Name: Mysterious Flower#36
+  X: 314
+  "Y": 122
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:491
+- Name: Mysterious Flower#37
+  X: 321
+  "Y": 118
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:492
+- Name: Mysterious Flower#38
+  X: 331
+  "Y": 123
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:493
+- Name: Mysterious Flower#39
+  X: 335
+  "Y": 126
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:494
+- Name: Mysterious Flower#40
+  X: 332
+  "Y": 141
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:495
+- Name: Mysterious Flower#41
+  X: 328
+  "Y": 144
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:496
+- Name: Mysterious Flower#42
+  X: 314
+  "Y": 144
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:497
+- Name: Mysterious Flower#43
+  X: 238
+  "Y": 224
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:498
+- Name: Mysterious Flower#44
+  X: 244
+  "Y": 231
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:499
+- Name: Mysterious Flower#45
+  X: 257
+  "Y": 232
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:500
+- Name: Mysterious Flower#46
+  X: 262
+  "Y": 229
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:501
+- Name: Mysterious Flower#47
+  X: 265
+  "Y": 216
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:502
+- Name: Mysterious Flower#48
+  X: 260
+  "Y": 214
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:503
+- Name: Mysterious Flower#49
+  X: 252
+  "Y": 206
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:504
+- Name: Mysterious Flower#50
+  X: 244
+  "Y": 211
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Mysterious Flower#1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:505
+- Name: "#Dragon Herder"
+  X: 2
+  "Y": 2
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:511
+- Name: Mysterious Young Man#mis
+  X: 97
+  "Y": 30
+  Dir: 3
+  Sprite: 512
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:541
+- Name: Loki#mist
+  X: 183
+  "Y": 304
+  Dir: 3
+  Sprite: 512
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:689
+- Name: Collapsed Girl#mist
+  X: 181
+  "Y": 303
+  Dir: 3
+  Sprite: 511
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:743
+- Name: "#Mist Mobs Respawn1"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:934
+- Name: "#Mist Mobs Respawn2"
+  X: 1
+  "Y": 2
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:947
+- Name: "#Mist Mobs Respawn3"
+  X: 1
+  "Y": 3
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:960
+- Name: "#Mist Mobs Respawn4"
+  X: 1
+  "Y": 4
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:973
+- Name: "#Mist Mobs Respawn5"
+  X: 1
+  "Y": 5
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:986
+- Name: "#Fragments of Memory"
+  X: 1
+  "Y": 6
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:999
+- Name: "#to_bif01"
+  X: 104
+  "Y": 23
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: bif_fild01
+    X: 160
+    "Y": 352
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1032
+- Name: a1_a2
+  X: 109
+  "Y": 70
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:1034
+- Name: a2_a7
+  X: 113
+  "Y": 40
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 90
+    "Y": 81
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1043
+- Name: a7_a14
+  X: 93
+  "Y": 81
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 108
+    "Y": 152
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1044
+- Name: a14_a24
+  X: 111
+  "Y": 154
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 236
+    "Y": 108
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1045
+- Name: a24_a1
+  X: 236
+  "Y": 110
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 106
+    "Y": 69
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1046
+- Name: a18-1_a22
+  X: 161
+  "Y": 67
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 159
+    "Y": 85
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1047
+- Name: a23_a18-1
+  X: 180
+  "Y": 116
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 164
+    "Y": 66
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1048
+- Name: a18-2_a9
+  X: 180
+  "Y": 63
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 141
+    "Y": 90
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1049
+- Name: a8_a26
+  X: 116
+  "Y": 84
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 222
+    "Y": 133
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1050
+- Name: a26_a27-1
+  X: 220
+  "Y": 133
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 200
+    "Y": 64
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1051
+- Name: a27-1_a23
+  X: 197
+  "Y": 64
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 177
+    "Y": 116
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1052
+- Name: af1-2_a27-2
+  X: 146
+  "Y": 194
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 225
+    "Y": 96
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1053
+- Name: af1-1_af2-1
+  X: 133
+  "Y": 195
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 202
+    "Y": 110
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1054
+- Name: af2-1_af1-1
+  X: 202
+  "Y": 107
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 134
+    "Y": 189
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1055
+- Name: af2-2_a20-1
+  X: 217
+  "Y": 110
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 240
+    "Y": 56
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1056
+- Name: a20-1_af2-2
+  X: 240
+  "Y": 54
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 214
+    "Y": 110
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1057
+- Name: a20-2_a21
+  X: 234
+  "Y": 67
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 239
+    "Y": 80
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1058
+- Name: a21_a15-1
+  X: 242
+  "Y": 77
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 153
+    "Y": 137
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1059
+- Name: a15-1_a3
+  X: 156
+  "Y": 139
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 123
+    "Y": 55
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1060
+- Name: a3_a20-1
+  X: 124
+  "Y": 51
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 240
+    "Y": 56
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1061
+- Name: a4-1_a17
+  X: 48
+  "Y": 41
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 174
+    "Y": 165
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1062
+- Name: a17_a16
+  X: 171
+  "Y": 165
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 168
+    "Y": 143
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1063
+- Name: a16_a10
+  X: 169
+  "Y": 141
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 101
+    "Y": 107
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1064
+- Name: a10_a4-2
+  X: 99
+  "Y": 107
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 57
+    "Y": 38
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1065
+- Name: a11_a28
+  X: 65
+  "Y": 113
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 218
+    "Y": 151
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1066
+- Name: a28_a13
+  X: 221
+  "Y": 151
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 117
+    "Y": 126
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1067
+- Name: a13_a5
+  X: 114
+  "Y": 126
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 36
+    "Y": 62
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1068
+- Name: a6_a19
+  X: 61
+  "Y": 88
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 189
+    "Y": 139
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1069
+- Name: a19_a12
+  X: 186
+  "Y": 140
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 98
+    "Y": 126
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1070
+- Name: a12_a29-1
+  X: 101
+  "Y": 126
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 238
+    "Y": 151
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1071
+- Name: a29-1_af1-2
+  X: 235
+  "Y": 152
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 144
+    "Y": 194
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1072
+- Name: a29-2E_b1
+  X: 254
+  "Y": 151
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 271
+    "Y": 164
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1073
+- Name: b1_b13
+  X: 275
+  "Y": 211
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 277
+    "Y": 112
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1074
+- Name: b14_b24
+  X: 301
+  "Y": 141
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 99
+    "Y": 232
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1075
+- Name: b24_b25
+  X: 99
+  "Y": 230
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 103
+    "Y": 255
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1076
+- Name: b25_b4-1
+  X: 102
+  "Y": 253
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 215
+    "Y": 177
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1077
+- Name: b4-1_b1
+  X: 212
+  "Y": 177
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 276
+    "Y": 208
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1078
+- Name: b2_b19
+  X: 289
+  "Y": 167
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 152
+    "Y": 219
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1079
+- Name: b19_b20
+  X: 149
+  "Y": 219
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 119
+    "Y": 227
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1080
+- Name: b20_b23
+  X: 115
+  "Y": 227
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 230
+    "Y": 353
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1081
+- Name: b23_b7
+  X: 233
+  "Y": 353
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 289
+    "Y": 225
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1082
+- Name: bf1-2_b7
+  X: 76
+  "Y": 273
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 289
+    "Y": 225
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1083
+- Name: bf1-1_bf2-1
+  X: 61
+  "Y": 282
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 256
+    "Y": 220
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1084
+- Name: bf2-1_bf1-1
+  X: 252
+  "Y": 220
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 65
+    "Y": 282
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1085
+- Name: bf2-2_b28
+  X: 267
+  "Y": 213
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 214
+    "Y": 268
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1086
+- Name: b28_b12
+  X: 212
+  "Y": 265
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 288
+    "Y": 266
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1087
+- Name: b12_b21
+  X: 285
+  "Y": 266
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 143
+    "Y": 234
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1088
+- Name: b21_b29
+  X: 143
+  "Y": 231
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 222
+    "Y": 281
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1089
+- Name: b29_b31
+  X: 223
+  "Y": 279
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 158
+    "Y": 317
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1090
+- Name: b30_b3
+  X: 134
+  "Y": 287
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 293
+    "Y": 195
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1091
+- Name: b3_b10
+  X: 295
+  "Y": 197
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 239
+    "Y": 253
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1092
+- Name: b10_b12
+  X: 236
+  "Y": 253
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 288
+    "Y": 266
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1093
+- Name: b16_b34
+  X: 111
+  "Y": 203
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 202
+    "Y": 333
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1094
+- Name: b34_b27-1
+  X: 199
+  "Y": 333
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 203
+    "Y": 251
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1095
+- Name: b27-1_b22
+  X: 206
+  "Y": 249
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 168
+    "Y": 239
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1096
+- Name: b22_b15
+  X: 165
+  "Y": 239
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 89
+    "Y": 173
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1097
+- Name: b27-2_a14
+  X: 177
+  "Y": 265
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 108
+    "Y": 152
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1098
+- Name: bN-1_b27-3
+  X: 166
+  "Y": 314
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 206
+    "Y": 297
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1099
+- Name: bN-2_b17
+  X: 197
+  "Y": 299
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 167
+    "Y": 200
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1100
+- Name: b17_bN-2
+  X: 165
+  "Y": 200
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 193
+    "Y": 299
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1101
+- Name: b15_b32
+  X: 86
+  "Y": 173
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 218
+    "Y": 313
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1102
+- Name: b32_b28
+  X: 215
+  "Y": 313
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 214
+    "Y": 268
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1103
+- Name: b33_b6-1
+  X: 230
+  "Y": 324
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 221
+    "Y": 233
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1104
+- Name: b6-2_b11
+  X: 230
+  "Y": 230
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 263
+    "Y": 261
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1105
+- Name: b11_b9
+  X: 263
+  "Y": 258
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 272
+    "Y": 246
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1106
+- Name: b9_b26
+  X: 269
+  "Y": 246
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 143
+    "Y": 265
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1107
+- Name: b26_b5
+  X: 140
+  "Y": 265
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 209
+    "Y": 200
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1108
+- Name: b18_b35
+  X: 195
+  "Y": 206
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 169
+    "Y": 341
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1109
+- Name: b35_b36
+  X: 166
+  "Y": 341
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 198
+    "Y": 354
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1110
+- Name: b36_b37-1
+  X: 201
+  "Y": 354
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 83
+    "Y": 224
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1111
+- Name: b37-1_b35
+  X: 87
+  "Y": 224
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 169
+    "Y": 341
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1112
+- Name: b37-2_c1
+  X: 84
+  "Y": 273
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 98
+    "Y": 287
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1113
+- Name: c2_c3
+  X: 111
+  "Y": 298
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 82
+    "Y": 307
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1114
+- Name: c3_c7
+  X: 79
+  "Y": 307
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 284
+    "Y": 89
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1115
+- Name: c7_c12
+  X: 281
+  "Y": 89
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 264
+    "Y": 291
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1116
+- Name: c12_c2
+  X: 261
+  "Y": 291
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 115
+    "Y": 298
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1117
+- Name: c13-1_b13
+  X: 326
+  "Y": 275
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 277
+    "Y": 112
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1118
+- Name: c13-2_c5
+  X: 294
+  "Y": 293
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 78
+    "Y": 330
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1119
+- Name: c5_c17
+  X: 81
+  "Y": 330
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 308
+    "Y": 330
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1120
+- Name: c17_c10
+  X: 308
+  "Y": 327
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 309
+    "Y": 165
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1121
+- Name: c10_c13-2
+  X: 306
+  "Y": 165
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 298
+    "Y": 293
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1122
+- Name: c4_c6
+  X: 46
+  "Y": 316
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 113
+    "Y": 328
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1123
+- Name: c6_c9
+  X: 95
+  "Y": 328
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 342
+    "Y": 157
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1124
+- Name: c9_c16
+  X: 339
+  "Y": 157
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 343
+    "Y": 328
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1125
+- Name: c16_c8-2
+  X: 343
+  "Y": 325
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 346
+    "Y": 120
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1126
+- Name: c8-2_c19
+  X: 344
+  "Y": 123
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 277
+    "Y": 343
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1127
+- Name: c18_c15
+  X: 256
+  "Y": 313
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 343
+    "Y": 307
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1128
+- Name: c15_cKEY
+  X: 342
+  "Y": 305
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 332
+    "Y": 121
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1129
+- Name: cKEY_c18
+  X: 335
+  "Y": 120
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 259
+    "Y": 313
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1130
+- Name: c8-1_c14
+  X: 317
+  "Y": 89
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 339
+    "Y": 284
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1131
+- Name: c14_c11-1
+  X: 339
+  "Y": 281
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 332
+    "Y": 172
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1132
+- Name: c11-1_c8-2
+  X: 329
+  "Y": 171
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 346
+    "Y": 120
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1133
+- Name: b8_b2
+  X: 301
+  "Y": 237
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 289
+    "Y": 170
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1134
+- Name: "#mist_warp_init"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/instances/HazyForest.txt:1138
+- Name: a25_a18-1
+  X: 247
+  "Y": 123
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 164
+    "Y": 66
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1158
+- Name: a27-2_af1-2
+  X: 225
+  "Y": 98
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 144
+    "Y": 194
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1159
+- Name: a15-2_a4-1
+  X: 159
+  "Y": 184
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 49
+    "Y": 37
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1160
+- Name: a4-2_a11
+  X: 61
+  "Y": 39
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 68
+    "Y": 113
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1161
+- Name: b4-2_b2
+  X: 230
+  "Y": 179
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 289
+    "Y": 170
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1162
+- Name: b7_bf1-2
+  X: 285
+  "Y": 225
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 72
+    "Y": 274
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1163
+- Name: b31_b16
+  X: 161
+  "Y": 316
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 108
+    "Y": 203
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1164
+- Name: b27-3_bN-1
+  X: 204
+  "Y": 299
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 169
+    "Y": 314
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1165
+- Name: b6-1_b33
+  X: 221
+  "Y": 236
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 233
+    "Y": 324
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1166
+- Name: b5_b14
+  X: 206
+  "Y": 200
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 298
+    "Y": 142
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1167
+- Name: c1_c13-1
+  X: 95
+  "Y": 287
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 323
+    "Y": 276
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1168
+- Name: c13-3_c4
+  X: 324
+  "Y": 325
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 49
+    "Y": 316
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1169
+- Name: c19_c4
+  X: 280
+  "Y": 344
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@mist
+    X: 49
+    "Y": 316
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1170
+- Name: "#to_bif02"
+  X: 345
+  "Y": 186
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: bif_fild02
+    X: 151
+    "Y": 121
+    TriggerWhileHidden: false
+  Source: npc/re/instances/HazyForest.txt:1171
+- Name: Tazaar's Remains#33
+  X: 132
+  "Y": 100
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_mora.txt:5133
+- Name: Naizar's Remains#33
+  X: 102
+  "Y": 242
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_mora.txt:5134
+- Name: Meshir's Remains#33
+  X: 145
+  "Y": 245
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_mora.txt:5135
+- Name: Noirit's Remains#33
+  X: 196
+  "Y": 276
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_mora.txt:5136
+- Name: Pajama God's Remains#33
+  X: 304
+  "Y": 327
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_mora.txt:5137
+- Name: Mendel's Remains#33
+  X: 334
+  "Y": 287
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_mora.txt:5138
+- Name: Milebit's Remains#33
+  X: 330
+  "Y": 177
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_mora.txt:5139
+- Name: Kunmun's Remains#33
+  X: 284
+  "Y": 84
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_mora.txt:5140
+- Name: Tsaihokin's Remains#33
+  X: 170
+  "Y": 54
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_mora.txt:5141
+- Name: Tuar's Remains#33
+  X: 118
+  "Y": 43
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_mora.txt:5142

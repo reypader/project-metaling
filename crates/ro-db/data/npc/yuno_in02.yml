@@ -1,0 +1,67 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Dean of the Academy#sa
+  X: 38
+  "Y": 61
+  Dir: 5
+  Sprite: 743
+  Kind: Script
+  Source: npc/jobs/2-2/sage.txt:32
+- Name: Metheus Sylphe#Library
+  X: 88
+  "Y": 164
+  Dir: 5
+  Sprite: 742
+  Kind: Script
+  Source: npc/jobs/valkyrie.txt:215
+- Name: Book of Ymir
+  X: 93
+  "Y": 207
+  Dir: 1
+  Sprite: 111
+  Kind: Script
+  Source: npc/jobs/valkyrie.txt:262
+- Name: yun58
+  X: 172
+  "Y": 61
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno
+    X: 90
+    "Y": 321
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/yuno.txt:85
+- Name: yun61
+  X: 82
+  "Y": 14
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_in05
+    X: 192
+    "Y": 194
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/yuno.txt:88
+- Name: Valerie#sag
+  X: 43
+  "Y": 62
+  Dir: 4
+  Sprite: 837
+  DuplicateOf: Valerie#sign
+  Kind: Script
+  Source: npc/re/jobs/repair.txt:274

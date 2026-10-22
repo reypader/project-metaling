@@ -1,0 +1,113 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#ep172_ev2whs01"
+  X: 37
+  "Y": 312
+  Dir: 3
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/quests/quests_17_2.txt:7458
+- Name: Head#ep172_2whs01
+  X: 37
+  "Y": 312
+  Dir: 3
+  Sprite: 950
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/quests_17_2.txt:7474
+- Name: Junk#ep172_whs2body
+  X: 31
+  "Y": 50
+  Dir: 0
+  Sprite: 10045
+  Kind: Script
+  Source: npc/re/quests/quests_17_2.txt:7653
+- Name: Junk#ep172_whs2arm
+  X: 129
+  "Y": 82
+  Dir: 0
+  Sprite: 10045
+  Kind: Script
+  Source: npc/re/quests/quests_17_2.txt:7687
+- Name: Junk#ep172_whs2leg
+  X: 239
+  "Y": 124
+  Dir: 0
+  Sprite: 10045
+  Kind: Script
+  Source: npc/re/quests/quests_17_2.txt:7721
+- Name: "#ep172_2whs02_out"
+  X: 337
+  "Y": 337
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ba_2whs01
+    X: 275
+    "Y": 291
+    TriggerWhileHidden: false
+  Source: npc/re/warps/other/ba_2whs.txt:13
+- Name: "#172wh01_"
+  X: 63
+  "Y": 300
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: ba_2whs02
+    X: 69
+    "Y": 300
+    TriggerWhileHidden: false
+  Source: npc/re/warps/other/ba_2whs.txt:14
+- Name: "#ba2whslab_to_ba2whs02-1"
+  X: 63
+  "Y": 325
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: ba_2whs02
+    X: 69
+    "Y": 325
+    TriggerWhileHidden: false
+  Source: npc/re/warps/other/ba_2whs.txt:15
+- Name: "#172wh01"
+  X: 66
+  "Y": 300
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/warps/other/ba_2whs.txt:17
+- Name: "#ba2whs02_to_ba2whslab-1"
+  X: 66
+  "Y": 325
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: "#172wh01"
+  Kind: Script
+  Source: npc/re/warps/other/ba_2whs.txt:28

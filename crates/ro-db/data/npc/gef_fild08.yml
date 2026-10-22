@@ -1,0 +1,63 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Bulletin Board#kb1
+  X: 211
+  "Y": 24
+  Dir: 5
+  Sprite: 836
+  DuplicateOf: KoboldsBoard
+  Kind: Script
+  Source: npc/other/bulletin_boards.txt:262
+- Name: The Wanderer
+  X: 182
+  "Y": 185
+  Dir: 0
+  Sprite: 739
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:11045
+- Name: "#CallGhost"
+  X: 182
+  "Y": 182
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:11379
+- Name: geff09-1
+  X: 200
+  "Y": 355
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: gef_fild06
+    X: 218
+    "Y": 20
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/geffen_fild.txt:47
+- Name: geff10-1
+  X: 360
+  "Y": 187
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 4
+  Kind: Warp
+  Warp:
+    Map: gef_fild07
+    X: 21
+    "Y": 191
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/geffen_fild.txt:48

@@ -1,0 +1,567 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Gate02#gq_aru02
+  X: 345
+  "Y": 23
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: arug_cas02
+    X: 349
+    "Y": 355
+    TriggerWhileHidden: false
+  Source: npc/quests/okolnir.txt:161
+- Name: Wish Maiden#gq_aru02
+  X: 345
+  "Y": 82
+  Dir: 3
+  Sprite: 403
+  DuplicateOf: Wish Maiden#gq_main
+  Kind: Script
+  Source: npc/quests/okolnir.txt:359
+- Name: Gate01#gq_aru02
+  X: 346
+  "Y": 81
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: Gate01#gq_main
+  Kind: Script
+  Source: npc/quests/okolnir.txt:456
+- Name: "#Gate_manager_aru02"
+  X: 1
+  "Y": 4
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#Gate_manager_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:479
+- Name: "#gq_miromob2_aru02"
+  X: 1
+  "Y": 4
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#gq_miromob2_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:533
+- Name: "#okolnir_aru02"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#okolnir_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:730
+- Name: "#Maze_Manager_aru02"
+  X: 1
+  "Y": 2
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#Maze_Manager_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:814
+- Name: "#miro_bf_aru02"
+  X: 2
+  "Y": 1
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#miro_bf_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:851
+- Name: "#miro_rf_aru02"
+  X: 2
+  "Y": 2
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#miro_rf_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:889
+- Name: "#miro_yf_aru02"
+  X: 2
+  "Y": 3
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#miro_yf_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:927
+- Name: windpath01_aru02
+  X: 132
+  "Y": 172
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: windpath01_main
+  Kind: Script
+  Source: npc/quests/okolnir.txt:953
+- Name: windpath02_aru02
+  X: 113
+  "Y": 165
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: que_qaru02
+    X: 139
+    "Y": 172
+    TriggerWhileHidden: false
+  Source: npc/quests/okolnir.txt:964
+- Name: Piamette#aru02
+  X: 131
+  "Y": 136
+  Dir: 3
+  Sprite: 1930
+  SpriteIsMob: true
+  DuplicateOf: Piamette#main
+  Kind: Script
+  Source: npc/quests/okolnir.txt:984
+- Name: "#event_start01_aru02"
+  X: 114
+  "Y": 158
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#event_start01_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1042
+- Name: "#gdtimer01_aru02"
+  X: 2
+  "Y": 2
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#gdtimer01_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1136
+- Name: "#gdtimer02_aru02"
+  X: 2
+  "Y": 3
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#gdtimer02_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1210
+- Name: "#piamette_aru02"
+  X: 1
+  "Y": 4
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#piamette_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1253
+- Name: "#getspell01_aru02"
+  X: 113
+  "Y": 135
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#getspells_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1307
+- Name: "#getspell02_aru02"
+  X: 146
+  "Y": 150
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#getspells_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1317
+- Name: "#getspell03_aru02"
+  X: 131
+  "Y": 117
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#getspells_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1327
+- Name: "#getspell04_aru02"
+  X: 117
+  "Y": 150
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#getspells_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1337
+- Name: "#getspell05_aru02"
+  X: 150
+  "Y": 135
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#getspells_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1347
+- Name: "#getspell06_aru02"
+  X: 117
+  "Y": 121
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#getspells_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1357
+- Name: "#getspell07_aru02"
+  X: 131
+  "Y": 154
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#getspells_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1367
+- Name: "#getspell08_aru02"
+  X: 146
+  "Y": 121
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#getspells_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1377
+- Name: "#aru02_cage01"
+  X: 103
+  "Y": 153
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#main_cages"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1407
+- Name: "#aru02_cage02"
+  X: 102
+  "Y": 135
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#main_cages"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1417
+- Name: "#aru02_cage03"
+  X: 113
+  "Y": 111
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#main_cages"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1427
+- Name: "#aru02_cage04"
+  X: 161
+  "Y": 105
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#main_cages"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1437
+- Name: "#aru02_cage05"
+  X: 168
+  "Y": 135
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#main_cages"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1447
+- Name: "#aru02_cage06"
+  X: 150
+  "Y": 159
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#main_cages"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1457
+- Name: "#gd_aru02_mobctrl"
+  X: 1
+  "Y": 8
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#gd_main_mobctrl"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1503
+- Name: windpath03_aru02
+  X: 149
+  "Y": 105
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: windpaths_main
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1532
+- Name: windpath04_aru02
+  X: 128
+  "Y": 104
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: windpaths_main
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1543
+- Name: "#nm_switch_aru02"
+  X: 253
+  "Y": 273
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: "#nm_switch_main"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1613
+- Name: "#nmsomaru02_jin01"
+  X: 229
+  "Y": 297
+  Dir: 0
+  Sprite: -1
+  DuplicateOf: "#nmsommain_jin01"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1662
+- Name: "#aru02_stone01"
+  X: 2
+  "Y": 8
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#main_stone01"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1699
+- Name: "#nmsomaru02_jin02"
+  X: 275
+  "Y": 299
+  Dir: 0
+  Sprite: -1
+  DuplicateOf: "#nmsommain_jin02"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1746
+- Name: "#aru02_stone02"
+  X: 2
+  "Y": 9
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#main_stone02"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1783
+- Name: "#nmsomaru02_jin03"
+  X: 251
+  "Y": 340
+  Dir: 0
+  Sprite: -1
+  DuplicateOf: "#nmsommain_jin03"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1838
+- Name: "#aru02_stone03"
+  X: 2
+  "Y": 10
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#main_stone03"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1876
+- Name: Guard of Shadow#aru02_01
+  X: 235
+  "Y": 285
+  Dir: 5
+  Sprite: 1752
+  SpriteIsMob: true
+  Trigger:
+    X: 4
+    "Y": 4
+  DuplicateOf: Guard of Shadow#main_all
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1923
+- Name: Guard of Shadow#aru02_02
+  X: 224
+  "Y": 290
+  Dir: 5
+  Sprite: 1752
+  SpriteIsMob: true
+  Trigger:
+    X: 4
+    "Y": 4
+  DuplicateOf: Guard of Shadow#main_all
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1924
+- Name: Guard of Shadow#aru02_03
+  X: 236
+  "Y": 296
+  Dir: 5
+  Sprite: 1752
+  SpriteIsMob: true
+  Trigger:
+    X: 4
+    "Y": 4
+  DuplicateOf: Guard of Shadow#main_all
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1925
+- Name: Guard of Shadow#aru02_04
+  X: 225
+  "Y": 303
+  Dir: 5
+  Sprite: 1752
+  SpriteIsMob: true
+  Trigger:
+    X: 4
+    "Y": 4
+  DuplicateOf: Guard of Shadow#main_all
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1926
+- Name: Bloody Hunter#aru02_ac01
+  X: 266
+  "Y": 296
+  Dir: 3
+  Sprite: 1753
+  SpriteIsMob: true
+  Trigger:
+    X: 4
+    "Y": 4
+  DuplicateOf: Bloody Hunter#main_all
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1997
+- Name: Bloody Hunter#aru02_ac02
+  X: 271
+  "Y": 283
+  Dir: 3
+  Sprite: 1753
+  SpriteIsMob: true
+  Trigger:
+    X: 4
+    "Y": 4
+  DuplicateOf: Bloody Hunter#main_all
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1998
+- Name: Bloody Hunter#aru02_ac03
+  X: 270
+  "Y": 307
+  Dir: 3
+  Sprite: 1753
+  SpriteIsMob: true
+  Trigger:
+    X: 4
+    "Y": 4
+  DuplicateOf: Bloody Hunter#main_all
+  Kind: Script
+  Source: npc/quests/okolnir.txt:1999
+- Name: Bloody Hunter#aru02_ac04
+  X: 279
+  "Y": 300
+  Dir: 3
+  Sprite: 1753
+  SpriteIsMob: true
+  Trigger:
+    X: 4
+    "Y": 4
+  DuplicateOf: Bloody Hunter#main_all
+  Kind: Script
+  Source: npc/quests/okolnir.txt:2000
+- Name: Temple Keeper#aru02_ac01
+  X: 247
+  "Y": 330
+  Dir: 5
+  Sprite: 1933
+  SpriteIsMob: true
+  Trigger:
+    X: 4
+    "Y": 4
+  DuplicateOf: Temple Keeper#main_all
+  Kind: Script
+  Source: npc/quests/okolnir.txt:2067
+- Name: Temple Keeper#aru02_ac02
+  X: 255
+  "Y": 330
+  Dir: 3
+  Sprite: 1933
+  SpriteIsMob: true
+  Trigger:
+    X: 4
+    "Y": 4
+  DuplicateOf: Temple Keeper#main_all
+  Kind: Script
+  Source: npc/quests/okolnir.txt:2068
+- Name: Wish Maiden#aru02_boss
+  X: 251
+  "Y": 255
+  Dir: 3
+  Sprite: 1931
+  SpriteIsMob: true
+  DuplicateOf: Wish Maiden#main_boss
+  Kind: Script
+  Source: npc/quests/okolnir.txt:2134
+- Name: Wish Maiden#aru02_gift
+  X: 252
+  "Y": 340
+  Dir: 3
+  Sprite: 403
+  DuplicateOf: Wish Maiden#main_gift
+  Kind: Script
+  Source: npc/quests/okolnir.txt:2263
+- Name: "#to_agit_aru02_gate"
+  X: 252
+  "Y": 339
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#to_agit_main_gate"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:2303
+- Name: "#okolnir_aru02_time01"
+  X: 1
+  "Y": 6
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#okolnir_main_time01"
+  Kind: Script
+  Source: npc/quests/okolnir.txt:2351

@@ -1,0 +1,272 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Student#kha
+  X: 57
+  "Y": 142
+  Dir: 6
+  Sprite: 893
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:802
+- Name: Student#khb
+  X: 57
+  "Y": 139
+  Dir: 0
+  Sprite: 893
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:836
+- Name: Lady#kh
+  X: 176
+  "Y": 60
+  Dir: 4
+  Sprite: 101
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:851
+- Name: Cute Student#kh
+  X: 179
+  "Y": 39
+  Dir: 0
+  Sprite: 895
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:932
+- Name: Elly
+  X: 178
+  "Y": 180
+  Dir: 4
+  Sprite: 895
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:1545
+- Name: Cookie Basket#kh
+  X: 175
+  "Y": 176
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:1724
+- Name: Window#kh2
+  X: 188
+  "Y": 185
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:1834
+- Name: Beautiful Lady#kh1
+  UniqueName: BeatifulLadyKHQ1
+  X: 119
+  "Y": 149
+  Dir: 4
+  Sprite: 894
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:3355
+- Name: Beautiful lady#kh2
+  UniqueName: BeatifulLadyKHQ2
+  X: 117
+  "Y": 149
+  Dir: 4
+  Sprite: 894
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:3434
+- Name: Beautiful lady#kh3
+  X: 118
+  "Y": 149
+  Dir: 4
+  Sprite: 894
+  DuplicateOf: BeatifulLadyKHQ2
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:3437
+- Name: Beautiful lady#kh4
+  X: 120
+  "Y": 149
+  Dir: 4
+  Sprite: 894
+  DuplicateOf: BeatifulLadyKHQ2
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:3438
+- Name: Beautiful lady#kh5
+  X: 121
+  "Y": 149
+  Dir: 4
+  Sprite: 894
+  DuplicateOf: BeatifulLadyKHQ1
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:3439
+- Name: Beautiful Lady#kh6
+  X: 122
+  "Y": 186
+  Dir: 4
+  Sprite: 894
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:3444
+- Name: kh_school_01
+  X: 76
+  "Y": 156
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_fild08
+    X: 155
+    "Y": 189
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:24
+- Name: kh_school_02a
+  X: 30
+  "Y": 125
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_school
+    X: 67
+    "Y": 14
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:25
+- Name: kh_school_02b
+  X: 71
+  "Y": 14
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_school
+    X: 36
+    "Y": 125
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:26
+- Name: kh_school_03a
+  X: 35
+  "Y": 133
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_school
+    X: 148
+    "Y": 16
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:27
+- Name: kh_school_03b
+  X: 153
+  "Y": 16
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_school
+    X: 39
+    "Y": 136
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:28
+- Name: kh_school_04a
+  X: 30
+  "Y": 155
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_school
+    X: 182
+    "Y": 116
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:29
+- Name: kh_school_04b
+  X: 186
+  "Y": 117
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_school
+    X: 35
+    "Y": 155
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:30
+- Name: kh_school_05a
+  X: 35
+  "Y": 176
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_school
+    X: 148
+    "Y": 56
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:31
+- Name: kh_school_05b
+  X: 153
+  "Y": 56
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_school
+    X: 40
+    "Y": 176
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:32
+- Name: kh_school_06a
+  X: 30
+  "Y": 185
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_school
+    X: 67
+    "Y": 74
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:33
+- Name: kh_school_06b
+  X: 71
+  "Y": 74
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_school
+    X: 35
+    "Y": 184
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:34

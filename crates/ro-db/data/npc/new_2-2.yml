@@ -1,0 +1,115 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: newwarp6002b
+  X: 100
+  "Y": 6
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: new_2-1
+    X: 144
+    "Y": 112
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:38
+- Name: newwarp6003b
+  X: 126
+  "Y": 106
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: new_2-2
+    X: 160
+    "Y": 171
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:43
+- Name: newwarp6004b
+  X: 156
+  "Y": 171
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: new_2-2
+    X: 123
+    "Y": 106
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:48
+- Name: newwarp6005b
+  X: 73
+  "Y": 106
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: new_2-2
+    X: 41
+    "Y": 172
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:53
+- Name: newwarp6006b
+  X: 46
+  "Y": 172
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: new_2-2
+    X: 78
+    "Y": 106
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:58
+- Name: Training Instructor#2b
+  X: 100
+  "Y": 29
+  Dir: 4
+  Sprite: 92
+  DuplicateOf: Training Instructor#1a
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:14263
+- Name: Training Instructor#2c
+  X: 100
+  "Y": 105
+  Dir: 3
+  Sprite: 92
+  DuplicateOf: Training Instructor#1a
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:14264
+- Name: Training Instructor#2d
+  X: 161
+  "Y": 182
+  Dir: 5
+  Sprite: 92
+  DuplicateOf: Training Instructor#1a
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:14265
+- Name: Training Instructor#2e
+  X: 33
+  "Y": 172
+  Dir: 4
+  Sprite: 92
+  DuplicateOf: Training Instructor#1a
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:14266

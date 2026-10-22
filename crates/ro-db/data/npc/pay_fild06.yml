@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Snake Scales
+  X: 306
+  "Y": 233
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_dicastes.txt:1171
+- Name: payf09-1
+  X: 305
+  "Y": 375
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 6
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: pay_fild03
+    X: 313
+    "Y": 19
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/payon_fild.txt:36

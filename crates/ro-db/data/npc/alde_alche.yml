@@ -1,0 +1,372 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Guild Dealer
+  X: 24
+  "Y": 188
+  Dir: 3
+  Sprite: 740
+  Kind: Script
+  Source: npc/merchants/alchemist.txt:23
+- Name: Muscle Man#Alarm Mask
+  X: 88
+  "Y": 180
+  Dir: 0
+  Sprite: 748
+  Kind: Script
+  Source: npc/quests/newgears/2004_headgears.txt:1904
+- Name: " #Alarm Mask Man1"
+  X: 86
+  "Y": 184
+  Dir: 0
+  Sprite: 1193
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/quests/newgears/2004_headgears.txt:2051
+- Name: " #Alarm Mask Man2"
+  X: 89
+  "Y": 184
+  Dir: 0
+  Sprite: 1193
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/quests/newgears/2004_headgears.txt:2057
+- Name: " #Alarm Mask Man3"
+  X: 92
+  "Y": 184
+  Dir: 0
+  Sprite: 1193
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/quests/newgears/2004_headgears.txt:2063
+- Name: " #Alarm Mask Man4"
+  X: 95
+  "Y": 184
+  Dir: 0
+  Sprite: 1193
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/quests/newgears/2004_headgears.txt:2069
+- Name: Alchemist#sign
+  X: 169
+  "Y": 162
+  Dir: 7
+  Sprite: 749
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:6134
+- Name: Alchemist Guildsman#am
+  X: 27
+  "Y": 185
+  Dir: 5
+  Sprite: 744
+  Kind: Script
+  Source: npc/jobs/2-2/alchemist.txt:23
+- Name: Fastidious Alchemist#am
+  X: 175
+  "Y": 107
+  Dir: 3
+  Sprite: 749
+  Kind: Script
+  Source: npc/jobs/2-2/alchemist.txt:326
+- Name: Studying Man#am
+  X: 13
+  "Y": 15
+  Dir: 7
+  Sprite: 750
+  Kind: Script
+  Source: npc/jobs/2-2/alchemist.txt:796
+- Name: Experiment Expert#am
+  X: 79
+  "Y": 19
+  Dir: 5
+  Sprite: 748
+  Kind: Script
+  Source: npc/jobs/2-2/alchemist.txt:1340
+- Name: Master Alchemist#am
+  X: 101
+  "Y": 184
+  Dir: 4
+  Sprite: 122
+  Kind: Script
+  Source: npc/jobs/2-2/alchemist.txt:1592
+- Name: Chief Researcher#am
+  X: 145
+  "Y": 19
+  Dir: 1
+  Sprite: 57
+  Kind: Script
+  Source: npc/jobs/2-2/alchemist.txt:1776
+- Name: alche#1-1
+  X: 19
+  "Y": 171
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: aldebaran
+    X: 68
+    "Y": 56
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:94
+- Name: alche#1-2
+  X: 42
+  "Y": 171
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: aldebaran
+    X: 56
+    "Y": 68
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:95
+- Name: alche#1F_2F
+  X: 41
+  "Y": 186
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: alde_alche
+    X: 113
+    "Y": 178
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:96
+- Name: alche#2F_1F
+  X: 114
+  "Y": 183
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: alde_alche
+    X: 42
+    "Y": 182
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:97
+- Name: alche#1F_B1
+  X: 13
+  "Y": 184
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: alde_alche
+    X: 88
+    "Y": 113
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:98
+- Name: alche#B1_1F
+  X: 88
+  "Y": 117
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: alde_alche
+    X: 13
+    "Y": 181
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:99
+- Name: alche#B1_r1
+  X: 46
+  "Y": 104
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: alde_alche
+    X: 157
+    "Y": 17
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:100
+- Name: alche#r1_b1
+  X: 160
+  "Y": 17
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: alde_alche
+    X: 50
+    "Y": 103
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:101
+- Name: alche#B1_r2
+  X: 46
+  "Y": 77
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: alde_alche
+    X: 88
+    "Y": 17
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:102
+- Name: alche#r2_b1
+  X: 93
+  "Y": 17
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: alde_alche
+    X: 50
+    "Y": 77
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:103
+- Name: alche#B1_r3
+  X: 89
+  "Y": 62
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: alde_alche
+    X: 17
+    "Y": 23
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:104
+- Name: alche#r3_b1
+  X: 17
+  "Y": 29
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: alde_alche
+    X: 89
+    "Y": 67
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:105
+- Name: alche#B1_r4
+  X: 133
+  "Y": 77
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: alde_alche
+    X: 162
+    "Y": 107
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:106
+- Name: alche#r4_b1
+  X: 158
+  "Y": 107
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: alde_alche
+    X: 129
+    "Y": 77
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:107
+- Name: alche#B1_r5
+  X: 133
+  "Y": 103
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: alde_alche
+    X: 164
+    "Y": 164
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:108
+- Name: alche#r5_b1
+  X: 158
+  "Y": 163
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: alde_alche
+    X: 129
+    "Y": 103
+    TriggerWhileHidden: false
+  Source: npc/warps/other/jobquests.txt:109
+- Name: Craft Book Merchant#alde
+  X: 31
+  "Y": 186
+  Dir: 3
+  Sprite: 883
+  Kind: Script
+  Source: npc/re/merchants/alchemist.txt:19
+- Name: Material Seller#alche
+  X: 38
+  "Y": 184
+  Dir: 3
+  Sprite: 755
+  Kind: Shop
+  Source: npc/re/merchants/shops.txt:35
+- Name: Alchemist Union Member
+  X: 35
+  "Y": 186
+  Dir: 5
+  Sprite: 805
+  Kind: Script
+  Source: npc/re/jobs/3-2/genetic.txt:21
+- Name: Valerie#alche
+  X: 38
+  "Y": 181
+  Dir: 4
+  Sprite: 837
+  DuplicateOf: Valerie#sign
+  Kind: Script
+  Source: npc/re/jobs/repair.txt:281

@@ -1,0 +1,67 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Skia#ep162_07
+  X: 147
+  "Y": 57
+  Dir: 5
+  Sprite: 10116
+  State: Cloaked
+  DuplicateOf: dummy_cloaked_npc
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:3395
+- Name: Rookie#ep162_03
+  X: 150
+  "Y": 58
+  Dir: 3
+  Sprite: 10181
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:3397
+- Name: Rebellion squadder#ep16
+  X: 141
+  "Y": 57
+  Dir: 5
+  Sprite: 10195
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:3591
+- Name: Philopontess#ep162_04
+  X: 145
+  "Y": 57
+  Dir: 3
+  Sprite: 10182
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:3604
+- Name: Yudmil#ep162_2
+  X: 159
+  "Y": 53
+  Dir: 5
+  Sprite: 10195
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:3754
+- Name: Yuslan#ep162_1
+  X: 161
+  "Y": 53
+  Dir: 3
+  Sprite: 10196
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:3771
+- Name: "#in_slbw"
+  X: 155
+  "Y": 61
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: slabw01
+    X: 14
+    "Y": 88
+    TriggerWhileHidden: false
+  Source: npc/re/warps/dungeons/slabw01.txt:7

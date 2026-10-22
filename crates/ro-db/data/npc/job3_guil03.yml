@@ -1,0 +1,378 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#3rdgc_event01"
+  X: 22
+  "Y": 70
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:2747
+- Name: "#3rdgc_event_master"
+  X: 1
+  "Y": 4
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:2782
+- Name: Barbed-Wire Entanglement
+  X: 55
+  "Y": 79
+  Dir: 0
+  Sprite: 844
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:2833
+- Name: "#3rdgc_hide01"
+  X: 98
+  "Y": 46
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 4
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:2855
+- Name: "#3rdgc_hide02"
+  X: 98
+  "Y": 55
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 4
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:2882
+- Name: "#3rdgc_hide03"
+  X: 98
+  "Y": 64
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 4
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:2909
+- Name: "#3rdgc_guard"
+  X: 1
+  "Y": 2
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:2936
+- Name: "#3rdgc_guardoff"
+  X: 1
+  "Y": 3
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:2977
+- Name: Front Gate Guard#g01
+  X: 93
+  "Y": 35
+  Dir: 3
+  Sprite: 456
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3052
+- Name: Front Gate Guard#g03
+  X: 93
+  "Y": 36
+  Dir: 3
+  Sprite: 456
+  DuplicateOf: "#3rdgc_guard00"
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3079
+- Name: Front Gate Guard#g04
+  X: 93
+  "Y": 34
+  Dir: 3
+  Sprite: 456
+  DuplicateOf: "#3rdgc_guard00"
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3080
+- Name: Front Gate Guard#g05
+  X: 93
+  "Y": 33
+  Dir: 3
+  Sprite: 456
+  DuplicateOf: "#3rdgc_guard00"
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3081
+- Name: Back Gate Guard#g01
+  X: 133
+  "Y": 52
+  Dir: 5
+  Sprite: 456
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3083
+- Name: Back Gate Guard#g03
+  X: 133
+  "Y": 53
+  Dir: 5
+  Sprite: 456
+  DuplicateOf: "#3rdgc_guard00"
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3110
+- Name: Back Gate Guard#g04
+  X: 133
+  "Y": 51
+  Dir: 5
+  Sprite: 456
+  DuplicateOf: "#3rdgc_guard00"
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3111
+- Name: Back Gate Guard#g05
+  X: 133
+  "Y": 50
+  Dir: 5
+  Sprite: 456
+  DuplicateOf: "#3rdgc_guard00"
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3112
+- Name: Interior Guard#g01
+  X: 117
+  "Y": 51
+  Dir: 4
+  Sprite: 456
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3114
+- Name: Interior Guard#g03
+  X: 117
+  "Y": 52
+  Dir: 4
+  Sprite: 456
+  DuplicateOf: "#3rdgc_guard00"
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3141
+- Name: Interior Guard#g04
+  X: 117
+  "Y": 50
+  Dir: 4
+  Sprite: 456
+  DuplicateOf: "#3rdgc_guard00"
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3142
+- Name: Interior Guard#g05
+  X: 117
+  "Y": 49
+  Dir: 4
+  Sprite: 456
+  DuplicateOf: "#3rdgc_guard00"
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3143
+- Name: Exterior Guard#g01
+  X: 88
+  "Y": 44
+  Dir: 4
+  Sprite: 456
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3145
+- Name: Exterior Guard#g02
+  X: 88
+  "Y": 55
+  Dir: 4
+  Sprite: 456
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3168
+- Name: Exterior Guard#g03
+  X: 88
+  "Y": 64
+  Dir: 4
+  Sprite: 456
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3191
+- Name: Exterior Guard#g04
+  X: 73
+  "Y": 62
+  Dir: 4
+  Sprite: 456
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3214
+- Name: Exterior Guard#g05
+  X: 77
+  "Y": 51
+  Dir: 4
+  Sprite: 456
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3237
+- Name: Exterior Guard#g06
+  X: 73
+  "Y": 34
+  Dir: 4
+  Sprite: 456
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3260
+- Name: Guard Dog#dog01
+  X: 110
+  "Y": 27
+  Dir: 3
+  Sprite: 1866
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 1
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3283
+- Name: Guard Dog#dog02
+  X: 119
+  "Y": 27
+  Dir: 3
+  Sprite: 1866
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 1
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3306
+- Name: "#3rdgc_sunchal_nomal"
+  X: 2
+  "Y": 1
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3329
+- Name: "#3rdgc_sunchal_kill01"
+  X: 2
+  "Y": 2
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3366
+- Name: "#3rdgc_sunchal_kill02"
+  X: 2
+  "Y": 3
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#3rdgc_sunchal_kill01"
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3396
+- Name: "#3rdgc_sunchal_kill03"
+  X: 2
+  "Y": 4
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#3rdgc_sunchal_kill01"
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3397
+- Name: "#3rdgc_gojung_kill01"
+  X: 64
+  "Y": 68
+  Dir: 3
+  Sprite: 456
+  Trigger:
+    X: 7
+    "Y": 7
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3399
+- Name: "#3rdgc_gojung_kill02"
+  X: 86
+  "Y": 63
+  Dir: 1
+  Sprite: 456
+  Trigger:
+    X: 8
+    "Y": 8
+  DuplicateOf: "#3rdgc_gojung_kill01"
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3434
+- Name: "#3rdgc_gojung_kill03"
+  X: 83
+  "Y": 36
+  Dir: 5
+  Sprite: 456
+  Trigger:
+    X: 6
+    "Y": 6
+  DuplicateOf: "#3rdgc_gojung_kill01"
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3435
+- Name: "#3rdgc_safezone01"
+  X: 88
+  "Y": 71
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3437
+- Name: "#3rdgc_safezone02"
+  X: 82
+  "Y": 45
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#3rdgc_safezone01"
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3459
+- Name: "#3rdgc_safezone03"
+  X: 72
+  "Y": 53
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 1
+  DuplicateOf: "#3rdgc_safezone01"
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3460
+- Name: Priest from Rachel
+  X: 111
+  "Y": 51
+  Dir: 7
+  Sprite: 928
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3462
+- Name: Renzak#3rdgc16
+  X: 146
+  "Y": 70
+  Dir: 3
+  Sprite: 466
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3557
+- Name: "#GMhelper02_gc"
+  X: 1
+  "Y": 8
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3890

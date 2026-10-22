@@ -1,0 +1,58 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Basilisk Prisoner#lasai
+  X: 61
+  "Y": 91
+  Dir: 5
+  Sprite: 10158
+  Kind: Script
+  Source: npc/re/custom/lasagna/lasagna_npcs.txt:4223
+- Name: Jindou#lasain
+  X: 64
+  "Y": 92
+  Dir: 3
+  Sprite: 10159
+  Kind: Script
+  Source: npc/re/custom/lasagna/lasagna_npcs.txt:4385
+- Name: Chief Peperoncino#lasai
+  X: 59
+  "Y": 90
+  Dir: 5
+  Sprite: 10152
+  Kind: Script
+  Source: npc/re/custom/lasagna/lasagna_npcs.txt:4429
+- Name: Vigilante Chef#dorcon99
+  X: 186
+  "Y": 57
+  Dir: 3
+  Sprite: 548
+  Kind: Script
+  Source: npc/re/custom/lasagna/lasagna_npcs.txt:8358
+- Name: Chief Peperoncino#dorco
+  X: 179
+  "Y": 60
+  Dir: 5
+  Sprite: 10152
+  Kind: Script
+  Source: npc/re/custom/lasagna/lasagna_npcs.txt:8372
+- Name: dining_lasa
+  X: 159
+  "Y": 61
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lasagna
+    X: 68
+    "Y": 202
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/lasagna.txt:28

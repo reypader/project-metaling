@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Training Instructor#5f
+  X: 96
+  "Y": 30
+  Dir: 4
+  Sprite: 92
+  DuplicateOf: Training Instructor#1a
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:14288

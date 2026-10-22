@@ -1,0 +1,63 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#arch_pilgrimage"
+  X: 220
+  "Y": 47
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/jobs/3-1/archbishop.txt:426
+- Name: nwarp5
+  X: 249
+  "Y": 262
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nif_fild01
+    X: 315
+    "Y": 66
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/yggdrasil.txt:23
+- Name: nwarp3
+  X: 271
+  "Y": 51
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yggdrasil01
+    X: 26
+    "Y": 196
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/yggdrasil.txt:26
+- Name: nwarp4
+  X: 26
+  "Y": 193
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yggdrasil01
+    X: 269
+    "Y": 53
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/yggdrasil.txt:27

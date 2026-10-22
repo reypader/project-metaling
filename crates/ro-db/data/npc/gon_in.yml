@@ -1,0 +1,215 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Ji Chung Zhe#gon
+  X: 73
+  "Y": 82
+  Dir: 5
+  Sprite: 778
+  Kind: Script
+  Source: npc/cities/gonryun.txt:283
+- Name: Yu Jiu Xia#gon
+  X: 173
+  "Y": 27
+  Dir: 3
+  Sprite: 774
+  Kind: Script
+  Source: npc/cities/gonryun.txt:316
+- Name: Chief#gon
+  X: 17
+  "Y": 93
+  Dir: 5
+  Sprite: 775
+  Kind: Script
+  Source: npc/quests/quests_gonryun.txt:24
+- Name: Hostess#gon
+  X: 152
+  "Y": 35
+  Dir: 4
+  Sprite: 702
+  Kind: Script
+  Source: npc/quests/quests_gonryun.txt:420
+- Name: Man in hangover#gon
+  X: 165
+  "Y": 16
+  Dir: 4
+  Sprite: 748
+  Kind: Script
+  Source: npc/quests/quests_gonryun.txt:518
+- Name: Madam#gnbs
+  X: 18
+  "Y": 27
+  Dir: 5
+  Sprite: 771
+  Kind: Script
+  Source: npc/quests/quests_gonryun.txt:2066
+- Name: gon_house1-2
+  X: 109
+  "Y": 98
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gonryun
+    X: 218
+    "Y": 162
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/gonryun.txt:17
+- Name: gon_house2=2
+  X: 95
+  "Y": 26
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gonryun
+    X: 195
+    "Y": 96
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/gonryun.txt:19
+- Name: gon_tea2-1
+  X: 72
+  "Y": 67
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gonryun
+    X: 107
+    "Y": 181
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/gonryun.txt:21
+- Name: gon_tavern1-2
+  X: 149
+  "Y": 24
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gonryun
+    X: 212
+    "Y": 114
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/gonryun.txt:23
+- Name: gon_inn1-1
+  X: 184
+  "Y": 36
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gon_in
+    X: 189
+    "Y": 107
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/gonryun.txt:24
+- Name: gon_inn1-2
+  X: 186
+  "Y": 107
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gon_in
+    X: 181
+    "Y": 36
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/gonryun.txt:25
+- Name: gon_inn2-1
+  X: 184
+  "Y": 11
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gon_in
+    X: 189
+    "Y": 85
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/gonryun.txt:26
+- Name: gon_inn2-2
+  X: 186
+  "Y": 85
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gon_in
+    X: 181
+    "Y": 11
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/gonryun.txt:27
+- Name: gon_castle1-2
+  X: 47
+  "Y": 24
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gonryun
+    X: 112
+    "Y": 131
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/gonryun.txt:29
+- Name: gon_castle2-1
+  X: 42
+  "Y": 35
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gon_in
+    X: 34
+    "Y": 97
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/gonryun.txt:30
+- Name: gon_castle2-2
+  X: 31
+  "Y": 97
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gon_in
+    X: 39
+    "Y": 35
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/gonryun.txt:31

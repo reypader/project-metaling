@@ -1,0 +1,539 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Follower Lekua
+  X: 287
+  "Y": 88
+  Dir: 7
+  Sprite: 926
+  Kind: Script
+  Source: npc/cities/rachel.txt:375
+- Name: Freya's Follower#in1
+  X: 228
+  "Y": 303
+  Dir: 5
+  Sprite: 926
+  Kind: Script
+  Source: npc/cities/rachel.txt:392
+- Name: Freya's Follower#in2
+  X: 230
+  "Y": 303
+  Dir: 3
+  Sprite: 926
+  Kind: Script
+  Source: npc/cities/rachel.txt:404
+- Name: Child Follower#in1
+  X: 138
+  "Y": 64
+  Dir: 5
+  Sprite: 921
+  Kind: Script
+  Source: npc/cities/rachel.txt:413
+- Name: Female Follower#em
+  X: 103
+  "Y": 151
+  Dir: 7
+  Sprite: 917
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:2571
+- Name: High Priest Zhed#rachel
+  X: 277
+  "Y": 159
+  Dir: 3
+  Sprite: 932
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:4751
+- Name: Panno#rachel
+  X: 170
+  "Y": 46
+  Dir: 3
+  Sprite: 920
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:6311
+- Name: Pope's Office Guard#rac
+  UniqueName: raofficeguard
+  X: 134
+  "Y": 128
+  Dir: 3
+  Sprite: 926
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:6743
+- Name: Pope's Office Guard#2ra
+  X: 134
+  "Y": 134
+  Dir: 3
+  Sprite: 926
+  DuplicateOf: raofficeguard
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:6794
+- Name: gyoin1#rachel
+  X: 134
+  "Y": 131
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:6796
+- Name: "#rachel33"
+  X: 275
+  "Y": 226
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:6819
+- Name: High Priestess Niren#ra
+  X: 294
+  "Y": 149
+  Dir: 0
+  Sprite: 915
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:7053
+- Name: out1#rachel
+  X: 293
+  "Y": 144
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:7070
+- Name: hidden1#rachel
+  X: 288
+  "Y": 151
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 6
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:7091
+- Name: key1#rachel
+  X: 272
+  "Y": 143
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:7256
+- Name: saint1#rachel
+  X: 28
+  "Y": 319
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_rachel.txt:7281
+- Name: Rachel Guard#vol1
+  X: 87
+  "Y": 133
+  Dir: 1
+  Sprite: 934
+  Trigger:
+    X: 5
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:5073
+- Name: Rachel Guard#vol2
+  X: 82
+  "Y": 133
+  Dir: 7
+  Sprite: 934
+  Trigger:
+    X: 5
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:5214
+- Name: Flower Vase#vol
+  X: 115
+  "Y": 140
+  Dir: 1
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:5231
+- Name: path_vol1
+  X: 85
+  "Y": 131
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 0
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:5273
+- Name: path_vol1#2
+  X: 82
+  "Y": 131
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 0
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:5281
+- Name: path_vol1#3
+  X: 82
+  "Y": 127
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 1
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:5289
+- Name: Female Follower#vol
+  X: 40
+  "Y": 124
+  Dir: 3
+  Sprite: 920
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:5297
+- Name: Rachel Guard#vol1_1
+  X: 42
+  "Y": 124
+  Dir: 3
+  Sprite: 934
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:5334
+- Name: vol_time
+  X: 5
+  "Y": 5
+  Dir: 3
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:5342
+- Name: Rachel Guard#vol2_1
+  X: 113
+  "Y": 140
+  Dir: 1
+  Sprite: 934
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:5392
+- Name: vol_time2
+  X: 5
+  "Y": 5
+  Dir: 1
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:5407
+- Name: Drawer#vol1
+  UniqueName: VeinsDrawer
+  X: 87
+  "Y": 118
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:5425
+- Name: Drawer#vol2
+  X: 83
+  "Y": 118
+  Dir: 3
+  Sprite: 111
+  DuplicateOf: VeinsDrawer
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:5433
+- Name: Drawer#vol3
+  X: 85
+  "Y": 118
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:5435
+- Name: Goddess Statue#vol1
+  X: 88
+  "Y": 117
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:5507
+- Name: Ladder#vol1
+  X: 73
+  "Y": 126
+  Dir: 1
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:5514
+- Name: Signpost#Holy Ground
+  X: 31
+  "Y": 316
+  Dir: 0
+  Sprite: 837
+  Kind: Script
+  Source: npc/re/other/adven_boards.txt:2334
+- Name: Guard Dent#ep18
+  X: 173
+  "Y": 40
+  Dir: 3
+  Sprite: 934
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:799
+- Name: Guard Neil#ep18
+  X: 174
+  "Y": 38
+  Dir: 3
+  Sprite: 939
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:858
+- Name: Priest Freya#ep18
+  X: 172
+  "Y": 36
+  Dir: 7
+  Sprite: 916
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:949
+- Name: Niren#ep18_in1
+  X: 170
+  "Y": 38
+  Dir: 5
+  Sprite: 915
+  State: Cloaked
+  DuplicateOf: dummy_cloaked_npc
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:1110
+- Name: Rachelite#ep18_in1
+  X: 171
+  "Y": 42
+  Dir: 5
+  Sprite: 919
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:1111
+- Name: Rachelite#ep18_in2
+  X: 173
+  "Y": 43
+  Dir: 3
+  Sprite: 930
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:1112
+- Name: Rachelite#ep18_in3
+  X: 175
+  "Y": 36
+  Dir: 0
+  Sprite: 940
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:1113
+- Name: Rachel Resident#ep18_in4
+  X: 170
+  "Y": 35
+  Dir: 1
+  Sprite: 945
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:1114
+- Name: Rachel Resident#ep18_in5
+  X: 174
+  "Y": 34
+  Dir: 3
+  Sprite: 929
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:1115
+- Name: Rachel Resident#ep18_in6
+  X: 177
+  "Y": 33
+  Dir: 5
+  Sprite: 921
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:1116
+- Name: Rachel Resident#ep18_in7
+  X: 173
+  "Y": 32
+  Dir: 0
+  Sprite: 917
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:1117
+- Name: Niren#ep18_in2
+  X: 213
+  "Y": 87
+  Dir: 3
+  Sprite: 915
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:1120
+- Name: Temple Knight#c12_02
+  X: 256
+  "Y": 130
+  Dir: 1
+  Sprite: 934
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:5363
+- Name: Miriam#c12_02
+  X: 254
+  "Y": 117
+  Dir: 5
+  Sprite: 10377
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:5384
+- Name: Elly's Figure#c12_02
+  X: 258
+  "Y": 117
+  Dir: 3
+  Sprite: 10354
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:5485
+- Name: Suad#c12last
+  X: 254
+  "Y": 114
+  Dir: 7
+  Sprite: 10378
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:5784
+- Name: Niren#c12last
+  X: 258
+  "Y": 114
+  Dir: 3
+  Sprite: 918
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:5793
+- Name: Maram#c12last
+  X: 259
+  "Y": 111
+  Dir: 1
+  Sprite: 10376
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:5798
+- Name: rachel30
+  X: 130
+  "Y": 93
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_temin
+    X: 239
+    "Y": 258
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:55
+- Name: rachel31
+  X: 206
+  "Y": 93
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_temin
+    X: 312
+    "Y": 258
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:56
+- Name: rachel32
+  X: 275
+  "Y": 332
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_temin
+    X: 27
+    "Y": 305
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:57
+- Name: rachel66
+  X: 169
+  "Y": 18
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_temple
+    X: 119
+    "Y": 175
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:97
+- Name: rachel67
+  X: 239
+  "Y": 253
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_temin
+    X: 130
+    "Y": 88
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:99
+- Name: rachel68
+  X: 312
+  "Y": 253
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_temin
+    X: 206
+    "Y": 88
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:100
+- Name: rachel69
+  X: 27
+  "Y": 299
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_temin
+    X: 275
+    "Y": 328
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/rachel.txt:101
+- Name: rachel87
+  X: 275
+  "Y": 243
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_temin
+    X: 131
+    "Y": 131
+    TriggerWhileHidden: true
+  Source: npc/re/warps/cities/rachel.txt:126

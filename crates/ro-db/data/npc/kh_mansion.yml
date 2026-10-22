@@ -1,0 +1,79 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Steward#kh
+  X: 78
+  "Y": 55
+  Dir: 5
+  Sprite: 109
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:3811
+- Name: Kiel Hyre#kh
+  X: 22
+  "Y": 28
+  Dir: 4
+  Sprite: 903
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:3913
+- Name: Allysia
+  X: 18
+  "Y": 30
+  Dir: 4
+  Sprite: 894
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:4685
+- Name: Mysterious Woman#kh
+  X: 25
+  "Y": 79
+  Dir: 4
+  Sprite: 727
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:4870
+- Name: Kiehl_Room_Warp
+  X: 27
+  "Y": 27
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:5155
+- Name: kh_mansion_01b
+  X: 88
+  "Y": 50
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lighthalzen
+    X: 188
+    "Y": 199
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:61
+- Name: kh_mansion_02
+  X: 21
+  "Y": 11
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_mansion
+    X: 72
+    "Y": 49
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:62

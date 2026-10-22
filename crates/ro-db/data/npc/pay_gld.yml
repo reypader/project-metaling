@@ -1,0 +1,321 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Repairman#pay_gld
+  X: 295
+  "Y": 183
+  Dir: 4
+  Sprite: 86
+  Kind: Script
+  Source: npc/merchants/refine.txt:1235
+- Name: Bright Arbor#1-2
+  X: 125
+  "Y": 236
+  Dir: 4
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA1
+  Kind: Script
+  Source: npc/guild/payg_cas01.txt:71
+- Name: Bright Arbor#2
+  X: 110
+  "Y": 233
+  Dir: 4
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA1
+  Kind: Script
+  Source: npc/guild/payg_cas01.txt:72
+- Name: Bright Arbor#3
+  X: 116
+  "Y": 233
+  Dir: 4
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA1
+  Kind: Script
+  Source: npc/guild/payg_cas01.txt:73
+- Name: Bright Arbor#4
+  X: 91
+  "Y": 239
+  Dir: 2
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA1
+  Kind: Script
+  Source: npc/guild/payg_cas01.txt:74
+- Name: Scarlet Palace#1-2
+  X: 292
+  "Y": 112
+  Dir: 6
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA2
+  Kind: Script
+  Source: npc/guild/payg_cas02.txt:72
+- Name: Scarlet Palace#2
+  X: 292
+  "Y": 120
+  Dir: 6
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA2
+  Kind: Script
+  Source: npc/guild/payg_cas02.txt:73
+- Name: Scarlet Palace#3
+  X: 291
+  "Y": 135
+  Dir: 6
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA2
+  Kind: Script
+  Source: npc/guild/payg_cas02.txt:74
+- Name: Scarlet Palace#4
+  X: 271
+  "Y": 163
+  Dir: 0
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA2
+  Kind: Script
+  Source: npc/guild/payg_cas02.txt:75
+- Name: Holy Shadow#1-2
+  X: 321
+  "Y": 298
+  Dir: 2
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA3
+  Kind: Script
+  Source: npc/guild/payg_cas03.txt:71
+- Name: Holy Shadow#2
+  X: 321
+  "Y": 289
+  Dir: 2
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA3
+  Kind: Script
+  Source: npc/guild/payg_cas03.txt:72
+- Name: Holy Shadow#3
+  X: 327
+  "Y": 304
+  Dir: 1
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA3
+  Kind: Script
+  Source: npc/guild/payg_cas03.txt:73
+- Name: Holy Shadow#4
+  X: 333
+  "Y": 254
+  Dir: 4
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA3
+  Kind: Script
+  Source: npc/guild/payg_cas03.txt:74
+- Name: Sacred Altar#1-2
+  X: 137
+  "Y": 160
+  Dir: 0
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA4
+  Kind: Script
+  Source: npc/guild/payg_cas04.txt:72
+- Name: Sacred Altar#2
+  X: 143
+  "Y": 160
+  Dir: 0
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA4
+  Kind: Script
+  Source: npc/guild/payg_cas04.txt:73
+- Name: Sacred Altar#3
+  X: 133
+  "Y": 151
+  Dir: 2
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA4
+  Kind: Script
+  Source: npc/guild/payg_cas04.txt:74
+- Name: Sacred Altar#4
+  X: 153
+  "Y": 166
+  Dir: 1
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA4
+  Kind: Script
+  Source: npc/guild/payg_cas04.txt:75
+- Name: Bamboo Grove Hill#1-2
+  X: 208
+  "Y": 268
+  Dir: 4
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA5
+  Kind: Script
+  Source: npc/guild/payg_cas05.txt:71
+- Name: Bamboo Grove Hill#2
+  X: 199
+  "Y": 268
+  Dir: 4
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA5
+  Kind: Script
+  Source: npc/guild/payg_cas05.txt:72
+- Name: Bamboo Grove Hill#3
+  X: 190
+  "Y": 277
+  Dir: 3
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA5
+  Kind: Script
+  Source: npc/guild/payg_cas05.txt:73
+- Name: Bamboo Grove Hill#4
+  X: 187
+  "Y": 294
+  Dir: 2
+  Sprite: 722
+  DuplicateOf: OutsideFlagsPA5
+  Kind: Script
+  Source: npc/guild/payg_cas05.txt:74
+- Name: payg01_payon-a
+  X: 374
+  "Y": 149
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: payon
+    X: 19
+    "Y": 143
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:229
+- Name: payg02_moc02a
+  X: 16
+  "Y": 276
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_fild02
+    X: 374
+    "Y": 272
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:230
+- Name: payg-1_payg-1-06
+  X: 121
+  "Y": 238
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: payg_cas01
+    X: 214
+    "Y": 48
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:231
+- Name: payg-2_payg-2-02
+  X: 291
+  "Y": 116
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: payg_cas02
+    X: 272
+    "Y": 57
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:232
+- Name: payg-3_payg-3-07
+  X: 323
+  "Y": 293
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: payg_cas03
+    X: 226
+    "Y": 26
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:233
+- Name: payg-4_payg-4-01
+  X: 140
+  "Y": 156
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: payg_cas04
+    X: 252
+    "Y": 271
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:234
+- Name: payg-5_payg-5-03
+  X: 204
+  "Y": 270
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: payg_cas05
+    X: 62
+    "Y": 227
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:235
+- Name: ClickClick MeowMeow-GX#2
+  X: 196
+  "Y": 176
+  Dir: 5
+  Sprite: 564
+  DuplicateOf: "#GldDungeonReward"
+  Kind: Script
+  Source: npc/re/merchants/gld_mission_exchange.txt:463
+- Name: Cat Paw Merchant Phecda
+  X: 203
+  "Y": 189
+  Dir: 3
+  Sprite: 549
+  DuplicateOf: Cat Paw Merchant Guild
+  Kind: Script
+  Source: npc/re/guild/invest_npc.txt:29
+- Name: Gate Manager#pay_f00
+  X: 206
+  "Y": 189
+  Dir: 3
+  Sprite: 421
+  DuplicateOf: Gate Manager#realm
+  Kind: Script
+  Source: npc/re/guild/invest_npc.txt:30
+- Name: Investment Status Board
+  UniqueName: InvestStatus_Pay
+  X: 200
+  "Y": 189
+  Dir: 5
+  Sprite: 857
+  DuplicateOf: Investment Status Board
+  Kind: Script
+  Source: npc/re/guild/invest_npc.txt:31
+- Name: Greenwood Lake Training Instructor#gqpayg
+  X: 198
+  "Y": 178
+  Dir: 5
+  Sprite: 899
+  DuplicateOf: gld_mission#core
+  Kind: Script
+  Source: npc/re/guild/mission_npc.txt:12

@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Bubbling Swamp#mos1
+  X: 153
+  "Y": 90
+  Dir: 3
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:3835
+- Name: Pile of skeletons#Magic
+  X: 225
+  "Y": 233
+  Dir: 0
+  Sprite: 111
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/quests/quests_moscovia.txt:6164
+- Name: Milestone#3-2
+  X: 27
+  "Y": 131
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/warps/dungeons/mosk_dun.txt:175
+- Name: Milestone#3-1
+  X: 119
+  "Y": 46
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/warps/dungeons/mosk_dun.txt:191

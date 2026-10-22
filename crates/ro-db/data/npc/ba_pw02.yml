@@ -1,0 +1,90 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: ???????????????#ep172_bapw2-00
+  X: 90
+  "Y": 93
+  Dir: 0
+  Sprite: 10043
+  Kind: Script
+  Source: npc/re/quests/quests_17_2.txt:13
+- Name: Dew#ep172_bapw2-00
+  X: 90
+  "Y": 93
+  Dir: 5
+  Sprite: 628
+  State: Cloaked
+  DuplicateOf: dummy_cloaked_npc
+  Kind: Script
+  Source: npc/re/quests/quests_17_2.txt:137
+- Name: Dew#ep172_bapw2-01
+  X: 93
+  "Y": 93
+  Dir: 3
+  Sprite: 628
+  State: Cloaked
+  DuplicateOf: dummy_cloaked_npc
+  Kind: Script
+  Source: npc/re/quests/quests_17_2.txt:138
+- Name: Lensis#jh_ba
+  X: 42
+  "Y": 267
+  Dir: 5
+  Sprite: 20629
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/re/quests/quests_17_2.txt:9514
+- Name: Elyumina#jh_ba1
+  X: 45
+  "Y": 267
+  Dir: 3
+  Sprite: 10301
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/quests_17_2.txt:9669
+- Name: Rookie#jh_ba1
+  X: 50
+  "Y": 264
+  Dir: 3
+  Sprite: 10181
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/quests_17_2.txt:9676
+- Name: Lazy#jh_ba1
+  X: 48
+  "Y": 262
+  Dir: 1
+  Sprite: 10179
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/quests_17_2.txt:9682
+- Name: "#ep172_pw2_to_pw1"
+  X: 7
+  "Y": 149
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/warps/other/ba_pw.txt:22
+- Name: "#ep172_pw2_to_cor"
+  X: 275
+  "Y": 15
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: sp_cor
+    X: 257
+    "Y": 285
+    TriggerWhileHidden: false
+  Source: npc/re/warps/other/ba_pw.txt:33

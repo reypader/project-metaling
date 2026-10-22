@@ -1,0 +1,364 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: A Girl#01
+  X: 260
+  "Y": 156
+  Dir: 6
+  Sprite: 668
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:230
+- Name: Doyen Irene#01
+  X: 268
+  "Y": 158
+  Dir: 4
+  Sprite: 684
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:385
+- Name: Strange Old Man#01
+  X: 260
+  "Y": 156
+  Dir: 4
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:397
+- Name: Mysterious Old Man#02
+  X: 260
+  "Y": 156
+  Dir: 4
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:409
+- Name: Sara Irene#01
+  X: 107
+  "Y": 325
+  Dir: 6
+  Sprite: 668
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:421
+- Name: Sara's Mother
+  X: 107
+  "Y": 325
+  Dir: 4
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:524
+- Name: Doyen Irene#02
+  X: 107
+  "Y": 325
+  Dir: 4
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:536
+- Name: Sara Irene#02
+  X: 152
+  "Y": 233
+  Dir: 6
+  Sprite: 668
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:548
+- Name: Doyen Irene#03
+  X: 152
+  "Y": 233
+  Dir: 4
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:607
+- Name: Doyen Irene#04
+  X: 156
+  "Y": 236
+  Dir: 4
+  Sprite: 684
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:619
+- Name: Sara Irene#03
+  X: 39
+  "Y": 142
+  Dir: 4
+  Sprite: 668
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:699
+- Name: ?????#01
+  X: 39
+  "Y": 142
+  Dir: 4
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:753
+- Name: Sara Irene#talk01
+  X: 97
+  "Y": 304
+  Dir: 6
+  Sprite: 668
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:765
+- Name: Sara Irene#talk02
+  X: 128
+  "Y": 296
+  Dir: 6
+  Sprite: 668
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:789
+- Name: Sara Irene#talk03
+  X: 124
+  "Y": 230
+  Dir: 6
+  Sprite: 668
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:813
+- Name: Sara Irene#talk04
+  X: 174
+  "Y": 227
+  Dir: 6
+  Sprite: 668
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:837
+- Name: Sara Irene#talk05
+  X: 203
+  "Y": 259
+  Dir: 6
+  Sprite: 668
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:861
+- Name: Sara Irene#talk06
+  X: 256
+  "Y": 279
+  Dir: 4
+  Sprite: 668
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:885
+- Name: Sara Irene#talk07
+  X: 228
+  "Y": 282
+  Dir: 6
+  Sprite: 668
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:909
+- Name: Sara Irene#talk08
+  X: 265
+  "Y": 253
+  Dir: 4
+  Sprite: 668
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:933
+- Name: Sara Irene#talk09
+  X: 230
+  "Y": 95
+  Dir: 6
+  Sprite: 668
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:957
+- Name: Sara Irene#talk10
+  X: 150
+  "Y": 60
+  Dir: 6
+  Sprite: 668
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:981
+- Name: Sara Irene#talk11
+  X: 105
+  "Y": 63
+  Dir: 6
+  Sprite: 668
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:1005
+- Name: Sara Irene#talk12
+  X: 184
+  "Y": 106
+  Dir: 6
+  Sprite: 668
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:1029
+- Name: Sara Irene#talk13
+  X: 164
+  "Y": 175
+  Dir: 4
+  Sprite: 668
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:1053
+- Name: "#MobsSara01"
+  X: 1
+  "Y": 1
+  Dir: 4
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:1078
+- Name: "#MobsSara02"
+  X: 1
+  "Y": 1
+  Dir: 4
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:1180
+- Name: "#MobsSara03"
+  X: 1
+  "Y": 1
+  Dir: 4
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:1228
+- Name: "#MobsSara04"
+  X: 1
+  "Y": 1
+  Dir: 4
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:1308
+- Name: "#BossSara01"
+  X: 1
+  "Y": 1
+  Dir: 4
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:1401
+- Name: "#BossSara02"
+  X: 1
+  "Y": 1
+  Dir: 4
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:1442
+- Name: "#sara_warp01"
+  X: 240
+  "Y": 145
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: 1@sara
+    X: 94
+    "Y": 320
+    TriggerWhileHidden: true
+  Source: npc/re/instances/SaraMemory.txt:1463
+- Name: "#sara_warp02"
+  X: 208
+  "Y": 250
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: 1@sara
+    X: 230
+    "Y": 311
+    TriggerWhileHidden: true
+  Source: npc/re/instances/SaraMemory.txt:1464
+- Name: "#sara_warp03"
+  X: 226
+  "Y": 190
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: 1@sara
+    X: 263
+    "Y": 94
+    TriggerWhileHidden: true
+  Source: npc/re/instances/SaraMemory.txt:1465
+- Name: "#sara_warp04"
+  X: 166
+  "Y": 67
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: 1@sara
+    X: 164
+    "Y": 81
+    TriggerWhileHidden: true
+  Source: npc/re/instances/SaraMemory.txt:1466
+- Name: "#sara_warp05"
+  X: 155
+  "Y": 180
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: 1@sara
+    X: 155
+    "Y": 196
+    TriggerWhileHidden: true
+  Source: npc/re/instances/SaraMemory.txt:1467
+- Name: "#sara_warp06"
+  X: 88
+  "Y": 188
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: 1@sara
+    X: 89
+    "Y": 175
+    TriggerWhileHidden: true
+  Source: npc/re/instances/SaraMemory.txt:1468
+- Name: "#sara_warp07"
+  X: 16
+  "Y": 143
+  Dir: 4
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/instances/SaraMemory.txt:1470

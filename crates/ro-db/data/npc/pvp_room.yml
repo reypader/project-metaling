@@ -1,0 +1,57 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Registration Staff#1
+  X: 54
+  "Y": 85
+  Dir: 4
+  Sprite: 105
+  Kind: Script
+  Source: npc/other/pvp.txt:324
+- Name: Spectator's Entrance#1
+  X: 62
+  "Y": 85
+  Dir: 4
+  Sprite: 105
+  DuplicateOf: PVPSpectator
+  Kind: Script
+  Source: npc/other/pvp.txt:392
+- Name: Spectator's Entrance#2
+  X: 70
+  "Y": 85
+  Dir: 4
+  Sprite: 105
+  DuplicateOf: PVPSpectator
+  Kind: Script
+  Source: npc/other/pvp.txt:393
+- Name: Spectator's Entrance#3
+  X: 78
+  "Y": 85
+  Dir: 4
+  Sprite: 105
+  DuplicateOf: PVPSpectator
+  Kind: Script
+  Source: npc/other/pvp.txt:394
+- Name: Spectator's Entrance#4
+  X: 86
+  "Y": 85
+  Dir: 4
+  Sprite: 105
+  DuplicateOf: PVPSpectator
+  Kind: Script
+  Source: npc/other/pvp.txt:395
+- Name: out#eventpvp
+  X: 51
+  "Y": 19
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 2
+  Kind: Script
+  Source: npc/other/pvp.txt:434

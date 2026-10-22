@@ -1,0 +1,101 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Inside Island#Aru
+  X: 21
+  "Y": 176
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:943
+- Name: Pass Out#Aru
+  X: 15
+  "Y": 61
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 2
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:1020
+- Name: Larjes#Monastery
+  X: 13
+  "Y": 58
+  Dir: 6
+  Sprite: 97
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:1098
+- Name: Creature#Monas
+  X: 13
+  "Y": 53
+  Dir: 1
+  Sprite: 1864
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 1
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:1109
+- Name: Out_from_Monastery
+  X: 12
+  "Y": 37
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:1132
+- Name: namelesswarp1004
+  X: 23
+  "Y": 128
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nameless_i
+    X: 249
+    "Y": 130
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/nameless.txt:20
+- Name: namelesswarp1006
+  X: 12
+  "Y": 169
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nameless_i
+    X: 82
+    "Y": 256
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/nameless.txt:22
+- Name: namelesswarp1008
+  X: 96
+  "Y": 177
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nameless_i
+    X: 81
+    "Y": 96
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/nameless.txt:24

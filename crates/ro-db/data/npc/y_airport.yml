@@ -1,0 +1,152 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Airport Staff#y_air1a
+  UniqueName: y_airport1
+  X: 143
+  "Y": 43
+  Dir: 5
+  Sprite: 90
+  Kind: Script
+  Source: npc/airports/yuno.txt:15
+- Name: Airport Staff#y_air1b
+  X: 158
+  "Y": 43
+  Dir: 5
+  Sprite: 90
+  DuplicateOf: y_airport1
+  Kind: Script
+  Source: npc/airports/yuno.txt:52
+- Name: Airport Staff#y_air1c
+  X: 126
+  "Y": 43
+  Dir: 5
+  Sprite: 90
+  DuplicateOf: y_airport1
+  Kind: Script
+  Source: npc/airports/yuno.txt:53
+- Name: Arrival Staff#y_air2a
+  UniqueName: y_airport2
+  X: 143
+  "Y": 49
+  Dir: 3
+  Sprite: 90
+  Kind: Script
+  Source: npc/airports/yuno.txt:55
+- Name: Arrival Staff#y_air2b
+  X: 126
+  "Y": 51
+  Dir: 3
+  Sprite: 90
+  DuplicateOf: y_airport2
+  Kind: Script
+  Source: npc/airports/yuno.txt:81
+- Name: Arrival Staff#y_air2c
+  X: 158
+  "Y": 50
+  Dir: 3
+  Sprite: 90
+  DuplicateOf: y_airport2
+  Kind: Script
+  Source: npc/airports/yuno.txt:82
+- Name: Domestic Boarding
+  X: 145
+  "Y": 63
+  Dir: 5
+  Sprite: 91
+  Kind: Script
+  Source: npc/airports/yuno.txt:84
+- Name: International Boarding
+  X: 140
+  "Y": 63
+  Dir: 5
+  Sprite: 91
+  Kind: Script
+  Source: npc/airports/yuno.txt:104
+- Name: jairp1
+  X: 125
+  "Y": 14
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: y_airport
+    X: 19
+    "Y": 20
+    TriggerWhileHidden: false
+  Source: npc/warps/other/airplane.txt:52
+- Name: jairp1a
+  X: 19
+  "Y": 18
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: y_airport
+    X: 123
+    "Y": 14
+    TriggerWhileHidden: false
+  Source: npc/warps/other/airplane.txt:53
+- Name: jairp2
+  X: 160
+  "Y": 14
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: y_airport
+    X: 48
+    "Y": 20
+    TriggerWhileHidden: false
+  Source: npc/warps/other/airplane.txt:54
+- Name: jairp2a
+  X: 48
+  "Y": 18
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: y_airport
+    X: 162
+    "Y": 14
+    TriggerWhileHidden: false
+  Source: npc/warps/other/airplane.txt:55
+- Name: jairp3a
+  X: 143
+  "Y": 16
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno
+    X: 52
+    "Y": 207
+    TriggerWhileHidden: false
+  Source: npc/warps/other/airplane.txt:57
+- Name: Crux#ep162_04
+  X: 168
+  "Y": 41
+  Dir: 3
+  Sprite: 10118
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:1033

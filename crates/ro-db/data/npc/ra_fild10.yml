@@ -1,0 +1,68 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Merchant#ep18_gorge
+  X: 179
+  "Y": 176
+  Dir: 5
+  Sprite: 10380
+  Kind: Script
+  Source: npc/re/instances/MazeofOz.txt:11
+- Name: "#Horim02"
+  X: 375
+  "Y": 293
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:10284
+- Name: "#Horim03"
+  X: 379
+  "Y": 282
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:10292
+- Name: Horim#ep1811
+  X: 375
+  "Y": 293
+  Dir: 5
+  Sprite: 930
+  State: Cloaked
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:10300
+- Name: Rope#to_oz_dun01_
+  X: 175
+  "Y": 179
+  Dir: 3
+  Sprite: 10024
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:12679
+- Name: ra024
+  X: 384
+  "Y": 287
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_fild11
+    X: 28
+    "Y": 290
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/rachel_fild.txt:42

@@ -1,0 +1,988 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Race Progress Timer
+  X: 58
+  "Y": 0
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/other/monster_race.txt:68
+- Name: Ticket Helper#single
+  X: 73
+  "Y": 22
+  Dir: 1
+  Sprite: 899
+  Kind: Script
+  Source: npc/other/monster_race.txt:151
+- Name: Runner No. 1#1
+  X: 30
+  "Y": 38
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 0
+  DuplicateOf: Runner_main
+  Kind: Script
+  Source: npc/other/monster_race.txt:249
+- Name: Runner No. 2#2
+  X: 30
+  "Y": 36
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 0
+  DuplicateOf: Runner_main
+  Kind: Script
+  Source: npc/other/monster_race.txt:250
+- Name: Runner No. 3#3
+  X: 30
+  "Y": 34
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 0
+  DuplicateOf: Runner_main
+  Kind: Script
+  Source: npc/other/monster_race.txt:251
+- Name: Runner No. 4#4
+  X: 30
+  "Y": 32
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 0
+  DuplicateOf: Runner_main
+  Kind: Script
+  Source: npc/other/monster_race.txt:252
+- Name: Runner No. 5#5
+  X: 30
+  "Y": 30
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 0
+  DuplicateOf: Runner_main
+  Kind: Script
+  Source: npc/other/monster_race.txt:253
+- Name: Runner No. 6#6
+  X: 30
+  "Y": 28
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 0
+  DuplicateOf: Runner_main
+  Kind: Script
+  Source: npc/other/monster_race.txt:254
+- Name: Medal Distributor#single
+  X: 67
+  "Y": 45
+  Dir: 5
+  Sprite: 845
+  Kind: Script
+  Source: npc/other/monster_race.txt:256
+- Name: Exit Guide#single
+  X: 76
+  "Y": 36
+  Dir: 1
+  Sprite: 798
+  Kind: Script
+  Source: npc/other/monster_race.txt:442
+- Name: Game Guide#single
+  X: 39
+  "Y": 49
+  Dir: 3
+  Sprite: 845
+  Kind: Script
+  Source: npc/other/monster_race.txt:670
+- Name: starting#1
+  X: 56
+  "Y": 38
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: starting_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:836
+- Name: starting#2
+  X: 56
+  "Y": 36
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: starting_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:837
+- Name: starting#3
+  X: 56
+  "Y": 34
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: starting_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:838
+- Name: starting#4
+  X: 56
+  "Y": 32
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: starting_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:839
+- Name: starting#5
+  X: 56
+  "Y": 30
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: starting_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:840
+- Name: starting#6
+  X: 56
+  "Y": 28
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: starting_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:841
+- Name: Luk1#1
+  X: 33
+  "Y": 38
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:843
+- Name: Luk1#2
+  X: 37
+  "Y": 38
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:844
+- Name: Luk1#3
+  X: 53
+  "Y": 38
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:845
+- Name: Luk1#4
+  X: 45
+  "Y": 38
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:846
+- Name: Luk2#1
+  X: 33
+  "Y": 36
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:847
+- Name: Luk2#2
+  X: 37
+  "Y": 36
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:848
+- Name: Luk2#3
+  X: 53
+  "Y": 36
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:849
+- Name: Luk2#4
+  X: 45
+  "Y": 36
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:850
+- Name: Luk3#1
+  X: 33
+  "Y": 34
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:851
+- Name: Luk3#2
+  X: 37
+  "Y": 34
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:852
+- Name: Luk3#3
+  X: 53
+  "Y": 34
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:853
+- Name: Luk3#4
+  X: 45
+  "Y": 34
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:854
+- Name: Luk4#1
+  X: 33
+  "Y": 32
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:855
+- Name: Luk4#2
+  X: 37
+  "Y": 32
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:856
+- Name: Luk4#3
+  X: 53
+  "Y": 32
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:857
+- Name: Luk4#4
+  X: 45
+  "Y": 32
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:858
+- Name: Luk5#1
+  X: 33
+  "Y": 30
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:859
+- Name: Luk5#2
+  X: 37
+  "Y": 30
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:860
+- Name: Luk5#3
+  X: 53
+  "Y": 30
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:861
+- Name: Luk5#4
+  X: 45
+  "Y": 30
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:862
+- Name: Luk6#1
+  X: 33
+  "Y": 28
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:863
+- Name: Luk6#2
+  X: 37
+  "Y": 28
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:864
+- Name: Luk6#3
+  X: 53
+  "Y": 28
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:865
+- Name: Luk6#4
+  X: 45
+  "Y": 28
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:866
+- Name: Luk1#5
+  X: 49
+  "Y": 38
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_2
+  Kind: Script
+  Source: npc/other/monster_race.txt:868
+- Name: Luk1#6
+  X: 41
+  "Y": 38
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_2
+  Kind: Script
+  Source: npc/other/monster_race.txt:869
+- Name: Luk2#5
+  X: 49
+  "Y": 36
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_2
+  Kind: Script
+  Source: npc/other/monster_race.txt:870
+- Name: Luk2#6
+  X: 41
+  "Y": 36
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_2
+  Kind: Script
+  Source: npc/other/monster_race.txt:871
+- Name: Luk3#5
+  X: 49
+  "Y": 34
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_2
+  Kind: Script
+  Source: npc/other/monster_race.txt:872
+- Name: Luk3#6
+  X: 41
+  "Y": 34
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_2
+  Kind: Script
+  Source: npc/other/monster_race.txt:873
+- Name: Luk4#5
+  X: 49
+  "Y": 32
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_2
+  Kind: Script
+  Source: npc/other/monster_race.txt:874
+- Name: Luk4#6
+  X: 41
+  "Y": 32
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_2
+  Kind: Script
+  Source: npc/other/monster_race.txt:875
+- Name: Luk5#5
+  X: 49
+  "Y": 30
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_2
+  Kind: Script
+  Source: npc/other/monster_race.txt:876
+- Name: Luk5#6
+  X: 41
+  "Y": 30
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_2
+  Kind: Script
+  Source: npc/other/monster_race.txt:877
+- Name: Luk6#5
+  X: 49
+  "Y": 28
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_2
+  Kind: Script
+  Source: npc/other/monster_race.txt:878
+- Name: Luk6#6
+  X: 41
+  "Y": 28
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Luk_2
+  Kind: Script
+  Source: npc/other/monster_race.txt:879
+- Name: Tire1#1
+  X: 43
+  "Y": 38
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:881
+- Name: Tire1#2
+  X: 39
+  "Y": 38
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:882
+- Name: Tire1#3
+  X: 35
+  "Y": 38
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:883
+- Name: Tire1#4
+  X: 55
+  "Y": 38
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:884
+- Name: Tire1#5
+  X: 51
+  "Y": 38
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:885
+- Name: Tire1#6
+  X: 47
+  "Y": 38
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:886
+- Name: Tire2#1
+  X: 43
+  "Y": 36
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:887
+- Name: Tire2#2
+  X: 39
+  "Y": 36
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:888
+- Name: Tire2#3
+  X: 35
+  "Y": 36
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:889
+- Name: Tire2#4
+  X: 55
+  "Y": 36
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:890
+- Name: Tire2#5
+  X: 51
+  "Y": 36
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:891
+- Name: Tire2#6
+  X: 47
+  "Y": 36
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:892
+- Name: Tire3#1
+  X: 43
+  "Y": 34
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:893
+- Name: Tire3#2
+  X: 39
+  "Y": 34
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:894
+- Name: Tire3#3
+  X: 35
+  "Y": 34
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:895
+- Name: Tire3#4
+  X: 55
+  "Y": 34
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:896
+- Name: Tire3#5
+  X: 51
+  "Y": 34
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:897
+- Name: Tire3#6
+  X: 47
+  "Y": 34
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:898
+- Name: Tire4#1
+  X: 43
+  "Y": 32
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:899
+- Name: Tire4#2
+  X: 39
+  "Y": 32
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:900
+- Name: Tire4#3
+  X: 35
+  "Y": 32
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:901
+- Name: Tire4#4
+  X: 55
+  "Y": 32
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:902
+- Name: Tire4#5
+  X: 51
+  "Y": 32
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:903
+- Name: Tire4#6
+  X: 47
+  "Y": 32
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:904
+- Name: Tire5#1
+  X: 43
+  "Y": 30
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:905
+- Name: Tire5#2
+  X: 39
+  "Y": 30
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:906
+- Name: Tire5#3
+  X: 35
+  "Y": 30
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:907
+- Name: Tire5#4
+  X: 55
+  "Y": 30
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:908
+- Name: Tire5#5
+  X: 51
+  "Y": 30
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:909
+- Name: Tire5#6
+  X: 47
+  "Y": 30
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:910
+- Name: Tire6#1
+  X: 43
+  "Y": 28
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:911
+- Name: Tire6#2
+  X: 39
+  "Y": 28
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:912
+- Name: Tire6#3
+  X: 35
+  "Y": 28
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:913
+- Name: Tire6#4
+  X: 55
+  "Y": 28
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:914
+- Name: Tire6#5
+  X: 51
+  "Y": 28
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:915
+- Name: Tire6#6
+  X: 47
+  "Y": 28
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Tire_1
+  Kind: Script
+  Source: npc/other/monster_race.txt:916
+- Name: Drunkard#single
+  X: 27
+  "Y": 47
+  Dir: 5
+  Sprite: 853
+  Kind: Script
+  Source: npc/other/monster_race.txt:2869
+- Name: Blacksmith Guildsman#sin
+  X: 69
+  "Y": 31
+  Dir: 1
+  Sprite: 107
+  Kind: Script
+  Source: npc/other/monster_race.txt:2888
+- Name: Absent Minded Man#single
+  X: 45
+  "Y": 42
+  Dir: 3
+  Sprite: 881
+  Kind: Script
+  Source: npc/other/monster_race.txt:2913

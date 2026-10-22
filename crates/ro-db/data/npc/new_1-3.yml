@@ -1,0 +1,68 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Adept Adventurer#new_1-3
+  X: 92
+  "Y": 169
+  Dir: 5
+  Sprite: 731
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:4926
+- Name: Friendly Poring#ac
+  X: 99
+  "Y": 169
+  Dir: 3
+  Sprite: 909
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:5071
+- Name: Ghostring#cupet
+  X: 108
+  "Y": 165
+  Dir: 3
+  Sprite: 950
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:5281
+- Name: Cowardly Poring#pet_1
+  X: 105
+  "Y": 165
+  Dir: 5
+  Sprite: 2398
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:5289
+- Name: Unskilled Poring#pet_2
+  X: 105
+  "Y": 164
+  Dir: 5
+  Sprite: 2398
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:5290
+- Name: Foolish Poring#pet_3
+  X: 105
+  "Y": 163
+  Dir: 5
+  Sprite: 2398
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:5291
+- Name: "#to_ac01-2"
+  X: 96
+  "Y": 176
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: iz_ac01
+    X: 49
+    "Y": 73
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:123

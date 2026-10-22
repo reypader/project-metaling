@@ -1,0 +1,116 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Krotzel#1
+  X: 79
+  "Y": 31
+  Dir: 4
+  Sprite: 893
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:1890
+- Name: Photo Journalist#1
+  X: 134
+  "Y": 169
+  Dir: 4
+  Sprite: 702
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:2042
+- Name: Strewn paper#e152a01
+  X: 60
+  "Y": 30
+  Dir: 1
+  Sprite: 10043
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:2380
+- Name: Strewn paper#e152a02
+  X: 178
+  "Y": 32
+  Dir: 3
+  Sprite: 10043
+  DuplicateOf: Strewn paper#e152a01
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:2449
+- Name: Strewn paper#e152a03
+  X: 102
+  "Y": 135
+  Dir: 3
+  Sprite: 10043
+  DuplicateOf: Strewn paper#e152a01
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:2450
+- Name: Strewn paper#e152a04
+  X: 42
+  "Y": 37
+  Dir: 3
+  Sprite: 10043
+  DuplicateOf: Strewn paper#e152a01
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:2451
+- Name: Strewn paper#e152a05
+  X: 155
+  "Y": 64
+  Dir: 3
+  Sprite: 10043
+  DuplicateOf: Strewn paper#e152a01
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:2452
+- Name: Strewn paper#e152a06
+  X: 80
+  "Y": 129
+  Dir: 3
+  Sprite: 10043
+  DuplicateOf: Strewn paper#e152a01
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:2453
+- Name: Strewn paper#e152a07
+  X: 29
+  "Y": 129
+  Dir: 3
+  Sprite: 10043
+  DuplicateOf: Strewn paper#e152a01
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:2454
+- Name: Strewn paper#e152a08
+  X: 125
+  "Y": 85
+  Dir: 3
+  Sprite: 10043
+  DuplicateOf: Strewn paper#e152a01
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:2455
+- Name: Strewn paper#e152a09
+  X: 51
+  "Y": 237
+  Dir: 3
+  Sprite: 10043
+  DuplicateOf: Strewn paper#e152a01
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:2456
+- Name: Strewn paper#e152a10
+  X: 160
+  "Y": 150
+  Dir: 3
+  Sprite: 10043
+  DuplicateOf: Strewn paper#e152a01
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:2457
+- Name: verus02_to_verus03
+  X: 72
+  "Y": 16
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: verus03
+    X: 169
+    "Y": 255
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/verus.txt:15

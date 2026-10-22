@@ -1,0 +1,938 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: mazewarp5101
+  X: 22
+  "Y": 194
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 16
+    "Y": 31
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:18
+- Name: mazewarp5102
+  X: 5
+  "Y": 186
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 182
+    "Y": 88
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:19
+- Name: mazewarp5103
+  X: 58
+  "Y": 194
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 23
+    "Y": 128
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:21
+- Name: mazewarp5104
+  X: 102
+  "Y": 165
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 99
+    "Y": 31
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:23
+- Name: mazewarp5105
+  X: 85
+  "Y": 174
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze02
+    X: 93
+    "Y": 20
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:24
+- Name: mazewarp5106
+  X: 154
+  "Y": 181
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 191
+    "Y": 175
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:26
+- Name: mazewarp5107
+  X: 125
+  "Y": 171
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 8
+    "Y": 186
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:27
+- Name: mazewarp5108
+  X: 175
+  "Y": 165
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 48
+    "Y": 104
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:29
+- Name: mazewarp5109
+  X: 194
+  "Y": 175
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 23
+    "Y": 128
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:30
+- Name: mazewarp5110
+  X: 18
+  "Y": 154
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 177
+    "Y": 71
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:32
+- Name: mazewarp5111
+  X: 23
+  "Y": 125
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 151
+    "Y": 22
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:33
+- Name: mazewarp5112
+  X: 5
+  "Y": 140
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 58
+    "Y": 48
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:34
+- Name: mazewarp5113
+  X: 54
+  "Y": 154
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 191
+    "Y": 175
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:36
+- Name: mazewarp5114
+  X: 63
+  "Y": 125
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 182
+    "Y": 88
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:37
+- Name: mazewarp5115
+  X: 98
+  "Y": 154
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 102
+    "Y": 168
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:39
+- Name: mazewarp5116
+  X: 114
+  "Y": 145
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 23
+    "Y": 128
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:40
+- Name: mazewarp5117
+  X: 85
+  "Y": 146
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 142
+    "Y": 111
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:41
+- Name: mazewarp5118
+  X: 137
+  "Y": 125
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 191
+    "Y": 139
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:43
+- Name: mazewarp5119
+  X: 154
+  "Y": 134
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 58
+    "Y": 191
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:44
+- Name: mazewarp5120
+  X: 194
+  "Y": 139
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 22
+    "Y": 88
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:46
+- Name: mazewarp5121
+  X: 166
+  "Y": 139
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 128
+    "Y": 173
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:47
+- Name: mazewarp5122
+  X: 17
+  "Y": 114
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 8
+    "Y": 186
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:49
+- Name: mazewarp5123
+  X: 22
+  "Y": 85
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 137
+    "Y": 128
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:50
+- Name: mazewarp5124
+  X: 63
+  "Y": 114
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 111
+    "Y": 56
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:52
+- Name: mazewarp5125
+  X: 63
+  "Y": 85
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 151
+    "Y": 22
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:53
+- Name: mazewarp5126
+  X: 74
+  "Y": 97
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 71
+    "Y": 11
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:54
+- Name: mazewarp5127
+  X: 45
+  "Y": 104
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 63
+    "Y": 128
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:55
+- Name: mazewarp5128
+  X: 105
+  "Y": 114
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 111
+    "Y": 145
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:57
+- Name: mazewarp5129
+  X: 114
+  "Y": 95
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 14
+    "Y": 48
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:58
+- Name: mazewarp5130
+  X: 85
+  "Y": 97
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 63
+    "Y": 128
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:59
+- Name: mazewarp5131
+  X: 142
+  "Y": 114
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 23
+    "Y": 128
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:61
+- Name: mazewarp5132
+  X: 125
+  "Y": 105
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 14
+    "Y": 48
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:62
+- Name: mazewarp5133
+  X: 182
+  "Y": 85
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 58
+    "Y": 48
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:64
+- Name: mazewarp5134
+  X: 194
+  "Y": 94
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 58
+    "Y": 191
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:65
+- Name: mazewarp5135
+  X: 168
+  "Y": 94
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 191
+    "Y": 139
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:66
+- Name: mazewarp5136
+  X: 14
+  "Y": 74
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 151
+    "Y": 22
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:68
+- Name: mazewarp5137
+  X: 14
+  "Y": 45
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mjolnir_12
+    X: 44
+    "Y": 21
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:69
+- Name: mazewarp5138
+  X: 5
+  "Y": 58
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 48
+    "Y": 104
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:70
+- Name: mazewarp5139
+  X: 74
+  "Y": 74
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 58
+    "Y": 191
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:72
+- Name: mazewarp5140
+  X: 52
+  "Y": 45
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 139
+    "Y": 48
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:73
+- Name: mazewarp5141
+  X: 104
+  "Y": 74
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 14
+    "Y": 48
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:75
+- Name: mazewarp5142
+  X: 96
+  "Y": 45
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 63
+    "Y": 128
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:76
+- Name: mazewarp5143
+  X: 114
+  "Y": 56
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 176
+    "Y": 8
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:77
+- Name: mazewarp5144
+  X: 85
+  "Y": 56
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 105
+    "Y": 111
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:78
+- Name: mazewarp5145
+  X: 137
+  "Y": 74
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 182
+    "Y": 88
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:80
+- Name: mazewarp5146
+  X: 139
+  "Y": 45
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 71
+    "Y": 11
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:81
+- Name: mazewarp5147
+  X: 177
+  "Y": 74
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_fild01
+    X: 136
+    "Y": 368
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:83
+- Name: mazewarp5148
+  X: 175
+  "Y": 45
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 58
+    "Y": 48
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:84
+- Name: mazewarp5149
+  X: 194
+  "Y": 54
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 99
+    "Y": 31
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:85
+- Name: mazewarp5150
+  X: 16
+  "Y": 34
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 128
+    "Y": 173
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:87
+- Name: mazewarp5151
+  X: 23
+  "Y": 5
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 176
+    "Y": 8
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:88
+- Name: mazewarp5152
+  X: 54
+  "Y": 5
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 128
+    "Y": 173
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:90
+- Name: mazewarp5153
+  X: 74
+  "Y": 12
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 58
+    "Y": 48
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:91
+- Name: mazewarp5154
+  X: 45
+  "Y": 21
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 142
+    "Y": 111
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:92
+- Name: mazewarp5155
+  X: 99
+  "Y": 34
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 137
+    "Y": 128
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:94
+- Name: mazewarp5156
+  X: 114
+  "Y": 22
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 177
+    "Y": 71
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:95
+- Name: mazewarp5157
+  X: 85
+  "Y": 13
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 22
+    "Y": 88
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:96
+- Name: mazewarp5158
+  X: 154
+  "Y": 22
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 139
+    "Y": 48
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:98
+- Name: mazewarp5159
+  X: 176
+  "Y": 34
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 8
+    "Y": 186
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:100
+- Name: mazewarp5160
+  X: 176
+  "Y": 5
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 137
+    "Y": 128
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:101
+- Name: mazewarp5161
+  X: 194
+  "Y": 15
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 52
+    "Y": 48
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:102
+- Name: mazewarp5162
+  X: 165
+  "Y": 22
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_maze01
+    X: 63
+    "Y": 128
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/prt_maze.txt:103

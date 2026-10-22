@@ -1,0 +1,277 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Armor Dealer#ama
+  X: 89
+  "Y": 28
+  Dir: 5
+  Sprite: 757
+  Kind: Shop
+  Source: npc/merchants/shops.txt:67
+- Name: Weapon Dealer#ama
+  X: 102
+  "Y": 28
+  Dir: 3
+  Sprite: 766
+  Kind: Shop
+  Source: npc/merchants/shops.txt:68
+- Name: Tool Dealer#ama
+  X: 24
+  "Y": 30
+  Dir: 5
+  Sprite: 763
+  Kind: Shop
+  Source: npc/merchants/shops.txt:69
+- Name: Sushi Master#ama
+  X: 162
+  "Y": 17
+  Dir: 1
+  Sprite: 765
+  Kind: Script
+  Source: npc/quests/quests_amatsu.txt:794
+- Name: Grandma#ama2
+  X: 22
+  "Y": 111
+  Dir: 0
+  Sprite: 761
+  Kind: Script
+  Source: npc/quests/quests_amatsu.txt:1916
+- Name: Shaman#ama
+  X: 169
+  "Y": 173
+  Dir: 1
+  Sprite: 769
+  Kind: Script
+  Source: npc/quests/quests_amatsu.txt:2122
+- Name: Kitsune Mask#ama
+  X: 180
+  "Y": 173
+  Dir: 3
+  Sprite: 762
+  Kind: Script
+  Source: npc/quests/quests_amatsu.txt:2143
+- Name: ama_house1-2
+  X: 31
+  "Y": 176
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: amatsu
+    X: 180
+    "Y": 138
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/amatsu.txt:19
+- Name: ama_house2-2
+  X: 76
+  "Y": 178
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: amatsu
+    X: 245
+    "Y": 160
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/amatsu.txt:21
+- Name: ama_warrior1-2
+  X: 34
+  "Y": 96
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: amatsu
+    X: 168
+    "Y": 179
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/amatsu.txt:23
+- Name: ama_deluxe1-2
+  X: 88
+  "Y": 94
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: amatsu
+    X: 52
+    "Y": 145
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/amatsu.txt:25
+- Name: ama_tools1-2
+  X: 33
+  "Y": 24
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: amatsu
+    X: 97
+    "Y": 117
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/amatsu.txt:27
+- Name: ama_weapon1-2
+  X: 86
+  "Y": 23
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: amatsu
+    X: 129
+    "Y": 117
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/amatsu.txt:29
+- Name: ama_tavern1-2
+  X: 157
+  "Y": 25
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: amatsu
+    X: 214
+    "Y": 116
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/amatsu.txt:31
+- Name: ama_inn1-1
+  X: 166
+  "Y": 73
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ama_in01
+    X: 162
+    "Y": 31
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/amatsu.txt:32
+- Name: ama_inn1-2
+  X: 162
+  "Y": 34
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ama_in01
+    X: 166
+    "Y": 77
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/amatsu.txt:33
+- Name: ama_shrine1.2
+  X: 175
+  "Y": 171
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ama_fild01
+    X: 174
+    "Y": 328
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/amatsu_fild.txt:19
+- Name: ama_craftsman1.2
+  X: 174
+  "Y": 121
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ama_fild01
+    X: 330
+    "Y": 138
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/amatsu_fild.txt:21
+- Name: Tool Dealer#Extended_Ama
+  X: 24
+  "Y": 30
+  Dir: 5
+  Sprite: 763
+  Kind: Shop
+  Source: npc/re/merchants/Dealer_Update.txt:148
+- Name: Arrow Merchant#over_arrow_16
+  X: 100
+  "Y": 17
+  Dir: 3
+  Sprite: 634
+  DuplicateOf: "#over_arrow"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:362
+- Name: Ammunition Merchant#over_bullet_16
+  X: 100
+  "Y": 19
+  Dir: 3
+  Sprite: 633
+  DuplicateOf: "#over_bullet"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:363
+- Name: Ninja Tool Merchant#over_kunai_16
+  X: 100
+  "Y": 21
+  Dir: 3
+  Sprite: 636
+  DuplicateOf: "#over_kunai"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:364
+- Name: Mado Gear Merchant#over_madogear_16
+  X: 100
+  "Y": 23
+  Dir: 2
+  Sprite: 10004
+  DuplicateOf: "#over_madogear"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:365
+- Name: Talisman Merchant#over_talisman_16
+  X: 100
+  "Y": 25
+  Dir: 2
+  Sprite: 10234
+  DuplicateOf: "#over_talisman"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:366
+- Name: Gemstone Bagger#04
+  X: 20
+  "Y": 26
+  Dir: 5
+  Sprite: 763
+  DuplicateOf: "#GemstoneBagger"
+  Kind: Script
+  Source: npc/re/merchants/Gemstone_Bagger.txt:35

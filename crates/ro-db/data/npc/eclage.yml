@@ -1,0 +1,241 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#ep14_2Bridge"
+  X: 101
+  "Y": 29
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:470
+- Name: Fairy Carpenter#ep14_2
+  X: 102
+  "Y": 32
+  Dir: 4
+  Sprite: 443
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:488
+- Name: Glaces#ep14_2
+  X: 283
+  "Y": 275
+  Dir: 4
+  Sprite: 438
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:883
+- Name: Yube#ep14_2
+  X: 191
+  "Y": 200
+  Dir: 4
+  Sprite: 446
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:1307
+- Name: Shul#ep14_2
+  X: 265
+  "Y": 166
+  Dir: 4
+  Sprite: 443
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:1566
+- Name: Tato#ep14_2
+  X: 137
+  "Y": 169
+  Dir: 4
+  Sprite: 439
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:1593
+- Name: Moreng#ep14_2
+  X: 266
+  "Y": 216
+  Dir: 4
+  Sprite: 444
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:1622
+- Name: "#ep14_2Yube Entrance"
+  X: 292
+  "Y": 265
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:2196
+- Name: Wuhari#eclbig
+  X: 282
+  "Y": 255
+  Dir: 4
+  Sprite: 620
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:2742
+- Name: Masione#eclbig
+  X: 200
+  "Y": 272
+  Dir: 4
+  Sprite: 437
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:3535
+- Name: Goatie#eclbig
+  X: 163
+  "Y": 228
+  Dir: 4
+  Sprite: 438
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:3579
+- Name: Svery#eclbig
+  X: 170
+  "Y": 195
+  Dir: 4
+  Sprite: 443
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:3662
+- Name: Pompe#eclbig
+  X: 126
+  "Y": 151
+  Dir: 4
+  Sprite: 444
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:3777
+- Name: Wutapoa#eclbig
+  X: 101
+  "Y": 130
+  Dir: 5
+  Sprite: 435
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:4104
+- Name: Markoza#eclbig
+  X: 106
+  "Y": 61
+  Dir: 4
+  Sprite: 444
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:4128
+- Name: "#hidden_eclage"
+  X: 156
+  "Y": 51
+  Dir: 6
+  Sprite: 111
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:4314
+- Name: Cruyan#eclage
+  X: 164
+  "Y": 102
+  Dir: 3
+  Sprite: 442
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:5461
+- Name: Wandering Merchant#ecl
+  X: 222
+  "Y": 131
+  Dir: 3
+  Sprite: 807
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:5710
+- Name: Residence entrance#e_prt
+  X: 156
+  "Y": 56
+  Dir: 3
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:6979
+- Name: "#pa0829RobertExteriTouch"
+  X: 291
+  "Y": 301
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:10164
+- Name: "#pa0829Hiel's Door10"
+  X: 155
+  "Y": 91
+  Dir: 4
+  Sprite: 836
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:10409
+- Name: Eclage Guard Leo#tl
+  X: 112
+  "Y": 40
+  Dir: 3
+  Sprite: 461
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:15453
+- Name: Laphines Conversation#tl
+  X: 274
+  "Y": 294
+  Dir: 5
+  Sprite: 436
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:16111
+- Name: Eclage Resident#tl02
+  X: 275
+  "Y": 294
+  Dir: 3
+  Sprite: 445
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:16143
+- Name: "#Hisie01"
+  X: 280
+  "Y": 290
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 0
+    "Y": 3
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:16660
+- Name: Normal Yai#tllb
+  X: 307
+  "Y": 237
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:16682
+- Name: eclageS_EclEnter
+  X: 98
+  "Y": 26
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ecl_fild01
+    X: 99
+    "Y": 317
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/eclage.txt:22
+- Name: eclageN_in01s
+  X: 299
+  "Y": 309
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ecl_in01
+    X: 47
+    "Y": 11
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/eclage.txt:23

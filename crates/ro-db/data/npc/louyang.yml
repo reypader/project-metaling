@@ -1,0 +1,396 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Muscular Woman#lou
+  X: 297
+  "Y": 167
+  Dir: 2
+  Sprite: 815
+  Kind: Script
+  Source: npc/cities/louyang.txt:140
+- Name: Powerful-looking guy#lou
+  X: 274
+  "Y": 136
+  Dir: 4
+  Sprite: 819
+  Kind: Script
+  Source: npc/cities/louyang.txt:163
+- Name: Fist master#lou
+  X: 276
+  "Y": 136
+  Dir: 4
+  Sprite: 819
+  Kind: Script
+  Source: npc/cities/louyang.txt:185
+- Name: Trainee#1lou
+  UniqueName: LouTrainee
+  X: 276
+  "Y": 133
+  Dir: 0
+  Sprite: 819
+  Kind: Script
+  Source: npc/cities/louyang.txt:210
+- Name: Trainee#2lou
+  X: 276
+  "Y": 131
+  Dir: 0
+  Sprite: 819
+  Kind: Script
+  Source: npc/cities/louyang.txt:218
+- Name: Trainee#3lou
+  X: 276
+  "Y": 129
+  Dir: 0
+  Sprite: 819
+  Kind: Script
+  Source: npc/cities/louyang.txt:226
+- Name: Trainee#4lou
+  X: 274
+  "Y": 133
+  Dir: 0
+  Sprite: 819
+  Kind: Script
+  Source: npc/cities/louyang.txt:233
+- Name: Trainee#5lou
+  X: 274
+  "Y": 131
+  Dir: 0
+  Sprite: 819
+  Kind: Script
+  Source: npc/cities/louyang.txt:241
+- Name: Trainee#6lou
+  X: 274
+  "Y": 129
+  Dir: 0
+  Sprite: 819
+  Kind: Script
+  Source: npc/cities/louyang.txt:249
+- Name: Trainee#7lou
+  X: 278
+  "Y": 133
+  Dir: 0
+  Sprite: 819
+  DuplicateOf: LouTrainee
+  Kind: Script
+  Source: npc/cities/louyang.txt:257
+- Name: Trainee#8lou
+  X: 278
+  "Y": 131
+  Dir: 0
+  Sprite: 819
+  DuplicateOf: LouTrainee
+  Kind: Script
+  Source: npc/cities/louyang.txt:258
+- Name: Trainee#9lou
+  X: 278
+  "Y": 129
+  Dir: 0
+  Sprite: 819
+  DuplicateOf: LouTrainee
+  Kind: Script
+  Source: npc/cities/louyang.txt:259
+- Name: Trainee#10lou
+  X: 272
+  "Y": 133
+  Dir: 0
+  Sprite: 819
+  DuplicateOf: LouTrainee
+  Kind: Script
+  Source: npc/cities/louyang.txt:260
+- Name: Trainee#11lou
+  X: 272
+  "Y": 131
+  Dir: 0
+  Sprite: 819
+  DuplicateOf: LouTrainee
+  Kind: Script
+  Source: npc/cities/louyang.txt:261
+- Name: Trainee#12lou
+  X: 272
+  "Y": 129
+  Dir: 0
+  Sprite: 819
+  DuplicateOf: LouTrainee
+  Kind: Script
+  Source: npc/cities/louyang.txt:262
+- Name: Exit#lou
+  X: 84
+  "Y": 254
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/cities/louyang.txt:309
+- Name: Kafra Employee
+  UniqueName: kaf_louyang
+  X: 210
+  "Y": 104
+  Dir: 5
+  Sprite: 116
+  Kind: Script
+  Source: npc/kafras/kafras.txt:561
+- Name: Chef Assistant#lou
+  X: 256
+  "Y": 123
+  Dir: 5
+  Sprite: 820
+  Kind: Shop
+  Source: npc/merchants/shops.txt:301
+- Name: Mailbox#lou
+  X: 204
+  "Y": 100
+  Dir: 0
+  Sprite: 888
+  DuplicateOf: MailBox
+  Kind: Script
+  Source: npc/other/mail.txt:127
+- Name: Chi Wu Ping#lou
+  X: 261
+  "Y": 123
+  Dir: 3
+  Sprite: 824
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:1027
+- Name: Jiu Chi Ling#lou
+  X: 174
+  "Y": 150
+  Dir: 5
+  Sprite: 815
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:1061
+- Name: Storage Warp#1
+  X: 129
+  "Y": 121
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_in02
+    X: 203
+    "Y": 161
+    TriggerWhileHidden: false
+  Source: npc/quests/quests_louyang.txt:2412
+- Name: Storage Warp#2
+  X: 125
+  "Y": 121
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_in02
+    X: 198
+    "Y": 161
+    TriggerWhileHidden: false
+  Source: npc/quests/quests_louyang.txt:2413
+- Name: " #lou_path"
+  X: 217
+  "Y": 278
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:4329
+- Name: lou_fild1-1
+  X: 218
+  "Y": 19
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_fild01
+    X: 233
+    "Y": 353
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:16
+- Name: lou_palace1-1
+  X: 218
+  "Y": 255
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_in01
+    X: 101
+    "Y": 122
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:18
+- Name: lou_pub1-1
+  X: 280
+  "Y": 167
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_in02
+    X: 58
+    "Y": 173
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:22
+- Name: lou_weapon1-1
+  X: 145
+  "Y": 174
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_in02
+    X: 126
+    "Y": 168
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:28
+- Name: lou_tool1-1
+  X: 136
+  "Y": 97
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_in02
+    X: 247
+    "Y": 171
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:30
+- Name: lou_hospital1-1
+  X: 263
+  "Y": 93
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_in02
+    X: 245
+    "Y": 59
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:32
+- Name: lou_office1-1
+  X: 309
+  "Y": 80
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_in02
+    X: 189
+    "Y": 77
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:34
+- Name: lou_house11-1
+  X: 130
+  "Y": 63
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_in02
+    X: 72
+    "Y": 31
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:38
+- Name: lou_house21-1
+  X: 317
+  "Y": 176
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_in02
+    X: 121
+    "Y": 31
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:40
+- Name: lou_tower1-1
+  X: 133
+  "Y": 245
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_in01
+    X: 25
+    "Y": 19
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:42
+- Name: lou_dun1-1
+  X: 37
+  "Y": 271
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_dun01
+    X: 218
+    "Y": 195
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/lou_dun.txt:16
+- Name: Luoyang Guide#01louyang
+  X: 224
+  "Y": 104
+  Dir: 4
+  Sprite: 818
+  Kind: Script
+  Source: npc/re/guides/guides_louyang.txt:17
+- Name: Guild Warehouse Manager#louyang
+  X: 210
+  "Y": 111
+  Dir: 5
+  Sprite: 896
+  DuplicateOf: GuildWarehouse
+  Kind: Script
+  Source: npc/re/merchants/guild_warehouse.txt:100
+- Name: Signpost#Luoyang Dungeon
+  X: 37
+  "Y": 276
+  Dir: 0
+  Sprite: 837
+  Kind: Script
+  Source: npc/re/other/adven_boards.txt:2993
+- Name: Eden Teleport Officer#24
+  X: 224
+  "Y": 107
+  Dir: 3
+  Sprite: 729
+  DuplicateOf: eto
+  Kind: Script
+  Source: npc/re/quests/eden/eden_common.txt:264

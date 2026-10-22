@@ -1,0 +1,196 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Mysterious Man#magum
+  X: 218
+  "Y": 283
+  Dir: 2
+  Sprite: 89
+  Kind: Script
+  Source: npc/quests/doomed_swords.txt:257
+- Name: "#wp120029"
+  X: 237
+  "Y": 345
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:228
+- Name: "#tr120029"
+  X: 237
+  "Y": 345
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:489
+- Name: Acolyte#tu
+  X: 40
+  "Y": 83
+  Dir: 5
+  Sprite: 95
+  DuplicateOf: Acolyte_Tu
+  Kind: Script
+  Source: npc/re/quests/first_class/tu_archer.txt:17
+- Name: Mushroom Spores
+  X: 188
+  "Y": 153
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_dicastes.txt:1166
+- Name: Lady Harvesting Herbs#2
+  X: 153
+  "Y": 83
+  Dir: 1
+  Sprite: 76
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6592
+- Name: Wrecked Cart#JQ_SH
+  X: 161
+  "Y": 129
+  Dir: 5
+  Sprite: 10390
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/jobs/doram/spirit_handler.txt:181
+- Name: Lee Daegam#JQ_SH_1
+  X: 152
+  "Y": 129
+  Dir: 5
+  Sprite: 120
+  State: Cloaked
+  DuplicateOf: dummy_cloaked_npc
+  Kind: Script
+  Source: npc/re/jobs/doram/spirit_handler.txt:182
+- Name: Carpenter Firewood#JQ_SH
+  X: 157
+  "Y": 129
+  Dir: 3
+  Sprite: 63
+  Kind: Script
+  Source: npc/re/jobs/doram/spirit_handler.txt:184
+- Name: Chulho#JQ_SH_1
+  X: 153
+  "Y": 129
+  Dir: 5
+  Sprite: 10429
+  State: Cloaked
+  DuplicateOf: dummy_cloaked_npc
+  Kind: Script
+  Source: npc/re/jobs/doram/spirit_handler.txt:406
+- Name: Chulho#JQ_SH_1_1
+  X: 153
+  "Y": 129
+  Dir: 5
+  Sprite: 10439
+  State: Cloaked
+  DuplicateOf: dummy_cloaked_npc
+  Kind: Script
+  Source: npc/re/jobs/doram/spirit_handler.txt:407
+- Name: Broken Tools#JQ_SH
+  X: 155
+  "Y": 128
+  Dir: 3
+  Sprite: 10025
+  Kind: Script
+  Source: npc/re/jobs/doram/spirit_handler.txt:409
+- Name: Clutter Traces#JQ_SH1
+  X: 153
+  "Y": 116
+  Dir: 3
+  Sprite: 557
+  Kind: Script
+  Source: npc/re/jobs/doram/spirit_handler.txt:548
+- Name: Clutter Traces#JQ_SH2
+  X: 137
+  "Y": 88
+  Dir: 3
+  Sprite: 557
+  Kind: Script
+  Source: npc/re/jobs/doram/spirit_handler.txt:578
+- Name: ???#JQ_SH_1
+  X: 165
+  "Y": 70
+  Dir: 6
+  Sprite: 10429
+  State: Cloaked
+  DuplicateOf: dummy_cloaked_npc
+  Kind: Script
+  Source: npc/re/jobs/doram/spirit_handler.txt:608
+- Name: Clutter Traces#JQ_SH3
+  X: 165
+  "Y": 68
+  Dir: 3
+  Sprite: 557
+  Kind: Script
+  Source: npc/re/jobs/doram/spirit_handler.txt:610
+- Name: ???#JQ_SH_2
+  X: 213
+  "Y": 91
+  Dir: 6
+  Sprite: 10429
+  State: Cloaked
+  DuplicateOf: dummy_cloaked_npc
+  Kind: Script
+  Source: npc/re/jobs/doram/spirit_handler.txt:651
+- Name: Clutter Traces#JQ_SH4
+  X: 214
+  "Y": 89
+  Dir: 3
+  Sprite: 557
+  Kind: Script
+  Source: npc/re/jobs/doram/spirit_handler.txt:653
+- Name: payf11-1
+  X: 160
+  "Y": 16
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: pay_fild07
+    X: 280
+    "Y": 379
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/payon_fild.txt:41
+- Name: payf006
+  X: 17
+  "Y": 75
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: payon
+    X: 265
+    "Y": 92
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/payon_fild.txt:42
+- Name: payf13
+  X: 262
+  "Y": 91
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 4
+  Kind: Warp
+  Warp:
+    Map: pay_fild09
+    X: 19
+    "Y": 91
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/payon_fild.txt:43

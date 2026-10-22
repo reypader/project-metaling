@@ -1,0 +1,115 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Minilover#arena
+  X: 99
+  "Y": 20
+  Dir: 4
+  Sprite: 124
+  Kind: Script
+  Source: npc/other/arena/arena_lvl60.txt:38
+- Name: force_08_01#60
+  X: 62
+  "Y": 26
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl60.txt:304
+- Name: force_01_02#60
+  X: 25
+  "Y": 44
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl60.txt:311
+- Name: force_02_03#60
+  X: 25
+  "Y": 134
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl60.txt:318
+- Name: force_03_04#60
+  X: 44
+  "Y": 174
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl60.txt:326
+- Name: force_04_05#60
+  X: 134
+  "Y": 174
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl60.txt:333
+- Name: force_05_06#60
+  X: 174
+  "Y": 155
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl60.txt:340
+- Name: force_06_07#60
+  X: 174
+  "Y": 65
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl60.txt:347
+- Name: force_07_08#60
+  X: 155
+  "Y": 26
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl60.txt:354
+- Name: force_08_09#60
+  X: 99
+  "Y": 54
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl60.txt:362
+- Name: force_exit#60
+  X: 99
+  "Y": 124
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl60.txt:369

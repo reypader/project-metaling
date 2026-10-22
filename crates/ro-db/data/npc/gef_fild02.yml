@@ -1,0 +1,98 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: gef011
+  X: 380
+  "Y": 156
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 7
+  Kind: Warp
+  Warp:
+    Map: prt_fild07
+    X: 21
+    "Y": 143
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/geffen_fild.txt:23
+- Name: gef012
+  X: 380
+  "Y": 289
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 12
+  Kind: Warp
+  Warp:
+    Map: prt_fild07
+    X: 18
+    "Y": 289
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/geffen_fild.txt:24
+- Name: gef013
+  X: 380
+  "Y": 68
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 10
+  Kind: Warp
+  Warp:
+    Map: prt_fild07
+    X: 17
+    "Y": 64
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/geffen_fild.txt:25
+- Name: gef026
+  X: 266
+  "Y": 18
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 5
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: prt_fild10
+    X: 227
+    "Y": 296
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/geffen_fild.txt:26
+- Name: geff03
+  X: 14
+  "Y": 78
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 4
+  Kind: Warp
+  Warp:
+    Map: gef_fild03
+    X: 379
+    "Y": 77
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/geffen_fild.txt:27
+- Name: geff04
+  X: 16
+  "Y": 275
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 4
+  Kind: Warp
+  Warp:
+    Map: gef_fild03
+    X: 379
+    "Y": 277
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/geffen_fild.txt:28

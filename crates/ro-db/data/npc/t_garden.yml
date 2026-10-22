@@ -1,0 +1,370 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Dimensional Barrier#got2
+  X: 111
+  "Y": 36
+  Dir: 2
+  Sprite: 10527
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:26
+- Name: "#wp01_t_garden"
+  X: 118
+  "Y": 66
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 3
+    "Y": 1
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:34
+- Name: "#wp02_t_garden"
+  X: 118
+  "Y": 72
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 3
+    "Y": 1
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:49
+- Name: "#life_wp11"
+  X: 116
+  "Y": 47
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:65
+- Name: Leticia#life
+  X: 114
+  "Y": 49
+  Dir: 6
+  Sprite: 10368
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:81
+- Name: Rigel#life
+  X: 118
+  "Y": 49
+  Dir: 3
+  Sprite: 10528
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:86
+- Name: Oscar#life
+  X: 119
+  "Y": 46
+  Dir: 2
+  Sprite: 10307
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:91
+- Name: "#wp01_t_garden_1"
+  X: 118
+  "Y": 91
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:220
+- Name: Leticia#life2
+  X: 118
+  "Y": 91
+  Dir: 6
+  Sprite: 10368
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:230
+- Name: "#life_wp2"
+  X: 82
+  "Y": 92
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:292
+- Name: Passage of Time#1
+  X: 78
+  "Y": 92
+  Dir: 2
+  Sprite: 10527
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:359
+- Name: "#life_wp3"
+  X: 151
+  "Y": 92
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:382
+- Name: Passage of Time#2
+  X: 157
+  "Y": 92
+  Dir: 2
+  Sprite: 10527
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:449
+- Name: "#life_wp4"
+  X: 118
+  "Y": 141
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:522
+- Name: Oscar#life2
+  X: 118
+  "Y": 142
+  Dir: 3
+  Sprite: 10307
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:533
+- Name: Leticia#life3
+  X: 115
+  "Y": 139
+  Dir: 7
+  Sprite: 10368
+  State: Cloaked
+  DuplicateOf: dummy_cloaked_npc
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:613
+- Name: "#wp11_t_garden"
+  X: 166
+  "Y": 217
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:618
+- Name: Rigel#life2
+  X: 166
+  "Y": 217
+  Dir: 3
+  Sprite: 10528
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:628
+- Name: "#wp12_t_garden"
+  X: 166
+  "Y": 235
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:678
+- Name: Sealing Spirit Stone#life2
+  X: 166
+  "Y": 235
+  Dir: 3
+  Sprite: 21887
+  SpriteIsMob: true
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:696
+- Name: Dimension Prison#1
+  X: 158
+  "Y": 235
+  Dir: 2
+  Sprite: 10527
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:982
+- Name: Dimension Prison#2
+  X: 173
+  "Y": 235
+  Dir: 2
+  Sprite: 10527
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:998
+- Name: "#wp01_t_garden_2"
+  X: 105
+  "Y": 118
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 6
+    "Y": 5
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1013
+- Name: Diluvio#life2
+  X: 97
+  "Y": 114
+  Dir: 5
+  Sprite: 10549
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1071
+- Name: Terremotus#life2
+  X: 100
+  "Y": 117
+  Dir: 5
+  Sprite: 10551
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1114
+- Name: Serpens#life2
+  X: 103
+  "Y": 120
+  Dir: 5
+  Sprite: 10552
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1157
+- Name: Procella#life2
+  X: 106
+  "Y": 123
+  Dir: 5
+  Sprite: 10550
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1200
+- Name: Ardor#life2
+  X: 109
+  "Y": 126
+  Dir: 5
+  Sprite: 10548
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1243
+- Name: "#v_wp01"
+  X: 126
+  "Y": 123
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1288
+- Name: "#v_wp02"
+  X: 130
+  "Y": 119
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: "#v_wp01"
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1299
+- Name: "#v_wp03"
+  X: 134
+  "Y": 115
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 4
+    "Y": 4
+  DuplicateOf: "#v_wp01"
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1300
+- Name: Spirit Complaint Terminal#1
+  X: 126
+  "Y": 126
+  Dir: 2
+  Sprite: 10375
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1304
+- Name: Subspace vending machine#1
+  X: 129
+  "Y": 123
+  Dir: 2
+  Sprite: 21866
+  SpriteIsMob: true
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1430
+- Name: Subspace vending machine#2
+  X: 132
+  "Y": 120
+  Dir: 2
+  Sprite: 21867
+  SpriteIsMob: true
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1458
+- Name: Subspace vending machine#3
+  X: 135
+  "Y": 117
+  Dir: 2
+  Sprite: 21868
+  SpriteIsMob: true
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1486
+- Name: Subspace vending machine#4
+  X: 138
+  "Y": 114
+  Dir: 2
+  Sprite: 21869
+  SpriteIsMob: true
+  State: Cloaked
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1515
+- Name: Functional Vending Machine#1
+  X: 156
+  "Y": 222
+  Dir: 2
+  Sprite: 10375
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1551
+- Name: Functional Vending Machine#2
+  X: 97
+  "Y": 138
+  Dir: 6
+  Sprite: 10375
+  DuplicateOf: Functional Vending Machine#1
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1593
+- Name: Functional Vending Machine#3
+  X: 91
+  "Y": 116
+  Dir: 2
+  Sprite: 10375
+  DuplicateOf: Functional Vending Machine#1
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1594
+- Name: Functional Vending Machine#4
+  X: 144
+  "Y": 116
+  Dir: 2
+  Sprite: 10375
+  DuplicateOf: Functional Vending Machine#1
+  Kind: Script
+  Source: npc/re/quests/garden_of_time.txt:1595
+- Name: control_t_garden
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/mobs/dungeons/for_dun.txt:43

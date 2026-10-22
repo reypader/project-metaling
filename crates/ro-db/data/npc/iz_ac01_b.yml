@@ -1,0 +1,267 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Therapist#ac_b
+  X: 59
+  "Y": 43
+  Dir: 3
+  Sprite: 993
+  DuplicateOf: Therapist#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:2265
+- Name: Academy Receptionist#1_b
+  X: 100
+  "Y": 39
+  Dir: 5
+  Sprite: 90
+  DuplicateOf: Academy Receptionist#1
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:2788
+- Name: Trainer Mainz#ac_b
+  X: 134
+  "Y": 47
+  Dir: 5
+  Sprite: 418
+  Trigger:
+    X: 4
+    "Y": 4
+  DuplicateOf: Trainer Mainz#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:3253
+- Name: Odd Novice#ac_b
+  X: 36
+  "Y": 52
+  Dir: 3
+  Sprite: 567
+  DuplicateOf: Odd Novice#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:3429
+- Name: Attribute Expert#ac_b
+  X: 53
+  "Y": 74
+  Dir: 3
+  Sprite: 64
+  DuplicateOf: Attribute Expert#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:3831
+- Name: Dacquoise#ac_b
+  X: 147
+  "Y": 50
+  Dir: 3
+  Sprite: 886
+  DuplicateOf: Dacquoise#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:4384
+- Name: General Store Owner#ac_b
+  X: 68
+  "Y": 49
+  Dir: 3
+  Sprite: 92
+  DuplicateOf: General Store Owner#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:4485
+- Name: Battle Instructor#08b
+  X: 59
+  "Y": 83
+  Dir: 3
+  Sprite: 642
+  DuplicateOf: Battle Instructor#08
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:4724
+- Name: Adept Adventurer#ac_b
+  X: 45
+  "Y": 80
+  Dir: 5
+  Sprite: 731
+  DuplicateOf: Adept Adventurer#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:4884
+- Name: Adventurer's Pet#ac_b
+  X: 43
+  "Y": 80
+  Dir: 7
+  Sprite: 738
+  DuplicateOf: Adventurer's Pet#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:4915
+- Name: Kafra Guide Trainer#ac_b
+  X: 95
+  "Y": 46
+  Dir: 5
+  Sprite: 117
+  DuplicateOf: Kafra Guide Trainer#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:5486
+- Name: Kafra Guide Trainer#01_b
+  X: 89
+  "Y": 103
+  Dir: 5
+  Sprite: 117
+  DuplicateOf: Kafra Guide Trainer#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:5492
+- Name: Otter Samssoon#ac_b
+  X: 69
+  "Y": 36
+  Dir: 3
+  Sprite: 100
+  DuplicateOf: Otter Samssoon#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6238
+- Name: Lady#ac_b
+  X: 138
+  "Y": 69
+  Dir: 3
+  Sprite: 76
+  DuplicateOf: Lady#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6264
+- Name: Eclaire#ac_b
+  X: 149
+  "Y": 46
+  Dir: 3
+  Sprite: 721
+  DuplicateOf: Eclaire#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6277
+- Name: Mille Feuille#ac_b
+  X: 150
+  "Y": 50
+  Dir: 3
+  Sprite: 860
+  DuplicateOf: Mille Feuille#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6291
+- Name: Chef#ac_b
+  X: 160
+  "Y": 50
+  Dir: 3
+  Sprite: 701
+  DuplicateOf: Chef#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6312
+- Name: Hungry Trainee#ac_b
+  X: 159
+  "Y": 32
+  Dir: 3
+  Sprite: 567
+  DuplicateOf: Hungry Trainee#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6339
+- Name: Scholarship Trainee#ac_b
+  X: 164
+  "Y": 36
+  Dir: 3
+  Sprite: 80
+  DuplicateOf: Scholarship Trainee#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6352
+- Name: Broke Trainee#ac_b
+  X: 133
+  "Y": 34
+  Dir: 5
+  Sprite: 881
+  DuplicateOf: Broke Trainee#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6373
+- Name: "[Armory]#ac_b"
+  X: 93
+  "Y": 76
+  Dir: 5
+  Sprite: 837
+  DuplicateOf: ac_board
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6610
+- Name: "[Library]#ac_b"
+  X: 106
+  "Y": 76
+  Dir: 3
+  Sprite: 837
+  DuplicateOf: ac_board
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6616
+- Name: "[Cafeteria]#ac_b"
+  X: 106
+  "Y": 44
+  Dir: 3
+  Sprite: 837
+  DuplicateOf: ac_board
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6622
+- Name: "[Dispensary]#ac_b"
+  X: 93
+  "Y": 44
+  Dir: 5
+  Sprite: 837
+  DuplicateOf: ac_board
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6628
+- Name: "[Great Hall]#ac_b"
+  X: 103
+  "Y": 89
+  Dir: 3
+  Sprite: 837
+  DuplicateOf: ac_board
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6634
+- Name: "#acKick_b"
+  X: 54
+  "Y": 49
+  Dir: 0
+  Sprite: 111
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: "#acKick"
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:8498
+- Name: "#to_ac01-1_b"
+  X: 100
+  "Y": 24
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: izlude_b
+    X: 127
+    "Y": 253
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:136
+- Name: "#to_bc2f01_b"
+  X: 78
+  "Y": 25
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 207
+    "Y": 27
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:141
+- Name: "#to_bc2f02_b"
+  X: 122
+  "Y": 25
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 207
+    "Y": 27
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:145

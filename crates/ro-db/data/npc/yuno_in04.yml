@@ -1,0 +1,439 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Studying Scholar#1
+  X: 47
+  "Y": 113
+  Dir: 1
+  Sprite: 749
+  Kind: Script
+  Source: npc/quests/seals/brisingamen_seal.txt:846
+- Name: Representative#bq
+  X: 20
+  "Y": 123
+  Dir: 7
+  Sprite: 95
+  Kind: Script
+  Source: npc/quests/bard_quest.txt:2766
+- Name: Adventurer#1
+  X: 33
+  "Y": 119
+  Dir: 3
+  Sprite: 828
+  Kind: Script
+  Source: npc/quests/bard_quest.txt:2894
+- Name: Scholar
+  X: 190
+  "Y": 125
+  Dir: 4
+  Sprite: 700
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:30
+- Name: Bundle of Files
+  X: 186
+  "Y": 125
+  Dir: 4
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:936
+- Name: Book#juperos
+  X: 188
+  "Y": 118
+  Dir: 4
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:1204
+- Name: Ambitious Hollgrehenn
+  X: 169
+  "Y": 109
+  Dir: 1
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:1326
+- Name: Penniless Hollgrehenn
+  X: 174
+  "Y": 111
+  Dir: 1
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:1351
+- Name: Popular Feasts
+  X: 102
+  "Y": 106
+  Dir: 1
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:1370
+- Name: Hamerun, Rat Hunter
+  X: 111
+  "Y": 108
+  Dir: 1
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:1415
+- Name: Red Book
+  X: 167
+  "Y": 127
+  Dir: 1
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:1422
+- Name: Scroll
+  X: 121
+  "Y": 109
+  Dir: 1
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:1479
+- Name: Paper
+  X: 118
+  "Y": 116
+  Dir: 4
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:1532
+- Name: Student
+  X: 107
+  "Y": 14
+  Dir: 5
+  Sprite: 754
+  Kind: Script
+  Source: npc/quests/quests_lighthalzen.txt:3016
+- Name: Passionate Student
+  X: 96
+  "Y": 106
+  Dir: 5
+  Sprite: 754
+  Kind: Script
+  Source: npc/quests/quests_lighthalzen.txt:3045
+- Name: Book#lhz
+  X: 168
+  "Y": 117
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_lighthalzen.txt:3275
+- Name: Reading Girl#moc_girl1
+  X: 180
+  "Y": 106
+  Dir: 3
+  Sprite: 73
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:841
+- Name: Library Part-Timer#garas
+  X: 111
+  "Y": 57
+  Dir: 3
+  Sprite: 862
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:2745
+- Name: Hot Bestseller Corner
+  X: 100
+  "Y": 5
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:2830
+- Name: "#garas_path"
+  X: 100
+  "Y": 3
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:2904
+- Name: Old News Scrapbook
+  X: 117
+  "Y": 102
+  Dir: 3
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:2965
+- Name: Suspicious Man#oliver_h
+  X: 169
+  "Y": 123
+  Dir: 3
+  Sprite: 407
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:3104
+- Name: Worn-out Book#garas
+  X: 167
+  "Y": 120
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:3317
+- Name: Archeologist
+  X: 38
+  "Y": 48
+  Dir: 3
+  Sprite: 55
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:10549
+- Name: Pisruik#qsk_al
+  X: 33
+  "Y": 108
+  Dir: 4
+  Sprite: 883
+  Kind: Script
+  Source: npc/quests/skills/alchemist_skills.txt:21
+- Name: Irache#qsk_al
+  X: 22
+  "Y": 107
+  Dir: 5
+  Sprite: 740
+  Kind: Script
+  Source: npc/quests/skills/alchemist_skills.txt:1106
+- Name: Degas#qsk_al
+  X: 27
+  "Y": 107
+  Dir: 4
+  Sprite: 748
+  Kind: Script
+  Source: npc/quests/skills/alchemist_skills.txt:1124
+- Name: Pile of Books#qsk_al
+  X: 33
+  "Y": 106
+  Dir: 4
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/skills/alchemist_skills.txt:1142
+- Name: yun10
+  X: 33
+  "Y": 130
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno
+    X: 95
+    "Y": 184
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/yuno.txt:37
+- Name: yun16
+  X: 29
+  "Y": 58
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno
+    X: 338
+    "Y": 203
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/yuno.txt:43
+- Name: yun17
+  X: 52
+  "Y": 58
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_in04
+    X: 97
+    "Y": 58
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/yuno.txt:44
+- Name: yun18
+  X: 95
+  "Y": 58
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_in04
+    X: 50
+    "Y": 58
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/yuno.txt:45
+- Name: yun19
+  X: 103
+  "Y": 64
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_in04
+    X: 103
+    "Y": 95
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/yuno.txt:46
+- Name: yun20
+  X: 103
+  "Y": 93
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_in04
+    X: 103
+    "Y": 62
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/yuno.txt:47
+- Name: yun21
+  X: 115
+  "Y": 64
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_in04
+    X: 115
+    "Y": 95
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/yuno.txt:48
+- Name: yun22
+  X: 115
+  "Y": 93
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_in04
+    X: 115
+    "Y": 62
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/yuno.txt:49
+- Name: yun23
+  X: 115
+  "Y": 51
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_in04
+    X: 115
+    "Y": 20
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/yuno.txt:50
+- Name: yun24
+  X: 115
+  "Y": 22
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_in04
+    X: 115
+    "Y": 53
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/yuno.txt:51
+- Name: yun25
+  X: 103
+  "Y": 51
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_in04
+    X: 103
+    "Y": 20
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/yuno.txt:52
+- Name: yun26
+  X: 103
+  "Y": 22
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_in04
+    X: 103
+    "Y": 53
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/yuno.txt:53
+- Name: yun27
+  X: 122
+  "Y": 57
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_in04
+    X: 164
+    "Y": 110
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/yuno.txt:54
+- Name: yun28
+  X: 161
+  "Y": 110
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_in04
+    X: 120
+    "Y": 57
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/yuno.txt:55
+- Name: yun79
+  X: 192
+  "Y": 28
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno
+    X: 198
+    "Y": 87
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/yuno.txt:195
+- Name: Stylist#yuno
+  X: 186
+  "Y": 21
+  Dir: 1
+  Sprite: 87
+  Kind: Script
+  Source: npc/re/merchants/Extended_Stylist.txt:103

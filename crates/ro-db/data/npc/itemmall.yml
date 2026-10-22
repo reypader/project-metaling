@@ -1,0 +1,86 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Exit Guide#cashmall_exit
+  X: 21
+  "Y": 45
+  Dir: 4
+  Sprite: 899
+  Kind: Script
+  Source: npc/re/merchants/cashmall.txt:54
+- Name: Cat Hand Salesman Macaroon#cashmall
+  X: 41
+  "Y": 53
+  Dir: 3
+  Sprite: 495
+  Kind: Script
+  Source: npc/re/merchants/cashmall.txt:109
+- Name: Blacksmith Basta#pr
+  X: 24
+  "Y": 77
+  Dir: 4
+  Sprite: 826
+  Kind: Script
+  Source: npc/re/merchants/cashmall.txt:184
+- Name: Mighty Hammer#im
+  X: 27
+  "Y": 77
+  Dir: 4
+  Sprite: 826
+  Kind: Script
+  Source: npc/re/merchants/cashmall.txt:196
+- Name: Blacksmith Brock#im
+  X: 24
+  "Y": 74
+  Dir: 5
+  Sprite: 898
+  Kind: Script
+  Source: npc/re/merchants/cashmall.txt:202
+- Name: Stylist#cash
+  X: 19
+  "Y": 74
+  Dir: 5
+  Sprite: 91
+  Kind: Script
+  Source: npc/re/merchants/cashmall.txt:208
+- Name: Cat Hand Salesman Tunkarom
+  X: 41
+  "Y": 55
+  Dir: 3
+  Sprite: 495
+  Kind: Script
+  Source: npc/re/merchants/cashmall.txt:334
+- Name: Equipment Reform PR Agent#it01
+  X: 14
+  "Y": 50
+  Dir: 3
+  Sprite: 831
+  Kind: Script
+  Source: npc/re/merchants/rgsr_in.txt:7
+- Name: Devil Enchant Master#prq
+  X: 29
+  "Y": 71
+  Dir: 3
+  Sprite: 63
+  Kind: Script
+  Source: npc/re/merchants/enchan_upg.txt:20
+- Name: Shadow Blacksmith#itemmall
+  X: 31
+  "Y": 76
+  Dir: 3
+  Sprite: 726
+  DuplicateOf: ShadowBlacksmith
+  Kind: Script
+  Source: npc/re/merchants/shadow_refiner.txt:168
+- Name: Mergician#mall
+  X: 35
+  "Y": 75
+  Dir: 3
+  Sprite: 64
+  Kind: Script
+  Source: npc/re/other/item_merge.txt:20

@@ -1,0 +1,610 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Roel#sara
+  X: 26
+  "Y": 95
+  Dir: 5
+  Sprite: 10040
+  Kind: Script
+  Source: npc/re/instances/NightmarishJitterbug.txt:11
+- Name: Runane#sara
+  X: 29
+  "Y": 95
+  Dir: 5
+  Sprite: 10039
+  Kind: Script
+  Source: npc/re/instances/NightmarishJitterbug.txt:116
+- Name: Kafra Employee
+  UniqueName: kaf_eden
+  X: 10
+  "Y": 185
+  Dir: 4
+  Sprite: 721
+  Kind: Script
+  Source: npc/re/kafras/kafras.txt:60
+- Name: Kafra Teleportation#eden
+  X: 35
+  "Y": 23
+  Dir: 3
+  Sprite: 10242
+  Kind: Script
+  Source: npc/re/kafras/Kafra_Teleportation_Services.txt:225
+- Name: Catalog Magician#catal01
+  X: 22
+  "Y": 16
+  Dir: 5
+  Sprite: 704
+  Kind: Script
+  Source: npc/re/merchants/catalog.txt:20
+- Name: Vending Machine for Nov#para
+  X: 17
+  "Y": 37
+  Dir: 3
+  Sprite: 564
+  DuplicateOf: novice_vending_machine#main
+  Kind: Script
+  Source: npc/re/merchants/novice_vending_machine.txt:97
+- Name: Market Group Hustler#ent
+  X: 106
+  "Y": 38
+  Dir: 4
+  Sprite: 779
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:282
+- Name: Mission [11 - 25]#Tuto
+  X: 36
+  "Y": 38
+  Dir: 3
+  Sprite: 857
+  Kind: Script
+  Source: npc/re/quests/eden/11-25.txt:20
+- Name: Spike
+  X: 32
+  "Y": 30
+  Dir: 6
+  Sprite: 914
+  Kind: Script
+  Source: npc/re/quests/eden/11-25.txt:106
+- Name: Mission [26 - 40]
+  X: 38
+  "Y": 38
+  Dir: 3
+  Sprite: 857
+  Kind: Script
+  Source: npc/re/quests/eden/26-40.txt:19
+- Name: Mission [41 - 55]
+  X: 40
+  "Y": 38
+  Dir: 3
+  Sprite: 857
+  Kind: Script
+  Source: npc/re/quests/eden/41-55.txt:19
+- Name: Mission [56 - 70]
+  X: 42
+  "Y": 38
+  Dir: 3
+  Sprite: 857
+  Kind: Script
+  Source: npc/re/quests/eden/56-70.txt:23
+- Name: Mission [71 - 85]
+  X: 44
+  "Y": 38
+  Dir: 3
+  Sprite: 857
+  Kind: Script
+  Source: npc/re/quests/eden/71-85.txt:20
+- Name: 86-90 Mission Board
+  X: 48
+  "Y": 175
+  Dir: 3
+  Sprite: 857
+  Kind: Script
+  Source: npc/re/quests/eden/86-90.txt:20
+- Name: 91-99 Mission Board
+  X: 48
+  "Y": 177
+  Dir: 3
+  Sprite: 857
+  Kind: Script
+  Source: npc/re/quests/eden/91-99.txt:20
+- Name: Gelkah#1
+  X: 37
+  "Y": 95
+  Dir: 5
+  Sprite: 629
+  Kind: Script
+  Source: npc/re/quests/eden/eden_100_111.txt:18
+- Name: Rohtert#12
+  X: 41
+  "Y": 95
+  Dir: 5
+  Sprite: 630
+  Kind: Script
+  Source: npc/re/quests/eden/eden_100_111.txt:1006
+- Name: Mingmin#1
+  X: 17
+  "Y": 95
+  Dir: 5
+  Sprite: 643
+  Kind: Script
+  Source: npc/re/quests/eden/eden_111_120.txt:18
+- Name: Melody-Jack#1
+  X: 44
+  "Y": 81
+  Dir: 3
+  Sprite: 648
+  Trigger:
+    X: 8
+    "Y": 8
+  Kind: Script
+  Source: npc/re/quests/eden/eden_121_130.txt:18
+- Name: Aigu#1
+  X: 17
+  "Y": 77
+  Dir: 5
+  Sprite: 646
+  Kind: Script
+  Source: npc/re/quests/eden/eden_121_130.txt:565
+- Name: Ragi#1
+  X: 41
+  "Y": 76
+  Dir: 3
+  Sprite: 647
+  Kind: Script
+  Source: npc/re/quests/eden/eden_131_140.txt:18
+- Name: Secretary Lime Evenor
+  X: 27
+  "Y": 35
+  Dir: 5
+  Sprite: 952
+  Kind: Script
+  Source: npc/re/quests/eden/eden_common.txt:28
+- Name: "#eden_out"
+  X: 30
+  "Y": 10
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/quests/eden/eden_common.txt:279
+- Name: "#warp_2_pass"
+  X: 47
+  "Y": 39
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/quests/eden/eden_common.txt:320
+- Name: Old Adventurer#eden
+  X: 16
+  "Y": 22
+  Dir: 7
+  Sprite: 900
+  Kind: Script
+  Source: npc/re/quests/eden/eden_common.txt:344
+- Name: Eden's Chief#eden
+  X: 182
+  "Y": 48
+  Dir: 3
+  Sprite: 886
+  Kind: Script
+  Source: npc/re/quests/eden/eden_common.txt:354
+- Name: Eden's Intern#eden
+  X: 172
+  "Y": 28
+  Dir: 5
+  Sprite: 883
+  Kind: Script
+  Source: npc/re/quests/eden/eden_common.txt:377
+- Name: Office Assistant Neede
+  X: 20
+  "Y": 35
+  Dir: 5
+  Sprite: 814
+  Kind: Script
+  Source: npc/re/quests/eden/eden_common.txt:392
+- Name: Instructor Boya#para01
+  X: 25
+  "Y": 35
+  Dir: 4
+  Sprite: 469
+  Kind: Script
+  Source: npc/re/quests/eden/eden_quests.txt:23
+- Name: Administrator Michael
+  X: 112
+  "Y": 96
+  Dir: 5
+  Sprite: 967
+  Kind: Script
+  Source: npc/re/quests/eden/eden_quests.txt:1772
+- Name: Chef
+  X: 179
+  "Y": 44
+  Dir: 3
+  Sprite: 820
+  Kind: Script
+  Source: npc/re/quests/eden/eden_quests.txt:2158
+- Name: Instructor Ur#2nd01
+  X: 23
+  "Y": 35
+  Dir: 5
+  Sprite: 468
+  Kind: Script
+  Source: npc/re/quests/eden/eden_quests.txt:2462
+- Name: Blacksmith Thorn#2nd10
+  X: 111
+  "Y": 83
+  Dir: 3
+  Sprite: 813
+  Kind: Script
+  Source: npc/re/quests/eden/eden_quests.txt:3741
+- Name: Weapons Expert BK#2nd11
+  X: 112
+  "Y": 79
+  Dir: 3
+  Sprite: 851
+  Kind: Script
+  Source: npc/re/quests/eden/eden_quests.txt:4101
+- Name: Goods Cabinet#01
+  X: 173
+  "Y": 120
+  Dir: 0
+  Sprite: 111
+  DuplicateOf: pggc
+  Kind: Script
+  Source: npc/re/quests/eden/eden_service.txt:66
+- Name: Goods Cabinet#02
+  X: 170
+  "Y": 120
+  Dir: 0
+  Sprite: 111
+  DuplicateOf: pggc
+  Kind: Script
+  Source: npc/re/quests/eden/eden_service.txt:67
+- Name: Tutorial Instructor
+  X: 34
+  "Y": 178
+  Dir: 3
+  Sprite: 904
+  Kind: Script
+  Source: npc/re/quests/eden/eden_tutorial.txt:18
+- Name: Tutorial Goal
+  X: 32
+  "Y": 179
+  Dir: 4
+  Sprite: 895
+  Kind: Script
+  Source: npc/re/quests/eden/eden_tutorial.txt:574
+- Name: Siege Master
+  X: 24
+  "Y": 175
+  Dir: 4
+  Sprite: 734
+  Kind: Script
+  Source: npc/re/quests/eden/eden_tutorial.txt:668
+- Name: Party Recruiting Expert
+  X: 21
+  "Y": 172
+  Dir: 4
+  Sprite: 878
+  Kind: Script
+  Source: npc/re/quests/eden/eden_tutorial.txt:841
+- Name: Battleground Master
+  X: 12
+  "Y": 179
+  Dir: 6
+  Sprite: 419
+  Kind: Script
+  Source: npc/re/quests/eden/eden_tutorial.txt:1023
+- Name: Memorial Dungeon Expert
+  X: 28
+  "Y": 167
+  Dir: 3
+  Sprite: 868
+  Kind: Script
+  Source: npc/re/quests/eden/eden_tutorial.txt:1203
+- Name: Map Expert
+  X: 14
+  "Y": 168
+  Dir: 6
+  Sprite: 743
+  Kind: Script
+  Source: npc/re/quests/eden/eden_tutorial.txt:1381
+- Name: Reno#2012hat
+  X: 41
+  "Y": 169
+  Dir: 3
+  Sprite: 64
+  Kind: Script
+  Source: npc/re/quests/newgears/2012_headgears.txt:19
+- Name: "#atnevt01"
+  X: 31
+  "Y": 14
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/quests/quests_15_1.txt:94
+- Name: Secretary Lime Evenor#evtat01
+  X: 38
+  "Y": 175
+  Dir: 5
+  Sprite: 952
+  Kind: Script
+  Source: npc/re/quests/quests_15_1.txt:130
+- Name: Lime Evenor#atnd02
+  X: 174
+  "Y": 165
+  Dir: 3
+  Sprite: 952
+  Kind: Script
+  Source: npc/re/quests/quests_15_1.txt:210
+- Name: Archaeologist Aures#atnd02
+  X: 172
+  "Y": 164
+  Dir: 5
+  Sprite: 10057
+  Kind: Script
+  Source: npc/re/quests/quests_15_1.txt:377
+- Name: Luke Lapez#atnd03
+  X: 178
+  "Y": 167
+  Dir: 3
+  Sprite: 953
+  Kind: Script
+  Source: npc/re/quests/quests_15_1.txt:407
+- Name: Commander Arquien#e152a1
+  X: 133
+  "Y": 170
+  Dir: 4
+  Sprite: 951
+  Kind: Script
+  Source: npc/re/quests/quests_15_2.txt:21
+- Name: Cat Paw Agent#gekk
+  X: 44
+  "Y": 19
+  Dir: 3
+  Sprite: 496
+  Kind: Script
+  Source: npc/re/quests/quests_dicastes.txt:7451
+- Name: Old scholar#lv200
+  X: 14
+  "Y": 19
+  Dir: 7
+  Sprite: 743
+  Kind: Script
+  Source: npc/re/quests/quests_dungeons_200.txt:486
+- Name: "#warp_2_pub"
+  X: 57
+  "Y": 27
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_para01
+    X: 162
+    "Y": 26
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/paradise.txt:15
+- Name: "#warp_2_din_1"
+  X: 158
+  "Y": 26
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_para01
+    X: 55
+    "Y": 27
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/paradise.txt:16
+- Name: "#warp_2_2f"
+  X: 48
+  "Y": 16
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_para01
+    X: 48
+    "Y": 164
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/paradise.txt:17
+- Name: "#warp_2_1f"
+  X: 47
+  "Y": 161
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_para01
+    X: 47
+    "Y": 18
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/paradise.txt:18
+- Name: "#warp_2_din_2"
+  X: 107
+  "Y": 12
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_para01
+    X: 47
+    "Y": 37
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/paradise.txt:19
+- Name: "#warp_2_gym"
+  X: 100
+  "Y": 27
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_para01
+    X: 47
+    "Y": 85
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/paradise.txt:20
+- Name: "#warp_2_pass_1"
+  X: 49
+  "Y": 86
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_para01
+    X: 103
+    "Y": 27
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/paradise.txt:21
+- Name: "#warp_2_ware"
+  X: 113
+  "Y": 32
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_para01
+    X: 105
+    "Y": 92
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/paradise.txt:22
+- Name: "#warp_2_pass_2"
+  X: 102
+  "Y": 92
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_para01
+    X: 109
+    "Y": 33
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/paradise.txt:23
+- Name: "#warp_2_room2"
+  X: 41
+  "Y": 187
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_para01
+    X: 179
+    "Y": 93
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/paradise.txt:24
+- Name: "#warp_2_2fhall_3"
+  X: 179
+  "Y": 90
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_para01
+    X: 41
+    "Y": 185
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/paradise.txt:25
+- Name: "#warp_2_bossroom"
+  X: 17
+  "Y": 187
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_para01
+    X: 132
+    "Y": 159
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/paradise.txt:28
+- Name: "#warp_2_2fhall_1"
+  X: 132
+  "Y": 156
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_para01
+    X: 17
+    "Y": 185
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/paradise.txt:29
+- Name: "#warp_2_room1"
+  X: 29
+  "Y": 187
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_para01
+    X: 180
+    "Y": 159
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/paradise.txt:30
+- Name: "#warp_2_2fhall_2"
+  X: 180
+  "Y": 156
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_para01
+    X: 29
+    "Y": 185
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/paradise.txt:31

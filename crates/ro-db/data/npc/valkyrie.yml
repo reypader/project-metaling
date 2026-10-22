@@ -1,0 +1,143 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Assassin Cross#Valkyrie
+  X: 44
+  "Y": 58
+  Dir: 5
+  Sprite: 725
+  Kind: Script
+  Source: npc/jobs/2-1a/AssassinCross.txt:18
+- Name: High Priest#Valkyrie
+  X: 44
+  "Y": 42
+  Dir: 5
+  Sprite: 60
+  Kind: Script
+  Source: npc/jobs/2-1a/HighPriest.txt:18
+- Name: High Wizard#Valkyrie
+  X: 44
+  "Y": 47
+  Dir: 5
+  Sprite: 735
+  Kind: Script
+  Source: npc/jobs/2-1a/HighWizard.txt:18
+- Name: Lord Knight#Valkyrie
+  X: 44
+  "Y": 39
+  Dir: 5
+  Sprite: 56
+  Kind: Script
+  Source: npc/jobs/2-1a/LordKnight.txt:18
+- Name: Sniper#Valkyrie
+  X: 44
+  "Y": 55
+  Dir: 5
+  Sprite: 727
+  Kind: Script
+  Source: npc/jobs/2-1a/Sniper.txt:18
+- Name: MasterSmith#Valkyrie
+  X: 44
+  "Y": 50
+  Dir: 5
+  Sprite: 731
+  Kind: Script
+  Source: npc/jobs/2-1a/WhiteSmith.txt:18
+- Name: Champion#Valkyrie
+  X: 53
+  "Y": 42
+  Dir: 3
+  Sprite: 52
+  Kind: Script
+  Source: npc/jobs/2-2a/Champion.txt:18
+- Name: Minstrel#Valkyrie
+  X: 53
+  "Y": 54
+  Dir: 3
+  Sprite: 741
+  Kind: Script
+  Source: npc/jobs/2-2a/Clown.txt:20
+- Name: Biochemist#Valkyrie
+  X: 53
+  "Y": 50
+  Dir: 3
+  Sprite: 122
+  Kind: Script
+  Source: npc/jobs/2-2a/Creator.txt:19
+- Name: Gypsy#Valkyrie
+  X: 53
+  "Y": 56
+  Dir: 3
+  Sprite: 101
+  Kind: Script
+  Source: npc/jobs/2-2a/Gypsy.txt:18
+- Name: Paladin#Valkyrie
+  X: 53
+  "Y": 39
+  Dir: 3
+  Sprite: 752
+  Kind: Script
+  Source: npc/jobs/2-2a/Paladin.txt:18
+- Name: Scholar#Valkyrie
+  X: 53
+  "Y": 47
+  Dir: 3
+  Sprite: 743
+  Kind: Script
+  Source: npc/jobs/2-2a/Professor.txt:18
+- Name: Stalker#Valkyrie
+  X: 53
+  "Y": 58
+  Dir: 3
+  Sprite: 747
+  Kind: Script
+  Source: npc/jobs/2-2a/Stalker.txt:18
+- Name: Valkyrie#
+  X: 48
+  "Y": 86
+  Dir: 4
+  Sprite: 811
+  Kind: Script
+  Source: npc/jobs/valkyrie.txt:43
+- Name: Teleporter
+  X: 44
+  "Y": 33
+  Dir: 5
+  Sprite: 124
+  Kind: Script
+  Source: npc/jobs/valkyrie.txt:355
+- Name: valk01#1
+  X: 48
+  "Y": 73
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: valkyrie
+    X: 48
+    "Y": 64
+    TriggerWhileHidden: false
+  Source: npc/jobs/valkyrie.txt:401
+- Name: valk01#2
+  X: 48
+  "Y": 66
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: valkyrie
+    X: 48
+    "Y": 75
+    TriggerWhileHidden: false
+  Source: npc/jobs/valkyrie.txt:402

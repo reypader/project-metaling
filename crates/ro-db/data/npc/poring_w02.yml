@@ -1,0 +1,138 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Mr. Doppel#wop_team_a
+  X: 26
+  "Y": 181
+  Dir: 3
+  Sprite: 739
+  Kind: Script
+  Source: npc/other/poring_war.txt:623
+- Name: Mr. Doppel#wop_team_d
+  X: 170
+  "Y": 181
+  Dir: 3
+  Sprite: 739
+  Kind: Script
+  Source: npc/other/poring_war.txt:754
+- Name: "#wop_master"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/other/poring_war.txt:881
+- Name: "#wop_warp_a"
+  X: 51
+  "Y": 82
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/poring_war.txt:1032
+- Name: "#wop_warp_d"
+  X: 146
+  "Y": 82
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/poring_war.txt:1054
+- Name: "#wop_angellium1"
+  X: 80
+  "Y": 82
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/other/poring_war.txt:1078
+- Name: "#wop_angellium2"
+  X: 98
+  "Y": 41
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/other/poring_war.txt:1112
+- Name: "#wop_devillium1"
+  X: 116
+  "Y": 82
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/other/poring_war.txt:1147
+- Name: "#wop_devillium2"
+  X: 98
+  "Y": 124
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/other/poring_war.txt:1182
+- Name: Deviruchi#wop_endmaster
+  X: 99
+  "Y": 201
+  Dir: 3
+  Sprite: 738
+  Kind: Script
+  Source: npc/other/poring_war.txt:1218
+- Name: Angeling Guardian#wop_da
+  X: 99
+  "Y": 52
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/other/poring_war.txt:1453
+- Name: "#aroom_ingate_wop"
+  X: 103
+  "Y": 52
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/poring_war.txt:1510
+- Name: "#aroom_outgate_wop"
+  X: 93
+  "Y": 51
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/poring_war.txt:1530
+- Name: Deviling Guardian#wop_dd
+  X: 98
+  "Y": 113
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/other/poring_war.txt:1550
+- Name: "#droom_ingate_wop"
+  X: 93
+  "Y": 113
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/poring_war.txt:1607
+- Name: "#droom_outgate_wop"
+  X: 103
+  "Y": 114
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/poring_war.txt:1627

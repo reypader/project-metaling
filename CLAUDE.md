@@ -37,6 +37,8 @@ Use `./verify.sh` instead of raw `cargo test`/`clippy`/`fmt`, which produce much
 
 Located via env vars only: `RATHENA_PATH`, `RUSTRO_PATH`, `RATHENA_SCRIPT_INTERPRETER_PATH`. If one is unset, ask the user. `reference/` holds only our own `catalog/`.
 
+**Licensing:** the repo is MIT except `crates/ro-db/data/`, which holds GPL-3.0 data converted from rAthena (each data dir has `LICENSE` + `NOTICE.md`; regenerate with the matching tool, e.g. `tools/npc-import`). Never copy code from the reference repos (rAthena is GPL, the script interpreter is unlicensed); write from `reference/catalog/` notes.
+
 ## Rules
 
 - **Reference lookups:** read `reference/catalog/INDEX.md` and the linked entry directly. Spawn `metaling-explorer` only when the catalog doesn't answer the question, or for web research; it writes new findings back. Don't browse the reference trees or the web from the main session. Batch independent lookups into parallel `metaling-explorer` calls.

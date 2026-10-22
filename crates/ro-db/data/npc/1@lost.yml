@@ -1,0 +1,354 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#lost_farm_control"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:285
+- Name: "#startline"
+  X: 161
+  "Y": 40
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:294
+- Name: Wooden Box#01
+  X: 163
+  "Y": 47
+  Dir: 3
+  Sprite: 10250
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:306
+- Name: Silk#01
+  X: 163
+  "Y": 47
+  Dir: 3
+  Sprite: 10357
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:354
+- Name: Silk#02
+  X: 214
+  "Y": 146
+  Dir: 3
+  Sprite: 10357
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:413
+- Name: Wooden Box#02
+  X: 214
+  "Y": 146
+  Dir: 3
+  Sprite: 10250
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:481
+- Name: Silk#03
+  X: 91
+  "Y": 92
+  Dir: 3
+  Sprite: 10357
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:514
+- Name: Wooden Box#03
+  X: 91
+  "Y": 92
+  Dir: 3
+  Sprite: 10250
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:586
+- Name: Silk#04
+  X: 232
+  "Y": 257
+  Dir: 3
+  Sprite: 10357
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:622
+- Name: Wooden Box#04
+  X: 232
+  "Y": 257
+  Dir: 3
+  Sprite: 10250
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:701
+- Name: Silk#05
+  X: 247
+  "Y": 119
+  Dir: 3
+  Sprite: 10357
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:735
+- Name: Wooden Box#05
+  X: 247
+  "Y": 119
+  Dir: 3
+  Sprite: 10250
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:821
+- Name: Silk#06
+  X: 106
+  "Y": 160
+  Dir: 3
+  Sprite: 10357
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:855
+- Name: "#compass01"
+  X: 113
+  "Y": 168
+  Dir: 0
+  Sprite: 139
+  State: Disabled
+  Trigger:
+    X: 30
+    "Y": 30
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:959
+- Name: Wooden Box#06
+  X: 106
+  "Y": 160
+  Dir: 3
+  Sprite: 10250
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:968
+- Name: Big Meow#01
+  X: 38
+  "Y": 257
+  Dir: 3
+  Sprite: 20662
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1003
+- Name: "#cat01warp"
+  X: 38
+  "Y": 256
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 4
+    "Y": 4
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1011
+- Name: banghae#101
+  X: 38
+  "Y": 265
+  Dir: 0
+  Sprite: 139
+  State: Disabled
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1037
+- Name: banghae#102
+  X: 38
+  "Y": 296
+  Dir: 0
+  Sprite: 139
+  State: Disabled
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1051
+- Name: banghae#103
+  X: 51
+  "Y": 317
+  Dir: 0
+  Sprite: 139
+  State: Disabled
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1065
+- Name: banghae#104
+  X: 92
+  "Y": 317
+  Dir: 0
+  Sprite: 139
+  State: Disabled
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1084
+- Name: banghae#105
+  X: 135
+  "Y": 317
+  Dir: 0
+  Sprite: 139
+  State: Disabled
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1098
+- Name: Big Meow#02
+  X: 286
+  "Y": 253
+  Dir: 3
+  Sprite: 20661
+  SpriteIsMob: true
+  DuplicateOf: Big Meow#01
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1114
+- Name: "#cat02warp"
+  X: 287
+  "Y": 253
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 4
+    "Y": 4
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1116
+- Name: banghae#201
+  X: 286
+  "Y": 267
+  Dir: 0
+  Sprite: 139
+  State: Disabled
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1142
+- Name: banghae#202
+  X: 287
+  "Y": 296
+  Dir: 0
+  Sprite: 139
+  State: Disabled
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1156
+- Name: banghae#203
+  X: 270
+  "Y": 317
+  Dir: 0
+  Sprite: 139
+  State: Disabled
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1170
+- Name: banghae#204
+  X: 232
+  "Y": 317
+  Dir: 0
+  Sprite: 139
+  State: Disabled
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1184
+- Name: banghae#205
+  X: 195
+  "Y": 317
+  Dir: 0
+  Sprite: 139
+  State: Disabled
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1198
+- Name: Wooden Box#10
+  X: 161
+  "Y": 315
+  Dir: 3
+  Sprite: 10250
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1214
+- Name: Wooden Box#10-1
+  X: 161
+  "Y": 315
+  Dir: 3
+  Sprite: 10250
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1287
+- Name: Silk#10
+  X: 161
+  "Y": 315
+  Dir: 3
+  Sprite: 10357
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1302
+- Name: "#1_lost_boss"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1385
+- Name: bossbang#301
+  X: 135
+  "Y": 317
+  Dir: 0
+  Sprite: 139
+  State: Disabled
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1431
+- Name: bossbang#302
+  X: 129
+  "Y": 317
+  Dir: 0
+  Sprite: 139
+  State: Disabled
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1442
+- Name: bossbang#401
+  X: 195
+  "Y": 317
+  Dir: 0
+  Sprite: 139
+  State: Disabled
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1453
+- Name: bossbang#402
+  X: 201
+  "Y": 317
+  Dir: 0
+  Sprite: 139
+  State: Disabled
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/LostFarm.txt:1464

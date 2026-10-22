@@ -1,0 +1,49 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#3rdgc_room01_mag01"
+  X: 34
+  "Y": 44
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:2371
+- Name: A man with black clothes
+  X: 51
+  "Y": 43
+  Dir: 7
+  Sprite: 456
+  Trigger:
+    X: 4
+    "Y": 4
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:2416
+- Name: "#3rdgc_2nd_timer"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:2471
+- Name: Dandelion#3rdgc12
+  X: 49
+  "Y": 43
+  Dir: 5
+  Sprite: 457
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:2491
+- Name: "#GMhelper01_gc"
+  X: 1
+  "Y": 3
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/jobs/3-1/guillotine_cross.txt:3851

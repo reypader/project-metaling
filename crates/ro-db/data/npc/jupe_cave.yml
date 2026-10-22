@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: jupwrp02
+  X: 148
+  "Y": 52
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_fild07
+    X: 212
+    "Y": 175
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/juperos.txt:25
+- Name: jupwrp03
+  X: 26
+  "Y": 52
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: juperos_01
+    X: 53
+    "Y": 247
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/juperos.txt:26
+- Name: Signposts#Juperos Ruins
+  X: 35
+  "Y": 57
+  Dir: 0
+  Sprite: 837
+  Kind: Script
+  Source: npc/re/other/adven_boards.txt:1109
+- Name: Scholar#Mechanic
+  X: 37
+  "Y": 55
+  Dir: 5
+  Sprite: 883
+  Kind: Script
+  Source: npc/re/jobs/3-1/mechanic.txt:305

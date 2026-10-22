@@ -1,0 +1,38 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: gl20-1
+  X: 171
+  "Y": 286
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gl_sew02
+    X: 295
+    "Y": 294
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/glastheim.txt:74
+- Name: gl21
+  X: 64
+  "Y": 10
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gl_sew04
+    X: 68
+    "Y": 277
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/glastheim.txt:75

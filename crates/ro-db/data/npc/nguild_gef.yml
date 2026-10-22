@@ -1,0 +1,248 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: ngefg01-1
+  X: 34
+  "Y": 136
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: n_castle
+    X: 183
+    "Y": 180
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:469
+- Name: ngefg02-1
+  X: 99
+  "Y": 178
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: n_castle
+    X: 183
+    "Y": 180
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:470
+- Name: ngefg106-1
+  X: 170
+  "Y": 14
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nguild_gef
+    X: 50
+    "Y": 84
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:472
+- Name: ngefg105-1
+  X: 170
+  "Y": 34
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nguild_gef
+    X: 30
+    "Y": 167
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:473
+- Name: ngefg107
+  X: 181
+  "Y": 52
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nguild_gef
+    X: 198
+    "Y": 160
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:474
+- Name: ngefg107-1
+  X: 202
+  "Y": 160
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nguild_gef
+    X: 185
+    "Y": 52
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:475
+- Name: ngefg103-1
+  X: 209
+  "Y": 34
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nguild_gef
+    X: 56
+    "Y": 170
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:476
+- Name: ngefg104
+  X: 31
+  "Y": 185
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nguild_gef
+    X: 33
+    "Y": 47
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:477
+- Name: ngefg104-1
+  X: 33
+  "Y": 51
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nguild_gef
+    X: 35
+    "Y": 185
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:478
+- Name: ngefg105
+  X: 34
+  "Y": 167
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nguild_gef
+    X: 174
+    "Y": 34
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:479
+- Name: ngefg101
+  X: 39
+  "Y": 196
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nguild_gef
+    X: 62
+    "Y": 13
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:480
+- Name: ngefg106
+  X: 54
+  "Y": 84
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nguild_gef
+    X: 174
+    "Y": 14
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:481
+- Name: ngefg102
+  X: 58
+  "Y": 185
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nguild_gef
+    X: 90
+    "Y": 47
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:482
+- Name: ngefg103
+  X: 59
+  "Y": 170
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nguild_gef
+    X: 205
+    "Y": 34
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:483
+- Name: ngefg101-1
+  X: 62
+  "Y": 9
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nguild_gef
+    X: 39
+    "Y": 192
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:484
+- Name: ngefg102-1
+  X: 90
+  "Y": 51
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nguild_gef
+    X: 54
+    "Y": 185
+    TriggerWhileHidden: false
+  Source: npc/warps/guildcastles.txt:485

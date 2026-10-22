@@ -1,0 +1,96 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Esuna Trigger
+  X: 76
+  "Y": 214
+  Dir: 0
+  Sprite: 111
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/quests/quests_lighthalzen.txt:9065
+- Name: Mysterious Woman
+  X: 66
+  "Y": 219
+  Dir: 4
+  Sprite: 859
+  Kind: Script
+  Source: npc/quests/quests_lighthalzen.txt:9080
+- Name: lhz043-1
+  X: 210
+  "Y": 18
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lighthalzen
+    X: 214
+    "Y": 324
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/lhalzen_fild.txt:17
+- Name: lhz044-1
+  X: 367
+  "Y": 222
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lhz_fild02
+    X: 36
+    "Y": 221
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/lhalzen_fild.txt:20
+- Name: "#wp120075"
+  X: 118
+  "Y": 73
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:178
+- Name: "#tr120075"
+  X: 118
+  "Y": 73
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:439
+- Name: Map Examiner Lipiri#yma
+  X: 240
+  "Y": 107
+  Dir: 4
+  Sprite: 896
+  Kind: Script
+  Source: npc/re/quests/juno_monster_society.txt:967
+- Name: ra016
+  X: 296
+  "Y": 382
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_fild06
+    X: 298
+    "Y": 25
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/rachel_fild.txt:34

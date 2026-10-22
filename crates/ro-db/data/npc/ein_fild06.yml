@@ -1,0 +1,109 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: ein001a
+  X: 252
+  "Y": 365
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_fild04
+    X: 251
+    "Y": 23
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/ein_fild.txt:20
+- Name: ein002a
+  X: 340
+  "Y": 170
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_fild07
+    X: 75
+    "Y": 219
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/ein_fild.txt:22
+- Name: ein003a
+  X: 356
+  "Y": 94
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno_fild07
+    X: 58
+    "Y": 76
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/ein_fild.txt:24
+- Name: ein005
+  X: 135
+  "Y": 35
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ein_fild07
+    X: 147
+    "Y": 360
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/ein_fild.txt:29
+- Name: "#wp120071"
+  X: 174
+  "Y": 245
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:148
+- Name: "#tr120071"
+  X: 174
+  "Y": 245
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:409
+- Name: Map Examiner Bast#yma
+  X: 257
+  "Y": 351
+  Dir: 4
+  Sprite: 815
+  Kind: Script
+  Source: npc/re/quests/juno_monster_society.txt:702
+- Name: hugel002a
+  X: 42
+  "Y": 171
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ein_fild05
+    X: 371
+    "Y": 183
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/hugel_fild.txt:22

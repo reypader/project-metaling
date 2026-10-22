@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Shawn McCurdy#rockmi2
+  X: 10
+  "Y": 86
+  Dir: 5
+  Sprite: 10215
+  Kind: Script
+  Source: npc/re/quests/quests_rockridge.txt:1633
+- Name: Broken Elevator#rrevt10
+  X: 97
+  "Y": 120
+  Dir: 5
+  Sprite: 10046
+  Kind: Script
+  Source: npc/re/quests/quests_rockridge.txt:1769

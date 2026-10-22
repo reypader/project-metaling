@@ -1,0 +1,176 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Expert mode - 4 person
+  X: 110
+  "Y": 135
+  Dir: 3
+  Sprite: 124
+  DuplicateOf: entrance#tt_main
+  Kind: Script
+  Source: npc/other/turbo_track.txt:64
+- Name: Expert mode - 8 person
+  X: 117
+  "Y": 135
+  Dir: 3
+  Sprite: 124
+  DuplicateOf: entrance#tt_main
+  Kind: Script
+  Source: npc/other/turbo_track.txt:65
+- Name: Expert mode - 16 person
+  X: 124
+  "Y": 135
+  Dir: 3
+  Sprite: 124
+  DuplicateOf: entrance#tt_main
+  Kind: Script
+  Source: npc/other/turbo_track.txt:66
+- Name: Normal mode - 4 person
+  X: 77
+  "Y": 135
+  Dir: 3
+  Sprite: 124
+  DuplicateOf: entrance#tt_main
+  Kind: Script
+  Source: npc/other/turbo_track.txt:67
+- Name: Normal mode - 8 person
+  X: 84
+  "Y": 135
+  Dir: 3
+  Sprite: 124
+  DuplicateOf: entrance#tt_main
+  Kind: Script
+  Source: npc/other/turbo_track.txt:68
+- Name: Normal mode - 16 person
+  X: 91
+  "Y": 135
+  Dir: 3
+  Sprite: 124
+  DuplicateOf: entrance#tt_main
+  Kind: Script
+  Source: npc/other/turbo_track.txt:69
+- Name: Solo Mode#n1
+  X: 72
+  "Y": 132
+  Dir: 3
+  Sprite: 124
+  DuplicateOf: entrance#tt_main
+  Kind: Script
+  Source: npc/other/turbo_track.txt:70
+- Name: Kafra Staff#tt
+  X: 130
+  "Y": 92
+  Dir: 3
+  Sprite: 115
+  Kind: Script
+  Source: npc/other/turbo_track.txt:3645
+- Name: Turbo Track Merchant
+  X: 124
+  "Y": 86
+  Dir: 0
+  Sprite: 90
+  Kind: Shop
+  Source: npc/other/turbo_track.txt:3662
+- Name: Turbo Track Guide
+  X: 99
+  "Y": 120
+  Dir: 4
+  Sprite: 124
+  Kind: Script
+  Source: npc/other/turbo_track.txt:3665
+- Name: Hall of Honor#tt
+  X: 102
+  "Y": 117
+  Dir: 3
+  Sprite: 857
+  Kind: Script
+  Source: npc/other/turbo_track.txt:3980
+- Name: Solo Mode#tt
+  UniqueName: TurboSoloNames
+  X: 77
+  "Y": 115
+  Dir: 5
+  Sprite: 857
+  Kind: Script
+  Source: npc/other/turbo_track.txt:3991
+- Name: Normal Mode Record#tt
+  UniqueName: TurboNormalNames
+  X: 87
+  "Y": 114
+  Dir: 5
+  Sprite: 857
+  Kind: Script
+  Source: npc/other/turbo_track.txt:4000
+- Name: Expert Mode Record
+  UniqueName: TurboExpertNames
+  X: 112
+  "Y": 114
+  Dir: 3
+  Sprite: 857
+  Kind: Script
+  Source: npc/other/turbo_track.txt:4011
+- Name: Hall of Honor#tt2
+  X: 97
+  "Y": 117
+  Dir: 5
+  Sprite: 857
+  Kind: Script
+  Source: npc/other/turbo_track.txt:4022
+- Name: Solo Mode#1
+  X: 75
+  "Y": 95
+  Dir: 5
+  Sprite: 857
+  DuplicateOf: TurboSoloNames
+  Kind: Script
+  Source: npc/other/turbo_track.txt:4033
+- Name: Normal Mode Records#1
+  X: 67
+  "Y": 95
+  Dir: 5
+  Sprite: 857
+  DuplicateOf: TurboNormalNames
+  Kind: Script
+  Source: npc/other/turbo_track.txt:4034
+- Name: Expert Mode Records#1
+  X: 71
+  "Y": 95
+  Dir: 5
+  Sprite: 857
+  DuplicateOf: TurboExpertNames
+  Kind: Script
+  Source: npc/other/turbo_track.txt:4035
+- Name: Point Exchange Helper
+  X: 93
+  "Y": 117
+  Dir: 5
+  Sprite: 125
+  Kind: Script
+  Source: npc/other/turbo_track.txt:4037
+- Name: Point Manager#tt
+  X: 106
+  "Y": 117
+  Dir: 3
+  Sprite: 833
+  Kind: Script
+  Source: npc/other/turbo_track.txt:4451
+- Name: exit_turbo
+  X: 100
+  "Y": 62
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: alde_gld
+    X: 183
+    "Y": 198
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/aldebaran.txt:56

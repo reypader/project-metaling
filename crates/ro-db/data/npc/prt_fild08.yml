@@ -1,0 +1,153 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Poring War Recruiter#wop
+  X: 159
+  "Y": 371
+  Dir: 3
+  Sprite: 909
+  Kind: Script
+  Source: npc/other/poring_war.txt:22
+- Name: Bard#brising
+  X: 175
+  "Y": 374
+  Dir: 3
+  Sprite: 51
+  Kind: Script
+  Source: npc/quests/seals/brisingamen_seal.txt:25
+- Name: Guard#izlude
+  X: 350
+  "Y": 219
+  Dir: 4
+  Sprite: 105
+  DuplicateOf: Guard_izlude
+  Kind: Script
+  Source: npc/re/cities/izlude.txt:79
+- Name: Resting Adventurer#iz
+  X: 338
+  "Y": 217
+  Dir: 7
+  Sprite: 882
+  Kind: Script
+  Source: npc/re/cities/izlude.txt:259
+- Name: "#wp120008"
+  X: 203
+  "Y": 222
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:240
+- Name: "#tr120008"
+  X: 203
+  "Y": 222
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:501
+- Name: Jellopy
+  X: 299
+  "Y": 332
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_dicastes.txt:1150
+- Name: prtf005
+  X: 371
+  "Y": 212
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Warp
+  Warp:
+    Map: izlude
+    X: 24
+    "Y": 98
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:22
+- Name: prtf15-1
+  X: 16
+  "Y": 187
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 17
+  Kind: Warp
+  Warp:
+    Map: prt_fild07
+    X: 380
+    "Y": 186
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:67
+- Name: prtf14-1
+  X: 16
+  "Y": 239
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 15
+  Kind: Warp
+  Warp:
+    Map: prt_fild07
+    X: 379
+    "Y": 239
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:68
+- Name: prtf004
+  X: 170
+  "Y": 378
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: prontera
+    X: 156
+    "Y": 26
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:69
+- Name: prtf023
+  X: 233
+  "Y": 16
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 12
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_fild01
+    X: 238
+    "Y": 378
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:70
+- Name: prtf024
+  X: 55
+  "Y": 21
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: moc_fild01
+    X: 56
+    "Y": 380
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:71

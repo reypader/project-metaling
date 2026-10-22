@@ -1,0 +1,458 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Investment Cat Helper
+  X: 134
+  "Y": 31
+  Dir: 5
+  Sprite: 505
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:30
+- Name: Samuel#mal
+  X: 28
+  "Y": 56
+  Dir: 5
+  Sprite: 495
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:363
+- Name: Tomas#mal
+  X: 22
+  "Y": 62
+  Dir: 3
+  Sprite: 556
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:407
+- Name: President of Meeting#mal
+  X: 182
+  "Y": 61
+  Dir: 3
+  Sprite: 421
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:634
+- Name: Scottfold#mal
+  X: 178
+  "Y": 66
+  Dir: 5
+  Sprite: 422
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:700
+- Name: Koon#mal
+  X: 177
+  "Y": 58
+  Dir: 7
+  Sprite: 546
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:738
+- Name: Linguist Devore#mal
+  X: 174
+  "Y": 64
+  Dir: 5
+  Sprite: 549
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:776
+- Name: Geologist Mali#mal
+  X: 179
+  "Y": 57
+  Dir: 1
+  Sprite: 559
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:950
+- Name: Bob#mal
+  X: 140
+  "Y": 94
+  Dir: 0
+  Sprite: 553
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1151
+- Name: Brie#mal
+  X: 181
+  "Y": 55
+  Dir: 3
+  Sprite: 545
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1436
+- Name: Cleaning Staff#mal
+  X: 102
+  "Y": 94
+  Dir: 3
+  Sprite: 544
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:2424
+- Name: Gozangee#ml
+  X: 184
+  "Y": 72
+  Dir: 3
+  Sprite: 547
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3370
+- Name: "#ml3"
+  X: 184
+  "Y": 77
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3378
+- Name: Cleanyang
+  X: 76
+  "Y": 63
+  Dir: 7
+  Sprite: 544
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3566
+- Name: "#CaptainRoom3"
+  X: 29
+  "Y": 67
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:3951
+- Name: "#MeetingFloor4"
+  X: 183
+  "Y": 49
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:4030
+- Name: "#MalBed5"
+  X: 103
+  "Y": 22
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:4077
+- Name: Chef Nyas
+  X: 187
+  "Y": 58
+  Dir: 3
+  Sprite: 548
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:4333
+- Name: Box#nya01
+  X: 187
+  "Y": 45
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:6337
+- Name: Book#nya02
+  X: 170
+  "Y": 75
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:6363
+- Name: Dirty Bed#nya03
+  X: 133
+  "Y": 98
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:6388
+- Name: Seashell#nya04
+  X: 31
+  "Y": 57
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:6415
+- Name: Ship Pillar#nya05
+  X: 114
+  "Y": 56
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:6432
+- Name: Ventilation Window#nya06
+  X: 139
+  "Y": 30
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:6458
+- Name: Neat Crew#nyaong01
+  X: 166
+  "Y": 74
+  Dir: 4
+  Sprite: 555
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:6479
+- Name: Scary Crew#nyaong02
+  X: 132
+  "Y": 95
+  Dir: 5
+  Sprite: 561
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:6496
+- Name: Picky Crew#nyaong03
+  X: 109
+  "Y": 62
+  Dir: 4
+  Sprite: 545
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:6507
+- Name: malangdo_ship0002
+  X: 60
+  "Y": 61
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: malangdo
+    X: 164
+    "Y": 163
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:48
+- Name: malangdo_ship0003
+  X: 51
+  "Y": 60
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in02
+    X: 31
+    "Y": 60
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:49
+- Name: malangdo_ship0004
+  X: 34
+  "Y": 60
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in02
+    X: 53
+    "Y": 59
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:50
+- Name: malangdo_ship0005
+  X: 63
+  "Y": 53
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in02
+    X: 63
+    "Y": 33
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:51
+- Name: malangdo_ship0006
+  X: 63
+  "Y": 35
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in02
+    X: 64
+    "Y": 55
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:52
+- Name: malangdo_ship0007
+  X: 63
+  "Y": 66
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in02
+    X: 63
+    "Y": 89
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:53
+- Name: malangdo_ship0008
+  X: 64
+  "Y": 87
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in02
+    X: 63
+    "Y": 64
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:54
+- Name: malangdo_ship0009
+  X: 101
+  "Y": 53
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in02
+    X: 101
+    "Y": 33
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:55
+- Name: malangdo_ship0010
+  X: 101
+  "Y": 35
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in02
+    X: 102
+    "Y": 55
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:56
+- Name: malangdo_ship0011
+  X: 101
+  "Y": 66
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in02
+    X: 101
+    "Y": 89
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:57
+- Name: malangdo_ship0012
+  X: 102
+  "Y": 87
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in02
+    X: 101
+    "Y": 64
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:58
+- Name: malangdo_ship0013
+  X: 137
+  "Y": 53
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in02
+    X: 139
+    "Y": 33
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:59
+- Name: malangdo_ship0014
+  X: 139
+  "Y": 35
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in02
+    X: 138
+    "Y": 55
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:60
+- Name: malangdo_ship0015
+  X: 137
+  "Y": 66
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in02
+    X: 139
+    "Y": 89
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:61
+- Name: malangdo_ship0016
+  X: 140
+  "Y": 87
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in02
+    X: 137
+    "Y": 64
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:62
+- Name: malangdo_ship0017
+  X: 142
+  "Y": 60
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in02
+    X: 162
+    "Y": 61
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:63
+- Name: malangdo_ship0018
+  X: 159
+  "Y": 61
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: mal_in02
+    X: 140
+    "Y": 59
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:64

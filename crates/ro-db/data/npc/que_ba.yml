@@ -1,0 +1,173 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#bpast_1_1"
+  X: 247
+  "Y": 33
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:3563
+- Name: Female Researcher#bpast
+  X: 257
+  "Y": 39
+  Dir: 3
+  Sprite: 744
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:3582
+- Name: "#bpast_1to2"
+  X: 265
+  "Y": 34
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: que_ba
+    X: 156
+    "Y": 37
+    TriggerWhileHidden: false
+  Source: npc/quests/quests_morocc.txt:3609
+- Name: Researcher#bpast_2_1
+  X: 176
+  "Y": 43
+  Dir: 7
+  Sprite: 402
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:3611
+- Name: Researcher#bpast_2_2
+  X: 181
+  "Y": 14
+  Dir: 7
+  Sprite: 865
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:3619
+- Name: "#bpast_2to3_1"
+  X: 183
+  "Y": 25
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: que_ba
+    X: 72
+    "Y": 25
+    TriggerWhileHidden: false
+  Source: npc/quests/quests_morocc.txt:3627
+- Name: "#bpast_2to3_2"
+  X: 183
+  "Y": 52
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: que_ba
+    X: 72
+    "Y": 51
+    TriggerWhileHidden: false
+  Source: npc/quests/quests_morocc.txt:3628
+- Name: "#3room_barmunt"
+  X: 102
+  "Y": 56
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:3630
+- Name: Grotesque Woman#eva1
+  X: 104
+  "Y": 55
+  Dir: 3
+  Sprite: 980
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:3691
+- Name: Grotesque Man#zid1
+  X: 99
+  "Y": 51
+  Dir: 7
+  Sprite: 999
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:3696
+- Name: "#garas_f_yume"
+  X: 53
+  "Y": 232
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:3701
+- Name: Grotesque Woman#eva2
+  X: 50
+  "Y": 238
+  Dir: 1
+  Sprite: 980
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:3735
+- Name: Grotesque Man#zid2
+  X: 48
+  "Y": 227
+  Dir: 7
+  Sprite: 999
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:3740
+- Name: "#barmut_room1"
+  X: 264
+  "Y": 186
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:3745
+- Name: "#barmunt_fire"
+  X: 270
+  "Y": 181
+  Dir: 3
+  Sprite: 755
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:3780
+- Name: "#barmunt_living"
+  X: 270
+  "Y": 270
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:3784
+- Name: "#barmut_room2"
+  X: 263
+  "Y": 276
+  Dir: 3
+  Sprite: 755
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:3863
+- Name: "#barmut_onna"
+  X: 266
+  "Y": 268
+  Dir: 3
+  Sprite: 982
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:3867

@@ -1,0 +1,54 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Knight Windsor#knt
+  X: 89
+  "Y": 106
+  Dir: 4
+  Sprite: 733
+  Kind: Script
+  Source: npc/jobs/2-1/knight.txt:1153
+- Name: Windsor Benedict#knt
+  X: 89
+  "Y": 106
+  Dir: 4
+  Sprite: 733
+  Kind: Script
+  Source: npc/jobs/2-1/knight.txt:1226
+- Name: Timer#knt
+  X: 1
+  "Y": 1
+  Dir: 1
+  Sprite: 107
+  Kind: Script
+  Source: npc/jobs/2-1/knight.txt:1944
+- Name: Warp#knt
+  X: 143
+  "Y": 57
+  Dir: 1
+  Sprite: 107
+  Trigger:
+    X: 22
+    "Y": 22
+  Kind: Script
+  Source: npc/jobs/2-1/knight.txt:1993
+- Name: knt_out
+  X: 89
+  "Y": 98
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: prt_in
+    X: 77
+    "Y": 99
+    TriggerWhileHidden: false
+  Source: npc/re/warps/other/jobquests.txt:20

@@ -1,0 +1,53 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: gl22
+  X: 12
+  "Y": 149
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gl_sew02
+    X: 29
+    "Y": 270
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/glastheim.txt:35
+- Name: gl12-1
+  X: 147
+  "Y": 12
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gl_church
+    X: 295
+    "Y": 46
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/glastheim.txt:36
+- Name: gl11-1
+  X: 147
+  "Y": 287
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gl_church
+    X: 16
+    "Y": 295
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/glastheim.txt:37

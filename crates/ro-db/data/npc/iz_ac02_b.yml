@@ -1,0 +1,664 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Kafra Guide Trainer#02_b
+  X: 204
+  "Y": 115
+  Dir: 5
+  Sprite: 117
+  DuplicateOf: Kafra Guide Trainer#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:5498
+- Name: Noisy Trainee#ac_b
+  X: 152
+  "Y": 79
+  Dir: 3
+  Sprite: 896
+  DuplicateOf: Noisy Trainee#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6414
+- Name: Quite Trainee#ac_b
+  X: 143
+  "Y": 77
+  Dir: 3
+  Sprite: 703
+  DuplicateOf: Quite Trainee#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6455
+- Name: Frightened Trainee#ac_b
+  X: 159
+  "Y": 79
+  Dir: 7
+  Sprite: 891
+  DuplicateOf: Frightened Trainee#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6468
+- Name: Ragie#ac_b
+  X: 149
+  "Y": 43
+  Dir: 3
+  Sprite: 51
+  DuplicateOf: Ragie#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6586
+- Name: "[Merchant Classroom]#2_b"
+  X: 202
+  "Y": 110
+  Dir: 5
+  Sprite: 837
+  DuplicateOf: ac_board
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6640
+- Name: "[Acolyte Classroom]#2_b"
+  X: 213
+  "Y": 110
+  Dir: 3
+  Sprite: 837
+  DuplicateOf: ac_board
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6646
+- Name: "[Thief Classroom]#ac_b"
+  X: 202
+  "Y": 94
+  Dir: 5
+  Sprite: 837
+  DuplicateOf: ac_board
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6652
+- Name: "[Ninja Classroom]#ac_b"
+  X: 213
+  "Y": 94
+  Dir: 3
+  Sprite: 837
+  DuplicateOf: ac_board
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6658
+- Name: "[Archer Classroom]#ac_b"
+  X: 202
+  "Y": 78
+  Dir: 5
+  Sprite: 837
+  DuplicateOf: ac_board
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6664
+- Name: "[Mage Classroom]#ac_b"
+  X: 213
+  "Y": 78
+  Dir: 3
+  Sprite: 837
+  DuplicateOf: ac_board
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6670
+- Name: "[Taekwon Classroom]#2_b"
+  X: 202
+  "Y": 62
+  Dir: 5
+  Sprite: 837
+  DuplicateOf: ac_board
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6676
+- Name: "[Gunslinger Classroom]#b"
+  X: 213
+  "Y": 62
+  Dir: 3
+  Sprite: 837
+  DuplicateOf: ac_board
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6682
+- Name: "[Swordman Classroom]#2_b"
+  X: 202
+  "Y": 46
+  Dir: 5
+  Sprite: 837
+  DuplicateOf: ac_board
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6688
+- Name: "[Lounge]#ac_b"
+  X: 213
+  "Y": 46
+  Dir: 3
+  Sprite: 837
+  DuplicateOf: ac_board
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6694
+- Name: "[Principal's Office]#ab"
+  X: 211
+  "Y": 118
+  Dir: 3
+  Sprite: 837
+  DuplicateOf: ac_board
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:6700
+- Name: Cream Puff#ac_b
+  X: 143
+  "Y": 55
+  Dir: 3
+  Sprite: 706
+  DuplicateOf: Cream Puff#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:7277
+- Name: Lusa#ac_b
+  X: 142
+  "Y": 85
+  Dir: 6
+  Sprite: 633
+  DuplicateOf: Lusa#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:8031
+- Name: Lusa's Desk#ac_b
+  X: 131
+  "Y": 82
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: Lusa's Desk#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:8184
+- Name: Guild Staff#ac_b
+  X: 162
+  "Y": 86
+  Dir: 4
+  Sprite: 98
+  DuplicateOf: Guild Staff#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:8289
+- Name: Arang#ac_b
+  X: 70
+  "Y": 85
+  Dir: 5
+  Sprite: 644
+  DuplicateOf: Arang#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:8478
+- Name: Archer Teacher#ac_b
+  X: 65
+  "Y": 109
+  Dir: 5
+  Sprite: 634
+  DuplicateOf: Archer Teacher#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:8815
+- Name: Swordman Trainer#ac_b
+  X: 60
+  "Y": 51
+  Dir: 5
+  Sprite: 635
+  DuplicateOf: Swordman Trainer#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:9104
+- Name: Swordman Assistant#ac_b
+  X: 53
+  "Y": 48
+  Dir: 5
+  Sprite: 418
+  DuplicateOf: Swordman Assistant#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:9214
+- Name: Mage Chuck#ac_b
+  X: 148
+  "Y": 110
+  Dir: 3
+  Sprite: 735
+  DuplicateOf: Mage Chuck#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:9487
+- Name: Salim Hamid#ac_b
+  X: 50
+  "Y": 169
+  Dir: 3
+  Sprite: 58
+  DuplicateOf: Salim Hamid#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:10002
+- Name: Steward Aydin#ac_b
+  X: 53
+  "Y": 171
+  Dir: 3
+  Sprite: 109
+  DuplicateOf: Steward Aydin#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:10124
+- Name: Guest Lecturer Mayssel#b
+  X: 52
+  "Y": 136
+  Dir: 3
+  Sprite: 640
+  DuplicateOf: Guest Lecturer Mayssel#0
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:10785
+- Name: Vicente#ac_b
+  X: 49
+  "Y": 134
+  Dir: 5
+  Sprite: 899
+  DuplicateOf: Vicente#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:11308
+- Name: Verkhasel#ac_b
+  X: 55
+  "Y": 134
+  Dir: 3
+  Sprite: 467
+  DuplicateOf: Verkhasel#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:11746
+- Name: Lumin#ac_b
+  X: 62
+  "Y": 139
+  Dir: 3
+  Sprite: 639
+  DuplicateOf: Lumin#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:11914
+- Name: "#nbacStone01_b"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#nbacStone01"
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:11953
+- Name: "#nbacStone02_b"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#nbacStone02"
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:11991
+- Name: "#nbacStone03_b"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#nbacStone03"
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:12029
+- Name: Acolyte Leader Alice#2_b
+  X: 156
+  "Y": 169
+  Dir: 5
+  Sprite: 641
+  DuplicateOf: Acolyte Leader Alice#2
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:12229
+- Name: A Nun#2_b
+  X: 152
+  "Y": 165
+  Dir: 5
+  Sprite: 95
+  DuplicateOf: A Nun#2
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:12287
+- Name: Ninja Guide#ac_b
+  X: 140
+  "Y": 139
+  Dir: 5
+  Sprite: 637
+  DuplicateOf: Ninja Guide#ac
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:12520
+- Name: "#to_bc1f01_b"
+  X: 198
+  "Y": 27
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac01_b
+    X: 78
+    "Y": 28
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:149
+- Name: "#to_bc1f02_b"
+  X: 217
+  "Y": 27
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac01_b
+    X: 122
+    "Y": 28
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:153
+- Name: "#to_swordmanroom_b"
+  X: 194
+  "Y": 44
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 80
+    "Y": 48
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:162
+- Name: "#from_sword_toac02_b"
+  X: 83
+  "Y": 48
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 197
+    "Y": 44
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:168
+- Name: "#to_helproom_b"
+  X: 221
+  "Y": 44
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 127
+    "Y": 48
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:174
+- Name: "#from_help_toac02_b"
+  X: 124
+  "Y": 48
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 218
+    "Y": 44
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:180
+- Name: "#to_taekwonroom_b"
+  X: 194
+  "Y": 60
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 80
+    "Y": 77
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:186
+- Name: "#from_taek_toac02_b"
+  X: 83
+  "Y": 77
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 197
+    "Y": 60
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:192
+- Name: "#to_gunslingerroom_b"
+  X: 221
+  "Y": 60
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 127
+    "Y": 78
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:198
+- Name: "#from_guns_toac02_b"
+  X: 124
+  "Y": 78
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 218
+    "Y": 60
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:204
+- Name: "#to_archerroom_b"
+  X: 194
+  "Y": 76
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 80
+    "Y": 108
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:210
+- Name: "#from_archer_toac02_b"
+  X: 83
+  "Y": 108
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 197
+    "Y": 76
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:216
+- Name: "#to_mageroom_b"
+  X: 221
+  "Y": 76
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 127
+    "Y": 108
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:222
+- Name: "#from_mage_toac02_b"
+  X: 124
+  "Y": 108
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 218
+    "Y": 76
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:228
+- Name: "#to_thiefroom_b"
+  X: 194
+  "Y": 92
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 80
+    "Y": 138
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:234
+- Name: "#from_thief_toac02_b"
+  X: 83
+  "Y": 138
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 197
+    "Y": 92
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:240
+- Name: "#to_ninjaroom_b"
+  X: 221
+  "Y": 92
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 127
+    "Y": 137
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:246
+- Name: "#from_ninja_toac02_b"
+  X: 124
+  "Y": 137
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 218
+    "Y": 92
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:252
+- Name: "#to_merchantroom_b"
+  X: 194
+  "Y": 108
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 80
+    "Y": 168
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:258
+- Name: "#from_merch_toac02_b"
+  X: 83
+  "Y": 168
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 197
+    "Y": 108
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:264
+- Name: "#to_acolyteroom_b"
+  X: 221
+  "Y": 108
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 127
+    "Y": 168
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:270
+- Name: "#from_aco_toac02_b"
+  X: 124
+  "Y": 168
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 218
+    "Y": 108
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:276
+- Name: "#to_principalroom_b"
+  X: 208
+  "Y": 121
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 104
+    "Y": 187
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:282
+- Name: "#from_principal_toac02_b"
+  X: 104
+  "Y": 184
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac02_b
+    X: 208
+    "Y": 118
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:288

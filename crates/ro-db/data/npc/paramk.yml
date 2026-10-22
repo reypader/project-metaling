@@ -1,0 +1,549 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Suribell#suribell
+  X: 34
+  "Y": 184
+  Dir: 4
+  Sprite: 10079
+  Kind: Script
+  Source: npc/re/merchants/enchantgrade.txt:70
+- Name: grade_in
+  X: 8
+  "Y": 171
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: paramk
+    X: 141
+    "Y": 64
+    TriggerWhileHidden: false
+  Source: npc/re/merchants/enchantgrade.txt:130
+- Name: grade_out
+  X: 145
+  "Y": 64
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: paramk
+    X: 11
+    "Y": 171
+    TriggerWhileHidden: false
+  Source: npc/re/merchants/enchantgrade.txt:131
+- Name: Market Group Guide#info
+  X: 101
+  "Y": 22
+  Dir: 3
+  Sprite: 831
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:340
+- Name: Market Guard#1
+  X: 103
+  "Y": 17
+  Dir: 3
+  Sprite: 405
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:404
+- Name: Market Guard#2
+  X: 92
+  "Y": 17
+  Dir: 6
+  Sprite: 405
+  DuplicateOf: Market Guard#1
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:427
+- Name: Market Guard#3
+  X: 53
+  "Y": 47
+  Dir: 3
+  Sprite: 405
+  DuplicateOf: Market Guard#1
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:428
+- Name: Market Guard#4
+  X: 142
+  "Y": 48
+  Dir: 3
+  Sprite: 405
+  DuplicateOf: Market Guard#1
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:429
+- Name: Market Guard#5
+  X: 142
+  "Y": 67
+  Dir: 3
+  Sprite: 405
+  DuplicateOf: Market Guard#1
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:430
+- Name: Market Guard#6
+  X: 53
+  "Y": 67
+  Dir: 3
+  Sprite: 405
+  DuplicateOf: Market Guard#1
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:431
+- Name: A wise customer#gst01
+  X: 78
+  "Y": 44
+  Dir: 3
+  Sprite: 10001
+  Trigger:
+    X: 6
+    "Y": 6
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:436
+- Name: A dining customer#gst02
+  X: 119
+  "Y": 80
+  Dir: 3
+  Sprite: 819
+  Trigger:
+    X: 6
+    "Y": 6
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:444
+- Name: Customer#gst03
+  X: 106
+  "Y": 61
+  Dir: 3
+  Sprite: 690
+  Trigger:
+    X: 6
+    "Y": 6
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:452
+- Name: Window-shopper#gst04
+  X: 77
+  "Y": 60
+  Dir: 3
+  Sprite: 688
+  Trigger:
+    X: 6
+    "Y": 6
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:460
+- Name: Cassie#gst05
+  X: 113
+  "Y": 56
+  Dir: 3
+  Sprite: 80
+  Trigger:
+    X: 6
+    "Y": 6
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:468
+- Name: Leria#coin
+  X: 74
+  "Y": 15
+  Dir: 0
+  Sprite: 704
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:503
+- Name: Heimhunter#hei
+  X: 71
+  "Y": 15
+  Dir: 3
+  Sprite: 679
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:533
+- Name: Zephet#key
+  X: 68
+  "Y": 15
+  Dir: 0
+  Sprite: 900
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:560
+- Name: "[Strong Friends]#wp00"
+  X: 72
+  "Y": 33
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:591
+- Name: Miffy#wp01
+  X: 65
+  "Y": 30
+  Dir: 3
+  Sprite: 862
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:599
+- Name: Nelsha#wp02
+  X: 70
+  "Y": 31
+  Dir: 3
+  Sprite: 881
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:633
+- Name: "[Reliable Friends]#arm00"
+  X: 72
+  "Y": 33
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:656
+- Name: Coco#arm01
+  X: 78
+  "Y": 31
+  Dir: 3
+  Sprite: 882
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:664
+- Name: "[Handsome Friends]#cst00"
+  X: 84
+  "Y": 33
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:692
+- Name: Minho Doh#cst01
+  X: 90
+  "Y": 31
+  Dir: 3
+  Sprite: 97
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:699
+- Name: Lapelt#hat01
+  X: 94
+  "Y": 32
+  Dir: 3
+  Sprite: 869
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:733
+- Name: "[Meds for Pharma]#ptn00"
+  X: 96
+  "Y": 33
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:763
+- Name: Head Pharmacist#ptn01
+  X: 100
+  "Y": 30
+  Dir: 3
+  Sprite: 982
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:774
+- Name: Johanna#ptn02
+  X: 106
+  "Y": 32
+  Dir: 3
+  Sprite: 475
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:807
+- Name: Brewer Wyn#ptn03
+  X: 106
+  "Y": 27
+  Dir: 3
+  Sprite: 748
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:844
+- Name: "[WeHaveEverything]#itm00"
+  X: 108
+  "Y": 33
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:879
+- Name: Lucky Day Napeed#itm01
+  X: 114
+  "Y": 30
+  Dir: 3
+  Sprite: 92
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:891
+- Name: Manager Parayo#itm02
+  X: 118
+  "Y": 31
+  Dir: 3
+  Sprite: 894
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:919
+- Name: "[Malangdonya]#seed00"
+  X: 122
+  "Y": 33
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:959
+- Name: Whiteberry#seed01
+  X: 126
+  "Y": 34
+  Dir: 3
+  Sprite: 544
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:971
+- Name: Blackphone#seed02
+  X: 129
+  "Y": 33
+  Dir: 3
+  Sprite: 496
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1006
+- Name: Jeffrey#food00
+  X: 144
+  "Y": 13
+  Dir: 3
+  Sprite: 58
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1037
+- Name: Vincent#food01
+  X: 140
+  "Y": 18
+  Dir: 3
+  Sprite: 10002
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1056
+- Name: Panel#food02
+  X: 138
+  "Y": 19
+  Dir: 3
+  Sprite: 10001
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1072
+- Name: Matina#food03
+  X: 136
+  "Y": 20
+  Dir: 3
+  Sprite: 691
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1088
+- Name: Lucy#food04
+  X: 134
+  "Y": 21
+  Dir: 3
+  Sprite: 696
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1104
+- Name: Mara#food05
+  X: 136
+  "Y": 16
+  Dir: 3
+  Sprite: 688
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1120
+- Name: Lana#food06
+  X: 133
+  "Y": 16
+  Dir: 3
+  Sprite: 690
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1136
+- Name: Rahoul#food07
+  X: 127
+  "Y": 16
+  Dir: 3
+  Sprite: 698
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1152
+- Name: Drunk#food08
+  X: 124
+  "Y": 20
+  Dir: 3
+  Sprite: 692
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1168
+- Name: Annoyed Customer#food09
+  X: 127
+  "Y": 10
+  Dir: 3
+  Sprite: 693
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1184
+- Name: Kalin#food10
+  X: 124
+  "Y": 11
+  Dir: 3
+  Sprite: 90
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1201
+- Name: Thrann#food11
+  X: 121
+  "Y": 11
+  Dir: 3
+  Sprite: 91
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1208
+- Name: Sobok the Cook#fd01
+  X: 127
+  "Y": 88
+  Dir: 3
+  Sprite: 820
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1224
+- Name: Pomegranate#mora01
+  X: 75
+  "Y": 86
+  Dir: 3
+  Sprite: 518
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1273
+- Name: Cocktail Master#mora01
+  X: 65
+  "Y": 86
+  Dir: 3
+  Sprite: 524
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1305
+- Name: "Hans #ref01"
+  X: 49
+  "Y": 103
+  Dir: 3
+  Sprite: 807
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1334
+- Name: Dus the Smith#ref02
+  X: 53
+  "Y": 104
+  Dir: 3
+  Sprite: 813
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1362
+- Name: "[Rain-of-Gems]#jw"
+  X: 63
+  "Y": 98
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1400
+- Name: Aurora#jew01
+  X: 69
+  "Y": 102
+  Dir: 3
+  Sprite: 91
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1410
+- Name: "[Alchemical Cat]#alc00"
+  X: 73
+  "Y": 98
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1457
+- Name: Dye the Alchemist#alc01
+  X: 75
+  "Y": 102
+  Dir: 3
+  Sprite: 750
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1469
+- Name: Earl the Alchemist#alc02
+  X: 80
+  "Y": 104
+  Dir: 3
+  Sprite: 10003
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1497
+- Name: "[Manbok Groceries]#fod00"
+  X: 83
+  "Y": 98
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1542
+- Name: Manbok#fod01
+  X: 87
+  "Y": 101
+  Dir: 3
+  Sprite: 49
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1553
+- Name: Ma-Ma-Ma-Ma#mag
+  X: 93
+  "Y": 98
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1601
+- Name: Madoha#mag01
+  X: 95
+  "Y": 102
+  Dir: 3
+  Sprite: 754
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1614
+- Name: Magiha#mag02
+  X: 100
+  "Y": 102
+  Dir: 3
+  Sprite: 755
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1661
+- Name: "[Yggdrasil Blessing]#00"
+  X: 103
+  "Y": 98
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1689
+- Name: "[Exotic Plants]#plt"
+  X: 113
+  "Y": 98
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1698
+- Name: Hwaran#plt01
+  X: 116
+  "Y": 100
+  Dir: 3
+  Sprite: 971
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1706
+- Name: "[You and Me]#unm00"
+  X: 133
+  "Y": 98
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1728
+- Name: Gecko the Trainer#unm01
+  X: 124
+  "Y": 97
+  Dir: 3
+  Sprite: 943
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1738
+- Name: Tamer Tete#unm02
+  X: 126
+  "Y": 100
+  Dir: 3
+  Sprite: 944
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1803
+- Name: Mist the Hunter#unm03
+  X: 130
+  "Y": 98
+  Dir: 3
+  Sprite: 732
+  Kind: Script
+  Source: npc/re/merchants/eden_market.txt:1823
+- Name: paramk#ex
+  X: 97
+  "Y": 5
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_para01
+    X: 106
+    "Y": 35
+    TriggerWhileHidden: false
+  Source: npc/re/merchants/eden_market.txt:1957

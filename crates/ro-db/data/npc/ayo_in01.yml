@@ -1,0 +1,405 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Tool Dealer#ayo
+  X: 18
+  "Y": 182
+  Dir: 1
+  Sprite: 840
+  Kind: Shop
+  Source: npc/merchants/shops.txt:74
+- Name: Weapon Dealer#ayo
+  X: 90
+  "Y": 192
+  Dir: 3
+  Sprite: 843
+  Kind: Shop
+  Source: npc/merchants/shops.txt:75
+- Name: Armor Dealer#ayo
+  X: 90
+  "Y": 160
+  Dir: 1
+  Sprite: 842
+  Kind: Shop
+  Source: npc/merchants/shops.txt:76
+- Name: Shaman#thai
+  X: 181
+  "Y": 193
+  Dir: 4
+  Sprite: 840
+  Kind: Script
+  Source: npc/quests/quests_ayothaya.txt:1332
+- Name: Cook#ayo
+  X: 145
+  "Y": 163
+  Dir: 3
+  Sprite: 839
+  Kind: Script
+  Source: npc/quests/quests_ayothaya.txt:2180
+- Name: ayo_tool1-2
+  X: 46
+  "Y": 183
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayothaya
+    X: 132
+    "Y": 99
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:17
+- Name: ayo_tool2-2
+  X: 23
+  "Y": 176
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayothaya
+    X: 132
+    "Y": 86
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:19
+- Name: ayo_tool3-2
+  X: 17
+  "Y": 153
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayothaya
+    X: 132
+    "Y": 73
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:21
+- Name: ayo_weapon1-2
+  X: 73
+  "Y": 174
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayothaya
+    X: 162
+    "Y": 90
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:23
+- Name: ayo_weapon2-2
+  X: 98
+  "Y": 175
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayothaya
+    X: 180
+    "Y": 90
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:25
+- Name: ayo_weapon3-2
+  X: 85
+  "Y": 149
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayothaya
+    X: 173
+    "Y": 74
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:27
+- Name: ayo_pub1-2
+  X: 137
+  "Y": 195
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayothaya
+    X: 229
+    "Y": 72
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:29
+- Name: ayo_inn1-2
+  X: 31
+  "Y": 111
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayothaya
+    X: 202
+    "Y": 164
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:31
+- Name: ayo_inn2-2
+  X: 50
+  "Y": 94
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayothaya
+    X: 214
+    "Y": 150
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:33
+- Name: ayo_inn3-2
+  X: 31
+  "Y": 78
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayothaya
+    X: 202
+    "Y": 137
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:35
+- Name: ayo_inn4-2
+  X: 10
+  "Y": 94
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayothaya
+    X: 189
+    "Y": 150
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:37
+- Name: ayo_stairNW1-1
+  X: 13
+  "Y": 107
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayo_in01
+    X: 132
+    "Y": 27
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:38
+- Name: ayo_roomNW1-2
+  X: 135
+  "Y": 27
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayo_in01
+    X: 17
+    "Y": 107
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:39
+- Name: ayo_stairNE1-1
+  X: 48
+  "Y": 107
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayo_in01
+    X: 179
+    "Y": 27
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:40
+- Name: ayo_roomNE2-2
+  X: 176
+  "Y": 27
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayo_in01
+    X: 45
+    "Y": 107
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:41
+- Name: ayo_stairSW1-1
+  X: 13
+  "Y": 82
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayo_in01
+    X: 18
+    "Y": 14
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:42
+- Name: ayo_roomSW1-2
+  X: 21
+  "Y": 14
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayo_in01
+    X: 17
+    "Y": 82
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:43
+- Name: ayo_stairSE1-1
+  X: 48
+  "Y": 82
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayo_in01
+    X: 63
+    "Y": 14
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:44
+- Name: ayo_roomSE1-2
+  X: 60
+  "Y": 14
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayo_in01
+    X: 45
+    "Y": 82
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:45
+- Name: ayo_house1_1-2
+  X: 177
+  "Y": 129
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayothaya
+    X: 111
+    "Y": 106
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:47
+- Name: ayo_house2_1-2
+  X: 194
+  "Y": 183
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ayothaya
+    X: 65
+    "Y": 104
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/ayothaya.txt:49
+- Name: Tool Dealer#Extended_Ayo
+  X: 18
+  "Y": 182
+  Dir: 1
+  Sprite: 840
+  Kind: Shop
+  Source: npc/re/merchants/Dealer_Update.txt:149
+- Name: Arrow Merchant#over_arrow_19
+  X: 77
+  "Y": 161
+  Dir: 5
+  Sprite: 634
+  DuplicateOf: "#over_arrow"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:389
+- Name: Ammunition Merchant#over_bullet_19
+  X: 77
+  "Y": 163
+  Dir: 5
+  Sprite: 633
+  DuplicateOf: "#over_bullet"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:390
+- Name: Ninja Tool Merchant#over_kunai_19
+  X: 77
+  "Y": 165
+  Dir: 5
+  Sprite: 636
+  DuplicateOf: "#over_kunai"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:391
+- Name: Mado Gear Merchant#over_madogear_19
+  X: 77
+  "Y": 159
+  Dir: 5
+  Sprite: 10004
+  DuplicateOf: "#over_madogear"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:392
+- Name: Talisman Merchant#over_talisman_19
+  X: 77
+  "Y": 157
+  Dir: 3
+  Sprite: 10234
+  DuplicateOf: "#over_talisman"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:393

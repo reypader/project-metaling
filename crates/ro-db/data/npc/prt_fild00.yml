@@ -1,0 +1,90 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Ascetic#3aco
+  X: 208
+  "Y": 218
+  Dir: 6
+  Sprite: 98
+  Kind: Script
+  Source: npc/re/jobs/1-1/acolyte.txt:259
+- Name: prtf007
+  X: 159
+  "Y": 383
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: mjolnir_07
+    X: 156
+    "Y": 19
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:21
+- Name: prtf01
+  X: 165
+  "Y": 18
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 9
+    "Y": 3
+  Kind: Warp
+  Warp:
+    Map: prt_fild04
+    X: 158
+    "Y": 384
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:22
+- Name: prtf015
+  X: 18
+  "Y": 129
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 6
+  Kind: Warp
+  Warp:
+    Map: gef_fild00
+    X: 376
+    "Y": 140
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:23
+- Name: prtf02
+  X: 317
+  "Y": 18
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 8
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: prt_fild04
+    X: 323
+    "Y": 384
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:24
+- Name: prtf008
+  X: 383
+  "Y": 249
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 4
+  Kind: Warp
+  Warp:
+    Map: mjolnir_09
+    X: 33
+    "Y": 248
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:25

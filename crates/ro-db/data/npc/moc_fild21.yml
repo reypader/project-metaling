@@ -1,0 +1,76 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Morocc Timer#edq
+  X: 38
+  "Y": 193
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 6
+    "Y": 6
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:1854
+- Name: Satan Broadcast#edq
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:1868
+- Name: Group of Evil#edq
+  X: 178
+  "Y": 239
+  Dir: 0
+  Sprite: 844
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:1897
+- Name: Time-Space Gap#edq
+  X: 177
+  "Y": 239
+  Dir: 0
+  Sprite: 844
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:1925
+- Name: Satan Summon#edq
+  X: 3
+  "Y": 1
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:1969
+- Name: Morocc GlobalVar Admin
+  UniqueName: MoroccAdmin_moc
+  X: 5
+  "Y": 5
+  Dir: 5
+  Sprite: 971
+  DuplicateOf: MoroccAdmin_sec
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:2085
+- Name: mocf020
+  X: 26
+  "Y": 196
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: moc_fild20
+    X: 349
+    "Y": 179
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/morroc_fild.txt:119

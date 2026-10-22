@@ -1,0 +1,86 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Myu#08_hat
+  X: 80
+  "Y": 149
+  Dir: 3
+  Sprite: 877
+  Kind: Script
+  Source: npc/quests/newgears/2008_headgears.txt:17
+- Name: "#wp120013"
+  X: 202
+  "Y": 292
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:156
+- Name: "#tr120013"
+  X: 202
+  "Y": 292
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:417
+- Name: Powder of Butterfly
+  X: 111
+  "Y": 96
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_dicastes.txt:1169
+- Name: geff06-1
+  X: 364
+  "Y": 309
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 8
+  Kind: Warp
+  Warp:
+    Map: gef_fild04
+    X: 19
+    "Y": 309
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/geffen_fild.txt:38
+- Name: geff07
+  X: 15
+  "Y": 201
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 4
+  Kind: Warp
+  Warp:
+    Map: gef_fild06
+    X: 379
+    "Y": 211
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/geffen_fild.txt:39
+- Name: geff08
+  X: 64
+  "Y": 15
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: gef_fild07
+    X: 64
+    "Y": 360
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/geffen_fild.txt:40

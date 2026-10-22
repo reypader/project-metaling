@@ -1,0 +1,1088 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: nyr_starter
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:292
+- Name: "#dmswp01"
+  X: 179
+  "Y": 168
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 2@nyr
+    X: 34
+    "Y": 221
+    TriggerWhileHidden: false
+  Source: npc/re/instances/Wolves.txt:605
+- Name: "#dmwrp02"
+  X: 43
+  "Y": 26
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:607
+- Name: Miriam#dms101
+  X: 192
+  "Y": 31
+  Dir: 3
+  Sprite: 21321
+  SpriteIsMob: true
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:688
+- Name: Suad#dms101
+  X: 125
+  "Y": 41
+  Dir: 3
+  Sprite: 10378
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:797
+- Name: Lamacus#dms102
+  X: 130
+  "Y": 34
+  Dir: 1
+  Sprite: 21292
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:909
+- Name: Kun#dms112
+  X: 132
+  "Y": 32
+  Dir: 1
+  Sprite: 21293
+  SpriteIsMob: true
+  DuplicateOf: Lamacus#dms102
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:915
+- Name: Yopi#dms122
+  X: 130
+  "Y": 31
+  Dir: 1
+  Sprite: 21294
+  SpriteIsMob: true
+  DuplicateOf: Lamacus#dms102
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:916
+- Name: Angry Crowd#dms171
+  X: 117
+  "Y": 38
+  Dir: 7
+  Sprite: 10396
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:918
+- Name: Temple Guard#dms101
+  X: 139
+  "Y": 46
+  Dir: 3
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:919
+- Name: Temple Guard#dms111
+  X: 132
+  "Y": 46
+  Dir: 3
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:920
+- Name: Temple Guard#dms121
+  X: 126
+  "Y": 46
+  Dir: 3
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:921
+- Name: Temple Guard#dms131
+  X: 122
+  "Y": 46
+  Dir: 3
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:922
+- Name: Temple Guard#dms141
+  X: 118
+  "Y": 46
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:923
+- Name: Temple Guard#dms151
+  X: 110
+  "Y": 46
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:924
+- Name: Temple Guard#dms181
+  X: 120
+  "Y": 44
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:926
+- Name: Temple Guard#dms191
+  X: 124
+  "Y": 44
+  Dir: 3
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:927
+- Name: Angry Crowd#dms101
+  X: 137
+  "Y": 38
+  Dir: 1
+  Sprite: 10397
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:928
+- Name: Angry Crowd#dms111
+  X: 124
+  "Y": 36
+  Dir: 1
+  Sprite: 10399
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:929
+- Name: Angry Crowd#dms121
+  X: 131
+  "Y": 38
+  Dir: 1
+  Sprite: 10398
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:930
+- Name: Angry Crowd#dms131
+  X: 127
+  "Y": 34
+  Dir: 1
+  Sprite: 929
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:931
+- Name: Angry Crowd#dms141
+  X: 121
+  "Y": 40
+  Dir: 7
+  Sprite: 10400
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:932
+- Name: Angry Crowd#dms151
+  X: 122
+  "Y": 37
+  Dir: 7
+  Sprite: 10395
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:933
+- Name: Angry Crowd#dms161
+  X: 118
+  "Y": 35
+  Dir: 7
+  Sprite: 931
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:934
+- Name: Angry Crowd#dms181
+  X: 114
+  "Y": 36
+  Dir: 7
+  Sprite: 919
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:935
+- Name: Angry Crowd#dms191
+  X: 116
+  "Y": 41
+  Dir: 7
+  Sprite: 10399
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:936
+- Name: "#dmswch02"
+  X: 65
+  "Y": 169
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2045
+- Name: Miriam#dms801
+  X: 68
+  "Y": 163
+  Dir: 5
+  Sprite: 21321
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2135
+- Name: Suad#dms102
+  X: 127
+  "Y": 163
+  Dir: 5
+  Sprite: 10378
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2235
+- Name: nyr_step_10
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2382
+- Name: Temple Guard#dms802
+  X: 113
+  "Y": 172
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2446
+- Name: Temple Guard#dms812
+  X: 126
+  "Y": 172
+  Dir: 3
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2447
+- Name: Temple Guard#dms822
+  X: 112
+  "Y": 178
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2448
+- Name: Temple Guard#dms832
+  X: 127
+  "Y": 178
+  Dir: 3
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2449
+- Name: Temple Guard#dms842
+  X: 118
+  "Y": 172
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2450
+- Name: Niren#dms201
+  X: 130
+  "Y": 163
+  Dir: 1
+  Sprite: 915
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2451
+- Name: Zhed#dms101
+  X: 131
+  "Y": 165
+  Dir: 3
+  Sprite: 932
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2452
+- Name: Temple Guard#dms801
+  X: 130
+  "Y": 172
+  Dir: 3
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2454
+- Name: Temple Guard#dms811
+  X: 127
+  "Y": 174
+  Dir: 3
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2455
+- Name: Temple Guard#dms821
+  X: 112
+  "Y": 174
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2456
+- Name: Temple Guard#dms831
+  X: 109
+  "Y": 172
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2457
+- Name: Temple Guard#dms841
+  X: 116
+  "Y": 172
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2458
+- Name: Temple Guard#dms851
+  X: 120
+  "Y": 172
+  Dir: 3
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2459
+- Name: Temple Guard#dms861
+  X: 123
+  "Y": 172
+  Dir: 3
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2460
+- Name: Temple Guard#dms871
+  X: 117
+  "Y": 176
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2461
+- Name: Temple Guard#dms881
+  X: 122
+  "Y": 176
+  Dir: 3
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2462
+- Name: Temple Guard#dms891
+  X: 119
+  "Y": 178
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2463
+- Name: Heart Hunter#dms101
+  X: 123
+  "Y": 168
+  Dir: 3
+  Sprite: 21308
+  SpriteIsMob: true
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2465
+- Name: Heart Hunter#dms111
+  X: 118
+  "Y": 168
+  Dir: 5
+  Sprite: 21308
+  SpriteIsMob: true
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2466
+- Name: Heart Hunter#dms121
+  X: 113
+  "Y": 165
+  Dir: 5
+  Sprite: 21308
+  SpriteIsMob: true
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2467
+- Name: Heart Hunter#dms131
+  X: 114
+  "Y": 171
+  Dir: 5
+  Sprite: 21308
+  SpriteIsMob: true
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2468
+- Name: Heart Hunter#dms141
+  X: 128
+  "Y": 170
+  Dir: 3
+  Sprite: 21308
+  SpriteIsMob: true
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2469
+- Name: Heart Hunter#dms151
+  X: 115
+  "Y": 176
+  Dir: 5
+  Sprite: 21308
+  SpriteIsMob: true
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2470
+- Name: Heart Hunter#dms161
+  X: 120
+  "Y": 174
+  Dir: 3
+  Sprite: 21308
+  SpriteIsMob: true
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2471
+- Name: Heart Hunter#dms171
+  X: 125
+  "Y": 175
+  Dir: 3
+  Sprite: 21308
+  SpriteIsMob: true
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2472
+- Name: Heart Hunter#dms181
+  X: 123
+  "Y": 177
+  Dir: 3
+  Sprite: 21308
+  SpriteIsMob: true
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2473
+- Name: Heart Hunter#dms191
+  X: 128
+  "Y": 172
+  Dir: 3
+  Sprite: 21308
+  SpriteIsMob: true
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2474
+- Name: Angry Crowd#dms201
+  X: 109
+  "Y": 167
+  Dir: 7
+  Sprite: 10397
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2477
+- Name: Angry Crowd#dms211
+  X: 117
+  "Y": 164
+  Dir: 1
+  Sprite: 10399
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2478
+- Name: Angry Crowd#dms231
+  X: 109
+  "Y": 167
+  Dir: 7
+  Sprite: 929
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2479
+- Name: Angry Crowd#dms221
+  X: 112
+  "Y": 166
+  Dir: 1
+  Sprite: 10398
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2480
+- Name: Angry Crowd#dms241
+  X: 122
+  "Y": 166
+  Dir: 1
+  Sprite: 10400
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2481
+- Name: Angry Crowd#dms251
+  X: 115
+  "Y": 166
+  Dir: 7
+  Sprite: 10395
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2482
+- Name: Angry Crowd#dms261
+  X: 120
+  "Y": 167
+  Dir: 1
+  Sprite: 931
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2483
+- Name: Angry Crowd#dms271
+  X: 116
+  "Y": 170
+  Dir: 1
+  Sprite: 10396
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2484
+- Name: Angry Crowd#dms281
+  X: 112
+  "Y": 168
+  Dir: 1
+  Sprite: 919
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2485
+- Name: Angry Crowd#dms291
+  X: 124
+  "Y": 171
+  Dir: 1
+  Sprite: 10399
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2486
+- Name: Angry Crowd#dms202
+  X: 118
+  "Y": 171
+  Dir: 1
+  Sprite: 930
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2488
+- Name: Angry Crowd#dms212
+  X: 127
+  "Y": 166
+  Dir: 7
+  Sprite: 943
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2489
+- Name: Angry Crowd#dms222
+  X: 125
+  "Y": 168
+  Dir: 7
+  Sprite: 931
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2490
+- Name: Angry Crowd#dms232
+  X: 123
+  "Y": 164
+  Dir: 7
+  Sprite: 928
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2491
+- Name: Angry Crowd#dms242
+  X: 127
+  "Y": 169
+  Dir: 7
+  Sprite: 919
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2492
+- Name: "#qwpto01"
+  X: 153
+  "Y": 145
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 7
+  Kind: Warp
+  Warp:
+    Map: 1@nyr
+    X: 146
+    "Y": 145
+    TriggerWhileHidden: false
+  Source: npc/re/instances/Wolves.txt:2500
+- Name: "#qwpto03"
+  X: 91
+  "Y": 33
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 7
+  Kind: Warp
+  Warp:
+    Map: 1@nyr
+    X: 86
+    "Y": 33
+    TriggerWhileHidden: false
+  Source: npc/re/instances/Wolves.txt:2501
+- Name: "#qwpto02"
+  X: 120
+  "Y": 181
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 7
+    "Y": 1
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2502
+- Name: "#areaw03"
+  X: 88
+  "Y": 146
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 5
+  Kind: Warp
+  Warp:
+    Map: 1@nyr
+    X: 94
+    "Y": 158
+    TriggerWhileHidden: false
+  Source: npc/re/instances/Wolves.txt:2510
+- Name: "#qar101sw"
+  X: 196
+  "Y": 30
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2515
+- Name: Temple Guard#qdms101
+  X: 190
+  "Y": 31
+  Dir: 1
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2573
+- Name: Temple Guard#qdms111
+  X: 186
+  "Y": 31
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2574
+- Name: Temple Guard#qdms121
+  X: 187
+  "Y": 32
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2575
+- Name: Temple Guard#qdms131
+  X: 188
+  "Y": 33
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2576
+- Name: Temple Guard#qdms141
+  X: 189
+  "Y": 34
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2577
+- Name: Temple Guard#qdms151
+  X: 185
+  "Y": 32
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2578
+- Name: Temple Guard#qdms161
+  X: 186
+  "Y": 33
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2579
+- Name: Temple Guard#qdms171
+  X: 187
+  "Y": 34
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2580
+- Name: Temple Guard#qdms181
+  X: 188
+  "Y": 35
+  Dir: 5
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2581
+- Name: "#qmobg101"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2588
+- Name: Temple Guard#qdms01
+  X: 165
+  "Y": 32
+  Dir: 5
+  Sprite: 934
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2682
+- Name: Temple Guard#qdms02
+  X: 165
+  "Y": 98
+  Dir: 5
+  Sprite: 934
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: Temple Guard#qdms01
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2691
+- Name: Temple Guard#qdms03
+  X: 184
+  "Y": 141
+  Dir: 5
+  Sprite: 934
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: Temple Guard#qdms01
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2692
+- Name: Temple Guard#qdms21
+  X: 139
+  "Y": 134
+  Dir: 5
+  Sprite: 934
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: Temple Guard#qdms01
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2693
+- Name: Temple Guard#qdms22
+  X: 102
+  "Y": 109
+  Dir: 5
+  Sprite: 934
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: Temple Guard#qdms01
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2694
+- Name: Temple Guard#qdms23
+  X: 137
+  "Y": 78
+  Dir: 5
+  Sprite: 934
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: Temple Guard#qdms01
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2695
+- Name: Temple Guard#qdms31
+  X: 74
+  "Y": 32
+  Dir: 5
+  Sprite: 934
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: Temple Guard#qdms01
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2696
+- Name: Temple Guard#qdms32
+  X: 54
+  "Y": 61
+  Dir: 5
+  Sprite: 934
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: Temple Guard#qdms01
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2697
+- Name: Temple Guard#qdms33
+  X: 65
+  "Y": 108
+  Dir: 5
+  Sprite: 934
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: Temple Guard#qdms01
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2698
+- Name: Temple Guard#qdms41
+  X: 108
+  "Y": 167
+  Dir: 5
+  Sprite: 934
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: Temple Guard#qdms01
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2699
+- Name: Temple Guard#qdms42
+  X: 107
+  "Y": 178
+  Dir: 5
+  Sprite: 934
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: Temple Guard#qdms01
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2700
+- Name: Temple Guard#qdms102
+  X: 119
+  "Y": 175
+  Dir: 3
+  Sprite: 934
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2703
+- Name: Temple Guard#qdms112
+  X: 116
+  "Y": 171
+  Dir: 7
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2732
+- Name: Temple Guard#qdms122
+  X: 118
+  "Y": 171
+  Dir: 7
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2733
+- Name: Temple Guard#qdms132
+  X: 120
+  "Y": 171
+  Dir: 1
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2734
+- Name: Temple Guard#qdms142
+  X: 122
+  "Y": 171
+  Dir: 1
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2735
+- Name: Temple Guard#qdms152
+  X: 116
+  "Y": 173
+  Dir: 7
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2736
+- Name: Temple Guard#qdms162
+  X: 118
+  "Y": 173
+  Dir: 7
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2737
+- Name: Temple Guard#qdms172
+  X: 120
+  "Y": 173
+  Dir: 1
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2738
+- Name: Temple Guard#qdms182
+  X: 122
+  "Y": 173
+  Dir: 1
+  Sprite: 934
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2739
+- Name: "#cell01"
+  X: 89
+  "Y": 24
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2742
+- Name: "#cell02"
+  X: 89
+  "Y": 37
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2743
+- Name: "#cell03"
+  X: 89
+  "Y": 58
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2744
+- Name: "#cell04"
+  X: 89
+  "Y": 65
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2745
+- Name: "#cell05"
+  X: 89
+  "Y": 106
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2746
+- Name: "#cell06"
+  X: 89
+  "Y": 113
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2747
+- Name: "#cell07"
+  X: 89
+  "Y": 134
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2748
+- Name: "#cell08"
+  X: 89
+  "Y": 153
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2749
+- Name: "#cell09"
+  X: 150
+  "Y": 134
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2750
+- Name: "#cell10"
+  X: 150
+  "Y": 153
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2751
+- Name: "#cell11"
+  X: 150
+  "Y": 24
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2752
+- Name: "#cell12"
+  X: 150
+  "Y": 37
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2753
+- Name: "#cell13"
+  X: 150
+  "Y": 58
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2754
+- Name: "#cell14"
+  X: 150
+  "Y": 65
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2755
+- Name: "#cell15"
+  X: 150
+  "Y": 106
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2756
+- Name: "#cell66"
+  X: 150
+  "Y": 113
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2757
+- Name: "#cell42"
+  X: 98
+  "Y": 153
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2760
+- Name: "#cell51"
+  X: 141
+  "Y": 153
+  Dir: 5
+  Sprite: 406
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/Wolves.txt:2761

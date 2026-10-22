@@ -1,0 +1,600 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Airship Staff#izlude_d
+  X: 202
+  "Y": 75
+  Dir: 3
+  Sprite: 90
+  DuplicateOf: Airship_Staff_izlude
+  Kind: Script
+  Source: npc/re/airports/izlude.txt:21
+- Name: Sailor#izlude_d
+  X: 197
+  "Y": 205
+  Dir: 1
+  Sprite: 100
+  DuplicateOf: Sailor_izlude
+  Kind: Script
+  Source: npc/re/cities/izlude.txt:24
+- Name: Bonne#izlude_d
+  X: 71
+  "Y": 92
+  Dir: 2
+  Sprite: 90
+  DuplicateOf: Bonne_izlude
+  Kind: Script
+  Source: npc/re/cities/izlude.txt:30
+- Name: Charfri#izlude_d
+  X: 172
+  "Y": 215
+  Dir: 4
+  Sprite: 91
+  DuplicateOf: Charfri_izlude
+  Kind: Script
+  Source: npc/re/cities/izlude.txt:36
+- Name: Cuskoal#izlude_d
+  X: 174
+  "Y": 164
+  Dir: 4
+  Sprite: 124
+  DuplicateOf: Cuskoal_izlude
+  Kind: Script
+  Source: npc/re/cities/izlude.txt:42
+- Name: Dega#izlude_d
+  X: 85
+  "Y": 103
+  Dir: 4
+  Sprite: 84
+  DuplicateOf: Dega_izlude
+  Kind: Script
+  Source: npc/re/cities/izlude.txt:48
+- Name: Kylick#izlude_d
+  X: 140
+  "Y": 186
+  Dir: 4
+  Sprite: 97
+  DuplicateOf: Kylick_izlude
+  Kind: Script
+  Source: npc/re/cities/izlude.txt:54
+- Name: Red#izlude_d
+  X: 57
+  "Y": 159
+  Dir: 2
+  Sprite: 85
+  DuplicateOf: Red_izlude
+  Kind: Script
+  Source: npc/re/cities/izlude.txt:60
+- Name: Cebalis#izlude_d
+  X: 55
+  "Y": 159
+  Dir: 2
+  Sprite: 98
+  DuplicateOf: Cebalis_izlude
+  Kind: Script
+  Source: npc/re/cities/izlude.txt:66
+- Name: Soldier#izlude_d
+  X: 165
+  "Y": 156
+  Dir: 2
+  Sprite: 105
+  DuplicateOf: Soldier_izlude
+  Kind: Script
+  Source: npc/re/cities/izlude.txt:72
+- Name: Channel Warp Official#_d
+  X: 122
+  "Y": 105
+  Dir: 5
+  Sprite: 64
+  Kind: Script
+  Source: npc/re/cities/izlude.txt:107
+- Name: Talkative Kid#izd
+  X: 143
+  "Y": 205
+  Dir: 7
+  Sprite: 703
+  DuplicateOf: Talkative Kid#iz
+  Kind: Script
+  Source: npc/re/cities/izlude.txt:179
+- Name: Talkative Adventurer#izd
+  X: 146
+  "Y": 205
+  Dir: 7
+  Sprite: 706
+  DuplicateOf: Talkative Adventurer#iz
+  Kind: Script
+  Source: npc/re/cities/izlude.txt:257
+- Name: Honeymoon Helper#Iz_d
+  X: 180
+  "Y": 224
+  Dir: 3
+  Sprite: 71
+  DuplicateOf: Honeymoon_Helper_Izlude
+  Kind: Script
+  Source: npc/re/cities/jawaii.txt:22
+- Name: Odgnalam#iz_d
+  X: 182
+  "Y": 218
+  Dir: 4
+  Sprite: 554
+  DuplicateOf: Odgnalam
+  Kind: Script
+  Source: npc/re/cities/malangdo.txt:215
+- Name: Guide#01izlude_d
+  X: 129
+  "Y": 175
+  Dir: 4
+  Sprite: 105
+  DuplicateOf: GuideIzlude
+  Kind: Script
+  Source: npc/re/guides/guides_izlude.txt:201
+- Name: Guide#02izlude_d
+  X: 133
+  "Y": 113
+  Dir: 4
+  Sprite: 105
+  DuplicateOf: GuideIzlude
+  Kind: Script
+  Source: npc/re/guides/guides_izlude.txt:207
+- Name: Kafra Employee#iz_d
+  X: 128
+  "Y": 148
+  Dir: 6
+  Sprite: 117
+  DuplicateOf: kaf_izlude
+  Kind: Script
+  Source: npc/re/kafras/kafras.txt:75
+- Name: Point Merchant#Izlude_d
+  X: 138
+  "Y": 163
+  Dir: 5
+  Sprite: 700
+  DuplicateOf: pss
+  Kind: Script
+  Source: npc/re/merchants/3rd_trader.txt:134
+- Name: Fruit Gardener#iz_d
+  X: 124
+  "Y": 165
+  Dir: 4
+  Sprite: 53
+  DuplicateOf: Fruit Gardener#iz
+  Kind: Shop
+  Source: npc/re/merchants/shops.txt:75
+- Name: Butcher#iz_d
+  X: 160
+  "Y": 186
+  Dir: 0
+  Sprite: 54
+  DuplicateOf: Butcher#iz
+  Kind: Shop
+  Source: npc/re/merchants/shops.txt:80
+- Name: Vendor from Milk Ranch#d
+  X: 128
+  "Y": 158
+  Dir: 7
+  Sprite: 90
+  DuplicateOf: Vendor from Milk Ranch#i
+  Kind: Shop
+  Source: npc/re/merchants/shops.txt:85
+- Name: Mailbox#iz_d
+  X: 136
+  "Y": 94
+  Dir: 0
+  Sprite: 888
+  DuplicateOf: MailBox
+  Kind: Script
+  Source: npc/re/other/mail.txt:21
+- Name: Mercenary Manager#Sword4
+  X: 47
+  "Y": 170
+  Dir: 4
+  Sprite: 734
+  DuplicateOf: Mercenary Manager#main
+  Kind: Script
+  Source: npc/re/other/mercenary_rent.txt:22
+- Name: Mercenary Merchant#Swo_d
+  X: 55
+  "Y": 170
+  Dir: 4
+  Sprite: 893
+  DuplicateOf: MercMerchant
+  Kind: Script
+  Source: npc/re/other/mercenary_rent.txt:28
+- Name: Hypnotist#novice_d
+  X: 127
+  "Y": 175
+  Dir: 3
+  Sprite: 124
+  DuplicateOf: Hypnotist#novice
+  Kind: Script
+  Source: npc/re/other/resetskill.txt:151
+- Name: Eden Teleport Officer#30
+  UniqueName: eto_iz_d
+  X: 131
+  "Y": 148
+  Dir: 4
+  Sprite: 729
+  DuplicateOf: eto
+  Kind: Script
+  Source: npc/re/quests/eden/eden_common.txt:274
+- Name: Smile Assistance#iz_d
+  X: 125
+  "Y": 175
+  Dir: 4
+  Sprite: 92
+  DuplicateOf: SmileHelper
+  Kind: Script
+  Source: npc/re/quests/mrsmile.txt:22
+- Name: Promotional Staff#iz_d
+  X: 102
+  "Y": 171
+  Dir: 6
+  Sprite: 100
+  DuplicateOf: PromotionalStaff_izlude
+  Kind: Script
+  Source: npc/re/quests/quests_13_1.txt:21
+- Name: Fish Tails#d
+  X: 136
+  "Y": 160
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_dicastes.txt:1155
+- Name: Edgar#izlude_d
+  X: 179
+  "Y": 219
+  Dir: 2
+  Sprite: 49
+  DuplicateOf: Edgar_izlude
+  Kind: Script
+  Source: npc/re/quests/quests_izlude.txt:21
+- Name: Scamp#iz_d
+  X: 172
+  "Y": 73
+  Dir: 6
+  Sprite: 853
+  DuplicateOf: Scamp
+  Kind: Script
+  Source: npc/re/quests/quests_lighthalzen.txt:24
+- Name: Cat Paw Shrimp Merchant#iz_d
+  X: 117
+  "Y": 165
+  Dir: 3
+  Sprite: 495
+  DuplicateOf: Cat Paw Shrimp Merchant#iz
+  Kind: Script
+  Source: npc/re/custom/lasagna/lasagna_npcs.txt:1331
+- Name: Con-Chliina Crewman#doid
+  X: 195
+  "Y": 213
+  Dir: 5
+  Sprite: 495
+  DuplicateOf: Con-Chliina Crewman#doi
+  Kind: Script
+  Source: npc/re/custom/lasagna/lasagna_npcs.txt:1376
+- Name: Captain Carocc#iz_d
+  X: 198
+  "Y": 213
+  Dir: 3
+  Sprite: 873
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: Captain Carocc#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:803
+- Name: Criatura Academy Staff#d
+  X: 122
+  "Y": 207
+  Dir: 3
+  Sprite: 903
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Criatura Academy Staff#0
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:1123
+- Name: Information Staff#d
+  X: 120
+  "Y": 207
+  Dir: 4
+  Sprite: 105
+  DuplicateOf: Information Staff#0
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:1637
+- Name: Airship#iz_d
+  X: 179
+  "Y": 75
+  Dir: 3
+  Sprite: 858
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Airship#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:1775
+- Name: Arena#iz_d
+  X: 207
+  "Y": 167
+  Dir: 3
+  Sprite: 858
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Arena#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:1917
+- Name: Bulletin Board#iz_d
+  X: 45
+  "Y": 94
+  Dir: 3
+  Sprite: 858
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Bulletin Board#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:2059
+- Name: Cultivated Red Plant#d
+  X: 141
+  "Y": 251
+  Dir: 0
+  Sprite: 1078
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Cultivated Red Plant#0
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:2297
+- Name: Academy Student#d
+  X: 140
+  "Y": 249
+  Dir: 7
+  Sprite: 639
+  DuplicateOf: Academy Student#0
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:2410
+- Name: Instructor Argos#iz_d
+  X: 140
+  "Y": 260
+  Dir: 3
+  Sprite: 887
+  DuplicateOf: Instructor Argos#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:2579
+- Name: Shop Helper#iz_d
+  X: 115
+  "Y": 181
+  Dir: 5
+  Sprite: 894
+  DuplicateOf: Shop Helper#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:3647
+- Name: Wedding Secretary#iz_d
+  X: 102
+  "Y": 150
+  Dir: 5
+  Sprite: 71
+  DuplicateOf: Wedding Secretary#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:5615
+- Name: Mom#iz_d
+  X: 95
+  "Y": 146
+  Dir: 5
+  Sprite: 979
+  DuplicateOf: Mom#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:5681
+- Name: Dad#iz_d
+  X: 97
+  "Y": 147
+  Dir: 3
+  Sprite: 54
+  DuplicateOf: Dad#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:5703
+- Name: Etinifni#iz_d
+  X: 97
+  "Y": 144
+  Dir: 1
+  Sprite: 538
+  DuplicateOf: Etinifni#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:5720
+- Name: Romantic Male#iz_d
+  X: 99
+  "Y": 138
+  Dir: 3
+  Sprite: 881
+  DuplicateOf: Romantic Male#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:5750
+- Name: Romantic Female#iz_d
+  X: 97
+  "Y": 138
+  Dir: 5
+  Sprite: 882
+  DuplicateOf: Romantic Female#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:5793
+- Name: Manufacturing Maniac#d
+  X: 93
+  "Y": 143
+  Dir: 3
+  Sprite: 740
+  DuplicateOf: Manufacturing Maniac#0
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:5828
+- Name: Repairing Blacksmith#d
+  X: 147
+  "Y": 131
+  Dir: 5
+  Sprite: 726
+  Trigger:
+    X: 5
+    "Y": 7
+  DuplicateOf: Repairing Blacksmith#0
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:5848
+- Name: Refining Maniac#iz_d
+  X: 148
+  "Y": 122
+  Dir: 5
+  Sprite: 881
+  DuplicateOf: Refining Maniac#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:5883
+- Name: Refinery Owner Han#iz_d
+  X: 153
+  "Y": 126
+  Dir: 1
+  Sprite: 84
+  DuplicateOf: Refinery Owner Han#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:12781
+- Name: Refining Machine Wagjak
+  UniqueName: iz_d
+  X: 153
+  "Y": 121
+  Dir: 3
+  Sprite: 406
+  DuplicateOf: izludeWagjak
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:12979
+- Name: Tadde#iz_d
+  X: 145
+  "Y": 122
+  Dir: 7
+  Sprite: 86
+  DuplicateOf: Tadde#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:13232
+- Name: Locas#iz_d
+  X: 155
+  "Y": 132
+  Dir: 3
+  Sprite: 84
+  DuplicateOf: Locas#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:13591
+- Name: Enchanter Mounds#iz_d
+  X: 96
+  "Y": 125
+  Dir: 7
+  Sprite: 545
+  DuplicateOf: Enchanter Mounds#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:13955
+- Name: Enchanter Almond J#iz_d
+  X: 108
+  "Y": 139
+  Dir: 7
+  Sprite: 546
+  DuplicateOf: Enchanter Almond J#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:14162
+- Name: Repair Man#iz_d
+  X: 158
+  "Y": 130
+  Dir: 4
+  Sprite: 86
+  DuplicateOf: Repair Man#iz
+  Kind: Script
+  Source: npc/re/jobs/novice/academy.txt:14228
+- Name: iz001_d
+  X: 20
+  "Y": 98
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Warp
+  Warp:
+    Map: prt_fild08d
+    X: 367
+    "Y": 212
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:46
+- Name: iz01_d
+  X: 110
+  "Y": 182
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: izlude_in
+    X: 65
+    "Y": 87
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:50
+- Name: iz04_d
+  X: 52
+  "Y": 172
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: izlude_in
+    X: 74
+    "Y": 161
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:54
+- Name: "#to_dc01_d"
+  X: 125
+  "Y": 257
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac01_d
+    X: 99
+    "Y": 29
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:129
+- Name: "#to_dc02_d"
+  X: 130
+  "Y": 257
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: iz_ac01_d
+    X: 99
+    "Y": 29
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/izlude.txt:133
+- Name: welcome_arena_d
+  X: 213
+  "Y": 161
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: arena_room
+    X: 100
+    "Y": 30
+    TriggerWhileHidden: false
+  Source: npc/re/warps/other/arena.txt:19

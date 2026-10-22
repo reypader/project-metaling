@@ -1,0 +1,568 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Table#khr2
+  X: 23
+  "Y": 23
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:5460
+- Name: Shelf#khr
+  X: 92
+  "Y": 40
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:5503
+- Name: Desk#khr3
+  X: 144
+  "Y": 286
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:5576
+- Name: Bookshelf#khr
+  X: 148
+  "Y": 288
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:5641
+- Name: Bed#khr
+  X: 154
+  "Y": 286
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/kiel_hyre_quest.txt:5685
+- Name: kh_rossi_01
+  X: 15
+  "Y": 92
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: yuno
+    X: 270
+    "Y": 139
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:67
+- Name: kh_rossi_02a
+  X: 35
+  "Y": 87
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 27
+    "Y": 37
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:68
+- Name: kh_rossi_02b
+  X: 27
+  "Y": 42
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 35
+    "Y": 91
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:69
+- Name: kh_rossi_03a
+  X: 63
+  "Y": 87
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 99
+    "Y": 38
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:70
+- Name: kh_rossi_03b
+  X: 99
+  "Y": 42
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 63
+    "Y": 91
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:71
+- Name: kh_rossi_04a
+  X: 90
+  "Y": 87
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 168
+    "Y": 30
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:72
+- Name: kh_rossi_04b
+  X: 168
+  "Y": 34
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 90
+    "Y": 90
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:73
+- Name: kh_rossi_05a
+  X: 35
+  "Y": 98
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 27
+    "Y": 147
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:74
+- Name: kh_rossi_01b
+  X: 27
+  "Y": 143
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 35
+    "Y": 94
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:75
+- Name: kh_rossi_06a
+  X: 90
+  "Y": 101
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 282
+    "Y": 64
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:76
+- Name: kh_rossi_06b
+  X: 42
+  "Y": 26
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 92
+    "Y": 25
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:77
+- Name: kh_rossi_07a
+  X: 87
+  "Y": 25
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 36
+    "Y": 26
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:78
+- Name: kh_rossi_07b
+  X: 282
+  "Y": 60
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 90
+    "Y": 96
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:79
+- Name: kh_rossi_08a
+  X: 222
+  "Y": 68
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 22
+    "Y": 277
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:80
+- Name: kh_rossi_08b
+  X: 22
+  "Y": 273
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 222
+    "Y": 64
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:81
+- Name: kh_rossi_09a
+  X: 248
+  "Y": 68
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 88
+    "Y": 277
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:82
+- Name: kh_rossi_09b
+  X: 88
+  "Y": 273
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 248
+    "Y": 64
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:83
+- Name: kh_rossi_10a
+  X: 222
+  "Y": 25
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 22
+    "Y": 219
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:84
+- Name: kh_rossi_10b
+  X: 22
+  "Y": 222
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 222
+    "Y": 29
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:85
+- Name: kh_rossi_11a
+  X: 248
+  "Y": 25
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 88
+    "Y": 217
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:86
+- Name: kh_rossi_11b
+  X: 88
+  "Y": 222
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 248
+    "Y": 29
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:87
+- Name: kh_rossi_12a
+  X: 259
+  "Y": 46
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 224
+    "Y": 234
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:88
+- Name: kh_rossi_12b
+  X: 228
+  "Y": 234
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 263
+    "Y": 46
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:89
+- Name: kh_rossi_13a
+  X: 220
+  "Y": 231
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 260
+    "Y": 186
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:90
+- Name: kh_rossi_13b
+  X: 260
+  "Y": 190
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 220
+    "Y": 234
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:91
+- Name: kh_rossi_14a
+  X: 204
+  "Y": 231
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 204
+    "Y": 186
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:92
+- Name: kh_rossi_14b
+  X: 204
+  "Y": 190
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 204
+    "Y": 234
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:93
+- Name: kh_rossi_15a
+  X: 188
+  "Y": 231
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 148
+    "Y": 186
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:94
+- Name: kh_rossi_15b
+  X: 148
+  "Y": 190
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 188
+    "Y": 234
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:95
+- Name: kh_rossi_16a
+  X: 188
+  "Y": 238
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 148
+    "Y": 283
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:96
+- Name: kh_rossi_16b
+  X: 148
+  "Y": 279
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 188
+    "Y": 235
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:97
+- Name: kh_rossi_17a
+  X: 204
+  "Y": 238
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 204
+    "Y": 283
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:98
+- Name: kh_rossi_17b
+  X: 204
+  "Y": 279
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 204
+    "Y": 235
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:99
+- Name: kh_rossi_18a
+  X: 220
+  "Y": 238
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 261
+    "Y": 283
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:100
+- Name: kh_rossi_18b
+  X: 260
+  "Y": 279
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: kh_rossi
+    X: 220
+    "Y": 235
+    TriggerWhileHidden: false
+  Source: npc/warps/other/kiel.txt:101

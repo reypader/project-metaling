@@ -1,0 +1,375 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Slipslowrun#party
+  X: 99
+  "Y": 31
+  Dir: 4
+  Sprite: 124
+  Kind: Script
+  Source: npc/other/arena/arena_party.txt:149
+- Name: force_09_exit
+  X: 95
+  "Y": 187
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_party.txt:415
+- Name: force_01start#party
+  X: 36
+  "Y": 26
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_party.txt:426
+- Name: force_02start#party
+  X: 162
+  "Y": 26
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_party.txt:481
+- Name: force_03start#party
+  X: 99
+  "Y": 66
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_party.txt:540
+- Name: force_04start#party
+  X: 162
+  "Y": 78
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/other/arena/arena_party.txt:595
+- Name: force_05start#party
+  X: 36
+  "Y": 77
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_party.txt:642
+- Name: force_06start#party
+  X: 26
+  "Y": 118
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_party.txt:689
+- Name: force_07start#party
+  X: 92
+  "Y": 124
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_party.txt:735
+- Name: force_08start#party
+  X: 173
+  "Y": 118
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_party.txt:771
+- Name: force_09start#party
+  X: 133
+  "Y": 178
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_party.txt:814
+- Name: force_10start#party
+  X: 29
+  "Y": 178
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_party.txt:854
+- Name: force_exit#party
+  X: 59
+  "Y": 178
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_party.txt:906
+- Name: force_00_01
+  X: 85
+  "Y": 26
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: force_1-2
+    X: 37
+    "Y": 26
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:47
+- Name: force_00_02
+  X: 114
+  "Y": 26
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: force_1-2
+    X: 162
+    "Y": 26
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:48
+- Name: force_00_03
+  X: 99
+  "Y": 40
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: force_1-2
+    X: 99
+    "Y": 66
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:49
+- Name: force_01_00
+  X: 41
+  "Y": 26
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: force_1-2
+    X: 89
+    "Y": 26
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:50
+- Name: force_02_00
+  X: 158
+  "Y": 26
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: force_1-2
+    X: 110
+    "Y": 26
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:51
+- Name: force_03_00
+  X: 99
+  "Y": 63
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: force_1-2
+    X: 99
+    "Y": 36
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:52
+- Name: force_03_05
+  X: 84
+  "Y": 78
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: force_1-2
+    X: 37
+    "Y": 78
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:53
+- Name: force_03_04
+  X: 115
+  "Y": 78
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: force_1-2
+    X: 162
+    "Y": 78
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:54
+- Name: force_04_03
+  X: 158
+  "Y": 77
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: force_1-2
+    X: 110
+    "Y": 78
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:55
+- Name: force_05_03
+  X: 41
+  "Y": 77
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: force_1-2
+    X: 37
+    "Y": 78
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:56
+- Name: force_05_06
+  X: 25
+  "Y": 93
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: force_1-2
+    X: 26
+    "Y": 118
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:57
+- Name: force_06_07
+  X: 49
+  "Y": 130
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: force_1-2
+    X: 91
+    "Y": 125
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:58
+- Name: force_07_08
+  X: 107
+  "Y": 145
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: force_1-2
+    X: 173
+    "Y": 118
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:59
+- Name: force_08_09
+  X: 158
+  "Y": 178
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: force_1-2
+    X: 133
+    "Y": 178
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:60
+- Name: force_09_10
+  X: 55
+  "Y": 178
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: force_1-2
+    X: 29
+    "Y": 178
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:61
+- Name: force_10_09
+  X: 33
+  "Y": 178
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: force_1-2
+    X: 59
+    "Y": 178
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:62

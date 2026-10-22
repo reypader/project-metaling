@@ -1,0 +1,38 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: fr_tun_to_eju
+  X: 84
+  "Y": 86
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ver_eju
+    X: 113
+    "Y": 38
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/verus.txt:46
+- Name: fr_tun_to_ver04
+  X: 10
+  "Y": 36
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: verus04
+    X: 202
+    "Y": 165
+    TriggerWhileHidden: true
+  Source: npc/re/warps/other/verus.txt:47

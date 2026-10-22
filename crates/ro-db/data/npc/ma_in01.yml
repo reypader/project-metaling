@@ -1,0 +1,216 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Inn Keeper#ma
+  X: 30
+  "Y": 94
+  Dir: 4
+  Sprite: 583
+  Kind: Script
+  Source: npc/re/cities/malaya.txt:95
+- Name: Arrow Merchant#over_arrow_21
+  X: 69
+  "Y": 21
+  Dir: 5
+  Sprite: 634
+  DuplicateOf: "#over_arrow"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:407
+- Name: Ammunition Merchant#over_bullet_21
+  X: 67
+  "Y": 21
+  Dir: 5
+  Sprite: 633
+  DuplicateOf: "#over_bullet"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:408
+- Name: Ninja Tool Merchant#over_kunai_21
+  X: 65
+  "Y": 21
+  Dir: 5
+  Sprite: 636
+  DuplicateOf: "#over_kunai"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:409
+- Name: Mado Gear Merchant#over_madogear_21
+  X: 71
+  "Y": 21
+  Dir: 4
+  Sprite: 10004
+  DuplicateOf: "#over_madogear"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:410
+- Name: Talisman Merchant#over_talisman_21
+  X: 63
+  "Y": 19
+  Dir: 4
+  Sprite: 10234
+  DuplicateOf: "#over_talisman"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:411
+- Name: Weapon Dealer#ma
+  X: 73
+  "Y": 22
+  Dir: 3
+  Sprite: 536
+  Kind: Shop
+  Source: npc/re/merchants/shops.txt:159
+- Name: Tool Dealer#ma
+  X: 22
+  "Y": 23
+  Dir: 3
+  Sprite: 536
+  Kind: Shop
+  Source: npc/re/merchants/shops.txt:160
+- Name: Armor Dealer#ma
+  X: 67
+  "Y": 13
+  Dir: 5
+  Sprite: 536
+  Kind: Shop
+  Source: npc/re/merchants/shops.txt:162
+- Name: Ghost Diwata
+  X: 125
+  "Y": 107
+  Dir: 3
+  Sprite: 1761
+  SpriteIsMob: true
+  Trigger:
+    X: 4
+    "Y": 4
+  Kind: Script
+  Source: npc/re/quests/quests_malaya.txt:2479
+- Name: Totoy#buwaya
+  X: 47
+  "Y": 101
+  Dir: 3
+  Sprite: 577
+  Trigger:
+    X: 7
+    "Y": 7
+  Kind: Script
+  Source: npc/re/quests/quests_malaya.txt:4007
+- Name: Dog#buwaya_totoi
+  X: 43
+  "Y": 101
+  Dir: 7
+  Sprite: 81
+  Kind: Script
+  Source: npc/re/quests/quests_malaya.txt:4291
+- Name: Drawer#buwaya
+  X: 44
+  "Y": 105
+  Dir: 3
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_malaya.txt:4298
+- Name: mal_in_ws
+  X: 86
+  "Y": 16
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: malaya
+    X: 115
+    "Y": 212
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malaya.txt:19
+- Name: mal_in_inn
+  X: 24
+  "Y": 77
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: malaya
+    X: 178
+    "Y": 208
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malaya.txt:20
+- Name: mal_in_house01
+  X: 33
+  "Y": 152
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: malaya
+    X: 52
+    "Y": 75
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malaya.txt:23
+- Name: mal_in_ship_malaya_ship
+  X: 105
+  "Y": 92
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: malaya
+    X: 310
+    "Y": 67
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malaya.txt:25
+- Name: mal_in_ts
+  X: 9
+  "Y": 24
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: malaya
+    X: 296
+    "Y": 167
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malaya.txt:30
+- Name: mal_in_shop_malaya_shop
+  X: 126
+  "Y": 17
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: malaya
+    X: 261
+    "Y": 237
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malaya.txt:31
+- Name: mf_in_minga_mf_minga
+  X: 105
+  "Y": 160
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ma_fild01
+    X: 248
+    "Y": 190
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malaya.txt:33

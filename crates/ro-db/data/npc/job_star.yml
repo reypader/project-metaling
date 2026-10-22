@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Daru#job_star
+  X: 29
+  "Y": 33
+  Dir: 0
+  Sprite: 59
+  Kind: Script
+  Source: npc/jobs/2-1e/StarGladiator.txt:821
+- Name: Beeryu#job_star
+  X: 95
+  "Y": 33
+  Dir: 0
+  Sprite: 106
+  Kind: Script
+  Source: npc/jobs/2-1e/StarGladiator.txt:1106
+- Name: Cheehee#job_star
+  X: 161
+  "Y": 33
+  Dir: 0
+  Sprite: 77
+  Kind: Script
+  Source: npc/jobs/2-1e/StarGladiator.txt:1418

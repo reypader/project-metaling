@@ -1,0 +1,500 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Armor Dealer#lou
+  X: 121
+  "Y": 182
+  Dir: 5
+  Sprite: 818
+  Kind: Shop
+  Source: npc/merchants/shops.txt:186
+- Name: Weapon Dealer#lou
+  X: 130
+  "Y": 182
+  Dir: 5
+  Sprite: 822
+  Kind: Shop
+  Source: npc/merchants/shops.txt:187
+- Name: Tool Dealer#lou
+  X: 239
+  "Y": 176
+  Dir: 5
+  Sprite: 818
+  Kind: Shop
+  Source: npc/merchants/shops.txt:188
+- Name: Employee#1
+  X: 53
+  "Y": 174
+  Dir: 7
+  Sprite: 822
+  Trigger:
+    X: 6
+    "Y": 62
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:42
+- Name: Employee#2
+  X: 76
+  "Y": 181
+  Dir: 3
+  Sprite: 822
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:117
+- Name: Employee#3
+  X: 61
+  "Y": 175
+  Dir: 3
+  Sprite: 818
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:207
+- Name: Chef#1-2
+  X: 62
+  "Y": 183
+  Dir: 3
+  Sprite: 820
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:304
+- Name: Pot#1
+  X: 50
+  "Y": 185
+  Dir: 5
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:715
+- Name: Pot#2
+  X: 49
+  "Y": 185
+  Dir: 5
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:787
+- Name: Chef Assistant#lou1
+  X: 58
+  "Y": 183
+  Dir: 5
+  Sprite: 823
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:859
+- Name: Li Min#lou
+  X: 80
+  "Y": 173
+  Dir: 3
+  Sprite: 746
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:945
+- Name: Liu Jia Lim#lou
+  X: 42
+  "Y": 186
+  Dir: 5
+  Sprite: 816
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:982
+- Name: Jiang Rong#lou
+  X: 43
+  "Y": 169
+  Dir: 1
+  Sprite: 827
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:1010
+- Name: Doctor#lyang
+  X: 265
+  "Y": 69
+  Dir: 5
+  Sprite: 814
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:1093
+- Name: Familiar-Looking Patient
+  X: 272
+  "Y": 55
+  Dir: 0
+  Sprite: 798
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:1504
+- Name: Tool Shop Master#lou
+  X: 248
+  "Y": 166
+  Dir: 2
+  Sprite: 824
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:1531
+- Name: Storage Keeper#lou
+  X: 201
+  "Y": 166
+  Dir: 4
+  Sprite: 819
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:1594
+- Name: City Hall Officer#lou
+  X: 210
+  "Y": 47
+  Dir: 0
+  Sprite: 825
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:1832
+- Name: Studying Officer#lou
+  X: 156
+  "Y": 38
+  Dir: 0
+  Sprite: 822
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:1987
+- Name: Supply Stack#1lou
+  X: 204
+  "Y": 169
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:2158
+- Name: Supply Stack#5lou
+  X: 207
+  "Y": 168
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:2208
+- Name: Supply Stack#4lou
+  X: 206
+  "Y": 163
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:2260
+- Name: Supply Stack#3lou
+  X: 198
+  "Y": 170
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:2312
+- Name: Supply Stack#2
+  X: 192
+  "Y": 170
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:2364
+- Name: Storage Warp#3
+  X: 198
+  "Y": 159
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: louyang
+    X: 124
+    "Y": 118
+    TriggerWhileHidden: false
+  Source: npc/quests/quests_louyang.txt:2414
+- Name: Storage Warp#4
+  X: 203
+  "Y": 159
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: louyang
+    X: 129
+    "Y": 118
+    TriggerWhileHidden: false
+  Source: npc/quests/quests_louyang.txt:2415
+- Name: Poison King#lou
+  X: 123
+  "Y": 39
+  Dir: 4
+  Sprite: 824
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:2419
+- Name: Employee#poison
+  X: 253
+  "Y": 45
+  Dir: 0
+  Sprite: 822
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:3411
+- Name: Hermit
+  X: 77
+  "Y": 37
+  Dir: 7
+  Sprite: 824
+  Kind: Script
+  Source: npc/quests/quests_louyang.txt:4592
+- Name: lou_pub1-2
+  X: 58
+  "Y": 170
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: louyang
+    X: 280
+    "Y": 164
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:23
+- Name: lou_pub2-1
+  X: 35
+  "Y": 190
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_in02
+    X: 41
+    "Y": 138
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:24
+- Name: lou_pub2-2
+  X: 44
+  "Y": 138
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_in02
+    X: 37
+    "Y": 190
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:25
+- Name: lou_pub3-1
+  X: 80
+  "Y": 190
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_in02
+    X: 73
+    "Y": 140
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:26
+- Name: lou_pub3-2
+  X: 71
+  "Y": 140
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_in02
+    X: 77
+    "Y": 190
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:27
+- Name: lou_weapon1-2
+  X: 126
+  "Y": 165
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: louyang
+    X: 145
+    "Y": 171
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:29
+- Name: lou_tool1-2
+  X: 249
+  "Y": 173
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: louyang
+    X: 136
+    "Y": 99
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:31
+- Name: lou_hospital1-2
+  X: 242
+  "Y": 59
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: louyang
+    X: 260
+    "Y": 93
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:33
+- Name: lou_office1-2
+  X: 189
+  "Y": 74
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: louyang
+    X: 309
+    "Y": 77
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:35
+- Name: lou_office2-1
+  X: 201
+  "Y": 94
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_in02
+    X: 173
+    "Y": 46
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:36
+- Name: lou_office2-2
+  X: 176
+  "Y": 46
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lou_in02
+    X: 203
+    "Y": 94
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:37
+- Name: lou_house11-2
+  X: 72
+  "Y": 28
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: louyang
+    X: 130
+    "Y": 60
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:39
+- Name: lou_house21-2
+  X: 121
+  "Y": 28
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: louyang
+    X: 317
+    "Y": 173
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/louyang.txt:41
+- Name: Tool Dealer#Extended_Lou
+  X: 239
+  "Y": 176
+  Dir: 5
+  Sprite: 818
+  Kind: Shop
+  Source: npc/re/merchants/Dealer_Update.txt:163
+- Name: Arrow Merchant#over_arrow_18
+  X: 134
+  "Y": 176
+  Dir: 3
+  Sprite: 634
+  DuplicateOf: "#over_arrow"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:380
+- Name: Ammunition Merchant#over_bullet_18
+  X: 134
+  "Y": 178
+  Dir: 3
+  Sprite: 633
+  DuplicateOf: "#over_bullet"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:381
+- Name: Ninja Tool Merchant#over_kunai_18
+  X: 134
+  "Y": 180
+  Dir: 3
+  Sprite: 636
+  DuplicateOf: "#over_kunai"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:382
+- Name: Mado Gear Merchant#over_madogear_18
+  X: 134
+  "Y": 174
+  Dir: 2
+  Sprite: 10004
+  DuplicateOf: "#over_madogear"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:383
+- Name: Talisman Merchant#over_talisman_18
+  X: 134
+  "Y": 172
+  Dir: 2
+  Sprite: 10234
+  DuplicateOf: "#over_talisman"
+  Kind: Script
+  Source: npc/re/merchants/Extended_Ammunition.txt:384
+- Name: Gemstone Bagger#15
+  X: 244
+  "Y": 175
+  Dir: 5
+  Sprite: 818
+  DuplicateOf: "#GemstoneBagger"
+  Kind: Script
+  Source: npc/re/merchants/Gemstone_Bagger.txt:46
+- Name: Cat Paw Shrimp Merchant#lou
+  X: 241
+  "Y": 168
+  Dir: 5
+  Sprite: 495
+  DuplicateOf: Cat Paw Shrimp Merchant#iz
+  Kind: Script
+  Source: npc/re/custom/lasagna/lasagna_npcs.txt:1334

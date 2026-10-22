@@ -1,0 +1,216 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Priest Gardron#tu
+  X: 18
+  "Y": 38
+  Dir: 6
+  Sprite: 110
+  Kind: Script
+  Source: npc/quests/first_class/tu_acolyte.txt:791
+- Name: Karven
+  X: 103
+  "Y": 176
+  Dir: 7
+  Sprite: 60
+  Kind: Script
+  Source: npc/quests/first_class/tu_acolyte.txt:1295
+- Name: Bishop Maugins
+  X: 19
+  "Y": 43
+  Dir: 1
+  Sprite: 60
+  Kind: Script
+  Source: npc/quests/first_class/tu_archer.txt:1910
+- Name: Sensei Moohae#mk
+  X: 99
+  "Y": 58
+  Dir: 1
+  Sprite: 60
+  Kind: Script
+  Source: npc/jobs/2-2/monk.txt:326
+- Name: monk03
+  X: 128
+  "Y": 46
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 3
+  Kind: Warp
+  Warp:
+    Map: monk_in
+    X: 161
+    "Y": 38
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:116
+- Name: monk04
+  X: 128
+  "Y": 84
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 3
+  Kind: Warp
+  Warp:
+    Map: monk_in
+    X: 161
+    "Y": 90
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:117
+- Name: monk03-1
+  X: 159
+  "Y": 38
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 3
+  Kind: Warp
+  Warp:
+    Map: monk_in
+    X: 126
+    "Y": 46
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:118
+- Name: monk04-1
+  X: 159
+  "Y": 90
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 3
+  Kind: Warp
+  Warp:
+    Map: monk_in
+    X: 126
+    "Y": 84
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:119
+- Name: monk05
+  X: 40
+  "Y": 38
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 3
+  Kind: Warp
+  Warp:
+    Map: monk_in
+    X: 71
+    "Y": 46
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:120
+- Name: monk06
+  X: 40
+  "Y": 92
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 3
+  Kind: Warp
+  Warp:
+    Map: monk_in
+    X: 71
+    "Y": 84
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:121
+- Name: monk05-1
+  X: 69
+  "Y": 46
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 3
+  Kind: Warp
+  Warp:
+    Map: monk_in
+    X: 38
+    "Y": 38
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:122
+- Name: monk06-1
+  X: 69
+  "Y": 84
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 3
+  Kind: Warp
+  Warp:
+    Map: monk_in
+    X: 38
+    "Y": 92
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:123
+- Name: monk02-1
+  X: 98
+  "Y": 186
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: prt_monk
+    X: 245
+    "Y": 139
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:124
+- Name: monk01-1
+  X: 98
+  "Y": 27
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 5
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: prt_monk
+    X: 245
+    "Y": 104
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:125
+- Name: monk07
+  X: 99
+  "Y": 102
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 5
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: monk_in
+    X: 99
+    "Y": 143
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:126
+- Name: monk07-1
+  X: 99
+  "Y": 141
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: monk_in
+    X: 99
+    "Y": 100
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/prontera_fild.txt:127

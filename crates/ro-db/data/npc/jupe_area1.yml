@@ -1,0 +1,148 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#hole#1-1"
+  X: 88
+  "Y": 224
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:1830
+- Name: Warp#1-1
+  X: 83
+  "Y": 221
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:1938
+- Name: Red Alarm#1-1
+  X: 47
+  "Y": 259
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:1960
+- Name: "#hole#1-2"
+  X: 25
+  "Y": 238
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:2122
+- Name: Warp#1-2
+  X: 21
+  "Y": 225
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:2232
+- Name: Red Alarm#1-2
+  X: 21
+  "Y": 191
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:2253
+- Name: "#hole#1-3"
+  X: 36
+  "Y": 146
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:2411
+- Name: Warp#1-3
+  X: 33
+  "Y": 137
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:2519
+- Name: Red Alarm#1-3
+  X: 33
+  "Y": 105
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 0
+    "Y": 4
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:2540
+- Name: "#hole#1-4"
+  X: 50
+  "Y": 49
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:2699
+- Name: Warp#1-4
+  X: 57
+  "Y": 53
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:2808
+- Name: Red Alarm#1-4
+  X: 83
+  "Y": 157
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:2829
+- Name: Lever#ufe
+  X: 112
+  "Y": 162
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:2987
+- Name: LeverWarp#ufe
+  X: 117
+  "Y": 157
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_juperos.txt:3014
+- Name: gate#left2
+  X: 103
+  "Y": 222
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 4
+  Kind: Warp
+  Warp:
+    Map: jupe_gate
+    X: 31
+    "Y": 145
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/juperos.txt:30

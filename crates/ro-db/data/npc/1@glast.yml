@@ -1,0 +1,1053 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#glast_event_1"
+  X: 360
+  "Y": 295
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 8
+    "Y": 8
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:499
+- Name: "#glast_event_3"
+  X: 360
+  "Y": 295
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 8
+    "Y": 8
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:563
+- Name: "#effect_glast_event01_1"
+  X: 359
+  "Y": 296
+  Dir: 4
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:601
+- Name: "#effect_glast_event01_2"
+  X: 353
+  "Y": 294
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:602
+- Name: "#effect_glast_event01_3"
+  X: 360
+  "Y": 304
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:603
+- Name: "#effect_glast_event01_4"
+  X: 366
+  "Y": 295
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:604
+- Name: "#effect_glast_event01_5"
+  X: 352
+  "Y": 304
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:605
+- Name: "#effect_glast_event01_6"
+  X: 356
+  "Y": 284
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:606
+- Name: "#effect_glast_event01_7"
+  X: 345
+  "Y": 283
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:607
+- Name: Fenrith Fenrir#glast_01
+  X: 359
+  "Y": 294
+  Dir: 4
+  Sprite: 664
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:609
+- Name: "#glast_move_01"
+  X: 352
+  "Y": 279
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 4
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:613
+- Name: "#glast_move_03"
+  X: 199
+  "Y": 237
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:666
+- Name: "#glast_move_03a"
+  X: 199
+  "Y": 294
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:677
+- Name: "#glast_move_04"
+  X: 351
+  "Y": 269
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:696
+- Name: "#glast_move_05"
+  X: 376
+  "Y": 303
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: dali02
+    X: 91
+    "Y": 140
+    TriggerWhileHidden: true
+  Source: npc/re/instances/SarahAndFenrir.txt:708
+- Name: "#glast_event_5"
+  X: 216
+  "Y": 48
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 6
+    "Y": 6
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:711
+- Name: Fenrith Fenrir#glast_02
+  X: 216
+  "Y": 52
+  Dir: 6
+  Sprite: 664
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:755
+- Name: "#glast_event_7"
+  X: 47
+  "Y": 270
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:758
+- Name: Fenrith Fenrir#glast_03
+  X: 47
+  "Y": 270
+  Dir: 4
+  Sprite: 664
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:783
+- Name: "#glast_event_9"
+  X: 44
+  "Y": 357
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:786
+- Name: "#fenrir_left_vermilion"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:931
+- Name: "#fenrir_left_final_1"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:963
+- Name: Fenrith Fenrir#glast_04
+  X: 44
+  "Y": 357
+  Dir: 8
+  Sprite: 664
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1020
+- Name: Gigantes#semi1
+  X: 49
+  "Y": 363
+  Dir: 4
+  Sprite: 10069
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1021
+- Name: Gigantes#semi2
+  X: 41
+  "Y": 363
+  Dir: 4
+  Sprite: 10069
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1022
+- Name: Sarah Irene#glast_10
+  X: 46
+  "Y": 364
+  Dir: 4
+  Sprite: 10066
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1023
+- Name: "#effect_glast_event02_1"
+  X: 52
+  "Y": 345
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1025
+- Name: "#effect_glast_event02_2"
+  X: 44
+  "Y": 350
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1026
+- Name: "#effect_glast_event02_3"
+  X: 35
+  "Y": 360
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1027
+- Name: "#effect_glast_event02_4"
+  X: 44
+  "Y": 360
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1028
+- Name: "#effect_glast_event02_5"
+  X: 52
+  "Y": 360
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1029
+- Name: "#effect_glast_event02_6"
+  X: 35
+  "Y": 368
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1030
+- Name: "#effect_glast_event02_7"
+  X: 53
+  "Y": 368
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1031
+- Name: "#effect_glast_event02_8"
+  X: 44
+  "Y": 371
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1032
+- Name: "#effect_glast_event02_bis"
+  X: 44
+  "Y": 366
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1033
+- Name: "#glast_event_13"
+  X: 133
+  "Y": 365
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 8
+    "Y": 8
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1036
+- Name: Fenrith Fenrir#glast_05
+  X: 133
+  "Y": 365
+  Dir: 4
+  Sprite: 664
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1071
+- Name: "#fenrir_left_final_2"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1074
+- Name: "#glast_event_15"
+  X: 200
+  "Y": 268
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 7
+    "Y": 7
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1126
+- Name: Fenrith Fenrir#glast_06
+  X: 200
+  "Y": 268
+  Dir: 4
+  Sprite: 664
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1147
+- Name: "#glast_event_18"
+  X: 199
+  "Y": 336
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 10
+    "Y": 10
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1150
+- Name: Sarah Irene#glast_17
+  X: 200
+  "Y": 336
+  Dir: 4
+  Sprite: 10066
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1202
+- Name: Fenrith Fenrir#glast_07
+  X: 197
+  "Y": 330
+  Dir: 8
+  Sprite: 664
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1204
+- Name: "#glast_event_19"
+  X: 212
+  "Y": 350
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1218
+- Name: "#fenrir_boss_final_1"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1555
+- Name: Fenrith Fenrir#glast_08
+  X: 199
+  "Y": 348
+  Dir: 8
+  Sprite: 664
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1627
+- Name: Fenrith Fenrir#glast_09
+  X: 201
+  "Y": 346
+  Dir: 4
+  Sprite: 664
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1628
+- Name: Sarah Irene#glast_20
+  X: 197
+  "Y": 339
+  Dir: 8
+  Sprite: 10066
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1629
+- Name: "#effect_glast_event03_1"
+  X: 201
+  "Y": 336
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1631
+- Name: "#effect_glast_event03_2"
+  X: 201
+  "Y": 337
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1632
+- Name: "#effect_glast_event03_3"
+  X: 200
+  "Y": 337
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1633
+- Name: "#effect_glast_event03_4"
+  X: 199
+  "Y": 337
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1634
+- Name: "#effect_glast_event03_5"
+  X: 199
+  "Y": 336
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1635
+- Name: "#effect_glast_event03_6"
+  X: 199
+  "Y": 335
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1636
+- Name: "#effect_glast_event03_7"
+  X: 200
+  "Y": 335
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1637
+- Name: "#effect_glast_event03_8"
+  X: 201
+  "Y": 335
+  Dir: 4
+  Sprite: 844
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1638
+- Name: "#glast_event_24"
+  X: 200
+  "Y": 224
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 7
+    "Y": 7
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1641
+- Name: Fenrith Fenrir#glast_10
+  X: 200
+  "Y": 224
+  Dir: 4
+  Sprite: 664
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1669
+- Name: "#fenrir_boss_final_2"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1672
+- Name: "#sarah_wrath"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1719
+- Name: "#glast_bomb_01"
+  X: 290
+  "Y": 43
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 10
+    "Y": 10
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1861
+- Name: "#glast_bomb_02"
+  X: 234
+  "Y": 47
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 10
+    "Y": 10
+  DuplicateOf: "#glast_bomb_01"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1872
+- Name: "#glast_bomb_03"
+  X: 265
+  "Y": 175
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 10
+    "Y": 10
+  DuplicateOf: "#glast_bomb_01"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1873
+- Name: "#glast_bomb_04"
+  X: 135
+  "Y": 176
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 10
+    "Y": 10
+  DuplicateOf: "#glast_bomb_01"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1874
+- Name: "#glast_bomb_05"
+  X: 146
+  "Y": 238
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 10
+    "Y": 10
+  DuplicateOf: "#glast_bomb_01"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1875
+- Name: "#glast_bomb_06"
+  X: 165
+  "Y": 212
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 10
+    "Y": 10
+  DuplicateOf: "#glast_bomb_01"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1876
+- Name: "#glast_bomb_07"
+  X: 232
+  "Y": 212
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 10
+    "Y": 10
+  DuplicateOf: "#glast_bomb_01"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1877
+- Name: "#glast_bomb_08"
+  X: 253
+  "Y": 241
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 10
+    "Y": 10
+  DuplicateOf: "#glast_bomb_01"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1878
+- Name: "#glast_bomb_09"
+  X: 268
+  "Y": 290
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 10
+    "Y": 10
+  DuplicateOf: "#glast_bomb_01"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1879
+- Name: "#glast_bomb_10"
+  X: 132
+  "Y": 289
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 10
+    "Y": 10
+  DuplicateOf: "#glast_bomb_01"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1880
+- Name: "#glast_bomb_11"
+  X: 199
+  "Y": 115
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 10
+    "Y": 10
+  DuplicateOf: "#glast_bomb_01"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1881
+- Name: "#glast_bomb_12"
+  X: 139
+  "Y": 46
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 10
+    "Y": 10
+  DuplicateOf: "#glast_bomb_01"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1882
+- Name: "#glast_bomb_13"
+  X: 82
+  "Y": 86
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 10
+    "Y": 10
+  DuplicateOf: "#glast_bomb_01"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1883
+- Name: "#glast_bomb_14"
+  X: 68
+  "Y": 226
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 10
+    "Y": 10
+  DuplicateOf: "#glast_bomb_01"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1884
+- Name: Fenrith Fenrir#glast_11
+  X: 359
+  "Y": 294
+  Dir: 4
+  Sprite: 664
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1888
+- Name: Sarah Irene's alter ego
+  X: 353
+  "Y": 290
+  Dir: 8
+  Sprite: 10066
+  DuplicateOf: "#effect_glast_event01_1"
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1921
+- Name: Ancient Gigantes#glast_1
+  X: 290
+  "Y": 147
+  Dir: 4
+  Sprite: 10067
+  Trigger:
+    X: 6
+    "Y": 6
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1924
+- Name: Ancient Gigantes#glast_2
+  X: 300
+  "Y": 248
+  Dir: 4
+  Sprite: 10067
+  Trigger:
+    X: 4
+    "Y": 4
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1944
+- Name: Ancient Gigantes#glast_3
+  X: 292
+  "Y": 344
+  Dir: 4
+  Sprite: 10067
+  Trigger:
+    X: 6
+    "Y": 6
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1963
+- Name: Ancient Gigantes#glast_4
+  X: 107
+  "Y": 147
+  Dir: 6
+  Sprite: 10067
+  Trigger:
+    X: 6
+    "Y": 6
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:1980
+- Name: Ancient Gigantes#glast_5
+  X: 98
+  "Y": 248
+  Dir: 6
+  Sprite: 10067
+  Trigger:
+    X: 4
+    "Y": 4
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2000
+- Name: Ancient Gigantes#glast_6
+  X: 107
+  "Y": 344
+  Dir: 6
+  Sprite: 10067
+  Trigger:
+    X: 6
+    "Y": 6
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2019
+- Name: Stone Gargoyle#glast_01
+  X: 277
+  "Y": 130
+  Dir: 8
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2036
+- Name: Stone Gargoyle#glast_02
+  X: 279
+  "Y": 130
+  Dir: 8
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2047
+- Name: Stone Gargoyle#glast_03
+  X: 281
+  "Y": 130
+  Dir: 8
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2048
+- Name: Stone Gargoyle#glast_04
+  X: 277
+  "Y": 161
+  Dir: 6
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2049
+- Name: Stone Gargoyle#glast_05
+  X: 279
+  "Y": 161
+  Dir: 6
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2050
+- Name: Stone Gargoyle#glast_06
+  X: 281
+  "Y": 161
+  Dir: 6
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2051
+- Name: Stone Gargoyle#glast_07
+  X: 277
+  "Y": 250
+  Dir: 6
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2052
+- Name: Stone Gargoyle#glast_08
+  X: 277
+  "Y": 245
+  Dir: 8
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2053
+- Name: Stone Gargoyle#glast_09
+  X: 272
+  "Y": 248
+  Dir: 6
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2054
+- Name: Stone Gargoyle#glast_10
+  X: 273
+  "Y": 260
+  Dir: 4
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2055
+- Name: Stone Gargoyle#glast_11
+  X: 273
+  "Y": 235
+  Dir: 2
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2056
+- Name: Stone Gargoyle#glast_12
+  X: 277
+  "Y": 328
+  Dir: 8
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2057
+- Name: Stone Gargoyle#glast_13
+  X: 279
+  "Y": 328
+  Dir: 8
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2058
+- Name: Stone Gargoyle#glast_14
+  X: 281
+  "Y": 328
+  Dir: 8
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2059
+- Name: Stone Gargoyle#glast_15
+  X: 122
+  "Y": 132
+  Dir: 2
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2060
+- Name: Stone Gargoyle#glast_16
+  X: 120
+  "Y": 132
+  Dir: 2
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2061
+- Name: Stone Gargoyle#glast_17
+  X: 118
+  "Y": 132
+  Dir: 2
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2062
+- Name: Stone Gargoyle#glast_18
+  X: 118
+  "Y": 163
+  Dir: 4
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2063
+- Name: Stone Gargoyle#glast_19
+  X: 120
+  "Y": 163
+  Dir: 4
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2064
+- Name: Stone Gargoyle#glast_20
+  X: 118
+  "Y": 163
+  Dir: 4
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2065
+- Name: Stone Gargoyle#glast_21
+  X: 122
+  "Y": 250
+  Dir: 4
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2066
+- Name: Stone Gargoyle#glast_22
+  X: 122
+  "Y": 245
+  Dir: 2
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2067
+- Name: Stone Gargoyle#glast_23
+  X: 126
+  "Y": 248
+  Dir: 4
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2068
+- Name: Stone Gargoyle#glast_24
+  X: 126
+  "Y": 260
+  Dir: 6
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2069
+- Name: Stone Gargoyle#glast_25
+  X: 126
+  "Y": 235
+  Dir: 8
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2070
+- Name: Stone Gargoyle#glast_26
+  X: 117
+  "Y": 328
+  Dir: 2
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2071
+- Name: Stone Gargoyle#glast_27
+  X: 119
+  "Y": 328
+  Dir: 2
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2072
+- Name: Stone Gargoyle#glast_28
+  X: 121
+  "Y": 328
+  Dir: 2
+  Sprite: 10070
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: Stone Gargoyle#glast_01
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2073
+- Name: "#fenrir_spawn_chimera"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/instances/SarahAndFenrir.txt:2076

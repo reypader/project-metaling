@@ -1,0 +1,64 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#wp120084"
+  X: 362
+  "Y": 230
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:251
+- Name: "#tr120084"
+  X: 362
+  "Y": 230
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:512
+- Name: Map Examiner Kantu#85
+  X: 292
+  "Y": 39
+  Dir: 5
+  Sprite: 707
+  Kind: Script
+  Source: npc/re/quests/juno_monster_society.txt:3536
+- Name: ra014
+  X: 19
+  "Y": 277
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ra_fild05
+    X: 341
+    "Y": 273
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/rachel_fild.txt:32
+- Name: ra015
+  X: 294
+  "Y": 21
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lhz_fild01
+    X: 296
+    "Y": 376
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/rachel_fild.txt:33

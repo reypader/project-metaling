@@ -1,0 +1,563 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Maroll Battle Recruiter
+  UniqueName: BatRecruit2
+  X: 75
+  "Y": 162
+  Dir: 3
+  Sprite: 728
+  DuplicateOf: BatRecruit
+  Kind: Script
+  Source: npc/battleground/bg_common.txt:283
+- Name: Young Man#moc01
+  X: 123
+  "Y": 154
+  Dir: 0
+  Sprite: 99
+  Kind: Script
+  Source: npc/cities/morocc.txt:146
+- Name: Grampa#moc
+  X: 128
+  "Y": 153
+  Dir: 0
+  Sprite: 61
+  Kind: Script
+  Source: npc/cities/morocc.txt:164
+- Name: Wolf Young Man#moc
+  X: 132
+  "Y": 144
+  Dir: 0
+  Sprite: 85
+  Kind: Script
+  Source: npc/cities/morocc.txt:173
+- Name: Muka Young Man#moc
+  X: 115
+  "Y": 144
+  Dir: 3
+  Sprite: 83
+  Kind: Script
+  Source: npc/cities/morocc.txt:186
+- Name: Diamond Young Man#moc
+  X: 109
+  "Y": 138
+  Dir: 0
+  Sprite: 99
+  Kind: Script
+  Source: npc/cities/morocc.txt:205
+- Name: Pale Looking Young Man
+  X: 94
+  "Y": 117
+  Dir: 0
+  Sprite: 48
+  Kind: Script
+  Source: npc/cities/morocc.txt:243
+- Name: Little Girl#moc
+  X: 115
+  "Y": 82
+  Dir: 0
+  Sprite: 703
+  Kind: Script
+  Source: npc/cities/morocc.txt:264
+- Name: Little Boy#moc
+  X: 118
+  "Y": 82
+  Dir: 1
+  Sprite: 706
+  Kind: Script
+  Source: npc/cities/morocc.txt:279
+- Name: Picky Lady#moc
+  X: 121
+  "Y": 116
+  Dir: 4
+  Sprite: 66
+  Kind: Script
+  Source: npc/cities/morocc.txt:297
+- Name: Ant Man#moc
+  X: 155
+  "Y": 107
+  Dir: 4
+  Sprite: 47
+  Kind: Script
+  Source: npc/cities/morocc.txt:347
+- Name: Assassin Boy#moc
+  X: 143
+  "Y": 43
+  Dir: 4
+  Sprite: 118
+  Kind: Script
+  Source: npc/cities/morocc.txt:399
+- Name: Dimitri#moc
+  X: 173
+  "Y": 141
+  Dir: 4
+  Sprite: 49
+  Kind: Script
+  Source: npc/cities/morocc.txt:452
+- Name: Fly Man#moc
+  X: 174
+  "Y": 120
+  Dir: 4
+  Sprite: 54
+  Kind: Script
+  Source: npc/cities/morocc.txt:494
+- Name: Uncle Morocc#moc
+  X: 173
+  "Y": 70
+  Dir: 4
+  Sprite: 48
+  Kind: Script
+  Source: npc/cities/morocc.txt:526
+- Name: Kafra Voting Staff#moc
+  X: 104
+  "Y": 133
+  Dir: 4
+  Sprite: 116
+  Kind: Script
+  Source: npc/kafras/dts_warper.txt:694
+- Name: Cool Event Staff#moc
+  X: 97
+  "Y": 133
+  Dir: 6
+  Sprite: 874
+  DuplicateOf: VotingStaffCCE
+  Kind: Script
+  Source: npc/kafras/dts_warper.txt:1107
+- Name: Kafra Employee
+  UniqueName: moc_ruins
+  X: 59
+  "Y": 157
+  Dir: 5
+  Sprite: 114
+  Kind: Script
+  Source: npc/kafras/kafras.txt:649
+- Name: Repairman#moc
+  X: 107
+  "Y": 94
+  Dir: 4
+  Sprite: 99
+  Kind: Script
+  Source: npc/merchants/refine.txt:1190
+- Name: Item Collector#moc1
+  X: 93
+  "Y": 53
+  Dir: 2
+  Sprite: 85
+  Kind: Shop
+  Source: npc/merchants/shops.txt:202
+- Name: Item Collector#moc2
+  X: 81
+  "Y": 113
+  Dir: 0
+  Sprite: 85
+  Kind: Shop
+  Source: npc/merchants/shops.txt:203
+- Name: Trader#moc1
+  X: 113
+  "Y": 126
+  Dir: 4
+  Sprite: 99
+  Kind: Shop
+  Source: npc/merchants/shops.txt:204
+- Name: Trader#moc2
+  X: 131
+  "Y": 138
+  Dir: 0
+  Sprite: 93
+  Kind: Shop
+  Source: npc/merchants/shops.txt:205
+- Name: Trader#moc3
+  X: 71
+  "Y": 139
+  Dir: 5
+  Sprite: 93
+  Kind: Shop
+  Source: npc/merchants/shops.txt:206
+- Name: Trader#moc4
+  X: 125
+  "Y": 135
+  Dir: 6
+  Sprite: 89
+  Kind: Shop
+  Source: npc/merchants/shops.txt:207
+- Name: Butcher#moc
+  X: 87
+  "Y": 109
+  Dir: 0
+  Sprite: 58
+  Kind: Shop
+  Source: npc/merchants/shops.txt:208
+- Name: Trader#moc5
+  X: 90
+  "Y": 149
+  Dir: 6
+  Sprite: 99
+  Kind: Shop
+  Source: npc/merchants/shops.txt:209
+- Name: Auction Hall Guide#moc
+  X: 78
+  "Y": 173
+  Dir: 6
+  Sprite: 98
+  Kind: Script
+  Source: npc/other/auction.txt:21
+- Name: Information Post#moc
+  X: 76
+  "Y": 176
+  Dir: 6
+  Sprite: 837
+  DuplicateOf: AuctionSign
+  Kind: Script
+  Source: npc/other/auction.txt:83
+- Name: Mailbox#1moc
+  X: 72
+  "Y": 166
+  Dir: 0
+  Sprite: 888
+  DuplicateOf: MailBox
+  Kind: Script
+  Source: npc/other/mail.txt:66
+- Name: Mailbox#2moc
+  X: 156
+  "Y": 52
+  Dir: 0
+  Sprite: 888
+  DuplicateOf: MailBox
+  Kind: Script
+  Source: npc/other/mail.txt:67
+- Name: Thief Trainer#T
+  X: 66
+  "Y": 164
+  Dir: 4
+  Sprite: 84
+  Kind: Script
+  Source: npc/quests/first_class/tu_thief01.txt:24
+- Name: Ponka-Hontas
+  X: 91
+  "Y": 150
+  Dir: 0
+  Sprite: 93
+  Kind: Script
+  Source: npc/quests/mage_solution.txt:38
+- Name: Smile Assistance#moc
+  X: 59
+  "Y": 154
+  Dir: 3
+  Sprite: 92
+  DuplicateOf: SmileHelper
+  Kind: Script
+  Source: npc/quests/mrsmile.txt:101
+- Name: Jacob#thai
+  X: 105
+  "Y": 62
+  Dir: 4
+  Sprite: 50
+  Kind: Script
+  Source: npc/quests/obb_quest.txt:618
+- Name: Tommy#thai
+  X: 107
+  "Y": 62
+  Dir: 0
+  Sprite: 716
+  Kind: Script
+  Source: npc/quests/obb_quest.txt:1845
+- Name: Time-Space Gap Guard
+  X: 137
+  "Y": 89
+  Dir: 5
+  Sprite: 707
+  Kind: Script
+  Source: npc/quests/quests_13_1.txt:1867
+- Name: Book-Touching Man#garas
+  X: 137
+  "Y": 70
+  Dir: 3
+  Sprite: 48
+  Kind: Script
+  Source: npc/quests/quests_morocc.txt:2089
+- Name: Foreign Merchant#aru1
+  X: 77
+  "Y": 167
+  Dir: 4
+  Sprite: 880
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:2257
+- Name: "#ForeignMerchant1"
+  X: 86
+  "Y": 149
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:2446
+- Name: "#ForeignMerchant2"
+  X: 88
+  "Y": 136
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:2454
+- Name: "#ForeignMerchant3"
+  X: 106
+  "Y": 133
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:2471
+- Name: "#ForeignMerchant4"
+  X: 115
+  "Y": 147
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:2479
+- Name: Foreign Merchant#aru2
+  X: 101
+  "Y": 133
+  Dir: 7
+  Sprite: 929
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:2487
+- Name: Ibrahim
+  X: 152
+  "Y": 147
+  Dir: 5
+  Sprite: 732
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:4657
+- Name: Suspicious Man#1
+  X: 90
+  "Y": 67
+  Dir: 3
+  Sprite: 99
+  Trigger:
+    X: 4
+    "Y": 4
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:8039
+- Name: Suspicious Man#2
+  X: 75
+  "Y": 171
+  Dir: 3
+  Sprite: 99
+  Trigger:
+    X: 4
+    "Y": 4
+  DuplicateOf: Suspicious Man#1
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:8261
+- Name: Thug#rg
+  X: 86
+  "Y": 103
+  Dir: 1
+  Sprite: 118
+  Kind: Script
+  Source: npc/jobs/2-2/rogue.txt:26
+- Name: Roberto
+  X: 118
+  "Y": 99
+  Dir: 5
+  Sprite: 88
+  Kind: Script
+  Source: npc/quests/skills/archer_skills.txt:18
+- Name: moc02-2
+  X: 159
+  "Y": 39
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 4
+  Kind: Warp
+  Warp:
+    Map: morocc
+    X: 30
+    "Y": 290
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/morroc.txt:72
+- Name: moc006
+  X: 54
+  "Y": 161
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 3
+  Kind: Warp
+  Warp:
+    Map: moc_pryd01
+    X: 192
+    "Y": 9
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/morroc.txt:75
+- Name: moc007
+  X: 71
+  "Y": 16
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 8
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: moc_fild19
+    X: 71
+    "Y": 167
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/morroc.txt:76
+- Name: Guide#01ruins
+  UniqueName: GuideMocRuins
+  X: 159
+  "Y": 53
+  Dir: 3
+  Sprite: 707
+  Kind: Script
+  Source: npc/re/guides/guides_morroc.txt:170
+- Name: Guide#02ruins
+  X: 70
+  "Y": 164
+  Dir: 3
+  Sprite: 707
+  DuplicateOf: GuideMocRuins
+  Kind: Script
+  Source: npc/re/guides/guides_morroc.txt:310
+- Name: Guide#03ruins
+  X: 65
+  "Y": 44
+  Dir: 5
+  Sprite: 707
+  DuplicateOf: GuideMocRuins
+  Kind: Script
+  Source: npc/re/guides/guides_morroc.txt:311
+- Name: Cash Sales Guide#moc_ruins
+  X: 115
+  "Y": 143
+  Dir: 4
+  Sprite: 899
+  DuplicateOf: cashmall_warper
+  Kind: Script
+  Source: npc/re/merchants/cashmall.txt:48
+- Name: Tool Dealer#Extended_Moc1
+  X: 91
+  "Y": 128
+  Dir: 4
+  Sprite: 93
+  Kind: Shop
+  Source: npc/re/merchants/Dealer_Update.txt:174
+- Name: Tool Dealer#Extended_Moc2
+  X: 114
+  "Y": 63
+  Dir: 6
+  Sprite: 99
+  Kind: Shop
+  Source: npc/re/merchants/Dealer_Update.txt:175
+- Name: Gemstone Bagger#17
+  X: 95
+  "Y": 128
+  Dir: 3
+  Sprite: 66
+  DuplicateOf: "#GemstoneBagger"
+  Kind: Script
+  Source: npc/re/merchants/Gemstone_Bagger.txt:48
+- Name: Pet Groomer#moc
+  X: 118
+  "Y": 170
+  Dir: 4
+  Sprite: 125
+  DuplicateOf: "#PetGroomer"
+  Kind: Script
+  Source: npc/re/merchants/pet_groomer.txt:40
+- Name: Tool Dealer#moc1
+  X: 91
+  "Y": 128
+  Dir: 4
+  Sprite: 93
+  Kind: Shop
+  Source: npc/re/merchants/shops.txt:118
+- Name: Tool Dealer#moc2
+  X: 114
+  "Y": 63
+  Dir: 6
+  Sprite: 99
+  Kind: Shop
+  Source: npc/re/merchants/shops.txt:119
+- Name: Jeweler#moc1
+  X: 110
+  "Y": 105
+  Dir: 2
+  Sprite: 102
+  Kind: Shop
+  Source: npc/re/merchants/shops.txt:132
+- Name: Jeweler#moc2
+  X: 52
+  "Y": 85
+  Dir: 6
+  Sprite: 99
+  Kind: Shop
+  Source: npc/re/merchants/shops.txt:133
+- Name: Chef Assistant#moc
+  X: 115
+  "Y": 123
+  Dir: 5
+  Sprite: 86
+  Kind: Shop
+  Source: npc/re/merchants/shops.txt:187
+- Name: Signposts#Pyramid
+  X: 61
+  "Y": 164
+  Dir: 0
+  Sprite: 837
+  Kind: Script
+  Source: npc/re/other/adven_boards.txt:1608
+- Name: Dieshin Man
+  X: 173
+  "Y": 55
+  Dir: 3
+  Sprite: 89
+  Kind: Script
+  Source: npc/re/quests/eden/26-40.txt:184
+- Name: Eden Teleport Officer#2
+  X: 68
+  "Y": 164
+  Dir: 3
+  Sprite: 729
+  DuplicateOf: eto
+  Kind: Script
+  Source: npc/re/quests/eden/eden_common.txt:242
+- Name: Tamarin#ep14bs_ru
+  X: 106
+  "Y": 140
+  Dir: 4
+  Sprite: 10027
+  Kind: Script
+  Source: npc/re/quests/quests_14_3_bis.txt:2263
+- Name: Valerie#rg
+  X: 90
+  "Y": 104
+  Dir: 4
+  Sprite: 837
+  DuplicateOf: Valerie#sign
+  Kind: Script
+  Source: npc/re/jobs/repair.txt:273

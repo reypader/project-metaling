@@ -1,0 +1,750 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#171_cor_control"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:12
+- Name: "#171_cor_ev"
+  X: 177
+  "Y": 169
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 4
+    "Y": 4
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:119
+- Name: Elena Volkova#171_cmd_0
+  X: 180
+  "Y": 169
+  Dir: 3
+  Sprite: 10192
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:131
+- Name: Elyumina#171_cmd_0
+  X: 178
+  "Y": 172
+  Dir: 3
+  Sprite: 10301
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:256
+- Name: Elyumina#171_cmd_1
+  X: 172
+  "Y": 223
+  Dir: 3
+  Sprite: 10301
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:258
+- Name: Rebellion#171_cmd_0
+  X: 177
+  "Y": 165
+  Dir: 1
+  Sprite: 10198
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:291
+- Name: Rebellion#171_cmd_1
+  X: 180
+  "Y": 165
+  Dir: 1
+  Sprite: 10180
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:292
+- Name: Rebellion#171_cmd_2
+  X: 183
+  "Y": 165
+  Dir: 1
+  Sprite: 10202
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:293
+- Name: Rebellion#171_cmd_3
+  X: 177
+  "Y": 163
+  Dir: 1
+  Sprite: 10193
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:294
+- Name: Rebellion#171_cmd_4
+  X: 180
+  "Y": 163
+  Dir: 1
+  Sprite: 10203
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:295
+- Name: Rebellion#171_cmd_5
+  X: 183
+  "Y": 163
+  Dir: 1
+  Sprite: 10201
+  DuplicateOf: dummy_npc
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:296
+- Name: Rebellion#171_box_0
+  X: 224
+  "Y": 238
+  Dir: 3
+  Sprite: 10198
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:298
+- Name: Box#171_box_0
+  X: 222
+  "Y": 236
+  Dir: 3
+  Sprite: 10249
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:339
+- Name: Biological Battery#171_box_0
+  X: 222
+  "Y": 235
+  Dir: 3
+  Sprite: 1738
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:405
+- Name: Reinforced Energy#171_box_0
+  X: 225
+  "Y": 232
+  Dir: 3
+  Sprite: 10046
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:442
+- Name: Rebellion#171_box_1
+  X: 218
+  "Y": 172
+  Dir: 5
+  Sprite: 10201
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:459
+- Name: Box#171_box_1
+  X: 220
+  "Y": 170
+  Dir: 3
+  Sprite: 10250
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:497
+- Name: Chemical Poison#171_box_1
+  X: 220
+  "Y": 169
+  Dir: 3
+  Sprite: 2531
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:559
+- Name: Rebellion#171_box_2
+  X: 162
+  "Y": 117
+  Dir: 1
+  Sprite: 10180
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:583
+- Name: Box#171_box_2
+  X: 160
+  "Y": 119
+  Dir: 3
+  Sprite: 10249
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:589
+- Name: Rebellion#171_box_3
+  X: 138
+  "Y": 82
+  Dir: 5
+  Sprite: 10193
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:614
+- Name: Rebellion#171_box_4
+  X: 142
+  "Y": 82
+  Dir: 3
+  Sprite: 10203
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:623
+- Name: Box#171_box_3
+  X: 140
+  "Y": 79
+  Dir: 3
+  Sprite: 10250
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:632
+- Name: Elena Volkova#171_cmd_1
+  X: 172
+  "Y": 223
+  Dir: 3
+  Sprite: 10192
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:653
+- Name: Elena Volkova#171_cmd_2
+  X: 138
+  "Y": 221
+  Dir: 3
+  Sprite: 10192
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:697
+- Name: Elyumina#171_cor_end
+  X: 140
+  "Y": 221
+  Dir: 3
+  Sprite: 10301
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:766
+- Name: Rebellion#171_cmd_6
+  X: 141
+  "Y": 222
+  Dir: 3
+  Sprite: 10203
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:770
+- Name: Rebellion#171_cmd_7
+  X: 141
+  "Y": 220
+  Dir: 3
+  Sprite: 10193
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:774
+- Name: "#171_cor_boss"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:779
+- Name: Biological Battery#171_cor_0
+  X: 151
+  "Y": 221
+  Dir: 3
+  Sprite: 1738
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:852
+- Name: Chemical Poison#171_cor_0
+  X: 151
+  "Y": 221
+  Dir: 3
+  Sprite: 2531
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:876
+- Name: Reinforced Energy#171_cor_0
+  X: 137
+  "Y": 220
+  Dir: 3
+  Sprite: 10046
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:888
+- Name: Biological Battery#171_cor_1
+  X: 145
+  "Y": 220
+  Dir: 3
+  Sprite: 1738
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Biological Battery#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:903
+- Name: Biological Battery#171_cor_2
+  X: 129
+  "Y": 220
+  Dir: 3
+  Sprite: 1738
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Biological Battery#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:904
+- Name: Biological Battery#171_cor_3
+  X: 138
+  "Y": 206
+  Dir: 3
+  Sprite: 1738
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Biological Battery#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:905
+- Name: Biological Battery#171_cor_4
+  X: 136
+  "Y": 213
+  Dir: 3
+  Sprite: 1738
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Biological Battery#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:906
+- Name: Biological Battery#171_cor_5
+  X: 138
+  "Y": 228
+  Dir: 3
+  Sprite: 1738
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Biological Battery#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:907
+- Name: Biological Battery#171_cor_6
+  X: 138
+  "Y": 235
+  Dir: 3
+  Sprite: 1738
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Biological Battery#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:908
+- Name: Biological Battery#171_cor_7
+  X: 102
+  "Y": 220
+  Dir: 3
+  Sprite: 1738
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Biological Battery#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:909
+- Name: Biological Battery#171_cor_8
+  X: 108
+  "Y": 221
+  Dir: 3
+  Sprite: 1738
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Biological Battery#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:910
+- Name: Biological Battery#171_cor_9
+  X: 115
+  "Y": 219
+  Dir: 3
+  Sprite: 1738
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Biological Battery#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:911
+- Name: Biological Battery#171_cor_10
+  X: 122
+  "Y": 221
+  Dir: 3
+  Sprite: 1738
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Biological Battery#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:912
+- Name: Chemical Poison#171_cor_1
+  X: 145
+  "Y": 220
+  Dir: 3
+  Sprite: 2531
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Chemical Poison#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:914
+- Name: Chemical Poison#171_cor_2
+  X: 129
+  "Y": 220
+  Dir: 3
+  Sprite: 2531
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Chemical Poison#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:915
+- Name: Chemical Poison#171_cor_3
+  X: 138
+  "Y": 206
+  Dir: 3
+  Sprite: 2531
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Chemical Poison#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:916
+- Name: Chemical Poison#171_cor_4
+  X: 136
+  "Y": 213
+  Dir: 3
+  Sprite: 2531
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Chemical Poison#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:917
+- Name: Chemical Poison#171_cor_5
+  X: 138
+  "Y": 228
+  Dir: 3
+  Sprite: 2531
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Chemical Poison#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:918
+- Name: Chemical Poison#171_cor_6
+  X: 138
+  "Y": 235
+  Dir: 3
+  Sprite: 2531
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Chemical Poison#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:919
+- Name: Chemical Poison#171_cor_7
+  X: 102
+  "Y": 220
+  Dir: 3
+  Sprite: 2531
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Chemical Poison#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:920
+- Name: Chemical Poison#171_cor_8
+  X: 108
+  "Y": 221
+  Dir: 3
+  Sprite: 2531
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Chemical Poison#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:921
+- Name: Chemical Poison#171_cor_9
+  X: 115
+  "Y": 219
+  Dir: 3
+  Sprite: 2531
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Chemical Poison#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:922
+- Name: Chemical Poison#171_cor_10
+  X: 122
+  "Y": 221
+  Dir: 3
+  Sprite: 2531
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Chemical Poison#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:923
+- Name: "#171_cor_warp_0"
+  X: 161
+  "Y": 221
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:925
+- Name: "#171_cor_warp_1"
+  X: 161
+  "Y": 221
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:942
+- Name: Elyumina#171_box_d0
+  X: 224
+  "Y": 238
+  Dir: 3
+  Sprite: 10301
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:959
+- Name: Elyumina#171_box_d1
+  X: 218
+  "Y": 172
+  Dir: 5
+  Sprite: 10301
+  DuplicateOf: Elyumina#171_box_d0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:975
+- Name: Elyumina#171_box_d2
+  X: 162
+  "Y": 117
+  Dir: 3
+  Sprite: 10301
+  DuplicateOf: Elyumina#171_box_d0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:976
+- Name: Elyumina#171_box_d3
+  X: 140
+  "Y": 82
+  Dir: 3
+  Sprite: 10301
+  DuplicateOf: Elyumina#171_box_d0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:977
+- Name: Box#171_box_d0
+  X: 222
+  "Y": 236
+  Dir: 3
+  Sprite: 10249
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:979
+- Name: Biological Battery#171_box_trap_0
+  X: 222
+  "Y": 235
+  Dir: 3
+  Sprite: 1738
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1060
+- Name: Chemical Poison#171_box_trap_1
+  X: 220
+  "Y": 169
+  Dir: 3
+  Sprite: 2531
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Biological Battery#171_box_trap_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1121
+- Name: Biological Battery#171_box_trap_2
+  X: 160
+  "Y": 118
+  Dir: 3
+  Sprite: 1738
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Biological Battery#171_box_trap_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1122
+- Name: Chemical Poison#171_box_trap_3
+  X: 140
+  "Y": 78
+  Dir: 3
+  Sprite: 2531
+  SpriteIsMob: true
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: Biological Battery#171_box_trap_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1123
+- Name: Reinforced Energy#171_trap_0
+  X: 225
+  "Y": 232
+  Dir: 3
+  Sprite: 10046
+  DuplicateOf: Reinforced Energy#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1125
+- Name: Reinforced Energy#171_trap_2
+  X: 163
+  "Y": 115
+  Dir: 3
+  Sprite: 10046
+  DuplicateOf: Reinforced Energy#171_cor_0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1126
+- Name: Box#171_box_d1
+  X: 220
+  "Y": 170
+  Dir: 3
+  Sprite: 10250
+  DuplicateOf: Box#171_box_d0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1128
+- Name: Box#171_box_d2
+  X: 160
+  "Y": 119
+  Dir: 3
+  Sprite: 10249
+  DuplicateOf: Box#171_box_d0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1129
+- Name: Box#171_box_d3
+  X: 140
+  "Y": 79
+  Dir: 3
+  Sprite: 10250
+  DuplicateOf: Box#171_box_d0
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1130
+- Name: "#cor_barricade_0"
+  X: 159
+  "Y": 218
+  Dir: 0
+  Sprite: 10024
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1132
+- Name: "#cor_barricade_1"
+  X: 159
+  "Y": 220
+  Dir: 3
+  Sprite: 10024
+  DuplicateOf: "#cor_barricade_0"
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1140
+- Name: "#cor_barricade_2"
+  X: 159
+  "Y": 222
+  Dir: 3
+  Sprite: 10024
+  DuplicateOf: "#cor_barricade_0"
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1141
+- Name: "#cor_barricade_3"
+  X: 159
+  "Y": 224
+  Dir: 3
+  Sprite: 10024
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: "#cor_barricade_0"
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1142
+- Name: "#cor_barricade_4"
+  X: 98
+  "Y": 218
+  Dir: 3
+  Sprite: 10024
+  DuplicateOf: "#cor_barricade_0"
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1143
+- Name: "#cor_barricade_5"
+  X: 98
+  "Y": 220
+  Dir: 3
+  Sprite: 10024
+  DuplicateOf: "#cor_barricade_0"
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1144
+- Name: "#cor_barricade_6"
+  X: 98
+  "Y": 222
+  Dir: 3
+  Sprite: 10024
+  DuplicateOf: "#cor_barricade_0"
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1145
+- Name: "#cor_barricade_7"
+  X: 98
+  "Y": 224
+  Dir: 3
+  Sprite: 10024
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: "#cor_barricade_0"
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1146
+- Name: "#cor_barricade_8"
+  X: 134
+  "Y": 240
+  Dir: 3
+  Sprite: 10024
+  DuplicateOf: "#cor_barricade_0"
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1147
+- Name: "#cor_barricade_9"
+  X: 136
+  "Y": 240
+  Dir: 3
+  Sprite: 10024
+  DuplicateOf: "#cor_barricade_0"
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1148
+- Name: "#cor_barricade_10"
+  X: 138
+  "Y": 240
+  Dir: 3
+  Sprite: 10024
+  DuplicateOf: "#cor_barricade_0"
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1149
+- Name: "#cor_barricade_11"
+  X: 140
+  "Y": 240
+  Dir: 3
+  Sprite: 10024
+  Trigger:
+    X: 2
+    "Y": 2
+  DuplicateOf: "#cor_barricade_0"
+  Kind: Script
+  Source: npc/re/instances/CorOperation.txt:1150

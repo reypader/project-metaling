@@ -1,0 +1,153 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Orc Warrior#1
+  X: 31
+  "Y": 93
+  Dir: 1
+  Sprite: 1023
+  SpriteIsMob: true
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/newgears/2004_headgears.txt:2635
+- Name: Orc Hero#1
+  X: 162
+  "Y": 33
+  Dir: 1
+  Sprite: 1087
+  SpriteIsMob: true
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/newgears/2004_headgears.txt:3506
+- Name: Orc Lady#2008hat03
+  X: 119
+  "Y": 106
+  Dir: 3
+  Sprite: 1273
+  SpriteIsMob: true
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/newgears/2008_headgears.txt:753
+- Name: orc001
+  X: 108
+  "Y": 86
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: gef_fild10
+    X: 223
+    "Y": 203
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/orcsdun.txt:16
+- Name: orc002
+  X: 124
+  "Y": 171
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 3
+  Kind: Warp
+  Warp:
+    Map: gef_fild10
+    X: 138
+    "Y": 329
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/orcsdun.txt:17
+- Name: orc003
+  X: 162
+  "Y": 55
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gef_fild10
+    X: 214
+    "Y": 53
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/orcsdun.txt:18
+- Name: orc004
+  X: 29
+  "Y": 116
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gef_fild10
+    X: 137
+    "Y": 286
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/orcsdun.txt:19
+- Name: orc005
+  X: 30
+  "Y": 154
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: gef_fild10
+    X: 65
+    "Y": 335
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/orcsdun.txt:20
+- Name: orc01
+  X: 30
+  "Y": 182
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: orcsdun01
+    X: 32
+    "Y": 170
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/orcsdun.txt:21
+- Name: orc02
+  X: 108
+  "Y": 114
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: orcsdun02
+    X: 180
+    "Y": 17
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/orcsdun.txt:23
+- Name: Eden Member Hooksha
+  X: 38
+  "Y": 175
+  Dir: 3
+  Sprite: 803
+  Kind: Script
+  Source: npc/re/quests/eden/eden_quests.txt:1363

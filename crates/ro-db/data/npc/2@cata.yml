@@ -1,0 +1,158 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: ins_2f_enter
+  X: 80
+  "Y": 144
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:974
+- Name: ins_2f_enter_broad
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:981
+- Name: slave_left
+  X: 50
+  "Y": 67
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:1011
+- Name: slave_right
+  X: 109
+  "Y": 67
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:1035
+- Name: slave_down
+  X: 79
+  "Y": 39
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:1059
+- Name: Magical Seal#0
+  X: 79
+  "Y": 81
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Magical Seal#SS
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:1116
+- Name: Magical Seal#2
+  X: 123
+  "Y": 109
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Magical Seal#SS
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:1117
+- Name: Magical Seal#4
+  X: 123
+  "Y": 22
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Magical Seal#SS
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:1118
+- Name: Magical Seal#8
+  X: 35
+  "Y": 21
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Magical Seal#SS
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:1119
+- Name: Magical Seal#10
+  X: 35
+  "Y": 109
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Magical Seal#SS
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:1120
+- Name: The Main Altar#ss
+  X: 79
+  "Y": 65
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:1122
+- Name: Ancient Hero's Soul#2F
+  X: 80
+  "Y": 63
+  Dir: 4
+  Sprite: 411
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:1148
+- Name: ins_2f_hero_broad
+  X: 1
+  "Y": 2
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:1184
+- Name: control_baphomet
+  X: 3
+  "Y": 3
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:1223
+- Name: ins_2f_hero_broad2
+  X: 2
+  "Y": 2
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:1259
+- Name: 2f_callmon_pattern_c
+  X: 4
+  "Y": 1
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:1307
+- Name: 2f_callmon_pattern
+  X: 4
+  "Y": 2
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:1332
+- Name: ins_2f_hero_pattern_c
+  X: 3
+  "Y": 1
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:1356
+- Name: ins_2f_hero_pattern
+  X: 3
+  "Y": 2
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/instances/SealedShrine.txt:1392

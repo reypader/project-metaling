@@ -1,0 +1,151 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Shenime#ecl01
+  X: 58
+  "Y": 69
+  Dir: 3
+  Sprite: 435
+  Kind: Script
+  Source: npc/re/instances/EclageInterior.txt:98
+- Name: Suspicious Creature#1
+  X: 51
+  "Y": 64
+  Dir: 1
+  Sprite: 2375
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/re/instances/EclageInterior.txt:130
+- Name: Suspicious Creature#2
+  X: 43
+  "Y": 67
+  Dir: 3
+  Sprite: 2375
+  SpriteIsMob: true
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Suspicious Creature#1
+  Kind: Script
+  Source: npc/re/instances/EclageInterior.txt:133
+- Name: Suspicious Creature#3
+  X: 55
+  "Y": 80
+  Dir: 3
+  Sprite: 2375
+  SpriteIsMob: true
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Suspicious Creature#1
+  Kind: Script
+  Source: npc/re/instances/EclageInterior.txt:134
+- Name: Suspicious Creature#4
+  X: 60
+  "Y": 75
+  Dir: 3
+  Sprite: 2375
+  SpriteIsMob: true
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Suspicious Creature#1
+  Kind: Script
+  Source: npc/re/instances/EclageInterior.txt:135
+- Name: Suspicious Creature#5
+  X: 42
+  "Y": 80
+  Dir: 5
+  Sprite: 2376
+  SpriteIsMob: true
+  Kind: Script
+  Source: npc/re/instances/EclageInterior.txt:137
+- Name: Suspicious Creature#6
+  X: 48
+  "Y": 86
+  Dir: 3
+  Sprite: 2376
+  SpriteIsMob: true
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Suspicious Creature#5
+  Kind: Script
+  Source: npc/re/instances/EclageInterior.txt:143
+- Name: Suspicious Creature#7
+  X: 58
+  "Y": 82
+  Dir: 3
+  Sprite: 2376
+  SpriteIsMob: true
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Suspicious Creature#5
+  Kind: Script
+  Source: npc/re/instances/EclageInterior.txt:144
+- Name: Suspicious Creature#8
+  X: 56
+  "Y": 88
+  Dir: 3
+  Sprite: 2376
+  SpriteIsMob: true
+  Trigger:
+    X: 0
+    "Y": 0
+  DuplicateOf: Suspicious Creature#5
+  Kind: Script
+  Source: npc/re/instances/EclageInterior.txt:145
+- Name: "#sndmaster"
+  X: 53
+  "Y": 83
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 10
+    "Y": 10
+  Kind: Script
+  Source: npc/re/instances/EclageInterior.txt:147
+- Name: "#event"
+  X: 57
+  "Y": 65
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/EclageInterior.txt:215
+- Name: Avant#
+  X: 148
+  "Y": 97
+  Dir: 3
+  Sprite: 618
+  Kind: Script
+  Source: npc/re/instances/EclageInterior.txt:259
+- Name: Loki#ecl01
+  X: 148
+  "Y": 29
+  Dir: 3
+  Sprite: 512
+  Kind: Script
+  Source: npc/re/instances/EclageInterior.txt:348
+- Name: Nydhog#ecl01
+  X: 147
+  "Y": 30
+  Dir: 3
+  Sprite: 510
+  Kind: Script
+  Source: npc/re/instances/EclageInterior.txt:355
+- Name: Hisie#ecl01
+  X: 144
+  "Y": 27
+  Dir: 5
+  Sprite: 623
+  Kind: Script
+  Source: npc/re/instances/EclageInterior.txt:361

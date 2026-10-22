@@ -1,0 +1,307 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Vrid#bios3
+  X: 64
+  "Y": 74
+  Dir: 5
+  Sprite: 468
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:349
+- Name: event_boss#bios3
+  X: 64
+  "Y": 74
+  Dir: 5
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 7
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:369
+- Name: freeze#bios3
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:379
+- Name: verit#bios3
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:534
+- Name: megalodon#bios3
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:560
+- Name: boss_prelude#bios3
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:586
+- Name: boss#bios3
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:610
+- Name: talk_friends#bios3
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:664
+- Name: talk_boss#bios3
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 139
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:688
+- Name: Zeith#bios3
+  X: 72
+  "Y": 74
+  Dir: 3
+  Sprite: 467
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:746
+- Name: Grim Reaper Ankou#bios3
+  X: 70
+  "Y": 67
+  Dir: 3
+  Sprite: 3029
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:747
+- Name: Corrupt Orc Zombie#1bio1
+  X: 62
+  "Y": 80
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:749
+- Name: Corrupt Orc Zombie#2bio1
+  X: 64
+  "Y": 80
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:750
+- Name: Corrupt Orc Zombie#3bio1
+  X: 66
+  "Y": 80
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:751
+- Name: Corrupt Orc Zombie#4bio1
+  X: 68
+  "Y": 80
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:752
+- Name: Corrupt Orc Zombie#5bio1
+  X: 72
+  "Y": 80
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:753
+- Name: Corrupt Orc Zombie#6bio1
+  X: 74
+  "Y": 80
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:754
+- Name: Corrupt Orc Zombie#7bio1
+  X: 76
+  "Y": 80
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:755
+- Name: Corrupt Orc Zombie#8bio1
+  X: 78
+  "Y": 80
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:756
+- Name: Corrupt Orc Zombie#1bio2
+  X: 62
+  "Y": 86
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:757
+- Name: Corrupt Orc Zombie#2bio2
+  X: 64
+  "Y": 86
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:758
+- Name: Corrupt Orc Zombie#3bio2
+  X: 66
+  "Y": 86
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:759
+- Name: Corrupt Orc Zombie#4bio2
+  X: 68
+  "Y": 86
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:760
+- Name: Corrupt Orc Zombie#5bio2
+  X: 72
+  "Y": 86
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:761
+- Name: Corrupt Orc Zombie#6bio2
+  X: 74
+  "Y": 86
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:762
+- Name: Corrupt Orc Zombie#7bio2
+  X: 76
+  "Y": 86
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:763
+- Name: Corrupt Orc Zombie#8bio2
+  X: 78
+  "Y": 86
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:764
+- Name: Corrupt Orc Zombie#1bio3
+  X: 62
+  "Y": 92
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:765
+- Name: Corrupt Orc Zombie#2bio3
+  X: 64
+  "Y": 92
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:766
+- Name: Corrupt Orc Zombie#3bio3
+  X: 66
+  "Y": 92
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:767
+- Name: Corrupt Orc Zombie#4bio3
+  X: 68
+  "Y": 92
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:768
+- Name: Corrupt Orc Zombie#5bio3
+  X: 72
+  "Y": 92
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:769
+- Name: Corrupt Orc Zombie#6bio3
+  X: 74
+  "Y": 92
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:770
+- Name: Corrupt Orc Zombie#7bio3
+  X: 76
+  "Y": 92
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:771
+- Name: Corrupt Orc Zombie#8bio3
+  X: 78
+  "Y": 92
+  Dir: 3
+  Sprite: 3016
+  SpriteIsMob: true
+  DuplicateOf: Grim Reaper Ankou#bios1
+  Kind: Script
+  Source: npc/re/instances/IsleOfBios.txt:772

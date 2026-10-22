@@ -1,0 +1,98 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: sphx02-1
+  X: 210
+  "Y": 57
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: in_sphinx2
+    X: 274
+    "Y": 272
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/in_sphinx.txt:20
+- Name: sphx03
+  X: 35
+  "Y": 227
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 4
+  Kind: Warp
+  Warp:
+    Map: in_sphinx3
+    X: 62
+    "Y": 227
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/in_sphinx.txt:21
+- Name: sphx03-1
+  X: 60
+  "Y": 227
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 4
+  Kind: Warp
+  Warp:
+    Map: in_sphinx3
+    X: 32
+    "Y": 227
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/in_sphinx.txt:22
+- Name: sphx04
+  X: 70
+  "Y": 111
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: in_sphinx3
+    X: 70
+    "Y": 81
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/in_sphinx.txt:23
+- Name: sphx04-1
+  X: 70
+  "Y": 83
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: in_sphinx3
+    X: 70
+    "Y": 113
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/in_sphinx.txt:24
+- Name: sphx05
+  X: 12
+  "Y": 69
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: in_sphinx4
+    X: 10
+    "Y": 222
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/in_sphinx.txt:25

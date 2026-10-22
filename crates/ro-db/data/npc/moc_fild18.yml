@@ -1,0 +1,121 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Trace of Battle#11
+  X: 346
+  "Y": 296
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/first_class/tu_ma_th01.txt:442
+- Name: Trace of Battle#12
+  X: 309
+  "Y": 257
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/first_class/tu_ma_th01.txt:477
+- Name: Trace of Battle#13
+  X: 177
+  "Y": 333
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/first_class/tu_ma_th01.txt:510
+- Name: Trace of Battle#14
+  X: 111
+  "Y": 303
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/first_class/tu_ma_th01.txt:547
+- Name: Trace of Battle#15
+  X: 109
+  "Y": 197
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/first_class/tu_ma_th01.txt:580
+- Name: Trace of Battle#16
+  X: 156
+  "Y": 96
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/first_class/tu_ma_th01.txt:752
+- Name: "#treasure"
+  X: 108
+  "Y": 116
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/quests_nameless.txt:9859
+- Name: "#wp120023"
+  X: 54
+  "Y": 284
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:220
+- Name: "#tr120023"
+  X: 54
+  "Y": 284
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:481
+- Name: moc_fild18-1
+  X: 51
+  "Y": 170
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 3
+  Kind: Warp
+  Warp:
+    Map: cmd_fild09
+    X: 363
+    "Y": 164
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/com_fild.txt:51
+- Name: mocf24-1
+  X: 158
+  "Y": 382
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: moc_fild12
+    X: 118
+    "Y": 33
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/morroc_fild.txt:112
+- Name: moc29-1
+  X: 382
+  "Y": 305
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 4
+  Kind: Warp
+  Warp:
+    Map: moc_fild17
+    X: 33
+    "Y": 300
+    TriggerWhileHidden: false
+  Source: npc/re/warps/fields/morroc_fild.txt:113

@@ -1,0 +1,37 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#ep18_sb3"
+  X: 152
+  "Y": 276
+  Dir: 5
+  Sprite: 10428
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:6116
+- Name: Old Man#ep18_sb1
+  X: 143
+  "Y": 231
+  Dir: 3
+  Sprite: 10393
+  Kind: Script
+  Source: npc/re/quests/quests_18.txt:6142
+- Name: to_oz_dun01
+  X: 142
+  "Y": 284
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: oz_dun01
+    X: 112
+    "Y": 34
+    TriggerWhileHidden: false
+  Source: npc/re/warps/dungeons/oz_dun.txt:10

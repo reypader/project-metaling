@@ -1,0 +1,116 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Intruder#sweety
+  X: 125
+  "Y": 39
+  Dir: 3
+  Sprite: 10349
+  State: Disabled
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/re/instances/TwilightGarden.txt:681
+- Name: twilight_story_mob_5
+  X: 1
+  "Y": 1
+  Dir: 7
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/TwilightGarden.txt:701
+- Name: Broken Sweety#sweety04
+  X: 123
+  "Y": 39
+  Dir: 3
+  Sprite: 10349
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/TwilightGarden.txt:718
+- Name: Est#est05
+  X: 108
+  "Y": 41
+  Dir: 5
+  Sprite: 10183
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/TwilightGarden.txt:726
+- Name: "#tgd_bamq_exit"
+  X: 101
+  "Y": 39
+  Dir: 0
+  Sprite: 45
+  State: Disabled
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ba_maison
+    X: 33
+    "Y": 220
+    TriggerWhileHidden: true
+  Source: npc/re/instances/TwilightGarden.txt:756
+- Name: "#sweety_evt01"
+  X: 16
+  "Y": 39
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/re/instances/TwilightGarden.txt:760
+- Name: Sweety#sweety_boss
+  X: 32
+  "Y": 49
+  Dir: 3
+  Sprite: 10349
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/TwilightGarden.txt:790
+- Name: twilight_daily
+  X: 1
+  "Y": 1
+  Dir: 7
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/instances/TwilightGarden.txt:826
+- Name: Stunned Sweety#sweety_bo
+  X: 32
+  "Y": 43
+  Dir: 3
+  Sprite: 10349
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/TwilightGarden.txt:839
+- Name: Almond#amond02
+  X: 37
+  "Y": 59
+  Dir: 3
+  Sprite: 20629
+  SpriteIsMob: true
+  State: Disabled
+  Kind: Script
+  Source: npc/re/instances/TwilightGarden.txt:850
+- Name: "#to_bamn"
+  X: 8
+  "Y": 39
+  Dir: 0
+  Sprite: 45
+  State: Disabled
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: 1@bamn
+    X: 33
+    "Y": 220
+    TriggerWhileHidden: true
+  Source: npc/re/instances/TwilightGarden.txt:883

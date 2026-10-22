@@ -1,0 +1,183 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: ein007a
+  X: 329
+  "Y": 346
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ein_fild10
+    X: 26
+    "Y": 331
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/ein_fild.txt:34
+- Name: ein008
+  X: 34
+  "Y": 132
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ein_fild08
+    X: 361
+    "Y": 128
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/ein_fild.txt:35
+- Name: ein_fd03a
+  X: 71
+  "Y": 352
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: einbech
+    X: 62
+    "Y": 32
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/ein_fild.txt:40
+- Name: "#wp120074"
+  X: 330
+  "Y": 76
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:151
+- Name: "#tr120074"
+  X: 330
+  "Y": 76
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:412
+- Name: Suspicious Heap of Earth#1
+  X: 70
+  "Y": 175
+  Dir: 5
+  Sprite: 557
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:11932
+- Name: Suspicious Heap of Earth#2
+  X: 136
+  "Y": 157
+  Dir: 5
+  Sprite: 557
+  DuplicateOf: Suspicious Heap of Earth#1
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:11965
+- Name: Suspicious Heap of Earth#3
+  X: 87
+  "Y": 192
+  Dir: 5
+  Sprite: 557
+  DuplicateOf: Suspicious Heap of Earth#1
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:11966
+- Name: Suspicious Heap of Earth#4
+  X: 95
+  "Y": 234
+  Dir: 5
+  Sprite: 557
+  DuplicateOf: Suspicious Heap of Earth#1
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:11967
+- Name: Suspicious Heap of Earth#5
+  X: 179
+  "Y": 248
+  Dir: 5
+  Sprite: 557
+  DuplicateOf: Suspicious Heap of Earth#1
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:11968
+- Name: Suspicious Heap of Earth#6
+  X: 127
+  "Y": 276
+  Dir: 5
+  Sprite: 557
+  DuplicateOf: Suspicious Heap of Earth#1
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:11969
+- Name: Suspicious Heap of Earth#7
+  X: 89
+  "Y": 289
+  Dir: 5
+  Sprite: 557
+  DuplicateOf: Suspicious Heap of Earth#1
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:11970
+- Name: Suspicious Heap of Earth#8
+  X: 103
+  "Y": 352
+  Dir: 5
+  Sprite: 557
+  DuplicateOf: Suspicious Heap of Earth#1
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:11971
+- Name: Suspicious Heap of Earth#9
+  X: 164
+  "Y": 290
+  Dir: 5
+  Sprite: 557
+  DuplicateOf: Suspicious Heap of Earth#1
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:11972
+- Name: Suspicious Heap of Earth#10
+  X: 256
+  "Y": 320
+  Dir: 5
+  Sprite: 557
+  DuplicateOf: Suspicious Heap of Earth#1
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:11973
+- Name: Suspicious Heap of Earth#11
+  X: 256
+  "Y": 282
+  Dir: 5
+  Sprite: 557
+  DuplicateOf: Suspicious Heap of Earth#1
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:11974
+- Name: Suspicious Heap of Earth#12
+  X: 335
+  "Y": 239
+  Dir: 5
+  Sprite: 557
+  DuplicateOf: Suspicious Heap of Earth#1
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:11975
+- Name: Suspicious Heap of Earth#13
+  X: 332
+  "Y": 216
+  Dir: 5
+  Sprite: 557
+  DuplicateOf: Suspicious Heap of Earth#1
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:11976
+- Name: Suspicious Heap of Earth#14
+  X: 135
+  "Y": 305
+  Dir: 5
+  Sprite: 557
+  DuplicateOf: Suspicious Heap of Earth#1
+  Kind: Script
+  Source: npc/re/quests/quests_16_2.txt:11977

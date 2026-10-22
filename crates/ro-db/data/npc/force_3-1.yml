@@ -1,0 +1,115 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Cadillac#arena
+  X: 99
+  "Y": 20
+  Dir: 4
+  Sprite: 124
+  Kind: Script
+  Source: npc/other/arena/arena_lvl70.txt:37
+- Name: force_08_01#70
+  X: 62
+  "Y": 26
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl70.txt:312
+- Name: force_01_02#70
+  X: 25
+  "Y": 44
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl70.txt:319
+- Name: force_02_03#70
+  X: 25
+  "Y": 134
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl70.txt:326
+- Name: force_03_04#70
+  X: 44
+  "Y": 174
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl70.txt:333
+- Name: force_04_05#70
+  X: 134
+  "Y": 174
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl70.txt:340
+- Name: force_05_06#70
+  X: 174
+  "Y": 155
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl70.txt:347
+- Name: force_06_07#70
+  X: 174
+  "Y": 65
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl70.txt:354
+- Name: force_07_08#70
+  X: 155
+  "Y": 26
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl70.txt:361
+- Name: force_08_09#70
+  X: 99
+  "Y": 54
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl70.txt:369
+- Name: force_exit#70
+  X: 99
+  "Y": 124
+  Dir: 1
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_lvl70.txt:376

@@ -1,0 +1,95 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Petrified Sapha#ep13md03
+  X: 58
+  "Y": 223
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:1100
+- Name: Snorren#ep13md17
+  X: 55
+  "Y": 223
+  Dir: 5
+  Sprite: 454
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:1320
+- Name: Trunk of a Tree#ep13
+  X: 62
+  "Y": 233
+  Dir: 0
+  Sprite: 844
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:1334
+- Name: Dragon Egg#ep13_degg01
+  X: 258
+  "Y": 134
+  Dir: 0
+  Sprite: 463
+  DuplicateOf: Dragon Egg#ep13_degg_0
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:3306
+- Name: Dragon Egg#ep13_degg02
+  X: 100
+  "Y": 210
+  Dir: 0
+  Sprite: 463
+  DuplicateOf: Dragon Egg#ep13_degg_0
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:3307
+- Name: Dragon Egg#ep13_degg03
+  X: 74
+  "Y": 68
+  Dir: 0
+  Sprite: 463
+  DuplicateOf: Dragon Egg#ep13_degg_0
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:3308
+- Name: Dragon Egg#ep13_degg04
+  X: 98
+  "Y": 142
+  Dir: 0
+  Sprite: 463
+  DuplicateOf: Dragon Egg#ep13_degg_0
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:3309
+- Name: Dragon Egg#ep13_degg05
+  X: 244
+  "Y": 157
+  Dir: 0
+  Sprite: 463
+  DuplicateOf: Dragon Egg#ep13_degg_0
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:3310
+- Name: Dragon Egg#ep13_degg06
+  X: 59
+  "Y": 185
+  Dir: 0
+  Sprite: 463
+  DuplicateOf: Dragon Egg#ep13_degg_0
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:3311
+- Name: nynm_dun1f_to_2f
+  X: 255
+  "Y": 142
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nyd_dun02
+    X: 61
+    "Y": 265
+    TriggerWhileHidden: false
+  Source: npc/quests/quests_13_2.txt:7309

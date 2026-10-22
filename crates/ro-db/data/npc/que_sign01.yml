@@ -1,0 +1,155 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Serin#dummy
+  X: 196
+  "Y": 39
+  Dir: 4
+  Sprite: 90
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:8375
+- Name: Dark Lord#serin
+  X: 196
+  "Y": 44
+  Dir: 4
+  Sprite: 737
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:8411
+- Name: Serin#serin
+  X: 196
+  "Y": 39
+  Dir: 4
+  Sprite: 90
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:8424
+- Name: Serin#witch
+  X: 197
+  "Y": 195
+  Dir: 4
+  Sprite: 90
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:8729
+- Name: Witch#s
+  X: 122
+  "Y": 141
+  Dir: 4
+  Sprite: 792
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:9751
+- Name: Queen of the Dead
+  X: 45
+  "Y": 227
+  Dir: 4
+  Sprite: 856
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:10745
+- Name: Fountain#sign
+  X: 46
+  "Y": 56
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:12183
+- Name: Starter#serin
+  X: 196
+  "Y": 44
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 32
+    "Y": 32
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:12306
+- Name: Warp#serin
+  X: 196
+  "Y": 44
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 35
+    "Y": 35
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:12317
+- Name: Timer#serin
+  X: 1
+  "Y": 0
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:12332
+- Name: CallMonster#serin
+  X: 50
+  "Y": 1
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:12353
+- Name: Starter#witch
+  X: 197
+  "Y": 195
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 32
+    "Y": 32
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:12367
+- Name: Timer#witch
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:12378
+- Name: Warp#witch
+  X: 197
+  "Y": 195
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 35
+    "Y": 35
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:12397
+- Name: CallMonster#witch
+  X: 1
+  "Y": 2
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/quests/the_sign_quest.txt:12412
+- Name: sign07
+  X: 113
+  "Y": 132
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: nif_in
+    X: 117
+    "Y": 173
+    TriggerWhileHidden: false
+  Source: npc/re/warps/other/sign.txt:35
+- Name: sign08
+  X: 45
+  "Y": 15
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: niflheim
+    X: 146
+    "Y": 245
+    TriggerWhileHidden: false
+  Source: npc/re/warps/other/sign.txt:37

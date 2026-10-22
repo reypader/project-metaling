@@ -1,0 +1,80 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Ghostfire#1
+  X: 149
+  "Y": 273
+  Dir: 3
+  Sprite: 802
+  Kind: Script
+  Source: npc/re/jobs/3-1/mechanic.txt:396
+- Name: Ghostfire#2
+  X: 53
+  "Y": 75
+  Dir: 3
+  Sprite: 802
+  Kind: Script
+  Source: npc/re/jobs/3-1/mechanic.txt:482
+- Name: Ghostfire#3
+  X: 242
+  "Y": 62
+  Dir: 3
+  Sprite: 802
+  Kind: Script
+  Source: npc/re/jobs/3-1/mechanic.txt:544
+- Name: "#Foothold"
+  X: 29
+  "Y": 150
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/jobs/3-1/mechanic.txt:585
+- Name: "#Foothold2"
+  X: 272
+  "Y": 149
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/jobs/3-1/mechanic.txt:624
+- Name: "#Door"
+  X: 288
+  "Y": 142
+  Dir: 3
+  Sprite: 844
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/re/jobs/3-1/mechanic.txt:659
+- Name: "#Acquiring Knowledge"
+  X: 149
+  "Y": 34
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 0
+  Kind: Script
+  Source: npc/re/jobs/3-1/mechanic.txt:713
+- Name: "#Acquiring Knowledge2"
+  X: 150
+  "Y": 33
+  Dir: 0
+  Sprite: 139
+  Trigger:
+    X: 1
+    "Y": 0
+  DuplicateOf: "#Acquiring Knowledge"
+  Kind: Script
+  Source: npc/re/jobs/3-1/mechanic.txt:738

@@ -1,0 +1,401 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Soldier#ep13pa829
+  X: 304
+  "Y": 195
+  Dir: 5
+  Sprite: 454
+  Kind: Script
+  Source: npc/cities/manuk.txt:20
+- Name: Soldier#ep13_2
+  X: 274
+  "Y": 239
+  Dir: 5
+  Sprite: 455
+  Kind: Script
+  Source: npc/cities/manuk.txt:33
+- Name: Soldier#ep13_3
+  X: 107
+  "Y": 233
+  Dir: 5
+  Sprite: 454
+  Kind: Script
+  Source: npc/cities/manuk.txt:53
+- Name: Piom
+  X: 100
+  "Y": 100
+  Dir: 3
+  Sprite: 454
+  Kind: Script
+  Source: npc/cities/manuk.txt:67
+- Name: Benknee#ep13_2_1
+  X: 188
+  "Y": 216
+  Dir: 3
+  Sprite: 449
+  Kind: Script
+  Source: npc/cities/manuk.txt:86
+- Name: Piom#ep13_2_1
+  X: 169
+  "Y": 260
+  Dir: 3
+  Sprite: 455
+  Kind: Script
+  Source: npc/cities/manuk.txt:113
+- Name: Galtun#ep13_2_1
+  X: 218
+  "Y": 163
+  Dir: 3
+  Sprite: 450
+  Kind: Script
+  Source: npc/cities/manuk.txt:132
+- Name: Galtun#ep13_2_2
+  X: 266
+  "Y": 199
+  Dir: 5
+  Sprite: 450
+  Kind: Script
+  Source: npc/cities/manuk.txt:160
+- Name: Benknee#ep13_2_2
+  X: 225
+  "Y": 129
+  Dir: 5
+  Sprite: 449
+  Kind: Script
+  Source: npc/cities/manuk.txt:177
+- Name: Piom#ep13_2_2
+  X: 286
+  "Y": 147
+  Dir: 3
+  Sprite: 454
+  Kind: Script
+  Source: npc/cities/manuk.txt:196
+- Name: Piom#ep13_2_3
+  X: 183
+  "Y": 185
+  Dir: 5
+  Sprite: 454
+  Kind: Script
+  Source: npc/cities/manuk.txt:223
+- Name: Galtun#ep13_2_3
+  X: 256
+  "Y": 143
+  Dir: 3
+  Sprite: 450
+  Kind: Script
+  Source: npc/cities/manuk.txt:252
+- Name: Piom#ep13_2_4
+  X: 245
+  "Y": 124
+  Dir: 3
+  Sprite: 455
+  Kind: Script
+  Source: npc/cities/manuk.txt:269
+- Name: Manuk Galtun#door1
+  X: 103
+  "Y": 354
+  Dir: 5
+  Sprite: 450
+  Kind: Script
+  Source: npc/cities/manuk.txt:383
+- Name: Manuk Galtun#door2
+  X: 122
+  "Y": 354
+  Dir: 3
+  Sprite: 450
+  Kind: Script
+  Source: npc/cities/manuk.txt:396
+- Name: Manuk Piom#tre1
+  X: 99
+  "Y": 334
+  Dir: 5
+  Sprite: 460
+  Kind: Script
+  Source: npc/cities/manuk.txt:409
+- Name: Manuk Piom#tre2
+  X: 103
+  "Y": 311
+  Dir: 3
+  Sprite: 455
+  Kind: Script
+  Source: npc/cities/manuk.txt:430
+- Name: Manuk Galtun#tre3
+  X: 194
+  "Y": 189
+  Dir: 3
+  Sprite: 450
+  Kind: Script
+  Source: npc/cities/manuk.txt:445
+- Name: Manuk Piom#tre4
+  X: 293
+  "Y": 203
+  Dir: 3
+  Sprite: 454
+  Kind: Script
+  Source: npc/cities/manuk.txt:455
+- Name: Manuk Benknee#tre5
+  X: 253
+  "Y": 173
+  Dir: 3
+  Sprite: 449
+  Kind: Script
+  Source: npc/cities/manuk.txt:472
+- Name: Young Villager#ep13bs
+  X: 251
+  "Y": 180
+  Dir: 5
+  Sprite: 454
+  Kind: Script
+  Source: npc/cities/manuk.txt:490
+- Name: Villager#ep13_11
+  X: 278
+  "Y": 177
+  Dir: 5
+  Sprite: 454
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:1352
+- Name: Villager#ep13_12
+  X: 281
+  "Y": 177
+  Dir: 3
+  Sprite: 449
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:1450
+- Name: Manuk Galtun#ep13_2day
+  X: 252
+  "Y": 116
+  Dir: 3
+  Sprite: 450
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:2706
+- Name: Worker#ep13bs
+  X: 193
+  "Y": 135
+  Dir: 0
+  Sprite: 454
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:6637
+- Name: manuk1-1
+  X: 311
+  "Y": 142
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: man_in01
+    X: 277
+    "Y": 41
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/manuk.txt:16
+- Name: manuk2-1
+  X: 310
+  "Y": 201
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: man_in01
+    X: 358
+    "Y": 121
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/manuk.txt:18
+- Name: manuk3-1
+  X: 255
+  "Y": 110
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: man_in01
+    X: 7
+    "Y": 61
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/manuk.txt:20
+- Name: manuk4-1
+  X: 257
+  "Y": 228
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: man_in01
+    X: 130
+    "Y": 267
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/manuk.txt:28
+- Name: manuk5-1
+  X: 265
+  "Y": 237
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: man_in01
+    X: 180
+    "Y": 267
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/manuk.txt:30
+- Name: manuk6-1
+  X: 276
+  "Y": 247
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: man_in01
+    X: 230
+    "Y": 267
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/manuk.txt:32
+- Name: manuk7-1
+  X: 288
+  "Y": 249
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: man_in01
+    X: 280
+    "Y": 267
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/manuk.txt:34
+- Name: manuk8-1
+  X: 302
+  "Y": 243
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: man_in01
+    X: 330
+    "Y": 267
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/manuk.txt:36
+- Name: manuk9-1
+  X: 311
+  "Y": 234
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: man_in01
+    X: 380
+    "Y": 267
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/manuk.txt:38
+- Name: manuk10-1
+  X: 253
+  "Y": 195
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: man_in01
+    X: 24
+    "Y": 284
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/manuk.txt:40
+- Name: manuk11-1
+  X: 235
+  "Y": 124
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: man_in01
+    X: 70
+    "Y": 171
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/manuk.txt:42
+- Name: manuk12-1
+  X: 279
+  "Y": 115
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: man_in01
+    X: 123
+    "Y": 224
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/manuk.txt:44
+- Name: man_fild02-3
+  X: 114
+  "Y": 357
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: man_fild02
+    X: 138
+    "Y": 43
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/man_fild.txt:24
+- Name: Point Merchant#Manuk
+  X: 261
+  "Y": 206
+  Dir: 3
+  Sprite: 700
+  DuplicateOf: pss
+  Kind: Script
+  Source: npc/re/merchants/3rd_trader.txt:140
+- Name: Mado Gear Armorer#man
+  X: 273
+  "Y": 212
+  Dir: 5
+  Sprite: 105
+  DuplicateOf: mgm
+  Kind: Script
+  Source: npc/re/merchants/renters.txt:272
+- Name: Entrance Manager#ep133
+  X: 321
+  "Y": 182
+  Dir: 5
+  Sprite: 450
+  Kind: Script
+  Source: npc/re/quests/quests_dicastes.txt:40

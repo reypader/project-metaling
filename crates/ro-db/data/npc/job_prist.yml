@@ -1,0 +1,195 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Peter S. Alberto
+  X: 24
+  "Y": 187
+  Dir: 4
+  Sprite: 110
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:847
+- Name: Peter S. Alberto#2
+  X: 23
+  "Y": 187
+  Dir: 1
+  Sprite: 110
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1036
+- Name: Zombie Info
+  X: 24
+  "Y": 44
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1166
+- Name: Zombie1_1
+  X: 24
+  "Y": 52
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 14
+    "Y": 1
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1193
+- Name: Zombie2_1
+  X: 21
+  "Y": 62
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 17
+    "Y": 1
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1214
+- Name: Zombie3_1
+  X: 24
+  "Y": 72
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 14
+    "Y": 1
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1235
+- Name: Zombie4_1
+  X: 21
+  "Y": 82
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 17
+    "Y": 1
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1256
+- Name: Zombie5_1
+  X: 24
+  "Y": 92
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 14
+    "Y": 1
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1276
+- Name: prst1_1
+  X: 24
+  "Y": 109
+  Dir: 4
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1296
+- Name: Deviruchi#prst
+  X: 168
+  "Y": 45
+  Dir: 4
+  Sprite: 1109
+  SpriteIsMob: true
+  Trigger:
+    X: 8
+    "Y": 1
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1312
+- Name: Doppelganger#prst
+  X: 168
+  "Y": 80
+  Dir: 4
+  Sprite: 1046
+  SpriteIsMob: true
+  Trigger:
+    X: 8
+    "Y": 1
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1413
+- Name: Dark Lord#prst
+  X: 168
+  "Y": 115
+  Dir: 4
+  Sprite: 1272
+  SpriteIsMob: true
+  Trigger:
+    X: 8
+    "Y": 1
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1482
+- Name: Baphomet#prst
+  X: 168
+  "Y": 150
+  Dir: 4
+  Sprite: 736
+  Trigger:
+    X: 8
+    "Y": 1
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1539
+- Name: prst2_1
+  X: 168
+  "Y": 180
+  Dir: 4
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1601
+- Name: Mummy_Generator
+  X: 1
+  "Y": 2
+  Dir: 1
+  Sprite: 110
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1613
+- Name: Mummy1_1
+  X: 90
+  "Y": 55
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 15
+    "Y": 1
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1645
+- Name: Mummy2_1
+  X: 90
+  "Y": 70
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 15
+    "Y": 1
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1666
+- Name: Mummy3_1
+  X: 90
+  "Y": 85
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 15
+    "Y": 1
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1687
+- Name: prst3_1
+  X: 98
+  "Y": 105
+  Dir: 4
+  Sprite: 45
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/jobs/2-1/priest.txt:1708

@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: mjod01
+  X: 14
+  "Y": 283
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 4
+  Kind: Warp
+  Warp:
+    Map: mjo_dun02
+    X: 381
+    "Y": 343
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/mjo_dun.txt:16
+- Name: mjod001
+  X: 52
+  "Y": 14
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: mjolnir_02
+    X: 79
+    "Y": 363
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/mjo_dun.txt:17
+- Name: Tooth of Bat
+  X: 222
+  "Y": 226
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/quests/quests_dicastes.txt:1158

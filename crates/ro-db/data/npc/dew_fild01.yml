@@ -1,0 +1,458 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Jaty Tribe Gatekeeper
+  X: 101
+  "Y": 259
+  Dir: 6
+  Sprite: 541
+  Kind: Script
+  Source: npc/re/cities/dewata.txt:1152
+- Name: R. Jaty Tribe Warrior
+  X: 106
+  "Y": 306
+  Dir: 4
+  Sprite: 541
+  Kind: Script
+  Source: npc/re/cities/dewata.txt:1160
+- Name: "#wp120107"
+  X: 175
+  "Y": 287
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:196
+- Name: "#tr120107"
+  X: 175
+  "Y": 287
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:457
+- Name: Signpost#Dewata_Istana
+  X: 51
+  "Y": 61
+  Dir: 0
+  Sprite: 837
+  Kind: Script
+  Source: npc/re/other/adven_boards.txt:3249
+- Name: "#hideout_legend"
+  X: 57
+  "Y": 274
+  Dir: 0
+  Sprite: 111
+  Trigger:
+    X: 6
+    "Y": 6
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:23
+- Name: Jaty Tribe Warrior#dew
+  X: 78
+  "Y": 288
+  Dir: 6
+  Sprite: 541
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:520
+- Name: Tribe Manager#dew
+  X: 185
+  "Y": 300
+  Dir: 6
+  Sprite: 541
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:558
+- Name: Lero#dew_drink
+  X: 114
+  "Y": 275
+  Dir: 4
+  Sprite: 536
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1073
+- Name: Poby#dew_drink
+  X: 259
+  "Y": 48
+  Dir: 4
+  Sprite: 538
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1334
+- Name: Palm Tree#drink01
+  X: 247
+  "Y": 62
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1626
+- Name: Palm Tree#drink02
+  X: 276
+  "Y": 73
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1627
+- Name: Palm Tree#drink03
+  X: 278
+  "Y": 63
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1628
+- Name: Palm Tree#drink04
+  X: 301
+  "Y": 88
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1629
+- Name: Palm Tree#drink05
+  X: 314
+  "Y": 72
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1630
+- Name: Palm Tree#drink06
+  X: 320
+  "Y": 68
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1631
+- Name: Palm Tree#drink07
+  X: 334
+  "Y": 107
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1632
+- Name: Palm Tree#drink08
+  X: 345
+  "Y": 88
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1633
+- Name: Palm Tree#drink09
+  X: 344
+  "Y": 71
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1634
+- Name: Palm Tree#drink10
+  X: 358
+  "Y": 93
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1635
+- Name: Palm Tree#drink11
+  X: 338
+  "Y": 121
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1636
+- Name: Palm Tree#drink12
+  X: 358
+  "Y": 136
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1637
+- Name: Palm Tree#drink13
+  X: 326
+  "Y": 147
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1638
+- Name: Palm Tree#drink14
+  X: 307
+  "Y": 146
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1639
+- Name: Palm Tree#drink15
+  X: 325
+  "Y": 159
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1640
+- Name: Palm Tree#drink16
+  X: 339
+  "Y": 163
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1641
+- Name: Palm Tree#drink17
+  X: 346
+  "Y": 193
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1642
+- Name: Palm Tree#drink18
+  X: 355
+  "Y": 193
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1643
+- Name: Palm Tree#drink19
+  X: 363
+  "Y": 219
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1644
+- Name: Palm Tree#drink20
+  X: 341
+  "Y": 261
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1645
+- Name: Palm Tree#drink21
+  X: 289
+  "Y": 302
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1646
+- Name: Palm Tree#drink22
+  X: 70
+  "Y": 196
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1647
+- Name: Palm Tree#drink23
+  X: 97
+  "Y": 145
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1648
+- Name: Palm Tree#drink24
+  X: 119
+  "Y": 42
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1649
+- Name: Palm Tree#drink25
+  X: 188
+  "Y": 72
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1650
+- Name: Palm Tree#drink26
+  X: 238
+  "Y": 80
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1651
+- Name: Palm Tree#drink27
+  X: 252
+  "Y": 97
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1652
+- Name: Palm Tree#drink28
+  X: 256
+  "Y": 98
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1653
+- Name: Palm Tree#drink29
+  X: 279
+  "Y": 93
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1654
+- Name: Palm Tree#drink30
+  X: 299
+  "Y": 107
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1655
+- Name: Palm Tree#drink31
+  X: 355
+  "Y": 113
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1656
+- Name: Palm Tree#drink32
+  X: 278
+  "Y": 136
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1657
+- Name: Palm Tree#drink33
+  X: 258
+  "Y": 128
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1658
+- Name: Palm Tree#drink34
+  X: 240
+  "Y": 125
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1659
+- Name: Palm Tree#drink35
+  X: 225
+  "Y": 117
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1660
+- Name: Palm Tree#drink36
+  X: 219
+  "Y": 121
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1661
+- Name: Palm Tree#drink37
+  X: 226
+  "Y": 99
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1662
+- Name: Palm Tree#drink38
+  X: 209
+  "Y": 137
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1663
+- Name: Palm Tree#drink39
+  X: 206
+  "Y": 156
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1664
+- Name: Palm Tree#drink40
+  X: 209
+  "Y": 201
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: DewataPalm
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1665
+- Name: Gatti#weapon
+  X: 127
+  "Y": 240
+  Dir: 4
+  Sprite: 813
+  Kind: Script
+  Source: npc/re/quests/quests_dewata.txt:1669
+- Name: dewata0002
+  X: 375
+  "Y": 212
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: dewata
+    X: 46
+    "Y": 251
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/dewata.txt:18
+- Name: dewata0003
+  X: 57
+  "Y": 273
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: dew_in01
+    X: 15
+    "Y": 33
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/dewata.txt:19
+- Name: dewata0005
+  X: 48
+  "Y": 65
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: dew_dun02
+    X: 302
+    "Y": 30
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/dewata.txt:21

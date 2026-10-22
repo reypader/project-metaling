@@ -1,0 +1,279 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Sahedi#vol
+  X: 250
+  "Y": 104
+  Dir: 3
+  Sprite: 934
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:6288
+- Name: "#Colonel1"
+  X: 194
+  "Y": 220
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:6491
+- Name: "#Colonel2"
+  X: 162
+  "Y": 182
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 7
+    "Y": 7
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:6546
+- Name: Colonel Vito#1
+  X: 187
+  "Y": 228
+  Dir: 5
+  Sprite: 946
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:6601
+- Name: Colonel Vito#2
+  X: 155
+  "Y": 175
+  Dir: 7
+  Sprite: 946
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:6609
+- Name: Colonel Vito#3
+  X: 159
+  "Y": 74
+  Dir: 3
+  Sprite: 946
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:6617
+- Name: "#vol_study1"
+  UniqueName: VeinsWarp
+  X: 141
+  "Y": 62
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:6936
+- Name: "#vol_study2"
+  X: 172
+  "Y": 72
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: VeinsWarp
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:6944
+- Name: "#vol_study3"
+  X: 172
+  "Y": 38
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 3
+    "Y": 3
+  DuplicateOf: VeinsWarp
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:6945
+- Name: "#sita_vol"
+  X: 172
+  "Y": 132
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:6947
+- Name: "#buki_vol"
+  X: 148
+  "Y": 310
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:6965
+- Name: Soldier#vol1
+  X: 124
+  "Y": 314
+  Dir: 1
+  Sprite: 939
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:6985
+- Name: Soldier#vol2
+  X: 134
+  "Y": 309
+  Dir: 5
+  Sprite: 939
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:6993
+- Name: Control Panel#vol
+  X: 109
+  "Y": 167
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7008
+- Name: Dummy#1
+  UniqueName: VeinsDummy
+  X: 150
+  "Y": 65
+  Dir: 3
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7041
+- Name: Dummy#2
+  X: 156
+  "Y": 65
+  Dir: 3
+  Sprite: 111
+  DuplicateOf: VeinsDummy
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7140
+- Name: Dummy#3
+  X: 162
+  "Y": 65
+  Dir: 3
+  Sprite: 111
+  DuplicateOf: VeinsDummy
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7141
+- Name: Dummy#4
+  X: 150
+  "Y": 57
+  Dir: 3
+  Sprite: 111
+  DuplicateOf: VeinsDummy
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7142
+- Name: Dummy#5
+  X: 156
+  "Y": 57
+  Dir: 3
+  Sprite: 111
+  DuplicateOf: VeinsDummy
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7143
+- Name: Dummy#6
+  X: 162
+  "Y": 57
+  Dir: 3
+  Sprite: 111
+  DuplicateOf: VeinsDummy
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7144
+- Name: Aitra#vol
+  X: 248
+  "Y": 104
+  Dir: 5
+  Sprite: 939
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7146
+- Name: High Priest#vol
+  X: 49
+  "Y": 97
+  Dir: 3
+  Sprite: 933
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7153
+- Name: Thor Volcano Soldier#vo1
+  X: 49
+  "Y": 122
+  Dir: 1
+  Sprite: 939
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7161
+- Name: Thor Volcano Soldier#vo2
+  X: 31
+  "Y": 93
+  Dir: 1
+  Sprite: 939
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7169
+- Name: Thor Volcano Soldier#vo3
+  X: 59
+  "Y": 79
+  Dir: 1
+  Sprite: 939
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7177
+- Name: Thor Volcano Soldier#vo4
+  X: 143
+  "Y": 114
+  Dir: 1
+  Sprite: 939
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7185
+- Name: Thor Volcano Soldier#vo5
+  X: 206
+  "Y": 92
+  Dir: 3
+  Sprite: 939
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7196
+- Name: Thor Volcano Soldier#vo6
+  X: 201
+  "Y": 321
+  Dir: 1
+  Sprite: 939
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7209
+- Name: Thor Volcano Soldier#vo7
+  X: 196
+  "Y": 315
+  Dir: 7
+  Sprite: 939
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7215
+- Name: Guardian#vol_7
+  X: 181
+  "Y": 231
+  Dir: 0
+  Sprite: 111
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7225
+- Name: Thor Volcano Soldier#vo8
+  X: 98
+  "Y": 213
+  Dir: 5
+  Sprite: 939
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7234
+- Name: Thor Volcano Soldier#vo9
+  X: 98
+  "Y": 209
+  Dir: 5
+  Sprite: 939
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7245
+- Name: "#volbq"
+  X: 62
+  "Y": 98
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 5
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7276
+- Name: Guard#goto
+  X: 246
+  "Y": 191
+  Dir: 3
+  Sprite: 939
+  Kind: Script
+  Source: npc/quests/quests_veins.txt:7289

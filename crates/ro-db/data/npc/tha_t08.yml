@@ -1,0 +1,154 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#Charm Stone Admintt01"
+  X: 1
+  "Y": 1
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:1609
+- Name: Shining Crystal#tt_r1
+  X: 90
+  "Y": 153
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:1660
+- Name: Shining Crystal#tt_r2
+  X: 90
+  "Y": 62
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Shining Crystal#tt_r1
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:1690
+- Name: Shining Crystal#tt_r3
+  X: 49
+  "Y": 59
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Shining Crystal#tt_r1
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:1691
+- Name: Shining Crystal#tt_r4
+  X: 49
+  "Y": 144
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Shining Crystal#tt_r1
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:1692
+- Name: Shining Crystal#tt_y1
+  X: 49
+  "Y": 153
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:1694
+- Name: Shining Crystal#tt_y2
+  X: 90
+  "Y": 150
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Shining Crystal#tt_y1
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:1724
+- Name: Shining Crystal#tt_y3
+  X: 90
+  "Y": 59
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Shining Crystal#tt_y1
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:1725
+- Name: Shining Crystal#tt_y4
+  X: 49
+  "Y": 56
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Shining Crystal#tt_y1
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:1726
+- Name: Shining Crystal#tt_b1
+  X: 49
+  "Y": 65
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:1728
+- Name: Shining Crystal#tt_b2
+  X: 49
+  "Y": 150
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Shining Crystal#tt_b1
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:1758
+- Name: Shining Crystal#tt_b3
+  X: 90
+  "Y": 147
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Shining Crystal#tt_b1
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:1759
+- Name: Shining Crystal#tt_b4
+  X: 90
+  "Y": 56
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Shining Crystal#tt_b1
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:1760
+- Name: Shining Crystal#tt_g1
+  X: 90
+  "Y": 65
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:1762
+- Name: Shining Crystal#tt_g2
+  X: 49
+  "Y": 62
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Shining Crystal#tt_g1
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:1792
+- Name: Shining Crystal#tt_g3
+  X: 49
+  "Y": 147
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Shining Crystal#tt_g1
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:1793
+- Name: Shining Crystal#tt_g4
+  X: 90
+  "Y": 144
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: Shining Crystal#tt_g1
+  Kind: Script
+  Source: npc/quests/thana_quest.txt:1794
+- Name: WarpThana8a
+  X: 114
+  "Y": 43
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: thana_step
+    X: 30
+    "Y": 223
+    TriggerWhileHidden: false
+  Source: npc/warps/dungeons/tha_t.txt:45

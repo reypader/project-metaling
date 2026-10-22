@@ -1,0 +1,97 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Starfish
+  X: 151
+  "Y": 235
+  Dir: 5
+  Sprite: 551
+  Kind: Script
+  Source: npc/re/instances/OctopusCave.txt:19
+- Name: Weird Entrance
+  X: 153
+  "Y": 237
+  Dir: 5
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/instances/OctopusCave.txt:115
+- Name: Map Examiner Mother One#yma
+  X: 141
+  "Y": 126
+  Dir: 4
+  Sprite: 644
+  Kind: Script
+  Source: npc/re/quests/juno_monster_society.txt:1106
+- Name: Linguist Devore#mald
+  X: 136
+  "Y": 120
+  Dir: 6
+  Sprite: 549
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1973
+- Name: Biscuit#mal
+  X: 136
+  "Y": 122
+  Dir: 3
+  Sprite: 551
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:1991
+- Name: Star Candy#mal
+  X: 133
+  "Y": 125
+  Dir: 5
+  Sprite: 552
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:2512
+- Name: Dry Skin#29
+  X: 143
+  "Y": 137
+  Dir: 0
+  Sprite: 111
+  DuplicateOf: "#skin_mal"
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:2679
+- Name: Prickly Skin#30
+  X: 131
+  "Y": 150
+  Dir: 0
+  Sprite: 111
+  DuplicateOf: "#skin_mal"
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:2680
+- Name: Chapped Skin#31
+  X: 116
+  "Y": 144
+  Dir: 0
+  Sprite: 111
+  DuplicateOf: "#skin_mal"
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:2681
+- Name: Hard Skin#32
+  X: 120
+  "Y": 129
+  Dir: 0
+  Sprite: 111
+  DuplicateOf: "#skin_mal"
+  Kind: Script
+  Source: npc/re/quests/quests_malangdo.txt:2682
+- Name: malangdo0028
+  X: 30
+  "Y": 230
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: malangdo
+    X: 75
+    "Y": 236
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/malangdo.txt:44

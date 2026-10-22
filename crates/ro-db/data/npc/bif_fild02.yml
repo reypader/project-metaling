@@ -1,0 +1,113 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#wp120092"
+  X: 155
+  "Y": 322
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:172
+- Name: "#tr120092"
+  X: 155
+  "Y": 322
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:433
+- Name: Teleport Cat No.2
+  X: 293
+  "Y": 325
+  Dir: 4
+  Sprite: 421
+  DuplicateOf: Teleport Cat#ep14_2
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:97
+- Name: Dead Laphine#ecltl
+  X: 311
+  "Y": 91
+  Dir: 3
+  Sprite: 613
+  Kind: Script
+  Source: npc/re/quests/quests_eclage.txt:17208
+- Name: Puddle#ep14_muk01
+  X: 315
+  "Y": 285
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#mora_puddle"
+  Kind: Script
+  Source: npc/re/quests/quests_mora.txt:4359
+- Name: Puddle#ep14_muk02
+  X: 65
+  "Y": 109
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#mora_puddle"
+  Kind: Script
+  Source: npc/re/quests/quests_mora.txt:4360
+- Name: Puddle#ep14_muk03
+  X: 223
+  "Y": 71
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#mora_puddle"
+  Kind: Script
+  Source: npc/re/quests/quests_mora.txt:4361
+- Name: Puddle#ep14_muk04
+  X: 113
+  "Y": 340
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: "#mora_puddle"
+  Kind: Script
+  Source: npc/re/quests/quests_mora.txt:4362
+- Name: biffild_fild01-1
+  X: 292
+  "Y": 351
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: ecl_fild01
+    X: 205
+    "Y": 76
+    TriggerWhileHidden: false
+  Source: npc/re/warps/cities/eclage.txt:20
+- Name: Small Hole#ep14_mora1
+  X: 285
+  "Y": 332
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: bifrost_field0000
+  Kind: Script
+  Source: npc/re/warps/fields/bif_fild.txt:42
+- Name: Small Hole#ep14_mora2
+  X: 95
+  "Y": 310
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: bifrost_field0000
+  Kind: Script
+  Source: npc/re/warps/fields/bif_fild.txt:43
+- Name: Small Hole#ep14_mora3
+  X: 174
+  "Y": 162
+  Dir: 0
+  Sprite: 844
+  DuplicateOf: bifrost_field0000
+  Kind: Script
+  Source: npc/re/warps/fields/bif_fild.txt:44

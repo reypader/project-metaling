@@ -1,0 +1,44 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: lhz_dun04_lhz_dun03
+  X: 244
+  "Y": 61
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: lhz_dun03
+    X: 240
+    "Y": 75
+    TriggerWhileHidden: false
+  Source: npc/re/instances/WolfchevLaboratory.txt:324
+- Name: Researcher#memo
+  X: 151
+  "Y": 276
+  Dir: 3
+  Sprite: 865
+  Kind: Script
+  Source: npc/re/instances/WolfchevLaboratory.txt:653
+- Name: Laboratory Entrance#memo
+  X: 147
+  "Y": 279
+  Dir: 0
+  Sprite: 844
+  Kind: Script
+  Source: npc/re/instances/WolfchevLaboratory.txt:862
+- Name: mvp_lhz_dun04
+  X: 0
+  "Y": 0
+  Dir: 0
+  Sprite: -1
+  Kind: Script
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:128

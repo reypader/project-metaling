@@ -1,0 +1,94 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: "#mj05_find_1"
+  X: 82
+  "Y": 171
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: mjo_no_find
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:4870
+- Name: "#mj05_find_2"
+  X: 219
+  "Y": 375
+  Dir: 0
+  Sprite: -1
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: mjo_no_find
+  Kind: Script
+  Source: npc/quests/quests_13_2.txt:4871
+- Name: mjol07-1
+  X: 16
+  "Y": 171
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: mjolnir_04
+    X: 384
+    "Y": 174
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/mtmjolnir.txt:30
+- Name: mjol08
+  X: 220
+  "Y": 382
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: mjolnir_12
+    X: 220
+    "Y": 29
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/mtmjolnir.txt:31
+- Name: mjol09
+  X: 235
+  "Y": 16
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 4
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: mjolnir_10
+    X: 235
+    "Y": 378
+    TriggerWhileHidden: false
+  Source: npc/warps/fields/mtmjolnir.txt:32
+- Name: "#wp120036"
+  X: 43
+  "Y": 327
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:205
+- Name: "#tr120036"
+  X: 43
+  "Y": 327
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:466

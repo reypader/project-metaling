@@ -1,0 +1,66 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: Kunlun Envoy#gon2
+  X: 255
+  "Y": 79
+  Dir: 7
+  Sprite: 776
+  Kind: Script
+  Source: npc/cities/gonryun.txt:133
+- Name: Kunlun Envoy#gon3
+  X: 187
+  "Y": 239
+  Dir: 7
+  Sprite: 776
+  Kind: Script
+  Source: npc/cities/gonryun.txt:160
+- Name: "#gonknife"
+  X: 245
+  "Y": 257
+  Dir: 0
+  Sprite: 111
+  Trigger:
+    X: 3
+    "Y": 3
+  Kind: Script
+  Source: npc/quests/quests_gonryun.txt:3804
+- Name: gon_fild1-2
+  X: 192
+  "Y": 265
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: gonryun
+    X: 161
+    "Y": 11
+    TriggerWhileHidden: false
+  Source: npc/warps/cities/gonryun.txt:33
+- Name: "#wp120102"
+  X: 171
+  "Y": 332
+  Dir: 4
+  Sprite: 139
+  Trigger:
+    X: 5
+    "Y": 5
+  DuplicateOf: ach_treasure#touch
+  Kind: Script
+  Source: npc/re/other/achievements.txt:191
+- Name: "#tr120102"
+  X: 171
+  "Y": 332
+  Dir: 4
+  Sprite: 10005
+  DuplicateOf: ach_treasure#click
+  Kind: Script
+  Source: npc/re/other/achievements.txt:452

@@ -1,0 +1,331 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See LICENSE and NOTICE.md in this directory.
+Header:
+  Type: NPC_SPAWN_DB
+  Version: 1
+Body:
+- Name: onlyaco#arena
+  X: 114
+  "Y": 102
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Script
+  Source: npc/other/arena/arena_aco.txt:20
+- Name: Acolyte Waiting Room
+  X: 136
+  "Y": 138
+  Dir: 3
+  Sprite: 124
+  Kind: Script
+  Source: npc/other/arena/arena_aco.txt:32
+- Name: Arena Record Staff#aco
+  X: 94
+  "Y": 82
+  Dir: 7
+  Sprite: 79
+  Kind: Script
+  Source: npc/other/arena/arena_aco.txt:1557
+- Name: Guide Alias
+  X: 140
+  "Y": 136
+  Dir: 3
+  Sprite: 729
+  Kind: Script
+  Source: npc/other/arena/arena_aco.txt:1653
+- Name: log-on-aco#arena
+  X: 195
+  "Y": 5
+  Dir: 3
+  Sprite: 802
+  Kind: Script
+  Source: npc/other/arena/arena_aco.txt:1713
+- Name: acolink#arena
+  X: 195
+  "Y": 10
+  Dir: 3
+  Sprite: 802
+  Kind: Script
+  Source: npc/other/arena/arena_aco.txt:1757
+- Name: Lv50 Waiting Room
+  X: 64
+  "Y": 138
+  Dir: 5
+  Sprite: 124
+  Kind: Script
+  Source: npc/other/arena/arena_lvl50.txt:18
+- Name: Lv60 Waiting Room
+  X: 38
+  "Y": 88
+  Dir: 5
+  Sprite: 124
+  Kind: Script
+  Source: npc/other/arena/arena_lvl60.txt:19
+- Name: Lv70 Waiting Room
+  X: 52
+  "Y": 42
+  Dir: 7
+  Sprite: 124
+  Kind: Script
+  Source: npc/other/arena/arena_lvl70.txt:18
+- Name: Lv80 Waiting Room
+  X: 147
+  "Y": 42
+  Dir: 1
+  Sprite: 124
+  Kind: Script
+  Source: npc/other/arena/arena_lvl80.txt:18
+- Name: Ponox
+  X: 162
+  "Y": 88
+  Dir: 3
+  Sprite: 124
+  Kind: Script
+  Source: npc/other/arena/arena_party.txt:21
+- Name: Vendigos
+  X: 94
+  "Y": 93
+  Dir: 5
+  Sprite: 97
+  Kind: Script
+  Source: npc/other/arena/arena_room.txt:20
+- Name: Arena Record Staff
+  X: 105
+  "Y": 82
+  Dir: 5
+  Sprite: 57
+  Kind: Script
+  Source: npc/other/arena/arena_room.txt:106
+- Name: Helper Pat
+  X: 68
+  "Y": 135
+  Dir: 3
+  Sprite: 726
+  Kind: Script
+  Source: npc/other/arena/arena_room.txt:139
+- Name: Helper Ben
+  X: 41
+  "Y": 93
+  Dir: 5
+  Sprite: 750
+  Kind: Script
+  Source: npc/other/arena/arena_room.txt:178
+- Name: Helper Vicious
+  X: 53
+  "Y": 49
+  Dir: 5
+  Sprite: 730
+  Kind: Script
+  Source: npc/other/arena/arena_room.txt:217
+- Name: Helper Epin
+  X: 147
+  "Y": 49
+  Dir: 3
+  Sprite: 727
+  Kind: Script
+  Source: npc/other/arena/arena_room.txt:257
+- Name: Helper Lunic
+  X: 158
+  "Y": 93
+  Dir: 5
+  Sprite: 828
+  Kind: Script
+  Source: npc/other/arena/arena_room.txt:301
+- Name: Helper Lonik
+  X: 158
+  "Y": 82
+  Dir: 1
+  Sprite: 828
+  Kind: Script
+  Source: npc/other/arena/arena_room.txt:370
+- Name: Teleporter#arena
+  X: 105
+  "Y": 93
+  Dir: 5
+  Sprite: 55
+  Kind: Script
+  Source: npc/other/arena/arena_room.txt:551
+- Name: arn_room_11_1
+  X: 84
+  "Y": 103
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: arena_room
+    X: 63
+    "Y": 130
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:21
+- Name: arn_room_11_2
+  X: 63
+  "Y": 126
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: arena_room
+    X: 87
+    "Y": 100
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:22
+- Name: arn_room_9_1
+  X: 76
+  "Y": 87
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: arena_room
+    X: 46
+    "Y": 87
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:23
+- Name: arn_room_9_2
+  X: 49
+  "Y": 87
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: arena_room
+    X: 78
+    "Y": 87
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:24
+- Name: arn_room_7_1
+  X: 84
+  "Y": 71
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: arena_room
+    X: 60
+    "Y": 50
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:25
+- Name: arn_room_7_2
+  X: 63
+  "Y": 53
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: arena_room
+    X: 86
+    "Y": 74
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:26
+- Name: arn_room_5_1
+  X: 115
+  "Y": 71
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: arena_room
+    X: 139
+    "Y": 50
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:27
+- Name: arn_room_5_2
+  X: 136
+  "Y": 53
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: arena_room
+    X: 113
+    "Y": 74
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:28
+- Name: arn_room_3_1
+  X: 123
+  "Y": 88
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: arena_room
+    X: 153
+    "Y": 87
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:29
+- Name: arn_room_3_2
+  X: 150
+  "Y": 87
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: arena_room
+    X: 120
+    "Y": 87
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:30
+- Name: byeaco#arena
+  X: 135
+  "Y": 126
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 1
+    "Y": 1
+  Kind: Warp
+  Warp:
+    Map: arena_room
+    X: 111
+    "Y": 99
+    TriggerWhileHidden: false
+  Source: npc/warps/other/arena.txt:35
+- Name: bye_arena
+  X: 99
+  "Y": 24
+  Dir: 0
+  Sprite: 45
+  Trigger:
+    X: 2
+    "Y": 2
+  Kind: Warp
+  Warp:
+    Map: izlude
+    X: 209
+    "Y": 161
+    TriggerWhileHidden: false
+  Source: npc/re/warps/other/arena.txt:20
