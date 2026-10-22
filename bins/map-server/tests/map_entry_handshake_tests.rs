@@ -10,7 +10,8 @@ use tokio::{
 use tokio_util::codec::Decoder;
 
 use map_server::{handle_client_session, map_data_loader, MapServiceHandle};
-use ro_core::{packet::PacketOpcode, TARGET_PACKETVER};
+use ro_core::TARGET_PACKETVER;
+use ro_packets::PacketOpcode;
 use ro_packets::{PacketDecoder, RathenaPacketLengthTable};
 
 #[tokio::test]

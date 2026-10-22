@@ -17,10 +17,11 @@ use map_server::{handle_client_session, MapServiceHandle, WalkabilityLoader};
 use ro_core::{
     AccountId, CancelDeleteOutcome, CellType, CharId, CharacterRepository, CharacterSummary,
     CreateCharacterError, CreateCharacterRequest, DeleteReserveOutcome, MapPosition,
-    MapWalkability, PacketOpcode, RawPacket, RepositoryError, Sex, TARGET_PACKETVER,
+    MapWalkability, RepositoryError, Sex, TARGET_PACKETVER,
 };
 use ro_db::MemoryMapGrid;
 use ro_packets::{pack_pos_dir, unpack_pos2, PacketDecoder, RathenaPacketLengthTable};
+use ro_packets::{PacketOpcode, RawPacket};
 
 pub const MAP: &str = "prontera.gat";
 

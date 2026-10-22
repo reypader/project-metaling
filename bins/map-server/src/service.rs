@@ -13,13 +13,12 @@ use bytes::{Bytes, BytesMut};
 use ro_core::{
     character::{CharacterRepository, CharacterSpawn},
     ids::{AccountId, CharId, CharacterSummary, MapPosition, SessionId},
-    packet::{
-        BroadcastScope, ClientIntent, EventEncoder, ScopedServerEvent, ServerEvent, SessionIntent,
-    },
+    message::{BroadcastScope, ClientIntent, ScopedServerEvent, ServerEvent, SessionIntent},
     EngineError, MapEngine, MapWalkability, TARGET_PACKETVER,
 };
 use ro_db::{GatMapGrid, MemoryMapGrid};
 use ro_engine::MapInstance;
+use ro_packets::EventEncoder;
 use ro_packets::Phase0EventEncoder;
 use tokio::sync::{mpsc, oneshot};
 use tracing::{debug, error, info, warn};

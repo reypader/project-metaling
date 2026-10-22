@@ -5,10 +5,10 @@
 
 use std::io;
 
-use bytes::{Bytes, BytesMut};
-use ro_core::packet::{
+use crate::{
     PacketCodecError, PacketLength, PacketLengthTable, PacketOpcode, RawPacket, MAX_PACKET_SIZE,
 };
+use bytes::{Bytes, BytesMut};
 use ro_core::TARGET_PACKETVER;
 use tokio_util::codec::{Decoder, Encoder};
 

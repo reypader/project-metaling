@@ -1,6 +1,6 @@
 //! Packet length lookup table for `TARGET_PACKETVER = 20260219`.
 
-use ro_core::packet::{PacketLength, PacketLengthTable, PacketOpcode};
+use crate::{PacketLength, PacketLengthTable, PacketOpcode};
 
 /// Standard packet length table implementation referencing rAthena packet databases.
 #[derive(Debug, Default, Clone, Copy)]

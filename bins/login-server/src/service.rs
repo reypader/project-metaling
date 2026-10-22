@@ -15,7 +15,7 @@ use ro_core::{
         ValidateSessionRequest, ValidateSessionResponse,
     },
     ids::{AccountId, CharServerInfo, SessionId, Sex},
-    packet::{ClientIntent, ServerEvent, SessionIntent},
+    message::{ClientIntent, ServerEvent, SessionIntent},
     TARGET_PACKETVER,
 };
 use tokio::sync::mpsc;

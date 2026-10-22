@@ -3,9 +3,10 @@ use std::net::SocketAddr;
 use bytes::{Bytes, BytesMut};
 use ro_core::{
     ids::AccountId,
-    packet::{ClientIntent, EventEncoder, PacketIntentParser, ServerEvent, SessionIntent},
+    message::{ClientIntent, ServerEvent, SessionIntent},
     TARGET_PACKETVER,
 };
+use ro_packets::{EventEncoder, PacketIntentParser};
 use ro_packets::{PacketDecoder, Phase0EventEncoder, Phase0IntentParser, RathenaPacketLengthTable};
 use tokio::{
     io::{AsyncReadExt, AsyncWriteExt},

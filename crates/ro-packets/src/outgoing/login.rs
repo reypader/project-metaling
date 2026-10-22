@@ -1,8 +1,8 @@
 //! Outgoing login server packet encoders supporting AC_* opcodes.
 
+use crate::{PacketCodecError, PacketOpcode};
 use bytes::{BufMut, Bytes, BytesMut};
 use ro_core::ids::{AccountId, CharServerInfo, Sex};
-use ro_core::packet::{PacketCodecError, PacketOpcode};
 
 use crate::outgoing::helpers::write_fixed_string;
 
@@ -147,7 +147,8 @@ pub use encode_ac_refuse_login as encode_ac_refuse_login_modern;
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ro_core::packet::{EventEncoder, ServerEvent};
+    use crate::EventEncoder;
+    use ro_core::message::ServerEvent;
     use ro_core::TARGET_PACKETVER;
 
     use crate::outgoing::encoder::ModernEventEncoder;

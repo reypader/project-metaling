@@ -7,8 +7,10 @@
 pub mod codec;
 pub mod coords;
 pub mod incoming;
+pub mod opcode;
 pub mod outgoing;
 pub mod table;
+pub mod wire;
 
 pub use codec::{PacketDecoder, PacketEncoder};
 pub use coords::{
@@ -21,6 +23,7 @@ pub use incoming::{
     CzReqNamePacket, CzRequestActPacket, CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket,
     DecodedFrame, ModernIntentParser, Phase0IntentParser, PingPacket, RathenaIntentParser,
 };
+pub use opcode::PacketOpcode;
 pub use outgoing::{
     encode_ac_accept_login, encode_ac_accept_login_modern, encode_ac_refuse_login,
     encode_ac_refuse_login_modern, encode_character_info, encode_hc_accept_enter,
@@ -37,5 +40,9 @@ pub use outgoing::{
     ModernEventEncoder, Phase0EventEncoder, RathenaEventEncoder,
 };
 pub use table::{lookup_packet_length, RathenaPacketLengthTable};
+pub use wire::{
+    EventEncoder, PacketCodecError, PacketIntentParser, PacketLength, PacketLengthTable, RawPacket,
+    MAX_PACKET_SIZE,
+};
 
 pub use ro_core;

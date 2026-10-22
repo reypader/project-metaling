@@ -2,7 +2,7 @@
 
 use crate::character::CharacterSpawn;
 use crate::ids::{AccountId, CharId, MapPosition, SessionId};
-use crate::packet::{ScopedServerEvent, SessionIntent};
+use crate::message::{ScopedServerEvent, SessionIntent};
 
 /// Errors returned by the map engine during session and entity lifecycle interactions.
 #[derive(thiserror::Error, Debug, Clone, PartialEq, Eq)]

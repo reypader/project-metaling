@@ -1,7 +1,8 @@
 //! Event encoder connecting domain ServerEvent variants to outgoing packet encoders.
 
+use crate::{EventEncoder, PacketCodecError, PacketOpcode};
 use bytes::{BufMut, Bytes, BytesMut};
-use ro_core::packet::{EventEncoder, PacketCodecError, PacketOpcode, ServerEvent};
+use ro_core::message::ServerEvent;
 
 use super::char::{
     encode_hc_accept_enter, encode_hc_accept_enter2, encode_hc_accept_makechar,

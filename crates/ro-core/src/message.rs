@@ -1,59 +1,10 @@
-//! Client packet abstractions, wire framing, and decoded intents.
+//! Decoded client intents and server events: the vocabulary between packets, engine and servers.
 
-use bytes::Bytes;
 use std::fmt;
-use std::io;
 
 use crate::ids::{
     AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, SessionId, Sex,
 };
-
-/// Maximum allowed packet size across all servers to prevent unbounded allocation.
-pub const MAX_PACKET_SIZE: usize = 65535;
-
-pub mod opcode;
-pub use opcode::PacketOpcode;
-
-/// Packet size classification in the Ragnarok wire protocol.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum PacketLength {
-    /// Packet size is invariant for a given PACKETVER.
-    Fixed(usize),
-    /// Packet size varies; bytes 2..4 hold a little-endian 16-bit total length header.
-    Dynamic,
-}
-
-/// A framed, unparsed packet received from a client TCP connection.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct RawPacket {
-    pub opcode: PacketOpcode,
-    pub payload: Bytes,
-}
-
-impl RawPacket {
-    pub fn new(opcode: PacketOpcode, payload: Bytes) -> Self {
-        Self { opcode, payload }
-    }
-
-    pub fn payload_len(&self) -> usize {
-        self.payload.len()
-    }
-}
-
-/// Delivery target for server-generated packets.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum OutboundTarget {
-    Session(SessionId),
-    Account(AccountId),
-    Character(CharId),
-    Broadcast(BroadcastScope),
-}
-
-impl From<BroadcastScope> for OutboundTarget {
-    fn from(scope: BroadcastScope) -> Self {
-        Self::Broadcast(scope)
-    }
-}
 
 /// Scope definition for spatial or broadcast packets emitted by map-server.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -71,56 +22,6 @@ pub enum BroadcastScope {
     MapWide {
         map_name: String,
     },
-}
-
-/// Outbound packet containing serialized wire bytes and a destination target.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct OutboundPacket {
-    pub target: OutboundTarget,
-    pub data: Bytes,
-}
-
-impl OutboundPacket {
-    pub fn new(target: OutboundTarget, data: Bytes) -> Self {
-        Self { target, data }
-    }
-
-    pub fn for_session(session_id: SessionId, data: Bytes) -> Self {
-        Self {
-            target: OutboundTarget::Session(session_id),
-            data,
-        }
-    }
-
-    pub fn for_character(char_id: CharId, data: Bytes) -> Self {
-        Self {
-            target: OutboundTarget::Character(char_id),
-            data,
-        }
-    }
-
-    pub fn broadcast_aoi(
-        map_name: String,
-        center: MapPosition,
-        exclude: Option<CharId>,
-        data: Bytes,
-    ) -> Self {
-        Self {
-            target: OutboundTarget::Broadcast(BroadcastScope::AreaOfInterest {
-                map_name,
-                center,
-                exclude,
-            }),
-            data,
-        }
-    }
-
-    pub fn broadcast_map(map_name: String, data: Bytes) -> Self {
-        Self {
-            target: OutboundTarget::Broadcast(BroadcastScope::MapWide { map_name }),
-            data,
-        }
-    }
 }
 
 /// High-level intents decoded from incoming client packets (`CA_`, `CH_`, `CZ_`).
@@ -330,58 +231,6 @@ impl SessionIntent {
     }
 }
 
-#[derive(thiserror::Error, Debug)]
-pub enum PacketCodecError {
-    #[error("IO failure: {0}")]
-    Io(#[from] io::Error),
-
-    #[error(
-        "Packet length {length} exceeds maximum permitted threshold {max} for opcode {opcode:?}"
-    )]
-    PacketTooLarge {
-        opcode: PacketOpcode,
-        length: usize,
-        max: usize,
-    },
-
-    #[error("Truncated payload for opcode {opcode:?}: expected {expected} bytes, got {actual}")]
-    TruncatedPayload {
-        opcode: PacketOpcode,
-        expected: usize,
-        actual: usize,
-    },
-
-    #[error("Invalid field value in opcode {opcode:?}: field '{field}' has invalid value {value}")]
-    InvalidField {
-        opcode: PacketOpcode,
-        field: &'static str,
-        value: u32,
-    },
-
-    #[error("Malformed packet header: {0}")]
-    MalformedHeader(String),
-
-    #[error("Unknown or unregistered packet opcode: {0:?}")]
-    UnknownOpcode(PacketOpcode),
-
-    #[error("Unsupported server event for serialization: {0}")]
-    UnsupportedEvent(String),
-}
-
-/// Table trait defining expected frame lengths for opcodes under a specific client version.
-pub trait PacketLengthTable: Send + Sync {
-    fn packet_length(&self, opcode: PacketOpcode, packetver: u32) -> Option<PacketLength>;
-}
-
-/// Trait defining the parser contract that translates a `RawPacket` into a high-level `ClientIntent`.
-pub trait PacketIntentParser: Send + Sync {
-    fn parse_intent(
-        &self,
-        raw: &RawPacket,
-        packetver: u32,
-    ) -> Result<Option<ClientIntent>, PacketCodecError>;
-}
-
 /// Appearance snapshot shared by the unit entry packets (`0x09fd`/`0x09fe`/`0x09ff`).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UnitAppearance {
@@ -543,73 +392,5 @@ pub struct ScopedServerEvent {
 impl ScopedServerEvent {
     pub fn new(scope: BroadcastScope, event: ServerEvent) -> Self {
         Self { scope, event }
-    }
-}
-
-/// Trait defining the serializer contract that translates a domain `ServerEvent` into wire `Bytes`.
-pub trait EventEncoder: Send + Sync {
-    fn encode_event(&self, event: &ServerEvent, packetver: u32) -> Result<Bytes, PacketCodecError>;
-
-    fn encode_scoped_event(
-        &self,
-        scoped: &ScopedServerEvent,
-        packetver: u32,
-    ) -> Result<OutboundPacket, PacketCodecError> {
-        let data = self.encode_event(&scoped.event, packetver)?;
-        Ok(OutboundPacket::new(scoped.scope.clone().into(), data))
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_packet_opcode_name_and_display_known() {
-        assert_eq!(PacketOpcode::CA_LOGIN.name(), Some("CA_LOGIN"));
-        assert_eq!(PacketOpcode::CA_LOGIN.to_string(), "0x0064 (CA_LOGIN)");
-
-        assert_eq!(PacketOpcode::ZC_NOTIFY_TIME.name(), Some("ZC_NOTIFY_TIME"));
-        assert_eq!(
-            PacketOpcode::ZC_NOTIFY_TIME.to_string(),
-            "0x007f (ZC_NOTIFY_TIME)"
-        );
-
-        assert_eq!(
-            PacketOpcode::HC_REFUSE_DELETECHAR.name(),
-            Some("HC_REFUSE_DELETECHAR")
-        );
-        assert_eq!(
-            PacketOpcode::HC_ACK_DELETE_CHAR.name(),
-            Some("HC_REFUSE_DELETECHAR")
-        );
-        assert_eq!(
-            PacketOpcode::HC_ACK_DELETE_CHAR.to_string(),
-            "0x0070 (HC_REFUSE_DELETECHAR)"
-        );
-
-        assert_eq!(
-            PacketOpcode::HC_ACK_MAKE_CHAR.name(),
-            Some("HC_ACK_MAKE_CHAR")
-        );
-        assert_eq!(
-            PacketOpcode::HC_ACCEPT_MAKECHAR.name(),
-            Some("HC_ACK_MAKE_CHAR")
-        );
-        assert_eq!(
-            PacketOpcode::HC_ACCEPT_MAKECHAR.to_string(),
-            "0x0b6f (HC_ACK_MAKE_CHAR)"
-        );
-    }
-
-    #[test]
-    fn test_packet_opcode_name_and_display_unknown() {
-        let unknown = PacketOpcode(0x0001);
-        assert_eq!(unknown.name(), None);
-        assert_eq!(unknown.to_string(), "0x0001");
-
-        let unknown_high = PacketOpcode(0xffff);
-        assert_eq!(unknown_high.name(), None);
-        assert_eq!(unknown_high.to_string(), "0xffff");
     }
 }

@@ -7,7 +7,7 @@ pub mod engine;
 pub mod http;
 pub mod ids;
 pub mod map;
-pub mod packet;
+pub mod message;
 pub mod repository;
 
 pub use account::*;
@@ -16,7 +16,7 @@ pub use engine::*;
 pub use http::*;
 pub use ids::*;
 pub use map::*;
-pub use packet::*;
+pub use message::*;
 pub use repository::*;
 
 pub const TARGET_PACKETVER: u32 = 20260219;

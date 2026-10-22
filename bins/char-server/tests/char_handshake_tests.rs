@@ -17,9 +17,9 @@ use char_server::{handle_client_session, CharServiceHandle};
 use ro_core::{
     character::CharacterRepository,
     ids::{AccountId, Sex},
-    packet::PacketOpcode,
     CreateCharacterRequest, TARGET_PACKETVER,
 };
+use ro_packets::PacketOpcode;
 use ro_packets::{PacketDecoder, RathenaPacketLengthTable};
 use ro_persistence::PostgresRepo;
 

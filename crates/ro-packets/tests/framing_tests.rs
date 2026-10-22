@@ -2,7 +2,7 @@
 
 use bytes::BytesMut;
 use ro_core::ids::{AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, Sex};
-use ro_core::packet::{ClientIntent, EventEncoder, PacketOpcode, ServerEvent, UnitAppearance};
+use ro_core::message::{ClientIntent, ServerEvent, UnitAppearance};
 use ro_packets::codec::PacketDecoder;
 use ro_packets::coords::{pack_pos2, pack_pos_dir, unpack_pos2, unpack_pos_dir};
 use ro_packets::incoming::{decode_frame, DecodedFrame};
@@ -13,6 +13,7 @@ use ro_packets::outgoing::{
     CharServerEntry, ModernEventEncoder, Phase0EventEncoder,
 };
 use ro_packets::table::RathenaPacketLengthTable;
+use ro_packets::{EventEncoder, PacketOpcode};
 use tokio_util::codec::Decoder;
 
 #[test]
@@ -823,6 +824,6 @@ fn pkt_02_streaming_framing() {
     let mut stream = BytesMut::from(&[0xfd_u8, 0x09, 3, 0][..]);
     assert!(matches!(
         decoder.decode(&mut stream),
-        Err(ro_core::PacketCodecError::MalformedHeader(_))
+        Err(ro_packets::PacketCodecError::MalformedHeader(_))
     ));
 }

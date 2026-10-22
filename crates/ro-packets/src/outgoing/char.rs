@@ -2,9 +2,9 @@
 
 use std::time::{SystemTime, UNIX_EPOCH};
 
+use crate::{PacketCodecError, PacketOpcode};
 use bytes::{BufMut, Bytes, BytesMut};
 use ro_core::ids::{CharId, CharacterSummary};
-use ro_core::packet::{PacketCodecError, PacketOpcode};
 
 use crate::outgoing::helpers::write_fixed_string;
 
@@ -256,8 +256,9 @@ pub fn encode_hc_notify_zonesvr(char_id: CharId, map_name: &str, ip: [u8; 4], po
 mod tests {
     use super::*;
     use crate::outgoing::encoder::ModernEventEncoder;
+    use crate::EventEncoder;
     use ro_core::ids::{AccountId, MapPosition, Sex};
-    use ro_core::packet::{EventEncoder, ServerEvent};
+    use ro_core::message::ServerEvent;
 
     #[test]
     fn test_encode_hc_notify_zonesvr() {

@@ -11,7 +11,7 @@ use ro_core::{
         CancelDeleteOutcome, CharacterRepository, CreateCharacterRequest, DeleteReserveOutcome,
     },
     ids::{AccountId, SessionId},
-    packet::{ClientIntent, ServerEvent, SessionIntent},
+    message::{ClientIntent, ServerEvent, SessionIntent},
 };
 use tokio::sync::mpsc;
 use tracing::{error, info, warn};

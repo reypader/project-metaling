@@ -12,7 +12,7 @@ use login_server::{
 use ro_core::{
     account::AccountRepository,
     ids::{AccountId, Sex},
-    packet::ServerEvent,
+    message::ServerEvent,
     RegisterCharServerRequest, ServerHeartbeat, ServerStatus, ServerType, ValidateSessionRequest,
     TARGET_PACKETVER,
 };

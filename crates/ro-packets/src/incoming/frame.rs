@@ -1,8 +1,7 @@
 //! High-level client frame decoding and intent parsing.
 
-use ro_core::packet::{
-    ClientIntent, PacketCodecError, PacketIntentParser, PacketLength, PacketOpcode, RawPacket,
-};
+use crate::{PacketCodecError, PacketIntentParser, PacketLength, PacketOpcode, RawPacket};
+use ro_core::message::ClientIntent;
 
 use crate::table::lookup_packet_length;
 

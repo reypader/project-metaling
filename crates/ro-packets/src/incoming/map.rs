@@ -1,7 +1,8 @@
 //! Incoming map server client packet decoders supporting CZ_* opcodes.
 
+use crate::{PacketCodecError, RawPacket};
 use ro_core::ids::{AccountId, CharId, Sex};
-use ro_core::packet::{ClientIntent, PacketCodecError, RawPacket};
+use ro_core::message::ClientIntent;
 
 use crate::coords::unpack_pos_dir;
 use crate::incoming::helpers::{parse_sex, read_u32_le};
@@ -270,8 +271,8 @@ impl CzRestartPacket {
 mod tests {
     use super::*;
     use crate::coords::pack_pos_dir;
+    use crate::PacketOpcode;
     use bytes::Bytes;
-    use ro_core::packet::PacketOpcode;
 
     #[test]
     fn test_decode_cz_enter() {

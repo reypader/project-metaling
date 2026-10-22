@@ -1,6 +1,6 @@
 use std::cmp::min;
 
-use ro_core::packet::{PacketLength, PacketLengthTable, PacketOpcode};
+use ro_packets::{PacketLength, PacketLengthTable, PacketOpcode};
 
 /// Formats a byte slice as a hex dump preview with ASCII representation.
 pub fn format_hex_preview(bytes: &[u8]) -> String {

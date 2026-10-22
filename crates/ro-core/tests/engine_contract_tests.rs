@@ -1,11 +1,10 @@
 //! Contract-level tests for the engine-foundation touchpoints (spec §1).
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use bytes::Bytes;
 use ro_core::{
-    AccountId, BroadcastScope, CellType, CharId, CharacterSpawn, CharacterSummary, ClientIntent,
-    EngineError, MapEngine, MapPosition, OutboundPacket, OutboundTarget, PacketOpcode,
-    ScopedServerEvent, ServerEvent, SessionIntent, Sex, UnitAppearance, DEFAULT_WALK_SPEED,
+    AccountId, CellType, CharId, CharacterSpawn, CharacterSummary, ClientIntent, EngineError,
+    MapEngine, MapPosition, ScopedServerEvent, ServerEvent, SessionIntent, Sex, UnitAppearance,
+    DEFAULT_WALK_SPEED,
 };
 
 fn summary() -> CharacterSummary {
@@ -83,25 +82,6 @@ fn character_spawn_from_summary_copies_appearance_and_defaults_speed() {
 }
 
 #[test]
-fn broadcast_aoi_carries_exclude() {
-    let center = MapPosition { x: 1, y: 2, dir: 0 };
-    let packet = OutboundPacket::broadcast_aoi(
-        "prontera.gat".to_string(),
-        center,
-        Some(CharId(150001)),
-        Bytes::from_static(&[1, 2]),
-    );
-    assert_eq!(
-        packet.target,
-        OutboundTarget::Broadcast(BroadcastScope::AreaOfInterest {
-            map_name: "prontera.gat".to_string(),
-            center,
-            exclude: Some(CharId(150001)),
-        })
-    );
-}
-
-#[test]
 fn engine_error_new_variants_display() {
     assert!(EngineError::MapNotFound("x.gat".into())
         .to_string()
@@ -110,28 +90,6 @@ fn engine_error_new_variants_display() {
         .to_string()
         .contains('7'));
     assert!(!EngineError::WorldCapacityExceeded.to_string().is_empty());
-}
-
-#[test]
-fn opcode_names_fixed_per_spec() {
-    assert_eq!(PacketOpcode::ZC_NOTIFY_MOVEENTRY11, PacketOpcode(0x09fd));
-    assert_eq!(PacketOpcode::ZC_NOTIFY_NEWENTRY11, PacketOpcode(0x09fe));
-    assert_eq!(PacketOpcode::ZC_NOTIFY_STANDENTRY11, PacketOpcode(0x09ff));
-    assert_eq!(PacketOpcode::ZC_ACK_REQNAME_BYGID, PacketOpcode(0x0af7));
-    assert_eq!(PacketOpcode::ZC_ACK_REQNAMEALL, PacketOpcode(0x0a30));
-    assert_eq!(PacketOpcode::ZC_CHANGE_DIRECTION, PacketOpcode(0x009c));
-    assert_eq!(PacketOpcode::ZC_STOPMOVE, PacketOpcode(0x0088));
-
-    assert_eq!(PacketOpcode(0x09fd).name(), Some("ZC_NOTIFY_MOVEENTRY11"));
-    assert_eq!(PacketOpcode(0x09fe).name(), Some("ZC_NOTIFY_NEWENTRY11"));
-    assert_eq!(PacketOpcode(0x09ff).name(), Some("ZC_NOTIFY_STANDENTRY11"));
-    assert_eq!(PacketOpcode(0x0af7).name(), Some("ZC_ACK_REQNAME_BYGID"));
-    assert_eq!(PacketOpcode(0x0a30).name(), Some("ZC_ACK_REQNAMEALL"));
-    assert_eq!(PacketOpcode(0x009c).name(), Some("ZC_CHANGE_DIRECTION"));
-    assert_eq!(PacketOpcode(0x0088).name(), Some("ZC_STOPMOVE"));
-    assert_eq!(PacketOpcode(0x0080).name(), Some("ZC_NOTIFY_VANISH"));
-    assert_eq!(PacketOpcode(0x0087).name(), Some("ZC_NOTIFY_PLAYERMOVE"));
-    assert_eq!(PacketOpcode(0x0091).name(), Some("ZC_NPCACK_MAPMOVE"));
 }
 
 #[test]

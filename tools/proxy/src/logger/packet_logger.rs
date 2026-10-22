@@ -1,17 +1,13 @@
 use std::{cmp::min, sync::Arc};
 
 use bytes::{Buf, BytesMut};
-use ro_core::{
-    http::ServerType,
-    packet::{
-        PacketCodecError, PacketIntentParser, PacketLength, PacketLengthTable, PacketOpcode,
-        RawPacket,
-    },
-    TARGET_PACKETVER,
-};
+use ro_core::{http::ServerType, TARGET_PACKETVER};
 use ro_packets::{
     incoming::{decode_frame, DecodedFrame},
     is_implemented_outbound_opcode, PacketDecoder, Phase0IntentParser, RathenaPacketLengthTable,
+};
+use ro_packets::{
+    PacketCodecError, PacketIntentParser, PacketLength, PacketLengthTable, PacketOpcode, RawPacket,
 };
 use tokio_util::codec::Decoder;
 use tracing::{debug, warn};
