@@ -32,12 +32,7 @@ pub fn encode_zc_inventory_expansion_info(expansion_size: i16) -> Bytes {
 }
 
 /// Encodes `ZC_ACCEPT_ENTER` (0x02eb), fixed 13 bytes.
-pub fn encode_zc_accept_enter(
-    start_time: u32,
-    pos: MapPosition,
-    x_size: u8,
-    y_size: u8,
-) -> Bytes {
+pub fn encode_zc_accept_enter(start_time: u32, pos: MapPosition, x_size: u8, y_size: u8) -> Bytes {
     let mut buf = BytesMut::with_capacity(13);
     buf.put_u16_le(PacketOpcode::ZC_ACCEPT_ENTER.raw());
     buf.put_u32_le(start_time);
@@ -104,7 +99,7 @@ pub struct NewEntryParams {
 /// Encodes `ZC_NOTIFY_NEWENTRY` (0x09fe) for PACKETVER >= 20150513, 107 bytes dynamic.
 pub fn encode_zc_notify_newentry(params: &NewEntryParams) -> Bytes {
     let mut buf = BytesMut::with_capacity(107);
-    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_NEWENTRY.raw());
+    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_NEWENTRY11.raw());
     buf.put_u16_le(107);
     buf.put_u8(0); // objecttype: BL_PC = 0
     buf.put_u32_le(params.gid); // AID
@@ -148,7 +143,7 @@ pub use encode_zc_notify_newentry as encode_zc_notify_newentry_modern;
 /// Encodes `ZC_NOTIFY_STANDENTRY` (0x09ff) for PACKETVER >= 20150513, 108 bytes dynamic.
 pub fn encode_zc_notify_standentry(params: &NewEntryParams, state: u8) -> Bytes {
     let mut buf = BytesMut::with_capacity(108);
-    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_STANDENTRY.raw());
+    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_STANDENTRY11.raw());
     buf.put_u16_le(108);
     buf.put_u8(0); // objecttype: BL_PC = 0
     buf.put_u32_le(params.gid); // AID
@@ -201,7 +196,7 @@ pub fn encode_zc_notify_move(
     name: &str,
 ) -> Bytes {
     let mut buf = BytesMut::with_capacity(114);
-    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_MOVE.raw());
+    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_MOVEENTRY11.raw());
     buf.put_u16_le(114);
     buf.put_u8(0); // objecttype: BL_PC = 0
     buf.put_u32_le(char_id.0); // AID
@@ -395,7 +390,11 @@ mod tests {
 
     #[test]
     fn test_encode_zc_accept_enter() {
-        let pos = MapPosition { x: 156, y: 180, dir: 4 };
+        let pos = MapPosition {
+            x: 156,
+            y: 180,
+            dir: 4,
+        };
         let bytes = encode_zc_accept_enter(99999, pos, 5, 5);
 
         assert_eq!(bytes.len(), 13);
@@ -438,7 +437,11 @@ mod tests {
             virtue: 0,
             is_pkmode_on: 0,
             sex: Sex::Male,
-            pos: MapPosition { x: 100, y: 100, dir: 0 },
+            pos: MapPosition {
+                x: 100,
+                y: 100,
+                dir: 0,
+            },
             x_size: 5,
             y_size: 5,
             clevel: 1,

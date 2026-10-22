@@ -90,7 +90,8 @@ pub trait MapEngine: Send {
     fn push_intent(&mut self, intent: SessionIntent);
     /// Bad per-intent input is logged and dropped. Err only for engine-wide faults.
     fn step_tick(&mut self, now_ms: u64) -> Result<Vec<ScopedServerEvent>, EngineError>;
-    fn query_aoi_characters(&self, center: MapPosition) -> Vec<CharId>;
+    /// Clears and fills `out` (reused by the caller; no per-event allocation).
+    fn query_aoi_characters(&self, center: MapPosition, out: &mut Vec<CharId>);
     fn character_position(&self, char_id: CharId) -> Option<MapPosition>;
     /// Removes the entity; emits UnitVanished{type 2} to AoI excluding the leaver.
     fn remove_character(&mut self, char_id: CharId) -> Result<Vec<ScopedServerEvent>, EngineError>;
@@ -101,6 +102,8 @@ pub trait MapEngine: Send {
 ### 1.2 `character.rs`: `CharacterSpawn`
 A snapshot the actor builds from `CharacterSummary` plus the session: `account_id`, `char_id`, `name`,
 `sex`, `job_class`, `base_level`, `hair_style`, `hair_color`, `pos`, `speed` (default 150).
+Built with `CharacterSpawn::from_summary(&summary)`; the actor first checks `summary.account_id`
+against the session's account and closes the session on mismatch.
 
 ### 1.3 `map.rs`: `CellType` (fixed to rAthena)
 `Walkable(0)`, `Wall(1)`, `Walkable2(2)`, `Water(3)`, `Walkable4(4)`, `Cliff(5)`, `Walkable6(6)`,
@@ -111,11 +114,12 @@ A snapshot the actor builds from `CharacterSummary` plus the session: `account_i
 - `BroadcastScope::AreaOfInterest { map_name, center, exclude: Option<CharId> }`. Update
   `OutboundPacket::broadcast_aoi` and its callers.
 - `UnitAppearance` (shared by entry packets): `gid` (account_id), `char_id: Option<CharId>`, `name`,
-  `job`, `sex`, `hair_style`, `hair_color`, `head_dir`, `pos` (incl. body dir), `speed`, `body_state`,
+  `job`, `sex`, `hair_style`, `hair_color`, `head_dir`, `pos` (incl. body dir), `speed`, `dead_sit`
+  (0 stand / 1 dead / 2 sit; only the `0x09ff` `state` byte, not the wire `body_state`/opt1 field),
   `clevel`.
 - `ServerEvent` replaces `EntityMoved`/`EntityAppeared`/`EntityVanished` with:
   `PlayerMoved { start: (u16,u16), dest: (u16,u16), move_start_tick: u32 }`,
-  `UnitWalking { unit: UnitAppearance, start, dest, move_start_tick }`,
+  `UnitWalking { unit: UnitAppearance, start, dest, move_start_tick }` (cells from `start`/`dest`; `unit.pos` ignored),
   `UnitStanding { unit: UnitAppearance }`, `UnitSpawned { unit: UnitAppearance }`,
   `UnitVanished { gid: u32, vanish_type: u8 }`, `UnitStopped { gid: u32, x: u16, y: u16 }`,
   `DirectionChanged { gid: u32, head_dir: u16, body_dir: u8 }`,
@@ -289,7 +293,7 @@ WBUFPOS (3 bytes) and WBUFPOS2 (6 bytes) round-trip. `(100,140,6)` packs to `[0x
 - `char_id: None` writes GID 0.
 
 ### PKT-09: `UnitSpawned` → `0x09fe` (107), `UnitStanding` → `0x09ff` (108)
-- `state` (body state) is at offset 68 in `0x09ff`.
+- `state` (`dead_sit`) is at offset 68 in `0x09ff`; the wire `body_state` (opt1) at 15 stays 0.
 - The fields carry the real speed, job, sex, hair, head dir, and name.
 - Offsets per `map_units.md`.
 
@@ -400,8 +404,8 @@ WBUFPOS (3 bytes) and WBUFPOS2 (6 bytes) round-trip. `(100,140,6)` packs to `[0x
 
 ### ENG-11: Sit / stand
 - **Sit and stand**
-  - `RequestAction` type 2 → body_state 2, and `EntityAction{src 2000001, type 2}` to AoI including self.
-  - Type 3 → body_state 0, and `EntityAction` type 3.
+  - `RequestAction` type 2 → dead_sit 2, and `EntityAction{src 2000001, type 2}` to AoI including self.
+  - Type 3 → dead_sit 0, and `EntityAction` type 3.
 - **Edge cases**
   - A repeated sit re-broadcasts (as rAthena does), and the state stays sitting.
   - A move while sitting is ignored.
@@ -456,3 +460,4 @@ WBUFPOS (3 bytes) and WBUFPOS2 (6 bytes) round-trip. `(100,140,6)` packs to `[0x
 - Non-player name replies (`ZC_ACK_REQNAMEALL_NPC`), portals/warps triggering `ZC_NPCACK_MAPMOVE`,
   monsters, status, combat, and rayon parallelism (see `crates/ro-engine/DESIGN.md`).
 - `.rsw` water-level promotion of type-0 cells.
+- `object_type` in `UnitAppearance` (every unit encodes as PC `0` until NPCs/mobs exist).

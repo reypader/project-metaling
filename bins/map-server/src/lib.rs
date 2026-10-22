@@ -17,9 +17,7 @@ use ro_contracts::{
 };
 use tracing::info;
 
-pub async fn health_check(
-    State(service): State<MapServiceHandle>,
-) -> Json<HealthResponse> {
+pub async fn health_check(State(service): State<MapServiceHandle>) -> Json<HealthResponse> {
     Json(HealthResponse {
         status: ServerStatus::Ready,
         server_type: ServerType::Map,

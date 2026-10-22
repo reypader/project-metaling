@@ -83,7 +83,7 @@ async fn test_map_handshake_enter_actorinit_and_time() {
             init_opcodes.push(raw.opcode);
         }
     }
-    assert_eq!(init_opcodes[0], PacketOpcode::ZC_NOTIFY_NEWENTRY);
+    assert_eq!(init_opcodes[0], PacketOpcode::ZC_NOTIFY_NEWENTRY11);
     assert_eq!(init_opcodes[1], PacketOpcode::ZC_PAR_CHANGE);
 
     let mut cz_time_bytes = vec![0x60, 0x03];
@@ -181,7 +181,9 @@ async fn test_accept_transfer_validation() {
         },
         character: None,
     };
-    let res = accept_transfer(State(service.clone()), Json(valid_req)).await.0;
+    let res = accept_transfer(State(service.clone()), Json(valid_req))
+        .await
+        .0;
     assert!(res.accepted);
 
     let invalid_cases = vec![
@@ -208,6 +210,10 @@ async fn test_accept_transfer_validation() {
             character: None,
         };
         let res = accept_transfer(State(service.clone()), Json(req)).await.0;
-        assert!(!res.accepted, "Expected map '{}' to be rejected", invalid_map);
+        assert!(
+            !res.accepted,
+            "Expected map '{}' to be rejected",
+            invalid_map
+        );
     }
 }

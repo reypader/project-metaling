@@ -1,9 +1,7 @@
 //! Integration tests for packet framing, coordinate packing, and packet codecs.
 
 use bytes::BytesMut;
-use ro_contracts::ids::{
-    AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, Sex,
-};
+use ro_contracts::ids::{AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, Sex};
 use ro_contracts::packet::{ClientIntent, EventEncoder, PacketOpcode, ServerEvent};
 use ro_packets::codec::PacketDecoder;
 use ro_packets::coords::{pack_pos2, pack_pos_dir, unpack_pos2, unpack_pos_dir};
@@ -27,10 +25,10 @@ fn test_stream_fragmentation_and_coalescing() {
     // 1. CZ_ENTER (0x0436, 23 bytes)
     let mut cz_enter_bytes = vec![0x36, 0x04];
     cz_enter_bytes.extend_from_slice(&2000001u32.to_le_bytes()); // account_id
-    cz_enter_bytes.extend_from_slice(&150001u32.to_le_bytes());  // char_id
-    cz_enter_bytes.extend_from_slice(&12345u32.to_le_bytes());   // login_id1
-    cz_enter_bytes.extend_from_slice(&99999u32.to_le_bytes());   // client_tick
-    cz_enter_bytes.extend_from_slice(&[0u8; 4]);                 // padding
+    cz_enter_bytes.extend_from_slice(&150001u32.to_le_bytes()); // char_id
+    cz_enter_bytes.extend_from_slice(&12345u32.to_le_bytes()); // login_id1
+    cz_enter_bytes.extend_from_slice(&99999u32.to_le_bytes()); // client_tick
+    cz_enter_bytes.extend_from_slice(&[0u8; 4]); // padding
     cz_enter_bytes.push(1); // Sex::Male
 
     // 2. CZ_REQUEST_TIME (0x0360, 6 bytes)
@@ -85,10 +83,7 @@ fn test_stream_fragmentation_and_coalescing() {
     // Check packet 3
     assert_eq!(decoded_packets[2].opcode, PacketOpcode(0x007d));
     let frame3 = decode_frame(&decoded_packets[2], ro_contracts::TARGET_PACKETVER).unwrap();
-    assert_eq!(
-        frame3,
-        DecodedFrame::Intent(ClientIntent::NotifyActorInit)
-    );
+    assert_eq!(frame3, DecodedFrame::Intent(ClientIntent::NotifyActorInit));
 
     assert!(stream_buffer.is_empty());
 }
@@ -101,7 +96,10 @@ fn test_unhandled_packet_consumption() {
     // 0x00bf is CZ_REQ_EMOTION (3 bytes fixed in clif_packetdb.hpp)
     stream.extend_from_slice(&[0xbf, 0x00, 0x07]);
 
-    let raw = decoder.decode(&mut stream).unwrap().expect("packet expected");
+    let raw = decoder
+        .decode(&mut stream)
+        .unwrap()
+        .expect("packet expected");
     assert_eq!(raw.opcode, PacketOpcode(0x00bf));
     assert_eq!(raw.payload.as_ref(), &[0x07]);
     assert!(stream.is_empty());
@@ -140,45 +138,59 @@ fn test_outgoing_serializers_and_redecoding() {
     )
     .unwrap();
     let mut stream = BytesMut::from(login_bytes.as_ref());
-    let raw = decoder.decode(&mut stream).unwrap().expect("AC_ACCEPT_LOGIN decoded");
+    let raw = decoder
+        .decode(&mut stream)
+        .unwrap()
+        .expect("AC_ACCEPT_LOGIN decoded");
     assert_eq!(raw.opcode, PacketOpcode(0x0ac4));
     assert_eq!(raw.payload_len(), 64 + 160 - 4);
 
     // 2. AC_REFUSE_LOGIN (26 bytes)
     let refuse_bytes = encode_ac_refuse_login(3, "0");
     let mut stream = BytesMut::from(refuse_bytes.as_ref());
-    let raw = decoder.decode(&mut stream).unwrap().expect("AC_REFUSE_LOGIN decoded");
+    let raw = decoder
+        .decode(&mut stream)
+        .unwrap()
+        .expect("AC_REFUSE_LOGIN decoded");
     assert_eq!(raw.opcode, PacketOpcode(0x083e));
     assert_eq!(raw.payload_len(), 24);
 
     // 3. HC_NOTIFY_ZONESVR (156 bytes)
-    let zone_bytes = encode_hc_notify_zonesvr(
-        CharId(150001),
-        "geffen.gat",
-        [127, 0, 0, 1],
-        5121,
-    );
+    let zone_bytes = encode_hc_notify_zonesvr(CharId(150001), "geffen.gat", [127, 0, 0, 1], 5121);
     let mut stream = BytesMut::from(zone_bytes.as_ref());
-    let raw = decoder.decode(&mut stream).unwrap().expect("HC_NOTIFY_ZONESVR decoded");
+    let raw = decoder
+        .decode(&mut stream)
+        .unwrap()
+        .expect("HC_NOTIFY_ZONESVR decoded");
     assert_eq!(raw.opcode, PacketOpcode(0x0ac5));
     assert_eq!(raw.payload_len(), 154);
 
     // 4. ZC_ACCEPT_ENTER (13 bytes)
     let accept_bytes = encode_zc_accept_enter(
         12345,
-        MapPosition { x: 50, y: 75, dir: 2 },
+        MapPosition {
+            x: 50,
+            y: 75,
+            dir: 2,
+        },
         5,
         5,
     );
     let mut stream = BytesMut::from(accept_bytes.as_ref());
-    let raw = decoder.decode(&mut stream).unwrap().expect("ZC_ACCEPT_ENTER decoded");
+    let raw = decoder
+        .decode(&mut stream)
+        .unwrap()
+        .expect("ZC_ACCEPT_ENTER decoded");
     assert_eq!(raw.opcode, PacketOpcode(0x02eb));
     assert_eq!(raw.payload_len(), 11);
 
     // 5. ZC_NOTIFY_TIME (6 bytes)
     let time_bytes = encode_zc_notify_time(8888);
     let mut stream = BytesMut::from(time_bytes.as_ref());
-    let raw = decoder.decode(&mut stream).unwrap().expect("ZC_NOTIFY_TIME decoded");
+    let raw = decoder
+        .decode(&mut stream)
+        .unwrap()
+        .expect("ZC_NOTIFY_TIME decoded");
     assert_eq!(raw.opcode, PacketOpcode(0x007f));
     assert_eq!(raw.payload_len(), 4);
 
@@ -205,35 +217,51 @@ fn test_outgoing_serializers_and_redecoding() {
         virtue: 0,
         is_pkmode_on: 0,
         sex: Sex::Female,
-        pos: MapPosition { x: 100, y: 150, dir: 6 },
+        pos: MapPosition {
+            x: 100,
+            y: 150,
+            dir: 6,
+        },
         x_size: 5,
         y_size: 5,
         clevel: 10,
     };
     let newentry_bytes = encode_zc_notify_newentry(&entry_params);
     let mut stream = BytesMut::from(newentry_bytes.as_ref());
-    let raw = decoder.decode(&mut stream).unwrap().expect("ZC_NOTIFY_NEWENTRY decoded");
+    let raw = decoder
+        .decode(&mut stream)
+        .unwrap()
+        .expect("ZC_NOTIFY_NEWENTRY decoded");
     assert_eq!(raw.opcode, PacketOpcode(0x09fe));
     assert_eq!(raw.payload_len(), 103);
 
     // 7. ZC_PAR_CHANGE (8 bytes)
     let par_bytes = encode_zc_par_change(5, 99);
     let mut stream = BytesMut::from(par_bytes.as_ref());
-    let raw = decoder.decode(&mut stream).unwrap().expect("ZC_PAR_CHANGE decoded");
+    let raw = decoder
+        .decode(&mut stream)
+        .unwrap()
+        .expect("ZC_PAR_CHANGE decoded");
     assert_eq!(raw.opcode, PacketOpcode(0x00b0));
     assert_eq!(raw.payload_len(), 6);
 
     // 8. ZC_NOTIFY_PLAYERMOVE (12 bytes)
     let move_bytes = encode_zc_notify_playermove(10, 20, 30, 40, 5000);
     let mut stream = BytesMut::from(move_bytes.as_ref());
-    let raw = decoder.decode(&mut stream).unwrap().expect("ZC_NOTIFY_PLAYERMOVE decoded");
+    let raw = decoder
+        .decode(&mut stream)
+        .unwrap()
+        .expect("ZC_NOTIFY_PLAYERMOVE decoded");
     assert_eq!(raw.opcode, PacketOpcode(0x0087));
     assert_eq!(raw.payload_len(), 10);
 
     // 9. ZC_NOTIFY_ACT (34 bytes)
     let act_bytes = encode_zc_notify_act(100, 200, 1000, 0, 0, 10, 1, 0, 0);
     let mut stream = BytesMut::from(act_bytes.as_ref());
-    let raw = decoder.decode(&mut stream).unwrap().expect("ZC_NOTIFY_ACT decoded");
+    let raw = decoder
+        .decode(&mut stream)
+        .unwrap()
+        .expect("ZC_NOTIFY_ACT decoded");
     assert_eq!(raw.opcode, PacketOpcode(0x08c8));
     assert_eq!(raw.payload_len(), 32);
 
@@ -263,7 +291,11 @@ fn test_event_encoder_integration() {
     let event = ServerEvent::AcceptEnter {
         account_id: AccountId(2000001),
         server_tick: 1111,
-        pos: MapPosition { x: 50, y: 60, dir: 1 },
+        pos: MapPosition {
+            x: 50,
+            y: 60,
+            dir: 1,
+        },
     };
     let bytes = encoder.encode_event(&event, ver).unwrap();
     assert_eq!(bytes.len(), 23);
@@ -318,7 +350,11 @@ fn test_event_encoder_integration() {
             hair_style: 3,
             hair_color: 5,
             last_map: "morocc.gat".to_string(),
-            last_pos: MapPosition { x: 150, y: 150, dir: 4 },
+            last_pos: MapPosition {
+                x: 150,
+                y: 150,
+                dir: 4,
+            },
             delete_date: None,
         }],
     };
@@ -350,7 +386,11 @@ fn test_event_encoder_integration() {
             hair_style: 3,
             hair_color: 5,
             last_map: "morocc.gat".to_string(),
-            last_pos: MapPosition { x: 150, y: 150, dir: 4 },
+            last_pos: MapPosition {
+                x: 150,
+                y: 150,
+                dir: 4,
+            },
             delete_date: None,
         }],
     };
@@ -548,19 +588,28 @@ fn test_modern_framing_and_intent_parsing() {
     assert_eq!(decoded[2].opcode, PacketOpcode(0x035f));
     assert_eq!(
         decode_frame(&decoded[2], ver).unwrap(),
-        DecodedFrame::Intent(ClientIntent::RequestMove { dest_x: 120, dest_y: 240 })
+        DecodedFrame::Intent(ClientIntent::RequestMove {
+            dest_x: 120,
+            dest_y: 240
+        })
     );
 
     assert_eq!(decoded[3].opcode, PacketOpcode(0x0361));
     assert_eq!(
         decode_frame(&decoded[3], ver).unwrap(),
-        DecodedFrame::Intent(ClientIntent::ChangeDirection { head_dir: 2, body_dir: 4 })
+        DecodedFrame::Intent(ClientIntent::ChangeDirection {
+            head_dir: 2,
+            body_dir: 4
+        })
     );
 
     assert_eq!(decoded[4].opcode, PacketOpcode(0x0437));
     assert_eq!(
         decode_frame(&decoded[4], ver).unwrap(),
-        DecodedFrame::Intent(ClientIntent::RequestAction { target_id: 50001, action_type: 2 })
+        DecodedFrame::Intent(ClientIntent::RequestAction {
+            target_id: 50001,
+            action_type: 2
+        })
     );
 
     assert_eq!(decoded[5].opcode, PacketOpcode(0x0368));
@@ -580,7 +629,11 @@ fn test_modern_event_encoder_roundtrip() {
     let event = ServerEvent::AcceptEnter {
         account_id: AccountId(2000001),
         server_tick: 7777,
-        pos: MapPosition { x: 55, y: 66, dir: 3 },
+        pos: MapPosition {
+            x: 55,
+            y: 66,
+            dir: 3,
+        },
     };
     let bytes = encoder.encode_event(&event, ver).unwrap();
     assert_eq!(bytes.len(), 23);
@@ -594,19 +647,6 @@ fn test_modern_event_encoder_roundtrip() {
     let raw3 = decoder.decode(&mut stream).unwrap().unwrap();
     assert_eq!(raw3.opcode, PacketOpcode(0x02eb));
     assert_eq!(raw3.payload_len(), 11);
-
-    // 2. ZC_NOTIFY_MOVE_MODERN (0x09fd, 114 bytes dynamic)
-    let event = ServerEvent::EntityMoved {
-        char_id: CharId(150001),
-        start_pos: MapPosition { x: 10, y: 20, dir: 0 },
-        dest_pos: MapPosition { x: 30, y: 40, dir: 0 },
-        move_start_tick: 5000,
-    };
-    let bytes = encoder.encode_event(&event, ver).unwrap();
-    let mut stream = BytesMut::from(bytes.as_ref());
-    let raw = decoder.decode(&mut stream).unwrap().unwrap();
-    assert_eq!(raw.opcode, PacketOpcode(0x09fd));
-    assert_eq!(raw.payload_len(), 110);
 
     // 3. ZC_NOTIFY_ACT_MODERN (0x08c8, 34 bytes)
     let event = ServerEvent::EntityAction {
@@ -642,7 +682,10 @@ fn test_login_sequence_trace_exact_byte_layouts() {
     assert_eq!(ca_login_fail.len(), 55);
 
     let mut stream_fail = BytesMut::from(ca_login_fail.as_slice());
-    let raw_fail = decoder.decode(&mut stream_fail).unwrap().expect("RawPacket expected");
+    let raw_fail = decoder
+        .decode(&mut stream_fail)
+        .unwrap()
+        .expect("RawPacket expected");
     assert_eq!(raw_fail.opcode, PacketOpcode(0x0064));
     assert_eq!(raw_fail.payload_len(), 53);
 
@@ -663,14 +706,16 @@ fn test_login_sequence_trace_exact_byte_layouts() {
     assert_eq!(refuse_bytes.len(), 26);
 
     let expected_refuse_wire: [u8; 26] = [
-        0x3e, 0x08, 0x01, 0x00, 0x00, 0x00,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0x3e, 0x08, 0x01, 0x00, 0x00, 0x00, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0,
     ];
     assert_eq!(refuse_bytes.as_ref(), &expected_refuse_wire);
 
     let mut stream_refuse = BytesMut::from(refuse_bytes.as_ref());
-    let raw_refuse = decoder.decode(&mut stream_refuse).unwrap().expect("AC_REFUSE_LOGIN expected");
+    let raw_refuse = decoder
+        .decode(&mut stream_refuse)
+        .unwrap()
+        .expect("AC_REFUSE_LOGIN expected");
     assert_eq!(raw_refuse.opcode, PacketOpcode(0x083e));
     assert_eq!(raw_refuse.payload_len(), 24);
 
@@ -686,7 +731,10 @@ fn test_login_sequence_trace_exact_byte_layouts() {
     assert_eq!(ca_login_retry.len(), 55);
 
     let mut stream_retry = BytesMut::from(ca_login_retry.as_slice());
-    let raw_retry = decoder.decode(&mut stream_retry).unwrap().expect("RawPacket expected");
+    let raw_retry = decoder
+        .decode(&mut stream_retry)
+        .unwrap()
+        .expect("RawPacket expected");
     assert_eq!(raw_retry.opcode, PacketOpcode(0x0064));
     assert_eq!(raw_retry.payload_len(), 53);
 
@@ -739,7 +787,10 @@ fn test_login_sequence_trace_exact_byte_layouts() {
     assert_eq!(&accept_bytes[96..224], &[0u8; 128]);
 
     let mut stream_accept = BytesMut::from(accept_bytes.as_ref());
-    let raw_accept = decoder.decode(&mut stream_accept).unwrap().expect("AC_ACCEPT_LOGIN expected");
+    let raw_accept = decoder
+        .decode(&mut stream_accept)
+        .unwrap()
+        .expect("AC_ACCEPT_LOGIN expected");
     assert_eq!(raw_accept.opcode, PacketOpcode(0x0ac4));
     assert_eq!(raw_accept.payload_len(), 220);
 }

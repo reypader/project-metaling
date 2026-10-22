@@ -1,7 +1,6 @@
 //! Event encoder connecting domain ServerEvent variants to outgoing packet encoders.
 
 use bytes::{BufMut, Bytes, BytesMut};
-use ro_contracts::ids::Sex;
 use ro_contracts::packet::{EventEncoder, PacketCodecError, PacketOpcode, ServerEvent};
 
 use super::char::{
@@ -13,9 +12,8 @@ use super::char::{
 use super::login::{encode_ac_accept_login, encode_ac_refuse_login, CharServerEntry};
 use super::map::{
     encode_zc_accept_enter, encode_zc_aid, encode_zc_inventory_expansion_info,
-    encode_zc_notify_act, encode_zc_notify_move, encode_zc_notify_newentry,
-    encode_zc_notify_time, encode_zc_notify_vanish, encode_zc_par_change_i32,
-    encode_zc_restart_ack, NewEntryParams,
+    encode_zc_notify_act, encode_zc_notify_newentry, encode_zc_notify_time,
+    encode_zc_par_change_i32, encode_zc_restart_ack, NewEntryParams,
 };
 
 /// Default event encoder connecting domain `ServerEvent` variants to Phase 0 packet serializers.
@@ -23,11 +21,7 @@ use super::map::{
 pub struct Phase0EventEncoder;
 
 impl EventEncoder for Phase0EventEncoder {
-    fn encode_event(
-        &self,
-        event: &ServerEvent,
-        packetver: u32,
-    ) -> Result<Bytes, PacketCodecError> {
+    fn encode_event(&self, event: &ServerEvent, packetver: u32) -> Result<Bytes, PacketCodecError> {
         ModernEventEncoder.encode_event(event, packetver)
     }
 }
@@ -78,12 +72,7 @@ impl EventEncoder for ModernEventEncoder {
                     *total_slots,
                     *total_slots,
                 ));
-                buf.extend_from_slice(&encode_hc_accept_enter(
-                    *total_slots,
-                    0,
-                    0,
-                    characters,
-                )?);
+                buf.extend_from_slice(&encode_hc_accept_enter(*total_slots, 0, 0, characters)?);
                 let pages = ((*total_slots as u32) / 3).max(1);
                 buf.put_u16_le(PacketOpcode::HC_CHARLIST_NOTIFY.raw());
                 buf.put_u32_le(pages);
@@ -101,9 +90,7 @@ impl EventEncoder for ModernEventEncoder {
             ServerEvent::CharacterPageLoaded { characters } => {
                 encode_hc_ack_charinfo_per_page(characters)
             }
-            ServerEvent::CharacterCreated { character } => {
-                Ok(encode_hc_accept_makechar(character))
-            }
+            ServerEvent::CharacterCreated { character } => Ok(encode_hc_accept_makechar(character)),
             ServerEvent::CharacterCreateRefused { error_code } => {
                 Ok(encode_hc_refuse_makechar(*error_code))
             }
@@ -125,10 +112,7 @@ impl EventEncoder for ModernEventEncoder {
                 map_host,
                 map_port,
             } => Ok(encode_hc_notify_zonesvr(
-                *char_id,
-                map_name,
-                *map_host,
-                *map_port,
+                *char_id, map_name, *map_host, *map_port,
             )),
             ServerEvent::AcceptEnter {
                 account_id,
@@ -148,62 +132,37 @@ impl EventEncoder for ModernEventEncoder {
             ServerEvent::TimeSynchronized { server_tick } => {
                 Ok(encode_zc_notify_time(*server_tick))
             }
-            ServerEvent::EntityMoved {
-                char_id,
-                start_pos,
-                dest_pos,
-                move_start_tick,
-            } => {
-                Ok(encode_zc_notify_move(
-                    *char_id,
-                    start_pos.x,
-                    start_pos.y,
-                    dest_pos.x,
-                    dest_pos.y,
-                    *move_start_tick,
-                    "",
-                ))
-            }
-            ServerEvent::EntityAppeared {
-                char_id,
-                pos,
-                hair_style,
-                hair_color,
-                ..
-            } => {
+            // Transitional (M1): real encoders for every new unit event land in M3.
+            ServerEvent::UnitSpawned { unit } => {
                 let params = NewEntryParams {
-                    gid: char_id.0,
-                    speed: 150,
+                    gid: unit.gid,
+                    speed: unit.speed as i16,
                     body_state: 0,
                     health_state: 0,
                     effect_state: 0,
-                    job: 0,
-                    head: *hair_style as i16,
+                    job: unit.job as i16,
+                    head: unit.hair_style as i16,
                     weapon: 0,
                     accessory: 0,
                     shield: 0,
                     accessory2: 0,
                     accessory3: 0,
-                    headpalette: *hair_color as i16,
+                    headpalette: unit.hair_color as i16,
                     bodypalette: 0,
-                    head_dir: 0,
+                    head_dir: unit.head_dir as i16,
                     guid: 0,
                     gemblem_ver: 0,
                     honor: 0,
                     virtue: 0,
                     is_pkmode_on: 0,
-                    sex: Sex::Male,
-                    pos: *pos,
+                    sex: unit.sex,
+                    pos: unit.pos,
                     x_size: 5,
                     y_size: 5,
-                    clevel: 1,
+                    clevel: unit.clevel as i16,
                 };
                 Ok(encode_zc_notify_newentry(&params))
             }
-            ServerEvent::EntityVanished {
-                char_id,
-                vanish_type,
-            } => Ok(encode_zc_notify_vanish(char_id.0, *vanish_type)),
             ServerEvent::ParameterChanged { var_id, value } => {
                 Ok(encode_zc_par_change_i32(*var_id, *value))
             }
@@ -266,9 +225,9 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
             | PacketOpcode::HC_CHARLIST_NOTIFY
             | PacketOpcode::HC_BLOCK_CHARACTER
             | PacketOpcode::HC_SECOND_PASSWD_LOGIN
-            | PacketOpcode::ZC_NOTIFY_MOVE
-            | PacketOpcode::ZC_NOTIFY_NEWENTRY
-            | PacketOpcode::ZC_NOTIFY_STANDENTRY
+            | PacketOpcode::ZC_NOTIFY_MOVEENTRY11
+            | PacketOpcode::ZC_NOTIFY_NEWENTRY11
+            | PacketOpcode::ZC_NOTIFY_STANDENTRY11
             | PacketOpcode::AC_ACCEPT_LOGIN
             | PacketOpcode::HC_NOTIFY_ZONESVR
             | PacketOpcode::ZC_AID
@@ -279,7 +238,9 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ro_contracts::ids::{AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition};
+    use ro_contracts::ids::{
+        AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, Sex,
+    };
     use ro_contracts::TARGET_PACKETVER;
 
     #[test]
@@ -291,7 +252,11 @@ mod tests {
         let event = ServerEvent::AcceptEnter {
             account_id: AccountId(2000000),
             server_tick: 5000,
-            pos: MapPosition { x: 100, y: 120, dir: 4 },
+            pos: MapPosition {
+                x: 100,
+                y: 120,
+                dir: 4,
+            },
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();
         assert_eq!(bytes.len(), 23);
@@ -309,45 +274,18 @@ mod tests {
         let event = ServerEvent::InventoryExpansionInfo { expansion_size: 0 };
         let bytes = encoder.encode_event(&event, ver).unwrap();
         assert_eq!(bytes.len(), 4);
-        assert_eq!(&bytes[0..2], &PacketOpcode::ZC_INVENTORY_EXPANSION_INFO.raw().to_le_bytes());
+        assert_eq!(
+            &bytes[0..2],
+            &PacketOpcode::ZC_INVENTORY_EXPANSION_INFO
+                .raw()
+                .to_le_bytes()
+        );
 
         // 2. TimeSynchronized -> 0x007f (6 bytes)
         let event = ServerEvent::TimeSynchronized { server_tick: 9999 };
         let bytes = encoder.encode_event(&event, ver).unwrap();
         assert_eq!(bytes.len(), 6);
         assert_eq!(&bytes[0..2], &0x007fu16.to_le_bytes());
-
-        // 3. EntityMoved -> 0x09fd (114 bytes)
-        let event = ServerEvent::EntityMoved {
-            char_id: CharId(150001),
-            start_pos: MapPosition { x: 10, y: 20, dir: 0 },
-            dest_pos: MapPosition { x: 30, y: 40, dir: 0 },
-            move_start_tick: 1234,
-        };
-        let bytes = encoder.encode_event(&event, ver).unwrap();
-        assert_eq!(bytes.len(), 114);
-        assert_eq!(&bytes[0..2], &0x09fdu16.to_le_bytes());
-
-        // 4. EntityAppeared -> 0x09fe (107 bytes)
-        let event = ServerEvent::EntityAppeared {
-            char_id: CharId(150001),
-            pos: MapPosition { x: 50, y: 60, dir: 2 },
-            name: "Novice".to_string(),
-            hair_style: 1,
-            hair_color: 2,
-        };
-        let bytes = encoder.encode_event(&event, ver).unwrap();
-        assert_eq!(bytes.len(), 107);
-        assert_eq!(&bytes[0..2], &0x09feu16.to_le_bytes());
-
-        // 5. EntityVanished -> 0x0080 (7 bytes)
-        let event = ServerEvent::EntityVanished {
-            char_id: CharId(150001),
-            vanish_type: 1,
-        };
-        let bytes = encoder.encode_event(&event, ver).unwrap();
-        assert_eq!(bytes.len(), 7);
-        assert_eq!(&bytes[0..2], &0x0080u16.to_le_bytes());
 
         // 6. ParameterChanged -> 0x00b0 (8 bytes)
         let event = ServerEvent::ParameterChanged {
@@ -426,7 +364,11 @@ mod tests {
                 hair_style: 1,
                 hair_color: 2,
                 last_map: "prontera.gat".to_string(),
-                last_pos: MapPosition { x: 50, y: 50, dir: 0 },
+                last_pos: MapPosition {
+                    x: 50,
+                    y: 50,
+                    dir: 0,
+                },
                 delete_date: None,
             }],
         };
@@ -471,7 +413,11 @@ mod tests {
                 hair_style: 2,
                 hair_color: 3,
                 last_map: "geffen.gat".to_string(),
-                last_pos: MapPosition { x: 100, y: 100, dir: 2 },
+                last_pos: MapPosition {
+                    x: 100,
+                    y: 100,
+                    dir: 2,
+                },
                 delete_date: None,
             }],
         };
@@ -493,7 +439,11 @@ mod tests {
                 hair_style: 4,
                 hair_color: 1,
                 last_map: "morocc.gat".to_string(),
-                last_pos: MapPosition { x: 50, y: 50, dir: 0 },
+                last_pos: MapPosition {
+                    x: 50,
+                    y: 50,
+                    dir: 0,
+                },
                 delete_date: None,
             },
         };
@@ -542,7 +492,11 @@ mod tests {
         let event = ServerEvent::AcceptEnter {
             account_id: AccountId(2000000),
             server_tick: 5000,
-            pos: MapPosition { x: 100, y: 120, dir: 4 },
+            pos: MapPosition {
+                x: 100,
+                y: 120,
+                dir: 4,
+            },
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();
         assert_eq!(bytes.len(), 23);
@@ -558,41 +512,17 @@ mod tests {
         let event = ServerEvent::InventoryExpansionInfo { expansion_size: 0 };
         let bytes = encoder.encode_event(&event, ver).unwrap();
         assert_eq!(bytes.len(), 4);
-        assert_eq!(&bytes[0..2], &PacketOpcode::ZC_INVENTORY_EXPANSION_INFO.raw().to_le_bytes());
+        assert_eq!(
+            &bytes[0..2],
+            &PacketOpcode::ZC_INVENTORY_EXPANSION_INFO
+                .raw()
+                .to_le_bytes()
+        );
 
         let event = ServerEvent::TimeSynchronized { server_tick: 9999 };
         let bytes = encoder.encode_event(&event, ver).unwrap();
         assert_eq!(bytes.len(), 6);
         assert_eq!(&bytes[0..2], &0x007fu16.to_le_bytes());
-
-        let event = ServerEvent::EntityMoved {
-            char_id: CharId(150001),
-            start_pos: MapPosition { x: 10, y: 20, dir: 0 },
-            dest_pos: MapPosition { x: 30, y: 40, dir: 0 },
-            move_start_tick: 1234,
-        };
-        let bytes = encoder.encode_event(&event, ver).unwrap();
-        assert_eq!(bytes.len(), 114);
-        assert_eq!(&bytes[0..2], &0x09fdu16.to_le_bytes());
-
-        let event = ServerEvent::EntityAppeared {
-            char_id: CharId(150001),
-            pos: MapPosition { x: 50, y: 60, dir: 2 },
-            name: "Novice".to_string(),
-            hair_style: 1,
-            hair_color: 2,
-        };
-        let bytes = encoder.encode_event(&event, ver).unwrap();
-        assert_eq!(bytes.len(), 107);
-        assert_eq!(&bytes[0..2], &0x09feu16.to_le_bytes());
-
-        let event = ServerEvent::EntityVanished {
-            char_id: CharId(150001),
-            vanish_type: 1,
-        };
-        let bytes = encoder.encode_event(&event, ver).unwrap();
-        assert_eq!(bytes.len(), 7);
-        assert_eq!(&bytes[0..2], &0x0080u16.to_le_bytes());
 
         let event = ServerEvent::ParameterChanged {
             var_id: 10,
@@ -659,9 +589,9 @@ mod tests {
             PacketOpcode::HC_CHARLIST_NOTIFY,
             PacketOpcode::HC_BLOCK_CHARACTER,
             PacketOpcode::HC_SECOND_PASSWD_LOGIN,
-            PacketOpcode::ZC_NOTIFY_MOVE,
-            PacketOpcode::ZC_NOTIFY_NEWENTRY,
-            PacketOpcode::ZC_NOTIFY_STANDENTRY,
+            PacketOpcode::ZC_NOTIFY_MOVEENTRY11,
+            PacketOpcode::ZC_NOTIFY_NEWENTRY11,
+            PacketOpcode::ZC_NOTIFY_STANDENTRY11,
             PacketOpcode::AC_ACCEPT_LOGIN,
             PacketOpcode::HC_NOTIFY_ZONESVR,
             PacketOpcode::ZC_AID,

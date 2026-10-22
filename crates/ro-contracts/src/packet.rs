@@ -4,7 +4,9 @@ use bytes::Bytes;
 use std::fmt;
 use std::io;
 
-use crate::ids::{AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, SessionId, Sex};
+use crate::ids::{
+    AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, SessionId, Sex,
+};
 
 /// Maximum allowed packet size across all servers to prevent unbounded allocation.
 pub const MAX_PACKET_SIZE: usize = 65535;
@@ -57,8 +59,15 @@ impl From<BroadcastScope> for OutboundTarget {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum BroadcastScope {
     SelfOnly(CharId),
-    AreaOfInterest { map_name: String, center: MapPosition },
-    MapWide { map_name: String },
+    /// Everyone whose character is in AoI range of `center`, minus `exclude`.
+    AreaOfInterest {
+        map_name: String,
+        center: MapPosition,
+        exclude: Option<CharId>,
+    },
+    MapWide {
+        map_name: String,
+    },
 }
 
 /// Outbound packet containing serialized wire bytes and a destination target.
@@ -87,9 +96,18 @@ impl OutboundPacket {
         }
     }
 
-    pub fn broadcast_aoi(map_name: String, center: MapPosition, data: Bytes) -> Self {
+    pub fn broadcast_aoi(
+        map_name: String,
+        center: MapPosition,
+        exclude: Option<CharId>,
+        data: Bytes,
+    ) -> Self {
         Self {
-            target: OutboundTarget::Broadcast(BroadcastScope::AreaOfInterest { map_name, center }),
+            target: OutboundTarget::Broadcast(BroadcastScope::AreaOfInterest {
+                map_name,
+                center,
+                exclude,
+            }),
             data,
         }
     }
@@ -284,7 +302,6 @@ impl fmt::Debug for ClientIntent {
     }
 }
 
-
 /// Session-authenticated envelope wrapping a wire `ClientIntent` for dispatch to server logic actors.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SessionIntent {
@@ -315,7 +332,9 @@ pub enum PacketCodecError {
     #[error("IO failure: {0}")]
     Io(#[from] io::Error),
 
-    #[error("Packet length {length} exceeds maximum permitted threshold {max} for opcode {opcode:?}")]
+    #[error(
+        "Packet length {length} exceeds maximum permitted threshold {max} for opcode {opcode:?}"
+    )]
     PacketTooLarge {
         opcode: PacketOpcode,
         length: usize,
@@ -358,6 +377,29 @@ pub trait PacketIntentParser: Send + Sync {
         raw: &RawPacket,
         packetver: u32,
     ) -> Result<Option<ClientIntent>, PacketCodecError>;
+}
+
+/// Appearance snapshot shared by the unit entry packets (`0x09fd`/`0x09fe`/`0x09ff`).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct UnitAppearance {
+    /// Wire id (`bl.id`): the account_id for players.
+    pub gid: u32,
+    /// Written to the `GID` field; `None` (non-players) writes 0.
+    pub char_id: Option<CharId>,
+    pub name: String,
+    pub job: u16,
+    pub sex: Sex,
+    pub hair_style: u16,
+    pub hair_color: u16,
+    /// 0 straight, 1 clockwise, 2 counter-clockwise.
+    pub head_dir: u16,
+    /// Cell and body direction.
+    pub pos: MapPosition,
+    pub speed: u16,
+    /// rAthena `dead_sit`: 0 standing, 1 dead, 2 sitting. Goes only to the `0x09ff` `state`
+    /// byte (offset 68). It is NOT the wire `body_state` (`sc.opt1`, offset 15), which stays 0.
+    pub dead_sit: u8,
+    pub clevel: u16,
 }
 
 /// High-level domain events emitted by logic modules and engine systems, decoupled from wire serialization.
@@ -419,22 +461,59 @@ pub enum ServerEvent {
     TimeSynchronized {
         server_tick: u32,
     },
-    EntityMoved {
-        char_id: CharId,
-        start_pos: MapPosition,
-        dest_pos: MapPosition,
+    /// `0x0087` to the mover: its own walk started or was redirected.
+    PlayerMoved {
+        start: (u16, u16),
+        dest: (u16, u16),
         move_start_tick: u32,
     },
-    EntityAppeared {
-        char_id: CharId,
-        pos: MapPosition,
-        name: String,
-        hair_style: u16,
-        hair_color: u16,
+    /// `0x09fd`: a walking unit, sent to observers. The encoder takes the cells from
+    /// `start`/`dest`; `unit.pos` is ignored (`0x09fd` has no `pos_dir` field).
+    UnitWalking {
+        unit: UnitAppearance,
+        start: (u16, u16),
+        dest: (u16, u16),
+        move_start_tick: u32,
     },
-    EntityVanished {
-        char_id: CharId,
+    /// `0x09ff`: an idle unit came into an observer's view.
+    UnitStanding {
+        unit: UnitAppearance,
+    },
+    /// `0x09fe`: a unit spawned in view.
+    UnitSpawned {
+        unit: UnitAppearance,
+    },
+    /// `0x0080`: `vanish_type` 0 out of sight, 1 died, 2 logged out, 3 teleport.
+    UnitVanished {
+        gid: u32,
         vanish_type: u8,
+    },
+    /// `0x0088`: a unit's walk stopped at (x, y).
+    UnitStopped {
+        gid: u32,
+        x: u16,
+        y: u16,
+    },
+    /// `0x009c`.
+    DirectionChanged {
+        gid: u32,
+        head_dir: u16,
+        body_dir: u8,
+    },
+    /// `0x0a30`: reply to `CZ_REQNAME` for a player.
+    AckEntityName {
+        gid: u32,
+        name: String,
+        party_name: String,
+        guild_name: String,
+        position_name: String,
+        title_id: i32,
+    },
+    /// `0x0091`.
+    PlayerMapMove {
+        dest_map: String,
+        dest_x: u16,
+        dest_y: u16,
     },
     EntityAction {
         source_id: u32,
@@ -466,11 +545,7 @@ impl ScopedServerEvent {
 
 /// Trait defining the serializer contract that translates a domain `ServerEvent` into wire `Bytes`.
 pub trait EventEncoder: Send + Sync {
-    fn encode_event(
-        &self,
-        event: &ServerEvent,
-        packetver: u32,
-    ) -> Result<Bytes, PacketCodecError>;
+    fn encode_event(&self, event: &ServerEvent, packetver: u32) -> Result<Bytes, PacketCodecError>;
 
     fn encode_scoped_event(
         &self,
@@ -492,15 +567,36 @@ mod tests {
         assert_eq!(PacketOpcode::CA_LOGIN.to_string(), "0x0064 (CA_LOGIN)");
 
         assert_eq!(PacketOpcode::ZC_NOTIFY_TIME.name(), Some("ZC_NOTIFY_TIME"));
-        assert_eq!(PacketOpcode::ZC_NOTIFY_TIME.to_string(), "0x007f (ZC_NOTIFY_TIME)");
+        assert_eq!(
+            PacketOpcode::ZC_NOTIFY_TIME.to_string(),
+            "0x007f (ZC_NOTIFY_TIME)"
+        );
 
-        assert_eq!(PacketOpcode::HC_REFUSE_DELETECHAR.name(), Some("HC_REFUSE_DELETECHAR"));
-        assert_eq!(PacketOpcode::HC_ACK_DELETE_CHAR.name(), Some("HC_REFUSE_DELETECHAR"));
-        assert_eq!(PacketOpcode::HC_ACK_DELETE_CHAR.to_string(), "0x0070 (HC_REFUSE_DELETECHAR)");
+        assert_eq!(
+            PacketOpcode::HC_REFUSE_DELETECHAR.name(),
+            Some("HC_REFUSE_DELETECHAR")
+        );
+        assert_eq!(
+            PacketOpcode::HC_ACK_DELETE_CHAR.name(),
+            Some("HC_REFUSE_DELETECHAR")
+        );
+        assert_eq!(
+            PacketOpcode::HC_ACK_DELETE_CHAR.to_string(),
+            "0x0070 (HC_REFUSE_DELETECHAR)"
+        );
 
-        assert_eq!(PacketOpcode::HC_ACK_MAKE_CHAR.name(), Some("HC_ACK_MAKE_CHAR"));
-        assert_eq!(PacketOpcode::HC_ACCEPT_MAKECHAR.name(), Some("HC_ACK_MAKE_CHAR"));
-        assert_eq!(PacketOpcode::HC_ACCEPT_MAKECHAR.to_string(), "0x0b6f (HC_ACK_MAKE_CHAR)");
+        assert_eq!(
+            PacketOpcode::HC_ACK_MAKE_CHAR.name(),
+            Some("HC_ACK_MAKE_CHAR")
+        );
+        assert_eq!(
+            PacketOpcode::HC_ACCEPT_MAKECHAR.name(),
+            Some("HC_ACK_MAKE_CHAR")
+        );
+        assert_eq!(
+            PacketOpcode::HC_ACCEPT_MAKECHAR.to_string(),
+            "0x0b6f (HC_ACK_MAKE_CHAR)"
+        );
     }
 
     #[test]

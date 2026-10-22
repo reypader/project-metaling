@@ -38,9 +38,12 @@ async fn main() -> anyhow::Result<()> {
     let client_addr: SocketAddr = format!("0.0.0.0:{}", config.client_port)
         .parse()
         .context("Failed to parse map-server client TCP address")?;
-    let client_listener = TcpListener::bind(client_addr)
-        .await
-        .with_context(|| format!("Failed to bind map-server client TCP listener to {}", client_addr))?;
+    let client_listener = TcpListener::bind(client_addr).await.with_context(|| {
+        format!(
+            "Failed to bind map-server client TCP listener to {}",
+            client_addr
+        )
+    })?;
     info!("Map client TCP listener active on {}", client_addr);
 
     let http_task = tokio::spawn(async move {

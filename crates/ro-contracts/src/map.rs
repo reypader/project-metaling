@@ -2,25 +2,25 @@
 
 use serde::{Deserialize, Serialize};
 
-/// Ragnarok Online .gat cell classification.
+/// Ragnarok Online `.gat` cell classification (rAthena raw values).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum CellType {
-    /// Walkable cell (0).
+    /// Walkable ground (0).
     Walkable,
-    /// Solid wall (1), non-walkable, blocks line of sight.
+    /// Wall (1): not walkable, blocks line of sight.
     Wall,
-    /// Walkable water (2).
+    /// Walkable variant (2).
+    Walkable2,
+    /// Water (3): walkable.
     Water,
-    /// Walkable water variant (3).
-    Water2,
-    /// Walkable cell variant (4).
+    /// Walkable variant (4).
     Walkable4,
-    /// Non-walkable cliff or gap (5), passable for line of sight.
+    /// Cliff or gap (5): not walkable, does not block line of sight.
     Cliff,
-    /// Walkable cell variant (6).
+    /// Walkable variant (6).
     Walkable6,
-    /// Other unclassified cell types.
-    Other(u8),
+    /// Any other raw value. Not walkable.
+    Unknown(u8),
 }
 
 impl CellType {
@@ -28,17 +28,21 @@ impl CellType {
         match val {
             0 => Self::Walkable,
             1 => Self::Wall,
-            2 => Self::Water,
-            3 => Self::Water2,
+            2 => Self::Walkable2,
+            3 => Self::Water,
             4 => Self::Walkable4,
             5 => Self::Cliff,
             6 => Self::Walkable6,
-            other => Self::Other(other),
+            other => Self::Unknown(other),
         }
     }
 
+    /// Walkable: 0, 2, 3, 4, 6. Not walkable: 1, 5, and unknown values.
     pub fn is_walkable(self) -> bool {
-        !matches!(self, Self::Wall | Self::Cliff)
+        matches!(
+            self,
+            Self::Walkable | Self::Walkable2 | Self::Water | Self::Walkable4 | Self::Walkable6
+        )
     }
 }
 
@@ -100,4 +104,3 @@ pub enum DbLoadError {
     #[error("Duplicate ID {id} found in database '{path}'")]
     DuplicateId { path: String, id: u32 },
 }
-

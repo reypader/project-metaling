@@ -30,6 +30,7 @@ impl PacketOpcode {
     pub const ZC_ACCEPT_QUIT: Self = Self(0x0083);
     pub const ZC_REFUSE_QUIT: Self = Self(0x0084);
     pub const ZC_NOTIFY_PLAYERMOVE: Self = Self(0x0087);
+    pub const ZC_STOPMOVE: Self = Self(0x0088);
     pub const ZC_NOTIFY_ACT_POSITION: Self = Self(0x008b);
     pub const CZ_REQUEST_CHAT: Self = Self(0x008c);
     pub const ZC_NOTIFY_CHAT: Self = Self(0x008d);
@@ -39,6 +40,7 @@ impl PacketOpcode {
     pub const ZC_NPCACK_ENABLE: Self = Self(0x0093);
     pub const CZ_WHISPER: Self = Self(0x0096);
     pub const CZ_BROADCAST: Self = Self(0x0099);
+    pub const ZC_CHANGE_DIRECTION: Self = Self(0x009c);
     pub const ZC_ITEM_FALL_ENTRY: Self = Self(0x009e);
     pub const CZ_USE_ITEM: Self = Self(0x009f);
     pub const CZ_SOLVE_CHAR_NAME_0X00A2: Self = Self(0x00a2);
@@ -858,9 +860,9 @@ impl PacketOpcode {
     pub const ZC_UPDATE_MISSION_HUNT_EX: Self = Self(0x09fa);
     pub const CZ_PET_EVOLUTION: Self = Self(0x09fb);
     pub const ZC_PET_EVOLUTION_RESULT: Self = Self(0x09fc);
-    pub const ZC_NOTIFY_MOVE: Self = Self(0x09fd);
-    pub const ZC_NOTIFY_NEWENTRY: Self = Self(0x09fe);
-    pub const ZC_NOTIFY_STANDENTRY: Self = Self(0x09ff);
+    pub const ZC_NOTIFY_MOVEENTRY11: Self = Self(0x09fd);
+    pub const ZC_NOTIFY_NEWENTRY11: Self = Self(0x09fe);
+    pub const ZC_NOTIFY_STANDENTRY11: Self = Self(0x09ff);
     pub const ZC_SHORTCUT_KEY_LIST_0X0A00: Self = Self(0x0a00);
     pub const CZ_SHORTCUTKEYBAR_ROTATE1: Self = Self(0x0a01);
     pub const CZ_REQ_CANCEL_WRITE_MAIL: Self = Self(0x0a03);
@@ -888,6 +890,7 @@ impl PacketOpcode {
     pub const ZC_REQ_ACH_REWARD_ACK: Self = Self(0x0a26);
     pub const CZ_REQ_CHANGE_TITLE: Self = Self(0x0a2e);
     pub const ZC_ACK_CHANGE_TITLE: Self = Self(0x0a2f);
+    pub const ZC_ACK_REQNAMEALL: Self = Self(0x0a30);
     pub const ZC_OPEN_RODEX_THROUGH_NPC_ONLY: Self = Self(0x0a32);
     pub const CZ_REQ_ONECLICK_ITEMIDENTIFY: Self = Self(0x0a35);
     pub const CH_MAKE_CHAR: Self = Self(0x0a39);
@@ -941,7 +944,7 @@ impl PacketOpcode {
     pub const CZ_ATTENDANCE_REQUEST: Self = Self(0x0aef);
     pub const PACKET_0X0AF0: Self = Self(0x0af0);
     pub const CZ_USE_SKILL_TO_POS_0X0AF4: Self = Self(0x0af4);
-    pub const ZC_ACK_REQNAME: Self = Self(0x0af7);
+    pub const ZC_ACK_REQNAME_BYGID: Self = Self(0x0af7);
     pub const CZ_PARTY_REQ_ACK_MASTER_TO_JOIN: Self = Self(0x0af8);
     pub const CZ_REQ_STYLE_CHANGE2: Self = Self(0x0afc);
     pub const PACKET_0X0B09: Self = Self(0x0b09);
@@ -1025,6 +1028,7 @@ impl PacketOpcode {
             0x0083 => Some("ZC_ACCEPT_QUIT"),
             0x0084 => Some("ZC_REFUSE_QUIT"),
             0x0087 => Some("ZC_NOTIFY_PLAYERMOVE"),
+            0x0088 => Some("ZC_STOPMOVE"),
             0x008b => Some("ZC_NOTIFY_ACT_POSITION"),
             0x008c => Some("CZ_REQUEST_CHAT"),
             0x008d => Some("ZC_NOTIFY_CHAT"),
@@ -1034,6 +1038,7 @@ impl PacketOpcode {
             0x0093 => Some("ZC_NPCACK_ENABLE"),
             0x0096 => Some("CZ_WHISPER"),
             0x0099 => Some("CZ_BROADCAST"),
+            0x009c => Some("ZC_CHANGE_DIRECTION"),
             0x009e => Some("ZC_ITEM_FALL_ENTRY"),
             0x009f => Some("CZ_USE_ITEM"),
             0x00a2 => Some("CZ_SOLVE_CHAR_NAME_0X00A2"),
@@ -1853,9 +1858,9 @@ impl PacketOpcode {
             0x09fa => Some("ZC_UPDATE_MISSION_HUNT_EX"),
             0x09fb => Some("CZ_PET_EVOLUTION"),
             0x09fc => Some("ZC_PET_EVOLUTION_RESULT"),
-            0x09fd => Some("ZC_NOTIFY_MOVE"),
-            0x09fe => Some("ZC_NOTIFY_NEWENTRY"),
-            0x09ff => Some("ZC_NOTIFY_STANDENTRY"),
+            0x09fd => Some("ZC_NOTIFY_MOVEENTRY11"),
+            0x09fe => Some("ZC_NOTIFY_NEWENTRY11"),
+            0x09ff => Some("ZC_NOTIFY_STANDENTRY11"),
             0x0a00 => Some("ZC_SHORTCUT_KEY_LIST_0X0A00"),
             0x0a01 => Some("CZ_SHORTCUTKEYBAR_ROTATE1"),
             0x0a03 => Some("CZ_REQ_CANCEL_WRITE_MAIL"),
@@ -1883,6 +1888,7 @@ impl PacketOpcode {
             0x0a26 => Some("ZC_REQ_ACH_REWARD_ACK"),
             0x0a2e => Some("CZ_REQ_CHANGE_TITLE"),
             0x0a2f => Some("ZC_ACK_CHANGE_TITLE"),
+            0x0a30 => Some("ZC_ACK_REQNAMEALL"),
             0x0a32 => Some("ZC_OPEN_RODEX_THROUGH_NPC_ONLY"),
             0x0a35 => Some("CZ_REQ_ONECLICK_ITEMIDENTIFY"),
             0x0a39 => Some("CH_MAKE_CHAR"),
@@ -1936,7 +1942,7 @@ impl PacketOpcode {
             0x0aef => Some("CZ_ATTENDANCE_REQUEST"),
             0x0af0 => Some("PACKET_0X0AF0"),
             0x0af4 => Some("CZ_USE_SKILL_TO_POS_0X0AF4"),
-            0x0af7 => Some("ZC_ACK_REQNAME"),
+            0x0af7 => Some("ZC_ACK_REQNAME_BYGID"),
             0x0af8 => Some("CZ_PARTY_REQ_ACK_MASTER_TO_JOIN"),
             0x0afc => Some("CZ_REQ_STYLE_CHANGE2"),
             0x0b09 => Some("PACKET_0X0B09"),

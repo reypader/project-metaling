@@ -10,9 +10,9 @@ use std::{
 
 use bytes::Bytes;
 use ro_contracts::{
-    character::CharacterRepository,
-    ids::{AccountId, CharId, MapPosition, SessionId},
-    packet::{ClientIntent, EventEncoder, ServerEvent, SessionIntent},
+    character::{CharacterRepository, DEFAULT_WALK_SPEED},
+    ids::{AccountId, CharId, MapPosition, SessionId, Sex},
+    packet::{ClientIntent, EventEncoder, ServerEvent, SessionIntent, UnitAppearance},
     TARGET_PACKETVER,
 };
 use ro_packets::Phase0EventEncoder;
@@ -35,13 +35,16 @@ pub enum WorldCommand {
     },
 }
 
+/// Reserved transfers: char -> (map name, optional entry position).
+type PendingTransfers = HashMap<CharId, (String, Option<MapPosition>)>;
+
 /// Shared coordinator managing long-lived per-map `MapWorldActor` tasks and transfer reservations.
 #[derive(Clone)]
 pub struct MapServiceHandle {
     next_session_id: Arc<AtomicU64>,
     char_repo: Arc<dyn CharacterRepository>,
     worlds: Arc<RwLock<HashMap<String, mpsc::Sender<WorldCommand>>>>,
-    pending_transfers: Arc<RwLock<HashMap<CharId, (String, Option<MapPosition>)>>>,
+    pending_transfers: Arc<RwLock<PendingTransfers>>,
     start_time: Instant,
 }
 
@@ -104,7 +107,9 @@ impl MapServiceHandle {
         let worlds_guard = match self.worlds.read() {
             Ok(guard) => guard,
             Err(poisoned) => {
-                warn!("Map worlds read lock poisoned during accept_transfer. Recovering inner state.");
+                warn!(
+                    "Map worlds read lock poisoned during accept_transfer. Recovering inner state."
+                );
                 poisoned.into_inner()
             }
         };
@@ -147,7 +152,10 @@ impl MapServiceHandle {
             let dest_map = destination_map.clone();
             tokio::spawn(async move {
                 if let Err(err) = repo.update_position(char_id, &dest_map, pos).await {
-                    error!("Failed to update position on transfer for char {}: {}", char_id.0, err);
+                    error!(
+                        "Failed to update position on transfer for char {}: {}",
+                        char_id.0, err
+                    );
                 }
             });
         }
@@ -387,12 +395,22 @@ impl MapWorldActor {
                     "Map '{}' synchronizing actor init for session {:?} (char {})",
                     self.map_name, session_id, char_id.0
                 );
-                let appear_event = ServerEvent::EntityAppeared {
-                    char_id,
-                    pos,
-                    name: "Novice".to_string(),
-                    hair_style: 1,
-                    hair_color: 1,
+                // Transitional (M1): ids and appearance come from the engine in M6.
+                let appear_event = ServerEvent::UnitSpawned {
+                    unit: UnitAppearance {
+                        gid: char_id.0,
+                        char_id: Some(char_id),
+                        name: "Novice".to_string(),
+                        job: 0,
+                        sex: Sex::Male,
+                        hair_style: 1,
+                        hair_color: 1,
+                        head_dir: 0,
+                        pos,
+                        speed: DEFAULT_WALK_SPEED,
+                        dead_sit: 0,
+                        clevel: 1,
+                    },
                 };
                 self.send_unicast(session_id, &appear_event);
                 self.broadcast_aoi(session_id, pos, &appear_event);
@@ -472,14 +490,12 @@ impl MapWorldActor {
             }
             let dx = (player.pos.x as i32 - pos.x as i32).abs();
             let dy = (player.pos.y as i32 - pos.y as i32).abs();
-            if dx <= 14 && dy <= 14 {
-                if player.outbound_tx.try_send(bytes.clone()).is_err() {
-                    warn!(
-                        "Session {:?} (char {}) outbound queue full or closed on map '{}'; removing session",
-                        session_id, player.char_id.0, self.map_name
-                    );
-                    disconnected.push(session_id);
-                }
+            if dx <= 14 && dy <= 14 && player.outbound_tx.try_send(bytes.clone()).is_err() {
+                warn!(
+                    "Session {:?} (char {}) outbound queue full or closed on map '{}'; removing session",
+                    session_id, player.char_id.0, self.map_name
+                );
+                disconnected.push(session_id);
             }
         }
         for session_id in disconnected {
