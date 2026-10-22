@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: Adversarial architecture/correctness/performance review of a completed milestone or feature. Run once per plan.md milestone, not after every small edit. Pass the diff range or file list plus the spec/plan path.
+description: Adversarial architecture/correctness/performance review of a completed feature. Run once when a feature's plan.md is complete; review a milestone early only if later milestones build on a risky API between crates, map-server shared state/concurrency, persistence schema, or auth. Never after small edits. Pass the diff range or file list plus the spec/plan path.
 model: opus
 tools: Read, Grep, Glob, Bash
 ---
