@@ -48,3 +48,9 @@ sqlx = { version = "0.8", features = ["runtime-tokio", "postgres"] }
 # Test code is exempted via clippy.toml.
 unwrap_used = "warn"
 expect_used = "warn"
+
+[profile.release]
+# Whole-program optimization: inlines across crates (e.g. ro-db grid reads in ro-engine's A*).
+# Slower release builds only; dev builds and ./verify.sh are unaffected.
+lto = "fat"
+codegen-units = 1
