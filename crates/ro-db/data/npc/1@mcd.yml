@@ -2,162 +2,164 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Charleston 1#0
   X: 127
-  "Y": 277
+  Y: 277
   Dir: 4
   Sprite: 10053
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:231
 - Name: Charleston 2#0
   X: 120
-  "Y": 224
+  Y: 224
   Dir: 5
   Sprite: 10054
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:288
 - Name: Dr. Ve#1
   X: 116
-  "Y": 213
+  Y: 213
   Dir: 5
   Sprite: 923
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:298
 - Name: Charleston 1#1
   X: 121
-  "Y": 217
+  Y: 217
   Dir: 4
   Sprite: 10053
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:403
 - Name: Charleston 1#2
   X: 122
-  "Y": 217
+  Y: 217
   Dir: 4
   Sprite: 10053
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:509
 - Name: Charleston 1#3
   X: 123
-  "Y": 217
+  Y: 217
   Dir: 4
   Sprite: 10053
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:567
 - Name: Charleston 2#1
   X: 141
-  "Y": 214
+  Y: 214
   Dir: 5
   Sprite: 10054
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:729
 - Name: Charleston 1#4
   X: 146
-  "Y": 214
+  Y: 214
   Dir: 4
   Sprite: 10053
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:774
 - Name: battle#1
   X: 144
-  "Y": 212
+  Y: 212
   Dir: 5
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:789
 - Name: battle#2
   X: 144
-  "Y": 212
+  Y: 212
   Dir: 5
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:835
 - Name: Charleston 2#2
   X: 141
-  "Y": 214
+  Y: 214
   Dir: 5
   Sprite: 10054
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:857
 - Name: Charleston 1#5
   X: 146
-  "Y": 214
+  Y: 214
   Dir: 4
   Sprite: 10053
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:969
 - Name: Dr. Ve#2
   X: 143
-  "Y": 217
+  Y: 217
   Dir: 5
   Sprite: 923
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:975
 - Name: Charleston 1#6
   X: 132
-  "Y": 129
+  Y: 129
   Dir: 4
   Sprite: 10053
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:981
 - Name: Charleston 1#61
   X: 132
-  "Y": 129
+  Y: 129
   Dir: 4
   Sprite: 10053
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:988
 - Name: Charleston 2#3
   X: 127
-  "Y": 129
+  Y: 129
   Dir: 5
   Sprite: 10054
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1055
 - Name: Charleston 2#31
   X: 127
-  "Y": 129
+  Y: 129
   Dir: 5
   Sprite: 10054
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1068
 - Name: CoreDialog#3
   X: 15
-  "Y": 15
+  Y: 15
   Dir: 5
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1075
 - Name: Charleston 1#7
   X: 132
-  "Y": 148
+  Y: 148
   Dir: 4
   Sprite: 10053
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1128
 - Name: Charleston 1#8
   X: 133
-  "Y": 148
+  Y: 148
   Dir: 4
   Sprite: 10053
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1138
 - Name: Charleston 2#4
   X: 127
-  "Y": 148
+  Y: 148
   Dir: 5
   Sprite: 10054
   DuplicateOf: Charleston 1#8
@@ -165,7 +167,7 @@ Body:
   Source: npc/re/instances/CharlestonCrisis.txt:1139
 - Name: Charleston 3#0
   X: 130
-  "Y": 153
+  Y: 153
   Dir: 5
   Sprite: 10055
   DuplicateOf: Charleston 1#8
@@ -173,420 +175,420 @@ Body:
   Source: npc/re/instances/CharlestonCrisis.txt:1140
 - Name: boss#1
   X: 129
-  "Y": 155
+  Y: 155
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1145
 - Name: boss#2
   X: 129
-  "Y": 149
+  Y: 149
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1212
 - Name: BOSS#23
   X: 120
-  "Y": 150
+  Y: 150
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1241
 - Name: Bomb#23
   X: 142
-  "Y": 150
+  Y: 150
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1266
 - Name: Charleston 1#9
   X: 132
-  "Y": 148
+  Y: 148
   Dir: 4
   Sprite: 10053
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1299
 - Name: Charleston 2#5
   X: 127
-  "Y": 148
+  Y: 148
   Dir: 5
   Sprite: 10054
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1320
 - Name: Charleston 2#6
   X: 127
-  "Y": 148
+  Y: 148
   Dir: 5
   Sprite: 10054
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1330
 - Name: boss#3
   X: 129
-  "Y": 149
+  Y: 149
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1355
 - Name: Dr. Ve#3
   X: 116
-  "Y": 215
+  Y: 215
   Dir: 5
   Sprite: 923
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1435
 - Name: Charleston 2#7
   X: 121
-  "Y": 215
+  Y: 215
   Dir: 4
   Sprite: 10054
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1454
 - Name: end#1
   X: 129
-  "Y": 149
+  Y: 149
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1464
 - Name: Dr. Ve#4
   X: 116
-  "Y": 215
+  Y: 215
   Dir: 4
   Sprite: 923
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1525
 - Name: Charleston 2#8
   X: 121
-  "Y": 215
+  Y: 215
   Dir: 4
   Sprite: 10054
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1600
 - Name: Shalosh#1
   X: 77
-  "Y": 167
+  Y: 167
   Dir: 5
   Sprite: 10041
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1616
 - Name: Main Computer#1
   X: 109
-  "Y": 219
+  Y: 219
   Dir: 5
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1707
 - Name: Backup Generator#1
   X: 86
-  "Y": 231
+  Y: 231
   Dir: 5
   Sprite: 844
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1757
 - Name: Backup Generator#2
   X: 172
-  "Y": 198
+  Y: 198
   Dir: 5
   Sprite: 844
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Backup Generator#1
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1781
 - Name: Backup Generator#3
   X: 126
-  "Y": 84
+  Y: 84
   Dir: 5
   Sprite: 844
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Backup Generator#1
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1782
 - Name: GeneratorBroadcast#1
   X: 11
-  "Y": 11
+  Y: 11
   Dir: 5
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1784
 - Name: 1gate#1
   X: 44
-  "Y": 211
+  Y: 211
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1799
 - Name: 2gate#1
   X: 58
-  "Y": 72
+  Y: 72
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1820
 - Name: 3gate#1
   X: 104
-  "Y": 50
+  Y: 50
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1841
 - Name: 4gate#1
   X: 218
-  "Y": 211
+  Y: 211
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: 1@mcd
     X: 210
-    "Y": 217
+    Y: 217
     TriggerWhileHidden: false
   Source: npc/re/instances/CharlestonCrisis.txt:1862
 - Name: 5gate#1
   X: 211
-  "Y": 195
+  Y: 195
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: 1@mcd
     X: 211
-    "Y": 180
+    Y: 180
     TriggerWhileHidden: false
   Source: npc/re/instances/CharlestonCrisis.txt:1863
 - Name: 6gate#1
   X: 141
-  "Y": 199
+  Y: 199
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@mcd
     X: 141
-    "Y": 207
+    Y: 207
     TriggerWhileHidden: false
   Source: npc/re/instances/CharlestonCrisis.txt:1864
 - Name: 7gate#1
   X: 142
-  "Y": 203
+  Y: 203
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1866
 - Name: 8gate#1
   X: 130
-  "Y": 127
+  Y: 127
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@mcd
     X: 129
-    "Y": 143
+    Y: 143
     TriggerWhileHidden: false
   Source: npc/re/instances/CharlestonCrisis.txt:1887
 - Name: 9gate#1
   X: 130
-  "Y": 134
+  Y: 134
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@mcd
     X: 130
-    "Y": 121
+    Y: 121
     TriggerWhileHidden: false
   Source: npc/re/instances/CharlestonCrisis.txt:1888
 - Name: mob#1
   X: 127
-  "Y": 262
+  Y: 262
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1890
 - Name: mob#2
   X: 67
-  "Y": 234
+  Y: 234
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: mob#1
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1970
 - Name: mob#3
   X: 33
-  "Y": 192
+  Y: 192
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: mob#1
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1971
 - Name: mob#4
   X: 75
-  "Y": 59
+  Y: 59
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: mob#1
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1972
 - Name: mob#5
   X: 109
-  "Y": 33
+  Y: 33
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: mob#1
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1973
 - Name: mob#6
   X: 133
-  "Y": 49
+  Y: 49
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: mob#1
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1974
 - Name: mob#7
   X: 204
-  "Y": 74
+  Y: 74
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: mob#1
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1975
 - Name: mob#8
   X: 204
-  "Y": 224
+  Y: 224
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: mob#1
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1976
 - Name: mob#9
   X: 157
-  "Y": 61
+  Y: 61
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: mob#1
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1977
 - Name: mob#10
   X: 175
-  "Y": 147
+  Y: 147
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: mob#1
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1978
 - Name: IGU#01
   X: 114
-  "Y": 82
+  Y: 82
   Dir: 4
   Sprite: 646
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1980
 - Name: Newoz#15_
   X: 176
-  "Y": 179
+  Y: 179
   Dir: 5
   Sprite: 625
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1992
 - Name: "#Research Journal 01"
   X: 123
-  "Y": 74
+  Y: 74
   Dir: 5
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:1999
 - Name: "#Research Journal 02"
   X: 142
-  "Y": 74
+  Y: 74
   Dir: 5
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:2014
 - Name: "#Research Journal 03"
   X: 111
-  "Y": 74
+  Y: 74
   Dir: 5
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:2031
 - Name: "#Research Journal 04"
   X: 128
-  "Y": 74
+  Y: 74
   Dir: 5
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/CharlestonCrisis.txt:2046
 - Name: Charleston Assistant#1
   X: 10
-  "Y": 10
+  Y: 10
   Dir: 5
   Sprite: 844
   Kind: Script

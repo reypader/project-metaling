@@ -2,41 +2,43 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Mark#Bunker Entrance
   X: 100
-  "Y": 96
+  Y: 96
   Dir: 3
   Sprite: 616
   Kind: Script
   Source: npc/re/quests/quests_15_2.txt:1126
 - Name: Alph#Entrance
   X: 363
-  "Y": 171
+  Y: 171
   Dir: 3
   Sprite: 615
   Kind: Script
   Source: npc/re/quests/quests_15_2.txt:1188
 - Name: Alph#Entrance2
   X: 388
-  "Y": 86
+  Y: 86
   Dir: 3
   Sprite: 615
   Kind: Script
   Source: npc/re/quests/quests_15_2.txt:1293
 - Name: Box#e152p00
   X: 382
-  "Y": 335
+  Y: 335
   Dir: 3
   Sprite: 10043
   Kind: Script
   Source: npc/re/quests/quests_15_2.txt:2259
 - Name: Under desk#e152p01
   X: 87
-  "Y": 167
+  Y: 167
   Dir: 3
   Sprite: 10043
   DuplicateOf: Box#e152p00
@@ -44,7 +46,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:2360
 - Name: Under desk#e152p02
   X: 316
-  "Y": 243
+  Y: 243
   Dir: 3
   Sprite: 10043
   DuplicateOf: Box#e152p00
@@ -52,7 +54,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:2361
 - Name: Under desk#e152p03
   X: 103
-  "Y": 175
+  Y: 175
   Dir: 3
   Sprite: 10043
   DuplicateOf: Box#e152p00
@@ -60,7 +62,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:2362
 - Name: Machine Remains#e152p04
   X: 50
-  "Y": 292
+  Y: 292
   Dir: 3
   Sprite: 10043
   DuplicateOf: Box#e152p00
@@ -68,7 +70,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:2364
 - Name: Machine Remains#e152p05
   X: 57
-  "Y": 314
+  Y: 314
   Dir: 3
   Sprite: 10043
   DuplicateOf: Box#e152p00
@@ -76,7 +78,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:2365
 - Name: Machine Remains#e152p06
   X: 128
-  "Y": 314
+  Y: 314
   Dir: 3
   Sprite: 10043
   DuplicateOf: Box#e152p00
@@ -84,7 +86,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:2366
 - Name: Machine Remains#e152p07
   X: 143
-  "Y": 308
+  Y: 308
   Dir: 3
   Sprite: 10043
   DuplicateOf: Box#e152p00
@@ -92,7 +94,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:2367
 - Name: Machine Remains#e152p08
   X: 147
-  "Y": 287
+  Y: 287
   Dir: 3
   Sprite: 10043
   DuplicateOf: Box#e152p00
@@ -100,7 +102,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:2368
 - Name: Thicket#e152p09
   X: 245
-  "Y": 360
+  Y: 360
   Dir: 3
   Sprite: 10043
   DuplicateOf: Box#e152p00
@@ -108,7 +110,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:2370
 - Name: Thicket#e152p10
   X: 286
-  "Y": 348
+  Y: 348
   Dir: 3
   Sprite: 10043
   DuplicateOf: Box#e152p00
@@ -116,7 +118,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:2371
 - Name: Thicket#e152p11
   X: 331
-  "Y": 375
+  Y: 375
   Dir: 3
   Sprite: 10043
   DuplicateOf: Box#e152p00
@@ -124,7 +126,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:2372
 - Name: Organized food tray#e152p12
   X: 321
-  "Y": 305
+  Y: 305
   Dir: 3
   Sprite: 10043
   DuplicateOf: Box#e152p00
@@ -132,7 +134,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:2374
 - Name: Organized food tray#e152p13
   X: 287
-  "Y": 304
+  Y: 304
   Dir: 3
   Sprite: 10043
   DuplicateOf: Box#e152p00
@@ -140,7 +142,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:2375
 - Name: Document pile#e152p14
   X: 288
-  "Y": 263
+  Y: 263
   Dir: 3
   Sprite: 10043
   DuplicateOf: Box#e152p00
@@ -148,7 +150,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:2377
 - Name: Document pile#e152p15
   X: 280
-  "Y": 243
+  Y: 243
   Dir: 3
   Sprite: 10043
   DuplicateOf: Box#e152p00
@@ -156,14 +158,14 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:2378
 - Name: Mysterious Device#EP15.2MR1
   X: 103
-  "Y": 95
+  Y: 95
   Dir: 4
   Sprite: 836
   Kind: Script
   Source: npc/re/quests/quests_15_2.txt:5458
 - Name: Mysterious Device#EP15.2MR2
   X: 102
-  "Y": 161
+  Y: 161
   Dir: 4
   Sprite: 836
   DuplicateOf: Mysterious Device#EP15.2MR1
@@ -171,7 +173,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:5506
 - Name: Mysterious Device#EP15.2MR3
   X: 51
-  "Y": 272
+  Y: 272
   Dir: 4
   Sprite: 836
   DuplicateOf: Mysterious Device#EP15.2MR1
@@ -179,7 +181,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:5507
 - Name: Mysterious Device#EP15.2MR4
   X: 220
-  "Y": 342
+  Y: 342
   Dir: 4
   Sprite: 836
   DuplicateOf: Mysterious Device#EP15.2MR1
@@ -187,7 +189,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:5508
 - Name: Mysterious Device#EP15.2MR5
   X: 295
-  "Y": 234
+  Y: 234
   Dir: 4
   Sprite: 836
   DuplicateOf: Mysterious Device#EP15.2MR1
@@ -195,7 +197,7 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:5509
 - Name: Mysterious Device#EP15.2MR6
   X: 279
-  "Y": 297
+  Y: 297
   Dir: 4
   Sprite: 836
   DuplicateOf: Mysterious Device#EP15.2MR1
@@ -203,1111 +205,1111 @@ Body:
   Source: npc/re/quests/quests_15_2.txt:5510
 - Name: "#room_out_"
   X: 387
-  "Y": 79
+  Y: 79
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 300
-    "Y": 166
+    Y: 166
     TriggerWhileHidden: true
   Source: npc/re/warps/other/un_myst.txt:61
 - Name: "#bunker_out"
   X: 98
-  "Y": 85
+  Y: 85
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: verus01
     X: 115
-    "Y": 190
+    Y: 190
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:52
 - Name: MechanicalRoom#b_J-0
   X: 41
-  "Y": 275
+  Y: 275
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 21
-    "Y": 276
+    Y: 276
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:53
 - Name: J-0#b_MechanicalRoom
   X: 24
-  "Y": 276
+  Y: 276
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 45
-    "Y": 275
+    Y: 275
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:54
 - Name: J-0#b_L-1
   X: 24
-  "Y": 256
+  Y: 256
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 26
-    "Y": 190
+    Y: 190
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:55
 - Name: L-1#b_J-0
   X: 23
-  "Y": 190
+  Y: 190
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 21
-    "Y": 256
+    Y: 256
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:56
 - Name: L-1#b_D-1
   X: 31
-  "Y": 196
+  Y: 196
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 22
-    "Y": 378
+    Y: 378
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:57
 - Name: D-1#b_L-1
   X: 21
-  "Y": 375
+  Y: 375
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 32
-    "Y": 193
+    Y: 193
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:58
 - Name: L-1#b_D-2
   X: 51
-  "Y": 196
+  Y: 196
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 68
-    "Y": 378
+    Y: 378
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:59
 - Name: D-2#b_L-1
   X: 67
-  "Y": 375
+  Y: 375
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 52
-    "Y": 193
+    Y: 193
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:60
 - Name: L-1#b_ControlRoom
   X: 60
-  "Y": 183
+  Y: 183
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 75
-    "Y": 235
+    Y: 235
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:61
 - Name: ControlRoom#b_L-1
   X: 71
-  "Y": 236
+  Y: 236
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 57
-    "Y": 182
+    Y: 182
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:62
 - Name: L-1#b_Monitoring room
   X: 60
-  "Y": 169
+  Y: 169
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 72
-    "Y": 168
+    Y: 168
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:63
 - Name: Monitoring room#b_L-1
   X: 69
-  "Y": 167
+  Y: 167
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 57
-    "Y": 168
+    Y: 168
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:64
 - Name: L-1#b_B-1
   X: 47
-  "Y": 135
+  Y: 135
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 37
-    "Y": 134
+    Y: 134
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:65
 - Name: B-1#b_L-1
   X: 40
-  "Y": 135
+  Y: 135
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 50
-    "Y": 134
+    Y: 134
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:66
 - Name: L-1#b_A-0
   X: 57
-  "Y": 118
+  Y: 118
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 72
-    "Y": 117
+    Y: 117
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:67
 - Name: A-0#b_L-1
   X: 69
-  "Y": 118
+  Y: 118
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 53
-    "Y": 117
+    Y: 117
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:68
 - Name: A-0#b_Monitoring room
   X: 97
-  "Y": 124
+  Y: 124
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 100
-    "Y": 144
+    Y: 144
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:69
 - Name: Monitoring room#b_A-0
   X: 97
-  "Y": 141
+  Y: 141
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 98
-    "Y": 121
+    Y: 121
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:70
 - Name: A-0#b_L-2
   X: 128
-  "Y": 118
+  Y: 118
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 144
-    "Y": 117
+    Y: 117
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:71
 - Name: L-2#b_A-0
   X: 140
-  "Y": 118
+  Y: 118
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 125
-    "Y": 117
+    Y: 117
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:72
 - Name: L-2#b_Monitoring room
   X: 137
-  "Y": 168
+  Y: 168
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 122
-    "Y": 167
+    Y: 167
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:73
 - Name: Monitoring room#b_L-2
   X: 126
-  "Y": 168
+  Y: 168
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 140
-    "Y": 167
+    Y: 167
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:74
 - Name: L-2#b_ControlRoom
   X: 137
-  "Y": 185
+  Y: 185
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 120
-    "Y": 235
+    Y: 235
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:75
 - Name: ControlRoom#b_L-2
   X: 124
-  "Y": 236
+  Y: 236
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 140
-    "Y": 184
+    Y: 184
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:76
 - Name: L-2#b_E-1
   X: 147
-  "Y": 196
+  Y: 196
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 106
-    "Y": 378
+    Y: 378
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:77
 - Name: E-1#b_L-2
   X: 105
-  "Y": 375
+  Y: 375
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 148
-    "Y": 193
+    Y: 193
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:78
 - Name: L-2#b_E-2
   X: 167
-  "Y": 196
+  Y: 196
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 152
-    "Y": 378
+    Y: 378
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:79
 - Name: E-2#b_L-2
   X: 151
-  "Y": 375
+  Y: 375
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 168
-    "Y": 193
+    Y: 193
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:80
 - Name: L-2#b_K-0
   X: 174
-  "Y": 190
+  Y: 190
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 172
-    "Y": 229
+    Y: 229
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:81
 - Name: K-0#b_L-2
   X: 169
-  "Y": 230
+  Y: 230
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 171
-    "Y": 189
+    Y: 189
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:82
 - Name: Farm#b_C-0
   X: 213
-  "Y": 346
+  Y: 346
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 213
-    "Y": 299
+    Y: 299
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:83
 - Name: C-0#b_Farm
   X: 216
-  "Y": 300
+  Y: 300
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 216
-    "Y": 345
+    Y: 345
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:84
 - Name: C-0#b_G-1
   X: 216
-  "Y": 280
+  Y: 280
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 220
-    "Y": 261
+    Y: 261
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:85
 - Name: G-1#b_C-0
   X: 217
-  "Y": 262
+  Y: 262
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 213
-    "Y": 279
+    Y: 279
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:86
 - Name: G-1#b_M-0
   X: 249
-  "Y": 268
+  Y: 268
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 390
-    "Y": 380
+    Y: 380
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:87
 - Name: M-0#b_G-1
   X: 389
-  "Y": 377
+  Y: 377
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 250
-    "Y": 265
+    Y: 265
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:88
 - Name: G-1#b_Cafeteria
   X: 258
-  "Y": 262
+  Y: 262
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 274
-    "Y": 289
+    Y: 289
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:89
 - Name: Cafeteria#b_G-1
   X: 271
-  "Y": 290
+  Y: 290
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 255
-    "Y": 261
+    Y: 261
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:90
 - Name: G-1#b_Clinic
   X: 258
-  "Y": 236
+  Y: 236
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 272
-    "Y": 235
+    Y: 235
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:91
 - Name: Clinic#b_G-1
   X: 269
-  "Y": 236
+  Y: 236
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 255
-    "Y": 235
+    Y: 235
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:92
 - Name: G-1#b_F-1
   X: 245
-  "Y": 214
+  Y: 214
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 226
-    "Y": 213
+    Y: 213
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:93
 - Name: F-1#b_G-1
   X: 230
-  "Y": 214
+  Y: 214
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 248
-    "Y": 213
+    Y: 213
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:94
 - Name: G-1#b_H-0
   X: 262
-  "Y": 200
+  Y: 200
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 274
-    "Y": 199
+    Y: 199
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:95
 - Name: H-0#b_G-1
   X: 271
-  "Y": 200
+  Y: 200
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 258
-    "Y": 199
+    Y: 199
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:96
 - Name: LA-0#b_LH-0
   X: 75
-  "Y": 128
+  Y: 128
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 276
-    "Y": 196
+    Y: 196
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:97
 - Name: LH-0#b_LA-0
   X: 275
-  "Y": 191
+  Y: 191
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 76
-    "Y": 121
+    Y: 121
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:98
 - Name: RA-0#b_RH-0
   X: 119
-  "Y": 128
+  Y: 128
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 319
-    "Y": 196
+    Y: 196
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:99
 - Name: RH-0#b_RA-0
   X: 320
-  "Y": 191
+  Y: 191
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 120
-    "Y": 121
+    Y: 121
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:100
 - Name: H-0#b_Clinic
   X: 297
-  "Y": 206
+  Y: 206
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 298
-    "Y": 224
+    Y: 224
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:101
 - Name: Clinic#b_H-0
   X: 297
-  "Y": 221
+  Y: 221
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 298
-    "Y": 203
+    Y: 203
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:102
 - Name: H-0#b_G-2
   X: 324
-  "Y": 200
+  Y: 200
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 344
-    "Y": 199
+    Y: 199
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:103
 - Name: G-2#b_H-0
   X: 339
-  "Y": 200
+  Y: 200
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 321
-    "Y": 199
+    Y: 199
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:104
 - Name: G-2#b_F-2
   X: 350
-  "Y": 214
+  Y: 214
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 368
-    "Y": 213
+    Y: 213
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:105
 - Name: F-2#b_G-2
   X: 365
-  "Y": 214
+  Y: 214
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 347
-    "Y": 213
+    Y: 213
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:106
 - Name: G-2#b_Clinic
   X: 337
-  "Y": 236
+  Y: 236
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 323
-    "Y": 235
+    Y: 235
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:107
 - Name: Clinic#b_G-2
   X: 326
-  "Y": 236
+  Y: 236
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 340
-    "Y": 235
+    Y: 235
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:108
 - Name: LClinic#b_LCafeteria
   X: 281
-  "Y": 266
+  Y: 266
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 282
-    "Y": 282
+    Y: 282
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:109
 - Name: LCafeteria#b_LClinic
   X: 281
-  "Y": 279
+  Y: 279
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 282
-    "Y": 263
+    Y: 263
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:110
 - Name: RClinic#b_RCafeteria
   X: 313
-  "Y": 266
+  Y: 266
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 314
-    "Y": 282
+    Y: 282
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:111
 - Name: RCafeteria#b_RClinic
   X: 313
-  "Y": 279
+  Y: 279
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 314
-    "Y": 262
+    Y: 262
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:112
 - Name: Cafeteria#b_G-2
   X: 324
-  "Y": 290
+  Y: 290
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 340
-    "Y": 261
+    Y: 261
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:113
 - Name: G-2#b_Cafeteria
   X: 337
-  "Y": 262
+  Y: 262
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 321
-    "Y": 289
+    Y: 289
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:114
 - Name: G-2#b_N-0
   X: 343
-  "Y": 270
+  Y: 270
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 382
-    "Y": 328
+    Y: 328
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:115
 - Name: N-0#b_G-2
   X: 381
-  "Y": 325
+  Y: 325
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 344
-    "Y": 267
+    Y: 267
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:116
 - Name: G-2#b_I-0
   X: 370
-  "Y": 264
+  Y: 264
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 388
-    "Y": 263
+    Y: 263
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:117
 - Name: I-0#b_G-2
   X: 385
-  "Y": 264
+  Y: 264
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 367
-    "Y": 263
+    Y: 263
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:118
 - Name: H-0#b_Z-0
   X: 297
-  "Y": 192
+  Y: 192
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 298
-    "Y": 181
+    Y: 181
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:119
 - Name: Z-0#b_H-0
   X: 297
-  "Y": 186
+  Y: 186
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 298
-    "Y": 196
+    Y: 196
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:120
 - Name: Z-0#b_Z-1
   X: 229
-  "Y": 163
+  Y: 163
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 159
-    "Y": 52
+    Y: 52
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:121
 - Name: Z-1#b_Z-0
   X: 164
-  "Y": 51
+  Y: 51
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 233
-    "Y": 164
+    Y: 164
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:122
 - Name: Z-0#b_Z-2
   X: 366
-  "Y": 164
+  Y: 164
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 31
-    "Y": 51
+    Y: 51
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:123
 - Name: Z-2#b_Z-0
   X: 27
-  "Y": 52
+  Y: 52
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_bunker
     X: 361
-    "Y": 163
+    Y: 163
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:124

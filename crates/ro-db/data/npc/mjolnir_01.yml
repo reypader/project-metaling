@@ -2,185 +2,187 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Dwarf Blacksmith#west
   X: 35
-  "Y": 136
+  Y: 136
   Dir: 7
   Sprite: 826
   Kind: Script
   Source: npc/quests/seals/mjolnir_seal.txt:1852
 - Name: "#mj01_01"
   X: 32
-  "Y": 309
+  Y: 309
   Dir: 3
   Sprite: 111
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: mjo_find
   Kind: Script
   Source: npc/quests/quests_13_2.txt:4941
 - Name: "#mj01_02"
   X: 217
-  "Y": 34
+  Y: 34
   Dir: 3
   Sprite: 111
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: mjo_find
   Kind: Script
   Source: npc/quests/quests_13_2.txt:4942
 - Name: "#mj01_find"
   X: 364
-  "Y": 256
+  Y: 256
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/quests/quests_13_2.txt:4950
 - Name: "#mj01_01_t"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 3
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_13_2.txt:4960
 - Name: "#mj01_02_t"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 3
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_13_2.txt:4973
 - Name: Historian#prt03
   X: 135
-  "Y": 168
+  Y: 168
   Dir: 3
   Sprite: 754
   Kind: Script
   Source: npc/quests/quests_prontera.txt:1369
 - Name: "#prt_poem01"
   X: 298
-  "Y": 302
+  Y: 302
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/quests/quests_prontera.txt:1557
 - Name: "#prt_poem02"
   X: 300
-  "Y": 297
+  Y: 297
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/quests/quests_prontera.txt:1567
 - Name: "#prt_poem03"
   X: 292
-  "Y": 288
+  Y: 288
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/quests/quests_prontera.txt:1577
 - Name: "#prt_poem04"
   X: 302
-  "Y": 286
+  Y: 286
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/quests/quests_prontera.txt:1587
 - Name: "#prt_poem05"
   X: 313
-  "Y": 279
+  Y: 279
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/quests/quests_prontera.txt:1597
 - Name: Dog#prt
   X: 312
-  "Y": 269
+  Y: 269
   Dir: 5
   Sprite: 81
   Kind: Script
   Source: npc/quests/quests_prontera.txt:1606
 - Name: Dazed Boy#prt
   X: 313
-  "Y": 269
+  Y: 269
   Dir: 5
   Sprite: 706
   Kind: Script
   Source: npc/quests/quests_prontera.txt:1612
 - Name: Exhausted-Looking Woman
   X: 316
-  "Y": 268
+  Y: 268
   Dir: 3
   Sprite: 879
   Kind: Script
   Source: npc/quests/quests_prontera.txt:1760
 - Name: mjol001
   X: 284
-  "Y": 18
+  Y: 18
   Dir: 0
   Sprite: 45
   Trigger:
     X: 4
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: gef_fild04
     X: 261
-    "Y": 359
+    Y: 359
     TriggerWhileHidden: false
   Source: npc/warps/fields/mtmjolnir.txt:18
 - Name: mjol01
   X: 378
-  "Y": 256
+  Y: 256
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: mjolnir_02
     X: 31
-    "Y": 258
+    Y: 258
     TriggerWhileHidden: false
   Source: npc/warps/fields/mtmjolnir.txt:19
 - Name: "#wp120032"
   X: 47
-  "Y": 60
+  Y: 60
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:201
 - Name: "#tr120032"
   X: 47
-  "Y": 60
+  Y: 60
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click

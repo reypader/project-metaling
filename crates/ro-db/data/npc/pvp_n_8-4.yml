@@ -2,127 +2,129 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Link#pt_link_1-11
   X: 33
-  "Y": 122
+  Y: 122
   Dir: 0
   Sprite: 45
   Trigger:
     X: 0
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: pvp_n_8-4
     X: 0
-    "Y": 0
+    Y: 0
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:166
 - Name: Link#pt_link_1-12
   X: 62
-  "Y": 84
+  Y: 84
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: pvp_n_8-4
     X: 0
-    "Y": 0
+    Y: 0
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:167
 - Name: Link#pt_link_1-21
   X: 49
-  "Y": 71
+  Y: 71
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: pvp_n_8-4
     X: 0
-    "Y": 0
+    Y: 0
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:168
 - Name: Link#pt_link_1-22
   X: 56
-  "Y": 166
+  Y: 166
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: pvp_n_8-4
     X: 0
-    "Y": 0
+    Y: 0
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:169
 - Name: Link#pt_link_1-31
   X: 99
-  "Y": 180
+  Y: 180
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: pvp_n_8-4
     X: 0
-    "Y": 0
+    Y: 0
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:170
 - Name: Link#pt_link_1-32
   X: 137
-  "Y": 84
+  Y: 84
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: pvp_n_8-4
     X: 0
-    "Y": 0
+    Y: 0
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:171
 - Name: Link#pt_link_1-41
   X: 150
-  "Y": 71
+  Y: 71
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: pvp_n_8-4
     X: 0
-    "Y": 0
+    Y: 0
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:172
 - Name: Link#pt_link_1-42
   X: 144
-  "Y": 166
+  Y: 166
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: pvp_n_8-4
     X: 0
-    "Y": 0
+    Y: 0
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:173

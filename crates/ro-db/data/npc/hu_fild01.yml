@@ -2,34 +2,36 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Tower Keeper
   X: 140
-  "Y": 163
+  Y: 163
   Dir: 5
   Sprite: 852
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/quests/thana_quest.txt:18
 - Name: "#wp120062"
   X: 347
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:163
 - Name: "#tr120062"
   X: 347
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -37,38 +39,38 @@ Body:
   Source: npc/re/other/achievements.txt:424
 - Name: Map Examiner Huf#yma
   X: 133
-  "Y": 157
+  Y: 157
   Dir: 6
   Sprite: 571
   Kind: Script
   Source: npc/re/quests/juno_monster_society.txt:1242
 - Name: hugel007
   X: 366
-  "Y": 185
+  Y: 185
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: hu_fild02
     X: 22
-    "Y": 168
+    Y: 168
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/hugel_fild.txt:33
 - Name: hu005a
   X: 141
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: yuno_fild06
     X: 156
-    "Y": 368
+    Y: 368
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/yuno_fild.txt:80

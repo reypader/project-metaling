@@ -2,20 +2,22 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Stylist#lasagna
   X: 134
-  "Y": 113
+  Y: 113
   Dir: 3
   Sprite: 10166
   Kind: Script
   Source: npc/re/merchants/Extended_Stylist.txt:66
 - Name: Pet Groomer#las
   X: 179
-  "Y": 176
+  Y: 176
   Dir: 6
   Sprite: 125
   DuplicateOf: "#PetGroomer"
@@ -23,42 +25,42 @@ Body:
   Source: npc/re/merchants/pet_groomer.txt:48
 - Name: Kid#doram04t
   X: 168
-  "Y": 125
+  Y: 125
   Dir: 3
   Sprite: 10167
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:825
 - Name: Tool Merchant#doram05t
   X: 165
-  "Y": 125
+  Y: 125
   Dir: 5
   Sprite: 10163
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:878
 - Name: Healer Haru#doram07t
   X: 224
-  "Y": 126
+  Y: 126
   Dir: 5
   Sprite: 10164
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1002
 - Name: Hypnotist#doram08t
   X: 222
-  "Y": 123
+  Y: 123
   Dir: 5
   Sprite: 549
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1226
 - Name: Vigilante Aglio#doram09
   X: 230
-  "Y": 127
+  Y: 127
   Dir: 3
   Sprite: 139
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1283
 - Name: Cat Paw Shrimp Merchant#las
   X: 166
-  "Y": 117
+  Y: 117
   Dir: 6
   Sprite: 495
   DuplicateOf: Cat Paw Shrimp Merchant#iz
@@ -66,524 +68,524 @@ Body:
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1332
 - Name: Mustachi#dorcon01
   X: 209
-  "Y": 301
+  Y: 301
   Dir: 3
   Sprite: 10167
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1452
 - Name: Linguina#dorcon01
   X: 232
-  "Y": 181
+  Y: 181
   Dir: 5
   Sprite: 559
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1459
 - Name: Vongolo#dorcon01
   X: 227
-  "Y": 187
+  Y: 187
   Dir: 1
   Sprite: 544
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1477
 - Name: Master of Property#do_h
   X: 220
-  "Y": 172
+  Y: 172
   Dir: 6
   Sprite: 422
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1495
 - Name: Cat Paw Service#lasagna
   X: 208
-  "Y": 188
+  Y: 188
   Dir: 3
   Sprite: 495
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1540
 - Name: Emergency Patient#dorco
   X: 171
-  "Y": 105
+  Y: 105
   Dir: 5
   Sprite: 849
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1686
 - Name: Recruiter#dorcon01
   X: 200
-  "Y": 278
+  Y: 278
   Dir: 5
   Sprite: 560
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1695
 - Name: Gomae#dorcon01
   X: 202
-  "Y": 276
+  Y: 276
   Dir: 5
   Sprite: 10165
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1707
 - Name: Boarding Attendant#dorc
   X: 211
-  "Y": 186
+  Y: 186
   Dir: 5
   Sprite: 559
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1712
 - Name: Kittie#do_hint01
   X: 217
-  "Y": 192
+  Y: 192
   Dir: 5
   Sprite: 544
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1756
 - Name: Rasmus#dorcon01
   X: 260
-  "Y": 134
+  Y: 134
   Dir: 3
   Sprite: 546
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1777
 - Name: Crewman of Anchovy Fish
   X: 244
-  "Y": 231
+  Y: 231
   Dir: 3
   Sprite: 544
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1782
 - Name: Youngster meow#dorcon01
   X: 190
-  "Y": 239
+  Y: 239
   Dir: 5
   Sprite: 559
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1787
 - Name: Youngster meow#dorcon02
   X: 180
-  "Y": 230
+  Y: 230
   Dir: 7
   Sprite: 560
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1792
 - Name: Youngster meow#dorcon03
   X: 192
-  "Y": 245
+  Y: 245
   Dir: 7
   Sprite: 554
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1797
 - Name: Youngster meow#dorcon04
   X: 184
-  "Y": 234
+  Y: 234
   Dir: 5
   Sprite: 422
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1802
 - Name: Youngster meow#dorcon05
   X: 186
-  "Y": 231
+  Y: 231
   Dir: 3
   Sprite: 10167
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1807
 - Name: Aram#dorcon01
   X: 226
-  "Y": 196
+  Y: 196
   Dir: 5
   Sprite: 10166
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1813
 - Name: Porto#dorcon01
   X: 228
-  "Y": 193
+  Y: 193
   Dir: 5
   Sprite: 10163
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1862
 - Name: Tos#dorcon01
   X: 229
-  "Y": 197
+  Y: 197
   Dir: 5
   Sprite: 10164
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1875
 - Name: Employee#dorcon01
   X: 226
-  "Y": 199
+  Y: 199
   Dir: 5
   Sprite: 139
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1884
 - Name: Perky Doram#do_hint03
   X: 230
-  "Y": 192
+  Y: 192
   Dir: 3
   Sprite: 560
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1886
 - Name: Customer#dorcon02
   X: 235
-  "Y": 193
+  Y: 193
   Dir: 3
   Sprite: 10157
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1891
 - Name: Customer#dorcon01
   X: 220
-  "Y": 190
+  Y: 190
   Dir: 5
   Sprite: 559
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1904
 - Name: Serious Doram#do_hint08
   X: 220
-  "Y": 194
+  Y: 194
   Dir: 3
   Sprite: 495
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1909
 - Name: Smart Doram#do_hint06
   X: 221
-  "Y": 175
+  Y: 175
   Dir: 5
   Sprite: 545
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1915
 - Name: Kittie#do_hint02
   X: 219
-  "Y": 178
+  Y: 178
   Dir: 3
   Sprite: 546
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1920
 - Name: Doram On The Journey#do
   X: 225
-  "Y": 174
+  Y: 174
   Dir: 3
   Sprite: 555
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1938
 - Name: Boozer#dorcon01
   X: 233
-  "Y": 174
+  Y: 174
   Dir: 5
   Sprite: 561
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1943
 - Name: Boozer#dorcon02
   X: 236
-  "Y": 173
+  Y: 173
   Dir: 3
   Sprite: 561
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1948
 - Name: Meow goon#dorcon01
   X: 236
-  "Y": 179
+  Y: 179
   Dir: 5
   Sprite: 10163
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1953
 - Name: Goon meow#dorcon01
   X: 235
-  "Y": 178
+  Y: 178
   Dir: 5
   Sprite: 10164
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1977
 - Name: Fettuccina#dorcon01
   X: 232
-  "Y": 187
+  Y: 187
   Dir: 6
   Sprite: 545
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:2000
 - Name: The diligent second son
   X: 131
-  "Y": 245
+  Y: 245
   Dir: 5
   Sprite: 555
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:2015
 - Name: The brave third#weapon
   X: 131
-  "Y": 250
+  Y: 250
   Dir: 5
   Sprite: 10164
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:2115
 - Name: The skittish fourth#wea
   X: 140
-  "Y": 250
+  Y: 250
   Dir: 3
   Sprite: 10165
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:2217
 - Name: The sensitive-minded ela
   X: 140
-  "Y": 245
+  Y: 245
   Dir: 3
   Sprite: 546
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:2322
 - Name: Chef#dorcon
   X: 222
-  "Y": 187
+  Y: 187
   Dir: 3
   Sprite: 548
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:3147
 - Name: Shaman meow#dorcon
   X: 85
-  "Y": 93
+  Y: 93
   Dir: 5
   Sprite: 10167
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:3641
 - Name: Vigilante Guide#lasa
   X: 174
-  "Y": 160
+  Y: 160
   Dir: 3
   Sprite: 10162
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:3862
 - Name: Vigilante Guide#lasa2
   X: 202
-  "Y": 291
+  Y: 291
   Dir: 3
   Sprite: 10162
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Vigilante Guide#lasa
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:3916
 - Name: Vigilante Olio#lasa
   X: 233
-  "Y": 197
+  Y: 197
   Dir: 5
   Sprite: 10155
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:3918
 - Name: Chief Peperoncino#lasa
   X: 235
-  "Y": 198
+  Y: 198
   Dir: 3
   Sprite: 10152
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:4065
 - Name: Tali#lasa
   X: 77
-  "Y": 263
+  Y: 263
   Dir: 5
   Sprite: 10166
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:4507
 - Name: Eggling#dorcon
   X: 205
-  "Y": 325
+  Y: 325
   Dir: 5
   Sprite: 495
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:4605
 - Name: Vigilante#dorcon01
   X: 298
-  "Y": 84
+  Y: 84
   Dir: 5
   Sprite: 10162
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:7665
 - Name: "#dorcon96"
   X: 56
-  "Y": 186
+  Y: 186
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:8364
 - Name: Grandma#dorcon01
   X: 263
-  "Y": 156
+  Y: 156
   Dir: 5
   Sprite: 554
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:8534
 - Name: Kalu#dorcon
   X: 226
-  "Y": 181
+  Y: 181
   Dir: 3
   Sprite: 548
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:8629
 - Name: Legalas#dorcon
   X: 248
-  "Y": 105
+  Y: 105
   Dir: 5
   Sprite: 10151
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:8974
 - Name: Gopara#dorcon01
   X: 246
-  "Y": 103
+  Y: 103
   Dir: 5
   Sprite: 10050
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:9121
 - Name: Daldal#dorcon01
   X: 247
-  "Y": 101
+  Y: 101
   Dir: 7
   Sprite: 10049
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:9277
 - Name: Daldal#dorcon02
   X: 193
-  "Y": 234
+  Y: 234
   Dir: 5
   Sprite: 139
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:9431
 - Name: Gopara#dorcon02
   X: 192
-  "Y": 236
+  Y: 236
   Dir: 5
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:9440
 - Name: Cute Baby#dorcon
   X: 195
-  "Y": 235
+  Y: 235
   Dir: 3
   Sprite: 586
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:9455
 - Name: Daldal#dorcon03
   X: 223
-  "Y": 288
+  Y: 288
   Dir: 5
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:9565
 - Name: Gopara#dorcon03
   X: 222
-  "Y": 290
+  Y: 290
   Dir: 5
   Sprite: 139
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:9580
 - Name: Workshop Manager#dorcon
   X: 225
-  "Y": 290
+  Y: 290
   Dir: 5
   Sprite: 421
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:9589
 - Name: Gopara#dorcon04
   X: 136
-  "Y": 299
+  Y: 299
   Dir: 5
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:9676
 - Name: Daldal#dorcon04
   X: 134
-  "Y": 300
+  Y: 300
   Dir: 7
   Sprite: 139
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:9691
 - Name: Captain of Anchovy Fish
   X: 139
-  "Y": 299
+  Y: 299
   Dir: 3
   Sprite: 561
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:9700
 - Name: Daldal#dorcon05
   X: 222
-  "Y": 180
+  Y: 180
   Dir: 7
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:9827
 - Name: Gopara#dorcon05
   X: 224
-  "Y": 178
+  Y: 178
   Dir: 7
   Sprite: 139
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:9852
 - Name: lasagna_out01
   X: 150
-  "Y": 54
+  Y: 54
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: lasa_fild01
     X: 131
-    "Y": 378
+    Y: 378
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/lasagna.txt:19
 - Name: lasagna_out02
   X: 327
-  "Y": 51
+  Y: 51
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: lasa_fild01
     X: 344
-    "Y": 371
+    Y: 371
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/lasagna.txt:22
 - Name: lasagna_in03
   X: 358
-  "Y": 91
+  Y: 91
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: lasa_fild02
     X: 20
-    "Y": 98
+    Y: 98
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/lasagna.txt:24

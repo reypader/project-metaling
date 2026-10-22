@@ -2,76 +2,78 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Sea Captain#ama2
   X: 194
-  "Y": 79
+  Y: 79
   Dir: 5
   Sprite: 709
   Kind: Script
   Source: npc/cities/amatsu.txt:127
 - Name: Well-side Maiden#ama
   X: 230
-  "Y": 160
+  Y: 160
   Dir: 3
   Sprite: 757
   Kind: Script
   Source: npc/cities/amatsu.txt:155
 - Name: John#ama
   X: 179
-  "Y": 107
+  Y: 107
   Dir: 4
   Sprite: 86
   Kind: Script
   Source: npc/cities/amatsu.txt:171
 - Name: Mimi#ama
   X: 205
-  "Y": 163
+  Y: 163
   Dir: 3
   Sprite: 759
   Kind: Script
   Source: npc/cities/amatsu.txt:228
 - Name: Drunken Man#ama
   X: 185
-  "Y": 115
+  Y: 115
   Dir: 3
   Sprite: 765
   Kind: Script
   Source: npc/cities/amatsu.txt:246
 - Name: Grandma#ama
   X: 217
-  "Y": 179
+  Y: 179
   Dir: 1
   Sprite: 760
   Kind: Script
   Source: npc/cities/amatsu.txt:286
 - Name: Jyaburo#ama
   X: 287
-  "Y": 266
+  Y: 266
   Dir: 3
   Sprite: 766
   Kind: Script
   Source: npc/cities/amatsu.txt:298
 - Name: Propose Girl#ama
   X: 269
-  "Y": 221
+  Y: 221
   Dir: 1
   Sprite: 758
   Kind: Script
   Source: npc/cities/amatsu.txt:343
 - Name: Drama Teacher#ama
   X: 243
-  "Y": 202
+  Y: 202
   Dir: 3
   Sprite: 760
   Kind: Script
   Source: npc/cities/amatsu.txt:378
 - Name: Bonubonu#ama1
   X: 283
-  "Y": 203
+  Y: 203
   Dir: 1
   Sprite: 1323
   SpriteIsMob: true
@@ -79,21 +81,21 @@ Body:
   Source: npc/cities/amatsu.txt:423
 - Name: Bonubonu#ama2
   X: 283
-  "Y": 203
+  Y: 203
   Dir: 1
   Sprite: 111
   Kind: Script
   Source: npc/cities/amatsu.txt:427
 - Name: Veterinarian#ama
   X: 274
-  "Y": 178
+  Y: 178
   Dir: 7
   Sprite: 735
   Kind: Script
   Source: npc/cities/amatsu.txt:457
 - Name: Legendary Tree
   X: 262
-  "Y": 197
+  Y: 197
   Dir: 1
   Sprite: 111
   Kind: Script
@@ -101,21 +103,21 @@ Body:
 - Name: Kafra Employee
   UniqueName: kaf_amatsu
   X: 102
-  "Y": 149
+  Y: 149
   Dir: 4
   Sprite: 116
   Kind: Script
   Source: npc/kafras/kafras.txt:435
 - Name: Chef Assistant#ama
   X: 206
-  "Y": 150
+  Y: 150
   Dir: 3
   Sprite: 83
   Kind: Shop
   Source: npc/merchants/shops.txt:300
 - Name: Mailbox#ama
   X: 102
-  "Y": 146
+  Y: 146
   Dir: 0
   Sprite: 888
   DuplicateOf: MailBox
@@ -123,213 +125,213 @@ Body:
   Source: npc/other/mail.txt:115
 - Name: Publisher#ama
   X: 223
-  "Y": 236
+  Y: 236
   Dir: 3
   Sprite: 763
   Kind: Script
   Source: npc/quests/quests_amatsu.txt:23
 - Name: Gate Soldier#ama1
   X: 112
-  "Y": 164
+  Y: 164
   Dir: 4
   Sprite: 767
   Kind: Script
   Source: npc/quests/quests_amatsu.txt:1309
 - Name: Gate Soldier#ama2
   X: 119
-  "Y": 164
+  Y: 164
   Dir: 4
   Sprite: 767
   Kind: Script
   Source: npc/quests/quests_amatsu.txt:1325
 - Name: Gate Soldier#ama5
   X: 164
-  "Y": 174
+  Y: 174
   Dir: 4
   Sprite: 767
   Kind: Script
   Source: npc/quests/quests_amatsu.txt:1367
 - Name: Gate Soldier#ama6
   X: 171
-  "Y": 174
+  Y: 174
   Dir: 4
   Sprite: 767
   Kind: Script
   Source: npc/quests/quests_amatsu.txt:1405
 - Name: Kouji#ama
   X: 189
-  "Y": 166
+  Y: 166
   Dir: 5
   Sprite: 764
   Kind: Script
   Source: npc/quests/quests_amatsu.txt:2066
 - Name: Momotoro Publisher#rus42
   X: 233
-  "Y": 234
+  Y: 234
   Dir: 3
   Sprite: 758
   Kind: Script
   Source: npc/quests/quests_moscovia.txt:10466
 - Name: ama_house1-1
   X: 177
-  "Y": 138
+  Y: 138
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ama_in01
     X: 28
-    "Y": 176
+    Y: 176
     TriggerWhileHidden: false
   Source: npc/warps/cities/amatsu.txt:18
 - Name: ama_house2-1
   X: 248
-  "Y": 160
+  Y: 160
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ama_in01
     X: 79
-    "Y": 178
+    Y: 178
     TriggerWhileHidden: false
   Source: npc/warps/cities/amatsu.txt:20
 - Name: ama_warrior1-1
   X: 168
-  "Y": 182
+  Y: 182
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ama_in01
     X: 34
-    "Y": 99
+    Y: 99
     TriggerWhileHidden: false
   Source: npc/warps/cities/amatsu.txt:22
 - Name: ama_deluxe1-1
   X: 52
-  "Y": 148
+  Y: 148
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ama_in01
     X: 88
-    "Y": 97
+    Y: 97
     TriggerWhileHidden: false
   Source: npc/warps/cities/amatsu.txt:24
 - Name: ama_tools1-1
   X: 94
-  "Y": 117
+  Y: 117
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ama_in01
     X: 30
-    "Y": 24
+    Y: 24
     TriggerWhileHidden: false
   Source: npc/warps/cities/amatsu.txt:26
 - Name: ama_weapon1-1
   X: 132
-  "Y": 117
+  Y: 117
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ama_in01
     X: 89
-    "Y": 23
+    Y: 23
     TriggerWhileHidden: false
   Source: npc/warps/cities/amatsu.txt:28
 - Name: ama_tavern1-1
   X: 217
-  "Y": 116
+  Y: 116
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ama_in01
     X: 162
-    "Y": 25
+    Y: 25
     TriggerWhileHidden: false
   Source: npc/warps/cities/amatsu.txt:30
 - Name: ama_castle1-1
   X: 85
-  "Y": 235
+  Y: 235
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ama_in02
     X: 223
-    "Y": 45
+    Y: 45
     TriggerWhileHidden: false
   Source: npc/warps/cities/amatsu.txt:35
 - Name: ama_fild1-1
   X: 248
-  "Y": 292
+  Y: 292
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ama_fild01
     X: 75
-    "Y": 33
+    Y: 33
     TriggerWhileHidden: false
   Source: npc/warps/fields/amatsu_fild.txt:16
 - Name: ninja01
   X: 149
-  "Y": 140
+  Y: 140
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: que_ng
     X: 20
-    "Y": 142
+    Y: 142
     TriggerWhileHidden: false
   Source: npc/warps/other/jobquests.txt:143
 - Name: Amatsu Guide#amatsu
   X: 202
-  "Y": 91
+  Y: 91
   Dir: 3
   Sprite: 758
   Kind: Script
   Source: npc/re/guides/guides_amatsu.txt:18
 - Name: Guild Warehouse Manager#amatsu
   X: 100
-  "Y": 156
+  Y: 156
   Dir: 5
   Sprite: 896
   DuplicateOf: GuildWarehouse
@@ -337,7 +339,7 @@ Body:
   Source: npc/re/merchants/guild_warehouse.txt:87
 - Name: Eden Teleport Officer#22
   X: 100
-  "Y": 145
+  Y: 145
   Dir: 5
   Sprite: 729
   DuplicateOf: eto
@@ -345,7 +347,7 @@ Body:
   Source: npc/re/quests/eden/eden_common.txt:262
 - Name: Cat Paw Shrimp Merchant#ama
   X: 102
-  "Y": 122
+  Y: 122
   Dir: 5
   Sprite: 495
   DuplicateOf: Cat Paw Shrimp Merchant#iz

@@ -2,89 +2,91 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Philofontes#171_cat
   X: 93
-  "Y": 105
+  Y: 105
   Dir: 3
   Sprite: 10182
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:2563
 - Name: "#EP171_EVT_CAT00"
   X: 150
-  "Y": 105
+  Y: 105
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:2851
 - Name: Philofontes#171_cat2
   X: 160
-  "Y": 102
+  Y: 102
   Dir: 5
   Sprite: 10182
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:2873
 - Name: Middle-Aged Man#171_cat
   X: 163
-  "Y": 102
+  Y: 102
   Dir: 3
   Sprite: 10299
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:3061
 - Name: Rekenber Senior Guard#171_cat
   X: 165
-  "Y": 103
+  Y: 103
   Dir: 3
   Sprite: 10300
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:3161
 - Name: Commander Est#171_cat
   X: 166
-  "Y": 100
+  Y: 100
   Dir: 3
   Sprite: 10183
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:3173
 - Name: "#EP171_EVT_CAT01"
   X: 107
-  "Y": 65
+  Y: 65
   Dir: 5
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:3186
 - Name: Lazy#171_cat
   X: 106
-  "Y": 69
+  Y: 69
   Dir: 7
   Sprite: 10179
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:3207
 - Name: Lazy#171_cat2
   X: 105
-  "Y": 58
+  Y: 58
   Dir: 3
   Sprite: 10179
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:3415
 - Name: Kaya Tos#171_cat
   X: 109
-  "Y": 71
+  Y: 71
   Dir: 3
   Sprite: 10299
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:3735
 - Name: Elena Volkova#171_cat
   X: 95
-  "Y": 103
+  Y: 103
   Dir: 3
   Sprite: 10192
   State: Cloaked
@@ -93,14 +95,14 @@ Body:
   Source: npc/re/quests/quests_17_1.txt:8425
 - Name: Kaya#171_cat2
   X: 102
-  "Y": 62
+  Y: 62
   Dir: 5
   Sprite: 10299
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8427
 - Name: Kaya#171_cat3
   X: 95
-  "Y": 103
+  Y: 103
   Dir: 3
   Sprite: 10299
   State: Cloaked
@@ -109,286 +111,286 @@ Body:
   Source: npc/re/quests/quests_17_1.txt:8438
 - Name: Aas#171_cat
   X: 112
-  "Y": 72
+  Y: 72
   Dir: 3
   Sprite: 10300
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8440
 - Name: Aas#171_cat2
   X: 104
-  "Y": 63
+  Y: 63
   Dir: 3
   Sprite: 10300
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8451
 - Name: Bartender#171_pub_1
   X: 73
-  "Y": 75
+  Y: 75
   Dir: 3
   Sprite: 80
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8658
 - Name: Bartender#171_pub_2
   X: 64
-  "Y": 82
+  Y: 82
   Dir: 5
   Sprite: 995
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8663
 - Name: Bartender#171_pub_3
   X: 62
-  "Y": 82
+  Y: 82
   Dir: 5
   Sprite: 109
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8668
 - Name: Bartender#171_pub_4
   X: 28
-  "Y": 71
+  Y: 71
   Dir: 5
   Sprite: 61
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8673
 - Name: Guest#171_pub_1
   X: 56
-  "Y": 58
+  Y: 58
   Dir: 3
   Sprite: 690
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8678
 - Name: Guest#171_pub_2
   X: 55
-  "Y": 60
+  Y: 60
   Dir: 5
   Sprite: 688
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8683
 - Name: Guest#171_pub_3
   X: 75
-  "Y": 58
+  Y: 58
   Dir: 3
   Sprite: 688
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8692
 - Name: Guest#171_pub_4
   X: 75
-  "Y": 58
+  Y: 58
   Dir: 3
   Sprite: 748
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8697
 - Name: Guest#171_pub_5
   X: 64
-  "Y": 66
+  Y: 66
   Dir: 1
   Sprite: 746
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8706
 - Name: Guest#171_pub_6
   X: 63
-  "Y": 69
+  Y: 69
   Dir: 5
   Sprite: 828
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8711
 - Name: Guest#171_pub_7
   X: 53
-  "Y": 69
+  Y: 69
   Dir: 5
   Sprite: 931
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8721
 - Name: Guest#171_pub_8
   X: 55
-  "Y": 69
+  Y: 69
   Dir: 5
   Sprite: 851
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8726
 - Name: Guest#171_pub_9
   X: 57
-  "Y": 67
+  Y: 67
   Dir: 3
   Sprite: 879
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8737
 - Name: Guest#171_pub_10
   X: 70
-  "Y": 71
+  Y: 71
   Dir: 7
   Sprite: 855
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8742
 - Name: Guest#171_pub_11
   X: 70
-  "Y": 72
+  Y: 72
   Dir: 7
   Sprite: 854
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8747
 - Name: Guest#171_pub_12
   X: 64
-  "Y": 79
+  Y: 79
   Dir: 1
   Sprite: 850
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8752
 - Name: Guest#171_pub_13
   X: 62
-  "Y": 79
+  Y: 79
   Dir: 7
   Sprite: 726
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8761
 - Name: Guest#171_pub_14
   X: 39
-  "Y": 95
+  Y: 95
   Dir: 1
   Sprite: 567
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8766
 - Name: Guest#171_pub_15
   X: 41
-  "Y": 98
+  Y: 98
   Dir: 3
   Sprite: 539
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8771
 - Name: Guest#171_pub_16
   X: 45
-  "Y": 96
+  Y: 96
   Dir: 1
   Sprite: 93
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8780
 - Name: Guest#171_pub_17
   X: 47
-  "Y": 95
+  Y: 95
   Dir: 3
   Sprite: 519
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8789
 - Name: Guest#171_pub_18
   X: 45
-  "Y": 99
+  Y: 99
   Dir: 5
   Sprite: 869
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8794
 - Name: Guest#171_pub_19
   X: 47
-  "Y": 100
+  Y: 100
   Dir: 5
   Sprite: 887
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8801
 - Name: Tired Guest#171_pub
   X: 51
-  "Y": 29
+  Y: 29
   Dir: 1
   Sprite: 851
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8806
 - Name: Bartender#171_pub_5
   X: 52
-  "Y": 32
+  Y: 32
   Dir: 5
   Sprite: 46
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8811
 - Name: Sales Manager#171_pub
   X: 55
-  "Y": 33
+  Y: 33
   Dir: 3
   Sprite: 547
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8816
 - Name: Employee#171_pub
   X: 61
-  "Y": 46
+  Y: 46
   Dir: 5
   Sprite: 898
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8821
 - Name: Vice President#171_pub
   X: 74
-  "Y": 73
+  Y: 73
   Dir: 3
   Sprite: 876
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8826
 - Name: Bullet President#171_pub
   X: 67
-  "Y": 73
+  Y: 73
   Dir: 3
   Sprite: 554
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8831
 - Name: Wilde#171_pub
   X: 84
-  "Y": 66
+  Y: 66
   Dir: 3
   Sprite: 810
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8836
 - Name: Retired Rebellion#backroom_ent
   X: 104
-  "Y": 106
+  Y: 106
   Dir: 3
   Sprite: 709
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8881
 - Name: Yulma#rudus4
   X: 94
-  "Y": 43
+  Y: 43
   Dir: 5
   Sprite: 10193
   Kind: Script
   Source: npc/re/quests/quests_dungeons_200.txt:12
 - Name: Ansuriya#ami
   X: 86
-  "Y": 33
+  Y: 33
   Dir: 5
   Sprite: 10201
   Kind: Script
   Source: npc/re/quests/quests_dungeons_200.txt:1335
 - Name: Gerbena#ami
   X: 89
-  "Y": 32
+  Y: 32
   Dir: 3
   Sprite: 10197
   Kind: Script
   Source: npc/re/quests/quests_dungeons_200.txt:1738
 - Name: pub_to_ein
   X: 44
-  "Y": 27
+  Y: 27
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: einbroch
     X: 302
-    "Y": 326
+    Y: 326
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/einbroch.txt:29
 - Name: backroom_exit
   X: 146
-  "Y": 105
+  Y: 105
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: pub_cat
     X: 100
-    "Y": 106
+    Y: 106
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/einbroch.txt:30

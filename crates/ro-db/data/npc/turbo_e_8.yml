@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Helper#e8_F
   X: 298
-  "Y": 167
+  Y: 167
   Dir: 3
   Sprite: 124
   DuplicateOf: Helper#tt_main
@@ -16,18 +18,18 @@ Body:
   Source: npc/other/turbo_track.txt:83
 - Name: Point Give-Away Guy#e8
   X: 298
-  "Y": 167
+  Y: 167
   Dir: 0
   Sprite: -1
   Trigger:
     X: 15
-    "Y": 15
+    Y: 15
   DuplicateOf: Point#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:108
 - Name: Broadcast#e8
   X: 167
-  "Y": 3
+  Y: 3
   Dir: 0
   Sprite: -1
   DuplicateOf: Broadcast#tt_main
@@ -35,7 +37,7 @@ Body:
   Source: npc/other/turbo_track.txt:198
 - Name: Master#e8
   X: 167
-  "Y": 3
+  Y: 3
   Dir: 0
   Sprite: -1
   DuplicateOf: Master#tt_main
@@ -43,711 +45,711 @@ Body:
   Source: npc/other/turbo_track.txt:410
 - Name: No_Unfair_Start#e8-1
   X: 62
-  "Y": 379
+  Y: 379
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 31
+    Y: 31
   DuplicateOf: NoUnfair#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:424
 - Name: No_Unfair_Start#e8-2
   X: 68
-  "Y": 379
+  Y: 379
   Dir: 5
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 31
+    Y: 31
   DuplicateOf: NoUnfair#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:425
 - Name: trap_a#e8-1
   X: 118
-  "Y": 377
+  Y: 377
   Dir: 0
   Sprite: -1
   Trigger:
     X: 44
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:523
 - Name: trap_a#e8-2
   X: 77
-  "Y": 375
+  Y: 375
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:524
 - Name: trap_a#e8-3
   X: 82
-  "Y": 375
+  Y: 375
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:525
 - Name: trap_a#e8-4
   X: 82
-  "Y": 372
+  Y: 372
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:526
 - Name: trap_a#e8-5
   X: 83
-  "Y": 372
+  Y: 372
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:527
 - Name: trap_a#e8-6
   X: 97
-  "Y": 374
+  Y: 374
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:528
 - Name: trap_a#e8-7
   X: 98
-  "Y": 374
+  Y: 374
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:529
 - Name: trap_a#e8-8
   X: 122
-  "Y": 372
+  Y: 372
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 4
+    Y: 4
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:530
 - Name: trap_a#e8-9
   X: 125
-  "Y": 374
+  Y: 374
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 4
+    Y: 4
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:531
 - Name: trap_a#e8-10
   X: 132
-  "Y": 374
+  Y: 374
   Dir: 0
   Sprite: -1
   Trigger:
     X: 7
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:532
 - Name: trap_a#e8-11
   X: 156
-  "Y": 374
+  Y: 374
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:533
 - Name: trap_a#e8-12
   X: 163
-  "Y": 375
+  Y: 375
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 3
+    Y: 3
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:534
 - Name: trap_a#e8-13
   X: 164
-  "Y": 377
+  Y: 377
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:535
 - Name: trap_b#e8-1
   X: 76
-  "Y": 369
+  Y: 369
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:536
 - Name: trap_b#e8-2
   X: 79
-  "Y": 369
+  Y: 369
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:537
 - Name: trap_b#e8-3
   X: 77
-  "Y": 366
+  Y: 366
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 0
+    Y: 0
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:538
 - Name: trap_b#e8-4
   X: 85
-  "Y": 366
+  Y: 366
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:539
 - Name: trap_b#e8-5
   X: 87
-  "Y": 363
+  Y: 363
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:540
 - Name: trap_b#e8-6
   X: 88
-  "Y": 368
+  Y: 368
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 5
+    Y: 5
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:541
 - Name: trap_b#e8-7
   X: 92
-  "Y": 370
+  Y: 370
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 3
+    Y: 3
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:542
 - Name: trap_b#e8-8
   X: 98
-  "Y": 368
+  Y: 368
   Dir: 0
   Sprite: -1
   Trigger:
     X: 4
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:543
 - Name: trap_b#e8-9
   X: 109
-  "Y": 371
+  Y: 371
   Dir: 0
   Sprite: -1
   Trigger:
     X: 7
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:544
 - Name: trap_b#e8-10
   X: 110
-  "Y": 368
+  Y: 368
   Dir: 0
   Sprite: -1
   Trigger:
     X: 7
-    "Y": 0
+    Y: 0
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:545
 - Name: trap_b#e8-11
   X: 113
-  "Y": 366
+  Y: 366
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:546
 - Name: trap_b#e8-12
   X: 117
-  "Y": 368
+  Y: 368
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 5
+    Y: 5
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:547
 - Name: trap_b#e8-13
   X: 123
-  "Y": 364
+  Y: 364
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:548
 - Name: trap_b#e8-14
   X: 136
-  "Y": 368
+  Y: 368
   Dir: 0
   Sprite: -1
   Trigger:
     X: 8
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:549
 - Name: trap_b#e8-15
   X: 136
-  "Y": 366
+  Y: 366
   Dir: 0
   Sprite: -1
   Trigger:
     X: 8
-    "Y": 0
+    Y: 0
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:550
 - Name: trap_b#e8-16
   X: 144
-  "Y": 370
+  Y: 370
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 3
+    Y: 3
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:551
 - Name: trap_b#e8-17
   X: 147
-  "Y": 370
+  Y: 370
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 3
+    Y: 3
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:552
 - Name: trap_b#e8-18
   X: 155
-  "Y": 369
+  Y: 369
   Dir: 0
   Sprite: -1
   Trigger:
     X: 7
-    "Y": 0
+    Y: 0
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:553
 - Name: trap_b#e8-19
   X: 155
-  "Y": 368
+  Y: 368
   Dir: 0
   Sprite: -1
   Trigger:
     X: 7
-    "Y": 0
+    Y: 0
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:554
 - Name: trap_b#e8-20
   X: 151
-  "Y": 367
+  Y: 367
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 0
+    Y: 0
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:555
 - Name: trap_b#e8-21
   X: 153
-  "Y": 366
+  Y: 366
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:556
 - Name: trap_b#e8-22
   X: 155
-  "Y": 367
+  Y: 367
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:557
 - Name: trap_c#e8-1
   X: 78
-  "Y": 362
+  Y: 362
   Dir: 0
   Sprite: -1
   Trigger:
     X: 4
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:558
 - Name: trap_c#e8-2
   X: 78
-  "Y": 359
+  Y: 359
   Dir: 0
   Sprite: -1
   Trigger:
     X: 4
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:559
 - Name: trap_c#e8-3
   X: 83
-  "Y": 362
+  Y: 362
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:560
 - Name: trap_c#e8-4
   X: 88
-  "Y": 359
+  Y: 359
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:561
 - Name: trap_c#e8-5
   X: 89
-  "Y": 357
+  Y: 357
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:562
 - Name: trap_c#e8-6
   X: 92
-  "Y": 390
+  Y: 390
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:563
 - Name: trap_c#e8-7
   X: 92
-  "Y": 357
+  Y: 357
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:564
 - Name: trap_c#e8-8
   X: 98
-  "Y": 364
+  Y: 364
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:565
 - Name: trap_c#e8-9
   X: 98
-  "Y": 362
+  Y: 362
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 0
+    Y: 0
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:566
 - Name: trap_c#e8-10
   X: 106
-  "Y": 364
+  Y: 364
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:567
 - Name: trap_c#e8-11
   X: 107
-  "Y": 360
+  Y: 360
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:568
 - Name: trap_c#e8-12
   X: 109
-  "Y": 360
+  Y: 360
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:569
 - Name: trap_c#e8-13
   X: 112
-  "Y": 361
+  Y: 361
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:570
 - Name: trap_c#e8-14
   X: 116
-  "Y": 359
+  Y: 359
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:571
 - Name: trap_c#e8-15
   X: 117
-  "Y": 359
+  Y: 359
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:572
 - Name: trap_c#e8-16
   X: 116
-  "Y": 356
+  Y: 356
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:573
 - Name: trap_c#e8-17
   X: 117
-  "Y": 356
+  Y: 356
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:574
 - Name: trap_c#e8-18
   X: 129
-  "Y": 360
+  Y: 360
   Dir: 0
   Sprite: -1
   Trigger:
     X: 12
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:575
 - Name: trap_c#e8-19
   X: 129
-  "Y": 358
+  Y: 358
   Dir: 0
   Sprite: -1
   Trigger:
     X: 12
-    "Y": 0
+    Y: 0
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:576
 - Name: trap_c#e8-20
   X: 132
-  "Y": 357
+  Y: 357
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:577
 - Name: trap_c#e8-21
   X: 137
-  "Y": 357
+  Y: 357
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:578
 - Name: trap_c#e8-22
   X: 147
-  "Y": 363
+  Y: 363
   Dir: 0
   Sprite: -1
   Trigger:
     X: 16
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:579
 - Name: trap_c#e8-23
   X: 149
-  "Y": 365
+  Y: 365
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:580
 - Name: trap_c#e8-24
   X: 158
-  "Y": 362
+  Y: 362
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 4
+    Y: 4
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:581
 - Name: trap_c#e8-25
   X: 154
-  "Y": 360
+  Y: 360
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:582
 - Name: trap_c#e8-26
   X: 161
-  "Y": 360
+  Y: 360
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:583
 - Name: trap_c#e8-27
   X: 161
-  "Y": 365
+  Y: 365
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:584
 - Name: trap_c#e8-28
   X: 160
-  "Y": 366
+  Y: 366
   Dir: 0
   Sprite: -1
   DuplicateOf: LogTrap#tt_main
@@ -755,1041 +757,1041 @@ Body:
   Source: npc/other/turbo_track.txt:585
 - Name: trap_d#e8-1
   X: 79
-  "Y": 353
+  Y: 353
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:586
 - Name: trap_d#e8-2
   X: 85
-  "Y": 354
+  Y: 354
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:587
 - Name: trap_d#e8-3
   X: 99
-  "Y": 353
+  Y: 353
   Dir: 0
   Sprite: -1
   Trigger:
     X: 14
-    "Y": 0
+    Y: 0
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:588
 - Name: trap_d#e8-4
   X: 99
-  "Y": 352
+  Y: 352
   Dir: 0
   Sprite: -1
   Trigger:
     X: 14
-    "Y": 0
+    Y: 0
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:589
 - Name: trap_d#e8-5
   X: 99
-  "Y": 356
+  Y: 356
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:590
 - Name: trap_d#e8-6
   X: 103
-  "Y": 356
+  Y: 356
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 3
+    Y: 3
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:591
 - Name: trap_d#e8-7
   X: 108
-  "Y": 354
+  Y: 354
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:592
 - Name: trap_d#e8-8
   X: 112
-  "Y": 356
+  Y: 356
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:593
 - Name: trap_d#e8-9
   X: 113
-  "Y": 356
+  Y: 356
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:594
 - Name: trap_d#e8-10
   X: 123
-  "Y": 353
+  Y: 353
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:595
 - Name: trap_d#e8-11
   X: 127
-  "Y": 353
+  Y: 353
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:596
 - Name: trap_d#e8-12
   X: 145
-  "Y": 352
+  Y: 352
   Dir: 0
   Sprite: -1
   Trigger:
     X: 17
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:597
 - Name: trap_d#e8-13
   X: 152
-  "Y": 354
+  Y: 354
   Dir: 0
   Sprite: -1
   Trigger:
     X: 10
-    "Y": 1
+    Y: 1
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:598
 - Name: trap_d#e8-14
   X: 145
-  "Y": 357
+  Y: 357
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:599
 - Name: trap_d#e8-15
   X: 148
-  "Y": 357
+  Y: 357
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 2
+    Y: 2
   DuplicateOf: LogTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:600
 - Name: "#TBT_trap_e8-1"
   X: 322
-  "Y": 354
+  Y: 354
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1041
 - Name: "#TBT_trap_e8-2"
   X: 323
-  "Y": 360
+  Y: 360
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1042
 - Name: "#TBT_trap_e8-3"
   X: 324
-  "Y": 365
+  Y: 365
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1043
 - Name: "#TBT_trap_e8-4"
   X: 325
-  "Y": 370
+  Y: 370
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1044
 - Name: "#TBT_trap_e8-5"
   X: 325
-  "Y": 375
+  Y: 375
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1045
 - Name: "#TBT_trap_e8-6"
   X: 329
-  "Y": 377
+  Y: 377
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1046
 - Name: "#TBT_trap_e8-7"
   X: 338
-  "Y": 372
+  Y: 372
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1047
 - Name: "#TBT_trap_e8-8"
   X: 341
-  "Y": 364
+  Y: 364
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1048
 - Name: "#TBT_trap_e8-9"
   X: 325
-  "Y": 359
+  Y: 359
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1049
 - Name: "#TBT_trap_e8-10"
   X: 341
-  "Y": 355
+  Y: 355
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1050
 - Name: "#TBT_trap_e8-11"
   X: 350
-  "Y": 355
+  Y: 355
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1051
 - Name: "#TBT_trap_e8-12"
   X: 348
-  "Y": 363
+  Y: 363
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1052
 - Name: "#TBT_trap_e8-13"
   X: 347
-  "Y": 370
+  Y: 370
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1053
 - Name: "#TBT_trap_e8-14"
   X: 349
-  "Y": 377
+  Y: 377
   Dir: 0
   Sprite: -1
   Trigger:
     X: 9
-    "Y": 9
+    Y: 9
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1054
 - Name: "#TBT_trap_e8-15"
   X: 362
-  "Y": 372
+  Y: 372
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1055
 - Name: "#TBT_trap_e8-16"
   X: 364
-  "Y": 365
+  Y: 365
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1056
 - Name: "#TBT_trap_e8-17"
   X: 363
-  "Y": 357
+  Y: 357
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1057
 - Name: "#TBT_trap_e8-18"
   X: 374
-  "Y": 358
+  Y: 358
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1058
 - Name: "#TBT_trap_e8-19"
   X: 371
-  "Y": 367
+  Y: 367
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1059
 - Name: "#TBT_trap_e8-20"
   X: 371
-  "Y": 376
+  Y: 376
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1060
 - Name: "#TBT_trap_e8-21"
   X: 379
-  "Y": 375
+  Y: 375
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1061
 - Name: "#TBT_trap_e8-22"
   X: 382
-  "Y": 363
+  Y: 363
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1062
 - Name: "#TBT_trap_e8-23"
   X: 381
-  "Y": 354
+  Y: 354
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: SandTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1063
 - Name: "#TBT_trap_e8-24"
   X: 355
-  "Y": 362
+  Y: 362
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: Trap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1243
 - Name: flasher#e8-01
   X: 13
-  "Y": 266
+  Y: 266
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 2
+    Y: 2
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1306
 - Name: flasher#e8-02
   X: 24
-  "Y": 268
+  Y: 268
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1307
 - Name: flasher#e8-03
   X: 20
-  "Y": 258
+  Y: 258
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1308
 - Name: flasher#e8-04
   X: 23
-  "Y": 251
+  Y: 251
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1309
 - Name: flasher#e8-05
   X: 36
-  "Y": 270
+  Y: 270
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1310
 - Name: flasher#e8-06
   X: 22
-  "Y": 239
+  Y: 239
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1311
 - Name: flasher#e8-07
   X: 38
-  "Y": 239
+  Y: 239
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1312
 - Name: flasher#e8-08
   X: 37
-  "Y": 237
+  Y: 237
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1313
 - Name: flasher#e8-09
   X: 55
-  "Y": 247
+  Y: 247
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1314
 - Name: flasher#e8-10
   X: 55
-  "Y": 246
+  Y: 246
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1315
 - Name: flasher#e8-11
   X: 63
-  "Y": 253
+  Y: 253
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1316
 - Name: flasher#e8-12
   X: 36
-  "Y": 216
+  Y: 216
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1317
 - Name: flasher#e8-13
   X: 20
-  "Y": 209
+  Y: 209
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1318
 - Name: flasher#e8-14
   X: 28
-  "Y": 195
+  Y: 195
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1319
 - Name: flasher#e8-15
   X: 82
-  "Y": 264
+  Y: 264
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1320
 - Name: flasher#e8-16
   X: 47
-  "Y": 185
+  Y: 185
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1321
 - Name: flasher#e8-17
   X: 53
-  "Y": 207
+  Y: 207
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1322
 - Name: flasher#e8-18
   X: 54
-  "Y": 208
+  Y: 208
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1323
 - Name: flasher#e8-19
   X: 81
-  "Y": 247
+  Y: 247
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1324
 - Name: flasher#e8-20
   X: 105
-  "Y": 257
+  Y: 257
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1325
 - Name: flasher#e8-21
   X: 95
-  "Y": 242
+  Y: 242
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1326
 - Name: flasher#e8-22
   X: 77
-  "Y": 232
+  Y: 232
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1327
 - Name: flasher#e8-23
   X: 67
-  "Y": 222
+  Y: 222
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1328
 - Name: flasher#e8-24
   X: 83
-  "Y": 206
+  Y: 206
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1329
 - Name: flasher#e8-25
   X: 95
-  "Y": 224
+  Y: 224
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1330
 - Name: flasher#e8-26
   X: 106
-  "Y": 220
+  Y: 220
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1331
 - Name: flasher#e8-27
   X: 93
-  "Y": 191
+  Y: 191
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1332
 - Name: flasher#e8-28a
   X: 94
-  "Y": 192
+  Y: 192
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1333
 - Name: flasher#e8-28b
   X: 46
-  "Y": 214
+  Y: 214
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1334
 - Name: flasher#e8-29
   X: 16
-  "Y": 247
+  Y: 247
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1335
 - Name: flasher#e8-30
   X: 58
-  "Y": 268
+  Y: 268
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1336
 - Name: flasher#e8-31
   X: 36
-  "Y": 253
+  Y: 253
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1337
 - Name: flasher#e8-32
   X: 69
-  "Y": 238
+  Y: 238
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1338
 - Name: flasher#e8-33
   X: 58
-  "Y": 268
+  Y: 268
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1339
 - Name: flasher#e8-34
   X: 74
-  "Y": 188
+  Y: 188
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1340
 - Name: flasher#e8-35
   X: 99
-  "Y": 207
+  Y: 207
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1341
 - Name: flasher#e8-36
   X: 74
-  "Y": 188
+  Y: 188
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1342
 - Name: flasher#e8-37a
   X: 111
-  "Y": 188
+  Y: 188
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1343
 - Name: flasher#e8-37b
   X: 51
-  "Y": 232
+  Y: 232
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1344
 - Name: flasher#e8-38
   X: 30
-  "Y": 232
+  Y: 232
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1345
 - Name: flasher#e8-39
   X: 92
-  "Y": 256
+  Y: 256
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1346
 - Name: flasher#e8-40
   X: 79
-  "Y": 220
+  Y: 220
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1347
 - Name: flasher#e8-41
   X: 51
-  "Y": 192
+  Y: 192
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1348
 - Name: flasher#e8-42
   X: 22
-  "Y": 227
+  Y: 227
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1349
 - Name: flasher#e8-43
   X: 51
-  "Y": 232
+  Y: 232
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1350
 - Name: flasher#e8-44
   X: 42
-  "Y": 258
+  Y: 258
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1351
 - Name: flasher#e8-45
   X: 45
-  "Y": 271
+  Y: 271
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1352
 - Name: flasher#e8-46
   X: 72
-  "Y": 207
+  Y: 207
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1353
 - Name: flasher#e8-47
   X: 33
-  "Y": 192
+  Y: 192
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 1
+    Y: 1
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1354
 - Name: flasher#e8-48a
   X: 90
-  "Y": 241
+  Y: 241
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1355
 - Name: flasher#e8-48b
   X: 236
-  "Y": 3
+  Y: 3
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 0
+    Y: 0
   DuplicateOf: WaterTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1356
 - Name: snake01#e8
   X: 324
-  "Y": 279
+  Y: 279
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: snake01#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1623
 - Name: snake02#e8
   X: 332
-  "Y": 279
+  Y: 279
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: snake02#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1640
 - Name: snake03#e8
   X: 324
-  "Y": 270
+  Y: 270
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: snake03#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1658
 - Name: snake04#e8
   X: 332
-  "Y": 270
+  Y: 270
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: snake04#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1676
 - Name: snake#e8
   X: 389
-  "Y": 288
+  Y: 288
   Dir: 0
   Sprite: 111
   DuplicateOf: SnakeHunt#tt_main
@@ -1797,7 +1799,7 @@ Body:
   Source: npc/other/turbo_track.txt:1712
 - Name: hunting#e8
   X: 90
-  "Y": 46
+  Y: 46
   Dir: 0
   Sprite: 111
   DuplicateOf: SnakeHunt#tt_main
@@ -1805,139 +1807,139 @@ Body:
   Source: npc/other/turbo_track.txt:1717
 - Name: "#cos_e8_1"
   X: 168
-  "Y": 363
+  Y: 363
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: cos#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1768
 - Name: "#cos_e8_2"
   X: 258
-  "Y": 364
+  Y: 364
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: cos#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1769
 - Name: "#cos_e8_3"
   X: 385
-  "Y": 365
+  Y: 365
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: cos#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1770
 - Name: "#cos_e8_5"
   X: 250
-  "Y": 200
+  Y: 200
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: cos#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1771
 - Name: "#cos_e8_6"
   X: 389
-  "Y": 275
+  Y: 275
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: cos#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1772
 - Name: "#cos_e8_7"
   X: 93
-  "Y": 19
+  Y: 19
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: cos#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1773
 - Name: "#cos_e8_end"
   X: 371
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: cos_end#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1968
 - Name: "#cos_e8_end2"
   X: 371
-  "Y": 51
+  Y: 51
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: cos_end2#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:1992
 - Name: "#cos_e8_end3"
   X: 371
-  "Y": 43
+  Y: 43
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: cos_end3#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2016
 - Name: Disposable_Switch#e8
   X: 316
-  "Y": 365
+  Y: 365
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: DSwitch#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2032
 - Name: Flasher_Exit_1#e8
   X: 11
-  "Y": 266
+  Y: 266
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Flasher#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2052
 - Name: Flasher_Exit_2#e8
   X: 114
-  "Y": 190
+  Y: 190
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Flasher#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2053
 - Name: Winner Helper#TBT_e8
   X: 384
-  "Y": 167
+  Y: 167
   Dir: 1
   Sprite: 47
   DuplicateOf: WHelper#tt_main
@@ -1945,1189 +1947,1189 @@ Body:
   Source: npc/other/turbo_track.txt:2545
 - Name: Notice_Maker1#TBT_e8
   X: 11
-  "Y": 91
+  Y: 91
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: NMaker1#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2780
 - Name: Notice_Maker3#TBT_e8
   X: 234
-  "Y": 223
+  Y: 223
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: NMaker3#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2800
 - Name: Notice_Maker4#TBT_e8
   X: 226
-  "Y": 15
+  Y: 15
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: NMaker4#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2821
 - Name: Warp#e8_1
   X: 227
-  "Y": 379
+  Y: 379
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: warp#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2847
 - Name: Warp#e8_2
   X: 237
-  "Y": 380
+  Y: 380
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: warp#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2848
 - Name: Warp#e8_3
   X: 227
-  "Y": 367
+  Y: 367
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: warp#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2849
 - Name: Warp#e8_4
   X: 231
-  "Y": 360
+  Y: 360
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: warp#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2850
 - Name: Warp#e8_5
   X: 225
-  "Y": 349
+  Y: 349
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: warp#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2851
 - Name: Warp#e8_6
   X: 249
-  "Y": 352
+  Y: 352
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: warp#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2852
 - Name: Warp#e8_7
   X: 253
-  "Y": 364
+  Y: 364
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: warp#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2853
 - Name: trap_e8#F1
   X: 307
-  "Y": 55
+  Y: 55
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2945
 - Name: trap_e8#F2
   X: 307
-  "Y": 51
+  Y: 51
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2946
 - Name: trap_e8#F3
   X: 307
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2947
 - Name: trap_e8#F4
   X: 307
-  "Y": 43
+  Y: 43
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2948
 - Name: trap_e8#F5
   X: 307
-  "Y": 39
+  Y: 39
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2949
 - Name: trap_e8#F96
   X: 307
-  "Y": 39
+  Y: 39
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2950
 - Name: trap_e8#F6
   X: 312
-  "Y": 56
+  Y: 56
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2951
 - Name: trap_e8#F7
   X: 312
-  "Y": 52
+  Y: 52
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2952
 - Name: trap_e8#F8
   X: 312
-  "Y": 48
+  Y: 48
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2953
 - Name: trap_e8#F9
   X: 312
-  "Y": 44
+  Y: 44
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2954
 - Name: trap_e8#F10
   X: 312
-  "Y": 40
+  Y: 40
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2955
 - Name: trap_e8#F11
   X: 312
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2956
 - Name: trap_e8#F12
   X: 316
-  "Y": 55
+  Y: 55
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2957
 - Name: trap_e8#F13
   X: 316
-  "Y": 51
+  Y: 51
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2958
 - Name: trap_e8#F14
   X: 316
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2959
 - Name: trap_e8#F15
   X: 316
-  "Y": 43
+  Y: 43
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2960
 - Name: trap_e8#F16
   X: 316
-  "Y": 39
+  Y: 39
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2961
 - Name: trap_e8#F17
   X: 316
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2962
 - Name: trap_e8#F18
   X: 320
-  "Y": 56
+  Y: 56
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2963
 - Name: trap_e8#F19
   X: 320
-  "Y": 52
+  Y: 52
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2964
 - Name: trap_e8#F20
   X: 320
-  "Y": 48
+  Y: 48
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2965
 - Name: trap_e8#F21
   X: 320
-  "Y": 44
+  Y: 44
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2966
 - Name: trap_e8#F22
   X: 320
-  "Y": 40
+  Y: 40
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2967
 - Name: trap_e8#F23
   X: 320
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2968
 - Name: trap_e8#F24
   X: 324
-  "Y": 55
+  Y: 55
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2969
 - Name: trap_e8#F25
   X: 324
-  "Y": 51
+  Y: 51
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2970
 - Name: trap_e8#F26
   X: 324
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2971
 - Name: trap_e8#F27
   X: 324
-  "Y": 43
+  Y: 43
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2972
 - Name: trap_e8#F28
   X: 324
-  "Y": 39
+  Y: 39
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2973
 - Name: trap_e8#F29
   X: 324
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2974
 - Name: trap_e8#F30
   X: 328
-  "Y": 56
+  Y: 56
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2975
 - Name: trap_e8#F31
   X: 328
-  "Y": 52
+  Y: 52
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2976
 - Name: trap_e8#F32
   X: 328
-  "Y": 48
+  Y: 48
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2977
 - Name: trap_e8#F33
   X: 328
-  "Y": 44
+  Y: 44
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2978
 - Name: trap_e8#F34
   X: 328
-  "Y": 40
+  Y: 40
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2979
 - Name: trap_e8#F35
   X: 328
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2980
 - Name: trap_e8#F36
   X: 332
-  "Y": 55
+  Y: 55
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2981
 - Name: trap_e8#F37
   X: 332
-  "Y": 51
+  Y: 51
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2982
 - Name: trap_e8#F38
   X: 332
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2983
 - Name: trap_e8#F39
   X: 332
-  "Y": 43
+  Y: 43
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2984
 - Name: trap_e8#F40
   X: 332
-  "Y": 39
+  Y: 39
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2985
 - Name: trap_e8#F41
   X: 332
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:2986
 - Name: trap_e8#F49
   X: 340
-  "Y": 51
+  Y: 51
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3244
 - Name: trap_e8#F50
   X: 340
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3245
 - Name: trap_e8#F51
   X: 340
-  "Y": 43
+  Y: 43
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3246
 - Name: trap_e8#F52
   X: 340
-  "Y": 39
+  Y: 39
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3247
 - Name: trap_e8#F53
   X: 340
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3248
 - Name: trap_e8#F54
   X: 344
-  "Y": 56
+  Y: 56
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3249
 - Name: trap_e8#F55
   X: 344
-  "Y": 52
+  Y: 52
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3250
 - Name: trap_e8#F56
   X: 344
-  "Y": 48
+  Y: 48
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3251
 - Name: trap_e8#F57
   X: 344
-  "Y": 44
+  Y: 44
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3252
 - Name: trap_e8#F58
   X: 344
-  "Y": 40
+  Y: 40
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3253
 - Name: trap_e8#F59
   X: 344
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3254
 - Name: trap_e8#F60
   X: 348
-  "Y": 55
+  Y: 55
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3255
 - Name: trap_e8#F61
   X: 348
-  "Y": 51
+  Y: 51
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3256
 - Name: trap_e8#F62
   X: 348
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3257
 - Name: trap_e8#F63
   X: 348
-  "Y": 43
+  Y: 43
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3258
 - Name: trap_e8#F64
   X: 348
-  "Y": 39
+  Y: 39
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3259
 - Name: trap_e8#F65
   X: 348
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3260
 - Name: trap_e8#F66
   X: 352
-  "Y": 56
+  Y: 56
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3261
 - Name: trap_e8#F67
   X: 352
-  "Y": 52
+  Y: 52
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3262
 - Name: trap_e8#F68
   X: 352
-  "Y": 48
+  Y: 48
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3263
 - Name: trap_e8#F69
   X: 352
-  "Y": 44
+  Y: 44
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3264
 - Name: trap_e8#F70
   X: 352
-  "Y": 40
+  Y: 40
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3265
 - Name: trap_e8#F71
   X: 352
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3266
 - Name: trap_e8#F72
   X: 356
-  "Y": 55
+  Y: 55
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3267
 - Name: trap_e8#F73
   X: 356
-  "Y": 51
+  Y: 51
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3268
 - Name: trap_e8#F74
   X: 356
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3269
 - Name: trap_e8#F75
   X: 356
-  "Y": 43
+  Y: 43
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3270
 - Name: trap_e8#F76
   X: 356
-  "Y": 39
+  Y: 39
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3271
 - Name: trap_e8#F77
   X: 356
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3272
 - Name: trap_e8#F78
   X: 360
-  "Y": 56
+  Y: 56
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3273
 - Name: trap_e8#F79
   X: 360
-  "Y": 52
+  Y: 52
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3274
 - Name: trap_e8#F80
   X: 360
-  "Y": 48
+  Y: 48
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3275
 - Name: trap_e8#F81
   X: 360
-  "Y": 44
+  Y: 44
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3276
 - Name: trap_e8#F82
   X: 360
-  "Y": 40
+  Y: 40
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3277
 - Name: trap_e8#F83
   X: 360
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3278
 - Name: trap_e8#F84
   X: 364
-  "Y": 55
+  Y: 55
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3279
 - Name: trap_e8#F85
   X: 364
-  "Y": 51
+  Y: 51
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3280
 - Name: trap_e8#F86
   X: 364
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3281
 - Name: trap_e8#F87
   X: 364
-  "Y": 43
+  Y: 43
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3282
 - Name: trap_e8#F88
   X: 364
-  "Y": 39
+  Y: 39
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3283
 - Name: trap_e8#F89
   X: 364
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3284
 - Name: trap_e8#F90
   X: 368
-  "Y": 56
+  Y: 56
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3285
 - Name: trap_e8#F91
   X: 368
-  "Y": 52
+  Y: 52
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3286
 - Name: trap_e8#F92
   X: 368
-  "Y": 48
+  Y: 48
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3287
 - Name: trap_e8#F93
   X: 368
-  "Y": 44
+  Y: 44
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3288
 - Name: trap_e8#F94
   X: 368
-  "Y": 40
+  Y: 40
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3289
 - Name: trap_e8#F95
   X: 368
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3290
 - Name: trap_e8#F42
   X: 336
-  "Y": 56
+  Y: 56
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap_2#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3550
 - Name: trap_e8#F43
   X: 336
-  "Y": 52
+  Y: 52
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap_2#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3551
 - Name: trap_e8#F44
   X: 336
-  "Y": 48
+  Y: 48
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap_2#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3552
 - Name: trap_e8#F45
   X: 336
-  "Y": 44
+  Y: 44
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap_2#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3553
 - Name: trap_e8#F46
   X: 336
-  "Y": 50
+  Y: 50
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap_2#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3554
 - Name: trap_e8#F47
   X: 336
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap_2#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3555
 - Name: trap_e8#F48
   X: 340
-  "Y": 55
+  Y: 55
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: TurboTrap_2#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3556
 - Name: bing#e8
   X: 217
-  "Y": 214
+  Y: 214
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: bing_1#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3613
 - Name: bing2#e8
   X: 217
-  "Y": 214
+  Y: 214
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: bing_2#tt_main
   Kind: Script
   Source: npc/other/turbo_track.txt:3639

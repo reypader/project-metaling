@@ -2,37 +2,39 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: nwarp8
   X: 21
-  "Y": 312
+  Y: 312
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nif_fild01
     X: 343
-    "Y": 322
+    Y: 322
     TriggerWhileHidden: false
   Source: npc/warps/cities/niflheim.txt:20
 - Name: nwarp9
   X: 379
-  "Y": 235
+  Y: 235
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: niflheim
     X: 20
-    "Y": 153
+    Y: 153
     TriggerWhileHidden: false
   Source: npc/warps/cities/niflheim.txt:21

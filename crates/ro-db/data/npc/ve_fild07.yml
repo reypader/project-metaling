@@ -2,45 +2,47 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Boat#Aru
   X: 125
-  "Y": 128
+  Y: 128
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_nameless.txt:761
 - Name: Secret Agent#Aru
   X: 128
-  "Y": 130
+  Y: 130
   Dir: 1
   Sprite: 97
   Kind: Script
   Source: npc/quests/quests_nameless.txt:885
 - Name: Silk Sand Camel
   X: 235
-  "Y": 42
+  Y: 42
   Dir: 3
   Sprite: 938
   Kind: Script
   Source: npc/quests/quests_veins.txt:4776
 - Name: "#wp120089"
   X: 33
-  "Y": 113
+  Y: 113
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:258
 - Name: "#tr120089"
   X: 33
-  "Y": 113
+  Y: 113
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -48,37 +50,37 @@ Body:
   Source: npc/re/other/achievements.txt:519
 - Name: Map Examiner Shevko#chevco
   X: 158
-  "Y": 354
+  Y: 354
   Dir: 3
   Sprite: 122
   Kind: Script
   Source: npc/re/quests/juno_monster_society.txt:2618
 - Name: Karian#cmd5
   X: 129
-  "Y": 132
+  Y: 132
   Dir: 5
   Sprite: 486
   Kind: Script
   Source: npc/re/jobs/3-2/minstrel.txt:777
 - Name: =Notice=#job_min
   X: 131
-  "Y": 132
+  Y: 132
   Dir: 5
   Sprite: 837
   Kind: Script
   Source: npc/re/jobs/3-2/minstrel.txt:1340
 - Name: ve_fild7-1
   X: 147
-  "Y": 371
+  Y: 371
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: veins
     X: 146
-    "Y": 28
+    Y: 28
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/veins_fild.txt:43

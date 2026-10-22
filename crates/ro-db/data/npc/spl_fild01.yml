@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: School of Fish#10
   X: 41
-  "Y": 118
+  Y: 118
   Dir: 0
   Sprite: 844
   DuplicateOf: FishingHole_spl3
@@ -16,7 +18,7 @@ Body:
   Source: npc/quests/quests_13_2.txt:526
 - Name: School of Fish#11
   X: 317
-  "Y": 361
+  Y: 361
   Dir: 0
   Sprite: 844
   DuplicateOf: FishingHole_spl3
@@ -24,7 +26,7 @@ Body:
   Source: npc/quests/quests_13_2.txt:527
 - Name: School of Fish#12
   X: 55
-  "Y": 269
+  Y: 269
   Dir: 0
   Sprite: 844
   DuplicateOf: FishingHole_spl3
@@ -32,7 +34,7 @@ Body:
   Source: npc/quests/quests_13_2.txt:528
 - Name: School of Fish#13
   X: 332
-  "Y": 131
+  Y: 131
   Dir: 0
   Sprite: 844
   DuplicateOf: FishingHole_spl3
@@ -40,7 +42,7 @@ Body:
   Source: npc/quests/quests_13_2.txt:529
 - Name: School of Fish#14
   X: 170
-  "Y": 74
+  Y: 74
   Dir: 0
   Sprite: 844
   DuplicateOf: FishingHole_spl3
@@ -48,71 +50,71 @@ Body:
   Source: npc/quests/quests_13_2.txt:530
 - Name: ????#ep13_mdplant05
   X: 341
-  "Y": 109
+  Y: 109
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_13_2.txt:1037
 - Name: to_dun01#ep13_2
   X: 375
-  "Y": 109
+  Y: 109
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/quests/quests_13_2.txt:1056
 - Name: ???#ep13mdf01
   X: 357
-  "Y": 44
+  Y: 44
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_13_2.txt:2551
 - Name: ???#ep13mdf02
   X: 312
-  "Y": 79
+  Y: 79
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_13_2.txt:2600
 - Name: ???#ep13mdf03
   X: 329
-  "Y": 29
+  Y: 29
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_13_2.txt:2649
 - Name: spl_fild01-1
   X: 289
-  "Y": 28
+  Y: 28
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: spl_fild02
     X: 292
-    "Y": 377
+    Y: 377
     TriggerWhileHidden: false
   Source: npc/warps/fields/spl_fild.txt:25
 - Name: "#wp120093"
   X: 335
-  "Y": 315
+  Y: 315
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:173
 - Name: "#tr120093"
   X: 335
-  "Y": 315
+  Y: 315
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -120,12 +122,12 @@ Body:
   Source: npc/re/other/achievements.txt:434
 - Name: Dispatched Rune Knight#2
   X: 361
-  "Y": 327
+  Y: 327
   Dir: 3
   Sprite: 83
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dispatched Rune Knight#1
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:1248

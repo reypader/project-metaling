@@ -2,24 +2,26 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#wp120099"
   X: 227
-  "Y": 82
+  Y: 82
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:186
 - Name: "#tr120099"
   X: 227
-  "Y": 82
+  Y: 82
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -27,7 +29,7 @@ Body:
   Source: npc/re/other/achievements.txt:447
 - Name: Signpost#Kamidal Exit
   X: 27
-  "Y": 83
+  Y: 83
   Dir: 0
   Sprite: 837
   DuplicateOf: Signpost#Kamidal
@@ -35,7 +37,7 @@ Body:
   Source: npc/re/other/adven_boards.txt:3335
 - Name: Capital City Guard#1
   X: 146
-  "Y": 281
+  Y: 281
   Dir: 5
   Sprite: 492
   DuplicateOf: Guard#ep133_11
@@ -43,7 +45,7 @@ Body:
   Source: npc/re/quests/quests_dicastes.txt:409
 - Name: Capital City Guard#2
   X: 153
-  "Y": 281
+  Y: 281
   Dir: 3
   Sprite: 450
   DuplicateOf: Guard#ep133_11
@@ -51,14 +53,14 @@ Body:
   Source: npc/re/quests/quests_dicastes.txt:410
 - Name: BK#ep133_18
   X: 231
-  "Y": 174
+  Y: 174
   Dir: 5
   Sprite: 496
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:4537
 - Name: Jalapeno#pa0829
   X: 240
-  "Y": 198
+  Y: 198
   Dir: 2
   Sprite: 495
   DuplicateOf: dic_enc#main
@@ -66,7 +68,7 @@ Body:
   Source: npc/re/quests/quests_dicastes.txt:7372
 - Name: Brare#pa0829
   X: 251
-  "Y": 183
+  Y: 183
   Dir: 3
   Sprite: 495
   DuplicateOf: dic_enc#main
@@ -74,7 +76,7 @@ Body:
   Source: npc/re/quests/quests_dicastes.txt:7373
 - Name: Mancho#pa0829
   X: 259
-  "Y": 172
+  Y: 172
   Dir: 3
   Sprite: 495
   DuplicateOf: dic_enc#main
@@ -82,14 +84,14 @@ Body:
   Source: npc/re/quests/quests_dicastes.txt:7374
 - Name: Jahbong#pa0829
   X: 228
-  "Y": 159
+  Y: 159
   Dir: 4
   Sprite: 496
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:7377
 - Name: Teleport Cat No.6
   X: 161
-  "Y": 266
+  Y: 266
   Dir: 4
   Sprite: 421
   DuplicateOf: Teleport Cat#ep14_2
@@ -97,31 +99,31 @@ Body:
   Source: npc/re/quests/quests_eclage.txt:101
 - Name: dic_field0002
   X: 24
-  "Y": 79
+  Y: 79
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: dic_dun01
     X: 366
-    "Y": 45
+    Y: 45
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/dic_fild.txt:17
 - Name: dic_field0003
   X: 69
-  "Y": 23
+  Y: 23
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: dic_fild02
     X: 70
-    "Y": 373
+    Y: 373
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/dic_fild.txt:18

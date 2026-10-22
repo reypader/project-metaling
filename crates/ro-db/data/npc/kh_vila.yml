@@ -2,31 +2,33 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Wall#kh
   X: 191
-  "Y": 14
+  Y: 14
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:2106
 - Name: Book#kh1
   UniqueName: BookKHQ1
   X: 184
-  "Y": 20
+  Y: 20
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:2131
 - Name: Book#kh2
   X: 181
-  "Y": 20
+  Y: 20
   Dir: 0
   Sprite: 111
   DuplicateOf: BookKHQ1
@@ -34,7 +36,7 @@ Body:
   Source: npc/quests/kiel_hyre_quest.txt:2160
 - Name: Book#kh3
   X: 178
-  "Y": 20
+  Y: 20
   Dir: 0
   Sprite: 111
   DuplicateOf: BookKHQ1
@@ -42,7 +44,7 @@ Body:
   Source: npc/quests/kiel_hyre_quest.txt:2161
 - Name: Book#kh4
   X: 175
-  "Y": 19
+  Y: 19
   Dir: 0
   Sprite: 111
   DuplicateOf: BookKHQ1
@@ -50,111 +52,111 @@ Body:
   Source: npc/quests/kiel_hyre_quest.txt:2162
 - Name: Letter#kh
   X: 179
-  "Y": 11
+  Y: 11
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:2167
 - Name: Box#khp1
   X: 16
-  "Y": 175
+  Y: 175
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:2198
 - Name: Apple Box#khp1
   X: 30
-  "Y": 184
+  Y: 184
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:2244
 - Name: Map#khp1
   X: 44
-  "Y": 126
+  Y: 126
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:2271
 - Name: Pot#khp1
   X: 33
-  "Y": 184
+  Y: 184
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:2385
 - Name: Calabash#khp1
   X: 14
-  "Y": 55
+  Y: 55
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:2427
 - Name: Pool#khp1
   X: 39
-  "Y": 41
+  Y: 41
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:2481
 - Name: Vicious Dog#khp1
   X: 181
-  "Y": 178
+  Y: 178
   Dir: 4
   Sprite: 81
   Trigger:
     X: 7
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:2563
 - Name: Drawer#khp1
   X: 115
-  "Y": 186
+  Y: 186
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:2627
 - Name: Box#khp2
   X: 107
-  "Y": 126
+  Y: 126
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:2671
 - Name: Bookshelf#khp1
   X: 181
-  "Y": 138
+  Y: 138
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:2718
 - Name: Desk#khp1
   X: 118
-  "Y": 144
+  Y: 144
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:2828
 - Name: Medicine Chest#khp1
   X: 123
-  "Y": 170
+  Y: 170
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:2863
 - Name: Sword Hilt#kh
   X: 136
-  "Y": 68
+  Y: 68
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:3009
 - Name: Test Tube#khp2
   X: 179
-  "Y": 68
+  Y: 68
   Dir: 0
   Sprite: 111
   Kind: Script
@@ -162,263 +164,263 @@ Body:
 - Name: Test Tube
   UniqueName: TestTubeKHQ2
   X: 185
-  "Y": 68
+  Y: 68
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:3164
 - Name: kh_vila_01
   X: 79
-  "Y": 11
+  Y: 11
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: yuno_fild02
     X: 92
-    "Y": 208
+    Y: 208
     TriggerWhileHidden: false
   Source: npc/warps/other/kiel.txt:39
 - Name: kh_vila_02a
   X: 71
-  "Y": 38
+  Y: 38
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: kh_vila
     X: 42
-    "Y": 38
+    Y: 38
     TriggerWhileHidden: false
   Source: npc/warps/other/kiel.txt:40
 - Name: kh_vila_02b
   X: 46
-  "Y": 38
+  Y: 38
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: kh_vila
     X: 75
-    "Y": 38
+    Y: 38
     TriggerWhileHidden: false
   Source: npc/warps/other/kiel.txt:41
 - Name: kh_vila_03a
   X: 71
-  "Y": 54
+  Y: 54
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: kh_vila
     X: 42
-    "Y": 54
+    Y: 54
     TriggerWhileHidden: false
   Source: npc/warps/other/kiel.txt:42
 - Name: kh_vila_03b
   X: 46
-  "Y": 54
+  Y: 54
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: kh_vila
     X: 75
-    "Y": 54
+    Y: 54
     TriggerWhileHidden: false
   Source: npc/warps/other/kiel.txt:43
 - Name: kh_vila_04a
   X: 34
-  "Y": 66
+  Y: 66
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: kh_vila
     X: 20
-    "Y": 108
+    Y: 108
     TriggerWhileHidden: false
   Source: npc/warps/other/kiel.txt:44
 - Name: kh_vila_04b
   X: 20
-  "Y": 103
+  Y: 103
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: kh_vila
     X: 34
-    "Y": 61
+    Y: 61
     TriggerWhileHidden: false
   Source: npc/warps/other/kiel.txt:45
 - Name: kh_vila_05a
   X: 84
-  "Y": 66
+  Y: 66
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: kh_vila
     X: 44
-    "Y": 107
+    Y: 107
     TriggerWhileHidden: false
   Source: npc/warps/other/kiel.txt:46
 - Name: kh_vila_05b
   X: 44
-  "Y": 103
+  Y: 103
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: kh_vila
     X: 84
-    "Y": 62
+    Y: 62
     TriggerWhileHidden: false
   Source: npc/warps/other/kiel.txt:47
 - Name: kh_vila_06a
   X: 32
-  "Y": 128
+  Y: 128
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: kh_vila
     X: 23
-    "Y": 171
+    Y: 171
     TriggerWhileHidden: false
   Source: npc/warps/other/kiel.txt:48
 - Name: kh_vila_06b
   X: 22
-  "Y": 167
+  Y: 167
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: kh_vila
     X: 32
-    "Y": 123
+    Y: 123
     TriggerWhileHidden: false
   Source: npc/warps/other/kiel.txt:49
 - Name: kh_vila_07a
   X: 90
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: kh_vila
     X: 119
-    "Y": 47
+    Y: 47
     TriggerWhileHidden: false
   Source: npc/warps/other/kiel.txt:50
 - Name: kh_vila_07b
   X: 115
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: kh_vila
     X: 85
-    "Y": 47
+    Y: 47
     TriggerWhileHidden: false
   Source: npc/warps/other/kiel.txt:51
 - Name: kh_vila_08a
   X: 126
-  "Y": 75
+  Y: 75
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: kh_vila
     X: 180
-    "Y": 176
+    Y: 176
     TriggerWhileHidden: false
   Source: npc/warps/other/kiel.txt:52
 - Name: kh_vila_08b
   X: 180
-  "Y": 171
+  Y: 171
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: kh_vila
     X: 126
-    "Y": 70
+    Y: 70
     TriggerWhileHidden: false
   Source: npc/warps/other/kiel.txt:53
 - Name: kh_vila_09
   X: 175
-  "Y": 71
+  Y: 71
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: kh_vila
     X: 136
-    "Y": 64
+    Y: 64
     TriggerWhileHidden: false
   Source: npc/warps/other/kiel.txt:54
 - Name: kh_vila_10
   X: 191
-  "Y": 19
+  Y: 19
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: yuno_fild02
     X: 74
-    "Y": 215
+    Y: 215
     TriggerWhileHidden: false
   Source: npc/warps/other/kiel.txt:55

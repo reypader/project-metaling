@@ -2,189 +2,191 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Heart of Ymir
   X: 49
-  "Y": 43
+  Y: 43
   Dir: 1
   Sprite: 111
   Kind: Script
   Source: npc/jobs/valkyrie.txt:348
 - Name: yun62
   X: 196
-  "Y": 194
+  Y: 194
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: yuno_in02
     X: 85
-    "Y": 14
+    Y: 14
     TriggerWhileHidden: false
   Source: npc/warps/cities/yuno.txt:89
 - Name: "#yun63"
   X: 153
-  "Y": 141
+  Y: 141
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/warps/cities/yuno.txt:94
 - Name: "#yun64"
   X: 196
-  "Y": 102
+  Y: 102
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/warps/cities/yuno.txt:102
 - Name: "#yun65"
   X: 181
-  "Y": 116
+  Y: 116
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/warps/cities/yuno.txt:109
 - Name: "#yun66"
   X: 165
-  "Y": 102
+  Y: 102
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/warps/cities/yuno.txt:116
 - Name: "#yun67"
   X: 181
-  "Y": 91
+  Y: 91
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/warps/cities/yuno.txt:123
 - Name: "#yun68"
   X: 148
-  "Y": 82
+  Y: 82
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/warps/cities/yuno.txt:131
 - Name: "#yun69"
   X: 125
-  "Y": 82
+  Y: 82
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/warps/cities/yuno.txt:138
 - Name: "#yun70"
   X: 136
-  "Y": 71
+  Y: 71
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/warps/cities/yuno.txt:145
 - Name: "#yun71"
   X: 16
-  "Y": 188
+  Y: 188
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/warps/cities/yuno.txt:153
 - Name: "#yun72"
   X: 176
-  "Y": 9
+  Y: 9
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/warps/cities/yuno.txt:160
 - Name: "#yun73"
   X: 176
-  "Y": 52
+  Y: 52
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/warps/cities/yuno.txt:167
 - Name: "#yun74"
   X: 40
-  "Y": 178
+  Y: 178
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/warps/cities/yuno.txt:175
 - Name: "#yun75"
   X: 47
-  "Y": 186
+  Y: 186
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/warps/cities/yuno.txt:182
 - Name: yun76
   X: 31
-  "Y": 167
+  Y: 167
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: yuno_in05
     X: 50
-    "Y": 85
+    Y: 85
     TriggerWhileHidden: false
   Source: npc/warps/cities/yuno.txt:190
 - Name: yun77
   X: 50
-  "Y": 88
+  Y: 88
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: yuno_in02
     X: 85
-    "Y": 14
+    Y: 14
     TriggerWhileHidden: false
   Source: npc/warps/cities/yuno.txt:191

@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Jody#02
   X: 15
-  "Y": 69
+  Y: 69
   Dir: 4
   Sprite: 754
   DuplicateOf: GuildRelay1
@@ -16,7 +18,7 @@ Body:
   Source: npc/quests/guildrelay.txt:3140
 - Name: Ron Haware#02
   X: 23
-  "Y": 22
+  Y: 22
   Dir: 3
   Sprite: 754
   DuplicateOf: GuildRelay2
@@ -24,7 +26,7 @@ Body:
   Source: npc/quests/guildrelay.txt:3141
 - Name: Vers#02
   X: 178
-  "Y": 38
+  Y: 38
   Dir: 3
   Sprite: 754
   DuplicateOf: GuildRelay3
@@ -32,7 +34,7 @@ Body:
   Source: npc/quests/guildrelay.txt:3142
 - Name: Gen Garish#02
   X: 18
-  "Y": 159
+  Y: 159
   Dir: 5
   Sprite: 754
   DuplicateOf: GuildRelay4
@@ -40,7 +42,7 @@ Body:
   Source: npc/quests/guildrelay.txt:3143
 - Name: Eeyorbriggar#5-2
   X: 65
-  "Y": 130
+  Y: 130
   Dir: 5
   Sprite: 722
   DuplicateOf: InsideFlagsG2
@@ -48,7 +50,7 @@ Body:
   Source: npc/guild/gefg_cas02.txt:84
 - Name: Eeyorbriggar#6
   X: 30
-  "Y": 123
+  Y: 123
   Dir: 5
   Sprite: 722
   DuplicateOf: InsideFlagsG2
@@ -56,7 +58,7 @@ Body:
   Source: npc/guild/gefg_cas02.txt:85
 - Name: Eeyorbriggar#7
   X: 65
-  "Y": 139
+  Y: 139
   Dir: 6
   Sprite: 722
   DuplicateOf: InsideFlagsG2
@@ -64,7 +66,7 @@ Body:
   Source: npc/guild/gefg_cas02.txt:86
 - Name: Eeyorbriggar#8
   X: 37
-  "Y": 177
+  Y: 177
   Dir: 6
   Sprite: 722
   DuplicateOf: InsideFlagsG2
@@ -72,7 +74,7 @@ Body:
   Source: npc/guild/gefg_cas02.txt:87
 - Name: Eeyorbriggar#9
   X: 37
-  "Y": 168
+  Y: 168
   Dir: 6
   Sprite: 722
   DuplicateOf: InsideFlagsG2
@@ -80,7 +82,7 @@ Body:
   Source: npc/guild/gefg_cas02.txt:88
 - Name: Eeyorbriggar#10
   X: 68
-  "Y": 47
+  Y: 47
   Dir: 2
   Sprite: 722
   DuplicateOf: InsideFlagsG2
@@ -88,7 +90,7 @@ Body:
   Source: npc/guild/gefg_cas02.txt:89
 - Name: Eeyorbriggar#11
   X: 68
-  "Y": 36
+  Y: 36
   Dir: 2
   Sprite: 722
   DuplicateOf: InsideFlagsG2
@@ -96,7 +98,7 @@ Body:
   Source: npc/guild/gefg_cas02.txt:90
 - Name: Kafra Staff#gefg_cas02
   X: 23
-  "Y": 66
+  Y: 66
   Dir: 3
   Sprite: 117
   DuplicateOf: guildkafra
@@ -104,7 +106,7 @@ Body:
   Source: npc/guild/gefg_cas02.txt:98
 - Name: Esmarehk#gefg_cas02
   X: 12
-  "Y": 66
+  Y: 66
   Dir: 5
   Sprite: 55
   DuplicateOf: cm
@@ -112,14 +114,14 @@ Body:
   Source: npc/guild/gefg_cas02.txt:102
 - Name: "#lever_G02"
   X: 145
-  "Y": 114
+  Y: 114
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild/gefg_cas02.txt:106
 - Name: "#gefg_cas02"
   X: 167
-  "Y": 40
+  Y: 40
   Dir: 0
   Sprite: 111
   DuplicateOf: gdlever
@@ -127,7 +129,7 @@ Body:
   Source: npc/guild/gefg_cas02.txt:120
 - Name: Treasure#gefg_cas02
   X: 140
-  "Y": 116
+  Y: 116
   Dir: 0
   Sprite: -1
   DuplicateOf: Gld_Trea_Spawn
@@ -135,7 +137,7 @@ Body:
   Source: npc/guild/gefg_cas02.txt:124
 - Name: Agit#gefg_cas02
   X: 176
-  "Y": 178
+  Y: 178
   Dir: 0
   Sprite: -1
   DuplicateOf: Gld_Agit_Manager
@@ -143,7 +145,7 @@ Body:
   Source: npc/guild/gefg_cas02.txt:128
 - Name: Guardian#gefg_cas02
   X: 12
-  "Y": 66
+  Y: 66
   Dir: 5
   Sprite: -1
   DuplicateOf: Gld_Guard_Template
@@ -151,262 +153,262 @@ Body:
   Source: npc/guild/gefg_cas02.txt:132
 - Name: gefg-2-01_gefg-2-12
   X: 35
-  "Y": 173
+  Y: 173
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gefg_cas02
     X: 76
-    "Y": 42
+    Y: 42
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:140
 - Name: gefg-2-02_gefg-2-11
   X: 46
-  "Y": 175
+  Y: 175
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gefg_cas02
     X: 34
-    "Y": 64
+    Y: 64
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:141
 - Name: gefg-2-03_gefg-2-13
   X: 22
-  "Y": 160
+  Y: 160
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gefg_cas02
     X: 34
-    "Y": 17
+    Y: 17
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:142
 - Name: gefg-2-04_gefg-2-22
   X: 48
-  "Y": 159
+  Y: 159
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gefg_cas02
     X: 184
-    "Y": 41
+    Y: 41
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:143
 - Name: gefg-2-05_gefg-2-23
   X: 34
-  "Y": 152
+  Y: 152
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gefg_cas02
     X: 153
-    "Y": 18
+    Y: 18
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:144
 - Name: gefg-2-06_gefg-2-24
   X: 57
-  "Y": 136
+  Y: 136
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gefg_cas02
     X: 180
-    "Y": 18
+    Y: 18
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:145
 - Name: gefg-2-07_gef-g2
   X: 70
-  "Y": 147
+  Y: 147
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gef_fild13
     X: 308
-    "Y": 240
+    Y: 240
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:146
 - Name: gefg-2-11_gefg-2-02
   X: 34
-  "Y": 68
+  Y: 68
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gefg_cas02
     X: 50
-    "Y": 175
+    Y: 175
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:147
 - Name: gefg-2-12_gefg-2-01
   X: 80
-  "Y": 42
+  Y: 42
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gefg_cas02
     X: 39
-    "Y": 173
+    Y: 173
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:148
 - Name: gefg-2-13_gefg-2-03
   X: 34
-  "Y": 13
+  Y: 13
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gefg_cas02
     X: 22
-    "Y": 156
+    Y: 156
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:149
 - Name: gefg-2-14_gefg-2-25
   X: 25
-  "Y": 13
+  Y: 13
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gefg_cas02
     X: 170
-    "Y": 11
+    Y: 11
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:150
 - Name: gefg-2-21_gefg-2-31
   X: 150
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gefg_cas02
     X: 152
-    "Y": 186
+    Y: 186
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:151
 - Name: gefg-2-22_gefg-2-04
   X: 184
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gefg_cas02
     X: 48
-    "Y": 155
+    Y: 155
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:152
 - Name: gefg-2-23_gefg-2-05
   X: 148
-  "Y": 18
+  Y: 18
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gefg_cas02
     X: 35
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:153
 - Name: gefg-2-24_gefg-2-06
   X: 185
-  "Y": 18
+  Y: 18
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gefg_cas02
     X: 53
-    "Y": 136
+    Y: 136
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:154
 - Name: gefg-2-25_gefg-2-14
   X: 174
-  "Y": 11
+  Y: 11
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gefg_cas02
     X: 21
-    "Y": 13
+    Y: 13
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:155
 - Name: gefg-2-31_gefg-2-21
   X: 152
-  "Y": 190
+  Y: 190
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gefg_cas02
     X: 150
-    "Y": 41
+    Y: 41
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:156
 - Name: Gate Manager#gef_f02
   X: 10
-  "Y": 65
+  Y: 65
   Dir: 4
   Sprite: 421
   DuplicateOf: Gate Manager#castle

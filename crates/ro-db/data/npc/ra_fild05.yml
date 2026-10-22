@@ -2,24 +2,26 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#wp120083"
   X: 59
-  "Y": 59
+  Y: 59
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:250
 - Name: "#tr120083"
   X: 59
-  "Y": 59
+  Y: 59
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -27,38 +29,38 @@ Body:
   Source: npc/re/other/achievements.txt:511
 - Name: Map Examiner Valenzela#85
   X: 48
-  "Y": 356
+  Y: 356
   Dir: 5
   Sprite: 707
   Kind: Script
   Source: npc/re/quests/juno_monster_society.txt:2908
 - Name: ra004
   X: 33
-  "Y": 353
+  Y: 353
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ra_fild04
     X: 356
-    "Y": 351
+    Y: 351
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/rachel_fild.txt:22
 - Name: ra013
   X: 348
-  "Y": 274
+  Y: 274
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ra_fild06
     X: 24
-    "Y": 277
+    Y: 277
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/rachel_fild.txt:31

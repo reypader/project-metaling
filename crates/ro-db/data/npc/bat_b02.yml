@@ -2,292 +2,294 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: start#bat_b02
   X: 15
-  "Y": 15
+  Y: 15
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:80
 - Name: OBJ#bat_b02_a
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:166
 - Name: OBJ#bat_b02_b
   X: 1
-  "Y": 2
+  Y: 2
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:202
 - Name: guardian#bat_b02_a
   X: 1
-  "Y": 3
+  Y: 3
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:238
 - Name: guardian#bat_b02_b
   X: 1
-  "Y": 3
+  Y: 3
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:257
 - Name: cell#bat_b02_a
   X: 1
-  "Y": 4
+  Y: 4
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:276
 - Name: cell#bat_b02_b
   X: 1
-  "Y": 5
+  Y: 5
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:288
 - Name: time#bat_b02
   X: 1
-  "Y": 6
+  Y: 6
   Dir: 1
   Sprite: 844
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:300
 - Name: Battle Therapist#b02_a
   X: 10
-  "Y": 294
+  Y: 294
   Dir: 3
   Sprite: 95
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:312
 - Name: Battle Therapist#b02_b
   X: 389
-  "Y": 14
+  Y: 14
   Dir: 3
   Sprite: 95
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:361
 - Name: A_CODE#bat_b02
   X: 87
-  "Y": 76
+  Y: 76
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:410
 - Name: B_CODE#bat_b02
   X: 312
-  "Y": 224
+  Y: 224
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:417
 - Name: Guillaume Vintenar#b02_a
   X: 10
-  "Y": 294
+  Y: 294
   Dir: 3
   Sprite: 934
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:424
 - Name: Croix Vintenar#b02_b
   X: 389
-  "Y": 14
+  Y: 14
   Dir: 3
   Sprite: 934
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:441
 - Name: countdown#bat_b02
   X: 1
-  "Y": 5
+  Y: 5
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:458
 - Name: Guillaume Camp#flag32
   X: 81
-  "Y": 83
+  Y: 83
   Dir: 3
   Sprite: 973
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:516
 - Name: Guillaume Camp#flag33
   X: 94
-  "Y": 83
+  Y: 83
   Dir: 3
   Sprite: 973
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:517
 - Name: Guillaume Camp#flag34
   X: 81
-  "Y": 66
+  Y: 66
   Dir: 3
   Sprite: 973
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:518
 - Name: Guillaume Camp#flag35
   X: 94
-  "Y": 66
+  Y: 66
   Dir: 3
   Sprite: 973
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:519
 - Name: Guillaume Camp#flag36
   X: 139
-  "Y": 142
+  Y: 142
   Dir: 3
   Sprite: 973
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:520
 - Name: Guillaume Camp#flag37
   X: 139
-  "Y": 158
+  Y: 158
   Dir: 3
   Sprite: 973
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:521
 - Name: Guillaume Camp#flag38
   X: 110
-  "Y": 161
+  Y: 161
   Dir: 3
   Sprite: 973
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:522
 - Name: Guillaume Camp#flag39
   X: 110
-  "Y": 137
+  Y: 137
   Dir: 3
   Sprite: 973
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:523
 - Name: Guillaume Camp#flag40
   X: 63
-  "Y": 135
+  Y: 135
   Dir: 3
   Sprite: 973
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:524
 - Name: Guillaume Camp#flag41
   X: 63
-  "Y": 165
+  Y: 165
   Dir: 3
   Sprite: 973
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:525
 - Name: Guillaume Camp#flag42
   X: 10
-  "Y": 296
+  Y: 296
   Dir: 3
   Sprite: 973
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:526
 - Name: Croix Camp#flag32
   X: 306
-  "Y": 233
+  Y: 233
   Dir: 3
   Sprite: 974
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:528
 - Name: Croix Camp#flag33
   X: 317
-  "Y": 233
+  Y: 233
   Dir: 3
   Sprite: 974
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:529
 - Name: Croix Camp#flag34
   X: 306
-  "Y": 216
+  Y: 216
   Dir: 3
   Sprite: 974
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:530
 - Name: Croix Camp#flag35
   X: 317
-  "Y": 216
+  Y: 216
   Dir: 3
   Sprite: 974
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:531
 - Name: Croix Camp#flag36
   X: 257
-  "Y": 158
+  Y: 158
   Dir: 3
   Sprite: 974
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:532
 - Name: Croix Camp#flag37
   X: 257
-  "Y": 141
+  Y: 141
   Dir: 3
   Sprite: 974
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:533
 - Name: Croix Camp#flag38
   X: 297
-  "Y": 164
+  Y: 164
   Dir: 3
   Sprite: 974
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:534
 - Name: Croix Camp#flag39
   X: 297
-  "Y": 136
+  Y: 136
   Dir: 3
   Sprite: 974
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:535
 - Name: Croix Camp#flag40
   X: 336
-  "Y": 161
+  Y: 161
   Dir: 3
   Sprite: 974
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:536
 - Name: Croix Camp#flag41
   X: 336
-  "Y": 139
+  Y: 139
   Dir: 3
   Sprite: 974
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:537
 - Name: Croix Camp#flag42
   X: 389
-  "Y": 16
+  Y: 16
   Dir: 3
   Sprite: 974
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:538
 - Name: Vintenar#bat_b02_aover
   X: 10
-  "Y": 294
+  Y: 294
   Dir: 3
   Sprite: 419
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:540
 - Name: Vintenar#bat_b02_bover
   X: 389
-  "Y": 14
+  Y: 14
   Dir: 3
   Sprite: 415
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:565
 - Name: Release all#b02
   X: 1
-  "Y": 10
+  Y: 10
   Dir: 3
   Sprite: 81
   Kind: Script

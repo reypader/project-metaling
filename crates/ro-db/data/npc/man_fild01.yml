@@ -2,40 +2,42 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Alberto#ep13bs
   X: 80
-  "Y": 248
+  Y: 248
   Dir: 4
   Sprite: 934
   Kind: Script
   Source: npc/quests/quests_13_1.txt:3338
 - Name: "#evt_lumis"
   X: 59
-  "Y": 261
+  Y: 261
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/quests/quests_13_1.txt:4745
 - Name: Frozen Tree#evt_lumis
   X: 92
-  "Y": 230
+  Y: 230
   Dir: 3
   Sprite: 111
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/quests/quests_13_1.txt:4755
 - Name: Mysterious Rock#1
   X: 180
-  "Y": 170
+  Y: 170
   Dir: 0
   Sprite: 844
   DuplicateOf: manukrock
@@ -43,7 +45,7 @@ Body:
   Source: npc/quests/quests_13_1.txt:8450
 - Name: Mysterious Rock#2
   X: 147
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 844
   DuplicateOf: manukrock
@@ -51,7 +53,7 @@ Body:
   Source: npc/quests/quests_13_1.txt:8451
 - Name: Mysterious Rock#3
   X: 114
-  "Y": 174
+  Y: 174
   Dir: 0
   Sprite: 844
   DuplicateOf: manukrock
@@ -59,7 +61,7 @@ Body:
   Source: npc/quests/quests_13_1.txt:8452
 - Name: Mysterious Rock#4
   X: 92
-  "Y": 155
+  Y: 155
   Dir: 0
   Sprite: 844
   DuplicateOf: manukrock
@@ -67,7 +69,7 @@ Body:
   Source: npc/quests/quests_13_1.txt:8453
 - Name: Mysterious Rock#5
   X: 170
-  "Y": 318
+  Y: 318
   Dir: 0
   Sprite: 844
   DuplicateOf: manukrock
@@ -75,7 +77,7 @@ Body:
   Source: npc/quests/quests_13_1.txt:8454
 - Name: Mysterious Rock#6
   X: 146
-  "Y": 269
+  Y: 269
   Dir: 0
   Sprite: 844
   DuplicateOf: manukrock
@@ -83,7 +85,7 @@ Body:
   Source: npc/quests/quests_13_1.txt:8455
 - Name: Mysterious Rock#7
   X: 118
-  "Y": 238
+  Y: 238
   Dir: 0
   Sprite: 844
   DuplicateOf: manukrock
@@ -91,7 +93,7 @@ Body:
   Source: npc/quests/quests_13_1.txt:8456
 - Name: Mysterious Rock#8
   X: 70
-  "Y": 246
+  Y: 246
   Dir: 0
   Sprite: 844
   DuplicateOf: manukrock
@@ -99,7 +101,7 @@ Body:
   Source: npc/quests/quests_13_1.txt:8457
 - Name: Mysterious Rock#9
   X: 64
-  "Y": 197
+  Y: 197
   Dir: 0
   Sprite: 844
   DuplicateOf: manukrock
@@ -107,77 +109,77 @@ Body:
   Source: npc/quests/quests_13_1.txt:8458
 - Name: Expedition Scout#1
   X: 315
-  "Y": 95
+  Y: 95
   Dir: 3
   Sprite: 707
   Kind: Script
   Source: npc/quests/quests_13_1.txt:10060
 - Name: ep13_man_fild01_mon_edq
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/quests/quests_13_1.txt:10353
 - Name: man_fild01-2
   X: 35
-  "Y": 232
+  Y: 232
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: mid_camp
     X: 341
-    "Y": 176
+    Y: 176
     TriggerWhileHidden: false
   Source: npc/warps/fields/man_fild.txt:17
 - Name: man_fild01-3
   X: 103
-  "Y": 55
+  Y: 55
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: man_fild03
     X: 84
-    "Y": 366
+    Y: 366
     TriggerWhileHidden: false
   Source: npc/warps/fields/man_fild.txt:18
 - Name: man_fild01-4
   X: 372
-  "Y": 230
+  Y: 230
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: man_fild02
     X: 34
-    "Y": 261
+    Y: 261
     TriggerWhileHidden: false
   Source: npc/warps/fields/man_fild.txt:21
 - Name: "#wp120096"
   X: 41
-  "Y": 172
+  Y: 172
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:183
 - Name: "#tr120096"
   X: 41
-  "Y": 172
+  Y: 172
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -185,7 +187,7 @@ Body:
   Source: npc/re/other/achievements.txt:444
 - Name: Dispatched Instructor#07
   X: 43
-  "Y": 234
+  Y: 234
   Dir: 3
   Sprite: 939
   Kind: Script

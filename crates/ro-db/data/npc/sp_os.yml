@@ -2,39 +2,41 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Dien#171_spos
   X: 252
-  "Y": 359
+  Y: 359
   Dir: 5
   Sprite: 10185
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:4226
 - Name: sp_os_to_sp_cor
   X: 260
-  "Y": 363
+  Y: 363
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/quests/quests_17_1.txt:8952
 - Name: sp_os_exit
   X: 188
-  "Y": 30
+  Y: 30
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ein_fild03
     X: 284
-    "Y": 267
+    Y: 267
     TriggerWhileHidden: false
   Source: npc/re/warps/other/special_border_area.txt:10

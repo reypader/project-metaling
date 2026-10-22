@@ -2,285 +2,287 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Part-Timer#sc_yuno
   X: 114
-  "Y": 117
+  Y: 117
   Dir: 1
   Sprite: 92
   Kind: Shop
   Source: npc/re/merchants/shops.txt:93
 - Name: Part-Timer#sc_lgt
   X: 15
-  "Y": 65
+  Y: 65
   Dir: 5
   Sprite: 89
   Kind: Shop
   Source: npc/re/merchants/shops.txt:100
 - Name: Part-Timer#sc_prt
   X: 17
-  "Y": 110
+  Y: 110
   Dir: 1
   Sprite: 67
   Kind: Shop
   Source: npc/re/merchants/shops.txt:170
 - Name: Part-Timer#sc_ra
   X: 137
-  "Y": 60
+  Y: 60
   Dir: 3
   Sprite: 70
   Kind: Shop
   Source: npc/re/merchants/shops.txt:181
 - Name: Manager#sc04_prt
   X: 65
-  "Y": 123
+  Y: 123
   Dir: 5
   Sprite: 903
   Kind: Script
   Source: npc/re/jobs/3-2/shadow_chaser.txt:304
 - Name: Manager#sc08_ra
   X: 168
-  "Y": 65
+  Y: 65
   Dir: 5
   Sprite: 923
   Kind: Script
   Source: npc/re/jobs/3-2/shadow_chaser.txt:623
 - Name: Manager#sc06_yuno
   X: 167
-  "Y": 129
+  Y: 129
   Dir: 3
   Sprite: 806
   Kind: Script
   Source: npc/re/jobs/3-2/shadow_chaser.txt:895
 - Name: Manager#sc10_lgt
   X: 25
-  "Y": 75
+  Y: 75
   Dir: 3
   Sprite: 899
   Kind: Script
   Source: npc/re/jobs/3-2/shadow_chaser.txt:1130
 - Name: Vicente#sc12_lgt
   X: 73
-  "Y": 65
+  Y: 65
   Dir: 3
   Sprite: 899
   Kind: Script
   Source: npc/re/jobs/3-2/shadow_chaser.txt:1324
 - Name: Dumk#sc13_lgh
   X: 70
-  "Y": 66
+  Y: 66
   Dir: 4
   Sprite: 481
   Kind: Script
   Source: npc/re/jobs/3-2/shadow_chaser.txt:1350
 - Name: Max#sc05_prt
   X: 29
-  "Y": 119
+  Y: 119
   Dir: 3
   Sprite: 97
   Kind: Script
   Source: npc/re/jobs/3-2/shadow_chaser.txt:2277
 - Name: Titika#sc09_ra
   X: 136
-  "Y": 70
+  Y: 70
   Dir: 3
   Sprite: 914
   Kind: Script
   Source: npc/re/jobs/3-2/shadow_chaser.txt:2342
 - Name: RimiGX#sc07_yuno
   X: 124
-  "Y": 128
+  Y: 128
   Dir: 3
   Sprite: 862
   Kind: Script
   Source: npc/re/jobs/3-2/shadow_chaser.txt:2393
 - Name: Vito#sc11_lgt
   X: 26
-  "Y": 68
+  Y: 68
   Dir: 3
   Sprite: 904
   Kind: Script
   Source: npc/re/jobs/3-2/shadow_chaser.txt:2442
 - Name: s_atelier0002
   X: 131
-  "Y": 75
+  Y: 75
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: rachel
     X: 180
-    "Y": 118
+    Y: 118
     TriggerWhileHidden: false
   Source: npc/re/warps/other/s_workshop.txt:17
 - Name: s_atelier0003
   X: 117
-  "Y": 71
+  Y: 71
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: s_atelier
     X: 169
-    "Y": 72
+    Y: 72
     TriggerWhileHidden: false
   Source: npc/re/warps/other/s_workshop.txt:18
 - Name: s_atelier0004
   X: 166
-  "Y": 72
+  Y: 72
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: s_atelier
     X: 117
-    "Y": 68
+    Y: 68
     TriggerWhileHidden: false
   Source: npc/re/warps/other/s_workshop.txt:19
 - Name: s_atelier0006
   X: 9
-  "Y": 119
+  Y: 119
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prontera
     X: 269
-    "Y": 108
+    Y: 108
     TriggerWhileHidden: false
   Source: npc/re/warps/other/s_workshop.txt:21
 - Name: s_atelier0007
   X: 31
-  "Y": 128
+  Y: 128
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: s_atelier
     X: 76
-    "Y": 125
+    Y: 125
     TriggerWhileHidden: false
   Source: npc/re/warps/other/s_workshop.txt:22
 - Name: s_atelier0008
   X: 76
-  "Y": 128
+  Y: 128
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: s_atelier
     X: 28
-    "Y": 128
+    Y: 128
     TriggerWhileHidden: false
   Source: npc/re/warps/other/s_workshop.txt:23
 - Name: s_atelier0009
   X: 19
-  "Y": 79
+  Y: 79
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: lighthalzen
     X: 41
-    "Y": 58
+    Y: 58
     TriggerWhileHidden: false
   Source: npc/re/warps/other/s_workshop.txt:24
 - Name: s_atelier0011
   X: 32
-  "Y": 65
+  Y: 65
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: s_atelier
     X: 80
-    "Y": 59
+    Y: 59
     TriggerWhileHidden: false
   Source: npc/re/warps/other/s_workshop.txt:26
 - Name: s_atelier0012
   X: 80
-  "Y": 66
+  Y: 66
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: s_atelier
     X: 32
-    "Y": 56
+    Y: 56
     TriggerWhileHidden: false
   Source: npc/re/warps/other/s_workshop.txt:27
 - Name: s_atelier0013
   X: 109
-  "Y": 129
+  Y: 129
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: s_atelier
     X: 159
-    "Y": 125
+    Y: 125
     TriggerWhileHidden: false
   Source: npc/re/warps/other/s_workshop.txt:28
 - Name: s_atelier0014
   X: 160
-  "Y": 130
+  Y: 130
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: s_atelier
     X: 114
-    "Y": 129
+    Y: 129
     TriggerWhileHidden: false
   Source: npc/re/warps/other/s_workshop.txt:29
 - Name: s_atelier0016
   X: 107
-  "Y": 122
+  Y: 122
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: yuno
     X: 274
-    "Y": 66
+    Y: 66
     TriggerWhileHidden: false
   Source: npc/re/warps/other/s_workshop.txt:31

@@ -2,41 +2,43 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#demon_god_variables"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:197
 - Name: Demon God's Apostle Aha#ahat
   X: 101
-  "Y": 43
+  Y: 43
   Dir: 3
   Sprite: 493
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:279
 - Name: "#door_mobmaster"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:337
 - Name: Empty Soul Globe#ahat01
   X: 104
-  "Y": 56
+  Y: 56
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:372
 - Name: Empty Soul Globe#shnaim01
   X: 98
-  "Y": 56
+  Y: 56
   Dir: 0
   Sprite: 844
   DuplicateOf: Empty Soul Globe#ahat01
@@ -44,7 +46,7 @@ Body:
   Source: npc/re/instances/TempleOfDemonGod.txt:420
 - Name: Filled Soul Globe#ahat02
   X: 104
-  "Y": 56
+  Y: 56
   Dir: 0
   Sprite: 844
   DuplicateOf: dummy_npc
@@ -52,7 +54,7 @@ Body:
   Source: npc/re/instances/TempleOfDemonGod.txt:422
 - Name: Filled Soul Globe#shnaim02
   X: 98
-  "Y": 56
+  Y: 56
   Dir: 0
   Sprite: 844
   DuplicateOf: dummy_npc
@@ -60,58 +62,58 @@ Body:
   Source: npc/re/instances/TempleOfDemonGod.txt:423
 - Name: "#gate_to_center"
   X: 101
-  "Y": 58
+  Y: 58
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:425
 - Name: Strange Boy#mockid01
   X: 100
-  "Y": 122
+  Y: 122
   Dir: 3
   Sprite: 10038
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:434
 - Name: "#gate_to_ice"
   X: 91
-  "Y": 120
+  Y: 120
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:540
 - Name: Loki#eomloki01
   X: 95
-  "Y": 122
+  Y: 122
   Dir: 5
   Sprite: 512
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:556
 - Name: Nidhogg#eomnyd01
   X: 94
-  "Y": 120
+  Y: 120
   Dir: 5
   Sprite: 510
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:563
 - Name: Cold Mana Crystalline#eom01
   X: 48
-  "Y": 88
+  Y: 88
   Dir: 0
   Sprite: 10043
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:609
 - Name: Cold Mana Crystalline#eom02
   X: 51
-  "Y": 103
+  Y: 103
   Dir: 0
   Sprite: 10043
   DuplicateOf: Cold Mana Crystalline#eom01
@@ -119,7 +121,7 @@ Body:
   Source: npc/re/instances/TempleOfDemonGod.txt:615
 - Name: Cold Mana Crystalline#eom03
   X: 24
-  "Y": 109
+  Y: 109
   Dir: 0
   Sprite: 10043
   DuplicateOf: Cold Mana Crystalline#eom01
@@ -127,7 +129,7 @@ Body:
   Source: npc/re/instances/TempleOfDemonGod.txt:616
 - Name: Cold Mana Crystalline#eom04
   X: 26
-  "Y": 128
+  Y: 128
   Dir: 0
   Sprite: 10043
   DuplicateOf: Cold Mana Crystalline#eom01
@@ -135,7 +137,7 @@ Body:
   Source: npc/re/instances/TempleOfDemonGod.txt:617
 - Name: Cold Mana Crystalline#eom05
   X: 40
-  "Y": 140
+  Y: 140
   Dir: 0
   Sprite: 10043
   DuplicateOf: Cold Mana Crystalline#eom01
@@ -143,7 +145,7 @@ Body:
   Source: npc/re/instances/TempleOfDemonGod.txt:618
 - Name: Cold Mana Crystalline#eom06
   X: 38
-  "Y": 139
+  Y: 139
   Dir: 0
   Sprite: 10043
   DuplicateOf: Cold Mana Crystalline#eom01
@@ -151,7 +153,7 @@ Body:
   Source: npc/re/instances/TempleOfDemonGod.txt:619
 - Name: Cold Mana Crystalline#eom07
   X: 51
-  "Y": 149
+  Y: 149
   Dir: 0
   Sprite: 10043
   DuplicateOf: Cold Mana Crystalline#eom01
@@ -159,7 +161,7 @@ Body:
   Source: npc/re/instances/TempleOfDemonGod.txt:620
 - Name: Cold Mana Crystalline#eom08
   X: 49
-  "Y": 148
+  Y: 148
   Dir: 0
   Sprite: 10043
   DuplicateOf: Cold Mana Crystalline#eom01
@@ -167,394 +169,394 @@ Body:
   Source: npc/re/instances/TempleOfDemonGod.txt:621
 - Name: "#icemob01"
   X: 61
-  "Y": 88
+  Y: 88
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:623
 - Name: Frost Spider#icemob02
   X: 22
-  "Y": 116
+  Y: 116
   Dir: 3
   Sprite: 3088
   SpriteIsMob: true
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:633
 - Name: Frost Spider#icemob03
   X: 53
-  "Y": 134
+  Y: 134
   Dir: 3
   Sprite: 3088
   SpriteIsMob: true
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:644
 - Name: Brinaranea#brinpc01
   X: 38
-  "Y": 129
+  Y: 129
   Dir: 3
   Sprite: 3091
   SpriteIsMob: true
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:655
 - Name: "#ice_hpcheck"
   X: 2
-  "Y": 3
+  Y: 3
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:677
 - Name: "#ice_combo"
   X: 2
-  "Y": 6
+  Y: 6
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:780
 - Name: "#brinaranea_event_1"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:791
 - Name: "#brinaranea_event_2"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:819
 - Name: "#brinaranea_event_3"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:838
 - Name: "#brinaranea_event_4"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:879
 - Name: "#super_heal"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:900
 - Name: "#icestunami"
   X: 2
-  "Y": 4
+  Y: 4
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:915
 - Name: Nidhogg#eomnyd02
   X: 59
-  "Y": 147
+  Y: 147
   Dir: 3
   Sprite: 510
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:951
 - Name: "#ice_to_center"
   X: 67
-  "Y": 149
+  Y: 149
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:972
 - Name: Morroc#mockid02
   X: 100
-  "Y": 122
+  Y: 122
   Dir: 3
   Sprite: 10038
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:991
 - Name: "#gate_to_fire"
   X: 104
-  "Y": 120
+  Y: 120
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1022
 - Name: "#fire_event01"
   X: 132
-  "Y": 93
+  Y: 93
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1037
 - Name: "#skollmaster"
   X: 3
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1067
 - Name: "#fire_hpcheck"
   X: 3
-  "Y": 7
+  Y: 7
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1163
 - Name: "#loco_call"
   X: 3
-  "Y": 5
+  Y: 5
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1225
 - Name: "#muspellskoll_event_1"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1251
 - Name: "#muspellskoll_event_2"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1268
 - Name: "#muspellskoll_event_3"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1299
 - Name: "#fire_combo"
   X: 3
-  "Y": 3
+  Y: 3
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1331
 - Name: "#flamecross"
   X: 3
-  "Y": 8
+  Y: 8
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1356
 - Name: Flowing Lava#lavapond01
   X: 154
-  "Y": 119
+  Y: 119
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1401
 - Name: Flowing Lava#lavapond02
   X: 182
-  "Y": 129
+  Y: 129
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1428
 - Name: Hardened Lava#lavaseal01
   X: 154
-  "Y": 119
+  Y: 119
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1455
 - Name: Hardened Lava#lavaseal02
   X: 182
-  "Y": 129
+  Y: 129
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1477
 - Name: "#lavazone11"
   X: 161
-  "Y": 122
+  Y: 122
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1499
 - Name: "#lavazone12"
   X: 161
-  "Y": 102
+  Y: 102
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#lavazone11"
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1506
 - Name: "#lavazone21"
   X: 163
-  "Y": 150
+  Y: 150
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#lavazone11"
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1507
 - Name: "#lavazone22"
   X: 163
-  "Y": 150
+  Y: 150
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#lavazone11"
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1508
 - Name: Nidhogg#eomnyd03
   X: 151
-  "Y": 155
+  Y: 155
   Dir: 3
   Sprite: 510
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1510
 - Name: "#fire_to_center"
   X: 147
-  "Y": 156
+  Y: 156
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1529
 - Name: Strange Young Man#mocadt01
   X: 98
-  "Y": 123
+  Y: 123
   Dir: 5
   Sprite: 3097
   SpriteIsMob: true
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1548
 - Name: "#gate_to_last"
   X: 98
-  "Y": 127
+  Y: 127
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: 1@eom
     X: 102
-    "Y": 186
+    Y: 186
     TriggerWhileHidden: false
   Source: npc/re/instances/TempleOfDemonGod.txt:1581
 - Name: "#moc_master"
   X: 101
-  "Y": 194
+  Y: 194
   Dir: 3
   Sprite: 3096
   SpriteIsMob: true
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1583
 - Name: "#despair_god_main"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1600
 - Name: "#mk_combo"
   X: 4
-  "Y": 2
+  Y: 2
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1693
 - Name: "#mk_hpcheck"
   X: 4
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1712
 - Name: "#demigod_event_1"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1756
 - Name: "#demigod_event_2"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1780
 - Name: "#demigod_event_3"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1835
 - Name: "#moc_origin"
   X: 4
-  "Y": 3
+  Y: 3
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1868
 - Name: "#moc_meddling"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1934
 - Name: "#mk_trap"
   X: 4
-  "Y": 6
+  Y: 6
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1947
 - Name: "#morocc_god"
   X: 102
-  "Y": 222
+  Y: 222
   Dir: 3
   Sprite: 3097
   SpriteIsMob: true
@@ -562,63 +564,63 @@ Body:
   Source: npc/re/instances/TempleOfDemonGod.txt:1963
 - Name: "#despair_main"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:1998
 - Name: "#ma_combo"
   X: 4
-  "Y": 8
+  Y: 8
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:2032
 - Name: "#despair_event_1"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:2043
 - Name: "#despair_event_2"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:2063
 - Name: "#despair_event_3"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:2117
 - Name: "#despair_event_4"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:2149
 - Name: "#despair_event_5"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:2166
 - Name: Nidhogg#eomnyd04
   X: 103
-  "Y": 194
+  Y: 194
   Dir: 3
   Sprite: 510
   Kind: Script
   Source: npc/re/instances/TempleOfDemonGod.txt:2185
 - Name: Little Helper#eomtest
   X: 5
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 10043
   Kind: Script

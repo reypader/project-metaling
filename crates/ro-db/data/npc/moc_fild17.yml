@@ -2,55 +2,57 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Trace of Battle#8
   X: 213
-  "Y": 358
+  Y: 358
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/quests/first_class/tu_ma_th01.txt:318
 - Name: Trace of Battle#9
   X: 228
-  "Y": 274
+  Y: 274
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/quests/first_class/tu_ma_th01.txt:355
 - Name: Trace of Battle#10
   X: 34
-  "Y": 292
+  Y: 292
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/quests/first_class/tu_ma_th01.txt:409
 - Name: Odd Slab
   X: 209
-  "Y": 235
+  Y: 235
   Dir: 0
   Sprite: 111
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/quests/quests_nameless.txt:8263
 - Name: "#wp120022"
   X: 269
-  "Y": 105
+  Y: 105
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:219
 - Name: "#tr120022"
   X: 269
-  "Y": 105
+  Y: 105
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -58,46 +60,46 @@ Body:
   Source: npc/re/other/achievements.txt:480
 - Name: mocf21-1
   X: 218
-  "Y": 369
+  Y: 369
   Dir: 0
   Sprite: 45
   Trigger:
     X: 5
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: moc_fild11
     X: 212
-    "Y": 32
+    Y: 32
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/morroc_fild.txt:109
 - Name: moc29
   X: 30
-  "Y": 300
+  Y: 300
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 5
+    Y: 5
   Kind: Warp
   Warp:
     Map: moc_fild18
     X: 379
-    "Y": 305
+    Y: 305
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/morroc_fild.txt:110
 - Name: mocf28-1
   X: 369
-  "Y": 272
+  Y: 272
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: moc_fild16
     X: 19
-    "Y": 179
+    Y: 179
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/morroc_fild.txt:111

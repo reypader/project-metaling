@@ -2,46 +2,48 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#rus27"
   X: 49
-  "Y": 22
+  Y: 22
   Dir: 3
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/quests/quests_moscovia.txt:9057
 - Name: Stone Furnace#rus28
   X: 45
-  "Y": 131
+  Y: 131
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_moscovia.txt:9100
 - Name: Occult Apple Tree#rus29
   X: 56
-  "Y": 202
+  Y: 202
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_moscovia.txt:9162
 - Name: Escape#rus30
   X: 47
-  "Y": 217
+  Y: 217
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: mosk_fild02
     X: 237
-    "Y": 266
+    Y: 266
     TriggerWhileHidden: false
   Source: npc/quests/quests_moscovia.txt:9198

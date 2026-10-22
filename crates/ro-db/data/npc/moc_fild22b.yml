@@ -2,48 +2,50 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Rift Guard#2
   X: 37
-  "Y": 196
+  Y: 196
   Dir: 5
   Sprite: 707
   Kind: Script
   Source: npc/quests/quests_13_1.txt:1626
 - Name: Rift Guard#3
   X: 330
-  "Y": 154
+  Y: 154
   Dir: 3
   Sprite: 707
   Kind: Script
   Source: npc/quests/quests_13_1.txt:1652
 - Name: Munkenro#2
   X: 230
-  "Y": 197
+  Y: 197
   Dir: 5
   Sprite: 967
   Kind: Script
   Source: npc/quests/quests_13_1.txt:1664
 - Name: Head of the Alliance#moo
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/quests/quests_13_1.txt:1802
 - Name: Allied Manager#gm
   X: 370
-  "Y": 370
+  Y: 370
   Dir: 3
   Sprite: 100
   Kind: Script
   Source: npc/quests/quests_13_1.txt:1928
 - Name: Expedition Guide#03
   X: 225
-  "Y": 198
+  Y: 198
   Dir: 6
   Sprite: 707
   DuplicateOf: Expedition Guide#01
@@ -51,7 +53,7 @@ Body:
   Source: npc/re/other/dimensional_gap.txt:43
 - Name: Expedition Guide#04
   X: 223
-  "Y": 203
+  Y: 203
   Dir: 4
   Sprite: 707
   DuplicateOf: Expedition Guide#02
@@ -59,14 +61,14 @@ Body:
   Source: npc/re/other/dimensional_gap.txt:44
 - Name: Cat Paw Agent#Tat
   X: 182
-  "Y": 179
+  Y: 179
   Dir: 3
   Sprite: 495
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:7610
 - Name: Transport Device#02
   X: 222
-  "Y": 200
+  Y: 200
   Dir: 4
   Sprite: 10007
   Kind: Script

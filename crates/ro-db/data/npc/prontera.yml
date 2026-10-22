@@ -2,6 +2,8 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
@@ -9,7 +11,7 @@ Body:
 - Name: Maroll Battle Recruiter
   UniqueName: BatRecruit1
   X: 123
-  "Y": 83
+  Y: 83
   Dir: 3
   Sprite: 728
   DuplicateOf: BatRecruit
@@ -17,7 +19,7 @@ Body:
   Source: npc/battleground/bg_common.txt:282
 - Name: Guard#2pront
   X: 223
-  "Y": 99
+  Y: 99
   Dir: 1
   Sprite: 105
   DuplicateOf: prtguard
@@ -25,7 +27,7 @@ Body:
   Source: npc/cities/prontera.txt:26
 - Name: Guard#3pront
   X: 229
-  "Y": 104
+  Y: 104
   Dir: 5
   Sprite: 105
   DuplicateOf: prtguard
@@ -33,7 +35,7 @@ Body:
   Source: npc/cities/prontera.txt:27
 - Name: Guard#4pront
   X: 47
-  "Y": 339
+  Y: 339
   Dir: 5
   Sprite: 105
   DuplicateOf: prtguard
@@ -41,63 +43,63 @@ Body:
   Source: npc/cities/prontera.txt:28
 - Name: Shuger#pront
   X: 101
-  "Y": 288
+  Y: 288
   Dir: 3
   Sprite: 98
   Kind: Script
   Source: npc/cities/prontera.txt:30
 - Name: Tono#pront
   X: 54
-  "Y": 240
+  Y: 240
   Dir: 6
   Sprite: 97
   Kind: Script
   Source: npc/cities/prontera.txt:45
 - Name: Merideth#pront
   X: 106
-  "Y": 116
+  Y: 116
   Dir: 6
   Sprite: 91
   Kind: Script
   Source: npc/cities/prontera.txt:63
 - Name: YuPi#pront
   X: 160
-  "Y": 133
+  Y: 133
   Dir: 2
   Sprite: 102
   Kind: Script
   Source: npc/cities/prontera.txt:75
 - Name: YuNa#pront
   X: 149
-  "Y": 202
+  Y: 202
   Dir: 2
   Sprite: 700
   Kind: Script
   Source: npc/cities/prontera.txt:87
 - Name: Strife#pront
   X: 216
-  "Y": 70
+  Y: 70
   Dir: 2
   Sprite: 48
   Kind: Script
   Source: npc/cities/prontera.txt:111
 - Name: Dairenne#pront
   X: 78
-  "Y": 150
+  Y: 150
   Dir: 3
   Sprite: 90
   Kind: Script
   Source: npc/cities/prontera.txt:208
 - Name: Kafra Voting Staff#prt
   X: 164
-  "Y": 125
+  Y: 125
   Dir: 4
   Sprite: 116
   Kind: Script
   Source: npc/kafras/dts_warper.txt:691
 - Name: Cool Event Staff#prt
   X: 147
-  "Y": 125
+  Y: 125
   Dir: 6
   Sprite: 874
   DuplicateOf: VotingStaffCCE
@@ -106,7 +108,7 @@ Body:
 - Name: Kafra Employee
   UniqueName: kaf_prontera
   X: 152
-  "Y": 326
+  Y: 326
   Dir: 3
   Sprite: 112
   Kind: Script
@@ -114,7 +116,7 @@ Body:
 - Name: Kafra Employee
   UniqueName: kaf_prontera2
   X: 151
-  "Y": 29
+  Y: 29
   Dir: 0
   Sprite: 115
   Kind: Script
@@ -122,7 +124,7 @@ Body:
 - Name: Kafra Employee
   UniqueName: kaf_prontera3
   X: 29
-  "Y": 207
+  Y: 207
   Dir: 6
   Sprite: 113
   Kind: Script
@@ -130,7 +132,7 @@ Body:
 - Name: Kafra Employee
   UniqueName: kaf_prontera4
   X: 282
-  "Y": 200
+  Y: 200
   Dir: 2
   Sprite: 114
   Kind: Script
@@ -138,126 +140,126 @@ Body:
 - Name: Kafra Employee
   UniqueName: kaf_prontera5
   X: 146
-  "Y": 89
+  Y: 89
   Dir: 6
   Sprite: 117
   Kind: Script
   Source: npc/kafras/kafras.txt:289
 - Name: Apprentice Craftsman
   X: 165
-  "Y": 60
+  Y: 60
   Dir: 2
   Sprite: 73
   Kind: Script
   Source: npc/merchants/enchan_arm.txt:20
 - Name: Milk Vendor
   X: 73
-  "Y": 140
+  Y: 140
   Dir: 0
   Sprite: 86
   Kind: Script
   Source: npc/merchants/milk_trader.txt:22
 - Name: Merchant#pron
   X: 123
-  "Y": 102
+  Y: 102
   Dir: 5
   Sprite: 85
   Kind: Script
   Source: npc/merchants/novice_exchange.txt:20
 - Name: Peco Peco Breeder#knt
   X: 55
-  "Y": 350
+  Y: 350
   Dir: 5
   Sprite: 105
   Kind: Script
   Source: npc/merchants/renters.txt:31
 - Name: Peco Peco Breeder#cru
   X: 232
-  "Y": 318
+  Y: 318
   Dir: 3
   Sprite: 105
   Kind: Script
   Source: npc/merchants/renters.txt:95
 - Name: Vendor from Milk Ranch#p
   X: 73
-  "Y": 134
+  Y: 134
   Dir: 0
   Sprite: 90
   Kind: Shop
   Source: npc/merchants/shops.txt:243
 - Name: Fruit Gardener#prt
   X: 104
-  "Y": 49
+  Y: 49
   Dir: 0
   Sprite: 102
   Kind: Shop
   Source: npc/merchants/shops.txt:244
 - Name: Butcher#prt
   X: 64
-  "Y": 125
+  Y: 125
   Dir: 0
   Sprite: 87
   Kind: Shop
   Source: npc/merchants/shops.txt:245
 - Name: Flower Girl#prt
   X: 58
-  "Y": 182
+  Y: 182
   Dir: 0
   Sprite: 96
   Kind: Shop
   Source: npc/merchants/shops.txt:246
 - Name: Flower Lady#prt
   X: 113
-  "Y": 42
+  Y: 42
   Dir: 0
   Sprite: 90
   Kind: Shop
   Source: npc/merchants/shops.txt:247
 - Name: Gift Merchant#prt
   X: 105
-  "Y": 87
+  Y: 87
   Dir: 0
   Sprite: 91
   Kind: Shop
   Source: npc/merchants/shops.txt:248
 - Name: Doll Supplier#prt
   X: 248
-  "Y": 153
+  Y: 153
   Dir: 0
   Sprite: 85
   Kind: Shop
   Source: npc/merchants/shops.txt:249
 - Name: Vegetable Gardener#prt
   X: 48
-  "Y": 58
+  Y: 58
   Dir: 0
   Sprite: 91
   Kind: Shop
   Source: npc/merchants/shops.txt:250
 - Name: Pet Enthusiast
   X: 218
-  "Y": 218
+  Y: 218
   Dir: 3
   Sprite: 96
   Kind: Script
   Source: npc/merchants/wander_pet_food.txt:17
 - Name: Berry Toe
   X: 220
-  "Y": 218
+  Y: 218
   Dir: 3
   Sprite: 955
   Kind: Script
   Source: npc/merchants/wander_pet_food.txt:72
 - Name: Auction Hall Guide#prt
   X: 218
-  "Y": 120
+  Y: 120
   Dir: 4
   Sprite: 117
   Kind: Script
   Source: npc/other/auction.txt:25
 - Name: Information Post#prt
   X: 216
-  "Y": 120
+  Y: 120
   Dir: 4
   Sprite: 837
   DuplicateOf: AuctionSign
@@ -265,14 +267,14 @@ Body:
   Source: npc/other/auction.txt:84
 - Name: Bulletin Board#09
   X: 148
-  "Y": 49
+  Y: 49
   Dir: 5
   Sprite: 837
   Kind: Script
   Source: npc/other/bulletin_boards.txt:113
 - Name: Mailbox#prt
   X: 146
-  "Y": 86
+  Y: 86
   Dir: 0
   Sprite: 888
   DuplicateOf: MailBox
@@ -280,7 +282,7 @@ Body:
   Source: npc/other/mail.txt:56
 - Name: Mailbox#2prt
   X: 275
-  "Y": 213
+  Y: 213
   Dir: 0
   Sprite: 888
   DuplicateOf: MailBox
@@ -288,7 +290,7 @@ Body:
   Source: npc/other/mail.txt:57
 - Name: Mailbox#3prt
   X: 34
-  "Y": 212
+  Y: 212
   Dir: 0
   Sprite: 888
   DuplicateOf: MailBox
@@ -296,7 +298,7 @@ Body:
   Source: npc/other/mail.txt:58
 - Name: Mercenary Manager#Spear
   X: 41
-  "Y": 337
+  Y: 337
   Dir: 5
   Sprite: 105
   DuplicateOf: Mercenary Manager#main
@@ -304,7 +306,7 @@ Body:
   Source: npc/other/mercenary_rent.txt:213
 - Name: Mercenary Merchant#Spear
   X: 30
-  "Y": 337
+  Y: 337
   Dir: 4
   Sprite: 700
   DuplicateOf: MercMerchant
@@ -312,7 +314,7 @@ Body:
   Source: npc/other/mercenary_rent.txt:291
 - Name: Mercenary Switch#Spear
   X: 299
-  "Y": 379
+  Y: 379
   Dir: 5
   Sprite: 105
   DuplicateOf: Mercenary_Switch
@@ -320,115 +322,115 @@ Body:
   Source: npc/other/mercenary_rent.txt:330
 - Name: Arthail
   X: 126
-  "Y": 335
+  Y: 335
   Dir: 5
   Sprite: 51
   Kind: Script
   Source: npc/quests/first_class/tu_archer.txt:1605
 - Name: New Guild Master#tu
   X: 167
-  "Y": 281
+  Y: 281
   Dir: 3
   Sprite: 753
   Kind: Script
   Source: npc/quests/first_class/tu_archer.txt:1783
 - Name: Mage#tu
   X: 144
-  "Y": 301
+  Y: 301
   Dir: 5
   Sprite: 123
   Kind: Script
   Source: npc/quests/first_class/tu_archer.txt:1806
 - Name: Sagle
   X: 66
-  "Y": 111
+  Y: 111
   Dir: 3
   Sprite: 82
   Kind: Script
   Source: npc/quests/first_class/tu_merchant.txt:596
 - Name: Kellion
   X: 93
-  "Y": 330
+  Y: 330
   Dir: 3
   Sprite: 97
   Kind: Script
   Source: npc/quests/first_class/tu_merchant.txt:666
 - Name: Jayon
   X: 247
-  "Y": 129
+  Y: 129
   Dir: 3
   Sprite: 85
   Kind: Script
   Source: npc/quests/first_class/tu_merchant.txt:789
 - Name: Nephia#1
   X: 165
-  "Y": 232
+  Y: 232
   Dir: 3
   Sprite: 744
   Kind: Script
   Source: npc/quests/newgears/2004_headgears.txt:396
 - Name: Woman#Rosa Ellenen
   X: 260
-  "Y": 354
+  Y: 354
   Dir: 4
   Sprite: 101
   Kind: Script
   Source: npc/quests/seals/brisingamen_seal.txt:2261
 - Name: Gravestone
   X: 262
-  "Y": 353
+  Y: 353
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/seals/brisingamen_seal.txt:2387
 - Name: Tialfi
   X: 124
-  "Y": 297
+  Y: 297
   Dir: 3
   Sprite: 706
   Kind: Script
   Source: npc/quests/seals/mjolnir_seal.txt:27
 - Name: Sign Post#god
   X: 113
-  "Y": 294
+  Y: 294
   Dir: 3
   Sprite: 837
   Kind: Script
   Source: npc/quests/seals/seal_status.txt:18
 - Name: Veeyop#magum
   X: 197
-  "Y": 188
+  Y: 188
   Dir: 2
   Sprite: 50
   Kind: Script
   Source: npc/quests/doomed_swords.txt:121
 - Name: Clanux Heffron#hellion
   X: 269
-  "Y": 326
+  Y: 326
   Dir: 3
   Sprite: 50
   Kind: Script
   Source: npc/quests/eye_of_hellion.txt:677
 - Name: "#prt_key-1"
   X: 223
-  "Y": 82
+  Y: 82
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/eye_of_hellion.txt:1042
 - Name: " #prt_key-1-1"
   X: 45
-  "Y": 67
+  Y: 67
   Dir: 0
   Sprite: 111
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/quests/eye_of_hellion.txt:1077
 - Name: Smile Assistance#prt
   X: 157
-  "Y": 187
+  Y: 187
   Dir: 4
   Sprite: 92
   DuplicateOf: SmileHelper
@@ -436,91 +438,91 @@ Body:
   Source: npc/quests/mrsmile.txt:103
 - Name: Promotional Staff#prt
   X: 163
-  "Y": 53
+  Y: 53
   Dir: 3
   Sprite: 100
   Kind: Script
   Source: npc/quests/quests_13_1.txt:86
 - Name: Young man#SaYumMoon
   X: 275
-  "Y": 86
+  Y: 86
   Dir: 2
   Sprite: 97
   Kind: Script
   Source: npc/quests/quests_gonryun.txt:3119
 - Name: Continental Messenger#01
   X: 164
-  "Y": 304
+  Y: 304
   Dir: 3
   Sprite: 997
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: ConMessenger
   Kind: Script
   Source: npc/quests/quests_morocc.txt:1198
 - Name: Wanderer#rus24
   X: 228
-  "Y": 279
+  Y: 279
   Dir: 3
   Sprite: 968
   Kind: Script
   Source: npc/quests/quests_moscovia.txt:8718
 - Name: Wanted Notice#edq
   X: 150
-  "Y": 326
+  Y: 326
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_nameless.txt:6386
 - Name: Chief Officer#edq
   X: 148
-  "Y": 326
+  Y: 326
   Dir: 3
   Sprite: 734
   Kind: Script
   Source: npc/quests/quests_nameless.txt:6474
 - Name: Old Soldier
   X: 140
-  "Y": 304
+  Y: 304
   Dir: 5
   Sprite: 901
   Kind: Script
   Source: npc/quests/quests_nameless.txt:10748
 - Name: Man from Morocc
   X: 163
-  "Y": 204
+  Y: 204
   Dir: 3
   Sprite: 99
   Kind: Script
   Source: npc/quests/quests_nameless.txt:11409
 - Name: Busy Boy#prt
   X: 248
-  "Y": 212
+  Y: 212
   Dir: 3
   Sprite: 706
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/quests/quests_prontera.txt:251
 - Name: Kid#sch
   X: 202
-  "Y": 122
+  Y: 122
   Dir: 0
   Sprite: 703
   Kind: Script
   Source: npc/quests/quests_veins.txt:643
 - Name: Young Man#sch
   X: 109
-  "Y": 161
+  Y: 161
   Dir: 6
   Sprite: 83
   Kind: Script
   Source: npc/quests/quests_veins.txt:2424
 - Name: Sign#prontera
   X: 147
-  "Y": 305
+  Y: 305
   Dir: 0
   Sprite: 111
   DuplicateOf: TheSign
@@ -528,7 +530,7 @@ Body:
   Source: npc/quests/the_sign_quest.txt:67
 - Name: Kriemhild#15
   X: 155
-  "Y": 190
+  Y: 190
   Dir: 4
   Sprite: 722
   DuplicateOf: InsideFlagsPR1
@@ -536,7 +538,7 @@ Body:
   Source: npc/guild/prtg_cas01.txt:99
 - Name: Swanhild#17
   X: 146
-  "Y": 194
+  Y: 194
   Dir: 3
   Sprite: 722
   DuplicateOf: InsideFlagsPR2
@@ -544,7 +546,7 @@ Body:
   Source: npc/guild/prtg_cas02.txt:101
 - Name: Fadhgridh#15
   X: 143
-  "Y": 203
+  Y: 203
   Dir: 2
   Sprite: 722
   DuplicateOf: InsideFlagsPR3
@@ -552,7 +554,7 @@ Body:
   Source: npc/guild/prtg_cas03.txt:99
 - Name: Skoegul#15
   X: 167
-  "Y": 203
+  Y: 203
   Dir: 6
   Sprite: 722
   DuplicateOf: InsideFlagsPR4
@@ -560,7 +562,7 @@ Body:
   Source: npc/guild/prtg_cas04.txt:99
 - Name: Gondul#13
   X: 165
-  "Y": 194
+  Y: 194
   Dir: 5
   Sprite: 722
   DuplicateOf: InsideFlagsPR5
@@ -568,354 +570,354 @@ Body:
   Source: npc/guild/prtg_cas05.txt:97
 - Name: Young Man#bard_q1
   X: 174
-  "Y": 328
+  Y: 328
   Dir: 3
   Sprite: 89
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/quests/skills/bard_skills.txt:30
 - Name: Aelle#qsk_dan02
   X: 183
-  "Y": 333
+  Y: 333
   Dir: 1
   Sprite: 79
   Kind: Script
   Source: npc/quests/skills/dancer_skills.txt:403
 - Name: "#tour"
   X: 69
-  "Y": 351
+  Y: 351
   Dir: 0
   Sprite: 111
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/quests/skills/knight_skills.txt:311
 - Name: Grand Master
   X: 72
-  "Y": 352
+  Y: 352
   Dir: 7
   Sprite: 733
   Kind: Script
   Source: npc/quests/skills/knight_skills.txt:343
 - Name: Knight#zabii
   X: 78
-  "Y": 354
+  Y: 354
   Dir: 3
   Sprite: 734
   Kind: Script
   Source: npc/quests/skills/knight_skills.txt:376
 - Name: Knight#drake
   X: 73
-  "Y": 357
+  Y: 357
   Dir: 5
   Sprite: 734
   Kind: Script
   Source: npc/quests/skills/knight_skills.txt:414
 - Name: Knight#sasword
   X: 78
-  "Y": 357
+  Y: 357
   Dir: 3
   Sprite: 734
   Kind: Script
   Source: npc/quests/skills/knight_skills.txt:448
 - Name: Knight#gattack
   X: 66
-  "Y": 358
+  Y: 358
   Dir: 5
   Sprite: 733
   Kind: Script
   Source: npc/quests/skills/knight_skills.txt:475
 - Name: prt01
   X: 107
-  "Y": 215
+  Y: 215
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_in
     X: 240
-    "Y": 139
+    Y: 139
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:20
 - Name: prt02
   X: 120
-  "Y": 267
+  Y: 267
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_in
     X: 180
-    "Y": 97
+    Y: 97
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:21
 - Name: prt03
   X: 133
-  "Y": 183
+  Y: 183
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_in
     X: 50
-    "Y": 105
+    Y: 105
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:22
 - Name: prt04
   X: 134
-  "Y": 221
+  Y: 221
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_in
     X: 131
-    "Y": 71
+    Y: 71
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:23
 - Name: prt001
   X: 156
-  "Y": 22
+  Y: 22
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_fild08
     X: 170
-    "Y": 375
+    Y: 375
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:24
 - Name: prt05
   X: 177
-  "Y": 221
+  Y: 221
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_in
     X: 168
-    "Y": 128
+    Y: 128
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:25
 - Name: prt06
   X: 179
-  "Y": 184
+  Y: 184
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_in
     X: 60
-    "Y": 73
+    Y: 73
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:26
 - Name: prt07
   X: 192
-  "Y": 267
+  Y: 267
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_in
     X: 178
-    "Y": 55
+    Y: 55
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:27
 - Name: prt08
   X: 204
-  "Y": 192
+  Y: 192
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_in
     X: 68
-    "Y": 134
+    Y: 134
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:28
 - Name: prt09
   X: 208
-  "Y": 154
+  Y: 154
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_in
     X: 172
-    "Y": 29
+    Y: 29
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:29
 - Name: prt002
   X: 22
-  "Y": 203
+  Y: 203
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: prt_fild05
     X: 367
-    "Y": 205
+    Y: 205
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:30
 - Name: prt004
   X: 237
-  "Y": 317
+  Y: 317
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_church
     X: 100
-    "Y": 60
+    Y: 60
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:31
 - Name: prt003
   X: 289
-  "Y": 203
+  Y: 203
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: prt_fild06
     X: 27
-    "Y": 193
+    Y: 193
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:32
 - Name: prt10
   X: 42
-  "Y": 67
+  Y: 67
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_in
     X: 44
-    "Y": 29
+    Y: 29
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:33
 - Name: prt11
   X: 45
-  "Y": 346
+  Y: 346
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_in
     X: 80
-    "Y": 110
+    Y: 110
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:34
 - Name: prt12
   X: 73
-  "Y": 100
+  Y: 100
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_in
     X: 208
-    "Y": 176
+    Y: 176
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:35
 - Name: prt13
   X: 74
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_in
     X: 248
-    "Y": 170
+    Y: 170
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:36
 - Name: prt14-1
   X: 84
-  "Y": 89
+  Y: 89
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_in
     X: 282
-    "Y": 176
+    Y: 176
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:37
 - Name: prt15-2
   X: 263
-  "Y": 279
+  Y: 279
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_in
     X: 227
-    "Y": 18
+    Y: 18
     TriggerWhileHidden: false
   Source: npc/warps/cities/prontera.txt:38
 - Name: Dolangmal#1
   X: 114
-  "Y": 77
+  Y: 77
   Dir: 6
   Sprite: 553
   DuplicateOf: Dolangmal
@@ -923,7 +925,7 @@ Body:
   Source: npc/re/cities/malangdo.txt:152
 - Name: Guard#1pront
   X: 52
-  "Y": 344
+  Y: 344
   Dir: 5
   Sprite: 105
   DuplicateOf: prtguard
@@ -932,14 +934,14 @@ Body:
 - Name: Guide#01prontera
   UniqueName: GuideProntera
   X: 154
-  "Y": 187
+  Y: 187
   Dir: 4
   Sprite: 105
   Kind: Script
   Source: npc/re/guides/guides_prontera.txt:10
 - Name: Guide#02prontera
   X: 282
-  "Y": 208
+  Y: 208
   Dir: 2
   Sprite: 105
   DuplicateOf: GuideProntera
@@ -947,7 +949,7 @@ Body:
   Source: npc/re/guides/guides_prontera.txt:291
 - Name: Guide#03prontera
   X: 29
-  "Y": 200
+  Y: 200
   Dir: 6
   Sprite: 105
   DuplicateOf: GuideProntera
@@ -955,7 +957,7 @@ Body:
   Source: npc/re/guides/guides_prontera.txt:292
 - Name: Guide#04prontera
   X: 160
-  "Y": 29
+  Y: 29
   Dir: 0
   Sprite: 105
   DuplicateOf: GuideProntera
@@ -963,7 +965,7 @@ Body:
   Source: npc/re/guides/guides_prontera.txt:293
 - Name: Guide#05prontera
   X: 159
-  "Y": 326
+  Y: 326
   Dir: 4
   Sprite: 105
   DuplicateOf: GuideProntera
@@ -971,14 +973,14 @@ Body:
   Source: npc/re/guides/guides_prontera.txt:294
 - Name: Kafra Teleportation#prontera
   X: 143
-  "Y": 87
+  Y: 87
   Dir: 5
   Sprite: 10242
   Kind: Script
   Source: npc/re/kafras/Kafra_Teleportation_Services.txt:327
 - Name: Zonda Teleportation#prontera
   X: 145
-  "Y": 87
+  Y: 87
   Dir: 3
   Sprite: 10243
   DuplicateOf: ZondaTeleportationServices
@@ -986,7 +988,7 @@ Body:
   Source: npc/re/kafras/Zonda_Teleportation_Services.txt:91
 - Name: Rune Merchant#prt
   X: 168
-  "Y": 228
+  Y: 228
   Dir: 3
   Sprite: 97
   DuplicateOf: runesale
@@ -995,21 +997,21 @@ Body:
 - Name: Cash Sales Guide#prontera
   UniqueName: cashmall_warper
   X: 137
-  "Y": 125
+  Y: 125
   Dir: 4
   Sprite: 899
   Kind: Script
   Source: npc/re/merchants/cashmall.txt:10
 - Name: Clothing Effect Removal Service
   X: 80
-  "Y": 106
+  Y: 106
   Dir: 5
   Sprite: 10144
   Kind: Script
   Source: npc/re/merchants/clothing_buff_removal.txt:9
 - Name: Rare Diamond Merchant#1
   X: 165
-  "Y": 89
+  Y: 89
   Dir: 6
   Sprite: 58
   DuplicateOf: RareDiamondMerchant
@@ -1017,39 +1019,39 @@ Body:
   Source: npc/re/merchants/diamond.txt:240
 - Name: Illusion Enchanter#0
   X: 90
-  "Y": 115
+  Y: 115
   Dir: 5
   Sprite: 677
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/merchants/enchan_illusion_dungeons.txt:182
 - Name: Illusion Merchant#0829
   X: 88
-  "Y": 113
+  Y: 113
   Dir: 5
   Sprite: 111
   Kind: Script
   Source: npc/re/merchants/enchan_illusion_dungeons.txt:856
 - Name: Grademk_Int
   X: 50
-  "Y": 293
+  Y: 293
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: grademk
     X: 13
-    "Y": 172
+    Y: 172
     TriggerWhileHidden: false
   Source: npc/re/merchants/enchantgrade.txt:128
 - Name: Guild Warehouse Manager#prontera
   X: 150
-  "Y": 191
+  Y: 191
   Dir: 3
   Sprite: 896
   DuplicateOf: GuildWarehouse
@@ -1057,24 +1059,24 @@ Body:
   Source: npc/re/merchants/guild_warehouse.txt:106
 - Name: Heart Merchant#life01
   X: 82
-  "Y": 108
+  Y: 108
   Dir: 5
   Sprite: 794
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/merchants/new_insurance.txt:9
 - Name: Pet Trader#1
   X: 210
-  "Y": 209
+  Y: 209
   Dir: 5
   Sprite: 766
   Kind: Script
   Source: npc/re/merchants/pet_trader.txt:10
 - Name: Pet Groomer#prt
   X: 218
-  "Y": 211
+  Y: 211
   Dir: 4
   Sprite: 125
   DuplicateOf: "#PetGroomer"
@@ -1082,21 +1084,21 @@ Body:
   Source: npc/re/merchants/pet_groomer.txt:39
 - Name: Riding Creature Master
   X: 130
-  "Y": 213
+  Y: 213
   Dir: 5
   Sprite: 105
   Kind: Script
   Source: npc/re/merchants/renters.txt:52
 - Name: Peco Peco Remover
   X: 125
-  "Y": 208
+  Y: 208
   Dir: 5
   Sprite: 105
   Kind: Script
   Source: npc/re/merchants/renters.txt:122
 - Name: Mado Gear Armorer#prt
   X: 163
-  "Y": 178
+  Y: 178
   Dir: 3
   Sprite: 105
   DuplicateOf: mgm
@@ -1104,42 +1106,42 @@ Body:
   Source: npc/re/merchants/renters.txt:265
 - Name: Amatsu Trader#nin
   X: 178
-  "Y": 244
+  Y: 244
   Dir: 3
   Sprite: 83
   Kind: Shop
   Source: npc/re/merchants/shops.txt:146
 - Name: Rebellion Accessories
   X: 96
-  "Y": 209
+  Y: 209
   Dir: 4
   Sprite: 564
   Kind: Shop
   Source: npc/re/merchants/shops.txt:171
 - Name: Rebellion Weapons
   X: 92
-  "Y": 209
+  Y: 209
   Dir: 4
   Sprite: 564
   Kind: Shop
   Source: npc/re/merchants/shops.txt:172
 - Name: Chef Assistant#prt
   X: 156
-  "Y": 212
+  Y: 212
   Dir: 1
   Sprite: 700
   Kind: Shop
   Source: npc/re/merchants/shops.txt:186
 - Name: Clan Helper
   X: 138
-  "Y": 183
+  Y: 183
   Dir: 7
   Sprite: 703
   Kind: Script
   Source: npc/re/other/clans.txt:13
 - Name: Eden Teleport Officer#1
   X: 124
-  "Y": 76
+  Y: 76
   Dir: 3
   Sprite: 729
   DuplicateOf: eto
@@ -1147,7 +1149,7 @@ Body:
   Source: npc/re/quests/eden/eden_common.txt:241
 - Name: Carbonated Water Vending Machine#prt
   X: 170
-  "Y": 125
+  Y: 125
   Dir: 3
   Sprite: 10375
   DuplicateOf: Carbonated Water Vending Machine#ra
@@ -1155,7 +1157,7 @@ Body:
   Source: npc/re/quests/juno_monster_society.txt:25
 - Name: Assistant Alonzo#prt
   X: 168
-  "Y": 125
+  Y: 125
   Dir: 5
   Sprite: 415
   Kind: Script
@@ -1163,37 +1165,37 @@ Body:
 - Name: Phantasmagorika Spokesperson#prt
   UniqueName: spokesperson
   X: 121
-  "Y": 77
+  Y: 77
   Dir: 3
   Sprite: 831
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/quests/quests_15_1.txt:18
 - Name: Royal Messenger#e16_pr
   X: 121
-  "Y": 72
+  Y: 72
   Dir: 3
   Sprite: 833
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13
 - Name: Royal Guard#ep16_ect01
   X: 150
-  "Y": 331
+  Y: 331
   Dir: 4
   Sprite: 105
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:143
 - Name: Royal Guard#ep16_ect02
   X: 161
-  "Y": 331
+  Y: 331
   Dir: 4
   Sprite: 105
   DuplicateOf: Royal Guard#ep16_ect01
@@ -1201,45 +1203,45 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:161
 - Name: Kiddo#ep16lug01
   X: 271
-  "Y": 70
+  Y: 70
   Dir: 3
   Sprite: 975
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:8276
 - Name: Kiddo#ep16lug02
   X: 271
-  "Y": 68
+  Y: 68
   Dir: 1
   Sprite: 706
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:8348
 - Name: Kiddo#ep16lug03
   X: 269
-  "Y": 69
+  Y: 69
   Dir: 5
   Sprite: 703
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:8424
 - Name: Ordinary Man#ep16lug02
   X: 269
-  "Y": 73
+  Y: 73
   Dir: 5
   Sprite: 86
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:8620
 - Name: Furniture Deliveryman#ep16wig
   X: 68
-  "Y": 68
+  Y: 68
   Dir: 5
   Sprite: 52
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:12894
 - Name: Cat Paw Shrimp Merchant#prt
   X: 137
-  "Y": 223
+  Y: 223
   Dir: 5
   Sprite: 495
   DuplicateOf: Cat Paw Shrimp Merchant#iz
@@ -1247,130 +1249,130 @@ Body:
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1340
 - Name: Warmhearted woman
   X: 141
-  "Y": 97
+  Y: 97
   Dir: 4
   Sprite: 701
   Kind: Script
   Source: npc/re/jobs/3-2/minstrel.txt:249
 - Name: Glasses-wearing Man
   X: 140
-  "Y": 331
+  Y: 331
   Dir: 6
   Sprite: 883
   Kind: Script
   Source: npc/re/jobs/3-2/minstrel.txt:280
 - Name: Woman#job_min
   X: 146
-  "Y": 218
+  Y: 218
   Dir: 4
   Sprite: 90
   Kind: Script
   Source: npc/re/jobs/3-2/minstrel.txt:313
 - Name: Karian#cmd9
   X: 155
-  "Y": 49
+  Y: 49
   Dir: 4
   Sprite: 486
   Kind: Script
   Source: npc/re/jobs/3-2/minstrel.txt:796
 - Name: "#jmprt1"
   X: 155
-  "Y": 40
+  Y: 40
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/jobs/3-2/minstrel.txt:1729
 - Name: "#prtjm1"
   X: 155
-  "Y": 42
+  Y: 42
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/jobs/3-2/minstrel.txt:1747
 - Name: "#prtjm2"
   X: 155
-  "Y": 44
+  Y: 44
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/jobs/3-2/minstrel.txt:1759
 - Name: "#prtjm3"
   X: 155
-  "Y": 46
+  Y: 46
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/jobs/3-2/minstrel.txt:1771
 - Name: "#prtjm4"
   X: 155
-  "Y": 48
+  Y: 48
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/jobs/3-2/minstrel.txt:1783
 - Name: prt_to_cas_cas_out
   X: 156
-  "Y": 358
+  Y: 358
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 216
-    "Y": 146
+    Y: 146
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:158
 - Name: illusion123
   X: 50
-  "Y": 228
+  Y: 228
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_in
     X: 128
-    "Y": 40
+    Y: 40
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:174
 - Name: s_atelier0005
   X: 272
-  "Y": 108
+  Y: 108
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: s_atelier
     X: 13
-    "Y": 119
+    Y: 119
     TriggerWhileHidden: false
   Source: npc/re/warps/other/s_workshop.txt:20
 - Name: Training Instructor#prontera_in
   X: 246
-  "Y": 62
+  Y: 62
   Dir: 3
   Sprite: 105
   Kind: Script

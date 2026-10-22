@@ -2,145 +2,147 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#sthd_move_back_a_1"
   X: 66
-  "Y": 88
+  Y: 88
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:883
 - Name: "#sthd_move_back_a_2"
   X: 116
-  "Y": 88
+  Y: 88
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#sthd_move_back_a_1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:899
 - Name: "#sthd_move_back_a_3"
   X: 16
-  "Y": 6
+  Y: 6
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#sthd_move_back_a_1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:900
 - Name: "#sthd_move_back_a_4"
   X: 115
-  "Y": 6
+  Y: 6
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#sthd_move_back_a_1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:901
 - Name: "#sthd_move_back_a_5"
   X: 66
-  "Y": 6
+  Y: 6
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#sthd_move_back_a_1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:902
 - Name: "#sthd_move_back_a_6"
   X: 15
-  "Y": 88
+  Y: 88
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#sthd_move_back_a_1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:903
 - Name: "#sthd_event_13"
   X: 66
-  "Y": 94
+  Y: 94
   Dir: 0
   Sprite: 139
   Trigger:
     X: 8
-    "Y": 8
+    Y: 8
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:965
 - Name: "#sthd_event_14"
   X: 116
-  "Y": 94
+  Y: 94
   Dir: 0
   Sprite: 139
   Trigger:
     X: 8
-    "Y": 8
+    Y: 8
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:994
 - Name: "#sthd_event_15"
   X: 115
-  "Y": 12
+  Y: 12
   Dir: 0
   Sprite: 139
   Trigger:
     X: 8
-    "Y": 8
+    Y: 8
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1023
 - Name: "#sthd_event_16"
   X: 66
-  "Y": 12
+  Y: 12
   Dir: 0
   Sprite: 139
   Trigger:
     X: 8
-    "Y": 8
+    Y: 8
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1052
 - Name: "#sthd_event_17"
   X: 15
-  "Y": 94
+  Y: 94
   Dir: 0
   Sprite: 139
   Trigger:
     X: 8
-    "Y": 8
+    Y: 8
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1082
 - Name: "#sthd_event_18"
   X: 16
-  "Y": 11
+  Y: 11
   Dir: 0
   Sprite: 139
   Trigger:
     X: 8
-    "Y": 8
+    Y: 8
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1097
 - Name: Sky Fortress Gold Treasure#1
   X: 66
-  "Y": 137
+  Y: 137
   Dir: 4
   Sprite: 10005
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1112
 - Name: Sky Fortress Gold Treasure#2
   X: 116
-  "Y": 137
+  Y: 137
   Dir: 4
   Sprite: 10005
   DuplicateOf: Sky Fortress Gold Treasure#1
@@ -148,7 +150,7 @@ Body:
   Source: npc/re/instances/SkyFortress.txt:1172
 - Name: Sky Fortress Gold Treasure#3
   X: 116
-  "Y": 55
+  Y: 55
   Dir: 4
   Sprite: 10005
   DuplicateOf: Sky Fortress Gold Treasure#1
@@ -156,7 +158,7 @@ Body:
   Source: npc/re/instances/SkyFortress.txt:1173
 - Name: Sky Fortress Gold Treasure#4
   X: 66
-  "Y": 55
+  Y: 55
   Dir: 4
   Sprite: 10005
   DuplicateOf: Sky Fortress Gold Treasure#1
@@ -164,28 +166,28 @@ Body:
   Source: npc/re/instances/SkyFortress.txt:1174
 - Name: Sky Fortress Treasure Box
   X: 16
-  "Y": 132
+  Y: 132
   Dir: 4
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1177
 - Name: Immortal Cursed Knight#
   X: 16
-  "Y": 129
+  Y: 129
   Dir: 4
   Sprite: 10141
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1218
 - Name: Wind Ghost in Experiment
   X: 16
-  "Y": 54
+  Y: 54
   Dir: 4
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1257
 - Name: Immortal Wind Ghost#01
   X: 15
-  "Y": 49
+  Y: 49
   Dir: 4
   Sprite: 10142
   Kind: Script

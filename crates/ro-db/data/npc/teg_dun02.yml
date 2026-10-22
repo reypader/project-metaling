@@ -2,37 +2,39 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: teg_dun02a_aldega#te
   X: 20
-  "Y": 160
+  Y: 160
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: te_alde_gld
     X: 229
-    "Y": 185
+    Y: 185
     TriggerWhileHidden: false
   Source: npc/re/warps/guildcastles.txt:334
 - Name: teg_dun02b_aldegb#te
   X: 180
-  "Y": 112
+  Y: 112
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: te_alde_gld
     X: 242
-    "Y": 121
+    Y: 121
     TriggerWhileHidden: false
   Source: npc/re/warps/guildcastles.txt:335

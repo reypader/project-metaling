@@ -2,27 +2,29 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Marry Jay#0_1
   X: 110
-  "Y": 129
+  Y: 129
   Dir: 6
   Sprite: 726
   Kind: Script
   Source: npc/re/instances/FridayDungeon.txt:106
 - Name: md_gef_mobs_spawn
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 6
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/FridayDungeon.txt:151
 - Name: Mary Juj#0_2
   X: 110
-  "Y": 129
+  Y: 129
   Dir: 6
   Sprite: 726
   State: Disabled
@@ -30,7 +32,7 @@ Body:
   Source: npc/re/instances/FridayDungeon.txt:195
 - Name: The Stranger#cadaver
   X: 183
-  "Y": 222
+  Y: 222
   Dir: 5
   Sprite: 697
   State: Disabled
@@ -38,7 +40,7 @@ Body:
   Source: npc/re/instances/FridayDungeon.txt:200
 - Name: Bizzare Sculpture#boss
   X: 199
-  "Y": 73
+  Y: 73
   Dir: 0
   Sprite: 844
   State: Disabled
@@ -46,7 +48,7 @@ Body:
   Source: npc/re/instances/FridayDungeon.txt:245
 - Name: "#fd_box1"
   X: 212
-  "Y": 212
+  Y: 212
   Dir: 3
   Sprite: 10005
   State: Disabled
@@ -54,7 +56,7 @@ Body:
   Source: npc/re/instances/FridayDungeon.txt:298
 - Name: "#fd_box2"
   X: 190
-  "Y": 56
+  Y: 56
   Dir: 3
   Sprite: 10005
   State: Disabled
@@ -63,7 +65,7 @@ Body:
   Source: npc/re/instances/FridayDungeon.txt:339
 - Name: "#fd_box3"
   X: 49
-  "Y": 57
+  Y: 57
   Dir: 3
   Sprite: 10005
   State: Disabled
@@ -72,7 +74,7 @@ Body:
   Source: npc/re/instances/FridayDungeon.txt:340
 - Name: "#fd_box4"
   X: 44
-  "Y": 211
+  Y: 211
   Dir: 3
   Sprite: 10005
   State: Disabled

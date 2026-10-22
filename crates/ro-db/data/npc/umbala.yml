@@ -2,132 +2,134 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Utan Kid#um
   X: 70
-  "Y": 106
+  Y: 106
   Dir: 3
   Sprite: 781
   Kind: Script
   Source: npc/cities/umbala.txt:241
 - Name: Utan Kid#1
   X: 59
-  "Y": 243
+  Y: 243
   Dir: 5
   Sprite: 787
   Kind: Script
   Source: npc/cities/umbala.txt:366
 - Name: Pasto#um
   X: 177
-  "Y": 153
+  Y: 153
   Dir: 3
   Sprite: 97
   Kind: Script
   Source: npc/cities/umbala.txt:462
 - Name: Yuwooki#um
   X: 80
-  "Y": 146
+  Y: 146
   Dir: 4
   Sprite: 753
   Kind: Script
   Source: npc/cities/umbala.txt:513
 - Name: Utan Man#1
   X: 140
-  "Y": 157
+  Y: 157
   Dir: 6
   Sprite: 785
   Kind: Script
   Source: npc/cities/umbala.txt:567
 - Name: Utan Man#2
   X: 146
-  "Y": 157
+  Y: 157
   Dir: 4
   Sprite: 786
   Kind: Script
   Source: npc/cities/umbala.txt:587
 - Name: Utan Kid#3
   X: 149
-  "Y": 165
+  Y: 165
   Dir: 4
   Sprite: 781
   Kind: Script
   Source: npc/cities/umbala.txt:605
 - Name: Bertan#um
   X: 92
-  "Y": 159
+  Y: 159
   Dir: 4
   Sprite: 785
   Kind: Script
   Source: npc/cities/umbala.txt:631
 - Name: Utan Kid#2
   X: 194
-  "Y": 104
+  Y: 104
   Dir: 4
   Sprite: 787
   Kind: Script
   Source: npc/cities/umbala.txt:827
 - Name: Utan Man#3
   X: 193
-  "Y": 208
+  Y: 208
   Dir: 6
   Sprite: 789
   Kind: Script
   Source: npc/cities/umbala.txt:870
 - Name: Utan Man#5
   X: 139
-  "Y": 205
+  Y: 205
   Dir: 4
   Sprite: 785
   Kind: Script
   Source: npc/cities/umbala.txt:898
 - Name: Bungee Jump
   X: 140
-  "Y": 197
+  Y: 197
   Dir: 1
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   Kind: Script
   Source: npc/cities/umbala.txt:1023
 - Name: " #jump"
   X: 136
-  "Y": 195
+  Y: 195
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/cities/umbala.txt:1043
 - Name: Kafra Employee
   UniqueName: kaf_umbala
   X: 87
-  "Y": 160
+  Y: 160
   Dir: 4
   Sprite: 721
   Kind: Script
   Source: npc/kafras/kafras.txt:576
 - Name: Chef Assistant#um
   X: 102
-  "Y": 154
+  Y: 154
   Dir: 3
   Sprite: 83
   Kind: Shop
   Source: npc/merchants/shops.txt:296
 - Name: Bulletin Board#13
   X: 137
-  "Y": 94
+  Y: 94
   Dir: 5
   Sprite: 837
   Kind: Script
   Source: npc/other/bulletin_boards.txt:204
 - Name: Mailbox#um
   X: 104
-  "Y": 155
+  Y: 155
   Dir: 0
   Sprite: 888
   DuplicateOf: MailBox
@@ -135,182 +137,182 @@ Body:
   Source: npc/other/mail.txt:111
 - Name: Bazo#lv4
   X: 117
-  "Y": 285
+  Y: 285
   Dir: 3
   Sprite: 85
   Kind: Script
   Source: npc/quests/lvl4_weapon_quest.txt:25
 - Name: Hibilaithan#lv4
   X: 163
-  "Y": 257
+  Y: 257
   Dir: 3
   Sprite: 785
   Kind: Script
   Source: npc/quests/lvl4_weapon_quest.txt:466
 - Name: Billik
   X: 215
-  "Y": 181
+  Y: 181
   Dir: 3
   Sprite: 733
   Kind: Script
   Source: npc/quests/quests_niflheim.txt:510
 - Name: "#Skulldoor"
   X: 221
-  "Y": 193
+  Y: 193
   Dir: 1
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_umbala.txt:826
 - Name: Chabimatan
   X: 145
-  "Y": 217
+  Y: 217
   Dir: 3
   Sprite: 783
   Kind: Script
   Source: npc/quests/quests_umbala.txt:1207
 - Name: "#unpc"
   X: 94
-  "Y": 181
+  Y: 181
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/quests/quests_umbala.txt:1294
 - Name: Native#_s
   X: 163
-  "Y": 256
+  Y: 256
   Dir: 3
   Sprite: 781
   Kind: Script
   Source: npc/quests/the_sign_quest.txt:7749
 - Name: um_chief1-1
   X: 68
-  "Y": 253
+  Y: 253
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: um_in
     X: 38
-    "Y": 113
+    Y: 113
     TriggerWhileHidden: false
   Source: npc/warps/cities/umbala.txt:19
 - Name: um_tool1-1
   X: 138
-  "Y": 129
+  Y: 129
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: um_in
     X: 99
-    "Y": 114
+    Y: 114
     TriggerWhileHidden: false
   Source: npc/warps/cities/umbala.txt:21
 - Name: um_weapon1-1
   X: 125
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: um_in
     X: 155
-    "Y": 114
+    Y: 114
     TriggerWhileHidden: false
   Source: npc/warps/cities/umbala.txt:23
 - Name: um_houseA1-1
   X: 94
-  "Y": 186
+  Y: 186
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: um_in
     X: 141
-    "Y": 42
+    Y: 42
     TriggerWhileHidden: false
   Source: npc/warps/cities/umbala.txt:25
 - Name: um_houseA2-1
   X: 100
-  "Y": 203
+  Y: 203
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: um_in
     X: 163
-    "Y": 69
+    Y: 69
     TriggerWhileHidden: false
   Source: npc/warps/cities/umbala.txt:27
 - Name: um_houseB1-1
   X: 107
-  "Y": 130
+  Y: 130
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: um_in
     X: 99
-    "Y": 66
+    Y: 66
     TriggerWhileHidden: false
   Source: npc/warps/cities/umbala.txt:29
 - Name: um_shaman1-1
   X: 220
-  "Y": 189
+  Y: 189
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/warps/cities/umbala.txt:31
 - Name: um_fild4-3
   X: 130
-  "Y": 79
+  Y: 79
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: um_fild04
     X: 215
-    "Y": 336
+    Y: 336
     TriggerWhileHidden: false
   Source: npc/warps/fields/umbala_fild.txt:31
 - Name: Umbala Guide#01umbala
   UniqueName: GuideUmbala
   X: 128
-  "Y": 94
+  Y: 94
   Dir: 3
   Sprite: 702
   Kind: Script
   Source: npc/re/guides/guides_umbala.txt:17
 - Name: Umbala Guide#02umbala
   X: 99
-  "Y": 158
+  Y: 158
   Dir: 3
   Sprite: 702
   DuplicateOf: GuideUmbala
@@ -318,7 +320,7 @@ Body:
   Source: npc/re/guides/guides_umbala.txt:102
 - Name: Guild Warehouse Manager#umbala
   X: 106
-  "Y": 160
+  Y: 160
   Dir: 3
   Sprite: 896
   DuplicateOf: GuildWarehouse
@@ -326,7 +328,7 @@ Body:
   Source: npc/re/merchants/guild_warehouse.txt:108
 - Name: Eden Teleport Officer#31
   X: 105
-  "Y": 158
+  Y: 158
   Dir: 3
   Sprite: 729
   DuplicateOf: eto
@@ -334,45 +336,45 @@ Body:
   Source: npc/re/quests/eden/eden_common.txt:275
 - Name: Utan Boy#arch
   X: 137
-  "Y": 227
+  Y: 227
   Dir: 5
   Sprite: 787
   Kind: Script
   Source: npc/re/jobs/3-1/archbishop.txt:174
 - Name: Priest#arch
   X: 139
-  "Y": 227
+  Y: 227
   Dir: 3
   Sprite: 60
   Kind: Script
   Source: npc/re/jobs/3-1/archbishop.txt:180
 - Name: ygGate_yg1
   X: 106
-  "Y": 285
+  Y: 285
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: yggdrasil01
     X: 39
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/yggdrasil.txt:20
 - Name: sign06
   X: 107
-  "Y": 118
+  Y: 118
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: um_in
     X: 15
-    "Y": 20
+    Y: 20
     TriggerWhileHidden: false
   Source: npc/re/warps/other/sign.txt:32

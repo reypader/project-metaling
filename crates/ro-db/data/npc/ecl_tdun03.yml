@@ -2,54 +2,56 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: New Oz#1
   X: 68
-  "Y": 80
+  Y: 80
   Dir: 3
   Sprite: 625
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:11502
 - Name: Diary Frog No.3#worm
   X: 21
-  "Y": 69
+  Y: 69
   Dir: 5
   Sprite: 614
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:12598
 - Name: tdun3dn_tdun2up
   X: 49
-  "Y": 11
+  Y: 11
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ecl_tdun02
     X: 50
-    "Y": 11
+    Y: 11
     TriggerWhileHidden: false
   Source: npc/re/warps/dungeons/ecl_dun.txt:22
 - Name: tdun3up_tdun4dn
   X: 50
-  "Y": 46
+  Y: 46
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ecl_tdun04
     X: 26
-    "Y": 24
+    Y: 24
     TriggerWhileHidden: false
   Source: npc/re/warps/dungeons/ecl_dun.txt:23

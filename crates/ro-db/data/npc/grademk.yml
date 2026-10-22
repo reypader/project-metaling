@@ -2,29 +2,31 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Sratos#sratos
   X: 34
-  "Y": 184
+  Y: 184
   Dir: 4
   Sprite: 10098
   Kind: Script
   Source: npc/re/merchants/enchantgrade.txt:11
 - Name: Grademk_Out
   X: 9
-  "Y": 172
+  Y: 172
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prontera
     X: 50
-    "Y": 290
+    Y: 290
     TriggerWhileHidden: false
   Source: npc/re/merchants/enchantgrade.txt:129

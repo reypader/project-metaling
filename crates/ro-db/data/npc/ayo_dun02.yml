@@ -2,118 +2,120 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#Annonblood"
   X: 91
-  "Y": 263
+  Y: 263
   Dir: 0
   Sprite: 111
   Trigger:
     X: 2
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/quests/quests_ayothaya.txt:436
 - Name: Haggard Man
   X: 91
-  "Y": 264
+  Y: 264
   Dir: 3
   Sprite: 841
   Kind: Script
   Source: npc/quests/quests_ayothaya.txt:576
 - Name: AyoFootprint5
   X: 145
-  "Y": 120
+  Y: 120
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 0
+    Y: 0
   Kind: Script
   Source: npc/quests/quests_ayothaya.txt:1025
 - Name: AyoFootprint6
   X: 135
-  "Y": 168
+  Y: 168
   Dir: 0
   Sprite: 139
   Trigger:
     X: 0
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/quests/quests_ayothaya.txt:1042
 - Name: AyoFootprint7
   X: 77
-  "Y": 213
+  Y: 213
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/quests/quests_ayothaya.txt:1116
 - Name: AyoFootprint8
   X: 86
-  "Y": 254
+  Y: 254
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/quests/quests_ayothaya.txt:1133
 - Name: " #reward_tiger"
   X: 268
-  "Y": 108
+  Y: 108
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_ayothaya.txt:2082
 - Name: ayo_dun2-1
   X: 24
-  "Y": 22
+  Y: 22
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ayo_dun01
     X: 24
-    "Y": 279
+    Y: 279
     TriggerWhileHidden: false
   Source: npc/warps/dungeons/ayo_dun.txt:17
 - Name: ayo_dun2-2
   X: 276
-  "Y": 22
+  Y: 22
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ayo_dun01
     X: 24
-    "Y": 279
+    Y: 279
     TriggerWhileHidden: false
   Source: npc/warps/dungeons/ayo_dun.txt:18
 - Name: "#wp120115"
   X: 150
-  "Y": 256
+  Y: 256
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:39
 - Name: "#tr120115"
   X: 150
-  "Y": 256
+  Y: 256
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click

@@ -2,54 +2,56 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#call_cheshir_ep14"
   X: 125
-  "Y": 192
+  Y: 192
   Dir: 0
   Sprite: 139
   Trigger:
     X: 0
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_mora.txt:1861
 - Name: Cheshire#ep14_extra
   X: 103
-  "Y": 190
+  Y: 190
   Dir: 3
   Sprite: 497
   Kind: Script
   Source: npc/re/quests/quests_mora.txt:1880
 - Name: eldicastes0012
   X: 120
-  "Y": 77
+  Y: 77
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: dicastes01
     X: 197
-    "Y": 351
+    Y: 351
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/dicastes.txt:30
 - Name: eldicastes0013
   X: 120
-  "Y": 237
+  Y: 237
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: dic_in01
     X: 45
-    "Y": 246
+    Y: 246
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/dicastes.txt:31

@@ -2,20 +2,22 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Eclage Guard#pri_inn
   X: 8
-  "Y": 71
+  Y: 71
   Dir: 5
   Sprite: 447
   Kind: Script
   Source: npc/re/cities/eclage.txt:22
 - Name: Eclage Guard#obb
   X: 48
-  "Y": 60
+  Y: 60
   Dir: 5
   Sprite: 447
   Kind: Script
@@ -23,192 +25,192 @@ Body:
 - Name: Armor Merchant Naphara#e
   UniqueName: glove
   X: 66
-  "Y": 95
+  Y: 95
   Dir: 3
   Sprite: 436
   Kind: Script
   Source: npc/re/merchants/coin_exchange.txt:834
 - Name: Slot Expert Nattuer#ecl
   X: 64
-  "Y": 97
+  Y: 97
   Dir: 5
   Sprite: 436
   Kind: Script
   Source: npc/re/merchants/coin_exchange.txt:910
 - Name: Herb Merchant Plafina#a
   X: 33
-  "Y": 98
+  Y: 98
   Dir: 5
   Sprite: 443
   Kind: Script
   Source: npc/re/merchants/coin_exchange.txt:970
 - Name: Replication Expert Paltu
   X: 67
-  "Y": 39
+  Y: 39
   Dir: 4
   Sprite: 445
   Kind: Script
   Source: npc/re/merchants/coin_exchange.txt:1036
 - Name: Interdimensional Device#ecl
   X: 38
-  "Y": 98
+  Y: 98
   Dir: 1
   Sprite: 10007
   Kind: Script
   Source: npc/re/quests/quests_14_3.txt:29
 - Name: Eclage Guard#143_6
   X: 40
-  "Y": 96
+  Y: 96
   Dir: 3
   Sprite: 447
   Kind: Script
   Source: npc/re/quests/quests_14_3.txt:49
 - Name: Combat Laphine#143_4
   X: 44
-  "Y": 99
+  Y: 99
   Dir: 1
   Sprite: 461
   Kind: Script
   Source: npc/re/quests/quests_14_3.txt:97
 - Name: Combat Laphine#143_5
   X: 46
-  "Y": 99
+  Y: 99
   Dir: 1
   Sprite: 461
   Kind: Script
   Source: npc/re/quests/quests_14_3.txt:103
 - Name: Combat Laphine#143_6
   X: 48
-  "Y": 99
+  Y: 99
   Dir: 1
   Sprite: 461
   Kind: Script
   Source: npc/re/quests/quests_14_3.txt:109
 - Name: Combat Laphine#143_7
   X: 44
-  "Y": 97
+  Y: 97
   Dir: 1
   Sprite: 462
   Kind: Script
   Source: npc/re/quests/quests_14_3.txt:114
 - Name: Combat Laphine#143_8
   X: 46
-  "Y": 97
+  Y: 97
   Dir: 1
   Sprite: 462
   Kind: Script
   Source: npc/re/quests/quests_14_3.txt:120
 - Name: Combat Laphine#143_9
   X: 48
-  "Y": 97
+  Y: 97
   Dir: 1
   Sprite: 462
   Kind: Script
   Source: npc/re/quests/quests_14_3.txt:126
 - Name: Commander Laphine#143_1
   X: 46
-  "Y": 102
+  Y: 102
   Dir: 3
   Sprite: 447
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_14_3.txt:132
 - Name: Magic Scholar Lemony#14
   X: 37
-  "Y": 90
+  Y: 90
   Dir: 3
   Sprite: 611
   Kind: Script
   Source: npc/re/quests/quests_14_3.txt:172
 - Name: Magic Scholar Armandi#1
   X: 35
-  "Y": 89
+  Y: 89
   Dir: 6
   Sprite: 620
   Kind: Script
   Source: npc/re/quests/quests_14_3.txt:203
 - Name: Murah#ep14_2
   X: 73
-  "Y": 51
+  Y: 51
   Dir: 4
   Sprite: 442
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:1540
 - Name: Old Man#ep14_2
   X: 60
-  "Y": 71
+  Y: 71
   Dir: 4
   Sprite: 443
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:1794
 - Name: Sack Merchant#ep14_2
   X: 70
-  "Y": 88
+  Y: 88
   Dir: 4
   Sprite: 495
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:2118
 - Name: Delivery Man#ep14_2
   X: 44
-  "Y": 53
+  Y: 53
   Dir: 4
   Sprite: 513
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:2507
 - Name: Dandy#eclbig
   X: 54
-  "Y": 91
+  Y: 91
   Dir: 2
   Sprite: 443
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:4076
 - Name: Lafiki#eclbig
   X: 53
-  "Y": 92
+  Y: 92
   Dir: 4
   Sprite: 444
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:4089
 - Name: Mijani#eclbig
   X: 55
-  "Y": 25
+  Y: 25
   Dir: 3
   Sprite: 520
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:4118
 - Name: A kneeling boy#eclbig
   X: 38
-  "Y": 37
+  Y: 37
   Dir: 4
   Sprite: 441
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:4182
 - Name: A blushing girl#eclbig
   X: 41
-  "Y": 103
+  Y: 103
   Dir: 1
   Sprite: 439
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:4227
 - Name: Choir Conductor#eclbig
   X: 52
-  "Y": 102
+  Y: 102
   Dir: 4
   Sprite: 442
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:4238
 - Name: Choir member#eclbig01
   X: 51
-  "Y": 103
+  Y: 103
   Dir: 4
   Sprite: 442
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:4300
 - Name: Choir member#eclbig02
   X: 53
-  "Y": 103
+  Y: 103
   Dir: 4
   Sprite: 442
   DuplicateOf: Choir member#eclbig01
@@ -216,7 +218,7 @@ Body:
   Source: npc/re/quests/quests_eclage.txt:4306
 - Name: Choir member#eclbig03
   X: 50
-  "Y": 104
+  Y: 104
   Dir: 4
   Sprite: 442
   DuplicateOf: Choir member#eclbig01
@@ -224,7 +226,7 @@ Body:
   Source: npc/re/quests/quests_eclage.txt:4307
 - Name: Choir member#eclbig04
   X: 52
-  "Y": 104
+  Y: 104
   Dir: 4
   Sprite: 442
   DuplicateOf: Choir member#eclbig01
@@ -232,7 +234,7 @@ Body:
   Source: npc/re/quests/quests_eclage.txt:4308
 - Name: Choir member#eclbig05
   X: 54
-  "Y": 104
+  Y: 104
   Dir: 4
   Sprite: 442
   DuplicateOf: Choir member#eclbig01
@@ -240,135 +242,135 @@ Body:
   Source: npc/re/quests/quests_eclage.txt:4309
 - Name: Cecilia#nk
   X: 26
-  "Y": 88
+  Y: 88
   Dir: 5
   Sprite: 440
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:7465
 - Name: Dominic#nk
   X: 80
-  "Y": 77
+  Y: 77
   Dir: 5
   Sprite: 445
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:7738
 - Name: "#kusa"
   X: 79
-  "Y": 84
+  Y: 84
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:7805
 - Name: "#call_ne"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:7837
 - Name: "#call_kusa"
   X: 2
-  "Y": 2
+  Y: 2
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:7849
 - Name: Midgard Exploration#bok1
   X: 80
-  "Y": 86
+  Y: 86
   Dir: 4
   Sprite: 111
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:7873
 - Name: Midgard Exploration#bok2
   X: 82
-  "Y": 84
+  Y: 84
   Dir: 4
   Sprite: 111
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:7951
 - Name: Midgard Exploration#bok3
   X: 83
-  "Y": 84
+  Y: 84
   Dir: 4
   Sprite: 111
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:8041
 - Name: Midgard Exploration#bok4
   X: 83
-  "Y": 81
+  Y: 81
   Dir: 4
   Sprite: 111
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:8129
 - Name: Magazine#01
   X: 82
-  "Y": 78
+  Y: 78
   Dir: 4
   Sprite: 111
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:8206
 - Name: Magazine#02
   X: 82
-  "Y": 79
+  Y: 79
   Dir: 4
   Sprite: 111
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:8311
 - Name: Monthly Eclage#pa0829
   X: 82
-  "Y": 80
+  Y: 80
   Dir: 4
   Sprite: 111
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:9722
 - Name: Traveler Fome#tl01
   X: 32
-  "Y": 52
+  Y: 52
   Dir: 5
   Sprite: 515
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:12966
 - Name: Traveler Litrip#tl02
   X: 32
-  "Y": 51
+  Y: 51
   Dir: 7
   Sprite: 513
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:13161
 - Name: Traveler Chiba#tl03
   X: 35
-  "Y": 51
+  Y: 51
   Dir: 3
   Sprite: 514
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:13260
 - Name: Eclage Guard#tl01
   X: 31
-  "Y": 49
+  Y: 49
   Dir: 7
   Sprite: 447
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:13372
 - Name: Eclage Guard#tl02
   X: 82
-  "Y": 70
+  Y: 70
   Dir: 3
   Sprite: 447
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:13386
 - Name: Cat Paw Shrimp Merchant#ecl
   X: 72
-  "Y": 86
+  Y: 86
   Dir: 3
   Sprite: 495
   DuplicateOf: Cat Paw Shrimp Merchant#iz
@@ -376,41 +378,41 @@ Body:
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1324
 - Name: in01s_eclageN
   X: 47
-  "Y": 8
+  Y: 8
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: eclage
     X: 297
-    "Y": 307
+    Y: 307
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/eclage.txt:24
 - Name: in01w_hub1-1
   X: 8
-  "Y": 67
+  Y: 67
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ecl_hub01
     X: 38
-    "Y": 94
+    Y: 94
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/eclage.txt:25
 - Name: in01e_hub2-1
   X: 84
-  "Y": 68
+  Y: 68
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/warps/cities/eclage.txt:31

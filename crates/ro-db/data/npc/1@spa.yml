@@ -2,41 +2,43 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: King#dk
   X: 41
-  "Y": 204
+  Y: 204
   Dir: 5
   Sprite: 965
   Kind: Script
   Source: npc/re/instances/GhostPalace.txt:128
 - Name: Lurid Royal Guard#dk
   X: 42
-  "Y": 201
+  Y: 201
   Dir: 1
   Sprite: 686
   Kind: Script
   Source: npc/re/instances/GhostPalace.txt:211
 - Name: "#gp_control_1"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 1
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/GhostPalace.txt:213
 - Name: Lurid Royal Guard#dk1
   X: 132
-  "Y": 122
+  Y: 122
   Dir: 7
   Sprite: 686
   Kind: Script
   Source: npc/re/instances/GhostPalace.txt:264
 - Name: Princess Tiara#dk
   X: 135
-  "Y": 125
+  Y: 125
   Dir: 3
   Sprite: 640
   DuplicateOf: Lurid Royal Guard#dk
@@ -44,28 +46,28 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:308
 - Name: "#gp_control_2"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 1
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/GhostPalace.txt:310
 - Name: King#dk1
   X: 32
-  "Y": 54
+  Y: 54
   Dir: 1
   Sprite: 965
   Kind: Script
   Source: npc/re/instances/GhostPalace.txt:366
 - Name: Magic Sword Tartanos#dk1
   X: 35
-  "Y": 56
+  Y: 56
   Dir: 5
   Sprite: 649
   Kind: Script
   Source: npc/re/instances/GhostPalace.txt:394
 - Name: Captain of the Guard#dk
   X: 28
-  "Y": 52
+  Y: 52
   Dir: 7
   Sprite: 418
   DuplicateOf: Lurid Royal Guard#dk
@@ -73,7 +75,7 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:433
 - Name: Soldier#dk1
   X: 25
-  "Y": 53
+  Y: 53
   Dir: 7
   Sprite: 413
   DuplicateOf: Lurid Royal Guard#dk
@@ -81,7 +83,7 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:434
 - Name: Soldier#dk2
   X: 34
-  "Y": 53
+  Y: 53
   Dir: 1
   Sprite: 413
   DuplicateOf: Lurid Royal Guard#dk
@@ -89,7 +91,7 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:435
 - Name: Soldier#dk3
   X: 30
-  "Y": 52
+  Y: 52
   Dir: 7
   Sprite: 417
   DuplicateOf: Lurid Royal Guard#dk
@@ -97,7 +99,7 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:436
 - Name: Lurid Royal Guard#dk2
   X: 30
-  "Y": 58
+  Y: 58
   Dir: 5
   Sprite: 10018
   DuplicateOf: Lurid Royal Guard#dk
@@ -105,7 +107,7 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:437
 - Name: Lurid Royal Guard#dk3
   X: 31
-  "Y": 57
+  Y: 57
   Dir: 5
   Sprite: 10018
   DuplicateOf: Lurid Royal Guard#dk
@@ -113,28 +115,28 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:438
 - Name: "#gp_control_3"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 1
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/GhostPalace.txt:440
 - Name: "#gp_control_4"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 1
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/GhostPalace.txt:553
 - Name: Lurid Royal Guard#dk4
   X: 199
-  "Y": 214
+  Y: 214
   Dir: 1
   Sprite: 686
   Kind: Script
   Source: npc/re/instances/GhostPalace.txt:591
 - Name: Magic Sword Tartanos#dk2
   X: 201
-  "Y": 214
+  Y: 214
   Dir: 1
   Sprite: 844
   DuplicateOf: Lurid Royal Guard#dk
@@ -142,7 +144,7 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:618
 - Name: Visiting Prince#dk
   X: 197
-  "Y": 218
+  Y: 218
   Dir: 5
   Sprite: 470
   DuplicateOf: Lurid Royal Guard#dk
@@ -150,7 +152,7 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:619
 - Name: King's Corpse#dk
   X: 194
-  "Y": 214
+  Y: 214
   Dir: 5
   Sprite: 956
   DuplicateOf: Lurid Royal Guard#dk
@@ -158,7 +160,7 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:620
 - Name: Captain's Corpse#dk
   X: 211
-  "Y": 194
+  Y: 194
   Dir: 3
   Sprite: 887
   DuplicateOf: Lurid Royal Guard#dk
@@ -166,7 +168,7 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:621
 - Name: Soldier's Corpse#dk
   X: 201
-  "Y": 198
+  Y: 198
   Dir: 1
   Sprite: 849
   DuplicateOf: Lurid Royal Guard#dk
@@ -174,7 +176,7 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:622
 - Name: Soldier's Corpse#dk1
   X: 197
-  "Y": 190
+  Y: 190
   Dir: 1
   Sprite: 849
   DuplicateOf: Lurid Royal Guard#dk
@@ -182,7 +184,7 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:623
 - Name: Soldier's Corpse#dk2
   X: 191
-  "Y": 207
+  Y: 207
   Dir: 7
   Sprite: 849
   DuplicateOf: Lurid Royal Guard#dk
@@ -190,7 +192,7 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:624
 - Name: Soldier's Corpse#dk3
   X: 206
-  "Y": 209
+  Y: 209
   Dir: 7
   Sprite: 849
   DuplicateOf: Lurid Royal Guard#dk
@@ -198,7 +200,7 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:625
 - Name: Soldier's Corpse#dk4
   X: 189
-  "Y": 195
+  Y: 195
   Dir: 1
   Sprite: 849
   DuplicateOf: Lurid Royal Guard#dk
@@ -206,21 +208,21 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:626
 - Name: "#gp_control_5"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 1
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/GhostPalace.txt:628
 - Name: Princess Tiara#dk1
   X: 216
-  "Y": 43
+  Y: 43
   Dir: 3
   Sprite: 640
   Kind: Script
   Source: npc/re/instances/GhostPalace.txt:664
 - Name: Lurid Royal Guard#dk5
   X: 213
-  "Y": 42
+  Y: 42
   Dir: 7
   Sprite: 686
   DuplicateOf: Lurid Royal Guard#dk
@@ -228,28 +230,28 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:701
 - Name: "#gp_control_6"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 1
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/GhostPalace.txt:703
 - Name: Sakray#dk
   X: 196
-  "Y": 44
+  Y: 44
   Dir: 5
   Sprite: 685
   Kind: Script
   Source: npc/re/instances/GhostPalace.txt:771
 - Name: "#tb"
   X: 196
-  "Y": 46
+  Y: 46
   Dir: 1
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/GhostPalace.txt:838
 - Name: Magic Sword Tartanos#dk3
   X: 195
-  "Y": 41
+  Y: 41
   Dir: 1
   Sprite: 844
   DuplicateOf: Lurid Royal Guard#dk
@@ -257,7 +259,7 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:876
 - Name: "#sv"
   X: 198
-  "Y": 43
+  Y: 43
   Dir: 1
   Sprite: 844
   DuplicateOf: Lurid Royal Guard#dk
@@ -265,7 +267,7 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:877
 - Name: "#tv"
   X: 196
-  "Y": 41
+  Y: 41
   Dir: 1
   Sprite: 844
   DuplicateOf: Lurid Royal Guard#dk
@@ -273,78 +275,78 @@ Body:
   Source: npc/re/instances/GhostPalace.txt:878
 - Name: King#dk11
   X: 204
-  "Y": 29
+  Y: 29
   Dir: 1
   Sprite: 965
   Kind: Script
   Source: npc/re/instances/GhostPalace.txt:880
 - Name: Way out of Palace
   X: 210
-  "Y": 28
+  Y: 28
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/GhostPalace.txt:971
 - Name: The second floor of Palace
   X: 41
-  "Y": 217
+  Y: 217
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@spa
     X: 114
-    "Y": 120
+    Y: 120
     TriggerWhileHidden: false
   Source: npc/re/instances/GhostPalace.txt:990
 - Name: 3rd floor in the palace
   X: 117
-  "Y": 137
+  Y: 137
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@spa
     X: 60
-    "Y": 43
+    Y: 43
     TriggerWhileHidden: false
   Source: npc/re/instances/GhostPalace.txt:991
 - Name: 4th floor in the palace
   X: 54
-  "Y": 28
+  Y: 28
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@spa
     X: 218
-    "Y": 186
+    Y: 186
     TriggerWhileHidden: false
   Source: npc/re/instances/GhostPalace.txt:992
 - Name: 5th floor of Palace
   X: 178
-  "Y": 186
+  Y: 186
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@spa
     X: 186
-    "Y": 57
+    Y: 57
     TriggerWhileHidden: false
   Source: npc/re/instances/GhostPalace.txt:993

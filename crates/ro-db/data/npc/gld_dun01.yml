@@ -2,6 +2,8 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
@@ -9,23 +11,23 @@ Body:
 - Name: Grunburti#1
   UniqueName: GodDwarf
   X: 28
-  "Y": 85
+  Y: 85
   Dir: 0
   Sprite: 826
   Kind: Script
   Source: npc/quests/seals/god_weapon_creation.txt:19
 - Name: gdun01_payg
   X: 119
-  "Y": 14
+  Y: 14
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: pay_gld
     X: 53
-    "Y": 141
+    Y: 141
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:526

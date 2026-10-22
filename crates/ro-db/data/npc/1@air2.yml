@@ -2,50 +2,52 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: warp4a#air2
   X: 88
-  "Y": 67
+  Y: 67
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@air2
     X: 247
-    "Y": 53
+    Y: 53
     TriggerWhileHidden: false
   Source: npc/re/instances/AirshipAssault.txt:97
 - Name: warp5a#air2
   X: 244
-  "Y": 73
+  Y: 73
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: dali02
     X: 137
-    "Y": 82
+    Y: 82
     TriggerWhileHidden: false
   Source: npc/re/instances/AirshipAssault.txt:98
 - Name: "#airshipputmob3"
   X: 0
-  "Y": 0
+  Y: 0
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/AirshipAssault.txt:595
 - Name: Passed out Drunkard#air2
   X: 95
-  "Y": 47
+  Y: 47
   Dir: 3
   Sprite: 887
   DuplicateOf: Passed out Drunkard#air1
@@ -53,7 +55,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:661
 - Name: Wealthy man at a meal#b
   X: 75
-  "Y": 71
+  Y: 71
   Dir: 5
   Sprite: 55
   DuplicateOf: Wealthy man at a meal#a
@@ -61,35 +63,35 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:662
 - Name: Traveling Knight#air2
   X: 120
-  "Y": 62
+  Y: 62
   Dir: 3
   Sprite: 733
   Kind: Script
   Source: npc/re/instances/AirshipAssault.txt:664
 - Name: Free Riding Bard#air2
   X: 61
-  "Y": 88
+  Y: 88
   Dir: 5
   Sprite: 51
   Kind: Script
   Source: npc/re/instances/AirshipAssault.txt:671
 - Name: Gambling Spirit#air2
   X: 28
-  "Y": 67
+  Y: 67
   Dir: 5
   Sprite: 853
   Kind: Script
   Source: npc/re/instances/AirshipAssault.txt:678
 - Name: Airship Cafeteria Manager#air2
   X: 46
-  "Y": 61
+  Y: 61
   Dir: 5
   Sprite: 61
   Kind: Script
   Source: npc/re/instances/AirshipAssault.txt:685
 - Name: Gremlin#1air2
   X: 236
-  "Y": 57
+  Y: 57
   Dir: 3
   Sprite: 3176
   SpriteIsMob: true
@@ -97,7 +99,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:696
 - Name: Gremlin#2air2
   X: 239
-  "Y": 57
+  Y: 57
   Dir: 5
   Sprite: 3176
   SpriteIsMob: true
@@ -106,7 +108,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:717
 - Name: Gremlin#3air2
   X: 230
-  "Y": 50
+  Y: 50
   Dir: 5
   Sprite: 3176
   SpriteIsMob: true
@@ -115,7 +117,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:718
 - Name: Gremlin#4air2
   X: 226
-  "Y": 62
+  Y: 62
   Dir: 3
   Sprite: 3176
   SpriteIsMob: true
@@ -124,7 +126,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:719
 - Name: Gremlin#5air2
   X: 241
-  "Y": 48
+  Y: 48
   Dir: 3
   Sprite: 3176
   SpriteIsMob: true
@@ -133,7 +135,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:720
 - Name: Gremlin#6air2
   X: 225
-  "Y": 40
+  Y: 40
   Dir: 7
   Sprite: 3176
   SpriteIsMob: true
@@ -142,7 +144,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:721
 - Name: Gremlin#7air2
   X: 236
-  "Y": 48
+  Y: 48
   Dir: 7
   Sprite: 3176
   SpriteIsMob: true
@@ -151,7 +153,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:722
 - Name: Gremlin#8air2
   X: 224
-  "Y": 66
+  Y: 66
   Dir: 5
   Sprite: 3176
   SpriteIsMob: true
@@ -160,7 +162,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:723
 - Name: Loki#air2
   X: 229
-  "Y": 56
+  Y: 56
   Dir: 5
   Sprite: 512
   DuplicateOf: Iris#air1
@@ -168,7 +170,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:725
 - Name: Iris#air2
   X: 241
-  "Y": 54
+  Y: 54
   Dir: 3
   Sprite: 666
   DuplicateOf: Iris#air1
@@ -176,7 +178,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:726
 - Name: Wywern#air2
   X: 213
-  "Y": 75
+  Y: 75
   Dir: 5
   Sprite: 3180
   SpriteIsMob: true
@@ -185,7 +187,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:727
 - Name: Wywern#2air2
   X: 235
-  "Y": 59
+  Y: 59
   Dir: 3
   Sprite: 3180
   SpriteIsMob: true
@@ -194,7 +196,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:728
 - Name: Wywern#3air2
   X: 235
-  "Y": 49
+  Y: 49
   Dir: 3
   Sprite: 3180
   SpriteIsMob: true
@@ -203,7 +205,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:729
 - Name: Acidus#1air2
   X: 218
-  "Y": 78
+  Y: 78
   Dir: 3
   Sprite: 3178
   SpriteIsMob: true
@@ -212,7 +214,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:730
 - Name: Acidus#2air2
   X: 208
-  "Y": 78
+  Y: 78
   Dir: 5
   Sprite: 3179
   SpriteIsMob: true
@@ -221,7 +223,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:731
 - Name: Rotar Zairo#1air2
   X: 200
-  "Y": 78
+  Y: 78
   Dir: 5
   Sprite: 3175
   SpriteIsMob: true
@@ -230,7 +232,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:732
 - Name: Rotar Zairo#2air2
   X: 223
-  "Y": 78
+  Y: 78
   Dir: 3
   Sprite: 3175
   SpriteIsMob: true
@@ -239,28 +241,28 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:733
 - Name: Fenrir#air2
   X: 229
-  "Y": 54
+  Y: 54
   Dir: 5
   Sprite: 664
   Kind: Script
   Source: npc/re/instances/AirshipAssault.txt:735
 - Name: calla#air2
   X: 104
-  "Y": 72
+  Y: 72
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/AirshipAssault.txt:893
 - Name: Iris#2air2
   X: 232
-  "Y": 51
+  Y: 51
   Dir: 5
   Sprite: 666
   Kind: Script
   Source: npc/re/instances/AirshipAssault.txt:918
 - Name: Captain Ferlock#air2
   X: 247
-  "Y": 51
+  Y: 51
   Dir: 3
   Sprite: 873
   DuplicateOf: Iris#air1
@@ -268,21 +270,21 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:998
 - Name: callb#air2
   X: 104
-  "Y": 52
+  Y: 52
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/AirshipAssault.txt:1000
 - Name: Chaos#air2
   X: 239
-  "Y": 58
+  Y: 58
   Dir: 5
   Sprite: 683
   Kind: Script
   Source: npc/re/instances/AirshipAssault.txt:1025
 - Name: Captain Ferlock#2air2
   X: 243
-  "Y": 58
+  Y: 58
   Dir: 3
   Sprite: 873
   DuplicateOf: Iris#air1
@@ -290,7 +292,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1182
 - Name: fire1#air2
   X: 113
-  "Y": 52
+  Y: 52
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -298,7 +300,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1185
 - Name: fire2#air2
   X: 115
-  "Y": 68
+  Y: 68
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -306,7 +308,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1186
 - Name: fire3#air2
   X: 96
-  "Y": 58
+  Y: 58
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -314,7 +316,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1187
 - Name: fire4#air2
   X: 90
-  "Y": 75
+  Y: 75
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -322,7 +324,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1188
 - Name: fire5#air2
   X: 92
-  "Y": 51
+  Y: 51
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -330,7 +332,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1189
 - Name: fire6#air2
   X: 77
-  "Y": 42
+  Y: 42
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -338,7 +340,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1190
 - Name: fire7#air2
   X: 69
-  "Y": 77
+  Y: 77
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -346,7 +348,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1191
 - Name: fire8#air2
   X: 50
-  "Y": 49
+  Y: 49
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -354,7 +356,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1192
 - Name: fire9#air2
   X: 44
-  "Y": 61
+  Y: 61
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -362,7 +364,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1193
 - Name: fire10#air2
   X: 31
-  "Y": 53
+  Y: 53
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -370,7 +372,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1194
 - Name: fire11#air2
   X: 24
-  "Y": 74
+  Y: 74
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -378,7 +380,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1195
 - Name: fire12#air2
   X: 43
-  "Y": 45
+  Y: 45
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -386,7 +388,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1196
 - Name: fire13#air2
   X: 73
-  "Y": 65
+  Y: 65
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -394,7 +396,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1197
 - Name: fire14#air2
   X: 53
-  "Y": 72
+  Y: 72
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -402,7 +404,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1198
 - Name: fire15#air2
   X: 82
-  "Y": 62
+  Y: 62
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -410,7 +412,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1199
 - Name: fire21#air2
   X: 234
-  "Y": 70
+  Y: 70
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -418,7 +420,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1200
 - Name: fire22#air2
   X: 247
-  "Y": 64
+  Y: 64
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -426,7 +428,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1201
 - Name: fire23#air2
   X: 230
-  "Y": 33
+  Y: 33
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -434,7 +436,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1202
 - Name: fire25#air2
   X: 277
-  "Y": 39
+  Y: 39
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -442,7 +444,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1203
 - Name: fire26#air2
   X: 223
-  "Y": 50
+  Y: 50
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -450,7 +452,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1204
 - Name: fire29#air2
   X: 238
-  "Y": 70
+  Y: 70
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -458,7 +460,7 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1205
 - Name: fire30#air2
   X: 238
-  "Y": 32
+  Y: 32
   Dir: 0
   Sprite: 139
   DuplicateOf: Iris#air1
@@ -466,14 +468,14 @@ Body:
   Source: npc/re/instances/AirshipAssault.txt:1206
 - Name: firecontrol#air2
   X: 0
-  "Y": 0
+  Y: 0
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/AirshipAssault.txt:1208
 - Name: firecontrol2#air2
   X: 0
-  "Y": 0
+  Y: 0
   Dir: 0
   Sprite: 139
   Kind: Script

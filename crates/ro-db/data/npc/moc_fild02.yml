@@ -2,112 +2,114 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: moc02a_payg02
   X: 378
-  "Y": 272
+  Y: 272
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: pay_gld
     X: 20
-    "Y": 276
+    Y: 276
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:228
 - Name: mocf03
   X: 228
-  "Y": 29
+  Y: 29
   Dir: 0
   Sprite: 45
   Trigger:
     X: 4
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: moc_fild13
     X: 298
-    "Y": 367
+    Y: 367
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/morroc_fild.txt:32
 - Name: mocf04
   X: 332
-  "Y": 19
+  Y: 19
   Dir: 0
   Sprite: 45
   Trigger:
     X: 5
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: moc_fild03
     X: 70
-    "Y": 336
+    Y: 336
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/morroc_fild.txt:33
 - Name: mocf012
   X: 350
-  "Y": 339
+  Y: 339
   Dir: 0
   Sprite: 45
   Trigger:
     X: 6
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: pay_fild04
     X: 194
-    "Y": 20
+    Y: 20
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/morroc_fild.txt:34
 - Name: mocf02-3
   X: 67
-  "Y": 342
+  Y: 342
   Dir: 0
   Sprite: 45
   Trigger:
     X: 11
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: moc_fild01
     X: 315
-    "Y": 25
+    Y: 25
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/morroc_fild.txt:35
 - Name: mocf05
   X: 71
-  "Y": 18
+  Y: 18
   Dir: 0
   Sprite: 45
   Trigger:
     X: 4
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: moc_fild13
     X: 146
-    "Y": 365
+    Y: 365
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/morroc_fild.txt:36
 - Name: mocf02-4
   X: 92
-  "Y": 342
+  Y: 342
   Dir: 0
   Sprite: 45
   Trigger:
     X: 11
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: moc_fild01
     X: 315
-    "Y": 25
+    Y: 25
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/morroc_fild.txt:37

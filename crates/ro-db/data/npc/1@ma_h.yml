@@ -2,37 +2,39 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#Memorial Start"
   X: 43
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:366
 - Name: "#Memorial Start_time"
   X: 43
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:391
 - Name: "#Ward1 Entry"
   X: 46
-  "Y": 165
+  Y: 165
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:412
 - Name: "#Ward2 Entry"
   X: 57
-  "Y": 147
+  Y: 147
   Dir: 0
   Sprite: 139
   DuplicateOf: "#Ward1 Entry"
@@ -40,7 +42,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:479
 - Name: "#Ward3 Entry"
   X: 67
-  "Y": 165
+  Y: 165
   Dir: 0
   Sprite: 139
   DuplicateOf: "#Ward1 Entry"
@@ -48,7 +50,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:480
 - Name: "#Ward4 Entry"
   X: 79
-  "Y": 147
+  Y: 147
   Dir: 0
   Sprite: 139
   DuplicateOf: "#Ward1 Entry"
@@ -56,7 +58,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:481
 - Name: "#Ward5 Entry"
   X: 90
-  "Y": 165
+  Y: 165
   Dir: 0
   Sprite: 139
   DuplicateOf: "#Ward1 Entry"
@@ -64,191 +66,191 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:482
 - Name: "#Ward6 Entry"
   X: 101
-  "Y": 147
+  Y: 147
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:484
 - Name: "#Summon Boss"
   X: 110
-  "Y": 177
+  Y: 177
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:519
 - Name: "#Boss Room Entry"
   X: 147
-  "Y": 143
+  Y: 143
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:543
 - Name: "#Boss Room Entry_time"
   X: 147
-  "Y": 143
+  Y: 143
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:598
 - Name: "#Boss Room Entry_2"
   X: 111
-  "Y": 177
+  Y: 177
   Dir: 0
   Sprite: 45
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:674
 - Name: "#Summon Ward Mob"
   X: 118
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:714
 - Name: "#Summon Ward Mob2"
   X: 118
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:788
 - Name: "#Summon Ward Mob_time"
   X: 118
-  "Y": 64
+  Y: 64
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:803
 - Name: "#Summon Pillar"
   X: 112
-  "Y": 177
+  Y: 177
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:836
 - Name: "#Summon Pillar_time"
   X: 112
-  "Y": 178
+  Y: 178
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:870
 - Name: "#Boss Room Entry_a"
   X: 118
-  "Y": 171
+  Y: 171
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:910
 - Name: "#Boss Room Entry_b"
   X: 132
-  "Y": 171
+  Y: 171
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Entry_a"
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:921
 - Name: "#Boss Room Entry_c"
   X: 147
-  "Y": 171
+  Y: 171
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Entry_a"
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:922
 - Name: "#Boss Room Entry_d"
   X: 118
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Entry_a"
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:923
 - Name: "#Boss Room Entry_e"
   X: 132
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Entry_a"
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:924
 - Name: "#Boss Room Entry_f"
   X: 147
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Entry_a"
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:925
 - Name: "#Boss Room Entry_g"
   X: 118
-  "Y": 143
+  Y: 143
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Entry_a"
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:926
 - Name: "#Boss Room Entry_h"
   X: 132
-  "Y": 143
+  Y: 143
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Entry_a"
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:927
 - Name: "#Boss Effect"
   X: 131
-  "Y": 62
+  Y: 62
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:929
 - Name: Moaning Patient#1
   X: 43
-  "Y": 86
+  Y: 86
   Dir: 4
   Sprite: 584
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:942
 - Name: Screaming Patient#2
   X: 60
-  "Y": 87
+  Y: 87
   Dir: 4
   Sprite: 585
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:971
 - Name: Patient in Pain#3
   X: 60
-  "Y": 39
+  Y: 39
   Dir: 7
   Sprite: 584
   DuplicateOf: Screaming Patient#2
@@ -256,7 +258,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1007
 - Name: Passed Out Patient#4
   X: 43
-  "Y": 39
+  Y: 39
   Dir: 7
   Sprite: 585
   DuplicateOf: Screaming Patient#2
@@ -264,7 +266,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1008
 - Name: Patient with Nightmare#5
   X: 77
-  "Y": 86
+  Y: 86
   Dir: 4
   Sprite: 584
   DuplicateOf: Screaming Patient#2
@@ -272,7 +274,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1009
 - Name: Sick Looking Patient#6
   X: 69
-  "Y": 87
+  Y: 87
   Dir: 4
   Sprite: 585
   DuplicateOf: Screaming Patient#2
@@ -280,7 +282,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1010
 - Name: Horrified Patient#7
   X: 73
-  "Y": 39
+  Y: 39
   Dir: 7
   Sprite: 584
   DuplicateOf: Screaming Patient#2
@@ -288,7 +290,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1011
 - Name: Patient in Sorrow#8
   X: 65
-  "Y": 51
+  Y: 51
   Dir: 7
   Sprite: 585
   DuplicateOf: Screaming Patient#2
@@ -296,7 +298,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1012
 - Name: Suffering Patient#9
   X: 87
-  "Y": 86
+  Y: 86
   Dir: 4
   Sprite: 584
   DuplicateOf: Screaming Patient#2
@@ -304,7 +306,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1013
 - Name: Wriggling Patient#10
   X: 104
-  "Y": 86
+  Y: 86
   Dir: 4
   Sprite: 585
   DuplicateOf: Screaming Patient#2
@@ -312,7 +314,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1014
 - Name: Patient in Cold Sweat#11
   X: 99
-  "Y": 39
+  Y: 39
   Dir: 7
   Sprite: 584
   DuplicateOf: Screaming Patient#2
@@ -320,7 +322,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1015
 - Name: Howling Patient#12
   X: 87
-  "Y": 39
+  Y: 39
   Dir: 7
   Sprite: 585
   DuplicateOf: Screaming Patient#2
@@ -328,14 +330,14 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1016
 - Name: Moaning Patient#b
   X: 43
-  "Y": 181
+  Y: 181
   Dir: 4
   Sprite: 584
   Kind: Script
   Source: npc/re/instances/BangungotHospital.txt:1018
 - Name: Screaming Patient#b
   X: 60
-  "Y": 182
+  Y: 182
   Dir: 4
   Sprite: 585
   DuplicateOf: Moaning Patient#b
@@ -343,7 +345,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1019
 - Name: Patient in Pain#b
   X: 60
-  "Y": 132
+  Y: 132
   Dir: 7
   Sprite: 584
   DuplicateOf: Moaning Patient#b
@@ -351,7 +353,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1020
 - Name: Passed Out Patient#b
   X: 43
-  "Y": 132
+  Y: 132
   Dir: 7
   Sprite: 585
   DuplicateOf: Moaning Patient#b
@@ -359,7 +361,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1021
 - Name: Patient with Nightmare#b
   X: 77
-  "Y": 182
+  Y: 182
   Dir: 4
   Sprite: 584
   DuplicateOf: Moaning Patient#b
@@ -367,7 +369,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1022
 - Name: Sick Looking Patient#b
   X: 69
-  "Y": 182
+  Y: 182
   Dir: 4
   Sprite: 585
   DuplicateOf: Moaning Patient#b
@@ -375,7 +377,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1023
 - Name: Horrified Patient#b
   X: 73
-  "Y": 132
+  Y: 132
   Dir: 7
   Sprite: 584
   DuplicateOf: Moaning Patient#b
@@ -383,7 +385,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1024
 - Name: Patient in Sorrow#b
   X: 65
-  "Y": 144
+  Y: 144
   Dir: 7
   Sprite: 585
   DuplicateOf: Moaning Patient#b
@@ -391,7 +393,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1025
 - Name: Suffering Patient#b
   X: 87
-  "Y": 181
+  Y: 181
   Dir: 4
   Sprite: 584
   DuplicateOf: Moaning Patient#b
@@ -399,7 +401,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1026
 - Name: Wriggling Patient#b
   X: 104
-  "Y": 181
+  Y: 181
   Dir: 4
   Sprite: 585
   DuplicateOf: Moaning Patient#b
@@ -407,7 +409,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1027
 - Name: Patient in Cold Sweat#b
   X: 99
-  "Y": 132
+  Y: 132
   Dir: 7
   Sprite: 584
   DuplicateOf: Moaning Patient#b
@@ -415,7 +417,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1028
 - Name: Howling Patient#b
   X: 87
-  "Y": 132
+  Y: 132
   Dir: 7
   Sprite: 585
   DuplicateOf: Moaning Patient#b
@@ -423,7 +425,7 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1029
 - Name: "#Dummy_Patternwarp45"
   X: 131
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 139
   DuplicateOf: Moaning Patient#b
@@ -431,785 +433,785 @@ Body:
   Source: npc/re/instances/BangungotHospital.txt:1030
 - Name: "#Boss Room Exit"
   X: 35
-  "Y": 156
+  Y: 156
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: ma_dun01
     X: 150
-    "Y": 9
+    Y: 9
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1034
 - Name: "#Boss Room Door"
   X: 105
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1035
 - Name: "#Boss Room Door1"
   X: 112
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 100
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1036
 - Name: "#Boss Room Door3"
   X: 112
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 100
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1037
 - Name: "#Boss Room Door2"
   X: 104
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1038
 - Name: "#Patternwarp1"
   X: 36
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 45
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1039
 - Name: "#Patternwarp2"
   X: 46
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 45
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1040
 - Name: "#Patternwarp3"
   X: 57
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 45
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1041
 - Name: "#Patternwarp4"
   X: 67
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 45
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1042
 - Name: "#Patternwarp5"
   X: 79
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 45
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1043
 - Name: "#Patternwarp6"
   X: 89
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 45
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1044
 - Name: "#Patternwarp7"
   X: 100
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 45
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1045
 - Name: "#Patternwarp8"
   X: 51
-  "Y": 173
+  Y: 173
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1046
 - Name: "#Patternwarp34"
   X: 52
-  "Y": 140
+  Y: 140
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1047
 - Name: "#Patternwarp35"
   X: 73
-  "Y": 173
+  Y: 173
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1048
 - Name: "#Patternwarp36"
   X: 73
-  "Y": 140
+  Y: 140
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1049
 - Name: "#Patternwarp37"
   X: 95
-  "Y": 173
+  Y: 173
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1050
 - Name: "#Patternwarp38"
   X: 95
-  "Y": 140
+  Y: 140
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1051
 - Name: "#Patternwarp41"
   X: 117
-  "Y": 171
+  Y: 171
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1054
 - Name: "#Patternwarp42"
   X: 131
-  "Y": 171
+  Y: 171
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1055
 - Name: "#Patternwarp43"
   X: 146
-  "Y": 171
+  Y: 171
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1056
 - Name: "#Patternwarp44"
   X: 117
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1057
 - Name: "#Patternwarp45"
   X: 131
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1058
 - Name: "#Patternwarp46"
   X: 146
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1059
 - Name: "#Patternwarp47"
   X: 117
-  "Y": 143
+  Y: 143
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1060
 - Name: "#Patternwarp48"
   X: 131
-  "Y": 143
+  Y: 143
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1061
 - Name: "#Patternwarp49"
   X: 146
-  "Y": 143
+  Y: 143
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Boss Room Door2"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 117
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1062
 - Name: "#Patternwarp10"
   X: 36
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1064
 - Name: "#Patternwarp11"
   X: 46
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1065
 - Name: "#Patternwarp12"
   X: 56
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1066
 - Name: "#Patternwarp13"
   X: 67
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1067
 - Name: "#Patternwarp14"
   X: 78
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1068
 - Name: "#Patternwarp15"
   X: 89
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1069
 - Name: "#Patternwarp16"
   X: 100
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1070
 - Name: "#Patternwarp17"
   X: 51
-  "Y": 79
+  Y: 79
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1071
 - Name: "#Patternwarp18"
   X: 51
-  "Y": 46
+  Y: 46
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1072
 - Name: "#Patternwarp19"
   X: 73
-  "Y": 80
+  Y: 80
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1073
 - Name: "#Patternwarp20"
   X: 73
-  "Y": 46
+  Y: 46
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1074
 - Name: "#Patternwarp21"
   X: 95
-  "Y": 79
+  Y: 79
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1075
 - Name: "#Patternwarp22"
   X: 95
-  "Y": 46
+  Y: 46
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1076
 - Name: "#Patternwarp25"
   X: 117
-  "Y": 77
+  Y: 77
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1079
 - Name: "#Patternwarp26"
   X: 131
-  "Y": 77
+  Y: 77
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1080
 - Name: "#Patternwarp27"
   X: 146
-  "Y": 77
+  Y: 77
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1081
 - Name: "#Patternwarp28"
   X: 117
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1082
 - Name: "#Patternwarp29"
   X: 131
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1083
 - Name: "#Patternwarp30"
   X: 146
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1084
 - Name: "#Patternwarp31"
   X: 117
-  "Y": 49
+  Y: 49
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1085
 - Name: "#Patternwarp32"
   X: 131
-  "Y": 49
+  Y: 49
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1086
 - Name: "#Patternwarp33"
   X: 146
-  "Y": 49
+  Y: 49
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#Patternwarp10"
   Kind: Warp
   Warp:
     Map: 1@ma_h
     X: 116
-    "Y": 157
+    Y: 157
     TriggerWhileHidden: true
   Source: npc/re/instances/BangungotHospital.txt:1087
 - Name: "#ma_hos_warp_init"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 844
   Kind: Script

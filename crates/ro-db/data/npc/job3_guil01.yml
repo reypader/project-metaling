@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Poison Herb Merchant
   X: 79
-  "Y": 96
+  Y: 96
   Dir: 3
   Sprite: 877
   DuplicateOf: phs
@@ -16,171 +18,171 @@ Body:
   Source: npc/re/merchants/3rd_trader.txt:34
 - Name: Rare Herb Collector
   X: 91
-  "Y": 93
+  Y: 93
   Dir: 3
   Sprite: 49
   Kind: Script
   Source: npc/re/merchants/3rd_trader.txt:53
 - Name: Daora#3rdgc02
   X: 82
-  "Y": 95
+  Y: 95
   Dir: 3
   Sprite: 940
   Kind: Script
   Source: npc/re/jobs/3-1/guillotine_cross.txt:241
 - Name: Mayshell#3rdgc03
   X: 16
-  "Y": 20
+  Y: 20
   Dir: 4
   Sprite: 894
   Kind: Script
   Source: npc/re/jobs/3-1/guillotine_cross.txt:844
 - Name: Estillda#3rdgc11
   X: 79
-  "Y": 15
+  Y: 15
   Dir: 1
   Sprite: 919
   Kind: Script
   Source: npc/re/jobs/3-1/guillotine_cross.txt:2213
 - Name: Bercasell#3rdgc16
   X: 148
-  "Y": 53
+  Y: 53
   Dir: 3
   Sprite: 467
   Kind: Script
   Source: npc/re/jobs/3-1/guillotine_cross.txt:3594
 - Name: "#gate_to_guil05"
   X: 80
-  "Y": 77
+  Y: 77
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/jobs/3-1/guillotine_cross.txt:3807
 - Name: "#gate_to_guil07"
   X: 51
-  "Y": 55
+  Y: 55
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/jobs/3-1/guillotine_cross.txt:3820
 - Name: "#gate_to_guil09"
   X: 51
-  "Y": 44
+  Y: 44
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/jobs/3-1/guillotine_cross.txt:3837
 - Name: "#gate_to_guil02"
   X: 6
-  "Y": 93
+  Y: 93
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: veins
     X: 254
-    "Y": 255
+    Y: 255
     TriggerWhileHidden: false
   Source: npc/re/warps/other/jobquests.txt:33
 - Name: "#gate_to_guil03"
   X: 18
-  "Y": 48
+  Y: 48
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: job3_guil01
     X: 68
-    "Y": 91
+    Y: 91
     TriggerWhileHidden: false
   Source: npc/re/warps/other/jobquests.txt:34
 - Name: "#gate_to_guil04"
   X: 67
-  "Y": 95
+  Y: 95
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: job3_guil01
     X: 18
-    "Y": 53
+    Y: 53
     TriggerWhileHidden: false
   Source: npc/re/warps/other/jobquests.txt:35
 - Name: "#gate_to_guil06"
   X: 65
-  "Y": 50
+  Y: 50
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: job3_guil01
     X: 83
-    "Y": 77
+    Y: 77
     TriggerWhileHidden: false
   Source: npc/re/warps/other/jobquests.txt:36
 - Name: "#gate_to_guil08"
   X: 11
-  "Y": 4
+  Y: 4
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: job3_guil01
     X: 51
-    "Y": 50
+    Y: 50
     TriggerWhileHidden: false
   Source: npc/re/warps/other/jobquests.txt:37
 - Name: "#gate_to_guil10"
   X: 79
-  "Y": 27
+  Y: 27
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: job3_guil01
     X: 51
-    "Y": 50
+    Y: 50
     TriggerWhileHidden: false
   Source: npc/re/warps/other/jobquests.txt:38
 - Name: "#gate_to_guil11"
   X: 143
-  "Y": 61
+  Y: 61
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: job3_guil01
     X: 51
-    "Y": 50
+    Y: 50
     TriggerWhileHidden: false
   Source: npc/re/warps/other/jobquests.txt:39

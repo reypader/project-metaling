@@ -2,95 +2,97 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#Resurrect Monsters1"
   X: 180
-  "Y": 30
+  Y: 30
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/instances/OrcsMemory.txt:169
 - Name: "#Resurrect Monsters2"
   X: 180
-  "Y": 30
+  Y: 30
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/instances/OrcsMemory.txt:230
 - Name: "#Resurrect Monsters3"
   X: 180
-  "Y": 30
+  Y: 30
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/instances/OrcsMemory.txt:262
 - Name: "#Resurrect Monsters4"
   X: 180
-  "Y": 30
+  Y: 30
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/instances/OrcsMemory.txt:303
 - Name: Kruger#1-1
   X: 180
-  "Y": 29
+  Y: 29
   Dir: 4
   Sprite: 433
   Kind: Script
   Source: npc/instances/OrcsMemory.txt:324
 - Name: Kruger#1-2
   X: 180
-  "Y": 29
+  Y: 29
   Dir: 4
   Sprite: 433
   Kind: Script
   Source: npc/instances/OrcsMemory.txt:329
 - Name: B1 Area 1
   X: 168
-  "Y": 125
+  Y: 125
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/instances/OrcsMemory.txt:389
 - Name: B1 Area 2
   X: 89
-  "Y": 94
+  Y: 94
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/instances/OrcsMemory.txt:418
 - Name: B1 Area 3
   X: 38
-  "Y": 105
+  Y: 105
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/instances/OrcsMemory.txt:447
 - Name: B1 Area 4
   X: 21
-  "Y": 189
+  Y: 189
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/instances/OrcsMemory.txt:476
 - Name: B1 Area Mobs
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script

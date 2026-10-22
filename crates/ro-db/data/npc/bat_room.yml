@@ -2,34 +2,36 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Flavius Officer#01a
   X: 133
-  "Y": 178
+  Y: 178
   Dir: 5
   Sprite: 418
   Kind: Script
   Source: npc/battleground/flavius/flavius_enter.txt:13
 - Name: Flavius Officer#01b
   X: 133
-  "Y": 121
+  Y: 121
   Dir: 1
   Sprite: 414
   Kind: Script
   Source: npc/battleground/flavius/flavius_enter.txt:82
 - Name: Guillaume Knight#3
   X: 135
-  "Y": 178
+  Y: 178
   Dir: 5
   Sprite: 417
   Kind: Script
   Source: npc/battleground/flavius/flavius_enter.txt:151
 - Name: Guillaume Knight#4
   X: 151
-  "Y": 178
+  Y: 178
   Dir: 5
   Sprite: 417
   DuplicateOf: Guillaume Knight#3
@@ -37,14 +39,14 @@ Body:
   Source: npc/battleground/flavius/flavius_enter.txt:180
 - Name: Croix Knight#3
   X: 135
-  "Y": 121
+  Y: 121
   Dir: 1
   Sprite: 413
   Kind: Script
   Source: npc/battleground/flavius/flavius_enter.txt:182
 - Name: Croix Knight#4
   X: 151
-  "Y": 121
+  Y: 121
   Dir: 1
   Sprite: 413
   DuplicateOf: Croix Knight#3
@@ -52,151 +54,151 @@ Body:
   Source: npc/battleground/flavius/flavius_enter.txt:211
 - Name: Flavius Officer#02a
   X: 148
-  "Y": 178
+  Y: 178
   Dir: 5
   Sprite: 418
   Kind: Script
   Source: npc/battleground/flavius/flavius_enter.txt:215
 - Name: Flavius Officer#02b
   X: 148
-  "Y": 121
+  Y: 121
   Dir: 1
   Sprite: 414
   Kind: Script
   Source: npc/battleground/flavius/flavius_enter.txt:284
 - Name: Lieutenant Ator
   X: 86
-  "Y": 227
+  Y: 227
   Dir: 4
   Sprite: 418
   Kind: Script
   Source: npc/battleground/flavius/flavius01.txt:22
 - Name: Lieutenant Thelokus
   X: 85
-  "Y": 204
+  Y: 204
   Dir: 0
   Sprite: 414
   Kind: Script
   Source: npc/battleground/flavius/flavius01.txt:32
 - Name: back_bgroomb01a
   X: 85
-  "Y": 220
+  Y: 220
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: false
   Source: npc/battleground/flavius/flavius01.txt:42
 - Name: back_bgroomb01b
   X: 85
-  "Y": 211
+  Y: 211
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: false
   Source: npc/battleground/flavius/flavius01.txt:43
 - Name: "#bat_b01_timer"
   X: 2
-  "Y": 151
+  Y: 151
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/battleground/flavius/flavius01.txt:45
 - Name: Lieutenant Huvas
   X: 142
-  "Y": 227
+  Y: 227
   Dir: 4
   Sprite: 418
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:23
 - Name: Lieutenant Yukon
   X: 142
-  "Y": 204
+  Y: 204
   Dir: 0
   Sprite: 414
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:33
 - Name: back_bgroomb02a
   X: 141
-  "Y": 220
+  Y: 220
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: false
   Source: npc/battleground/flavius/flavius02.txt:43
 - Name: back_bgroomb02b
   X: 141
-  "Y": 211
+  Y: 211
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: false
   Source: npc/battleground/flavius/flavius02.txt:44
 - Name: "#bat_b02_timer"
   X: 2
-  "Y": 151
+  Y: 151
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/battleground/flavius/flavius02.txt:46
 - Name: KVM Mercenary Officer#1
   X: 164
-  "Y": 178
+  Y: 178
   Dir: 5
   Sprite: 418
   Kind: Script
   Source: npc/battleground/kvm/kvm_enter.txt:17
 - Name: Guillaume Knight#kvm
   X: 167
-  "Y": 178
+  Y: 178
   Dir: 5
   Sprite: 417
   Kind: Script
   Source: npc/battleground/kvm/kvm_enter.txt:59
 - Name: KVM Mercenary Officer#2
   X: 164
-  "Y": 121
+  Y: 121
   Dir: 1
   Sprite: 414
   Kind: Script
   Source: npc/battleground/kvm/kvm_enter.txt:135
 - Name: Croix Knight#kvm
   X: 167
-  "Y": 121
+  Y: 121
   Dir: 1
   Sprite: 413
   Kind: Script
   Source: npc/battleground/kvm/kvm_enter.txt:177
 - Name: KVM Logistic Officer#a
   X: 151
-  "Y": 144
+  Y: 144
   Dir: 3
   Sprite: 734
   Kind: Script
@@ -204,7 +206,7 @@ Body:
 - Name: KVM Waiting Room#a
   UniqueName: KvM01R_Guillaume
   X: 169
-  "Y": 226
+  Y: 226
   Dir: 5
   Sprite: 418
   Kind: Script
@@ -212,45 +214,45 @@ Body:
 - Name: KVM Waiting Room#b
   UniqueName: KvM01R_Croix
   X: 169
-  "Y": 205
+  Y: 205
   Dir: 3
   Sprite: 414
   Kind: Script
   Source: npc/battleground/kvm/kvm01.txt:29
 - Name: "#kvm801"
   X: 169
-  "Y": 220
+  Y: 220
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: true
   Source: npc/battleground/kvm/kvm01.txt:41
 - Name: "#kvm802"
   X: 169
-  "Y": 211
+  Y: 211
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: true
   Source: npc/battleground/kvm/kvm01.txt:42
 - Name: KVM Waiting Room#a2
   UniqueName: KvM02R_Guillaume
   X: 197
-  "Y": 226
+  Y: 226
   Dir: 5
   Sprite: 418
   Kind: Script
@@ -258,45 +260,45 @@ Body:
 - Name: KVM Waiting Room#b2
   UniqueName: KvM02R_Croix
   X: 197
-  "Y": 205
+  Y: 205
   Dir: 3
   Sprite: 414
   Kind: Script
   Source: npc/battleground/kvm/kvm02.txt:31
 - Name: "#kvm601"
   X: 197
-  "Y": 220
+  Y: 220
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: true
   Source: npc/battleground/kvm/kvm02.txt:41
 - Name: "#kvm602"
   X: 197
-  "Y": 21
+  Y: 21
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: true
   Source: npc/battleground/kvm/kvm02.txt:42
 - Name: KVM Waiting Room#a3
   UniqueName: KvM03R_Guillaume
   X: 225
-  "Y": 226
+  Y: 226
   Dir: 5
   Sprite: 418
   Kind: Script
@@ -304,65 +306,65 @@ Body:
 - Name: KVM Waiting Room#b3
   UniqueName: KvM03R_Croix
   X: 225
-  "Y": 205
+  Y: 205
   Dir: 3
   Sprite: 414
   Kind: Script
   Source: npc/battleground/kvm/kvm03.txt:30
 - Name: "#kvm701"
   X: 225
-  "Y": 220
+  Y: 220
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: true
   Source: npc/battleground/kvm/kvm03.txt:39
 - Name: "#kvm702"
   X: 225
-  "Y": 211
+  Y: 211
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: true
   Source: npc/battleground/kvm/kvm03.txt:40
 - Name: Tierra Gorge Officer#01a
   X: 124
-  "Y": 178
+  Y: 178
   Dir: 5
   Sprite: 418
   Kind: Script
   Source: npc/battleground/tierra/tierra_enter.txt:14
 - Name: Tierra Gorge Officer#02a
   X: 140
-  "Y": 178
+  Y: 178
   Dir: 5
   Sprite: 418
   Kind: Script
   Source: npc/battleground/tierra/tierra_enter.txt:83
 - Name: Guillaume Knight#1
   X: 127
-  "Y": 178
+  Y: 178
   Dir: 5
   Sprite: 417
   Kind: Script
   Source: npc/battleground/tierra/tierra_enter.txt:152
 - Name: Guillaume Knight#2
   X: 143
-  "Y": 178
+  Y: 178
   Dir: 5
   Sprite: 417
   DuplicateOf: Guillaume Knight#1
@@ -370,14 +372,14 @@ Body:
   Source: npc/battleground/tierra/tierra_enter.txt:183
 - Name: Croix Knight#1
   X: 127
-  "Y": 121
+  Y: 121
   Dir: 1
   Sprite: 413
   Kind: Script
   Source: npc/battleground/tierra/tierra_enter.txt:185
 - Name: Croix Knight#2
   X: 143
-  "Y": 121
+  Y: 121
   Dir: 1
   Sprite: 413
   DuplicateOf: Croix Knight#1
@@ -385,464 +387,464 @@ Body:
   Source: npc/battleground/tierra/tierra_enter.txt:216
 - Name: Tierra Gorge Officer#01b
   X: 125
-  "Y": 121
+  Y: 121
   Dir: 1
   Sprite: 414
   Kind: Script
   Source: npc/battleground/tierra/tierra_enter.txt:220
 - Name: Tierra Gorge Officer#02b
   X: 140
-  "Y": 121
+  Y: 121
   Dir: 1
   Sprite: 414
   Kind: Script
   Source: npc/battleground/tierra/tierra_enter.txt:289
 - Name: Lieutenant Kalos
   X: 57
-  "Y": 227
+  Y: 227
   Dir: 5
   Sprite: 418
   Kind: Script
   Source: npc/battleground/tierra/tierra01.txt:21
 - Name: Lieutenant Eyor
   X: 58
-  "Y": 204
+  Y: 204
   Dir: 1
   Sprite: 414
   Kind: Script
   Source: npc/battleground/tierra/tierra01.txt:33
 - Name: "#bat_a01_timer"
   X: 1
-  "Y": 151
+  Y: 151
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/battleground/tierra/tierra01.txt:45
 - Name: back_bgrooma01a
   X: 57
-  "Y": 220
+  Y: 220
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: false
   Source: npc/battleground/tierra/tierra01.txt:94
 - Name: back_bgrooma01b
   X: 57
-  "Y": 211
+  Y: 211
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: false
   Source: npc/battleground/tierra/tierra01.txt:95
 - Name: Lieutenant Rundel
   X: 114
-  "Y": 227
+  Y: 227
   Dir: 5
   Sprite: 418
   Kind: Script
   Source: npc/battleground/tierra/tierra02.txt:20
 - Name: Lieutenant Guerrit
   X: 114
-  "Y": 204
+  Y: 204
   Dir: 1
   Sprite: 414
   Kind: Script
   Source: npc/battleground/tierra/tierra02.txt:32
 - Name: "#bat_a02_timer"
   X: 1
-  "Y": 151
+  Y: 151
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/battleground/tierra/tierra02.txt:44
 - Name: back_bgrooma02a
   X: 113
-  "Y": 220
+  Y: 220
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: false
   Source: npc/battleground/tierra/tierra02.txt:94
 - Name: back_bgrooma02b
   X: 113
-  "Y": 211
+  Y: 211
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: false
   Source: npc/battleground/tierra/tierra02.txt:95
 - Name: Gen. Guillaume's Aide#01
   X: 161
-  "Y": 158
+  Y: 158
   Dir: 3
   Sprite: 419
   Kind: Script
   Source: npc/battleground/bg_common.txt:28
 - Name: Gen. Guillaume's Aide#03
   X: 161
-  "Y": 160
+  Y: 160
   Dir: 3
   Sprite: 419
   Kind: Script
   Source: npc/battleground/bg_common.txt:29
 - Name: Prince Croix
   X: 160
-  "Y": 141
+  Y: 141
   Dir: 3
   Sprite: 416
   Kind: Script
   Source: npc/battleground/bg_common.txt:31
 - Name: Prince Croix's Aide#01
   X: 161
-  "Y": 140
+  Y: 140
   Dir: 3
   Sprite: 415
   Kind: Script
   Source: npc/battleground/bg_common.txt:95
 - Name: Prince Croix's Aide#02
   X: 161
-  "Y": 142
+  Y: 142
   Dir: 3
   Sprite: 415
   Kind: Script
   Source: npc/battleground/bg_common.txt:96
 - Name: General Guillaume
   X: 160
-  "Y": 159
+  Y: 159
   Dir: 3
   Sprite: 420
   Kind: Script
   Source: npc/battleground/bg_common.txt:98
 - Name: Teleporter#Battlefield
   X: 148
-  "Y": 150
+  Y: 150
   Dir: 5
   Sprite: 124
   Kind: Script
   Source: npc/battleground/bg_common.txt:185
 - Name: bat1
   X: 57
-  "Y": 81
+  Y: 81
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:292
 - Name: bat2
   X: 57
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:293
 - Name: bat5
   X: 85
-  "Y": 81
+  Y: 81
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:295
 - Name: bat6
   X: 85
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:296
 - Name: bat9
   X: 113
-  "Y": 81
+  Y: 81
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:298
 - Name: bat10
   X: 113
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:299
 - Name: bat13
   X: 141
-  "Y": 81
+  Y: 81
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:301
 - Name: bat14
   X: 141
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:302
 - Name: bat17
   X: 169
-  "Y": 81
+  Y: 81
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:304
 - Name: bat18
   X: 169
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:305
 - Name: bat21
   X: 197
-  "Y": 81
+  Y: 81
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:307
 - Name: bat22
   X: 197
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:308
 - Name: bat25
   X: 225
-  "Y": 81
+  Y: 81
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:310
 - Name: bat26
   X: 225
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:311
 - Name: bat29
   X: 253
-  "Y": 81
+  Y: 81
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:313
 - Name: bat30
   X: 253
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:314
 - Name: bat31
   X: 253
-  "Y": 220
+  Y: 220
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:316
 - Name: bat32
   X: 253
-  "Y": 211
+  Y: 211
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: bat_room
     X: 154
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/battleground/bg_common.txt:317
 - Name: Kafra Staff
   UniqueName: kaf_bat
   X: 148
-  "Y": 147
+  Y: 147
   Dir: 4
   Sprite: 861
   Kind: Script
   Source: npc/battleground/bg_common.txt:321
 - Name: Repairman#bg
   X: 138
-  "Y": 144
+  Y: 144
   Dir: 4
   Sprite: 86
   Kind: Script
   Source: npc/battleground/bg_common.txt:328
 - Name: Switch#batgnd
   X: 1
-  "Y": 151
+  Y: 151
   Dir: 3
   Sprite: 81
   Kind: Script
   Source: npc/battleground/bg_common.txt:335
 - Name: Erundek
   X: 160
-  "Y": 150
+  Y: 150
   Dir: 3
   Sprite: 109
   Kind: Script

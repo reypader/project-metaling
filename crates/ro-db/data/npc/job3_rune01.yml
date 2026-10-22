@@ -2,6 +2,8 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
@@ -9,14 +11,14 @@ Body:
 - Name: Kafra Employee
   UniqueName: kaf_rune
   X: 92
-  "Y": 62
+  Y: 62
   Dir: 3
   Sprite: 114
   Kind: Script
   Source: npc/re/kafras/kafras.txt:93
 - Name: Rune Merchant#job3
   X: 90
-  "Y": 62
+  Y: 62
   Dir: 3
   Sprite: 97
   DuplicateOf: runesale
@@ -24,79 +26,79 @@ Body:
   Source: npc/re/merchants/3rd_trader.txt:48
 - Name: Dragon Breeder
   X: 88
-  "Y": 62
+  Y: 62
   Dir: 5
   Sprite: 105
   Kind: Script
   Source: npc/re/merchants/renters.txt:14
 - Name: Rune Knight Captain
   X: 80
-  "Y": 60
+  Y: 60
   Dir: 3
   Sprite: 470
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:308
 - Name: Rune Knight Lunarea
   X: 90
-  "Y": 50
+  Y: 50
   Dir: 3
   Sprite: 469
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:586
 - Name: Rune Knight, Renoa
   X: 55
-  "Y": 50
+  Y: 50
   Dir: 3
   Sprite: 469
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:700
 - Name: Rune Furnace
   X: 58
-  "Y": 51
+  Y: 51
   Dir: 1
   Sprite: 844
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:916
 - Name: Runes and Rune Knights
   X: 40
-  "Y": 54
+  Y: 54
   Dir: 1
   Sprite: 844
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:988
 - Name: The Principles of Runes
   X: 43
-  "Y": 44
+  Y: 44
   Dir: 1
   Sprite: 844
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:1047
 - Name: Runes, Make & Use
   X: 50
-  "Y": 36
+  Y: 36
   Dir: 1
   Sprite: 844
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:1094
 - Name: Rune Knight Velpino
   X: 114
-  "Y": 50
+  Y: 50
   Dir: 3
   Sprite: 468
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:1432
 - Name: "#renshucheck"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 3
   Sprite: 844
   DuplicateOf: R.Knight Job Manager

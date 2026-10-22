@@ -2,34 +2,36 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Administrator#gnp
   X: 50
-  "Y": 14
+  Y: 14
   Dir: 4
   Sprite: 780
   Kind: Script
   Source: npc/other/powernpc.txt:115
 - Name: Summoner#gnp
   X: 42
-  "Y": 89
+  Y: 89
   Dir: 4
   Sprite: 774
   Kind: Script
   Source: npc/other/powernpc.txt:151
 - Name: Guide of field of fight
   X: 46
-  "Y": 14
+  Y: 14
   Dir: 3
   Sprite: 770
   Kind: Script
   Source: npc/other/powernpc.txt:228
 - Name: ChowAnAn#gnp
   X: 70
-  "Y": 103
+  Y: 103
   Dir: 3
   Sprite: 773
   Kind: Script

@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Guide#gq_aru04
   X: 324
-  "Y": 161
+  Y: 161
   Dir: 3
   Sprite: 899
   DuplicateOf: Guide#gq_main
@@ -16,7 +18,7 @@ Body:
   Source: npc/quests/okolnir.txt:152
 - Name: Steward#ar04
   X: 328
-  "Y": 98
+  Y: 98
   Dir: 3
   Sprite: 55
   DuplicateOf: Steward#template
@@ -24,7 +26,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:23
 - Name: Nios#ar04
   X: 146
-  "Y": 315
+  Y: 315
   Dir: 3
   Sprite: 868
   DuplicateOf: Guardian#template
@@ -32,7 +34,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:24
 - Name: Kafra Employee#ar04
   X: 315
-  "Y": 98
+  Y: 98
   Dir: 5
   Sprite: 117
   DuplicateOf: Kafra#template
@@ -40,7 +42,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:25
 - Name: 1st Guardian Stone#ar04
   X: 65
-  "Y": 171
+  Y: 171
   Dir: 0
   Sprite: 844
   DuplicateOf: Guardian Stone#template
@@ -48,7 +50,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:26
 - Name: 2nd Guardian Stone#ar04
   X: 212
-  "Y": 149
+  Y: 149
   Dir: 0
   Sprite: 844
   DuplicateOf: Guardian Stone#template
@@ -56,7 +58,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:27
 - Name: Control Device01#ar04
   X: 136
-  "Y": 158
+  Y: 158
   Dir: 0
   Sprite: 111
   DuplicateOf: Control#template
@@ -64,7 +66,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:28
 - Name: Control Device02#ar04
   X: 135
-  "Y": 212
+  Y: 212
   Dir: 0
   Sprite: 111
   DuplicateOf: Control#template
@@ -72,7 +74,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:29
 - Name: Control Device03#ar04
   X: 134
-  "Y": 266
+  Y: 266
   Dir: 0
   Sprite: 111
   DuplicateOf: Control#template
@@ -80,7 +82,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:30
 - Name: "#aru04_switch"
   X: 299
-  "Y": 277
+  Y: 277
   Dir: 0
   Sprite: 111
   DuplicateOf: Switch#template
@@ -88,7 +90,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:31
 - Name: Mysterious Sunflower#09
   X: 312
-  "Y": 154
+  Y: 154
   Dir: 3
   Sprite: 977
   DuplicateOf: Sunflower#template
@@ -96,70 +98,70 @@ Body:
   Source: npc/guild2/arug_cas04.txt:32
 - Name: LF-01#arug_cas04
   X: 122
-  "Y": 314
+  Y: 314
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/arug_cas04.txt:34
 - Name: LF-02#arug_cas04
   X: 125
-  "Y": 314
+  Y: 314
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/arug_cas04.txt:35
 - Name: LF-03#arug_cas04
   X: 128
-  "Y": 314
+  Y: 314
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/arug_cas04.txt:36
 - Name: LF-04#arug_cas04
   X: 131
-  "Y": 314
+  Y: 314
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/arug_cas04.txt:37
 - Name: LF-05#arug_cas04
   X: 134
-  "Y": 314
+  Y: 314
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/arug_cas04.txt:38
 - Name: LF-06#arug_cas04
   X: 149
-  "Y": 314
+  Y: 314
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/arug_cas04.txt:39
 - Name: LF-07#arug_cas04
   X: 152
-  "Y": 314
+  Y: 314
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/arug_cas04.txt:40
 - Name: LF-08#arug_cas04
   X: 155
-  "Y": 314
+  Y: 314
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/arug_cas04.txt:41
 - Name: LF-09#arug_cas04
   X: 158
-  "Y": 314
+  Y: 314
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/arug_cas04.txt:42
 - Name: LF-10#arug_cas04
   X: 161
-  "Y": 314
+  Y: 314
   Dir: 0
   Sprite: 111
   Kind: Script
@@ -167,14 +169,14 @@ Body:
 - Name: Gefn#LF_ar04_01
   UniqueName: LF_ar04_01
   X: 45
-  "Y": 158
+  Y: 158
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/arug_cas04.txt:44
 - Name: Gefn#LF_ar04_01
   X: 226
-  "Y": 156
+  Y: 156
   Dir: 0
   Sprite: 111
   DuplicateOf: LF_ar04_01
@@ -182,7 +184,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:45
 - Name: Gefn#LF_ar04_02
   X: 134
-  "Y": 62
+  Y: 62
   Dir: 4
   Sprite: 111
   DuplicateOf: LF_ar04_01
@@ -190,7 +192,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:46
 - Name: Gefn#LF_ar04_03
   X: 149
-  "Y": 62
+  Y: 62
   Dir: 4
   Sprite: 111
   DuplicateOf: LF_ar04_01
@@ -198,7 +200,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:47
 - Name: Gefn#LF_ar04_04
   X: 123
-  "Y": 154
+  Y: 154
   Dir: 0
   Sprite: 111
   DuplicateOf: LF_ar04_01
@@ -206,7 +208,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:48
 - Name: Gefn#LF_ar04_05
   X: 160
-  "Y": 154
+  Y: 154
   Dir: 0
   Sprite: 111
   DuplicateOf: LF_ar04_01
@@ -214,7 +216,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:49
 - Name: Gefn#LF_ar04_06
   X: 135
-  "Y": 205
+  Y: 205
   Dir: 0
   Sprite: 111
   DuplicateOf: LF_ar04_01
@@ -222,7 +224,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:50
 - Name: Gefn#LF_ar04_07
   X: 148
-  "Y": 205
+  Y: 205
   Dir: 0
   Sprite: 111
   DuplicateOf: LF_ar04_01
@@ -230,7 +232,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:51
 - Name: Gefn#LF_ar04_08
   X: 134
-  "Y": 260
+  Y: 260
   Dir: 0
   Sprite: 111
   DuplicateOf: LF_ar04_01
@@ -239,14 +241,14 @@ Body:
 - Name: Gefn#LF_ar04_10
   UniqueName: LF_ar04_02
   X: 148
-  "Y": 103
+  Y: 103
   Dir: 4
   Sprite: 722
   Kind: Script
   Source: npc/guild2/arug_cas04.txt:54
 - Name: Gefn#LF_ar04_11
   X: 135
-  "Y": 103
+  Y: 103
   Dir: 4
   Sprite: 722
   DuplicateOf: LF_ar04_02
@@ -254,7 +256,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:62
 - Name: Gefn#LF_ar04_12
   X: 63
-  "Y": 51
+  Y: 51
   Dir: 7
   Sprite: 722
   DuplicateOf: LF_ar04_02
@@ -262,7 +264,7 @@ Body:
   Source: npc/guild2/arug_cas04.txt:63
 - Name: Gefn#LF_ar04_13
   X: 214
-  "Y": 51
+  Y: 51
   Dir: 1
   Sprite: 722
   DuplicateOf: LF_ar04_02
@@ -270,31 +272,31 @@ Body:
   Source: npc/guild2/arug_cas04.txt:64
 - Name: arug401
   X: 141
-  "Y": 40
+  Y: 40
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: aru_gld
     X: 299
-    "Y": 345
+    Y: 345
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:437
 - Name: arug403
   X: 321
-  "Y": 52
+  Y: 52
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: arug_cas04
     X: 141
-    "Y": 45
+    Y: 45
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:439

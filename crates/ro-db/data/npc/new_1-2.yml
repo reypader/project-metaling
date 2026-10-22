@@ -2,88 +2,90 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: newwarp6002a
   X: 100
-  "Y": 6
+  Y: 6
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: new_1-1
     X: 144
-    "Y": 112
+    Y: 112
     TriggerWhileHidden: false
   Source: npc/warps/other/jobquests.txt:37
 - Name: newwarp6003a
   X: 126
-  "Y": 106
+  Y: 106
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: new_1-2
     X: 160
-    "Y": 171
+    Y: 171
     TriggerWhileHidden: false
   Source: npc/warps/other/jobquests.txt:42
 - Name: newwarp6004a
   X: 156
-  "Y": 171
+  Y: 171
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: new_1-2
     X: 123
-    "Y": 106
+    Y: 106
     TriggerWhileHidden: false
   Source: npc/warps/other/jobquests.txt:47
 - Name: newwarp6005a
   X: 73
-  "Y": 106
+  Y: 106
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: new_1-2
     X: 41
-    "Y": 172
+    Y: 172
     TriggerWhileHidden: false
   Source: npc/warps/other/jobquests.txt:52
 - Name: newwarp6006a
   X: 46
-  "Y": 172
+  Y: 172
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: new_1-2
     X: 78
-    "Y": 106
+    Y: 106
     TriggerWhileHidden: false
   Source: npc/warps/other/jobquests.txt:57
 - Name: Training Instructor#1b
   X: 100
-  "Y": 29
+  Y: 29
   Dir: 4
   Sprite: 92
   DuplicateOf: Training Instructor#1a
@@ -91,7 +93,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:14257
 - Name: Training Instructor#1c
   X: 100
-  "Y": 105
+  Y: 105
   Dir: 3
   Sprite: 92
   DuplicateOf: Training Instructor#1a
@@ -99,7 +101,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:14258
 - Name: Training Instructor#1d
   X: 161
-  "Y": 182
+  Y: 182
   Dir: 5
   Sprite: 92
   DuplicateOf: Training Instructor#1a
@@ -107,7 +109,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:14259
 - Name: Training Instructor#1e
   X: 33
-  "Y": 172
+  Y: 172
   Dir: 4
   Sprite: 92
   DuplicateOf: Training Instructor#1a

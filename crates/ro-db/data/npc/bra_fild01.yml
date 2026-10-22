@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Puppy#a1
   X: 98
-  "Y": 96
+  Y: 96
   Dir: 3
   Sprite: 81
   DuplicateOf: Puppy#bra
@@ -16,7 +18,7 @@ Body:
   Source: npc/quests/quests_brasilis.txt:132
 - Name: Puppy#a2
   X: 59
-  "Y": 116
+  Y: 116
   Dir: 5
   Sprite: 81
   DuplicateOf: Puppy#bra
@@ -24,7 +26,7 @@ Body:
   Source: npc/quests/quests_brasilis.txt:133
 - Name: Puppy#a3
   X: 62
-  "Y": 142
+  Y: 142
   Dir: 3
   Sprite: 81
   DuplicateOf: Puppy#bra
@@ -32,7 +34,7 @@ Body:
   Source: npc/quests/quests_brasilis.txt:134
 - Name: Puppy#b1
   X: 80
-  "Y": 163
+  Y: 163
   Dir: 3
   Sprite: 81
   DuplicateOf: Puppy#bra
@@ -40,7 +42,7 @@ Body:
   Source: npc/quests/quests_brasilis.txt:135
 - Name: Puppy#b2
   X: 73
-  "Y": 210
+  Y: 210
   Dir: 3
   Sprite: 81
   DuplicateOf: Puppy#bra
@@ -48,7 +50,7 @@ Body:
   Source: npc/quests/quests_brasilis.txt:136
 - Name: Puppy#b3
   X: 80
-  "Y": 210
+  Y: 210
   Dir: 3
   Sprite: 81
   DuplicateOf: Puppy#bra
@@ -56,7 +58,7 @@ Body:
   Source: npc/quests/quests_brasilis.txt:137
 - Name: Puppy#c1
   X: 38
-  "Y": 235
+  Y: 235
   Dir: 3
   Sprite: 81
   DuplicateOf: Puppy#bra
@@ -64,7 +66,7 @@ Body:
   Source: npc/quests/quests_brasilis.txt:138
 - Name: Puppy#c2
   X: 307
-  "Y": 64
+  Y: 64
   Dir: 3
   Sprite: 81
   DuplicateOf: Puppy#bra
@@ -72,7 +74,7 @@ Body:
   Source: npc/quests/quests_brasilis.txt:139
 - Name: Puppy#c3
   X: 260
-  "Y": 60
+  Y: 60
   Dir: 3
   Sprite: 81
   DuplicateOf: Puppy#bra
@@ -80,7 +82,7 @@ Body:
   Source: npc/quests/quests_brasilis.txt:140
 - Name: Puppy#d1
   X: 234
-  "Y": 101
+  Y: 101
   Dir: 3
   Sprite: 81
   DuplicateOf: Puppy#bra
@@ -88,7 +90,7 @@ Body:
   Source: npc/quests/quests_brasilis.txt:141
 - Name: Puppy#d2
   X: 200
-  "Y": 84
+  Y: 84
   Dir: 3
   Sprite: 81
   DuplicateOf: Puppy#bra
@@ -96,7 +98,7 @@ Body:
   Source: npc/quests/quests_brasilis.txt:142
 - Name: Puppy#d3
   X: 176
-  "Y": 63
+  Y: 63
   Dir: 5
   Sprite: 81
   DuplicateOf: Puppy#bra
@@ -104,29 +106,29 @@ Body:
   Source: npc/quests/quests_brasilis.txt:143
 - Name: Toucan#bra
   X: 75
-  "Y": 83
+  Y: 83
   Dir: 5
   Sprite: 2073
   SpriteIsMob: true
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/quests/quests_brasilis.txt:809
 - Name: Jaguar#bra
   X: 34
-  "Y": 184
+  Y: 184
   Dir: 5
   Sprite: 2072
   SpriteIsMob: true
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/quests/quests_brasilis.txt:869
 - Name: "#Monkeybra"
   X: 245
-  "Y": 53
+  Y: 53
   Dir: 3
   Sprite: 1057
   SpriteIsMob: true
@@ -134,54 +136,54 @@ Body:
   Source: npc/quests/quests_brasilis.txt:931
 - Name: Monkey#bra
   X: 245
-  "Y": 52
+  Y: 52
   Dir: 3
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_brasilis.txt:933
 - Name: Pipe#brafild
   X: 323
-  "Y": 136
+  Y: 136
   Dir: 1
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_brasilis.txt:2605
 - Name: Native Warrior#nk
   X: 188
-  "Y": 301
+  Y: 301
   Dir: 5
   Sprite: 472
   Kind: Script
   Source: npc/quests/quests_brasilis.txt:2923
 - Name: bra_fild01_brasilis
   X: 72
-  "Y": 34
+  Y: 34
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: brasilis
     X: 309
-    "Y": 334
+    Y: 334
     TriggerWhileHidden: false
   Source: npc/warps/fields/bra_fild.txt:7
 - Name: "#wp120106"
   X: 99
-  "Y": 193
+  Y: 193
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:195
 - Name: "#tr120106"
   X: 99
-  "Y": 193
+  Y: 193
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click

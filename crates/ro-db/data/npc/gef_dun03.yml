@@ -2,22 +2,24 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: gefd03-1
   X: 203
-  "Y": 204
+  Y: 204
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gef_dun02
     X: 215
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: false
   Source: npc/warps/dungeons/gef_dun.txt:46

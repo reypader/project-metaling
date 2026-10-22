@@ -2,37 +2,39 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: gdun04_g13a#abyss
   X: 37
-  "Y": 230
+  Y: 230
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gef_fild13
     X: 42
-    "Y": 331
+    Y: 331
     TriggerWhileHidden: false
   Source: npc/re/warps/guildcastles.txt:40
 - Name: gdun04_g13b#abyss
   X: 110
-  "Y": 20
+  Y: 20
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gef_fild13
     X: 373
-    "Y": 62
+    Y: 62
     TriggerWhileHidden: false
   Source: npc/re/warps/guildcastles.txt:41

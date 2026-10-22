@@ -2,78 +2,80 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Temporary Dimension-mov#pa0829_01
   X: 153
-  "Y": 155
+  Y: 155
   Dir: 5
   Sprite: 10007
   Kind: Script
   Source: npc/re/instances/CentralLaboratory.txt:11
 - Name: Civilization Explorer#pa0829_01
   X: 149
-  "Y": 155
+  Y: 155
   Dir: 5
   Sprite: 865
   Kind: Script
   Source: npc/re/instances/CentralLaboratory.txt:48
 - Name: Laboratory Administrator#pa0829_01
   X: 1
-  "Y": 5
+  Y: 5
   Dir: 5
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/CentralLaboratory.txt:968
 - Name: Du#Verus
   X: 221
-  "Y": 65
+  Y: 65
   Dir: 5
   Sprite: 628
   Kind: Script
   Source: npc/re/quests/quests_15_2.txt:908
 - Name: Fruit#Verus
   X: 151
-  "Y": 173
+  Y: 173
   Dir: 3
   Sprite: 10079
   Kind: Script
   Source: npc/re/quests/quests_15_2.txt:983
 - Name: Verity#Warper
   X: 123
-  "Y": 181
+  Y: 181
   Dir: 3
   Sprite: 10078
   Kind: Script
   Source: npc/re/quests/quests_15_2.txt:1713
 - Name: Exhausted Journalist#1
   X: 41
-  "Y": 103
+  Y: 103
   Dir: 4
   Sprite: 52
   Kind: Script
   Source: npc/re/quests/quests_15_2.txt:2115
 - Name: Lame Journalist#1
   X: 172
-  "Y": 146
+  Y: 146
   Dir: 4
   Sprite: 896
   Kind: Script
   Source: npc/re/quests/quests_15_2.txt:2187
 - Name: verus01_to_verus03
   X: 247
-  "Y": 58
+  Y: 58
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: verus03
     X: 55
-    "Y": 251
+    Y: 251
     TriggerWhileHidden: true
   Source: npc/re/warps/other/verus.txt:14

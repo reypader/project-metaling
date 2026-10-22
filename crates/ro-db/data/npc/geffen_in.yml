@@ -2,153 +2,155 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Wizard Stanza
   X: 164
-  "Y": 109
+  Y: 109
   Dir: 0
   Sprite: 64
   Kind: Script
   Source: npc/cities/geffen.txt:69
 - Name: Theodore
   X: 34
-  "Y": 170
+  Y: 170
   Dir: 0
   Sprite: 47
   Kind: Script
   Source: npc/cities/geffen.txt:187
 - Name: Crumpler
   X: 22
-  "Y": 125
+  Y: 125
   Dir: 1
   Sprite: 52
   Kind: Script
   Source: npc/cities/geffen.txt:428
 - Name: Skyler
   X: 59
-  "Y": 61
+  Y: 61
   Dir: 1
   Sprite: 61
   Kind: Script
   Source: npc/cities/geffen.txt:526
 - Name: Waitress#elen
   X: 27
-  "Y": 134
+  Y: 134
   Dir: 5
   Sprite: 91
   Kind: Script
   Source: npc/cities/geffen.txt:551
 - Name: Waitress#elise
   X: 70
-  "Y": 67
+  Y: 67
   Dir: 3
   Sprite: 90
   Kind: Script
   Source: npc/cities/geffen.txt:690
 - Name: Merchant Daven
   X: 79
-  "Y": 76
+  Y: 76
   Dir: 2
   Sprite: 120
   Kind: Script
   Source: npc/cities/geffen.txt:811
 - Name: Hadenheim
   X: 114
-  "Y": 73
+  Y: 73
   Dir: 5
   Sprite: 709
   Kind: Script
   Source: npc/cities/geffen.txt:878
 - Name: Psychic Advisor
   X: 39
-  "Y": 127
+  Y: 127
   Dir: 2
   Sprite: 704
   Kind: Script
   Source: npc/cities/geffen.txt:924
 - Name: Monster Scholar
   X: 109
-  "Y": 72
+  Y: 72
   Dir: 2
   Sprite: 90
   Kind: Script
   Source: npc/cities/geffen.txt:1341
 - Name: Inn Employee#Cena
   X: 70
-  "Y": 64
+  Y: 64
   Dir: 5
   Sprite: 53
   Kind: Script
   Source: npc/merchants/inn.txt:73
 - Name: Christopher#1
   X: 110
-  "Y": 172
+  Y: 172
   Dir: 0
   Sprite: 63
   Kind: Script
   Source: npc/merchants/refine.txt:24
 - Name: Repairman#gef
   X: 34
-  "Y": 166
+  Y: 166
   Dir: 3
   Sprite: 99
   Kind: Script
   Source: npc/merchants/refine.txt:1210
 - Name: Armor Dealer#gef
   X: 26
-  "Y": 178
+  Y: 178
   Dir: 4
   Sprite: 66
   Kind: Shop
   Source: npc/merchants/shops.txt:111
 - Name: Weapon Dealer#gef2
   X: 30
-  "Y": 178
+  Y: 178
   Dir: 4
   Sprite: 47
   Kind: Shop
   Source: npc/merchants/shops.txt:112
 - Name: Weapon Dealer#gef
   X: 22
-  "Y": 171
+  Y: 171
   Dir: 7
   Sprite: 84
   Kind: Shop
   Source: npc/merchants/shops.txt:113
 - Name: Trader#gef
   X: 74
-  "Y": 144
+  Y: 144
   Dir: 0
   Sprite: 66
   Kind: Shop
   Source: npc/merchants/shops.txt:114
 - Name: Tool Dealer#gef
   X: 77
-  "Y": 167
+  Y: 167
   Dir: 0
   Sprite: 68
   Kind: Shop
   Source: npc/merchants/shops.txt:115
 - Name: Magical Item Seller#gef
   X: 77
-  "Y": 173
+  Y: 173
   Dir: 0
   Sprite: 64
   Kind: Shop
   Source: npc/merchants/shops.txt:116
 - Name: Tool Dealer#gef2
   X: 171
-  "Y": 123
+  Y: 123
   Dir: 4
   Sprite: 64
   Kind: Shop
   Source: npc/merchants/shops.txt:117
 - Name: PVP Narrator#pe4
   X: 67
-  "Y": 63
+  Y: 63
   Dir: 4
   Sprite: 84
   DuplicateOf: pvpe
@@ -156,7 +158,7 @@ Body:
   Source: npc/other/pvp.txt:172
 - Name: PVP Narrator#pe6
   X: 67
-  "Y": 63
+  Y: 63
   Dir: 4
   Sprite: 84
   DuplicateOf: pvpe
@@ -164,7 +166,7 @@ Body:
   Source: npc/other/pvp.txt:174
 - Name: Gate Keeper#gke4
   X: 63
-  "Y": 63
+  Y: 63
   Dir: 4
   Sprite: 83
   DuplicateOf: gkut
@@ -172,465 +174,465 @@ Body:
   Source: npc/other/pvp.txt:279
 - Name: Crusader#God1
   X: 109
-  "Y": 161
+  Y: 161
   Dir: 3
   Sprite: 751
   Kind: Script
   Source: npc/quests/seals/megingard_seal.txt:1541
 - Name: Morgenstein#cm
   X: 141
-  "Y": 140
+  Y: 140
   Dir: 3
   Sprite: 121
   Kind: Script
   Source: npc/quests/counteragent_mixture.txt:398
 - Name: Blacksmith
   X: 144
-  "Y": 166
+  Y: 166
   Dir: 4
   Sprite: 63
   Kind: Script
   Source: npc/quests/quests_geffen.txt:22
 - Name: Eric
   X: 30
-  "Y": 71
+  Y: 71
   Dir: 4
   Sprite: 83
   Kind: Script
   Source: npc/quests/quests_geffen.txt:88
 - Name: Blacksmith#SaYumMoon
   X: 71
-  "Y": 112
+  Y: 112
   Dir: 2
   Sprite: 731
   Kind: Script
   Source: npc/quests/quests_gonryun.txt:2417
 - Name: Girl#gnbs2
   X: 106
-  "Y": 106
+  Y: 106
   Dir: 7
   Sprite: 716
   Kind: Script
   Source: npc/quests/quests_gonryun.txt:3005
 - Name: Jesqurienne#sign
   X: 59
-  "Y": 74
+  Y: 74
   Dir: 4
   Sprite: 803
   Kind: Script
   Source: npc/quests/the_sign_quest.txt:3430
 - Name: Aaron#sign
   X: 61
-  "Y": 72
+  Y: 72
   Dir: 7
   Sprite: 754
   Kind: Script
   Source: npc/quests/the_sign_quest.txt:3718
 - Name: Lonely-looking Woman
   X: 159
-  "Y": 48
+  Y: 48
   Dir: 5
   Sprite: 711
   Kind: Script
   Source: npc/quests/the_sign_quest.txt:6917
 - Name: Cute Girl
   X: 171
-  "Y": 42
+  Y: 42
   Dir: 3
   Sprite: 703
   Kind: Script
   Source: npc/quests/the_sign_quest.txt:7034
 - Name: Blacksmith Guildsman#gef
   X: 109
-  "Y": 170
+  Y: 170
   Dir: 3
   Sprite: 726
   Kind: Script
   Source: npc/jobs/2-1/blacksmith.txt:1598
 - Name: Great Wizard
   X: 151
-  "Y": 119
+  Y: 119
   Dir: 4
   Sprite: 64
   Kind: Script
   Source: npc/quests/skills/mage_skills.txt:18
 - Name: gef06-1
   X: 28
-  "Y": 156
+  Y: 156
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: geffen
     X: 101
-    "Y": 138
+    Y: 138
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:27
 - Name: gef07
   X: 100
-  "Y": 67
+  Y: 67
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 84
-    "Y": 65
+    Y: 65
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:28
 - Name: gef07-1
   X: 87
-  "Y": 66
+  Y: 66
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 103
-    "Y": 67
+    Y: 67
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:29
 - Name: gef08
   X: 104
-  "Y": 109
+  Y: 109
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 76
-    "Y": 107
+    Y: 107
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:30
 - Name: gef08-1
   X: 79
-  "Y": 107
+  Y: 107
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 107
-    "Y": 109
+    Y: 109
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:31
 - Name: gef09
   X: 113
-  "Y": 163
+  Y: 163
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 139
-    "Y": 169
+    Y: 169
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:32
 - Name: gef09-1
   X: 136
-  "Y": 169
+  Y: 169
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 110
-    "Y": 163
+    Y: 163
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:33
 - Name: gef10
   X: 114
-  "Y": 37
+  Y: 37
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 114
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:34
 - Name: gef10-1
   X: 114
-  "Y": 60
+  Y: 60
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 114
-    "Y": 34
+    Y: 34
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:35
 - Name: gef11
   X: 138
-  "Y": 149
+  Y: 149
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 138
-    "Y": 165
+    Y: 165
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:36
 - Name: gef11-1
   X: 138
-  "Y": 162
+  Y: 162
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 138
-    "Y": 146
+    Y: 146
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:37
 - Name: gef12
   X: 26
-  "Y": 60
+  Y: 60
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 26
-    "Y": 34
+    Y: 34
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:38
 - Name: gef12-1
   X: 26
-  "Y": 37
+  Y: 37
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 26
-    "Y": 63
+    Y: 63
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:39
 - Name: gef13
   X: 52
-  "Y": 65
+  Y: 65
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 38
-    "Y": 67
+    Y: 67
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:40
 - Name: gef13-1
   X: 41
-  "Y": 67
+  Y: 67
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 55
-    "Y": 65
+    Y: 65
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:41
 - Name: gef14
   X: 70
-  "Y": 149
+  Y: 149
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 70
-    "Y": 161
+    Y: 161
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:42
 - Name: gef14-1
   X: 70
-  "Y": 158
+  Y: 158
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 70
-    "Y": 146
+    Y: 146
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:43
 - Name: gef15
   X: 70
-  "Y": 83
+  Y: 83
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 72
-    "Y": 101
+    Y: 101
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:44
 - Name: gef15-1
   X: 72
-  "Y": 98
+  Y: 98
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: geffen_in
     X: 70
-    "Y": 80
+    Y: 80
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:45
 - Name: gef05-1
   X: 163
-  "Y": 94
+  Y: 94
   Dir: 0
   Sprite: 45
   Trigger:
     X: 4
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: geffen
     X: 65
-    "Y": 176
+    Y: 176
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:46
 - Name: gef04-1
   X: 70
-  "Y": 132
+  Y: 132
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: geffen
     X: 46
-    "Y": 88
+    Y: 88
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:47
 - Name: gef03-1
   X: 106
-  "Y": 181
+  Y: 181
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: geffen
     X: 179
-    "Y": 59
+    Y: 59
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:48
 - Name: gef01-1
   X: 28
-  "Y": 106
+  Y: 106
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: geffen
     X: 136
-    "Y": 136
+    Y: 136
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:49
 - Name: gef02-1
   X: 70
-  "Y": 48
+  Y: 48
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: geffen
     X: 168
-    "Y": 170
+    Y: 170
     TriggerWhileHidden: false
   Source: npc/warps/cities/geffen.txt:50
 - Name: Tool Dealer#Extended_Gef
   X: 77
-  "Y": 167
+  Y: 167
   Dir: 0
   Sprite: 68
   Kind: Shop
   Source: npc/re/merchants/Dealer_Update.txt:154
 - Name: Tool Dealer#Extended_Gef2
   X: 171
-  "Y": 123
+  Y: 123
   Dir: 4
   Sprite: 64
   Kind: Shop
   Source: npc/re/merchants/Dealer_Update.txt:155
 - Name: Arrow Merchant#over_arrow_3
   X: 22
-  "Y": 167
+  Y: 167
   Dir: 5
   Sprite: 634
   DuplicateOf: "#over_arrow"
@@ -638,7 +640,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:245
 - Name: Ammunition Merchant#over_bullet_3
   X: 22
-  "Y": 169
+  Y: 169
   Dir: 5
   Sprite: 633
   DuplicateOf: "#over_bullet"
@@ -646,7 +648,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:246
 - Name: Ninja Tool Merchant#over_kunai_3
   X: 22
-  "Y": 165
+  Y: 165
   Dir: 5
   Sprite: 636
   DuplicateOf: "#over_kunai"
@@ -654,7 +656,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:247
 - Name: Mado Gear Merchant#over_madogear_3
   X: 22
-  "Y": 163
+  Y: 163
   Dir: 4
   Sprite: 10004
   DuplicateOf: "#over_madogear"
@@ -662,7 +664,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:248
 - Name: Talisman Merchant#over_talisman_3
   X: 22
-  "Y": 161
+  Y: 161
   Dir: 6
   Sprite: 10234
   DuplicateOf: "#over_talisman"
@@ -670,7 +672,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:249
 - Name: Gemstone Bagger#09
   X: 77
-  "Y": 175
+  Y: 175
   Dir: 3
   Sprite: 68
   DuplicateOf: "#GemstoneBagger"
@@ -678,7 +680,7 @@ Body:
   Source: npc/re/merchants/Gemstone_Bagger.txt:40
 - Name: Vending Machine for Nov#gef
   X: 158
-  "Y": 107
+  Y: 107
   Dir: 3
   Sprite: 564
   DuplicateOf: novice_vending_machine#main
@@ -686,21 +688,21 @@ Body:
   Source: npc/re/merchants/novice_vending_machine.txt:96
 - Name: Advanced Potion Merchant#gef
   X: 78
-  "Y": 169
+  Y: 169
   Dir: 3
   Sprite: 68
   Kind: Shop
   Source: npc/re/merchants/shops.txt:66
 - Name: Ore Tester#sorty
   X: 99
-  "Y": 174
+  Y: 174
   Dir: 5
   Sprite: 700
   Kind: Script
   Source: npc/re/other/stone_change.txt:19
 - Name: Eden Teleport Officer#8
   X: 160
-  "Y": 104
+  Y: 104
   Dir: 5
   Sprite: 729
   DuplicateOf: eto
@@ -708,21 +710,21 @@ Body:
   Source: npc/re/quests/eden/eden_common.txt:248
 - Name: Master Velofos
   X: 176
-  "Y": 105
+  Y: 105
   Dir: 4
   Sprite: 64
   Kind: Script
   Source: npc/re/quests/magic_books.txt:26
 - Name: Lea
   X: 175
-  "Y": 112
+  Y: 112
   Dir: 4
   Sprite: 123
   Kind: Script
   Source: npc/re/quests/magic_books.txt:272
 - Name: Cat Paw Shrimp Merchant#gef
   X: 75
-  "Y": 140
+  Y: 140
   Dir: 3
   Sprite: 495
   DuplicateOf: Cat Paw Shrimp Merchant#iz
@@ -730,23 +732,23 @@ Body:
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1325
 - Name: Mage Guildsman#mage
   X: 164
-  "Y": 124
+  Y: 124
   Dir: 4
   Sprite: 123
   Kind: Script
   Source: npc/re/jobs/1-1/mage.txt:15
 - Name: sign02a
   X: 165
-  "Y": 54
+  Y: 54
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: geffen
     X: 138
-    "Y": 104
+    Y: 104
     TriggerWhileHidden: false
   Source: npc/re/warps/other/sign.txt:22

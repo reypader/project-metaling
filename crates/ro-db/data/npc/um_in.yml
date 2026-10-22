@@ -2,212 +2,214 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Utan villager#um
   X: 158
-  "Y": 71
+  Y: 71
   Dir: 3
   Sprite: 787
   Kind: Script
   Source: npc/cities/umbala.txt:953
 - Name: Tool Dealer#um
   X: 104
-  "Y": 124
+  Y: 124
   Dir: 3
   Sprite: 788
   Kind: Shop
   Source: npc/merchants/shops.txt:278
 - Name: Weapon Dealer#um
   X: 160
-  "Y": 125
+  Y: 125
   Dir: 3
   Sprite: 789
   Kind: Shop
   Source: npc/merchants/shops.txt:279
 - Name: Tabezthan#lv4
   X: 156
-  "Y": 77
+  Y: 77
   Dir: 5
   Sprite: 788
   Kind: Script
   Source: npc/quests/lvl4_weapon_quest.txt:924
 - Name: Utan Chief
   X: 39
-  "Y": 122
+  Y: 122
   Dir: 5
   Sprite: 784
   Kind: Script
   Source: npc/quests/quests_umbala.txt:44
 - Name: Utan Shaman
   X: 44
-  "Y": 71
+  Y: 71
   Dir: 2
   Sprite: 782
   Kind: Script
   Source: npc/quests/quests_umbala.txt:367
 - Name: Phrenetan
   X: 139
-  "Y": 48
+  Y: 48
   Dir: 5
   Sprite: 783
   Kind: Script
   Source: npc/quests/quests_umbala.txt:984
 - Name: Umpokoriohtan
   X: 144
-  "Y": 45
+  Y: 45
   Dir: 5
   Sprite: 789
   Kind: Script
   Source: npc/quests/quests_umbala.txt:1035
 - Name: Wainatan
   X: 101
-  "Y": 73
+  Y: 73
   Dir: 3
   Sprite: 783
   Kind: Script
   Source: npc/quests/quests_umbala.txt:1116
 - Name: Bertztan
   X: 94
-  "Y": 123
+  Y: 123
   Dir: 5
   Sprite: 783
   Kind: Script
   Source: npc/quests/quests_umbala.txt:1163
 - Name: "#!@#$%"
   X: 141
-  "Y": 46
+  Y: 46
   Dir: 0
   Sprite: -1
   Trigger:
     X: 8
-    "Y": 8
+    Y: 8
   Kind: Script
   Source: npc/quests/quests_umbala.txt:1265
 - Name: Fastidious-Looking Guy
   X: 27
-  "Y": 23
+  Y: 23
   Dir: 3
   Sprite: 121
   Kind: Script
   Source: npc/quests/the_sign_quest.txt:7825
 - Name: um_chief1-2
   X: 38
-  "Y": 110
+  Y: 110
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: umbala
     X: 66
-    "Y": 250
+    Y: 250
     TriggerWhileHidden: false
   Source: npc/warps/cities/umbala.txt:20
 - Name: um_tool1-2
   X: 99
-  "Y": 111
+  Y: 111
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: umbala
     X: 136
-    "Y": 127
+    Y: 127
     TriggerWhileHidden: false
   Source: npc/warps/cities/umbala.txt:22
 - Name: um_weapon1-2
   X: 155
-  "Y": 111
+  Y: 111
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: umbala
     X: 126
-    "Y": 154
+    Y: 154
     TriggerWhileHidden: false
   Source: npc/warps/cities/umbala.txt:24
 - Name: um_houseA1-2
   X: 141
-  "Y": 39
+  Y: 39
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: umbala
     X: 94
-    "Y": 183
+    Y: 183
     TriggerWhileHidden: false
   Source: npc/warps/cities/umbala.txt:26
 - Name: um_houseA2-2
   X: 166
-  "Y": 69
+  Y: 69
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: umbala
     X: 102
-    "Y": 205
+    Y: 205
     TriggerWhileHidden: false
   Source: npc/warps/cities/umbala.txt:28
 - Name: um_houseB1-2
   X: 99
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: umbala
     X: 108
-    "Y": 127
+    Y: 127
     TriggerWhileHidden: false
   Source: npc/warps/cities/umbala.txt:30
 - Name: um_shaman2-1
   X: 29
-  "Y": 71
+  Y: 71
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: umbala
     X: 217
-    "Y": 186
+    Y: 186
     TriggerWhileHidden: false
   Source: npc/warps/cities/umbala.txt:38
 - Name: Tool Dealer#Extended_Um
   X: 104
-  "Y": 124
+  Y: 124
   Dir: 3
   Sprite: 788
   Kind: Shop
   Source: npc/re/merchants/Dealer_Update.txt:172
 - Name: Arrow Merchant#over_arrow_9
   X: 158
-  "Y": 127
+  Y: 127
   Dir: 5
   Sprite: 634
   DuplicateOf: "#over_arrow"
@@ -215,7 +217,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:299
 - Name: Ammunition Merchant#over_bullet_9
   X: 156
-  "Y": 127
+  Y: 127
   Dir: 5
   Sprite: 633
   DuplicateOf: "#over_bullet"
@@ -223,7 +225,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:300
 - Name: Ninja Tool Merchant#over_kunai_9
   X: 154
-  "Y": 127
+  Y: 127
   Dir: 5
   Sprite: 636
   DuplicateOf: "#over_kunai"
@@ -231,7 +233,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:301
 - Name: Mado Gear Merchant#over_madogear_9
   X: 152
-  "Y": 127
+  Y: 127
   Dir: 4
   Sprite: 10004
   DuplicateOf: "#over_madogear"
@@ -239,7 +241,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:302
 - Name: Talisman Merchant#over_talisman_9
   X: 150
-  "Y": 127
+  Y: 127
   Dir: 4
   Sprite: 10234
   DuplicateOf: "#over_talisman"
@@ -247,7 +249,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:303
 - Name: Gemstone Bagger#25
   X: 103
-  "Y": 115
+  Y: 115
   Dir: 3
   Sprite: 788
   DuplicateOf: "#GemstoneBagger"
@@ -255,7 +257,7 @@ Body:
   Source: npc/re/merchants/Gemstone_Bagger.txt:56
 - Name: Cat Paw Shrimp Merchant#um
   X: 104
-  "Y": 118
+  Y: 118
   Dir: 3
   Sprite: 495
   DuplicateOf: Cat Paw Shrimp Merchant#iz
@@ -263,46 +265,46 @@ Body:
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1342
 - Name: sign05
   X: 33
-  "Y": 18
+  Y: 18
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: um_in
     X: 89
-    "Y": 11
+    Y: 11
     TriggerWhileHidden: false
   Source: npc/re/warps/other/sign.txt:29
 - Name: sign05a
   X: 89
-  "Y": 9
+  Y: 9
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: um_in
     X: 33
-    "Y": 16
+    Y: 16
     TriggerWhileHidden: false
   Source: npc/re/warps/other/sign.txt:30
 - Name: sign06a
   X: 11
-  "Y": 18
+  Y: 18
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: umbala
     X: 111
-    "Y": 121
+    Y: 121
     TriggerWhileHidden: false
   Source: npc/re/warps/other/sign.txt:33

@@ -2,69 +2,71 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Viorel#homun_s
   X: 24
-  "Y": 47
+  Y: 47
   Dir: 3
   Sprite: 542
   Kind: Script
   Source: npc/re/quests/homun_s.txt:275
 - Name: Jeyna#homun_s
   X: 80
-  "Y": 42
+  Y: 42
   Dir: 3
   Sprite: 558
   Kind: Script
   Source: npc/re/quests/homun_s.txt:610
 - Name: Magic Board#homun_s
   X: 83
-  "Y": 47
+  Y: 47
   Dir: 3
   Sprite: 857
   Kind: Script
   Source: npc/re/quests/homun_s.txt:833
 - Name: Open Book#01homun_s
   X: 13
-  "Y": 52
+  Y: 52
   Dir: 3
   Sprite: 111
   Kind: Script
   Source: npc/re/quests/homun_s.txt:999
 - Name: Open Book#02homun_s
   X: 16
-  "Y": 52
+  Y: 52
   Dir: 3
   Sprite: 111
   Kind: Script
   Source: npc/re/quests/homun_s.txt:1129
 - Name: "#03homun_s"
   X: 11
-  "Y": 52
+  Y: 52
   Dir: 3
   Sprite: 111
   Kind: Script
   Source: npc/re/quests/homun_s.txt:1313
 - Name: "#04homun_s"
   X: 14
-  "Y": 52
+  Y: 52
   Dir: 3
   Sprite: 111
   Kind: Script
   Source: npc/re/quests/homun_s.txt:1328
 - Name: Jonathan#homun_s
   X: 24
-  "Y": 46
+  Y: 46
   Dir: 3
   Sprite: 6002
   Kind: Script
   Source: npc/re/quests/homun_s.txt:1334
 - Name: "#05homun_s"
   X: 23
-  "Y": 46
+  Y: 46
   Dir: 3
   Sprite: 111
   Kind: Script

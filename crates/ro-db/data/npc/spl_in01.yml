@@ -2,171 +2,173 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Security Officer#tre
   X: 190
-  "Y": 314
+  Y: 314
   Dir: 5
   Sprite: 461
   Kind: Script
   Source: npc/cities/splendide.txt:395
 - Name: Splendide Guard#tre
   X: 281
-  "Y": 329
+  Y: 329
   Dir: 3
   Sprite: 447
   Kind: Script
   Source: npc/cities/splendide.txt:414
 - Name: "#spl_prs"
   X: 287
-  "Y": 306
+  Y: 306
   Dir: 3
   Sprite: 111
   Kind: Script
   Source: npc/cities/splendide.txt:427
 - Name: "#spl_prs1"
   X: 265
-  "Y": 315
+  Y: 315
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/cities/splendide.txt:442
 - Name: Wandering Poet#ep13
   X: 172
-  "Y": 225
+  Y: 225
   Dir: 3
   Sprite: 51
   Kind: Script
   Source: npc/cities/splendide.txt:461
 - Name: Resting Laphine#ep13_1
   X: 182
-  "Y": 213
+  Y: 213
   Dir: 1
   Sprite: 438
   Kind: Script
   Source: npc/cities/splendide.txt:573
 - Name: Resting Laphine#ep13_2
   X: 181
-  "Y": 218
+  Y: 218
   Dir: 5
   Sprite: 446
   Kind: Script
   Source: npc/cities/splendide.txt:594
 - Name: Dining Laphine#ep13
   X: 161
-  "Y": 213
+  Y: 213
   Dir: 7
   Sprite: 447
   Kind: Script
   Source: npc/cities/splendide.txt:614
 - Name: Laphine taking notes#1
   X: 162
-  "Y": 202
+  Y: 202
   Dir: 5
   Sprite: 436
   Kind: Script
   Source: npc/cities/splendide.txt:635
 - Name: Silent Laphine#ep13
   X: 167
-  "Y": 207
+  Y: 207
   Dir: 7
   Sprite: 445
   Kind: Script
   Source: npc/cities/splendide.txt:660
 - Name: Laphine Soldier#ep13_1
   X: 180
-  "Y": 201
+  Y: 201
   Dir: 3
   Sprite: 461
   Kind: Script
   Source: npc/cities/splendide.txt:665
 - Name: Laphine Staff#ep13_1
   X: 189
-  "Y": 207
+  Y: 207
   Dir: 3
   Sprite: 439
   Kind: Script
   Source: npc/cities/splendide.txt:693
 - Name: Laphine Staff#ep13_2
   X: 154
-  "Y": 207
+  Y: 207
   Dir: 5
   Sprite: 440
   Kind: Script
   Source: npc/cities/splendide.txt:718
 - Name: High-Ranked Soldier#ep13
   X: 122
-  "Y": 314
+  Y: 314
   Dir: 5
   Sprite: 461
   Kind: Script
   Source: npc/cities/splendide.txt:739
 - Name: Laphine Soldier#ep13_2
   X: 122
-  "Y": 311
+  Y: 311
   Dir: 1
   Sprite: 447
   Kind: Script
   Source: npc/cities/splendide.txt:768
 - Name: Commander Lebiordirr#edq
   X: 109
-  "Y": 60
+  Y: 60
   Dir: 3
   Sprite: 435
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:713
 - Name: Aide Arioss#edq
   X: 104
-  "Y": 56
+  Y: 56
   Dir: 3
   Sprite: 437
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:927
 - Name: trap#s_edq
   X: 110
-  "Y": 21
+  Y: 21
   Dir: 0
   Sprite: -1
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:1061
 - Name: Splendide Guard#1_edq
   X: 101
-  "Y": 52
+  Y: 52
   Dir: 5
   Sprite: 447
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:1075
 - Name: Splendide Guard#2_edq
   X: 118
-  "Y": 52
+  Y: 52
   Dir: 3
   Sprite: 447
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:1082
 - Name: Merchant of Splendide
   X: 110
-  "Y": 326
+  Y: 326
   Dir: 5
   Sprite: 439
   DuplicateOf: merchant_13_2
@@ -174,235 +176,235 @@ Body:
   Source: npc/merchants/coin_exchange.txt:89
 - Name: Splendide Guard#ep13md01
   X: 32
-  "Y": 306
+  Y: 306
   Dir: 3
   Sprite: 447
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/quests/quests_13_2.txt:534
 - Name: Laphine Craftsman#ep13
   X: 97
-  "Y": 313
+  Y: 313
   Dir: 3
   Sprite: 446
   Kind: Script
   Source: npc/quests/quests_13_2.txt:2929
 - Name: High Laphine#grenouille
   X: 30
-  "Y": 324
+  Y: 324
   Dir: 3
   Sprite: 446
   Kind: Script
   Source: npc/quests/quests_13_2.txt:5473
 - Name: splendide11-2
   X: 110
-  "Y": 17
+  Y: 17
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: splendide
     X: 197
-    "Y": 191
+    Y: 191
     TriggerWhileHidden: false
   Source: npc/warps/cities/splendide.txt:37
 - Name: splendide11-3
   X: 124
-  "Y": 38
+  Y: 38
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: spl_in01
     X: 236
-    "Y": 36
+    Y: 36
     TriggerWhileHidden: false
   Source: npc/warps/cities/splendide.txt:38
 - Name: splendide11-4
   X: 238
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: spl_in01
     X: 126
-    "Y": 38
+    Y: 38
     TriggerWhileHidden: false
   Source: npc/warps/cities/splendide.txt:39
 - Name: splendide11-5
   X: 95
-  "Y": 38
+  Y: 38
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: spl_in01
     X: 199
-    "Y": 36
+    Y: 36
     TriggerWhileHidden: false
   Source: npc/warps/cities/splendide.txt:40
 - Name: splendide11-6
   X: 197
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: spl_in01
     X: 93
-    "Y": 38
+    Y: 38
     TriggerWhileHidden: false
   Source: npc/warps/cities/splendide.txt:41
 - Name: splendide11-7
   X: 218
-  "Y": 22
+  Y: 22
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: spl_in01
     X: 310
-    "Y": 19
+    Y: 19
     TriggerWhileHidden: false
   Source: npc/warps/cities/splendide.txt:42
 - Name: splendide11-8
   X: 310
-  "Y": 17
+  Y: 17
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: spl_in01
     X: 218
-    "Y": 20
+    Y: 20
     TriggerWhileHidden: false
   Source: npc/warps/cities/splendide.txt:43
 - Name: splendide12-2
   X: 190
-  "Y": 299
+  Y: 299
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: splendide
     X: 170
-    "Y": 166
+    Y: 166
     TriggerWhileHidden: false
   Source: npc/warps/cities/splendide.txt:45
 - Name: splendide12-3
   X: 191
-  "Y": 320
+  Y: 320
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: spl_in01
     X: 276
-    "Y": 334
+    Y: 334
     TriggerWhileHidden: false
   Source: npc/warps/cities/splendide.txt:46
 - Name: splendide12-4
   X: 276
-  "Y": 336
+  Y: 336
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: spl_in01
     X: 190
-    "Y": 322
+    Y: 322
     TriggerWhileHidden: false
   Source: npc/warps/cities/splendide.txt:47
 - Name: splendide13-2
   X: 171
-  "Y": 187
+  Y: 187
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: splendide
     X: 156
-    "Y": 208
+    Y: 208
     TriggerWhileHidden: false
   Source: npc/warps/cities/splendide.txt:49
 - Name: splendide14-2
   X: 110
-  "Y": 299
+  Y: 299
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: splendide
     X: 198
-    "Y": 238
+    Y: 238
     TriggerWhileHidden: false
   Source: npc/warps/cities/splendide.txt:51
 - Name: splendide15-2
   X: 30
-  "Y": 213
+  Y: 213
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: splendide
     X: 237
-    "Y": 210
+    Y: 210
     TriggerWhileHidden: false
   Source: npc/warps/cities/splendide.txt:53
 - Name: splendide16-2
   X: 30
-  "Y": 299
+  Y: 299
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: splendide
     X: 228
-    "Y": 162
+    Y: 162
     TriggerWhileHidden: false
   Source: npc/warps/cities/splendide.txt:55

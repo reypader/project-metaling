@@ -2,54 +2,56 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: ein050a
   X: 158
-  "Y": 349
+  Y: 349
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: lhz_fild02
     X: 164
-    "Y": 39
+    Y: 39
     TriggerWhileHidden: false
   Source: npc/warps/fields/ein_fild.txt:51
 - Name: ein051
   X: 363
-  "Y": 283
+  Y: 283
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ein_fild08
     X: 25
-    "Y": 275
+    Y: 275
     TriggerWhileHidden: false
   Source: npc/warps/fields/ein_fild.txt:52
 - Name: "#wp120077"
   X: 313
-  "Y": 132
+  Y: 132
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:180
 - Name: "#tr120077"
   X: 313
-  "Y": 132
+  Y: 132
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -57,7 +59,7 @@ Body:
   Source: npc/re/other/achievements.txt:441
 - Name: Map Examiner Modaka#madaka
   X: 167
-  "Y": 344
+  Y: 344
   Dir: 3
   Sprite: 728
   Kind: Script

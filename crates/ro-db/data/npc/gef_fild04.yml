@@ -2,67 +2,69 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: gef015
   X: 187
-  "Y": 39
+  Y: 39
   Dir: 0
   Sprite: 45
   Trigger:
     X: 4
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: geffen
     X: 119
-    "Y": 210
+    Y: 210
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/geffen_fild.txt:34
 - Name: gef016
   X: 261
-  "Y": 362
+  Y: 362
   Dir: 0
   Sprite: 45
   Trigger:
     X: 4
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: mjolnir_01
     X: 284
-    "Y": 21
+    Y: 21
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/geffen_fild.txt:35
 - Name: gef017
   X: 362
-  "Y": 322
+  Y: 322
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 4
+    Y: 4
   Kind: Warp
   Warp:
     Map: mjolnir_06
     X: 21
-    "Y": 331
+    Y: 331
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/geffen_fild.txt:36
 - Name: geff06
   X: 16
-  "Y": 309
+  Y: 309
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 6
+    Y: 6
   Kind: Warp
   Warp:
     Map: gef_fild05
     X: 361
-    "Y": 309
+    Y: 309
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/geffen_fild.txt:37

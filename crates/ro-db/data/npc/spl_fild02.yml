@@ -2,6 +2,8 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
@@ -9,14 +11,14 @@ Body:
 - Name: Tree#ep13bs1
   UniqueName: ep13tree
   X: 348
-  "Y": 76
+  Y: 76
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_13_1.txt:3445
 - Name: Tree#ep13bs2
   X: 232
-  "Y": 145
+  Y: 145
   Dir: 0
   Sprite: 111
   DuplicateOf: ep13tree
@@ -24,7 +26,7 @@ Body:
   Source: npc/quests/quests_13_1.txt:3486
 - Name: Tree#ep13bs3
   X: 380
-  "Y": 197
+  Y: 197
   Dir: 0
   Sprite: 111
   DuplicateOf: ep13tree
@@ -32,7 +34,7 @@ Body:
   Source: npc/quests/quests_13_1.txt:3487
 - Name: Tree#ep13bs4
   X: 304
-  "Y": 151
+  Y: 151
   Dir: 0
   Sprite: 111
   DuplicateOf: ep13tree
@@ -40,7 +42,7 @@ Body:
   Source: npc/quests/quests_13_1.txt:3488
 - Name: Tree#ep13bs5
   X: 183
-  "Y": 235
+  Y: 235
   Dir: 0
   Sprite: 111
   DuplicateOf: ep13tree
@@ -48,7 +50,7 @@ Body:
   Source: npc/quests/quests_13_1.txt:3489
 - Name: Small Fairy#spl
   X: 34
-  "Y": 223
+  Y: 223
   Dir: 5
   Sprite: 442
   Kind: Script
@@ -56,14 +58,14 @@ Body:
 - Name: School of Fish#1
   UniqueName: Fishinghole
   X: 314
-  "Y": 165
+  Y: 165
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_13_1.txt:8256
 - Name: School of Fish#2
   X: 321
-  "Y": 169
+  Y: 169
   Dir: 0
   Sprite: 844
   DuplicateOf: Fishinghole
@@ -71,7 +73,7 @@ Body:
   Source: npc/quests/quests_13_1.txt:8318
 - Name: School of Fish#3
   X: 326
-  "Y": 171
+  Y: 171
   Dir: 0
   Sprite: 844
   DuplicateOf: Fishinghole
@@ -79,7 +81,7 @@ Body:
   Source: npc/quests/quests_13_1.txt:8319
 - Name: Expedition Scout#3
   X: 295
-  "Y": 368
+  Y: 368
   Dir: 3
   Sprite: 707
   DuplicateOf: Expedition Scout#1
@@ -87,157 +89,157 @@ Body:
   Source: npc/quests/quests_13_1.txt:10133
 - Name: ep13_spl_fild02_mon_edq
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/quests/quests_13_1.txt:10292
 - Name: Cat Paw Agent#spl
   X: 25
-  "Y": 211
+  Y: 211
   Dir: 4
   Sprite: 421
   Kind: Script
   Source: npc/quests/quests_13_2.txt:58
 - Name: ????#ep13_mdplant01
   X: 45
-  "Y": 214
+  Y: 214
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_13_2.txt:952
 - Name: ????#ep13_mdplant02
   X: 122
-  "Y": 106
+  Y: 106
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_13_2.txt:978
 - Name: ????#ep13_mdplant03
   X: 329
-  "Y": 191
+  Y: 191
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_13_2.txt:997
 - Name: ????#ep13_mdplant04
   X: 328
-  "Y": 323
+  Y: 323
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_13_2.txt:1016
 - Name: Half-buried Gem#1
   X: 27
-  "Y": 218
+  Y: 218
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_13_2.txt:4535
 - Name: spl_fild02-2
   X: 382
-  "Y": 143
+  Y: 143
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: mid_camp
     X: 16
-    "Y": 143
+    Y: 143
     TriggerWhileHidden: false
   Source: npc/warps/fields/spl_fild.txt:18
 - Name: spl_fild02-4
   X: 383
-  "Y": 216
+  Y: 216
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: mid_camp
     X: 12
-    "Y": 215
+    Y: 215
     TriggerWhileHidden: false
   Source: npc/warps/fields/spl_fild.txt:19
 - Name: spl_fild02-5
   X: 310
-  "Y": 10
+  Y: 10
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: spl_fild03
     X: 306
-    "Y": 376
+    Y: 376
     TriggerWhileHidden: false
   Source: npc/warps/fields/spl_fild.txt:20
 - Name: spl_fild03-2
   X: 103
-  "Y": 30
+  Y: 30
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: spl_fild03
     X: 99
-    "Y": 370
+    Y: 370
     TriggerWhileHidden: false
   Source: npc/warps/fields/spl_fild.txt:23
 - Name: spl_fild02-7
   X: 6
-  "Y": 241
+  Y: 241
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: splendide
     X: 386
-    "Y": 251
+    Y: 251
     TriggerWhileHidden: false
   Source: npc/warps/fields/spl_fild.txt:26
 - Name: spl_fild02-9
   X: 293
-  "Y": 379
+  Y: 379
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: spl_fild01
     X: 289
-    "Y": 30
+    Y: 30
     TriggerWhileHidden: false
   Source: npc/warps/fields/spl_fild.txt:28
 - Name: "#wp120094"
   X: 153
-  "Y": 358
+  Y: 358
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:174
 - Name: "#tr120094"
   X: 153
-  "Y": 358
+  Y: 358
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -245,14 +247,14 @@ Body:
   Source: npc/re/other/achievements.txt:435
 - Name: Dispatched Instructor#08
   X: 377
-  "Y": 149
+  Y: 149
   Dir: 3
   Sprite: 946
   Kind: Script
   Source: npc/re/quests/eden/eden_quests.txt:3657
 - Name: Teleport Cat No.3
   X: 53
-  "Y": 242
+  Y: 242
   Dir: 4
   Sprite: 421
   DuplicateOf: Teleport Cat#ep14_2
@@ -260,7 +262,7 @@ Body:
   Source: npc/re/quests/quests_eclage.txt:98
 - Name: Bush#ep14_1_bs1
   X: 79
-  "Y": 104
+  Y: 104
   Dir: 0
   Sprite: 111
   DuplicateOf: "#mora_bush"
@@ -268,18 +270,18 @@ Body:
   Source: npc/re/quests/quests_mora.txt:449
 - Name: "#ep14_1_bs1"
   X: 79
-  "Y": 104
+  Y: 104
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#mora_pouch"
   Kind: Script
   Source: npc/re/quests/quests_mora.txt:450
 - Name: Fairy#cmd11
   X: 79
-  "Y": 104
+  Y: 104
   Dir: 6
   Sprite: 440
   DuplicateOf: "#mora_fairy"
@@ -287,7 +289,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:451
 - Name: Fairy#cmd12
   X: 79
-  "Y": 104
+  Y: 104
   Dir: 6
   Sprite: 445
   DuplicateOf: "#mora_fairy"
@@ -295,7 +297,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:452
 - Name: Fairy#cmd13
   X: 79
-  "Y": 104
+  Y: 104
   Dir: 6
   Sprite: 439
   DuplicateOf: "#mora_fairy"
@@ -303,7 +305,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:453
 - Name: Bush#ep14_1_bs2
   X: 103
-  "Y": 344
+  Y: 344
   Dir: 0
   Sprite: 111
   DuplicateOf: "#mora_bush"
@@ -311,18 +313,18 @@ Body:
   Source: npc/re/quests/quests_mora.txt:455
 - Name: "#ep14_1_bs2"
   X: 103
-  "Y": 344
+  Y: 344
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#mora_pouch"
   Kind: Script
   Source: npc/re/quests/quests_mora.txt:456
 - Name: Fairy#cmd21
   X: 103
-  "Y": 344
+  Y: 344
   Dir: 6
   Sprite: 440
   DuplicateOf: "#mora_fairy"
@@ -330,7 +332,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:457
 - Name: Fairy#cmd22
   X: 103
-  "Y": 344
+  Y: 344
   Dir: 6
   Sprite: 445
   DuplicateOf: "#mora_fairy"
@@ -338,7 +340,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:458
 - Name: Fairy#cmd23
   X: 103
-  "Y": 344
+  Y: 344
   Dir: 6
   Sprite: 439
   DuplicateOf: "#mora_fairy"
@@ -346,7 +348,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:459
 - Name: Bush#ep14_1_bs3
   X: 261
-  "Y": 323
+  Y: 323
   Dir: 0
   Sprite: 111
   DuplicateOf: "#mora_bush"
@@ -354,18 +356,18 @@ Body:
   Source: npc/re/quests/quests_mora.txt:461
 - Name: "#ep14_1_bs3"
   X: 261
-  "Y": 323
+  Y: 323
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#mora_pouch"
   Kind: Script
   Source: npc/re/quests/quests_mora.txt:462
 - Name: Fairy#cmd31
   X: 261
-  "Y": 323
+  Y: 323
   Dir: 6
   Sprite: 440
   DuplicateOf: "#mora_fairy"
@@ -373,7 +375,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:463
 - Name: Fairy#cmd32
   X: 261
-  "Y": 323
+  Y: 323
   Dir: 6
   Sprite: 445
   DuplicateOf: "#mora_fairy"
@@ -381,7 +383,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:464
 - Name: Fairy#cmd33
   X: 261
-  "Y": 323
+  Y: 323
   Dir: 6
   Sprite: 439
   DuplicateOf: "#mora_fairy"
@@ -389,7 +391,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:465
 - Name: Bush#ep14_1_bs4
   X: 137
-  "Y": 305
+  Y: 305
   Dir: 0
   Sprite: 111
   DuplicateOf: "#mora_bush"
@@ -397,18 +399,18 @@ Body:
   Source: npc/re/quests/quests_mora.txt:467
 - Name: "#ep14_1_bs4"
   X: 137
-  "Y": 305
+  Y: 305
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#mora_pouch"
   Kind: Script
   Source: npc/re/quests/quests_mora.txt:468
 - Name: Fairy#cmd41
   X: 137
-  "Y": 305
+  Y: 305
   Dir: 6
   Sprite: 440
   DuplicateOf: "#mora_fairy"
@@ -416,7 +418,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:469
 - Name: Fairy#cmd42
   X: 137
-  "Y": 305
+  Y: 305
   Dir: 6
   Sprite: 445
   DuplicateOf: "#mora_fairy"
@@ -424,7 +426,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:470
 - Name: Fairy#cmd43
   X: 137
-  "Y": 305
+  Y: 305
   Dir: 6
   Sprite: 439
   DuplicateOf: "#mora_fairy"
@@ -432,7 +434,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:471
 - Name: Bush#ep14_1_bs5
   X: 23
-  "Y": 196
+  Y: 196
   Dir: 0
   Sprite: 111
   DuplicateOf: "#mora_bush"
@@ -440,18 +442,18 @@ Body:
   Source: npc/re/quests/quests_mora.txt:473
 - Name: "#ep14_1_bs5"
   X: 23
-  "Y": 196
+  Y: 196
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#mora_pouch"
   Kind: Script
   Source: npc/re/quests/quests_mora.txt:474
 - Name: Fairy#cmd51
   X: 23
-  "Y": 196
+  Y: 196
   Dir: 6
   Sprite: 440
   DuplicateOf: "#mora_fairy"
@@ -459,7 +461,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:475
 - Name: Fairy#cmd52
   X: 23
-  "Y": 196
+  Y: 196
   Dir: 6
   Sprite: 445
   DuplicateOf: "#mora_fairy"
@@ -467,7 +469,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:476
 - Name: Fairy#cmd53
   X: 23
-  "Y": 196
+  Y: 196
   Dir: 6
   Sprite: 439
   DuplicateOf: "#mora_fairy"
@@ -475,7 +477,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:477
 - Name: Bush#ep14_1_bs6
   X: 186
-  "Y": 260
+  Y: 260
   Dir: 0
   Sprite: 111
   DuplicateOf: "#mora_bush"
@@ -483,18 +485,18 @@ Body:
   Source: npc/re/quests/quests_mora.txt:479
 - Name: "#ep14_1_bs6"
   X: 186
-  "Y": 260
+  Y: 260
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#mora_pouch"
   Kind: Script
   Source: npc/re/quests/quests_mora.txt:480
 - Name: Fairy#cmd61
   X: 186
-  "Y": 260
+  Y: 260
   Dir: 6
   Sprite: 440
   DuplicateOf: "#mora_fairy"
@@ -502,7 +504,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:481
 - Name: Fairy#cmd62
   X: 186
-  "Y": 260
+  Y: 260
   Dir: 6
   Sprite: 445
   DuplicateOf: "#mora_fairy"
@@ -510,7 +512,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:482
 - Name: Fairy#cmd63
   X: 186
-  "Y": 260
+  Y: 260
   Dir: 6
   Sprite: 439
   DuplicateOf: "#mora_fairy"
@@ -518,7 +520,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:483
 - Name: Bush1Timer
   X: 180
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 440
   DuplicateOf: "#mora_bush_timer"
@@ -526,7 +528,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:506
 - Name: Bush2Timer
   X: 181
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 440
   DuplicateOf: "#mora_bush_timer"
@@ -534,7 +536,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:507
 - Name: Bush3Timer
   X: 182
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 440
   DuplicateOf: "#mora_bush_timer"
@@ -542,7 +544,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:508
 - Name: Bush4Timer
   X: 183
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 440
   DuplicateOf: "#mora_bush_timer"
@@ -550,7 +552,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:509
 - Name: Bush5Timer
   X: 184
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 440
   DuplicateOf: "#mora_bush_timer"
@@ -558,7 +560,7 @@ Body:
   Source: npc/re/quests/quests_mora.txt:510
 - Name: Bush6Timer
   X: 186
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 440
   DuplicateOf: "#mora_bush_timer"
@@ -566,18 +568,18 @@ Body:
   Source: npc/re/quests/quests_mora.txt:511
 - Name: Field Bush Switch
   X: 187
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 440
   Kind: Script
   Source: npc/re/quests/quests_mora.txt:513
 - Name: "#Barricade1"
   X: 13
-  "Y": 241
+  Y: 241
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:1250

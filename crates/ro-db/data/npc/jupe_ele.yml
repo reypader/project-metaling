@@ -2,59 +2,61 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: TimeOut#ufe
   X: 14
-  "Y": 6
+  Y: 6
   Dir: 1
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_juperos.txt:4575
 - Name: Guard-1#ufe
   X: 15
-  "Y": 6
+  Y: 6
   Dir: 1
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_juperos.txt:4649
 - Name: Guard-2#ufe
   X: 16
-  "Y": 6
+  Y: 6
   Dir: 1
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_juperos.txt:4704
 - Name: Guard-3#ufe
   X: 17
-  "Y": 6
+  Y: 6
   Dir: 1
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_juperos.txt:4763
 - Name: Guard-4#ufe
   X: 18
-  "Y": 6
+  Y: 6
   Dir: 1
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_juperos.txt:4819
 - Name: GuardEnd#ufe
   X: 19
-  "Y": 6
+  Y: 6
   Dir: 1
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_juperos.txt:4860
 - Name: 4F Enter#ufe
   X: 41
-  "Y": 33
+  Y: 33
   Dir: 0
   Sprite: 45
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/quests/quests_juperos.txt:4919

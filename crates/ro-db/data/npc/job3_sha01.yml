@@ -2,50 +2,52 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: ????#keybox01
   X: 22
-  "Y": 78
+  Y: 78
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/jobs/3-2/shadow_chaser.txt:1932
 - Name: ????#keybox02
   X: 25
-  "Y": 28
+  Y: 28
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/jobs/3-2/shadow_chaser.txt:2000
 - Name: ????#keybox03
   X: 73
-  "Y": 80
+  Y: 80
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/jobs/3-2/shadow_chaser.txt:2079
 - Name: ????#keybox04
   X: 71
-  "Y": 27
+  Y: 27
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/jobs/3-2/shadow_chaser.txt:2216
 - Name: shadowc1
   X: 71
-  "Y": 19
+  Y: 19
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: tha_t01
     X: 149
-    "Y": 224
+    Y: 224
     TriggerWhileHidden: false
   Source: npc/re/warps/other/jobquests.txt:52

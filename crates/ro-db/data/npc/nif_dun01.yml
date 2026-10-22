@@ -2,20 +2,22 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Piano#lv200
   X: 140
-  "Y": 202
+  Y: 202
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/quests_dungeons_200.txt:1201
 - Name: Exciting Cello#lv200
   X: 133
-  "Y": 198
+  Y: 198
   Dir: 3
   Sprite: 844
   DuplicateOf: dummy_npc
@@ -23,7 +25,7 @@ Body:
   Source: npc/re/quests/quests_dungeons_200.txt:1224
 - Name: Dancing Cello#lv200
   X: 138
-  "Y": 195
+  Y: 195
   Dir: 3
   Sprite: 844
   DuplicateOf: dummy_npc
@@ -31,7 +33,7 @@ Body:
   Source: npc/re/quests/quests_dungeons_200.txt:1225
 - Name: Quiet Cello#lv200
   X: 153
-  "Y": 195
+  Y: 195
   Dir: 3
   Sprite: 844
   DuplicateOf: dummy_npc
@@ -39,7 +41,7 @@ Body:
   Source: npc/re/quests/quests_dungeons_200.txt:1226
 - Name: Stranger Cello#lv200
   X: 152
-  "Y": 198
+  Y: 198
   Dir: 3
   Sprite: 844
   DuplicateOf: dummy_npc
@@ -47,7 +49,7 @@ Body:
   Source: npc/re/quests/quests_dungeons_200.txt:1227
 - Name: Happy Cello#lv200
   X: 157
-  "Y": 198
+  Y: 198
   Dir: 3
   Sprite: 844
   DuplicateOf: dummy_npc
@@ -55,7 +57,7 @@ Body:
   Source: npc/re/quests/quests_dungeons_200.txt:1228
 - Name: Serious Contrabass#lv2
   X: 156
-  "Y": 202
+  Y: 202
   Dir: 3
   Sprite: 844
   DuplicateOf: dummy_npc
@@ -63,7 +65,7 @@ Body:
   Source: npc/re/quests/quests_dungeons_200.txt:1229
 - Name: Sleek Harp#lv200
   X: 133
-  "Y": 201
+  Y: 201
   Dir: 3
   Sprite: 844
   DuplicateOf: dummy_npc
@@ -71,7 +73,7 @@ Body:
   Source: npc/re/quests/quests_dungeons_200.txt:1230
 - Name: Helpful Gatekeeper#240
   X: 148
-  "Y": 43
+  Y: 43
   Dir: 3
   Sprite: 20936
   SpriteIsMob: true
@@ -79,7 +81,7 @@ Body:
   Source: npc/re/quests/quests_dungeons_200.txt:1232
 - Name: Silent Gatekeeper#240
   X: 143
-  "Y": 43
+  Y: 43
   Dir: 7
   Sprite: 20941
   SpriteIsMob: true
@@ -87,26 +89,26 @@ Body:
   Source: npc/re/quests/quests_dungeons_200.txt:1243
 - Name: nifdun01a_nifla
   X: 145
-  "Y": 82
+  Y: 82
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: niflheim
     X: 146
-    "Y": 122
+    Y: 122
     TriggerWhileHidden: true
   Source: npc/re/warps/dungeons/nif_dun.txt:19
 - Name: nifdun01a_nifdun02a
   X: 146
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/warps/dungeons/nif_dun.txt:21

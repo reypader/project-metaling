@@ -2,265 +2,267 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Radimir#ridimir
   X: 122
-  "Y": 237
+  Y: 237
   Dir: 3
   Sprite: 102
   Kind: Script
   Source: npc/re/quests/illusion_investigation.txt:475
 - Name: "#illcon01"
   X: 94
-  "Y": 133
+  Y: 133
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:1861
 - Name: "#ilgf01"
   X: 114
-  "Y": 216
+  Y: 216
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 0
+    Y: 0
   DuplicateOf: "#illcon01"
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:1948
 - Name: "#illcon02"
   X: 81
-  "Y": 135
+  Y: 135
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: "#illcon01"
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:1950
 - Name: "#illcon03"
   X: 86
-  "Y": 113
+  Y: 113
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: "#illcon01"
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:1951
 - Name: "#illcon04"
   X: 95
-  "Y": 121
+  Y: 121
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: "#illcon01"
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:1952
 - Name: "#illcon05"
   X: 148
-  "Y": 56
+  Y: 56
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: "#illcon01"
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:1953
 - Name: "#illcon06"
   X: 188
-  "Y": 97
+  Y: 97
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: "#illcon01"
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:1954
 - Name: "#illcon07"
   X: 209
-  "Y": 94
+  Y: 94
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: "#illcon01"
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:1955
 - Name: "#illcon08"
   X: 205
-  "Y": 117
+  Y: 117
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: "#illcon01"
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:1956
 - Name: "#illcon09"
   X: 183
-  "Y": 82
+  Y: 82
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: "#illcon01"
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:1957
 - Name: "#illcon10"
   X: 197
-  "Y": 80
+  Y: 80
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: "#illcon01"
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:1958
 - Name: "#illcon11"
   X: 172
-  "Y": 86
+  Y: 86
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: "#illcon01"
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:1959
 - Name: Marina#ilgf01
   X: 112
-  "Y": 228
+  Y: 228
   Dir: 5
   Sprite: 746
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:1961
 - Name: Antoine#ilgf01
   X: 116
-  "Y": 228
+  Y: 228
   Dir: 3
   Sprite: 669
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:1977
 - Name: Gem#ilgf01
   X: 113
-  "Y": 230
+  Y: 230
   Dir: 5
   Sprite: 79
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2134
 - Name: Marina#ilgf03
   X: 93
-  "Y": 178
+  Y: 178
   Dir: 5
   Sprite: 746
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2407
 - Name: Marina#ilgf04
   X: 127
-  "Y": 153
+  Y: 153
   Dir: 5
   Sprite: 746
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Marina#ilgf03
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2434
 - Name: Marina#ilgf05
   X: 213
-  "Y": 237
+  Y: 237
   Dir: 5
   Sprite: 746
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Marina#ilgf03
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2435
 - Name: Marina#ilgf06
   X: 150
-  "Y": 224
+  Y: 224
   Dir: 5
   Sprite: 746
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Marina#ilgf03
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2436
 - Name: Marina#ilgf07
   X: 208
-  "Y": 144
+  Y: 144
   Dir: 5
   Sprite: 746
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Marina#ilgf03
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2437
 - Name: Marina#ilgf08
   X: 250
-  "Y": 130
+  Y: 130
   Dir: 5
   Sprite: 746
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Marina#ilgf03
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2438
 - Name: Marina#ilgf09
   X: 255
-  "Y": 202
+  Y: 202
   Dir: 5
   Sprite: 746
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Marina#ilgf03
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2439
 - Name: "#ilgf06"
   X: 250
-  "Y": 164
+  Y: 164
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2443
 - Name: Undead#ilgf08
   X: 254
-  "Y": 162
+  Y: 162
   Dir: 1
   Sprite: 3752
   SpriteIsMob: true
@@ -270,7 +272,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2451
 - Name: Undead#ilgf09
   X: 252
-  "Y": 160
+  Y: 160
   Dir: 1
   Sprite: 3752
   SpriteIsMob: true
@@ -280,7 +282,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2452
 - Name: Marina#ilgf10
   X: 253
-  "Y": 165
+  Y: 165
   Dir: 3
   Sprite: 746
   State: Cloaked
@@ -289,29 +291,29 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2453
 - Name: Priest#ilgf01
   X: 250
-  "Y": 164
+  Y: 164
   Dir: 5
   Sprite: 110
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2455
 - Name: Wizard#ilgf06
   X: 49
-  "Y": 113
+  Y: 113
   Dir: 3
   Sprite: 669
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2640
 - Name: Wizard#ilgf07
   X: 46
-  "Y": 112
+  Y: 112
   Dir: 5
   Sprite: 937
   State: Cloaked
@@ -320,7 +322,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2665
 - Name: Undead#ilgf06
   X: 47
-  "Y": 110
+  Y: 110
   Dir: 7
   Sprite: 1036
   SpriteIsMob: true
@@ -330,18 +332,18 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2666
 - Name: Wizard#ilgf08
   X: 137
-  "Y": 60
+  Y: 60
   Dir: 3
   Sprite: 64
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2669
 - Name: Nameless Catacomb#ilgf01
   X: 136
-  "Y": 58
+  Y: 58
   Dir: 5
   Sprite: 557
   State: Cloaked
@@ -350,18 +352,18 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2686
 - Name: Wizard#ilgf09
   X: 67
-  "Y": 85
+  Y: 85
   Dir: 5
   Sprite: 735
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2689
 - Name: Wizard#ilgf10
   X: 67
-  "Y": 83
+  Y: 83
   Dir: 1
   Sprite: 673
   State: Cloaked
@@ -370,29 +372,29 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2716
 - Name: Wizard#ilgf11
   X: 156
-  "Y": 234
+  Y: 234
   Dir: 3
   Sprite: 567
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2719
 - Name: Wizard#ilgf12
   X: 48
-  "Y": 255
+  Y: 255
   Dir: 5
   Sprite: 64
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2738
 - Name: Wizard#ilgf13
   X: 50
-  "Y": 257
+  Y: 257
   Dir: 5
   Sprite: 123
   State: Cloaked
@@ -401,7 +403,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2764
 - Name: Nameless Catacomb#ilgf02
   X: 50
-  "Y": 254
+  Y: 254
   Dir: 5
   Sprite: 557
   State: Cloaked
@@ -410,18 +412,18 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2765
 - Name: Wizard#ilgf14
   X: 112
-  "Y": 267
+  Y: 267
   Dir: 3
   Sprite: 735
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2768
 - Name: Wizard#ilgf15
   X: 110
-  "Y": 266
+  Y: 266
   Dir: 5
   Sprite: 937
   State: Cloaked
@@ -430,7 +432,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2794
 - Name: Nameless Catacomb#ilgf03
   X: 111
-  "Y": 264
+  Y: 264
   Dir: 5
   Sprite: 557
   State: Cloaked
@@ -439,18 +441,18 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2795
 - Name: Wizard#ilgf16
   X: 55
-  "Y": 167
+  Y: 167
   Dir: 3
   Sprite: 937
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2798
 - Name: Wizard#ilgf17
   X: 53
-  "Y": 166
+  Y: 166
   Dir: 7
   Sprite: 123
   State: Cloaked
@@ -459,18 +461,18 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2815
 - Name: Wizard#ilgf18
   X: 236
-  "Y": 235
+  Y: 235
   Dir: 1
   Sprite: 64
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2818
 - Name: Someone's Dream#ilgf18
   X: 233
-  "Y": 237
+  Y: 237
   Dir: 5
   Sprite: 1061
   SpriteIsMob: true
@@ -480,18 +482,18 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2835
 - Name: Wizard#ilgf19
   X: 255
-  "Y": 201
+  Y: 201
   Dir: 5
   Sprite: 673
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2838
 - Name: Wizard#ilgf20
   X: 254
-  "Y": 200
+  Y: 200
   Dir: 5
   Sprite: 123
   State: Cloaked
@@ -500,7 +502,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2861
 - Name: Undead#ilgf05
   X: 256
-  "Y": 198
+  Y: 198
   Dir: 1
   Sprite: 1036
   SpriteIsMob: true
@@ -510,18 +512,18 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2862
 - Name: Wizard#ilgf21
   X: 204
-  "Y": 146
+  Y: 146
   Dir: 1
   Sprite: 673
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2865
 - Name: Wizard#ilgf22
   X: 202
-  "Y": 149
+  Y: 149
   Dir: 5
   Sprite: 937
   State: Cloaked
@@ -530,7 +532,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2895
 - Name: Undead#ilgf02
   X: 202
-  "Y": 152
+  Y: 152
   Dir: 5
   Sprite: 1036
   SpriteIsMob: true
@@ -540,7 +542,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2896
 - Name: Undead#ilgf03
   X: 200
-  "Y": 151
+  Y: 151
   Dir: 5
   Sprite: 1015
   SpriteIsMob: true
@@ -550,7 +552,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2897
 - Name: Undead#ilgf04
   X: 204
-  "Y": 151
+  Y: 151
   Dir: 3
   Sprite: 1036
   SpriteIsMob: true
@@ -560,18 +562,18 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2898
 - Name: Wizard#ilgf23
   X: 257
-  "Y": 110
+  Y: 110
   Dir: 1
   Sprite: 10224
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2901
 - Name: Fast Undead#ilgf01
   X: 253
-  "Y": 112
+  Y: 112
   Dir: 5
   Sprite: 1036
   SpriteIsMob: true
@@ -581,18 +583,18 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2920
 - Name: Wizard#ilgf24
   X: 230
-  "Y": 76
+  Y: 76
   Dir: 3
   Sprite: 704
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2923
 - Name: Shining Mushroom#ilgf01
   X: 228
-  "Y": 75
+  Y: 75
   Dir: 3
   Sprite: 3755
   SpriteIsMob: true
@@ -602,18 +604,18 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2942
 - Name: Wizard#ilgf25
   X: 93
-  "Y": 34
+  Y: 34
   Dir: 1
   Sprite: 10224
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2945
 - Name: Wizard#ilgf26
   X: 94
-  "Y": 37
+  Y: 37
   Dir: 3
   Sprite: 64
   State: Cloaked
@@ -622,7 +624,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2972
 - Name: Undead#ilgf01
   X: 91
-  "Y": 35
+  Y: 35
   Dir: 5
   Sprite: 1036
   SpriteIsMob: true
@@ -632,7 +634,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2973
 - Name: Wizard#ilgf27
   X: 101
-  "Y": 124
+  Y: 124
   Dir: 3
   Sprite: 10224
   State: Cloaked
@@ -641,111 +643,111 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:2976
 - Name: Wizard#ilgf28
   X: 99
-  "Y": 122
+  Y: 122
   Dir: 7
   Sprite: 10224
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:2977
 - Name: Gem#ilgf02
   X: 80
-  "Y": 139
+  Y: 139
   Dir: 5
   Sprite: 79
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: dummy_cloaked_npc
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:3004
 - Name: Marina#ilgf02
   X: 86
-  "Y": 133
+  Y: 133
   Dir: 1
   Sprite: 746
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: dummy_cloaked_npc
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:3005
 - Name: Antoine#ilgf02
   X: 85
-  "Y": 139
+  Y: 139
   Dir: 3
   Sprite: 669
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: dummy_cloaked_npc
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:3006
 - Name: Dracula#ilgf03
   X: 84
-  "Y": 135
+  Y: 135
   Dir: 3
   Sprite: 10137
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: dummy_cloaked_npc
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:3007
 - Name: King#ilgf02
   X: 87
-  "Y": 137
+  Y: 137
   Dir: 3
   Sprite: 799
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: dummy_cloaked_npc
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:3008
 - Name: Jojo#ilgf01
   X: 80
-  "Y": 132
+  Y: 132
   Dir: 7
   Sprite: 735
   State: Cloaked
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: dummy_cloaked_npc
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:3009
 - Name: Wizard#ilgf01
   X: 81
-  "Y": 135
+  Y: 135
   Dir: 5
   Sprite: 10224
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:3012
 - Name: Wizard#ilgf001
   X: 81
-  "Y": 135
+  Y: 135
   Dir: 3
   Sprite: 801
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Wizard#ilgf01
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:3914
 - Name: Mushroom#ilgf01
   X: 82
-  "Y": 132
+  Y: 132
   Dir: 3
   Sprite: 3755
   SpriteIsMob: true
@@ -754,7 +756,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:3916
 - Name: Dracula#ilgf01
   X: 86
-  "Y": 133
+  Y: 133
   Dir: 1
   Sprite: 10137
   State: Cloaked
@@ -763,38 +765,38 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:3917
 - Name: ill_vampire_spawn_bomi
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 5
   Sprite: -1
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:3921
 - Name: ill_vampire_spawn_dracula
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 5
   Sprite: -1
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:3946
 - Name: King#ilgf01
   X: 185
-  "Y": 97
+  Y: 97
   Dir: 5
   Sprite: 799
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:3962
 - Name: Wizard#ilgf02
   X: 191
-  "Y": 96
+  Y: 96
   Dir: 3
   Sprite: 735
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:4284
 - Name: Dracula#ilgf02
   X: 189
-  "Y": 98
+  Y: 98
   Dir: 3
   Sprite: 10137
   State: Cloaked

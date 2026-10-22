@@ -2,31 +2,33 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Old Fisherman
   X: 232
-  "Y": 222
+  Y: 222
   Dir: 0
   Sprite: 709
   Kind: Script
   Source: npc/quests/kiel_hyre_quest.txt:5724
 - Name: "#wp120053"
   X: 76
-  "Y": 268
+  Y: 268
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:262
 - Name: "#tr120053"
   X: 76
-  "Y": 268
+  Y: 268
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -34,61 +36,61 @@ Body:
   Source: npc/re/other/achievements.txt:523
 - Name: newjun01a
   X: 375
-  "Y": 239
+  Y: 239
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: yuno_fild01
     X: 28
-    "Y": 246
+    Y: 246
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/yuno_fild.txt:34
 - Name: newjun02
   X: 23
-  "Y": 338
+  Y: 338
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: yuno_fild11
     X: 366
-    "Y": 361
+    Y: 361
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/yuno_fild.txt:35
 - Name: newjun03
   X: 24
-  "Y": 225
+  Y: 225
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: yuno_fild11
     X: 363
-    "Y": 218
+    Y: 218
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/yuno_fild.txt:37
 - Name: newjun05
   X: 193
-  "Y": 371
+  Y: 371
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: yuno_fild08
     X: 143
-    "Y": 21
+    Y: 21
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/yuno_fild.txt:41

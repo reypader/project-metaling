@@ -2,6 +2,8 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
@@ -9,7 +11,7 @@ Body:
 - Name: Maroll Battle Recruiter
   UniqueName: BatRecruit3
   X: 146
-  "Y": 109
+  Y: 109
   Dir: 3
   Sprite: 728
   DuplicateOf: BatRecruit
@@ -17,133 +19,133 @@ Body:
   Source: npc/battleground/bg_common.txt:284
 - Name: Forger Munster#alde
   X: 113
-  "Y": 70
+  Y: 70
   Dir: 4
   Sprite: 48
   Kind: Script
   Source: npc/cities/aldebaran.txt:37
 - Name: Smithing Guy#alde
   X: 64
-  "Y": 104
+  Y: 104
   Dir: 4
   Sprite: 55
   Kind: Script
   Source: npc/cities/aldebaran.txt:62
 - Name: Young Man#alde
   X: 49
-  "Y": 93
+  Y: 93
   Dir: 4
   Sprite: 83
   Kind: Script
   Source: npc/cities/aldebaran.txt:85
 - Name: Shell Gathering Lady#ald
   X: 81
-  "Y": 61
+  Y: 61
   Dir: 4
   Sprite: 101
   Kind: Script
   Source: npc/cities/aldebaran.txt:96
 - Name: Canal Guy#alde
   X: 46
-  "Y": 129
+  Y: 129
   Dir: 4
   Sprite: 97
   Kind: Script
   Source: npc/cities/aldebaran.txt:126
 - Name: Forest Guy#alde
   X: 67
-  "Y": 154
+  Y: 154
   Dir: 4
   Sprite: 98
   Kind: Script
   Source: npc/cities/aldebaran.txt:148
 - Name: Slot Guy#alde
   X: 90
-  "Y": 170
+  Y: 170
   Dir: 4
   Sprite: 47
   Kind: Script
   Source: npc/cities/aldebaran.txt:187
 - Name: Phracon Guy#alde
   X: 117
-  "Y": 181
+  Y: 181
   Dir: 4
   Sprite: 48
   Kind: Script
   Source: npc/cities/aldebaran.txt:219
 - Name: Alchemy Guy#alde
   X: 121
-  "Y": 231
+  Y: 231
   Dir: 4
   Sprite: 49
   Kind: Script
   Source: npc/cities/aldebaran.txt:248
 - Name: Little Kid#alde
   X: 86
-  "Y": 228
+  Y: 228
   Dir: 4
   Sprite: 62
   Kind: Script
   Source: npc/cities/aldebaran.txt:319
 - Name: Insect Guy#alde
   X: 159
-  "Y": 242
+  Y: 242
   Dir: 4
   Sprite: 119
   Kind: Script
   Source: npc/cities/aldebaran.txt:353
 - Name: Sylvia#alde
   X: 60
-  "Y": 70
+  Y: 70
   Dir: 4
   Sprite: 69
   Kind: Script
   Source: npc/cities/aldebaran.txt:382
 - Name: Issei#alde
   X: 93
-  "Y": 80
+  Y: 80
   Dir: 4
   Sprite: 48
   Kind: Script
   Source: npc/cities/aldebaran.txt:412
 - Name: Joo Jahk#alde
   X: 180
-  "Y": 46
+  Y: 46
   Dir: 4
   Sprite: 88
   Kind: Script
   Source: npc/cities/aldebaran.txt:438
 - Name: Citizen#alde
   X: 212
-  "Y": 122
+  Y: 122
   Dir: 4
   Sprite: 97
   Kind: Script
   Source: npc/cities/aldebaran.txt:463
 - Name: Town Girl#alde
   X: 146
-  "Y": 124
+  Y: 124
   Dir: 4
   Sprite: 101
   Kind: Script
   Source: npc/cities/aldebaran.txt:495
 - Name: Bell Keeper#A
   X: 143
-  "Y": 136
+  Y: 136
   Dir: 4
   Sprite: 89
   Kind: Script
   Source: npc/cities/aldebaran.txt:518
 - Name: Kafra Voting Staff#alde
   X: 145
-  "Y": 102
+  Y: 102
   Dir: 4
   Sprite: 116
   Kind: Script
   Source: npc/kafras/dts_warper.txt:706
 - Name: Cool Event Staff#alde
   X: 138
-  "Y": 102
+  Y: 102
   Dir: 6
   Sprite: 874
   DuplicateOf: VotingStaffCCE
@@ -152,35 +154,35 @@ Body:
 - Name: Kafra Employee
   UniqueName: kaf_aldebaran
   X: 143
-  "Y": 119
+  Y: 119
   Dir: 4
   Sprite: 113
   Kind: Script
   Source: npc/kafras/kafras.txt:115
 - Name: Merchant#alde
   X: 152
-  "Y": 63
+  Y: 63
   Dir: 5
   Sprite: 85
   Kind: Script
   Source: npc/merchants/novice_exchange.txt:187
 - Name: Chef Assistant#alde
   X: 165
-  "Y": 107
+  Y: 107
   Dir: 2
   Sprite: 97
   Kind: Shop
   Source: npc/merchants/shops.txt:294
 - Name: Bulletin Board#18
   X: 145
-  "Y": 105
+  Y: 105
   Dir: 5
   Sprite: 837
   Kind: Script
   Source: npc/other/bulletin_boards.txt:316
 - Name: Mailbox#alde
   X: 135
-  "Y": 122
+  Y: 122
   Dir: 0
   Sprite: 888
   DuplicateOf: MailBox
@@ -188,21 +190,21 @@ Body:
   Source: npc/other/mail.txt:87
 - Name: Lady#megin
   X: 66
-  "Y": 213
+  Y: 213
   Dir: 0
   Sprite: 69
   Kind: Script
   Source: npc/quests/seals/megingard_seal.txt:2460
 - Name: Bill Thayer#lv4
   X: 178
-  "Y": 239
+  Y: 239
   Dir: 3
   Sprite: 712
   Kind: Script
   Source: npc/quests/lvl4_weapon_quest.txt:1349
 - Name: Smile Assistance#alde
   X: 136
-  "Y": 135
+  Y: 135
   Dir: 4
   Sprite: 92
   DuplicateOf: SmileHelper
@@ -210,46 +212,46 @@ Body:
   Source: npc/quests/mrsmile.txt:99
 - Name: Promotional Staff#alde
   X: 127
-  "Y": 138
+  Y: 138
   Dir: 3
   Sprite: 100
   Kind: Script
   Source: npc/quests/quests_13_1.txt:357
 - Name: Meteurengut#cmd
   X: 44
-  "Y": 53
+  Y: 53
   Dir: 4
   Sprite: 64
   Kind: Script
   Source: npc/quests/quests_comodo.txt:1944
 - Name: Kafra Employee#l1
   X: 58
-  "Y": 225
+  Y: 225
   Dir: 4
   Sprite: 116
   Kind: Script
   Source: npc/quests/quests_lighthalzen.txt:8596
 - Name: Continental Messenger#05
   X: 135
-  "Y": 128
+  Y: 128
   Dir: 3
   Sprite: 998
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: ConMessenger
   Kind: Script
   Source: npc/quests/quests_morocc.txt:1202
 - Name: Rogue Agent#nd0
   X: 114
-  "Y": 56
+  Y: 56
   Dir: 5
   Sprite: 828
   Kind: Script
   Source: npc/quests/quests_nameless.txt:11678
 - Name: Sign#aldebaran
   X: 54
-  "Y": 223
+  Y: 223
   Dir: 0
   Sprite: 111
   DuplicateOf: TheSign
@@ -257,7 +259,7 @@ Body:
   Source: npc/quests/the_sign_quest.txt:71
 - Name: Neuschwanstein#23
   X: 152
-  "Y": 97
+  Y: 97
   Dir: 4
   Sprite: 722
   DuplicateOf: InsideFlagsA1
@@ -265,7 +267,7 @@ Body:
   Source: npc/guild/aldeg_cas01.txt:105
 - Name: Hohenschwangau#17
   X: 149
-  "Y": 97
+  Y: 97
   Dir: 4
   Sprite: 722
   DuplicateOf: InsideFlagsA2
@@ -273,7 +275,7 @@ Body:
   Source: npc/guild/aldeg_cas02.txt:99
 - Name: Nuernberg#20
   X: 134
-  "Y": 97
+  Y: 97
   Dir: 4
   Sprite: 722
   DuplicateOf: InsideFlagsA3
@@ -281,7 +283,7 @@ Body:
   Source: npc/guild/aldeg_cas03.txt:102
 - Name: Wuerzburg#20
   X: 131
-  "Y": 97
+  Y: 97
   Dir: 4
   Sprite: 722
   DuplicateOf: InsideFlagsA4
@@ -289,7 +291,7 @@ Body:
   Source: npc/guild/aldeg_cas04.txt:102
 - Name: Rothenburg#19
   X: 128
-  "Y": 97
+  Y: 97
   Dir: 4
   Sprite: 722
   DuplicateOf: InsideFlagsA5
@@ -297,209 +299,209 @@ Body:
   Source: npc/guild/aldeg_cas05.txt:101
 - Name: Kafra Employee#sn
   X: 54
-  "Y": 238
+  Y: 238
   Dir: 5
   Sprite: 117
   Kind: Script
   Source: npc/jobs/novice/supernovice.txt:387
 - Name: ald01
   X: 118
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: aldeba_in
     X: 211
-    "Y": 117
+    Y: 117
     TriggerWhileHidden: false
   Source: npc/warps/cities/aldebaran.txt:19
 - Name: ald001
   X: 139
-  "Y": 34
+  Y: 34
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: mjolnir_12
     X: 199
-    "Y": 375
+    Y: 375
     TriggerWhileHidden: false
   Source: npc/warps/cities/aldebaran.txt:20
 - Name: ald02
   X: 197
-  "Y": 70
+  Y: 70
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: aldeba_in
     X: 94
-    "Y": 41
+    Y: 41
     TriggerWhileHidden: false
   Source: npc/warps/cities/aldebaran.txt:21
 - Name: ald04
   X: 233
-  "Y": 105
+  Y: 105
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: aldeba_in
     X: 157
-    "Y": 190
+    Y: 190
     TriggerWhileHidden: false
   Source: npc/warps/cities/aldebaran.txt:22
 - Name: ald05
   X: 51
-  "Y": 218
+  Y: 218
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: aldeba_in
     X: 24
-    "Y": 227
+    Y: 227
     TriggerWhileHidden: false
   Source: npc/warps/cities/aldebaran.txt:23
 - Name: ald06
   X: 61
-  "Y": 229
+  Y: 229
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: aldeba_in
     X: 148
-    "Y": 227
+    Y: 227
     TriggerWhileHidden: false
   Source: npc/warps/cities/aldebaran.txt:24
 - Name: ald07
   X: 72
-  "Y": 197
+  Y: 197
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: aldeba_in
     X: 27
-    "Y": 37
+    Y: 37
     TriggerWhileHidden: false
   Source: npc/warps/cities/aldebaran.txt:25
 - Name: ald08
   X: 89
-  "Y": 234
+  Y: 234
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: aldeba_in
     X: 242
-    "Y": 237
+    Y: 237
     TriggerWhileHidden: false
   Source: npc/warps/cities/aldebaran.txt:26
 - Name: aldeb_sign1-1
   X: 225
-  "Y": 54
+  Y: 54
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: aldeba_in
     X: 149
-    "Y": 120
+    Y: 120
     TriggerWhileHidden: false
   Source: npc/warps/cities/aldebaran.txt:51
 - Name: ald002
   X: 139
-  "Y": 135
+  Y: 135
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: c_tower1
     X: 199
-    "Y": 159
+    Y: 159
     TriggerWhileHidden: false
   Source: npc/warps/dungeons/c_tower.txt:16
 - Name: alche#1
   X: 65
-  "Y": 53
+  Y: 53
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: alde_alche
     X: 20
-    "Y": 175
+    Y: 175
     TriggerWhileHidden: false
   Source: npc/warps/other/jobquests.txt:92
 - Name: alche#2
   X: 53
-  "Y": 65
+  Y: 65
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: alde_alche
     X: 42
-    "Y": 175
+    Y: 175
     TriggerWhileHidden: false
   Source: npc/warps/other/jobquests.txt:93
 - Name: alde-a_aldeg01
   X: 35
-  "Y": 140
+  Y: 140
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: alde_gld
     X: 280
-    "Y": 160
+    Y: 160
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:302
 - Name: Mr. Claus#1
   X: 168
-  "Y": 168
+  Y: 168
   Dir: 4
   Sprite: 718
   DuplicateOf: Mr. Claus
@@ -507,7 +509,7 @@ Body:
   Source: npc/re/cities/lutie.txt:11
 - Name: Dolangmal#4
   X: 170
-  "Y": 104
+  Y: 104
   Dir: 4
   Sprite: 553
   DuplicateOf: Dolangmal
@@ -516,14 +518,14 @@ Body:
 - Name: Guide#01aldebaran
   UniqueName: GuideAldearan
   X: 139
-  "Y": 63
+  Y: 63
   Dir: 4
   Sprite: 105
   Kind: Script
   Source: npc/re/guides/guides_aldebaran.txt:18
 - Name: Guide#02aldebaran
   X: 243
-  "Y": 143
+  Y: 143
   Dir: 2
   Sprite: 105
   DuplicateOf: GuideAldearan
@@ -531,7 +533,7 @@ Body:
   Source: npc/re/guides/guides_aldebaran.txt:150
 - Name: Guide#03aldebaran
   X: 135
-  "Y": 243
+  Y: 243
   Dir: 4
   Sprite: 105
   DuplicateOf: GuideAldearan
@@ -539,7 +541,7 @@ Body:
   Source: npc/re/guides/guides_aldebaran.txt:151
 - Name: Guide#04aldebaran
   X: 36
-  "Y": 135
+  Y: 135
   Dir: 6
   Sprite: 105
   DuplicateOf: GuideAldearan
@@ -547,14 +549,14 @@ Body:
   Source: npc/re/guides/guides_aldebaran.txt:152
 - Name: Kafra Teleportation#aldebaran
   X: 136
-  "Y": 122
+  Y: 122
   Dir: 5
   Sprite: 10242
   Kind: Script
   Source: npc/re/kafras/Kafra_Teleportation_Services.txt:303
 - Name: Zonda Teleportation#aldebaran
   X: 138
-  "Y": 122
+  Y: 122
   Dir: 3
   Sprite: 10243
   DuplicateOf: ZondaTeleportationServices
@@ -562,7 +564,7 @@ Body:
   Source: npc/re/kafras/Zonda_Teleportation_Services.txt:85
 - Name: Point Merchant#Aldebaran
   X: 133
-  "Y": 114
+  Y: 114
   Dir: 5
   Sprite: 700
   DuplicateOf: pss
@@ -570,7 +572,7 @@ Body:
   Source: npc/re/merchants/3rd_trader.txt:127
 - Name: Guild Warehouse Manager#aldebaran
   X: 146
-  "Y": 122
+  Y: 122
   Dir: 3
   Sprite: 896
   DuplicateOf: GuildWarehouse
@@ -578,7 +580,7 @@ Body:
   Source: npc/re/merchants/guild_warehouse.txt:86
 - Name: Riding Creature Master#4
   X: 133
-  "Y": 109
+  Y: 109
   Dir: 5
   Sprite: 105
   DuplicateOf: Riding Creature Master
@@ -586,7 +588,7 @@ Body:
   Source: npc/re/merchants/renters.txt:116
 - Name: Mado Gear Armorer#alde
   X: 133
-  "Y": 112
+  Y: 112
   Dir: 5
   Sprite: 105
   DuplicateOf: mgm
@@ -594,14 +596,14 @@ Body:
   Source: npc/re/merchants/renters.txt:268
 - Name: Signposts#Clock Tower
   X: 136
-  "Y": 133
+  Y: 133
   Dir: 0
   Sprite: 837
   Kind: Script
   Source: npc/re/other/adven_boards.txt:934
 - Name: Eden Teleport Officer#5
   X: 133
-  "Y": 119
+  Y: 119
   Dir: 5
   Sprite: 729
   DuplicateOf: eto
@@ -609,18 +611,18 @@ Body:
   Source: npc/re/quests/eden/eden_common.txt:245
 - Name: Royal Messenger#e16_ald
   X: 159
-  "Y": 113
+  Y: 113
   Dir: 3
   Sprite: 833
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Royal Messenger#e16_pr
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:134
 - Name: Karian#cmd8
   X: 142
-  "Y": 128
+  Y: 128
   Dir: 2
   Sprite: 486
   DuplicateOf: Karian#cmd2
@@ -628,26 +630,26 @@ Body:
   Source: npc/re/jobs/3-2/minstrel.txt:837
 - Name: "#jmAldebaran Clock Tower"
   X: 140
-  "Y": 130
+  Y: 130
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/jobs/3-2/minstrel.txt:1664
 - Name: alde-yunfild
   X: 140
-  "Y": 244
+  Y: 244
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: yuno_fild01
     X: 208
-    "Y": 19
+    Y: 19
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/yuno_fild.txt:66

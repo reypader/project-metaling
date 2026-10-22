@@ -2,55 +2,57 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#inf_space_control"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:135
 - Name: "#inf_space_mobs"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:222
 - Name: "#w0_0"
   X: 42
-  "Y": 8
+  Y: 8
   Dir: 1
   Sprite: 702
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:576
 - Name: "#w0"
   X: 42
-  "Y": 8
+  Y: 8
   Dir: 1
   Sprite: 702
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:616
 - Name: "#w50_ppl"
   X: 366
-  "Y": 392
+  Y: 392
   Dir: 4
   Sprite: 702
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:620
 - Name: "#w10_t"
   X: 30
-  "Y": 369
+  Y: 369
   Dir: 3
   Sprite: 10005
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:631
 - Name: "#w20_t"
   X: 112
-  "Y": 369
+  Y: 369
   Dir: 3
   Sprite: 10005
   DuplicateOf: "#w10_t"
@@ -58,7 +60,7 @@ Body:
   Source: npc/re/instances/InfiniteSpace.txt:699
 - Name: "#w30_t"
   X: 194
-  "Y": 380
+  Y: 380
   Dir: 3
   Sprite: 10005
   DuplicateOf: "#w10_t"
@@ -66,7 +68,7 @@ Body:
   Source: npc/re/instances/InfiniteSpace.txt:700
 - Name: "#w40_t"
   X: 280
-  "Y": 380
+  Y: 380
   Dir: 3
   Sprite: 10005
   DuplicateOf: "#w10_t"
@@ -74,7 +76,7 @@ Body:
   Source: npc/re/instances/InfiniteSpace.txt:701
 - Name: "#w50_t"
   X: 366
-  "Y": 380
+  Y: 380
   Dir: 3
   Sprite: 10005
   DuplicateOf: "#w10_t"
@@ -82,539 +84,539 @@ Body:
   Source: npc/re/instances/InfiniteSpace.txt:702
 - Name: "#w1"
   X: 30
-  "Y": 31
+  Y: 31
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:709
 - Name: "#w2"
   X: 30
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:776
 - Name: "#w3"
   X: 30
-  "Y": 95
+  Y: 95
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:777
 - Name: "#w4"
   X: 30
-  "Y": 127
+  Y: 127
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:778
 - Name: "#w5"
   X: 30
-  "Y": 168
+  Y: 168
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:779
 - Name: "#w6"
   X: 30
-  "Y": 243
+  Y: 243
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:780
 - Name: "#w7"
   X: 30
-  "Y": 275
+  Y: 275
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:781
 - Name: "#w8"
   X: 30
-  "Y": 307
+  Y: 307
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:782
 - Name: "#w9"
   X: 30
-  "Y": 339
+  Y: 339
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:783
 - Name: "#w10"
   X: 30
-  "Y": 380
+  Y: 380
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:784
 - Name: "#w11"
   X: 112
-  "Y": 31
+  Y: 31
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:785
 - Name: "#w12"
   X: 112
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:786
 - Name: "#w13"
   X: 112
-  "Y": 95
+  Y: 95
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:787
 - Name: "#w14"
   X: 112
-  "Y": 127
+  Y: 127
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:788
 - Name: "#w15"
   X: 112
-  "Y": 168
+  Y: 168
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:789
 - Name: "#w16"
   X: 112
-  "Y": 243
+  Y: 243
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:790
 - Name: "#w17"
   X: 112
-  "Y": 275
+  Y: 275
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:791
 - Name: "#w18"
   X: 112
-  "Y": 307
+  Y: 307
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:792
 - Name: "#w19"
   X: 112
-  "Y": 339
+  Y: 339
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:793
 - Name: "#w20"
   X: 112
-  "Y": 380
+  Y: 380
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:794
 - Name: "#w21"
   X: 198
-  "Y": 31
+  Y: 31
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:795
 - Name: "#w22"
   X: 198
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:796
 - Name: "#w23"
   X: 198
-  "Y": 95
+  Y: 95
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:797
 - Name: "#w24"
   X: 198
-  "Y": 127
+  Y: 127
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:798
 - Name: "#w25"
   X: 198
-  "Y": 168
+  Y: 168
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:799
 - Name: "#w26"
   X: 194
-  "Y": 235
+  Y: 235
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:800
 - Name: "#w27"
   X: 194
-  "Y": 267
+  Y: 267
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:801
 - Name: "#w28"
   X: 194
-  "Y": 299
+  Y: 299
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:802
 - Name: "#w29"
   X: 194
-  "Y": 331
+  Y: 331
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:803
 - Name: "#w30"
   X: 194
-  "Y": 392
+  Y: 392
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:804
 - Name: "#w31"
   X: 280
-  "Y": 31
+  Y: 31
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:805
 - Name: "#w32"
   X: 280
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:806
 - Name: "#w33"
   X: 280
-  "Y": 95
+  Y: 95
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:807
 - Name: "#w34"
   X: 280
-  "Y": 127
+  Y: 127
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:808
 - Name: "#w35"
   X: 280
-  "Y": 168
+  Y: 168
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:809
 - Name: "#w36"
   X: 280
-  "Y": 235
+  Y: 235
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:810
 - Name: "#w37"
   X: 280
-  "Y": 267
+  Y: 267
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:811
 - Name: "#w38"
   X: 280
-  "Y": 299
+  Y: 299
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:812
 - Name: "#w39"
   X: 280
-  "Y": 331
+  Y: 331
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:813
 - Name: "#w40"
   X: 280
-  "Y": 392
+  Y: 392
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:814
 - Name: "#w41"
   X: 362
-  "Y": 31
+  Y: 31
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:815
 - Name: "#w42"
   X: 362
-  "Y": 63
+  Y: 63
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:816
 - Name: "#w43"
   X: 362
-  "Y": 95
+  Y: 95
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:817
 - Name: "#w44"
   X: 362
-  "Y": 127
+  Y: 127
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:818
 - Name: "#w45"
   X: 362
-  "Y": 168
+  Y: 168
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:819
 - Name: "#w46"
   X: 366
-  "Y": 235
+  Y: 235
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:820
 - Name: "#w47"
   X: 366
-  "Y": 267
+  Y: 267
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:821
 - Name: "#w48"
   X: 366
-  "Y": 299
+  Y: 299
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:822
 - Name: "#w49"
   X: 366
-  "Y": 331
+  Y: 331
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#w1"
   Kind: Script
   Source: npc/re/instances/InfiniteSpace.txt:823

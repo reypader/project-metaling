@@ -2,350 +2,352 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Dungeon gateway#1
   X: 96
-  "Y": 203
+  Y: 203
   Dir: 3
   Sprite: 550
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:391
 - Name: Silent Mind#JCv2
   X: 145
-  "Y": 265
+  Y: 265
   Dir: 4
   Sprite: 10172
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:569
 - Name: Wandering Mind#JCv2
   X: 134
-  "Y": 265
+  Y: 265
   Dir: 2
   Sprite: 10172
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:608
 - Name: Victimized Soul's Mind#1
   X: 143
-  "Y": 269
+  Y: 269
   Dir: 4
   Sprite: 10092
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1041
 - Name: Sorrowful Soul's Mind#1
   X: 136
-  "Y": 269
+  Y: 269
   Dir: 6
   Sprite: 10028
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1231
 - Name: A Questionable Device#l
   X: 167
-  "Y": 259
+  Y: 259
   Dir: 2
   Sprite: 10248
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1684
 - Name: "#Alphoccio_Basil_A1"
   X: 75
-  "Y": 121
+  Y: 121
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1714
 - Name: "#Alphoccio_Basil_A2"
   X: 92
-  "Y": 102
+  Y: 102
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1982
 - Name: "#Catherine Cheiron_A1"
   X: 150
-  "Y": 74
+  Y: 74
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1983
 - Name: "#Katrinn Chiron_A2"
   X: 174
-  "Y": 98
+  Y: 98
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1984
 - Name: "#Celia_Alde_A1"
   X: 25
-  "Y": 65
+  Y: 65
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1985
 - Name: "#Celia_Alde_A2"
   X: 60
-  "Y": 102
+  Y: 102
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1986
 - Name: "#Chen_Liu_A1"
   X: 194
-  "Y": 188
+  Y: 188
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1987
 - Name: "#Chen_Liu_A2"
   X: 255
-  "Y": 206
+  Y: 206
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1988
 - Name: "#Eremes_Guille_A1"
   X: 81
-  "Y": 184
+  Y: 184
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1989
 - Name: "#Eremes_Guille_A2"
   X: 113
-  "Y": 191
+  Y: 191
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1990
 - Name: "#Flamel_Emule_A1"
   X: 84
-  "Y": 87
+  Y: 87
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1991
 - Name: "#Flamel_Emule_A2"
   X: 39
-  "Y": 55
+  Y: 55
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1992
 - Name: "#Gertie_Wie_A1"
   X: 232
-  "Y": 198
+  Y: 198
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1993
 - Name: "#Gertie_Wie_A2"
   X: 130
-  "Y": 148
+  Y: 148
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1994
 - Name: "#Harword Alt-Eisen_A1"
   X: 119
-  "Y": 195
+  Y: 195
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1995
 - Name: "#Harword Alt-Eisen_A2"
   X: 158
-  "Y": 210
+  Y: 210
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1996
 - Name: "#Magaleta_Sorin_A1"
   X: 159
-  "Y": 122
+  Y: 122
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1997
 - Name: "#Magaleta_Sorin_A2"
   X: 133
-  "Y": 39
+  Y: 39
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1998
 - Name: "#Randel_Lawrence_A1"
   X: 168
-  "Y": 193
+  Y: 193
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:1999
 - Name: "#Randel_Lawrence_A2"
   X: 188
-  "Y": 188
+  Y: 188
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:2000
 - Name: "#Seyren Windsor_A1"
   X: 44
-  "Y": 155
+  Y: 155
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:2001
 - Name: "#Seyren Windsor_A2"
   X: 54
-  "Y": 221
+  Y: 221
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:2002
 - Name: "#Shecil_Damon_A1"
   X: 249
-  "Y": 66
+  Y: 66
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:2003
 - Name: "#Shecil_Damon_A2"
   X: 213
-  "Y": 97
+  Y: 97
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:2004
 - Name: "#Trentini_A1"
   X: 191
-  "Y": 129
+  Y: 129
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:2005
 - Name: "#Trentini_A2"
   X: 259
-  "Y": 132
+  Y: 132
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#Alphoccio_Basil_A1"
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:2006
 - Name: "#lhz_dun_talk_A1"
   X: 44
-  "Y": 155
+  Y: 155
   Dir: 6
   Sprite: 844
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:2008
 - Name: "#lhz_dun_talk_A2"
   X: 54
-  "Y": 221
+  Y: 221
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -353,7 +355,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2009
 - Name: "#lhz_dun_talk_A3"
   X: 159
-  "Y": 122
+  Y: 122
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -361,7 +363,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2010
 - Name: "#lhz_dun_talk_A4"
   X: 133
-  "Y": 39
+  Y: 39
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -369,7 +371,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2011
 - Name: "#lhz_dun_talk_A5"
   X: 150
-  "Y": 74
+  Y: 74
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -377,7 +379,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2012
 - Name: "#lhz_dun_talk_A6"
   X: 174
-  "Y": 98
+  Y: 98
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -385,7 +387,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2013
 - Name: "#lhz_dun_talk_A7"
   X: 81
-  "Y": 184
+  Y: 184
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -393,7 +395,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2014
 - Name: "#lhz_dun_talk_A8"
   X: 113
-  "Y": 191
+  Y: 191
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -401,7 +403,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2015
 - Name: "#lhz_dun_talk_A9"
   X: 119
-  "Y": 195
+  Y: 195
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -409,7 +411,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2016
 - Name: "#lhz_dun_talk_A10"
   X: 158
-  "Y": 210
+  Y: 210
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -417,7 +419,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2017
 - Name: "#lhz_dun_talk_A11"
   X: 249
-  "Y": 66
+  Y: 66
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -425,7 +427,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2018
 - Name: "#lhz_dun_talk_A12"
   X: 213
-  "Y": 97
+  Y: 97
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -433,7 +435,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2019
 - Name: "#lhz_dun_talk_A13"
   X: 168
-  "Y": 193
+  Y: 193
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -441,7 +443,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2020
 - Name: "#lhz_dun_talk_A14"
   X: 188
-  "Y": 188
+  Y: 188
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -449,7 +451,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2021
 - Name: "#lhz_dun_talk_A15"
   X: 84
-  "Y": 87
+  Y: 87
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -457,7 +459,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2022
 - Name: "#lhz_dun_talk_A16"
   X: 39
-  "Y": 55
+  Y: 55
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -465,7 +467,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2023
 - Name: "#lhz_dun_talk_A17"
   X: 25
-  "Y": 65
+  Y: 65
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -473,7 +475,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2024
 - Name: "#lhz_dun_talk_A18"
   X: 60
-  "Y": 102
+  Y: 102
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -481,7 +483,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2025
 - Name: "#lhz_dun_talk_A19"
   X: 194
-  "Y": 188
+  Y: 188
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -489,7 +491,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2026
 - Name: "#lhz_dun_talk_A20"
   X: 255
-  "Y": 206
+  Y: 206
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -497,7 +499,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2027
 - Name: "#lhz_dun_talk_A21"
   X: 232
-  "Y": 198
+  Y: 198
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -505,7 +507,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2028
 - Name: "#lhz_dun_talk_A22"
   X: 130
-  "Y": 148
+  Y: 148
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -513,7 +515,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2029
 - Name: "#lhz_dun_talk_A23"
   X: 75
-  "Y": 121
+  Y: 121
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -521,7 +523,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2030
 - Name: "#lhz_dun_talk_A24"
   X: 92
-  "Y": 102
+  Y: 102
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -529,7 +531,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2031
 - Name: "#lhz_dun_talk_A25"
   X: 191
-  "Y": 129
+  Y: 129
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -537,7 +539,7 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2032
 - Name: "#lhz_dun_talk_A26"
   X: 259
-  "Y": 132
+  Y: 132
   Dir: 6
   Sprite: 844
   DuplicateOf: "#lhz_dun_talk_A1"
@@ -545,50 +547,50 @@ Body:
   Source: npc/re/merchants/nightmare_biolab.txt:2033
 - Name: A Questionable Device#14684
   X: 132
-  "Y": 61
+  Y: 61
   Dir: 2
   Sprite: 10248
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:2036
 - Name: A Questionable Device#14685
   X: 53
-  "Y": 127
+  Y: 127
   Dir: 2
   Sprite: 10248
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: A Questionable Device#14684
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:2082
 - Name: A Questionable Device#14686
   X: 214
-  "Y": 127
+  Y: 127
   Dir: 2
   Sprite: 10248
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: A Questionable Device#14684
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:2083
 - Name: A Questionable Device#14687
   X: 148
-  "Y": 148
+  Y: 148
   Dir: 2
   Sprite: 10248
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: A Questionable Device#14684
   Kind: Script
   Source: npc/re/merchants/nightmare_biolab.txt:2084
 - Name: lhz_dun_n
   X: 0
-  "Y": 0
+  Y: 0
   Dir: 0
   Sprite: -1
   Kind: Script

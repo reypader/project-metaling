@@ -2,207 +2,209 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Mark
   X: 163
-  "Y": 38
+  Y: 38
   Dir: 5
   Sprite: 616
   Kind: Script
   Source: npc/re/instances/LastRoom.txt:11
 - Name: Verity#Myst
   X: 27
-  "Y": 208
+  Y: 208
   Dir: 5
   Sprite: 10078
   Kind: Script
   Source: npc/re/quests/quests_15_2.txt:1335
 - Name: "#myst_1"
   X: 56
-  "Y": 206
+  Y: 206
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/quests/quests_15_2.txt:1380
 - Name: Du#Hall
   X: 100
-  "Y": 190
+  Y: 190
   Dir: 3
   Sprite: 628
   Kind: Script
   Source: npc/re/quests/quests_15_2.txt:1416
 - Name: Weird piece#01
   X: 333
-  "Y": 206
+  Y: 206
   Dir: 3
   Sprite: 10082
   Kind: Script
   Source: npc/re/quests/quests_15_2.txt:1516
 - Name: Weird piece#02
   X: 182
-  "Y": 137
+  Y: 137
   Dir: 3
   Sprite: 10082
   Kind: Script
   Source: npc/re/quests/quests_15_2.txt:1567
 - Name: Weird piece#03
   X: 214
-  "Y": 86
+  Y: 86
   Dir: 3
   Sprite: 10082
   Kind: Script
   Source: npc/re/quests/quests_15_2.txt:1631
 - Name: Tamarin#Lastroom Entrance
   X: 209
-  "Y": 42
+  Y: 42
   Dir: 3
   Sprite: 10027
   Kind: Script
   Source: npc/re/quests/quests_15_2.txt:1676
 - Name: "#m101"
   X: 124
-  "Y": 189
+  Y: 189
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_myst
     X: 171
-    "Y": 197
+    Y: 197
     TriggerWhileHidden: true
   Source: npc/re/warps/other/un_myst.txt:11
 - Name: "#m102"
   X: 171
-  "Y": 183
+  Y: 183
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_myst
     X: 259
-    "Y": 200
+    Y: 200
     TriggerWhileHidden: true
   Source: npc/re/warps/other/un_myst.txt:12
 - Name: "#m103"
   X: 258
-  "Y": 208
+  Y: 208
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/warps/other/un_myst.txt:14
 - Name: "#m104"
   X: 295
-  "Y": 208
+  Y: 208
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#m103"
   Kind: Script
   Source: npc/re/warps/other/un_myst.txt:26
 - Name: "#m201"
   X: 393
-  "Y": 139
+  Y: 139
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/warps/other/un_myst.txt:29
 - Name: "#m202"
   X: 104
-  "Y": 136
+  Y: 136
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#m201"
   Kind: Script
   Source: npc/re/warps/other/un_myst.txt:41
 - Name: "#m203"
   X: 138
-  "Y": 140
+  Y: 140
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#m201"
   Kind: Script
   Source: npc/re/warps/other/un_myst.txt:42
 - Name: "#m301"
   X: 75
-  "Y": 91
+  Y: 91
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/warps/other/un_myst.txt:45
 - Name: "#m302"
   X: 121
-  "Y": 82
+  Y: 82
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#m301"
   Kind: Script
   Source: npc/re/warps/other/un_myst.txt:57
 - Name: "#m303"
   X: 169
-  "Y": 89
+  Y: 89
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#m301"
   Kind: Script
   Source: npc/re/warps/other/un_myst.txt:58
 - Name: "#m304"
   X: 219
-  "Y": 88
+  Y: 88
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#m301"
   Kind: Script
   Source: npc/re/warps/other/un_myst.txt:59
 - Name: "#way"
   X: 108
-  "Y": 38
+  Y: 38
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: un_myst
     X: 209
-    "Y": 33
+    Y: 33
     TriggerWhileHidden: true
   Source: npc/re/warps/other/un_myst.txt:62

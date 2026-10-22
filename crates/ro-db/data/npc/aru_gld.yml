@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Repairman#aru_gld
   X: 189
-  "Y": 336
+  Y: 336
   Dir: 4
   Sprite: 86
   Kind: Script
@@ -16,14 +18,14 @@ Body:
 - Name: Mardol#flag_Ar01_1
   UniqueName: Ar01_Flag
   X: 164
-  "Y": 270
+  Y: 270
   Dir: 4
   Sprite: 722
   Kind: Script
   Source: npc/guild2/arug_cas01.txt:67
 - Name: Mardol#flag_Ar01_2
   X: 142
-  "Y": 235
+  Y: 235
   Dir: 4
   Sprite: 722
   DuplicateOf: Ar01_Flag
@@ -31,7 +33,7 @@ Body:
   Source: npc/guild2/arug_cas01.txt:75
 - Name: Mardol#flag_Ar01_3
   X: 164
-  "Y": 245
+  Y: 245
   Dir: 5
   Sprite: 722
   DuplicateOf: Ar01_Flag
@@ -39,7 +41,7 @@ Body:
   Source: npc/guild2/arug_cas01.txt:76
 - Name: Mardol#flag_Ar01_4
   X: 182
-  "Y": 255
+  Y: 255
   Dir: 5
   Sprite: 722
   DuplicateOf: Ar01_Flag
@@ -48,14 +50,14 @@ Body:
 - Name: Cyr#flag_Ar02_1
   UniqueName: Ar02_Flag
   X: 80
-  "Y": 41
+  Y: 41
   Dir: 6
   Sprite: 722
   Kind: Script
   Source: npc/guild2/arug_cas02.txt:66
 - Name: Cyr#flag_Ar02_2
   X: 80
-  "Y": 52
+  Y: 52
   Dir: 6
   Sprite: 722
   DuplicateOf: Ar02_Flag
@@ -63,7 +65,7 @@ Body:
   Source: npc/guild2/arug_cas02.txt:74
 - Name: Cyr#flag_Ar02_3
   X: 120
-  "Y": 83
+  Y: 83
   Dir: 5
   Sprite: 722
   Kind: Script
@@ -71,14 +73,14 @@ Body:
 - Name: Horn#flag_Ar03_1
   UniqueName: Ar03_Flag
   X: 60
-  "Y": 174
+  Y: 174
   Dir: 0
   Sprite: 722
   Kind: Script
   Source: npc/guild2/arug_cas03.txt:66
 - Name: Horn#flag_Ar03_2
   X: 74
-  "Y": 174
+  Y: 174
   Dir: 0
   Sprite: 722
   DuplicateOf: Ar03_Flag
@@ -87,14 +89,14 @@ Body:
 - Name: Gefn#flag_ar04_1
   UniqueName: ar04_Flag
   X: 306
-  "Y": 359
+  Y: 359
   Dir: 6
   Sprite: 722
   Kind: Script
   Source: npc/guild2/arug_cas04.txt:66
 - Name: Gefn#flag_ar04_2
   X: 306
-  "Y": 348
+  Y: 348
   Dir: 6
   Sprite: 722
   DuplicateOf: ar04_Flag
@@ -103,14 +105,14 @@ Body:
 - Name: Gefn#flag_ar04_3
   UniqueName: ar04_Flag2
   X: 301
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 722
   Kind: Script
   Source: npc/guild2/arug_cas04.txt:75
 - Name: Gefn#flag_ar04_4
   X: 313
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 722
   DuplicateOf: ar04_Flag2
@@ -119,14 +121,14 @@ Body:
 - Name: Banadis#flag_ar05_1
   UniqueName: ar05_Flag
   X: 289
-  "Y": 103
+  Y: 103
   Dir: 6
   Sprite: 722
   Kind: Script
   Source: npc/guild2/arug_cas05.txt:66
 - Name: Banadis#flag_ar05_2
   X: 289
-  "Y": 112
+  Y: 112
   Dir: 6
   Sprite: 722
   DuplicateOf: ar05_Flag
@@ -135,14 +137,14 @@ Body:
 - Name: Banadis#flag_ar05_3
   UniqueName: ar05_Flag2
   X: 350
-  "Y": 98
+  Y: 98
   Dir: 6
   Sprite: 722
   Kind: Script
   Source: npc/guild2/arug_cas05.txt:75
 - Name: Banadis#flag_ar05_4
   X: 350
-  "Y": 88
+  Y: 88
   Dir: 6
   Sprite: 722
   DuplicateOf: ar05_Flag2
@@ -150,97 +152,97 @@ Body:
   Source: npc/guild2/arug_cas05.txt:83
 - Name: arug002
   X: 195
-  "Y": 363
+  Y: 363
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ve_fild02
     X: 191
-    "Y": 24
+    Y: 24
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:425
 - Name: arug102
   X: 155
-  "Y": 274
+  Y: 274
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: arug_cas01
     X: 275
-    "Y": 93
+    Y: 93
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:429
 - Name: arug202
   X: 78
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: arug_cas02
     X: 139
-    "Y": 31
+    Y: 31
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:432
 - Name: arug302
   X: 68
-  "Y": 150
+  Y: 150
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: arug_cas03
     X: 141
-    "Y": 45
+    Y: 45
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:435
 - Name: arug402
   X: 289
-  "Y": 347
+  Y: 347
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: arug_cas04
     X: 141
-    "Y": 45
+    Y: 45
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:438
 - Name: arug502
   X: 287
-  "Y": 107
+  Y: 107
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: arug_cas05
     X: 141
-    "Y": 45
+    Y: 45
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:441
 - Name: ClickClick MeowMeow-GX#5
   X: 89
-  "Y": 204
+  Y: 204
   Dir: 5
   Sprite: 564
   DuplicateOf: "#GldDungeonReward"
@@ -248,7 +250,7 @@ Body:
   Source: npc/re/merchants/gld_mission_exchange.txt:466
 - Name: Valfreyja Training Instructor#gqaru
   X: 96
-  "Y": 203
+  Y: 203
   Dir: 3
   Sprite: 899
   DuplicateOf: gld_mission#core

@@ -2,247 +2,249 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: ord11-1
   X: 100
-  "Y": 150
+  Y: 150
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ordeal_1-1
     X: 128
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:20
 - Name: ord11-2
   X: 123
-  "Y": 150
+  Y: 150
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ordeal_1-1
     X: 95
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:21
 - Name: ord11-3
   X: 114
-  "Y": 183
+  Y: 183
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ordeal_1-1
     X: 135
-    "Y": 163
+    Y: 163
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:22
 - Name: ord11-4
   X: 130
-  "Y": 168
+  Y: 168
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ordeal_1-1
     X: 109
-    "Y": 188
+    Y: 188
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:23
 - Name: ord11-5
   X: 115
-  "Y": 115
+  Y: 115
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ordeal_1-1
     X: 136
-    "Y": 136
+    Y: 136
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:24
 - Name: ord11-6
   X: 131
-  "Y": 131
+  Y: 131
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ordeal_1-1
     X: 110
-    "Y": 110
+    Y: 110
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:25
 - Name: ord11-7
   X: 148
-  "Y": 176
+  Y: 176
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ordeal_1-1
     X: 149
-    "Y": 204
+    Y: 204
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:26
 - Name: ord11-8
   X: 149
-  "Y": 199
+  Y: 199
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ordeal_1-1
     X: 148
-    "Y": 171
+    Y: 171
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:27
 - Name: ord11-9
   X: 149
-  "Y": 99
+  Y: 99
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ordeal_1-1
     X: 151
-    "Y": 129
+    Y: 129
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:28
 - Name: ord11-10
   X: 151
-  "Y": 124
+  Y: 124
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ordeal_1-1
     X: 151
-    "Y": 94
+    Y: 94
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:29
 - Name: ord11-11
   X: 168
-  "Y": 168
+  Y: 168
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ordeal_1-1
     X: 189
-    "Y": 189
+    Y: 189
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:30
 - Name: ord11-12
   X: 184
-  "Y": 184
+  Y: 184
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ordeal_1-1
     X: 163
-    "Y": 163
+    Y: 163
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:31
 - Name: ord11-13
   X: 169
-  "Y": 131
+  Y: 131
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ordeal_1-1
     X: 188
-    "Y": 111
+    Y: 111
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:32
 - Name: ord11-14
   X: 183
-  "Y": 116
+  Y: 116
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ordeal_1-1
     X: 164
-    "Y": 136
+    Y: 136
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:33
 - Name: ord11-15
   X: 176
-  "Y": 150
+  Y: 150
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ordeal_1-1
     X: 204
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:34
 - Name: ord11-16
   X: 199
-  "Y": 150
+  Y: 150
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ordeal_1-1
     X: 171
-    "Y": 150
+    Y: 150
     TriggerWhileHidden: false
   Source: npc/warps/pvp.txt:35

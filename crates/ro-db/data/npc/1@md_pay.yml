@@ -2,34 +2,36 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Marry Jae#0_1
   X: 239
-  "Y": 30
+  Y: 30
   Dir: 6
   Sprite: 726
   Kind: Script
   Source: npc/re/instances/WeekendDungeon.txt:175
 - Name: map_md_pay_spawn
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 6
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/WeekendDungeon.txt:223
 - Name: "#WDbox1"
   X: 99
-  "Y": 172
+  Y: 172
   Dir: 3
   Sprite: 10005
   Kind: Script
   Source: npc/re/instances/WeekendDungeon.txt:367
 - Name: "#WDbox2"
   X: 235
-  "Y": 60
+  Y: 60
   Dir: 3
   Sprite: 10005
   DuplicateOf: "#WDbox1"
@@ -37,7 +39,7 @@ Body:
   Source: npc/re/instances/WeekendDungeon.txt:403
 - Name: "#WDbox3"
   X: 53
-  "Y": 267
+  Y: 267
   Dir: 3
   Sprite: 10005
   DuplicateOf: "#WDbox1"
@@ -45,7 +47,7 @@ Body:
   Source: npc/re/instances/WeekendDungeon.txt:404
 - Name: "#WDbox4"
   X: 238
-  "Y": 252
+  Y: 252
   Dir: 3
   Sprite: 10005
   DuplicateOf: "#WDbox1"

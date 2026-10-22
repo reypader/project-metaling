@@ -2,20 +2,22 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Magic Swordman#tnm02
   X: 136
-  "Y": 139
+  Y: 139
   Dir: 3
   Sprite: 10009
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:993
 - Name: Demon Morocc#tnm01
   X: 133
-  "Y": 139
+  Y: 139
   Dir: 5
   Sprite: 1916
   SpriteIsMob: true
@@ -24,42 +26,42 @@ Body:
   Source: npc/re/instances/DevilTower.txt:999
 - Name: Lucile#tnm03
   X: 144
-  "Y": 137
+  Y: 137
   Dir: 3
   Sprite: 667
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1001
 - Name: "#devil_flamecross"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1066
 - Name: "#devil_seal_timer"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1105
 - Name: "#devil_seal_spawn_global"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1179
 - Name: devil_seal_spawn#DIR_NORTHWEST
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1221
 - Name: devil_seal_spawn#DIR_SOUTHWEST
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   DuplicateOf: devil_seal_spawn#DIR_NORTHWEST
@@ -67,7 +69,7 @@ Body:
   Source: npc/re/instances/DevilTower.txt:1289
 - Name: devil_seal_spawn#DIR_SOUTHEAST
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   DuplicateOf: devil_seal_spawn#DIR_NORTHWEST
@@ -75,7 +77,7 @@ Body:
   Source: npc/re/instances/DevilTower.txt:1290
 - Name: devil_seal_spawn#DIR_NORTHEAST
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   DuplicateOf: devil_seal_spawn#DIR_NORTHWEST
@@ -83,7 +85,7 @@ Body:
   Source: npc/re/instances/DevilTower.txt:1291
 - Name: devil_seal_spawn#DIR_NORTH
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   DuplicateOf: devil_seal_spawn#DIR_NORTHWEST
@@ -91,14 +93,14 @@ Body:
   Source: npc/re/instances/DevilTower.txt:1292
 - Name: seal_reach_center#DIR_NORTHWEST
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1294
 - Name: seal_reach_center#DIR_SOUTHWEST
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   DuplicateOf: seal_reach_center#DIR_NORTHWEST
@@ -106,7 +108,7 @@ Body:
   Source: npc/re/instances/DevilTower.txt:1311
 - Name: seal_reach_center#DIR_SOUTHEAST
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   DuplicateOf: seal_reach_center#DIR_NORTHWEST
@@ -114,7 +116,7 @@ Body:
   Source: npc/re/instances/DevilTower.txt:1312
 - Name: seal_reach_center#DIR_NORTHEAST
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   DuplicateOf: seal_reach_center#DIR_NORTHWEST
@@ -122,7 +124,7 @@ Body:
   Source: npc/re/instances/DevilTower.txt:1313
 - Name: seal_reach_center#DIR_NORTH
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   DuplicateOf: seal_reach_center#DIR_NORTHWEST
@@ -130,21 +132,21 @@ Body:
   Source: npc/re/instances/DevilTower.txt:1314
 - Name: "#devil_seal_dead"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1316
 - Name: Lucile#tnm04
   X: 144
-  "Y": 137
+  Y: 137
   Dir: 3
   Sprite: 667
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1377
 - Name: "#morocc_lord_talk"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script

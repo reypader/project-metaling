@@ -2,20 +2,22 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Repairman#prt_gld
   X: 139
-  "Y": 117
+  Y: 117
   Dir: 4
   Sprite: 86
   Kind: Script
   Source: npc/merchants/refine.txt:1225
 - Name: Kriemhild#1-2
   X: 131
-  "Y": 60
+  Y: 60
   Dir: 6
   Sprite: 722
   DuplicateOf: OutsideFlagsPR1
@@ -23,7 +25,7 @@ Body:
   Source: npc/guild/prtg_cas01.txt:71
 - Name: Kriemhild#2
   X: 138
-  "Y": 68
+  Y: 68
   Dir: 6
   Sprite: 722
   DuplicateOf: OutsideFlagsPR1
@@ -31,7 +33,7 @@ Body:
   Source: npc/guild/prtg_cas01.txt:72
 - Name: Kriemhild#3
   X: 138
-  "Y": 60
+  Y: 60
   Dir: 6
   Sprite: 722
   DuplicateOf: OutsideFlagsPR1
@@ -39,7 +41,7 @@ Body:
   Source: npc/guild/prtg_cas01.txt:73
 - Name: Kriemhild#4
   X: 135
-  "Y": 60
+  Y: 60
   Dir: 6
   Sprite: 722
   DuplicateOf: OutsideFlagsPR1
@@ -47,7 +49,7 @@ Body:
   Source: npc/guild/prtg_cas01.txt:74
 - Name: Swanhild#1-2
   X: 244
-  "Y": 126
+  Y: 126
   Dir: 8
   Sprite: 722
   DuplicateOf: OutsideFlagsPR2
@@ -55,7 +57,7 @@ Body:
   Source: npc/guild/prtg_cas02.txt:71
 - Name: Swanhild#2
   X: 244
-  "Y": 128
+  Y: 128
   Dir: 8
   Sprite: 722
   DuplicateOf: OutsideFlagsPR2
@@ -63,7 +65,7 @@ Body:
   Source: npc/guild/prtg_cas02.txt:72
 - Name: Swanhild#3
   X: 236
-  "Y": 126
+  Y: 126
   Dir: 8
   Sprite: 722
   DuplicateOf: OutsideFlagsPR2
@@ -71,7 +73,7 @@ Body:
   Source: npc/guild/prtg_cas02.txt:73
 - Name: Swanhild#4
   X: 236
-  "Y": 128
+  Y: 128
   Dir: 8
   Sprite: 722
   DuplicateOf: OutsideFlagsPR2
@@ -79,7 +81,7 @@ Body:
   Source: npc/guild/prtg_cas02.txt:74
 - Name: Fadhgridh#1-2
   X: 147
-  "Y": 140
+  Y: 140
   Dir: 4
   Sprite: 722
   DuplicateOf: OutsideFlagsPR3
@@ -87,7 +89,7 @@ Body:
   Source: npc/guild/prtg_cas03.txt:71
 - Name: Fadhgridh#2
   X: 147
-  "Y": 136
+  Y: 136
   Dir: 4
   Sprite: 722
   DuplicateOf: OutsideFlagsPR3
@@ -95,7 +97,7 @@ Body:
   Source: npc/guild/prtg_cas03.txt:72
 - Name: Fadhgridh#3
   X: 158
-  "Y": 140
+  Y: 140
   Dir: 4
   Sprite: 722
   DuplicateOf: OutsideFlagsPR3
@@ -103,7 +105,7 @@ Body:
   Source: npc/guild/prtg_cas03.txt:73
 - Name: Fadhgridh#4
   X: 158
-  "Y": 136
+  Y: 136
   Dir: 4
   Sprite: 722
   DuplicateOf: OutsideFlagsPR3
@@ -111,7 +113,7 @@ Body:
   Source: npc/guild/prtg_cas03.txt:74
 - Name: Skoegul#1-2
   X: 120
-  "Y": 243
+  Y: 243
   Dir: 6
   Sprite: 722
   DuplicateOf: OutsideFlagsPR4
@@ -119,7 +121,7 @@ Body:
   Source: npc/guild/prtg_cas04.txt:71
 - Name: Skoegul#2
   X: 120
-  "Y": 236
+  Y: 236
   Dir: 6
   Sprite: 722
   DuplicateOf: OutsideFlagsPR4
@@ -127,7 +129,7 @@ Body:
   Source: npc/guild/prtg_cas04.txt:72
 - Name: Skoegul#3
   X: 122
-  "Y": 243
+  Y: 243
   Dir: 6
   Sprite: 722
   DuplicateOf: OutsideFlagsPR4
@@ -135,7 +137,7 @@ Body:
   Source: npc/guild/prtg_cas04.txt:73
 - Name: Skoegul#4
   X: 122
-  "Y": 236
+  Y: 236
   Dir: 6
   Sprite: 722
   DuplicateOf: OutsideFlagsPR4
@@ -143,7 +145,7 @@ Body:
   Source: npc/guild/prtg_cas04.txt:74
 - Name: Gondul#1-2
   X: 199
-  "Y": 243
+  Y: 243
   Dir: 2
   Sprite: 722
   DuplicateOf: OutsideFlagsPR5
@@ -151,7 +153,7 @@ Body:
   Source: npc/guild/prtg_cas05.txt:71
 - Name: Gondul#2
   X: 199
-  "Y": 236
+  Y: 236
   Dir: 2
   Sprite: 722
   DuplicateOf: OutsideFlagsPR5
@@ -159,7 +161,7 @@ Body:
   Source: npc/guild/prtg_cas05.txt:72
 - Name: Gondul#3
   X: 197
-  "Y": 243
+  Y: 243
   Dir: 2
   Sprite: 722
   DuplicateOf: OutsideFlagsPR5
@@ -167,7 +169,7 @@ Body:
   Source: npc/guild/prtg_cas05.txt:73
 - Name: Gondul#4
   X: 197
-  "Y": 236
+  Y: 236
   Dir: 2
   Sprite: 722
   DuplicateOf: OutsideFlagsPR5
@@ -175,111 +177,111 @@ Body:
   Source: npc/guild/prtg_cas05.txt:74
 - Name: prtg01_NorthField
   X: 159
-  "Y": 298
+  Y: 298
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_fild01
     X: 199
-    "Y": 30
+    Y: 30
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:31
 - Name: prtg-1_prtg-1-01
   X: 129
-  "Y": 65
+  Y: 65
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prtg_cas01
     X: 99
-    "Y": 32
+    Y: 32
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:32
 - Name: prtg-2_prtg-2
   X: 240
-  "Y": 124
+  Y: 124
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prtg_cas02
     X: 43
-    "Y": 229
+    Y: 229
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:33
 - Name: prtg-3_prtg-3
   X: 153
-  "Y": 141
+  Y: 141
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prtg_cas03
     X: 168
-    "Y": 12
+    Y: 12
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:34
 - Name: prtg-4_prtg-4
   X: 107
-  "Y": 240
+  Y: 240
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prtg_cas04
     X: 86
-    "Y": 13
+    Y: 13
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:35
 - Name: prtg-5_prtg-5
   X: 212
-  "Y": 240
+  Y: 240
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prtg_cas05
     X: 17
-    "Y": 235
+    Y: 235
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:36
 - Name: Guide in Gloria#tes01
   X: 118
-  "Y": 151
+  Y: 151
   Dir: 4
   Sprite: 105
   Kind: Script
   Source: npc/re/guides/guides_woe_te.txt:10
 - Name: Guide in Gloria#tes02
   X: 122
-  "Y": 151
+  Y: 151
   Dir: 4
   Sprite: 105
   Kind: Script
   Source: npc/re/guides/guides_woe_te.txt:59
 - Name: ClickClick MeowMeow-GX#6
   X: 107
-  "Y": 155
+  Y: 155
   Dir: 3
   Sprite: 564
   DuplicateOf: "#GldDungeonReward"
@@ -287,35 +289,35 @@ Body:
   Source: npc/re/merchants/gld_mission_exchange.txt:467
 - Name: "#fund_master"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/guild/invest_main.txt:230
 - Name: Investment_total#fund00
   X: 2
-  "Y": 2
+  Y: 2
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/guild/invest_main.txt:392
 - Name: Revoting Manager#Invest1
   X: 164
-  "Y": 98
+  Y: 98
   Dir: 3
   Sprite: 421
   Kind: Script
   Source: npc/re/guild/invest_main.txt:468
 - Name: Revoting Manager#Invest2
   X: 164
-  "Y": 98
+  Y: 98
   Dir: 3
   Sprite: 421
   Kind: Script
   Source: npc/re/guild/invest_main.txt:558
 - Name: Cat Paw Merchant Dubae
   X: 158
-  "Y": 96
+  Y: 96
   Dir: 5
   Sprite: 549
   DuplicateOf: Cat Paw Merchant Guild
@@ -323,7 +325,7 @@ Body:
   Source: npc/re/guild/invest_npc.txt:33
 - Name: Gate Manager#prt_f00
   X: 161
-  "Y": 96
+  Y: 96
   Dir: 3
   Sprite: 421
   DuplicateOf: Gate Manager#realm
@@ -332,7 +334,7 @@ Body:
 - Name: Investment Status Board
   UniqueName: InvestStatus_Prt
   X: 163
-  "Y": 99
+  Y: 99
   Dir: 3
   Sprite: 857
   DuplicateOf: Investment Status Board
@@ -340,14 +342,14 @@ Body:
   Source: npc/re/guild/invest_npc.txt:35
 - Name: "#Enterance Button prt"
   X: 1
-  "Y": 4
+  Y: 4
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/guild3/agit_main_te.txt:1138
 - Name: Gaeborg#te_prtcas01
   X: 112
-  "Y": 155
+  Y: 155
   Dir: 4
   Sprite: 722
   DuplicateOf: flag_te
@@ -355,7 +357,7 @@ Body:
   Source: npc/re/guild3/te_prtcas01.txt:12
 - Name: Richard#te_prtcas02
   X: 116
-  "Y": 155
+  Y: 155
   Dir: 4
   Sprite: 722
   DuplicateOf: flag_te
@@ -363,7 +365,7 @@ Body:
   Source: npc/re/guild3/te_prtcas02.txt:12
 - Name: Wigner#te_prtcas03
   X: 120
-  "Y": 155
+  Y: 155
   Dir: 4
   Sprite: 722
   DuplicateOf: flag_te
@@ -371,7 +373,7 @@ Body:
   Source: npc/re/guild3/te_prtcas03.txt:12
 - Name: Heine#te_prtcas04
   X: 124
-  "Y": 155
+  Y: 155
   Dir: 4
   Sprite: 722
   DuplicateOf: flag_te
@@ -379,7 +381,7 @@ Body:
   Source: npc/re/guild3/te_prtcas04.txt:12
 - Name: Nerious#te_prtcas05
   X: 128
-  "Y": 155
+  Y: 155
   Dir: 4
   Sprite: 722
   DuplicateOf: flag_te
@@ -387,7 +389,7 @@ Body:
   Source: npc/re/guild3/te_prtcas05.txt:12
 - Name: Valkyrie Realm Training Instructor#gqprtg
   X: 125
-  "Y": 149
+  Y: 149
   Dir: 3
   Sprite: 899
   DuplicateOf: gld_mission#core
@@ -395,61 +397,61 @@ Body:
   Source: npc/re/guild/mission_npc.txt:13
 - Name: gld_to_cas_way_to_gld
   X: 159
-  "Y": 24
+  Y: 24
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 82
-    "Y": 171
+    Y: 171
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:148
 - Name: prt_cas_D#prt_cas_C
   X: 159
-  "Y": 24
+  Y: 24
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 82
-    "Y": 171
+    Y: 171
     TriggerWhileHidden: false
   Source: npc/re/warps/guildcastles.txt:18
 - Name: to_gloria
   X: 120
-  "Y": 153
+  Y: 153
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: te_prt_gld
     X: 120
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/re/warps/guildcastles.txt:52
 - Name: prtg01_NorthField#te
   X: 159
-  "Y": 298
+  Y: 298
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_fild01
     X: 199
-    "Y": 30
+    Y: 30
     TriggerWhileHidden: false
   Source: npc/re/warps/guildcastles.txt:314

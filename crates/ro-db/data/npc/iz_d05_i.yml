@@ -2,20 +2,22 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Guardian#guard2
   X: 141
-  "Y": 188
+  Y: 188
   Dir: 5
   Sprite: 417
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:9890
 - Name: Kena#Kena
   X: 138
-  "Y": 186
+  Y: 186
   Dir: 5
   Sprite: 84
   Kind: Script

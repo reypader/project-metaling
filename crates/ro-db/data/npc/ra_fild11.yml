@@ -2,40 +2,42 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Merchant#ep18_rachel
   X: 354
-  "Y": 235
+  Y: 235
   Dir: 3
   Sprite: 10380
   Kind: Script
   Source: npc/re/quests/quests_18.txt:2547
 - Name: "#ep18w02__"
   X: 355
-  "Y": 226
+  Y: 226
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/quests/quests_18.txt:10233
 - Name: "#Horim01"
   X: 350
-  "Y": 236
+  Y: 236
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/quests/quests_18.txt:10241
 - Name: Horim#ep1810
   X: 350
-  "Y": 236
+  Y: 236
   Dir: 3
   Sprite: 930
   State: Cloaked
@@ -43,31 +45,31 @@ Body:
   Source: npc/re/quests/quests_18.txt:10249
 - Name: ra022
   X: 360
-  "Y": 226
+  Y: 226
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: rachel
     X: 30
-    "Y": 125
+    Y: 125
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/rachel_fild.txt:40
 - Name: ra023
   X: 21
-  "Y": 290
+  Y: 290
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ra_fild10
     X: 379
-    "Y": 283
+    Y: 283
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/rachel_fild.txt:41

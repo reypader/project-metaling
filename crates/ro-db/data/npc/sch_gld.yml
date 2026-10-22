@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Repairman#sch_gld
   X: 340
-  "Y": 80
+  Y: 80
   Dir: 7
   Sprite: 86
   Kind: Script
@@ -16,14 +18,14 @@ Body:
 - Name: Himinn#flag_sc01_1
   UniqueName: Sc01_Flag
   X: 290
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: 722
   Kind: Script
   Source: npc/guild2/schg_cas01.txt:66
 - Name: Himinn#flag_sc01_2
   X: 297
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: 722
   DuplicateOf: Sc01_Flag
@@ -32,14 +34,14 @@ Body:
 - Name: Andlangr#flag_sc02_1
   UniqueName: Sc02_Flag
   X: 296
-  "Y": 247
+  Y: 247
   Dir: 4
   Sprite: 722
   Kind: Script
   Source: npc/guild2/schg_cas02.txt:58
 - Name: Andlangr#flag_sc02_2
   X: 280
-  "Y": 247
+  Y: 247
   Dir: 4
   Sprite: 722
   DuplicateOf: Sc02_Flag
@@ -48,14 +50,14 @@ Body:
 - Name: Vidblainn#flag_sc03_1
   UniqueName: Sc03_Flag
   X: 91
-  "Y": 191
+  Y: 191
   Dir: 0
   Sprite: 722
   Kind: Script
   Source: npc/guild2/schg_cas03.txt:66
 - Name: Bidblind#flag_sc03_2
   X: 104
-  "Y": 191
+  Y: 191
   Dir: 0
   Sprite: 722
   DuplicateOf: Sc03_Flag
@@ -64,14 +66,14 @@ Body:
 - Name: Hljod#flag_sc04_1
   UniqueName: sc04_Flag
   X: 134
-  "Y": 97
+  Y: 97
   Dir: 4
   Sprite: 722
   Kind: Script
   Source: npc/guild2/schg_cas04.txt:66
 - Name: Hljod#flag_sc04_2
   X: 141
-  "Y": 97
+  Y: 97
   Dir: 4
   Sprite: 722
   DuplicateOf: sc04_Flag
@@ -80,14 +82,14 @@ Body:
 - Name: Skidbladnir#flag_sc05_1
   UniqueName: sc05_Flag
   X: 101
-  "Y": 284
+  Y: 284
   Dir: 4
   Sprite: 722
   Kind: Script
   Source: npc/guild2/schg_cas05.txt:66
 - Name: Skidbladnir#flag_sc05_2
   X: 91
-  "Y": 284
+  Y: 284
   Dir: 4
   Sprite: 722
   DuplicateOf: sc05_Flag
@@ -95,7 +97,7 @@ Body:
   Source: npc/guild2/schg_cas05.txt:74
 - Name: Skidbladnir#flag_sc05_3
   X: 66
-  "Y": 320
+  Y: 320
   Dir: 6
   Sprite: 722
   DuplicateOf: sc05_Flag
@@ -103,7 +105,7 @@ Body:
   Source: npc/guild2/schg_cas05.txt:75
 - Name: Skidbladnir#flag_sc05_4
   X: 66
-  "Y": 310
+  Y: 310
   Dir: 6
   Sprite: 722
   DuplicateOf: sc05_Flag
@@ -111,97 +113,97 @@ Body:
   Source: npc/guild2/schg_cas05.txt:76
 - Name: schg002
   X: 354
-  "Y": 89
+  Y: 89
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: yuno
     X: 16
-    "Y": 126
+    Y: 126
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:404
 - Name: schg102
   X: 293
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: schg_cas01
     X: 119
-    "Y": 8
+    Y: 8
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:408
 - Name: schg202
   X: 288
-  "Y": 258
+  Y: 258
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: schg_cas02
     X: 339
-    "Y": 78
+    Y: 78
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:411
 - Name: schg302
   X: 97
-  "Y": 183
+  Y: 183
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: schg_cas03
     X: 337
-    "Y": 330
+    Y: 330
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:414
 - Name: schg402
   X: 137
-  "Y": 98
+  Y: 98
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: schg_cas04
     X: 119
-    "Y": 8
+    Y: 8
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:417
 - Name: schg502
   X: 65
-  "Y": 315
+  Y: 315
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: schg_cas05
     X: 119
-    "Y": 8
+    Y: 8
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:420
 - Name: ClickClick MeowMeow-GX#4
   X: 266
-  "Y": 119
+  Y: 119
   Dir: 5
   Sprite: 564
   DuplicateOf: "#GldDungeonReward"
@@ -209,7 +211,7 @@ Body:
   Source: npc/re/merchants/gld_mission_exchange.txt:465
 - Name: Nidhoggur Training Instructor#gqsch
   X: 270
-  "Y": 117
+  Y: 117
   Dir: 3
   Sprite: 899
   DuplicateOf: gld_mission#core

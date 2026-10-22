@@ -2,124 +2,126 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Cave Settler#g1
   X: 82
-  "Y": 97
+  Y: 97
   Dir: 3
   Sprite: 996
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/quests/quests_morocc.txt:3873
 - Name: Jaeda#garas1
   X: 85
-  "Y": 101
+  Y: 101
   Dir: 3
   Sprite: 401
   Kind: Script
   Source: npc/quests/quests_morocc.txt:4044
 - Name: case_out1
   X: 97
-  "Y": 21
+  Y: 21
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ein_fild01
     X: 28
-    "Y": 255
+    Y: 255
     TriggerWhileHidden: false
   Source: npc/quests/quests_morocc.txt:4051
 - Name: zid_in
   X: 86
-  "Y": 167
+  Y: 167
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: cave
     X: 77
-    "Y": 185
+    Y: 185
     TriggerWhileHidden: false
   Source: npc/quests/quests_morocc.txt:4053
 - Name: zid_out
   X: 79
-  "Y": 180
+  Y: 180
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: cave
     X: 90
-    "Y": 162
+    Y: 162
     TriggerWhileHidden: false
   Source: npc/quests/quests_morocc.txt:4054
 - Name: Monsterous Man#zid
   X: 22
-  "Y": 186
+  Y: 186
   Dir: 3
   Sprite: 999
   Kind: Script
   Source: npc/quests/quests_morocc.txt:4056
 - Name: Cave Settler#f_cave1
   X: 91
-  "Y": 43
+  Y: 43
   Dir: 3
   Sprite: 870
   Kind: Script
   Source: npc/quests/quests_morocc.txt:4241
 - Name: Cave Settler#m_cave2
   X: 72
-  "Y": 71
+  Y: 71
   Dir: 5
   Sprite: 981
   Kind: Script
   Source: npc/quests/quests_morocc.txt:4250
 - Name: Cave Settler#m_cave3
   X: 134
-  "Y": 62
+  Y: 62
   Dir: 1
   Sprite: 981
   Kind: Script
   Source: npc/quests/quests_morocc.txt:4259
 - Name: Cave Settler#f_cave4
   X: 113
-  "Y": 74
+  Y: 74
   Dir: 5
   Sprite: 401
   Kind: Script
   Source: npc/quests/quests_morocc.txt:4268
 - Name: Cave Girl#f_cave5
   X: 76
-  "Y": 39
+  Y: 39
   Dir: 5
   Sprite: 62
   Kind: Shop
   Source: npc/quests/quests_morocc.txt:4277
 - Name: Cave Settler#f_cave6
   X: 108
-  "Y": 34
+  Y: 34
   Dir: 3
   Sprite: 979
   Kind: Script
   Source: npc/quests/quests_morocc.txt:4279
 - Name: Cave Settler#f_cave7
   X: 105
-  "Y": 32
+  Y: 32
   Dir: 7
   Sprite: 979
   Kind: Script

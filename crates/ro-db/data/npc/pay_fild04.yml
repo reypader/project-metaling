@@ -2,24 +2,26 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#wp120027"
   X: 257
-  "Y": 95
+  Y: 95
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:226
 - Name: "#tr120027"
   X: 257
-  "Y": 95
+  Y: 95
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -27,31 +29,31 @@ Body:
   Source: npc/re/other/achievements.txt:487
 - Name: payf002
   X: 17
-  "Y": 165
+  Y: 165
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 8
+    Y: 8
   Kind: Warp
   Warp:
     Map: moc_fild01
     X: 376
-    "Y": 162
+    Y: 162
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/payon_fild.txt:31
 - Name: payf003
   X: 194
-  "Y": 17
+  Y: 17
   Dir: 0
   Sprite: 45
   Trigger:
     X: 7
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: moc_fild02
     X: 350
-    "Y": 336
+    Y: 336
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/payon_fild.txt:32

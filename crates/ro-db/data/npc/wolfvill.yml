@@ -2,23 +2,25 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#con_wp11"
   X: 79
-  "Y": 260
+  Y: 260
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:16
 - Name: Aira#con
   X: 79
-  "Y": 260
+  Y: 260
   Dir: 4
   Sprite: 475
   State: Cloaked
@@ -26,7 +28,7 @@ Body:
   Source: npc/re/instances/VillaofDeception.txt:25
 - Name: Maram#ep18_wv
   X: 143
-  "Y": 114
+  Y: 114
   Dir: 5
   Sprite: 10376
   State: Cloaked
@@ -35,7 +37,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:2940
 - Name: Miriam#ep18_wv
   X: 145
-  "Y": 114
+  Y: 114
   Dir: 5
   Sprite: 10377
   State: Cloaked
@@ -44,31 +46,31 @@ Body:
   Source: npc/re/quests/quests_18.txt:2941
 - Name: Imril#ep18_wv
   X: 143
-  "Y": 113
+  Y: 113
   Dir: 5
   Sprite: 10379
   Kind: Script
   Source: npc/re/quests/quests_18.txt:2943
 - Name: Village Boy#category
   X: 180
-  "Y": 179
+  Y: 179
   Dir: 3
   Sprite: 944
   Kind: Script
   Source: npc/re/quests/quests_18.txt:3284
 - Name: "#contest1"
   X: 146
-  "Y": 148
+  Y: 148
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_18.txt:3322
 - Name: Radical Youth#Radical2
   X: 147
-  "Y": 148
+  Y: 148
   Dir: 3
   Sprite: 939
   State: Cloaked
@@ -76,7 +78,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:3377
 - Name: Excited Youth#Radical3
   X: 145
-  "Y": 144
+  Y: 144
   Dir: 7
   Sprite: 10398
   State: Cloaked
@@ -84,7 +86,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:3382
 - Name: Hot-blooded Youth#Radic
   X: 148
-  "Y": 144
+  Y: 144
   Dir: 1
   Sprite: 10399
   State: Cloaked
@@ -92,7 +94,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:3387
 - Name: Angry Youth#Radical5
   X: 143
-  "Y": 148
+  Y: 148
   Dir: 5
   Sprite: 10398
   State: Cloaked
@@ -100,7 +102,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:3392
 - Name: Suad#1
   X: 144
-  "Y": 151
+  Y: 151
   Dir: 5
   Sprite: 10378
   State: Cloaked
@@ -108,7 +110,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:3398
 - Name: Passionate Youth#Radica
   X: 145
-  "Y": 146
+  Y: 146
   Dir: 5
   Sprite: 10397
   State: Cloaked
@@ -116,7 +118,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:3728
 - Name: Native Old Man#Elder1
   X: 139
-  "Y": 148
+  Y: 148
   Dir: 5
   Sprite: 10393
   State: Cloaked
@@ -124,7 +126,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:3774
 - Name: Passionate Old Man#Weap
   X: 150
-  "Y": 147
+  Y: 147
   Dir: 1
   Sprite: 929
   State: Cloaked
@@ -132,7 +134,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:3815
 - Name: Timid Youth#Neutral1
   X: 152
-  "Y": 145
+  Y: 145
   Dir: 1
   Sprite: 931
   State: Cloaked
@@ -140,7 +142,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:3863
 - Name: Maram#1
   X: 149
-  "Y": 152
+  Y: 152
   Dir: 3
   Sprite: 10376
   State: Cloaked
@@ -148,7 +150,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:3905
 - Name: Miriam#1
   X: 148
-  "Y": 153
+  Y: 153
   Dir: 3
   Sprite: 10377
   State: Cloaked
@@ -156,7 +158,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:3944
 - Name: Radical Young Man#Radic
   X: 143
-  "Y": 145
+  Y: 145
   Dir: 7
   Sprite: 934
   State: Cloaked
@@ -164,7 +166,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4068
 - Name: Maram#1_1
   X: 148
-  "Y": 145
+  Y: 145
   Dir: 3
   Sprite: 10376
   State: Cloaked
@@ -173,7 +175,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4166
 - Name: Embarrassed Old Man#Eld
   X: 140
-  "Y": 150
+  Y: 150
   Dir: 5
   Sprite: 10395
   State: Cloaked
@@ -181,7 +183,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4168
 - Name: Timid Old Man#Elder3
   X: 138
-  "Y": 145
+  Y: 145
   Dir: 7
   Sprite: 10396
   State: Cloaked
@@ -189,7 +191,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4173
 - Name: Timid Old Man#Elder4
   X: 141
-  "Y": 146
+  Y: 146
   Dir: 7
   Sprite: 945
   State: Cloaked
@@ -197,7 +199,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4178
 - Name: Quiet Youth#Neutral2
   X: 154
-  "Y": 146
+  Y: 146
   Dir: 1
   Sprite: 10398
   State: Cloaked
@@ -205,7 +207,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4183
 - Name: Neutral Youth#Neutral3
   X: 151
-  "Y": 150
+  Y: 150
   Dir: 1
   Sprite: 10397
   State: Cloaked
@@ -213,18 +215,18 @@ Body:
   Source: npc/re/quests/quests_18.txt:4188
 - Name: "#sms01"
   X: 140
-  "Y": 112
+  Y: 112
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: "#contest1"
   Kind: Script
   Source: npc/re/quests/quests_18.txt:4440
 - Name: Miriam#sms01
   X: 142
-  "Y": 109
+  Y: 109
   Dir: 1
   Sprite: 10377
   State: Cloaked
@@ -233,7 +235,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4442
 - Name: Maram#sms01
   X: 143
-  "Y": 110
+  Y: 110
   Dir: 1
   Sprite: 10376
   State: Cloaked
@@ -242,7 +244,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4443
 - Name: Suad#sms01
   X: 140
-  "Y": 112
+  Y: 112
   Dir: 5
   Sprite: 10378
   State: Cloaked
@@ -250,7 +252,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4445
 - Name: Goods#sms01
   X: 132
-  "Y": 256
+  Y: 256
   Dir: 1
   Sprite: 10250
   DuplicateOf: dummy_npc
@@ -258,7 +260,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4570
 - Name: Goods#sms02
   X: 131
-  "Y": 258
+  Y: 258
   Dir: 1
   Sprite: 10250
   DuplicateOf: dummy_npc
@@ -266,7 +268,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4571
 - Name: Goods#sms03
   X: 132
-  "Y": 258
+  Y: 258
   Dir: 1
   Sprite: 10250
   DuplicateOf: dummy_npc
@@ -274,14 +276,14 @@ Body:
   Source: npc/re/quests/quests_18.txt:4572
 - Name: Goods#sms04
   X: 131
-  "Y": 257
+  Y: 257
   Dir: 1
   Sprite: 10250
   Kind: Script
   Source: npc/re/quests/quests_18.txt:4574
 - Name: Lamacus#sms01
   X: 131
-  "Y": 252
+  Y: 252
   Dir: 3
   Sprite: 21292
   SpriteIsMob: true
@@ -290,7 +292,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4742
 - Name: Kun#sms01
   X: 129
-  "Y": 256
+  Y: 256
   Dir: 3
   Sprite: 21293
   SpriteIsMob: true
@@ -300,7 +302,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4925
 - Name: Yopi#sms01
   X: 126
-  "Y": 255
+  Y: 255
   Dir: 5
   Sprite: 21294
   SpriteIsMob: true
@@ -310,7 +312,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4926
 - Name: Citizen#sms01
   X: 129
-  "Y": 251
+  Y: 251
   Dir: 1
   Sprite: 931
   State: Cloaked
@@ -319,7 +321,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4928
 - Name: Citizen#sms02
   X: 129
-  "Y": 248
+  Y: 248
   Dir: 7
   Sprite: 928
   State: Cloaked
@@ -328,7 +330,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4929
 - Name: Citizen#sms03
   X: 132
-  "Y": 250
+  Y: 250
   Dir: 1
   Sprite: 10397
   State: Cloaked
@@ -337,7 +339,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4930
 - Name: Suad#sms02
   X: 126
-  "Y": 252
+  Y: 252
   Dir: 7
   Sprite: 10378
   State: Cloaked
@@ -346,7 +348,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4932
 - Name: Miriam#sms02
   X: 124
-  "Y": 253
+  Y: 253
   Dir: 5
   Sprite: 10377
   State: Cloaked
@@ -355,7 +357,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4933
 - Name: Maram#sms02
   X: 127
-  "Y": 250
+  Y: 250
   Dir: 7
   Sprite: 10376
   State: Cloaked
@@ -364,7 +366,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:4934
 - Name: Aisha#wms01
   X: 120
-  "Y": 117
+  Y: 117
   Dir: 1
   Sprite: 919
   DuplicateOf: dummy_npc
@@ -372,35 +374,35 @@ Body:
   Source: npc/re/quests/quests_18.txt:6232
 - Name: Peco#wms01
   X: 121
-  "Y": 113
+  Y: 113
   Dir: 1
   Sprite: 428
   Kind: Script
   Source: npc/re/quests/quests_18.txt:6234
 - Name: Pando#wms01
   X: 117
-  "Y": 113
+  Y: 113
   Dir: 7
   Sprite: 10285
   Kind: Script
   Source: npc/re/quests/quests_18.txt:6239
 - Name: Guest#wms01
   X: 123
-  "Y": 110
+  Y: 110
   Dir: 5
   Sprite: 10285
   Kind: Script
   Source: npc/re/quests/quests_18.txt:6244
 - Name: Cute#wms01
   X: 125
-  "Y": 111
+  Y: 111
   Dir: 3
   Sprite: 10285
   Kind: Script
   Source: npc/re/quests/quests_18.txt:6249
 - Name: Goat#wms01
   X: 121
-  "Y": 119
+  Y: 119
   Dir: 3
   Sprite: 21323
   SpriteIsMob: true
@@ -408,24 +410,24 @@ Body:
   Source: npc/re/quests/quests_18.txt:6254
 - Name: Sheep#wms01
   X: 124
-  "Y": 116
+  Y: 116
   Dir: 3
   Sprite: 890
   Kind: Script
   Source: npc/re/quests/quests_18.txt:6260
 - Name: Scania#wms01
   X: 117
-  "Y": 119
+  Y: 119
   Dir: 5
   Sprite: 10398
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_18.txt:6265
 - Name: Maram#wms01
   X: 120
-  "Y": 121
+  Y: 121
   Dir: 3
   Sprite: 10376
   State: Cloaked
@@ -434,7 +436,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:6648
 - Name: Boksil#wms01
   X: 119
-  "Y": 117
+  Y: 117
   Dir: 1
   Sprite: 21324
   SpriteIsMob: true
@@ -444,14 +446,14 @@ Body:
   Source: npc/re/quests/quests_18.txt:6649
 - Name: Aisha#wms02
   X: 99
-  "Y": 178
+  Y: 178
   Dir: 5
   Sprite: 919
   Kind: Script
   Source: npc/re/quests/quests_18.txt:6652
 - Name: Boksil#wms02
   X: 100
-  "Y": 177
+  Y: 177
   Dir: 1
   Sprite: 21324
   SpriteIsMob: true
@@ -459,87 +461,87 @@ Body:
   Source: npc/re/quests/quests_18.txt:6779
 - Name: Zlan#ep18
   X: 85
-  "Y": 111
+  Y: 111
   Dir: 3
   Sprite: 931
   Kind: Script
   Source: npc/re/quests/quests_18.txt:7006
 - Name: Karr#ep18
   X: 83
-  "Y": 109
+  Y: 109
   Dir: 5
   Sprite: 99
   Kind: Script
   Source: npc/re/quests/quests_18.txt:7148
 - Name: Redcell#ep18
   X: 87
-  "Y": 109
+  Y: 109
   Dir: 3
   Sprite: 943
   Kind: Script
   Source: npc/re/quests/quests_18.txt:7240
 - Name: Ahab#ep18
   X: 127
-  "Y": 155
+  Y: 155
   Dir: 3
   Sprite: 928
   Kind: Script
   Source: npc/re/quests/quests_18.txt:7323
 - Name: Folklorist Gudra#ep18
   X: 61
-  "Y": 170
+  Y: 170
   Dir: 5
   Sprite: 919
   Kind: Script
   Source: npc/re/quests/quests_18.txt:7545
 - Name: Dinar#ep18
   X: 106
-  "Y": 224
+  Y: 224
   Dir: 3
   Sprite: 941
   Kind: Script
   Source: npc/re/quests/quests_18.txt:7778
 - Name: Amira#ep18
   X: 180
-  "Y": 204
+  Y: 204
   Dir: 3
   Sprite: 940
   Kind: Script
   Source: npc/re/quests/quests_18.txt:7838
 - Name: Shanina#ep18
   X: 154
-  "Y": 184
+  Y: 184
   Dir: 5
   Sprite: 942
   Kind: Script
   Source: npc/re/quests/quests_18.txt:7891
 - Name: Budan#ep18
   X: 103
-  "Y": 230
+  Y: 230
   Dir: 3
   Sprite: 931
   Kind: Script
   Source: npc/re/quests/quests_18.txt:7949
 - Name: Water barrel#ep1801
   X: 104
-  "Y": 235
+  Y: 235
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/quests_18.txt:8255
 - Name: "#ep18_wp01"
   X: 53
-  "Y": 234
+  Y: 234
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/quests/quests_18.txt:8297
 - Name: Hazar#ep18_1
   X: 50
-  "Y": 234
+  Y: 234
   Dir: 6
   Sprite: 10389
   State: Cloaked
@@ -547,14 +549,14 @@ Body:
   Source: npc/re/quests/quests_18.txt:8308
 - Name: Transport Cart#ep18_1
   X: 53
-  "Y": 234
+  Y: 234
   Dir: 4
   Sprite: 10390
   Kind: Script
   Source: npc/re/quests/quests_18.txt:8434
 - Name: Camille#ep18_1
   X: 56
-  "Y": 234
+  Y: 234
   Dir: 4
   Sprite: 10388
   State: Cloaked
@@ -562,17 +564,17 @@ Body:
   Source: npc/re/quests/quests_18.txt:8470
 - Name: "#ep18_wp03_"
   X: 76
-  "Y": 210
+  Y: 210
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/quests/quests_18.txt:8655
 - Name: Hazar#ep18_3
   X: 75
-  "Y": 214
+  Y: 214
   Dir: 4
   Sprite: 10389
   State: Cloaked
@@ -580,7 +582,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:8669
 - Name: Camille#ep18_3
   X: 79
-  "Y": 213
+  Y: 213
   Dir: 3
   Sprite: 10388
   State: Cloaked
@@ -589,7 +591,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:8842
 - Name: Observer#ep18_33
   X: 77
-  "Y": 207
+  Y: 207
   Dir: 8
   Sprite: 931
   State: Cloaked
@@ -597,7 +599,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:8844
 - Name: Observer#ep18_32
   X: 74
-  "Y": 208
+  Y: 208
   Dir: 8
   Sprite: 928
   State: Cloaked
@@ -605,7 +607,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:8850
 - Name: Observer#ep18_31
   X: 72
-  "Y": 209
+  Y: 209
   Dir: 8
   Sprite: 929
   State: Cloaked
@@ -613,17 +615,17 @@ Body:
   Source: npc/re/quests/quests_18.txt:8856
 - Name: Ezekiel#hms01
   X: 171
-  "Y": 253
+  Y: 253
   Dir: 5
   Sprite: 930
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_18.txt:8909
 - Name: Maram#hms01
   X: 174
-  "Y": 252
+  Y: 252
   Dir: 3
   Sprite: 10376
   State: Cloaked
@@ -632,7 +634,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:9460
 - Name: Old Man#hms01
   X: 175
-  "Y": 249
+  Y: 249
   Dir: 1
   Sprite: 10393
   State: Cloaked
@@ -641,7 +643,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:9461
 - Name: Old Man#hms02
   X: 173
-  "Y": 247
+  Y: 247
   Dir: 1
   Sprite: 10394
   State: Cloaked
@@ -650,7 +652,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:9462
 - Name: Old Man#hms03
   X: 170
-  "Y": 248
+  Y: 248
   Dir: 7
   Sprite: 10395
   State: Cloaked
@@ -659,7 +661,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:9463
 - Name: Villager#hms01
   X: 170
-  "Y": 251
+  Y: 251
   Dir: 5
   Sprite: 931
   State: Cloaked
@@ -668,7 +670,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:9464
 - Name: Injured#hms01
   X: 172
-  "Y": 250
+  Y: 250
   Dir: 1
   Sprite: 849
   State: Cloaked
@@ -677,69 +679,69 @@ Body:
   Source: npc/re/quests/quests_18.txt:9465
 - Name: Old Man#hms05
   X: 174
-  "Y": 111
+  Y: 111
   Dir: 5
   Sprite: 10394
   Kind: Script
   Source: npc/re/quests/quests_18.txt:9468
 - Name: Old Man#hms06
   X: 178
-  "Y": 110
+  Y: 110
   Dir: 3
   Sprite: 10395
   Kind: Script
   Source: npc/re/quests/quests_18.txt:9474
 - Name: Old Man#hms04
   X: 176
-  "Y": 111
+  Y: 111
   Dir: 3
   Sprite: 10393
   Kind: Script
   Source: npc/re/quests/quests_18.txt:9480
 - Name: Larama#ep18
   X: 197
-  "Y": 170
+  Y: 170
   Dir: 5
   Sprite: 943
   Kind: Script
   Source: npc/re/quests/quests_18.txt:9591
 - Name: Eruin#ep18
   X: 202
-  "Y": 166
+  Y: 166
   Dir: 3
   Sprite: 919
   Kind: Script
   Source: npc/re/quests/quests_18.txt:9601
 - Name: Ahir#ep18
   X: 147
-  "Y": 97
+  Y: 97
   Dir: 5
   Sprite: 944
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_18.txt:9871
 - Name: Albert#ep18
   X: 182
-  "Y": 82
+  Y: 82
   Dir: 5
   Sprite: 931
   Kind: Script
   Source: npc/re/quests/quests_18.txt:10060
 - Name: "#HorimG"
   X: 271
-  "Y": 26
+  Y: 26
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/quests/quests_18.txt:10564
 - Name: Horim#ep1815
   X: 266
-  "Y": 26
+  Y: 26
   Dir: 5
   Sprite: 930
   State: Cloaked
@@ -747,131 +749,131 @@ Body:
   Source: npc/re/quests/quests_18.txt:10572
 - Name: Half Flower#EP18_L08
   X: 212
-  "Y": 86
+  Y: 86
   Dir: 1
   Sprite: 10392
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: Half Flower#EP18_R01
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12468
 - Name: Half Flower#EP18_L09
   X: 143
-  "Y": 43
+  Y: 43
   Dir: 1
   Sprite: 10392
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: Half Flower#EP18_R01
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12469
 - Name: Half Flower#EP18_L10
   X: 58
-  "Y": 113
+  Y: 113
   Dir: 1
   Sprite: 10392
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: Half Flower#EP18_R01
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12470
 - Name: Half Flower#EP18_T09
   X: 258
-  "Y": 226
+  Y: 226
   Dir: 1
   Sprite: 10392
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: Half Flower#EP18_R01
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12480
 - Name: Half Flower#EP18_T10
   X: 130
-  "Y": 203
+  Y: 203
   Dir: 1
   Sprite: 10392
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: Half Flower#EP18_R01
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12481
 - Name: Half Flower#EP18_W02
   X: 88
-  "Y": 57
+  Y: 57
   Dir: 1
   Sprite: 10392
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: Half Flower#EP18_R01
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12484
 - Name: Half Flower#EP18_W03
   X: 65
-  "Y": 95
+  Y: 95
   Dir: 1
   Sprite: 10392
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: Half Flower#EP18_R01
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12485
 - Name: Half Flower#EP18_W04
   X: 78
-  "Y": 222
+  Y: 222
   Dir: 1
   Sprite: 10392
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: Half Flower#EP18_R01
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12486
 - Name: Half Flower#EP18_W05
   X: 193
-  "Y": 238
+  Y: 238
   Dir: 1
   Sprite: 10392
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: Half Flower#EP18_R01
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12487
 - Name: Half Flower#EP18_W06
   X: 208
-  "Y": 245
+  Y: 245
   Dir: 1
   Sprite: 10392
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: Half Flower#EP18_R01
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12488
 - Name: Syeil#E18_D7
   X: 90
-  "Y": 261
+  Y: 261
   Dir: 6
   Sprite: 959
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12709
 - Name: Seil#E18_D8
   X: 269
-  "Y": 68
+  Y: 68
   Dir: 4
   Sprite: 960
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12715
 - Name: Building materials#hms01
   X: 167
-  "Y": 253
+  Y: 253
   Dir: 1
   Sprite: 10250
   DuplicateOf: dummy_npc
@@ -879,7 +881,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:12721
 - Name: Building materials#hms02
   X: 166
-  "Y": 252
+  Y: 252
   Dir: 1
   Sprite: 10250
   DuplicateOf: dummy_npc
@@ -887,7 +889,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:12722
 - Name: Building materials#hms03
   X: 165
-  "Y": 254
+  Y: 254
   Dir: 1
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -895,7 +897,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:12723
 - Name: Building materials#hms04
   X: 165
-  "Y": 250
+  Y: 250
   Dir: 1
   Sprite: 10026
   DuplicateOf: dummy_npc
@@ -903,7 +905,7 @@ Body:
   Source: npc/re/quests/quests_18.txt:12724
 - Name: Building materials#hms05
   X: 164
-  "Y": 251
+  Y: 251
   Dir: 1
   Sprite: 10025
   DuplicateOf: dummy_npc
@@ -911,14 +913,14 @@ Body:
   Source: npc/re/quests/quests_18.txt:12725
 - Name: Sarana#cmm01
   X: 154
-  "Y": 217
+  Y: 217
   Dir: 3
   Sprite: 10399
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12727
 - Name: Village child#cmm01
   X: 146
-  "Y": 131
+  Y: 131
   Dir: 1
   Sprite: 10402
   DuplicateOf: dummy_npc
@@ -926,21 +928,21 @@ Body:
   Source: npc/re/quests/quests_18.txt:12738
 - Name: Oha#cmm01
   X: 192
-  "Y": 146
+  Y: 146
   Dir: 3
   Sprite: 10395
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12740
 - Name: Zen#cmm01
   X: 123
-  "Y": 162
+  Y: 162
   Dir: 7
   Sprite: 10394
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12746
 - Name: "#con_admin"
   X: 38
-  "Y": 243
+  Y: 243
   Dir: 5
   Sprite: 844
   DuplicateOf: dummy_npc
@@ -948,58 +950,58 @@ Body:
   Source: npc/re/quests/quests_18.txt:12752
 - Name: Cassoulet#villager
   X: 188
-  "Y": 140
+  Y: 140
   Dir: 7
   Sprite: 10401
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12754
 - Name: Hiyares#villager
   X: 202
-  "Y": 130
+  Y: 130
   Dir: 7
   Sprite: 10400
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12765
 - Name: Director#villager
   X: 224
-  "Y": 230
+  Y: 230
   Dir: 3
   Sprite: 10402
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12775
 - Name: Asad#asad
   X: 167
-  "Y": 135
+  Y: 135
   Dir: 3
   Sprite: 10397
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12863
 - Name: Emmet#emet
   X: 164
-  "Y": 137
+  Y: 137
   Dir: 3
   Sprite: 10399
   Kind: Script
   Source: npc/re/quests/quests_18.txt:12984
 - Name: Bamdat#bamdat
   X: 170
-  "Y": 131
+  Y: 131
   Dir: 3
   Sprite: 10394
   Kind: Script
   Source: npc/re/quests/quests_18.txt:13066
 - Name: wolfvill_to_gw_fild01
   X: 276
-  "Y": 25
+  Y: 25
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gw_fild01
     X: 25
-    "Y": 101
+    Y: 101
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/gw_fild.txt:11

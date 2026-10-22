@@ -2,343 +2,345 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Han#a1
   X: 249
-  "Y": 82
+  Y: 82
   Dir: 2
   Sprite: 105
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:10
 - Name: Doek#a1
   X: 252
-  "Y": 79
+  Y: 79
   Dir: 4
   Sprite: 105
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:37
 - Name: Scientist Doyeon#a1
   X: 249
-  "Y": 79
+  Y: 79
   Dir: 4
   Sprite: 573
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:63
 - Name: Fortress Entry Warp Portal#1
   X: 243
-  "Y": 75
+  Y: 75
   Dir: 3
   Sprite: 10007
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:338
 - Name: Nillem#ep16_pprt01
   X: 157
-  "Y": 334
+  Y: 334
   Dir: 3
   Sprite: 735
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14445
 - Name: Medic#EP162PS18
   X: 159
-  "Y": 328
+  Y: 328
   Dir: 6
   Sprite: 641
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14577
 - Name: Wounded Soldier#EP161PS17
   X: 160
-  "Y": 327
+  Y: 327
   Dir: 5
   Sprite: 105
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14584
 - Name: Soldier#EP162PS01
   X: 165
-  "Y": 326
+  Y: 326
   Dir: 6
   Sprite: 105
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14591
 - Name: Soldier#EP162PS02
   X: 167
-  "Y": 324
+  Y: 324
   Dir: 6
   Sprite: 105
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Soldier#EP162PS01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14682
 - Name: Soldier#EP162PS03
   X: 165
-  "Y": 322
+  Y: 322
   Dir: 6
   Sprite: 105
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Soldier#EP162PS01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14683
 - Name: Soldier#EP162PS04
   X: 167
-  "Y": 320
+  Y: 320
   Dir: 6
   Sprite: 105
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Soldier#EP162PS01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14684
 - Name: Soldier#EP162PS05
   X: 165
-  "Y": 318
+  Y: 318
   Dir: 6
   Sprite: 105
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Soldier#EP162PS01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14685
 - Name: Soldier#EP162PS06
   X: 146
-  "Y": 326
+  Y: 326
   Dir: 2
   Sprite: 105
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Soldier#EP162PS01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14686
 - Name: Soldier#EP162PS07
   X: 144
-  "Y": 324
+  Y: 324
   Dir: 2
   Sprite: 105
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Soldier#EP162PS01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14687
 - Name: Soldier#EP162PS08
   X: 146
-  "Y": 322
+  Y: 322
   Dir: 2
   Sprite: 105
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Soldier#EP162PS01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14688
 - Name: Soldier#EP162PS09
   X: 144
-  "Y": 320
+  Y: 320
   Dir: 2
   Sprite: 105
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Soldier#EP162PS01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14689
 - Name: Soldier#EP162PS10
   X: 146
-  "Y": 318
+  Y: 318
   Dir: 2
   Sprite: 105
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Soldier#EP162PS01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14690
 - Name: Soldier#EP162PS11
   X: 149
-  "Y": 316
+  Y: 316
   Dir: 4
   Sprite: 105
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Soldier#EP162PS01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14691
 - Name: Soldier#EP162PS12
   X: 151
-  "Y": 314
+  Y: 314
   Dir: 4
   Sprite: 105
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Soldier#EP162PS01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14692
 - Name: Soldier#EP162PS13
   X: 153
-  "Y": 316
+  Y: 316
   Dir: 4
   Sprite: 105
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Soldier#EP162PS01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14693
 - Name: Soldier#EP162PS14
   X: 158
-  "Y": 316
+  Y: 316
   Dir: 4
   Sprite: 105
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Soldier#EP162PS01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14694
 - Name: Soldier#EP162PS15
   X: 160
-  "Y": 314
+  Y: 314
   Dir: 4
   Sprite: 105
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Soldier#EP162PS01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14695
 - Name: Soldier#EP162PS16
   X: 162
-  "Y": 316
+  Y: 316
   Dir: 4
   Sprite: 105
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Soldier#EP162PS01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14696
 - Name: Chief Guard#EP161PG
   X: 156
-  "Y": 324
+  Y: 324
   Dir: 6
   Sprite: 10134
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14698
 - Name: Lad Quest_START#EP161QU01
   X: 221
-  "Y": 193
+  Y: 193
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14907
 - Name: Village Lad#EP161HO01
   X: 221
-  "Y": 193
+  Y: 193
   Dir: 4
   Sprite: 85
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14917
 - Name: Soldier#EP161HO02
   X: 79
-  "Y": 96
+  Y: 96
   Dir: 7
   Sprite: 105
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14954
 - Name: Village Lad#EP161HO03
   X: 77
-  "Y": 98
+  Y: 98
   Dir: 8
   Sprite: 85
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14991
 - Name: Tool Bag#EP161HO04
   X: 178
-  "Y": 185
+  Y: 185
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15060
 - Name: Giant Beast Manager#EP161ETC06
   X: 85
-  "Y": 90
+  Y: 90
   Dir: 7
   Sprite: 105
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15081
 - Name: Magical Gear Mechanic#EP161ETC05
   X: 74
-  "Y": 101
+  Y: 101
   Dir: 7
   Sprite: 105
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15133
 - Name: Girl Quest_START#EP161QU02
   X: 276
-  "Y": 242
+  Y: 242
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15185
 - Name: Girl#EP161GU01
   X: 276
-  "Y": 242
+  Y: 242
   Dir: 4
   Sprite: 958
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15195
 - Name: Cathedral Knight#EP161GU04
   X: 235
-  "Y": 315
+  Y: 315
   Dir: 4
   Sprite: 745
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15235
 - Name: PecoPeco Mechanic#EP161GU02
   X: 232
-  "Y": 318
+  Y: 318
   Dir: 3
   Sprite: 105
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15303
 - Name: Girl#EP161GU03
   X: 229
-  "Y": 317
+  Y: 317
   Dir: 6
   Sprite: 958
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15373
 - Name: PecoPeco Mechanic#EP161ETC04
   X: 55
-  "Y": 350
+  Y: 350
   Dir: 5
   Sprite: 105
   DuplicateOf: PecoPeco Mechanic#EP161GU02
@@ -346,14 +348,14 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:15440
 - Name: Soldier#EP161ETC01
   X: 47
-  "Y": 339
+  Y: 339
   Dir: 5
   Sprite: 105
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15442
 - Name: Soldier#EP161ETC02
   X: 52
-  "Y": 344
+  Y: 344
   Dir: 5
   Sprite: 105
   DuplicateOf: Soldier#EP161ETC01
@@ -361,31 +363,31 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:15448
 - Name: Knight Gray#EP161GU05
   X: 52
-  "Y": 340
+  Y: 340
   Dir: 6
   Sprite: 119
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15450
 - Name: Mercenary Guild Admin#EP161ETC03
   X: 41
-  "Y": 337
+  Y: 337
   Dir: 5
   Sprite: 105
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15476
 - Name: Rosa Erinin#EP161GU07
   X: 55
-  "Y": 347
+  Y: 347
   Dir: 6
   Sprite: 101
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15489
 - Name: Girl#EP161GU06
   X: 57
-  "Y": 346
+  Y: 346
   Dir: 4
   Sprite: 958
   DuplicateOf: Rosa Erinin#EP161GU07
@@ -393,318 +395,318 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:15536
 - Name: Soldier Quest_START#EP161QU03
   X: 140
-  "Y": 304
+  Y: 304
   Dir: 0
   Sprite: 139
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15539
 - Name: Soldier#EP161HU01
   X: 140
-  "Y": 304
+  Y: 304
   Dir: 6
   Sprite: 705
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15548
 - Name: Soldier#EP161HU02
   X: 68
-  "Y": 336
+  Y: 336
   Dir: 4
   Sprite: 705
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15600
 - Name: Soldier#EP161HU03
   X: 79
-  "Y": 102
+  Y: 102
   Dir: 8
   Sprite: 705
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15640
 - Name: Married couple Quest_START#EP161QU04
   X: 38
-  "Y": 261
+  Y: 261
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15705
 - Name: Eryus#EP161BU01
   X: 38
-  "Y": 261
+  Y: 261
   Dir: 6
   Sprite: 92
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15715
 - Name: Eryus#EP161BU02
   X: 231
-  "Y": 310
+  Y: 310
   Dir: 4
   Sprite: 92
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15774
 - Name: Female#EP161BU03
   X: 108
-  "Y": 164
+  Y: 164
   Dir: 4
   Sprite: 101
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15883
 - Name: Female#EP161BU04
   X: 229
-  "Y": 310
+  Y: 310
   Dir: 6
   Sprite: 101
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15921
 - Name: Emergency Medicine#EP161BU05
   X: 111
-  "Y": 166
+  Y: 166
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:15982
 - Name: Dead Villager#EP161DIE01
   X: 213
-  "Y": 90
+  Y: 90
   Dir: 2
   Sprite: 457
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16000
 - Name: Dead Villager#EP161DIE02
   X: 214
-  "Y": 85
+  Y: 85
   Dir: 6
   Sprite: 887
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16025
 - Name: Dead Villager#EP161DIE03
   X: 222
-  "Y": 87
+  Y: 87
   Dir: 8
   Sprite: 849
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16026
 - Name: Dead Villager#EP161DIE04
   X: 149
-  "Y": 188
+  Y: 188
   Dir: 2
   Sprite: 887
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16027
 - Name: Dead Villager#EP161DIE05
   X: 188
-  "Y": 207
+  Y: 207
   Dir: 6
   Sprite: 849
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16028
 - Name: Dead Villager#EP161DIE06
   X: 109
-  "Y": 94
+  Y: 94
   Dir: 8
   Sprite: 457
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16030
 - Name: Dead Villager#EP161DIE07
   X: 88
-  "Y": 279
+  Y: 279
   Dir: 2
   Sprite: 887
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16073
 - Name: Dead Villager#EP161DIE08
   X: 89
-  "Y": 207
+  Y: 207
   Dir: 6
   Sprite: 849
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16074
 - Name: Dead Villager#EP161DIE09
   X: 265
-  "Y": 300
+  Y: 300
   Dir: 8
   Sprite: 457
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16075
 - Name: Dead Villager#EP161DIE10
   X: 88
-  "Y": 350
+  Y: 350
   Dir: 2
   Sprite: 887
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16076
 - Name: Dead Villager#EP161DIE11
   X: 156
-  "Y": 275
+  Y: 275
   Dir: 6
   Sprite: 457
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16077
 - Name: Dead Villager#EP161DIE12
   X: 104
-  "Y": 114
+  Y: 114
   Dir: 8
   Sprite: 849
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16078
 - Name: Dead Villager#EP161DIE13
   X: 108
-  "Y": 318
+  Y: 318
   Dir: 2
   Sprite: 887
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16079
 - Name: Dead Villager#EP161DIE14
   X: 238
-  "Y": 129
+  Y: 129
   Dir: 6
   Sprite: 849
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16080
 - Name: Dead Villager#EP161DIE15
   X: 200
-  "Y": 139
+  Y: 139
   Dir: 8
   Sprite: 849
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16081
 - Name: Dead Villager#EP161DIE16
   X: 74
-  "Y": 227
+  Y: 227
   Dir: 2
   Sprite: 457
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16082
 - Name: Dead Villager#EP161DIE17
   X: 220
-  "Y": 350
+  Y: 350
   Dir: 6
   Sprite: 849
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16083
 - Name: Dead Villager#EP161DIE18
   X: 45
-  "Y": 146
+  Y: 146
   Dir: 8
   Sprite: 849
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16084
 - Name: Dead Villager#EP161DIE19
   X: 227
-  "Y": 219
+  Y: 219
   Dir: 2
   Sprite: 457
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16085
 - Name: Dead Villager#EP161DIE20
   X: 146
-  "Y": 252
+  Y: 252
   Dir: 6
   Sprite: 887
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dead Villager#EP161DIE01
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16086
 - Name: Sign#EP161ETC12
   X: 148
-  "Y": 49
+  Y: 49
   Dir: 0
   Sprite: 837
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16088
 - Name: Kriemhild
   X: 155
-  "Y": 190
+  Y: 190
   Dir: 4
   Sprite: 722
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16120
 - Name: Swanhild
   X: 146
-  "Y": 194
+  Y: 194
   Dir: 3
   Sprite: 722
   DuplicateOf: Kriemhild
@@ -712,7 +714,7 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:16121
 - Name: Fadhgridh
   X: 143
-  "Y": 203
+  Y: 203
   Dir: 2
   Sprite: 722
   DuplicateOf: Kriemhild
@@ -720,7 +722,7 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:16122
 - Name: Skoegul
   X: 167
-  "Y": 203
+  Y: 203
   Dir: 6
   Sprite: 722
   DuplicateOf: Kriemhild
@@ -728,7 +730,7 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:16123
 - Name: Gondul
   X: 165
-  "Y": 194
+  Y: 194
   Dir: 5
   Sprite: 722
   DuplicateOf: Kriemhild
@@ -736,23 +738,23 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:16124
 - Name: Pron Dungeon Helper#EP161PG
   X: 5
-  "Y": 5
+  Y: 5
   Dir: 6
   Sprite: 10134
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:16127
 - Name: "#prt_q_tp_lib_q"
   X: 155
-  "Y": 358
+  Y: 358
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_lib_q
     X: 89
-    "Y": 43
+    Y: 43
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:114

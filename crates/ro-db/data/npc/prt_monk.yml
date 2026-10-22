@@ -2,180 +2,182 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Rust Blackhand#edq
   X: 261
-  "Y": 91
+  Y: 91
   Dir: 3
   Sprite: 826
   Kind: Script
   Source: npc/instances/SealedShrine.txt:254
 - Name: Weapon Dealer#prt4
   X: 135
-  "Y": 263
+  Y: 263
   Dir: 5
   Sprite: 726
   Kind: Shop
   Source: npc/merchants/shops.txt:259
 - Name: Asthe#tu
   X: 230
-  "Y": 106
+  Y: 106
   Dir: 3
   Sprite: 79
   Kind: Script
   Source: npc/quests/first_class/tu_acolyte.txt:173
 - Name: Dog#tu
   X: 235
-  "Y": 245
+  Y: 245
   Dir: 5
   Sprite: 81
   Kind: Script
   Source: npc/quests/first_class/tu_acolyte.txt:942
 - Name: Boy#boy_voi
   X: 243
-  "Y": 238
+  Y: 238
   Dir: 5
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/quests/first_class/tu_acolyte.txt:986
 - Name: Ill Girl#tu
   X: 226
-  "Y": 257
+  Y: 257
   Dir: 6
   Sprite: 93
   Kind: Script
   Source: npc/quests/first_class/tu_acolyte.txt:997
 - Name: Veiner
   X: 197
-  "Y": 228
+  Y: 228
   Dir: 3
   Sprite: 89
   Kind: Script
   Source: npc/quests/first_class/tu_acolyte.txt:1196
 - Name: Hedrick
   X: 28
-  "Y": 260
+  Y: 260
   Dir: 5
   Sprite: 50
   Kind: Script
   Source: npc/quests/first_class/tu_acolyte.txt:1241
 - Name: Weapon Merchant#tu
   X: 136
-  "Y": 261
+  Y: 261
   Dir: 0
   Sprite: 139
   Trigger:
     X: 9
-    "Y": 9
+    Y: 9
   Kind: Script
   Source: npc/quests/first_class/tu_acolyte.txt:1277
 - Name: Gloria#tu
   X: 219
-  "Y": 164
+  Y: 164
   Dir: 3
   Sprite: 95
   Kind: Script
   Source: npc/quests/first_class/tu_acolyte.txt:1329
 - Name: Cleope Verce
   X: 153
-  "Y": 210
+  Y: 210
   Dir: 3
   Sprite: 95
   Kind: Script
   Source: npc/quests/first_class/tu_acolyte.txt:1402
 - Name: "#tu_monk"
   X: 217
-  "Y": 123
+  Y: 123
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/quests/first_class/tu_acolyte.txt:1576
 - Name: Eavesdrop#tu
   X: 223
-  "Y": 123
+  Y: 123
   Dir: 3
   Sprite: 111
   Kind: Script
   Source: npc/quests/first_class/tu_acolyte.txt:1597
 - Name: Guarding Monk#mk
   X: 59
-  "Y": 247
+  Y: 247
   Dir: 1
   Sprite: 120
   Trigger:
     X: 6
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/jobs/2-2/monk.txt:21
 - Name: Touha#mk
   X: 251
-  "Y": 255
+  Y: 255
   Dir: 1
   Sprite: 79
   Kind: Script
   Source: npc/jobs/2-2/monk.txt:906
 - Name: Boohae#mk
   X: 57
-  "Y": 179
+  Y: 179
   Dir: 1
   Sprite: 110
   Kind: Script
   Source: npc/jobs/2-2/monk.txt:1685
 - Name: Door Keeper#mk
   X: 199
-  "Y": 169
+  Y: 169
   Dir: 3
   Sprite: 746
   Kind: Script
   Source: npc/jobs/2-2/monk.txt:1851
 - Name: Hyunmoo#mk2
   X: 225
-  "Y": 180
+  Y: 180
   Dir: 1
   Sprite: 89
   Kind: Script
   Source: npc/jobs/2-2/monk.txt:2120
 - Name: Apprentice Monk#qsk_mo
   X: 270
-  "Y": 198
+  Y: 198
   Dir: 3
   Sprite: 753
   Kind: Script
   Source: npc/quests/skills/monk_skills.txt:16
 - Name: monk15
   X: 192
-  "Y": 172
+  Y: 172
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: monk_test
     X: 329
-    "Y": 50
+    Y: 50
     TriggerWhileHidden: false
   Source: npc/warps/other/jobquests.txt:82
 - Name: Sister Margaret#ep162
   X: 93
-  "Y": 254
+  Y: 254
   Dir: 3
   Sprite: 79
   Kind: Script
   Source: npc/re/quests/quests_16_2.txt:14477
 - Name: Valerie#mnk
   X: 59
-  "Y": 253
+  Y: 253
   Dir: 4
   Sprite: 837
   DuplicateOf: Valerie#sign
@@ -183,46 +185,46 @@ Body:
   Source: npc/re/jobs/repair.txt:272
 - Name: monk001
   X: 22
-  "Y": 248
+  Y: 248
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_fild03
     X: 368
-    "Y": 256
+    Y: 256
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/prontera_fild.txt:128
 - Name: monk01
   X: 245
-  "Y": 106
+  Y: 106
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: monk_in
     X: 98
-    "Y": 30
+    Y: 30
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/prontera_fild.txt:129
 - Name: monk02
   X: 245
-  "Y": 137
+  Y: 137
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: monk_in
     X: 98
-    "Y": 183
+    Y: 183
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/prontera_fild.txt:130

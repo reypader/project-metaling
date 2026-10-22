@@ -2,170 +2,172 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Bulletin Board#28
   X: 369
-  "Y": 308
+  Y: 308
   Dir: 5
   Sprite: 837
   Kind: Script
   Source: npc/other/bulletin_boards.txt:403
 - Name: gl3
   X: 162
-  "Y": 330
+  Y: 330
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gl_in01
     X: 77
-    "Y": 68
+    Y: 68
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:80
 - Name: gl4
   X: 179
-  "Y": 360
+  Y: 360
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gl_in01
     X: 80
-    "Y": 174
+    Y: 174
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:81
 - Name: gl8
   X: 199
-  "Y": 322
+  Y: 322
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gl_cas02
     X: 104
-    "Y": 189
+    Y: 189
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:82
 - Name: gl9
   X: 200
-  "Y": 137
+  Y: 137
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gl_church
     X: 156
-    "Y": 7
+    Y: 7
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:83
 - Name: gl7
   X: 200
-  "Y": 297
+  Y: 297
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gl_cas01
     X: 199
-    "Y": 29
+    Y: 29
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:84
 - Name: gl5
   X: 220
-  "Y": 360
+  Y: 360
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gl_in01
     X: 110
-    "Y": 125
+    Y: 125
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:85
 - Name: gl6
   X: 237
-  "Y": 330
+  Y: 330
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gl_in01
     X: 122
-    "Y": 59
+    Y: 59
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:86
 - Name: glst001
   X: 377
-  "Y": 304
+  Y: 304
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: gef_fild06
     X: 27
-    "Y": 304
+    Y: 304
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:87
 - Name: gl1
   X: 51
-  "Y": 108
+  Y: 108
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gl_step
     X: 12
-    "Y": 7
+    Y: 7
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:88
 - Name: gl2
   X: 77
-  "Y": 193
+  Y: 193
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gl_knt01
     X: 150
-    "Y": 15
+    Y: 15
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:89
 - Name: Hugin
   X: 204
-  "Y": 273
+  Y: 273
   Dir: 5
   Sprite: 755
   Kind: Script
@@ -173,87 +175,87 @@ Body:
 - Name: Kafra Employee
   UniqueName: kaf_glast
   X: 200
-  "Y": 275
+  Y: 275
   Dir: 0
   Sprite: 115
   Kind: Script
   Source: npc/re/kafras/kafras.txt:43
 - Name: Hugin's Butler#pa0829
   X: 210
-  "Y": 273
+  Y: 273
   Dir: 5
   Sprite: 69
   Kind: Script
   Source: npc/re/merchants/OldGlastHeim_merchants.txt:12
 - Name: Hugin's Magician#pa0829
   X: 212
-  "Y": 273
+  Y: 273
   Dir: 4
   Sprite: 66
   Kind: Script
   Source: npc/re/merchants/OldGlastHeim_merchants.txt:102
 - Name: Hugin's Craftsman#pa0829
   X: 210
-  "Y": 270
+  Y: 270
   Dir: 0
   Sprite: 726
   Kind: Script
   Source: npc/re/merchants/OldGlastHeim_merchants.txt:255
 - Name: Dark magic master#pa082
   X: 184
-  "Y": 283
+  Y: 283
   Dir: 4
   Sprite: 66
   Kind: Script
   Source: npc/re/merchants/OldGlastHeim_merchants.txt:344
 - Name: Portrait collector#0002
   X: 216
-  "Y": 292
+  Y: 292
   Dir: 5
   Sprite: 878
   Kind: Script
   Source: npc/re/merchants/OldGlastHeim_merchants.txt:522
 - Name: Signposts#Glastheim
   X: 372
-  "Y": 298
+  Y: 298
   Dir: 0
   Sprite: 837
   Kind: Script
   Source: npc/re/other/adven_boards.txt:218
 - Name: Dispatched Instructor#03
   X: 195
-  "Y": 131
+  Y: 131
   Dir: 5
   Sprite: 95
   Kind: Script
   Source: npc/re/quests/eden/eden_quests.txt:3065
 - Name: Magician Nillem#glabyss01
   X: 191
-  "Y": 273
+  Y: 273
   Dir: 3
   Sprite: 735
   Kind: Script
   Source: npc/re/quests/quests_exp_175.txt:13
 - Name: Hugin's follower#1
   X: 195
-  "Y": 273
+  Y: 273
   Dir: 3
   Sprite: 123
   Kind: Script
   Source: npc/re/quests/quests_glastheim.txt:14
 - Name: Rune Leader Jungberg
   X: 44
-  "Y": 363
+  Y: 363
   Dir: 3
   Sprite: 468
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:137
 - Name: Memory of King Schmidtz
   X: 240
-  "Y": 366
+  Y: 366
   Dir: 5
   Sprite: 844
   Kind: Script

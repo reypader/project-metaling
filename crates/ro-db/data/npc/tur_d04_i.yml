@@ -2,35 +2,37 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: illtur04_03
   X: 99
-  "Y": 191
+  Y: 191
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: tur_d03_i
     X: 217
-    "Y": 82
+    Y: 82
     TriggerWhileHidden: false
   Source: npc/re/quests/quests_illusion_dungeons.txt:5721
 - Name: Fragile Woman#illtur
   X: 96
-  "Y": 112
+  Y: 112
   Dir: 1
   Sprite: 10241
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:6627
 - Name: Girl#illtur02
   X: 100
-  "Y": 112
+  Y: 112
   Dir: 3
   Sprite: 10238
   State: Cloaked
@@ -39,7 +41,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:6989
 - Name: Archeologist Leiphen#illtur03
   X: 101
-  "Y": 110
+  Y: 110
   Dir: 3
   Sprite: 740
   State: Cloaked
@@ -48,7 +50,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:6990
 - Name: Rancorous Ghost#illtur02
   X: 96
-  "Y": 112
+  Y: 112
   Dir: 5
   Sprite: 792
   State: Cloaked
@@ -57,7 +59,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:6991
 - Name: Rancorous Ghost#illtur03
   X: 94
-  "Y": 108
+  Y: 108
   Dir: 7
   Sprite: 796
   State: Cloaked
@@ -66,7 +68,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:6992
 - Name: Rancorous Ghost#illtur04
   X: 91
-  "Y": 111
+  Y: 111
   Dir: 5
   Sprite: 792
   State: Cloaked
@@ -75,7 +77,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:6993
 - Name: Rancorous Ghost#illtur05
   X: 97
-  "Y": 104
+  Y: 104
   Dir: 7
   Sprite: 792
   State: Cloaked
@@ -84,7 +86,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:6994
 - Name: Rancorous Ghost#illtur06
   X: 107
-  "Y": 109
+  Y: 109
   Dir: 3
   Sprite: 792
   State: Cloaked
@@ -93,7 +95,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:6995
 - Name: Rancorous Ghost#illtur07
   X: 104
-  "Y": 112
+  Y: 112
   Dir: 3
   Sprite: 796
   State: Cloaked
@@ -102,7 +104,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:6996
 - Name: Rancorous Ghost#illtur01
   X: 102
-  "Y": 102
+  Y: 102
   Dir: 1
   Sprite: 796
   State: Cloaked
@@ -111,90 +113,90 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:6997
 - Name: "#illtur01"
   X: 26
-  "Y": 167
+  Y: 167
   Dir: 0
   Sprite: 139
   Trigger:
     X: 15
-    "Y": 15
+    Y: 15
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:7000
 - Name: Archeologist Leiphen#illtur02
   X: 26
-  "Y": 167
+  Y: 167
   Dir: 5
   Sprite: 740
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:7008
 - Name: "#illturg21"
   X: 99
-  "Y": 153
+  Y: 153
   Dir: 7
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:7305
 - Name: "#illturgg21"
   X: 99
-  "Y": 160
+  Y: 160
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#illturgg11"
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:7309
 - Name: "#illturg22"
   X: 37
-  "Y": 137
+  Y: 137
   Dir: 7
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:7311
 - Name: "#illturgg22"
   X: 45
-  "Y": 137
+  Y: 137
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#illturgg11"
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:7315
 - Name: "#illturg23"
   X: 76
-  "Y": 35
+  Y: 35
   Dir: 7
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:7317
 - Name: "#illturgg23"
   X: 69
-  "Y": 31
+  Y: 31
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#illturgg11"
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:7321
 - Name: "#illturg24"
   X: 135
-  "Y": 133
+  Y: 133
   Dir: 1
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:7323
 - Name: "#illturgg24"
   X: 137
-  "Y": 126
+  Y: 126
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#illturgg11"
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:7327

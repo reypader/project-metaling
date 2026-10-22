@@ -2,27 +2,29 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Poring Vending Machine#w
   X: 100
-  "Y": 97
+  Y: 97
   Dir: 3
   Sprite: 909
   Kind: Script
   Source: npc/other/poring_war.txt:72
 - Name: Sweet Devi#wop
   X: 96
-  "Y": 97
+  Y: 97
   Dir: 3
   Sprite: 738
   Kind: Script
   Source: npc/other/poring_war.txt:225
 - Name: Poring#wop_door_all
   X: 91
-  "Y": 97
+  Y: 97
   Dir: 3
   Sprite: 1002
   SpriteIsMob: true
@@ -30,7 +32,7 @@ Body:
   Source: npc/other/poring_war.txt:359
 - Name: Poring#wop_door_a
   X: 91
-  "Y": 68
+  Y: 68
   Dir: 5
   Sprite: 1002
   SpriteIsMob: true
@@ -38,7 +40,7 @@ Body:
   Source: npc/other/poring_war.txt:382
 - Name: Poring#wop_door_d
   X: 112
-  "Y": 68
+  Y: 68
   Dir: 3
   Sprite: 1002
   SpriteIsMob: true
@@ -46,17 +48,17 @@ Body:
   Source: npc/other/poring_war.txt:474
 - Name: "#wop_warp_rtry"
   X: 103
-  "Y": 70
+  Y: 70
   Dir: 0
   Sprite: 139
   Trigger:
     X: 13
-    "Y": 13
+    Y: 13
   Kind: Script
   Source: npc/other/poring_war.txt:567
 - Name: Angeling Side Poring#wa1
   X: 79
-  "Y": 102
+  Y: 102
   Dir: 5
   Sprite: 1002
   SpriteIsMob: true
@@ -65,7 +67,7 @@ Body:
   Source: npc/other/poring_war.txt:1657
 - Name: Angeling Side Poring#wa2
   X: 80
-  "Y": 107
+  Y: 107
   Dir: 5
   Sprite: 1002
   SpriteIsMob: true
@@ -74,7 +76,7 @@ Body:
   Source: npc/other/poring_war.txt:1658
 - Name: Angeling Side Poring#wa3
   X: 84
-  "Y": 108
+  Y: 108
   Dir: 5
   Sprite: 1002
   SpriteIsMob: true
@@ -83,7 +85,7 @@ Body:
   Source: npc/other/poring_war.txt:1659
 - Name: Angeling Side Poring#wa4
   X: 84
-  "Y": 112
+  Y: 112
   Dir: 5
   Sprite: 1002
   SpriteIsMob: true
@@ -92,7 +94,7 @@ Body:
   Source: npc/other/poring_war.txt:1660
 - Name: Angeling Side Poring#wa5
   X: 88
-  "Y": 112
+  Y: 112
   Dir: 5
   Sprite: 1002
   SpriteIsMob: true
@@ -101,7 +103,7 @@ Body:
   Source: npc/other/poring_war.txt:1661
 - Name: Deviling Side Marin#wd1
   X: 114
-  "Y": 112
+  Y: 112
   Dir: 3
   Sprite: 1242
   SpriteIsMob: true
@@ -110,7 +112,7 @@ Body:
   Source: npc/other/poring_war.txt:1663
 - Name: Deviling Side Marin#wd2
   X: 117
-  "Y": 111
+  Y: 111
   Dir: 3
   Sprite: 1242
   SpriteIsMob: true
@@ -119,7 +121,7 @@ Body:
   Source: npc/other/poring_war.txt:1664
 - Name: Deviling Side Marin#wd3
   X: 117
-  "Y": 108
+  Y: 108
   Dir: 3
   Sprite: 1242
   SpriteIsMob: true
@@ -128,7 +130,7 @@ Body:
   Source: npc/other/poring_war.txt:1665
 - Name: Deviling Side Marin#wd4
   X: 122
-  "Y": 108
+  Y: 108
   Dir: 3
   Sprite: 1242
   SpriteIsMob: true
@@ -137,7 +139,7 @@ Body:
   Source: npc/other/poring_war.txt:1666
 - Name: Deviling Side Marin#wd5
   X: 121
-  "Y": 105
+  Y: 105
   Dir: 3
   Sprite: 1242
   SpriteIsMob: true
@@ -146,21 +148,21 @@ Body:
   Source: npc/other/poring_war.txt:1667
 - Name: "#wop_ex_1"
   X: 84
-  "Y": 108
+  Y: 108
   Dir: 3
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/other/poring_war.txt:1669
 - Name: "#wop_ex_2"
   X: 119
-  "Y": 107
+  Y: 107
   Dir: 3
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/other/poring_war.txt:1722

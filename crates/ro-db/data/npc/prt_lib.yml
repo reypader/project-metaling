@@ -2,79 +2,81 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Lindt the Librarian#ep16_lindt
   X: 76
-  "Y": 80
+  Y: 80
   Dir: 3
   Sprite: 47
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1588
 - Name: Mage Nillem#ep16_warp
   X: 91
-  "Y": 85
+  Y: 85
   Dir: 3
   Sprite: 735
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1634
 - Name: Room of Consciousness#evt_gate01
   X: 88
-  "Y": 90
+  Y: 90
   Dir: 1
   Sprite: 10007
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1829
 - Name: Guardian Knight#ep16_roomguard
   X: 56
-  "Y": 61
+  Y: 61
   Dir: 4
   Sprite: 751
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1875
 - Name: "#ep16_lib_evt01"
   X: 88
-  "Y": 80
+  Y: 80
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1900
 - Name: Kronecker G. Heine#ep16_01_lib01
   X: 80
-  "Y": 79
+  Y: 79
   Dir: 3
   Sprite: 10119
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1928
 - Name: Kronecker G. Heine#ep16_01_lib02
   X: 81
-  "Y": 79
+  Y: 79
   Dir: 5
   Sprite: 10119
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:2072
 - Name: Nyhill M. Heine#ep16_lib01
   X: 83
-  "Y": 80
+  Y: 80
   Dir: 5
   Sprite: 10114
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:2073
 - Name: Ian Walther#ep16_lib01
   X: 85
-  "Y": 82
+  Y: 82
   Dir: 5
   Sprite: 55
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:2075
 - Name: Levuiere Wigner#ep16_lib01
   X: 88
-  "Y": 83
+  Y: 83
   Dir: 4
   Sprite: 10132
   DuplicateOf: Ian Walther#ep16_lib01
@@ -82,7 +84,7 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:2333
 - Name: Maximilian Roegenburg#ep16_lib01
   X: 91
-  "Y": 78
+  Y: 78
   Dir: 2
   Sprite: 10133
   DuplicateOf: Ian Walther#ep16_lib01
@@ -90,18 +92,18 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:2334
 - Name: Dimension Warper MkII#ep16_lib
   X: 94
-  "Y": 82
+  Y: 82
   Dir: 3
   Sprite: 10007
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:2337
 - Name: lib_to_prt_prison
   X: 9
-  "Y": 24
+  Y: 24
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/warps/cities/prontera.txt:81

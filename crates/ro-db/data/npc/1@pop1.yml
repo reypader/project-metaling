@@ -2,44 +2,46 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Pope#1hmoon01
   X: 50
-  "Y": 137
+  Y: 137
   Dir: 3
   Sprite: 936
   Kind: Script
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:337
 - Name: Pope#1hmoon03
   X: 100
-  "Y": 142
+  Y: 142
   Dir: 3
   Sprite: 936
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:477
 - Name: Pope#1hmoon04
   X: 100
-  "Y": 98
+  Y: 98
   Dir: 3
   Sprite: 936
   Kind: Script
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:489
 - Name: "#mob1hmoon"
   X: 0
-  "Y": 0
+  Y: 0
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:873
 - Name: Pope#1hmoon05
   X: 101
-  "Y": 91
+  Y: 91
   Dir: 3
   Sprite: 936
   State: Disabled
@@ -47,14 +49,14 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:943
 - Name: Pope#1hmoon06
   X: 100
-  "Y": 16
+  Y: 16
   Dir: 3
   Sprite: 936
   Kind: Script
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:961
 - Name: Priest#1hmoon01
   X: 95
-  "Y": 99
+  Y: 99
   Dir: 6
   Sprite: 935
   DuplicateOf: dummy_npc
@@ -62,7 +64,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1086
 - Name: Priest#1hmoon02
   X: 104
-  "Y": 99
+  Y: 99
   Dir: 4
   Sprite: 935
   DuplicateOf: dummy_npc
@@ -70,7 +72,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1087
 - Name: Devotee#1hmoon01
   X: 93
-  "Y": 97
+  Y: 97
   Dir: 6
   Sprite: 927
   DuplicateOf: dummy_npc
@@ -78,7 +80,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1088
 - Name: Devotee#1hmoon02
   X: 106
-  "Y": 97
+  Y: 97
   Dir: 4
   Sprite: 917
   DuplicateOf: dummy_npc
@@ -86,7 +88,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1089
 - Name: Devotee#1hmoon03
   X: 91
-  "Y": 95
+  Y: 95
   Dir: 6
   Sprite: 927
   DuplicateOf: dummy_npc
@@ -94,7 +96,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1090
 - Name: Devotee#1hmoon04
   X: 108
-  "Y": 95
+  Y: 95
   Dir: 4
   Sprite: 926
   DuplicateOf: dummy_npc
@@ -102,7 +104,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1091
 - Name: Devotee#1hmoon05
   X: 91
-  "Y": 92
+  Y: 92
   Dir: 6
   Sprite: 927
   DuplicateOf: dummy_npc
@@ -110,7 +112,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1092
 - Name: Devotee#1hmoon06
   X: 108
-  "Y": 92
+  Y: 92
   Dir: 4
   Sprite: 926
   DuplicateOf: dummy_npc
@@ -118,7 +120,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1093
 - Name: Guard#1hmoon01
   X: 89
-  "Y": 103
+  Y: 103
   Dir: 5
   Sprite: 934
   DuplicateOf: dummy_npc
@@ -126,7 +128,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1094
 - Name: Guard#1hmoon02
   X: 110
-  "Y": 103
+  Y: 103
   Dir: 3
   Sprite: 934
   DuplicateOf: dummy_npc
@@ -134,7 +136,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1095
 - Name: Guard#1hmoon03
   X: 96
-  "Y": 83
+  Y: 83
   Dir: 5
   Sprite: 934
   DuplicateOf: dummy_npc
@@ -142,7 +144,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1096
 - Name: Guard#1hmoon04
   X: 103
-  "Y": 83
+  Y: 83
   Dir: 3
   Sprite: 934
   DuplicateOf: dummy_npc
@@ -150,7 +152,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1097
 - Name: Guard#1hmoon05
   X: 96
-  "Y": 80
+  Y: 80
   Dir: 5
   Sprite: 934
   DuplicateOf: dummy_npc
@@ -158,7 +160,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1098
 - Name: Guard#1hmoon06
   X: 103
-  "Y": 80
+  Y: 80
   Dir: 3
   Sprite: 934
   DuplicateOf: dummy_npc
@@ -166,7 +168,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1099
 - Name: Guard#1hmoon07
   X: 96
-  "Y": 77
+  Y: 77
   Dir: 5
   Sprite: 934
   DuplicateOf: dummy_npc
@@ -174,7 +176,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1100
 - Name: Guard#1hmoon08
   X: 103
-  "Y": 77
+  Y: 77
   Dir: 3
   Sprite: 934
   DuplicateOf: dummy_npc
@@ -182,7 +184,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1101
 - Name: Guard#1hmoon09
   X: 96
-  "Y": 74
+  Y: 74
   Dir: 5
   Sprite: 934
   DuplicateOf: dummy_npc
@@ -190,7 +192,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1102
 - Name: Guard#1hmoon10
   X: 103
-  "Y": 74
+  Y: 74
   Dir: 3
   Sprite: 934
   DuplicateOf: dummy_npc
@@ -198,7 +200,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1103
 - Name: Luwmin#1hmoon01
   X: 98
-  "Y": 17
+  Y: 17
   Dir: 6
   Sprite: 922
   DuplicateOf: dummy_npc
@@ -206,7 +208,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1104
 - Name: Devotee#1hmoon11
   X: 97
-  "Y": 97
+  Y: 97
   Dir: 6
   Sprite: 927
   State: Disabled
@@ -215,7 +217,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1106
 - Name: Devotee#1hmoon12
   X: 102
-  "Y": 97
+  Y: 97
   Dir: 4
   Sprite: 917
   State: Disabled
@@ -224,7 +226,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1107
 - Name: Devotee#1hmoon13
   X: 97
-  "Y": 95
+  Y: 95
   Dir: 6
   Sprite: 927
   State: Disabled
@@ -233,7 +235,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1108
 - Name: Devotee#1hmoon14
   X: 102
-  "Y": 95
+  Y: 95
   Dir: 4
   Sprite: 926
   State: Disabled
@@ -242,7 +244,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1109
 - Name: Devotee#1hmoon15
   X: 97
-  "Y": 92
+  Y: 92
   Dir: 6
   Sprite: 927
   State: Disabled
@@ -251,7 +253,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1110
 - Name: Devotee#1hmoon16
   X: 102
-  "Y": 92
+  Y: 92
   Dir: 4
   Sprite: 926
   State: Disabled
@@ -260,7 +262,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1111
 - Name: Priest#1hmoon21
   X: 101
-  "Y": 94
+  Y: 94
   Dir: 3
   Sprite: 935
   State: Disabled
@@ -269,7 +271,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1112
 - Name: Priest#1hmoon22
   X: 98
-  "Y": 94
+  Y: 94
   Dir: 5
   Sprite: 935
   State: Disabled
@@ -278,7 +280,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1113
 - Name: Devotee#1hmoon23
   X: 96
-  "Y": 92
+  Y: 92
   Dir: 6
   Sprite: 927
   State: Disabled
@@ -287,7 +289,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1114
 - Name: Devotee#1hmoon24
   X: 103
-  "Y": 92
+  Y: 92
   Dir: 4
   Sprite: 917
   State: Disabled
@@ -296,7 +298,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1115
 - Name: Devotee#1hmoon25
   X: 96
-  "Y": 90
+  Y: 90
   Dir: 7
   Sprite: 927
   State: Disabled
@@ -305,7 +307,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1116
 - Name: Devotee#1hmoon26
   X: 103
-  "Y": 90
+  Y: 90
   Dir: 1
   Sprite: 926
   State: Disabled
@@ -314,7 +316,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1117
 - Name: Devotee#1hmoon27
   X: 101
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 927
   State: Disabled
@@ -323,7 +325,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1118
 - Name: Devotee#1hmoon28
   X: 98
-  "Y": 89
+  Y: 89
   Dir: 7
   Sprite: 926
   State: Disabled
@@ -332,7 +334,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1119
 - Name: Guard#1hmoon21
   X: 99
-  "Y": 89
+  Y: 89
   Dir: 7
   Sprite: 934
   State: Disabled
@@ -341,7 +343,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1120
 - Name: Guard#1hmoon22
   X: 100
-  "Y": 82
+  Y: 82
   Dir: 1
   Sprite: 934
   State: Disabled
@@ -350,7 +352,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1121
 - Name: Guard#1hmoon23
   X: 96
-  "Y": 87
+  Y: 87
   Dir: 7
   Sprite: 934
   State: Disabled
@@ -359,7 +361,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1122
 - Name: Guard#1hmoon24
   X: 98
-  "Y": 87
+  Y: 87
   Dir: 7
   Sprite: 934
   State: Disabled
@@ -368,7 +370,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1123
 - Name: Guard#1hmoon25
   X: 101
-  "Y": 87
+  Y: 87
   Dir: 1
   Sprite: 934
   State: Disabled
@@ -377,7 +379,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1124
 - Name: Guard#1hmoon26
   X: 103
-  "Y": 87
+  Y: 87
   Dir: 1
   Sprite: 934
   State: Disabled
@@ -386,7 +388,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1125
 - Name: Guard#1hmoon27
   X: 96
-  "Y": 84
+  Y: 84
   Dir: 7
   Sprite: 934
   State: Disabled
@@ -395,7 +397,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1126
 - Name: Guard#1hmoon28
   X: 98
-  "Y": 84
+  Y: 84
   Dir: 7
   Sprite: 934
   State: Disabled
@@ -404,7 +406,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1127
 - Name: Guard#1hmoon29
   X: 101
-  "Y": 84
+  Y: 84
   Dir: 1
   Sprite: 934
   State: Disabled
@@ -413,7 +415,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1128
 - Name: Guard#1hmoon30
   X: 103
-  "Y": 84
+  Y: 84
   Dir: 1
   Sprite: 934
   State: Disabled
@@ -422,7 +424,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1129
 - Name: Pope#1hmoon02
   X: 100
-  "Y": 98
+  Y: 98
   Dir: 3
   Sprite: 936
   State: Disabled
@@ -431,7 +433,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1130
 - Name: Pope#1hmoon07
   X: 100
-  "Y": 16
+  Y: 16
   Dir: 3
   Sprite: 3528
   SpriteIsMob: true
@@ -441,7 +443,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1131
 - Name: Pope#1hmoon08
   X: 101
-  "Y": 16
+  Y: 16
   Dir: 3
   Sprite: 936
   State: Disabled
@@ -450,7 +452,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1132
 - Name: Pope#1hmoon09
   X: 100
-  "Y": 96
+  Y: 96
   Dir: 3
   Sprite: 936
   State: Disabled
@@ -459,7 +461,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1133
 - Name: Pope#1hmoon10
   X: 99
-  "Y": 94
+  Y: 94
   Dir: 3
   Sprite: 936
   State: Disabled
@@ -468,7 +470,7 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1134
 - Name: Pope#1hmoon11
   X: 100
-  "Y": 92
+  Y: 92
   Dir: 3
   Sprite: 936
   State: Disabled
@@ -477,76 +479,76 @@ Body:
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:1135
 - Name: "#dollbox01"
   X: 95
-  "Y": 99
+  Y: 99
   Dir: 4
   Sprite: 10046
   State: Disabled
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:2600
 - Name: "#1hmoond01"
   X: 63
-  "Y": 139
+  Y: 139
   Dir: 0
   Sprite: 45
   State: Disabled
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@pop1
     X: 92
-    "Y": 143
+    Y: 143
     TriggerWhileHidden: true
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:2613
 - Name: "#1hmoond03"
   X: 100
-  "Y": 134
+  Y: 134
   Dir: 0
   Sprite: 45
   State: Disabled
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@pop1
     X: 99
-    "Y": 111
+    Y: 111
     TriggerWhileHidden: true
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:2614
 - Name: "#1hmoond05"
   X: 99
-  "Y": 68
+  Y: 68
   Dir: 0
   Sprite: 45
   State: Disabled
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@pop1
     X: 99
-    "Y": 54
+    Y: 54
     TriggerWhileHidden: true
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:2615
 - Name: "#1hmoond07"
   X: 100
-  "Y": 8
+  Y: 8
   Dir: 0
   Sprite: 45
   State: Disabled
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@pop2
     X: 124
-    "Y": 218
+    Y: 218
     TriggerWhileHidden: true
   Source: npc/re/instances/EddaHalfMoonInTheDaylight.txt:2616

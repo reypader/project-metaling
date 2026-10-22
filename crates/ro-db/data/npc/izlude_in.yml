@@ -2,48 +2,50 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Aaron#izlude
   X: 125
-  "Y": 164
+  Y: 164
   Dir: 2
   Sprite: 65
   Kind: Script
   Source: npc/cities/izlude.txt:463
 - Name: Weapon Dealer#iz
   X: 60
-  "Y": 127
+  Y: 127
   Dir: 4
   Sprite: 72
   Kind: Shop
   Source: npc/merchants/shops.txt:140
 - Name: Armor Dealer#iz
   X: 70
-  "Y": 127
+  Y: 127
   Dir: 4
   Sprite: 62
   Kind: Shop
   Source: npc/merchants/shops.txt:141
 - Name: Shurank
   X: 82
-  "Y": 163
+  Y: 163
   Dir: 3
   Sprite: 733
   Kind: Script
   Source: npc/quests/first_class/tu_sword.txt:24
 - Name: Nain#magum
   X: 173
-  "Y": 88
+  Y: 88
   Dir: 2
   Sprite: 102
   Kind: Script
   Source: npc/quests/doomed_swords.txt:213
 - Name: Magazine Dealer Kenny#iz
   X: 74
-  "Y": 104
+  Y: 104
   Dir: 5
   Sprite: 83
   DuplicateOf: mdk
@@ -51,7 +53,7 @@ Body:
   Source: npc/re/merchants/ammo_boxes.txt:290
 - Name: Arrow Merchant#over_arrow_1
   X: 73
-  "Y": 103
+  Y: 103
   Dir: 3
   Sprite: 634
   DuplicateOf: "#over_arrow"
@@ -59,7 +61,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:227
 - Name: Ammunition Merchant#over_bullet_1
   X: 73
-  "Y": 105
+  Y: 105
   Dir: 3
   Sprite: 633
   DuplicateOf: "#over_bullet"
@@ -67,7 +69,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:228
 - Name: Ninja Tool Merchant#over_kunai_1
   X: 73
-  "Y": 101
+  Y: 101
   Dir: 3
   Sprite: 636
   DuplicateOf: "#over_kunai"
@@ -75,7 +77,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:229
 - Name: Mado Gear Merchant#over_madogear_1
   X: 73
-  "Y": 99
+  Y: 99
   Dir: 3
   Sprite: 10004
   DuplicateOf: "#over_madogear"
@@ -83,7 +85,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:230
 - Name: Talisman Merchant#over_talisman_1
   X: 72
-  "Y": 106
+  Y: 106
   Dir: 3
   Sprite: 10234
   DuplicateOf: "#over_talisman"
@@ -91,7 +93,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:231
 - Name: Gemstone Bagger#12
   X: 55
-  "Y": 110
+  Y: 110
   Dir: 5
   Sprite: 83
   DuplicateOf: "#GemstoneBagger"
@@ -99,7 +101,7 @@ Body:
   Source: npc/re/merchants/Gemstone_Bagger.txt:43
 - Name: Vending Machine for Nov#iz
   X: 69
-  "Y": 177
+  Y: 177
   Dir: 5
   Sprite: 564
   DuplicateOf: novice_vending_machine#main
@@ -107,7 +109,7 @@ Body:
   Source: npc/re/merchants/novice_vending_machine.txt:90
 - Name: Pet Groomer#iz
   X: 72
-  "Y": 98
+  Y: 98
   Dir: 3
   Sprite: 124
   DuplicateOf: "#PetGroomer"
@@ -115,28 +117,28 @@ Body:
   Source: npc/re/merchants/pet_groomer.txt:44
 - Name: Tool Dealer#iz
   X: 57
-  "Y": 110
+  Y: 110
   Dir: 0
   Sprite: 47
   Kind: Shop
   Source: npc/re/merchants/shops.txt:86
 - Name: Trading Merchant#iz
   X: 72
-  "Y": 102
+  Y: 102
   Dir: 3
   Sprite: 900
   Kind: Shop
   Source: npc/re/merchants/shops.txt:87
 - Name: Advanced Potion Merchant#iz
   X: 59
-  "Y": 113
+  Y: 113
   Dir: 5
   Sprite: 558
   Kind: Shop
   Source: npc/re/merchants/shops.txt:88
 - Name: Eden Teleport Officer#6
   X: 68
-  "Y": 162
+  Y: 162
   Dir: 1
   Sprite: 729
   DuplicateOf: eto
@@ -144,7 +146,7 @@ Body:
   Source: npc/re/quests/eden/eden_common.txt:246
 - Name: Monster Tamer#izu
   X: 55
-  "Y": 105
+  Y: 105
   Dir: 4
   Sprite: 125
   DuplicateOf: MonsterTamer_izlude
@@ -152,18 +154,18 @@ Body:
   Source: npc/re/quests/monstertamers.txt:15
 - Name: Dorian
   X: 57
-  "Y": 92
+  Y: 92
   Dir: 3
   Sprite: 878
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Dorian_izlude
   Kind: Script
   Source: npc/re/quests/quests_nameless.txt:17
 - Name: Strange Machine
   X: 58
-  "Y": 90
+  Y: 90
   Dir: 1
   Sprite: 111
   DuplicateOf: StrangeMachine_izlude
@@ -171,184 +173,184 @@ Body:
   Source: npc/re/quests/quests_nameless.txt:18
 - Name: Swordman#swd
   X: 74
-  "Y": 172
+  Y: 172
   Dir: 4
   Sprite: 119
   Kind: Script
   Source: npc/re/jobs/1-1/swordman.txt:15
 - Name: Knight De Thomas
   X: 118
-  "Y": 175
+  Y: 175
   Dir: 2
   Sprite: 98
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: KnightDeThomas
   Kind: Script
   Source: npc/re/quests/skills/swordman_skills.txt:15
 - Name: iz02-1
   X: 116
-  "Y": 46
+  Y: 46
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: izlude
     X: 128
-    "Y": 98
+    Y: 98
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/izlude.txt:24
 - Name: iz01-1
   X: 65
-  "Y": 84
+  Y: 84
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: izlude
     X: 112
-    "Y": 179
+    Y: 179
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/izlude.txt:26
 - Name: iz04-1
   X: 74
-  "Y": 158
+  Y: 158
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: izlude
     X: 52
-    "Y": 168
+    Y: 168
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/izlude.txt:28
 - Name: w219
   X: 43
-  "Y": 169
+  Y: 169
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: izlude_in
     X: 63
-    "Y": 169
+    Y: 169
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/izlude.txt:29
 - Name: iz05-1
   X: 87
-  "Y": 169
+  Y: 169
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: izlude_in
     X: 111
-    "Y": 169
+    Y: 169
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/izlude.txt:30
 - Name: iz05
   X: 108
-  "Y": 169
+  Y: 169
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: izlude_in
     X: 84
-    "Y": 169
+    Y: 169
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/izlude.txt:31
 - Name: iz03-1
   X: 148
-  "Y": 127
+  Y: 127
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 5
+    Y: 5
   Kind: Warp
   Warp:
     Map: izlude
     X: 210
-    "Y": 161
+    Y: 161
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/izlude.txt:32
 - Name: iz07
   X: 172
-  "Y": 139
+  Y: 139
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: izlude_in
     X: 172
-    "Y": 161
+    Y: 161
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/izlude.txt:33
 - Name: iz07-1
   X: 172
-  "Y": 158
+  Y: 158
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: izlude_in
     X: 172
-    "Y": 136
+    Y: 136
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/izlude.txt:34
 - Name: iz06-1
   X: 172
-  "Y": 116
+  Y: 116
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: izlude_in
     X: 172
-    "Y": 94
+    Y: 94
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/izlude.txt:35
 - Name: iz06
   X: 171
-  "Y": 97
+  Y: 97
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: izlude_in
     X: 172
-    "Y": 119
+    Y: 119
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/izlude.txt:36

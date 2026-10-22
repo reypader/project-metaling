@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Chungye#04
   X: 24
-  "Y": 285
+  Y: 285
   Dir: 3
   Sprite: 106
   DuplicateOf: GuildRelay1
@@ -16,7 +18,7 @@ Body:
   Source: npc/quests/guildrelay.txt:3189
 - Name: Dosuhlji#04
   X: 21
-  "Y": 16
+  Y: 16
   Dir: 3
   Sprite: 754
   DuplicateOf: GuildRelay2
@@ -24,7 +26,7 @@ Body:
   Source: npc/quests/guildrelay.txt:3190
 - Name: Yayula#04
   X: 69
-  "Y": 270
+  Y: 270
   Dir: 3
   Sprite: 741
   DuplicateOf: GuildRelay3
@@ -32,7 +34,7 @@ Body:
   Source: npc/quests/guildrelay.txt:3191
 - Name: Ashin#04
   X: 18
-  "Y": 239
+  Y: 239
   Dir: 3
   Sprite: 59
   DuplicateOf: GuildRelay4
@@ -40,7 +42,7 @@ Body:
   Source: npc/quests/guildrelay.txt:3192
 - Name: Sacred Altar#5-2
   X: 255
-  "Y": 259
+  Y: 259
   Dir: 0
   Sprite: 722
   DuplicateOf: InsideFlagsPA4
@@ -48,7 +50,7 @@ Body:
   Source: npc/guild/payg_cas04.txt:87
 - Name: Sacred Altar#6
   X: 248
-  "Y": 259
+  Y: 259
   Dir: 0
   Sprite: 722
   DuplicateOf: InsideFlagsPA4
@@ -56,7 +58,7 @@ Body:
   Source: npc/guild/payg_cas04.txt:88
 - Name: Sacred Altar#7
   X: 248
-  "Y": 168
+  Y: 168
   Dir: 6
   Sprite: 722
   DuplicateOf: InsideFlagsPA4
@@ -64,7 +66,7 @@ Body:
   Source: npc/guild/payg_cas04.txt:89
 - Name: Sacred Altar#8
   X: 248
-  "Y": 160
+  Y: 160
   Dir: 6
   Sprite: 722
   DuplicateOf: InsideFlagsPA4
@@ -72,7 +74,7 @@ Body:
   Source: npc/guild/payg_cas04.txt:90
 - Name: Sacred Altar#9
   X: 232
-  "Y": 181
+  Y: 181
   Dir: 4
   Sprite: 722
   DuplicateOf: InsideFlagsPA4
@@ -80,7 +82,7 @@ Body:
   Source: npc/guild/payg_cas04.txt:91
 - Name: Sacred Altar#10
   X: 239
-  "Y": 181
+  Y: 181
   Dir: 4
   Sprite: 722
   DuplicateOf: InsideFlagsPA4
@@ -88,7 +90,7 @@ Body:
   Source: npc/guild/payg_cas04.txt:92
 - Name: Kafra Staff#payg_cas04
   X: 40
-  "Y": 235
+  Y: 235
   Dir: 1
   Sprite: 117
   DuplicateOf: guildkafra
@@ -96,7 +98,7 @@ Body:
   Source: npc/guild/payg_cas04.txt:101
 - Name: DJ#payg_cas04
   X: 38
-  "Y": 284
+  Y: 284
   Dir: 3
   Sprite: 55
   DuplicateOf: cm
@@ -104,14 +106,14 @@ Body:
   Source: npc/guild/payg_cas04.txt:105
 - Name: "#lever_PA04"
   X: 151
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild/payg_cas04.txt:109
 - Name: "#payg_cas04"
   X: 52
-  "Y": 48
+  Y: 48
   Dir: 0
   Sprite: 111
   DuplicateOf: gdlever
@@ -119,7 +121,7 @@ Body:
   Source: npc/guild/payg_cas04.txt:123
 - Name: Treasure#payg_cas04
   X: 147
-  "Y": 48
+  Y: 48
   Dir: 0
   Sprite: -1
   DuplicateOf: Gld_Trea_Spawn
@@ -127,7 +129,7 @@ Body:
   Source: npc/guild/payg_cas04.txt:127
 - Name: Agit#payg_cas04
   X: 271
-  "Y": 29
+  Y: 29
   Dir: 0
   Sprite: -1
   DuplicateOf: Gld_Agit_Manager
@@ -135,7 +137,7 @@ Body:
   Source: npc/guild/payg_cas04.txt:131
 - Name: Guardian#payg_cas04
   X: 38
-  "Y": 284
+  Y: 284
   Dir: 3
   Sprite: -1
   DuplicateOf: Gld_Guard_Template
@@ -143,172 +145,172 @@ Body:
   Source: npc/guild/payg_cas04.txt:135
 - Name: payg-4-01_payg-4
   X: 252
-  "Y": 275
+  Y: 275
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: pay_gld
     X: 140
-    "Y": 160
+    Y: 160
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:278
 - Name: payg-4-02_payg-4-13
   X: 260
-  "Y": 212
+  Y: 212
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: payg_cas04
     X: 70
-    "Y": 240
+    Y: 240
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:279
 - Name: payg-4-03_payg-4-12
   X: 232
-  "Y": 189
+  Y: 189
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: payg_cas04
     X: 74
-    "Y": 261
+    Y: 261
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:280
 - Name: payg-4-04_payg-4-11
   X: 229
-  "Y": 208
+  Y: 208
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: payg_cas04
     X: 70
-    "Y": 282
+    Y: 282
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:281
 - Name: payg-4-11_payg-4-04
   X: 74
-  "Y": 282
+  Y: 282
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: payg_cas04
     X: 225
-    "Y": 208
+    Y: 208
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:282
 - Name: payg-4-12_payg-4-03
   X: 78
-  "Y": 261
+  Y: 261
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: payg_cas04
     X: 236
-    "Y": 189
+    Y: 189
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:283
 - Name: payg-4-13_payg-4-02
   X: 74
-  "Y": 240
+  Y: 240
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: payg_cas04
     X: 256
-    "Y": 212
+    Y: 212
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:284
 - Name: payg-4-14_payg-4-21
   X: 7
-  "Y": 261
+  Y: 261
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: payg_cas04
     X: 55
-    "Y": 30
+    Y: 30
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:285
 - Name: payg-4-21_payg-4-14
   X: 59
-  "Y": 30
+  Y: 30
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: payg_cas04
     X: 11
-    "Y": 261
+    Y: 261
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:286
 - Name: payg-4-22_payg-4-31
   X: 28
-  "Y": 31
+  Y: 31
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: payg_cas04
     X: 251
-    "Y": 42
+    Y: 42
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:287
 - Name: payg-4-31_payg-4-22
   X: 254
-  "Y": 45
+  Y: 45
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: payg_cas04
     X: 24
-    "Y": 31
+    Y: 31
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:288
 - Name: Gate Manager#pay_f04
   X: 39
-  "Y": 264
+  Y: 264
   Dir: 4
   Sprite: 421
   DuplicateOf: Gate Manager#castle

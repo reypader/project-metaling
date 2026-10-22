@@ -2,328 +2,330 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#Pause Effect RZ1"
   X: 33
-  "Y": 117
+  Y: 117
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:270
 - Name: "#Pause Effect RZ2"
   X: 36
-  "Y": 118
+  Y: 118
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:288
 - Name: "#Pause Effect RZ3"
   X: 36
-  "Y": 121
+  Y: 121
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:289
 - Name: "#Pause Effect RZ4"
   X: 34
-  "Y": 122
+  Y: 122
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:290
 - Name: "#Pause Effect RZ5"
   X: 31
-  "Y": 121
+  Y: 121
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:291
 - Name: "#Pause Effect RZ6"
   X: 31
-  "Y": 118
+  Y: 118
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:292
 - Name: "#Pause Effect RZ7"
   X: 112
-  "Y": 116
+  Y: 116
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:293
 - Name: "#Pause Effect RZ8"
   X: 114
-  "Y": 117
+  Y: 117
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:294
 - Name: "#Pause Effect RZ9"
   X: 114
-  "Y": 120
+  Y: 120
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:295
 - Name: "#Pause Effect RZ10"
   X: 111
-  "Y": 121
+  Y: 121
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:296
 - Name: "#Pause Effect RZ11"
   X: 109
-  "Y": 120
+  Y: 120
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:297
 - Name: "#Pause Effect RZ12"
   X: 109
-  "Y": 117
+  Y: 117
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:298
 - Name: "#Pause Effect RZ1_"
   X: 31
-  "Y": 50
+  Y: 50
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:300
 - Name: "#Pause Effect RZ2_"
   X: 36
-  "Y": 49
+  Y: 49
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:301
 - Name: "#Pause Effect RZ3_"
   X: 37
-  "Y": 45
+  Y: 45
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:302
 - Name: "#Pause Effect RZ4_"
   X: 30
-  "Y": 45
+  Y: 45
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:303
 - Name: "#Pause Effect RZ5_"
   X: 29
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:304
 - Name: "#Pause Effect RZ6_"
   X: 33
-  "Y": 51
+  Y: 51
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:305
 - Name: "#Pause Effect RZ7_"
   X: 38
-  "Y": 49
+  Y: 49
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:306
 - Name: "#Pause Effect RZ8_"
   X: 34
-  "Y": 44
+  Y: 44
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:307
 - Name: "#Pause Effect RZ9_"
   X: 32
-  "Y": 44
+  Y: 44
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:308
 - Name: "#Pause Effect RZ10_"
   X: 29
-  "Y": 49
+  Y: 49
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:309
 - Name: "#Pause Effect RZ11_"
   X: 35
-  "Y": 51
+  Y: 51
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:310
 - Name: "#Pause Effect RZ12_"
   X: 37
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#Pause Effect RZ1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:311
 - Name: "#RZ Memorial Start"
   X: 27
-  "Y": 181
+  Y: 181
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:315
 - Name: "#RZ Memorial Effect 1"
   X: 34
-  "Y": 120
+  Y: 120
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:380
 - Name: "#RZ Memorial Effect 2"
   X: 112
-  "Y": 118
+  Y: 118
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#RZ Memorial Effect 1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:394
 - Name: "#RZ Memorial Effect 3"
   X: 34
-  "Y": 48
+  Y: 48
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#RZ Memorial Effect 1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:395
 - Name: "#RZ Event_1"
   X: 31
-  "Y": 181
+  Y: 181
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:397
 - Name: Grim Reaper Ankou#RZ Event_2
   X: 64
-  "Y": 181
+  Y: 181
   Dir: 4
   Sprite: 3029
   SpriteIsMob: true
@@ -331,7 +333,7 @@ Body:
   Source: npc/re/instances/MorseCave.txt:450
 - Name: Grim Reaper Ankou#RZ Event_3
   X: 34
-  "Y": 126
+  Y: 126
   Dir: 4
   Sprite: 3029
   SpriteIsMob: true
@@ -339,7 +341,7 @@ Body:
   Source: npc/re/instances/MorseCave.txt:474
 - Name: Grim Reaper Ankou#RZ Event_4
   X: 112
-  "Y": 126
+  Y: 126
   Dir: 4
   Sprite: 3029
   SpriteIsMob: true
@@ -347,7 +349,7 @@ Body:
   Source: npc/re/instances/MorseCave.txt:506
 - Name: Grim Reaper Ankou#RZ Event_5
   X: 34
-  "Y": 55
+  Y: 55
   Dir: 4
   Sprite: 3029
   SpriteIsMob: true
@@ -355,17 +357,17 @@ Body:
   Source: npc/re/instances/MorseCave.txt:508
 - Name: "#RZ Event_3"
   X: 104
-  "Y": 176
+  Y: 176
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:531
 - Name: Weakened Morocc#RZ1
   X: 111
-  "Y": 178
+  Y: 178
   Dir: 4
   Sprite: 1916
   SpriteIsMob: true
@@ -373,44 +375,44 @@ Body:
   Source: npc/re/instances/MorseCave.txt:549
 - Name: "#Battle_1RZ1"
   X: 35
-  "Y": 119
+  Y: 119
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:606
 - Name: "#Battle_1RZ2"
   X: 112
-  "Y": 126
+  Y: 126
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:698
 - Name: "#Battle_2RZ1"
   X: 34
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:774
 - Name: Morocc Necromancer#RZ1
   X: 112
-  "Y": 48
+  Y: 48
   Dir: 4
   Sprite: 10029
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:887
 - Name: Grim Reaper Ankou#RZ Event_6
   X: 112
-  "Y": 48
+  Y: 48
   Dir: 4
   Sprite: 3029
   SpriteIsMob: true
@@ -418,45 +420,45 @@ Body:
   Source: npc/re/instances/MorseCave.txt:909
 - Name: "#morocc_necromancer_dummy"
   X: 112
-  "Y": 48
+  Y: 48
   Dir: 4
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:912
 - Name: "#Battle_3RZ1"
   X: 104
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:915
 - Name: "#Battle_3RZ2"
   X: 106
-  "Y": 57
+  Y: 57
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:959
 - Name: "#Battle_3RZ3"
   X: 120
-  "Y": 54
+  Y: 54
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1010
 - Name: "#Battle_3RZ4"
   X: 120
-  "Y": 55
+  Y: 55
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1271
 - Name: "#Battle_3RZ5"
   X: 120
-  "Y": 56
+  Y: 56
   Dir: 0
   Sprite: 139
   DuplicateOf: "#Battle_3RZ4"
@@ -464,7 +466,7 @@ Body:
   Source: npc/re/instances/MorseCave.txt:1308
 - Name: "#Battle_3RZ6"
   X: 120
-  "Y": 57
+  Y: 57
   Dir: 0
   Sprite: 139
   DuplicateOf: "#Battle_3RZ4"
@@ -472,7 +474,7 @@ Body:
   Source: npc/re/instances/MorseCave.txt:1309
 - Name: "#Battle_3RZ7"
   X: 120
-  "Y": 58
+  Y: 58
   Dir: 0
   Sprite: 139
   DuplicateOf: "#Battle_3RZ4"
@@ -480,533 +482,533 @@ Body:
   Source: npc/re/instances/MorseCave.txt:1310
 - Name: "#RZ Move_30"
   X: 63
-  "Y": 181
+  Y: 181
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Warp
   Warp:
     Map: 1@rev
     X: 103
-    "Y": 177
+    Y: 177
     TriggerWhileHidden: true
   Source: npc/re/instances/MorseCave.txt:1315
 - Name: "#RZ Move_31"
   X: 47
-  "Y": 181
+  Y: 181
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Warp
   Warp:
     Map: 1@rev
     X: 103
-    "Y": 177
+    Y: 177
     TriggerWhileHidden: true
   Source: npc/re/instances/MorseCave.txt:1316
 - Name: "#RZ Move_32"
   X: 31
-  "Y": 181
+  Y: 181
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Warp
   Warp:
     Map: 1@rev
     X: 103
-    "Y": 177
+    Y: 177
     TriggerWhileHidden: true
   Source: npc/re/instances/MorseCave.txt:1317
 - Name: "#RZ Move_1"
   X: 106
-  "Y": 183
+  Y: 183
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1319
 - Name: "#RZ Move_2"
   X: 106
-  "Y": 172
+  Y: 172
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1354
 - Name: "#RZ Move_3"
   X: 117
-  "Y": 172
+  Y: 172
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1355
 - Name: "#RZ Move_4"
   X: 117
-  "Y": 183
+  Y: 183
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1356
 - Name: "#RZ Move_5"
   X: 28
-  "Y": 125
+  Y: 125
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1357
 - Name: "#RZ Move_6"
   X: 28
-  "Y": 114
+  Y: 114
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1358
 - Name: "#RZ Move_7"
   X: 39
-  "Y": 114
+  Y: 114
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1359
 - Name: "#RZ Move_8"
   X: 39
-  "Y": 125
+  Y: 125
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1360
 - Name: "#RZ Move_9"
   X: 106
-  "Y": 123
+  Y: 123
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1361
 - Name: "#RZ Move_10"
   X: 106
-  "Y": 112
+  Y: 112
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1362
 - Name: "#RZ Move_11"
   X: 117
-  "Y": 112
+  Y: 112
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1363
 - Name: "#RZ Move_12"
   X: 117
-  "Y": 123
+  Y: 123
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1364
 - Name: "#RZ Move_13"
   X: 28
-  "Y": 53
+  Y: 53
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1365
 - Name: "#RZ Move_14"
   X: 28
-  "Y": 42
+  Y: 42
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1366
 - Name: "#RZ Move_15"
   X: 39
-  "Y": 42
+  Y: 42
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1367
 - Name: "#RZ Move_16"
   X: 39
-  "Y": 53
+  Y: 53
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1368
 - Name: "#RZ Move_5a"
   X: 28
-  "Y": 125
+  Y: 125
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1370
 - Name: "#RZ Move_6a"
   X: 28
-  "Y": 114
+  Y: 114
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_5a"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1377
 - Name: "#RZ Move_7a"
   X: 39
-  "Y": 114
+  Y: 114
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_5a"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1378
 - Name: "#RZ Move_8a"
   X: 39
-  "Y": 125
+  Y: 125
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_5a"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1379
 - Name: "#RZ Move_9a"
   X: 106
-  "Y": 123
+  Y: 123
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_5a"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1380
 - Name: "#RZ Move_10a"
   X: 106
-  "Y": 112
+  Y: 112
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_5a"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1381
 - Name: "#RZ Move_11a"
   X: 117
-  "Y": 112
+  Y: 112
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_5a"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1382
 - Name: "#RZ Move_12a"
   X: 117
-  "Y": 123
+  Y: 123
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_5a"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1383
 - Name: "#RZ Move_13a"
   X: 28
-  "Y": 53
+  Y: 53
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_5a"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1384
 - Name: "#RZ Move_14a"
   X: 28
-  "Y": 42
+  Y: 42
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_5a"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1385
 - Name: "#RZ Move_15a"
   X: 39
-  "Y": 42
+  Y: 42
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_5a"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1386
 - Name: "#RZ Move_16a"
   X: 39
-  "Y": 53
+  Y: 53
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Move_5a"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1387
 - Name: "#RZ Move_17a"
   X: 112
-  "Y": 56
+  Y: 56
   Dir: 3
   Sprite: 10007
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1389
 - Name: "#RZ Debuff_1"
   X: 28
-  "Y": 125
+  Y: 125
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1403
 - Name: "#RZ Debuff_2"
   X: 28
-  "Y": 114
+  Y: 114
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Debuff_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1409
 - Name: "#RZ Debuff_3"
   X: 39
-  "Y": 114
+  Y: 114
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Debuff_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1410
 - Name: "#RZ Debuff_4"
   X: 39
-  "Y": 125
+  Y: 125
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Debuff_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1411
 - Name: "#RZ Debuff_5"
   X: 106
-  "Y": 123
+  Y: 123
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Debuff_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1412
 - Name: "#RZ Debuff_6"
   X: 106
-  "Y": 112
+  Y: 112
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Debuff_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1413
 - Name: "#RZ Debuff_7"
   X: 117
-  "Y": 112
+  Y: 112
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Debuff_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1414
 - Name: "#RZ Debuff_8"
   X: 117
-  "Y": 123
+  Y: 123
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Debuff_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1415
 - Name: "#RZ Debuff_9"
   X: 28
-  "Y": 53
+  Y: 53
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Debuff_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1416
 - Name: "#RZ Debuff_10"
   X: 28
-  "Y": 42
+  Y: 42
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Debuff_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1417
 - Name: "#RZ Debuff_11"
   X: 39
-  "Y": 42
+  Y: 42
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Debuff_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1418
 - Name: "#RZ Debuff_12"
   X: 39
-  "Y": 53
+  Y: 53
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Debuff_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1419
 - Name: "#RZ Debuff Recovery_1"
   X: 28
-  "Y": 53
+  Y: 53
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1422
 - Name: "#RZ Debuff Recovery_2"
   X: 28
-  "Y": 42
+  Y: 42
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Debuff Recovery_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1428
 - Name: "#RZ Debuff Recovery_3"
   X: 39
-  "Y": 42
+  Y: 42
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Debuff Recovery_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1429
 - Name: "#RZ Debuff Recovery_4"
   X: 39
-  "Y": 53
+  Y: 53
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#RZ Debuff Recovery_1"
   Kind: Script
   Source: npc/re/instances/MorseCave.txt:1430

@@ -2,76 +2,78 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Waitress#payon
   X: 180
-  "Y": 7
+  Y: 7
   Dir: 2
   Sprite: 90
   Kind: Script
   Source: npc/cities/payon.txt:376
 - Name: Archer Zakk#payon
   X: 66
-  "Y": 64
+  Y: 64
   Dir: 5
   Sprite: 88
   Kind: Script
   Source: npc/cities/payon.txt:486
 - Name: Archer Wolt#payon
   X: 47
-  "Y": 59
+  Y: 59
   Dir: 2
   Sprite: 88
   Kind: Script
   Source: npc/cities/payon.txt:541
 - Name: Inn Employee#Ahee
   X: 132
-  "Y": 62
+  Y: 62
   Dir: 5
   Sprite: 53
   Kind: Script
   Source: npc/merchants/inn.txt:80
 - Name: Inventor Jaax
   X: 5
-  "Y": 134
+  Y: 134
   Dir: 5
   Sprite: 89
   Kind: Script
   Source: npc/merchants/quivers.txt:27
 - Name: Weapon Dealer#pay
   X: 15
-  "Y": 119
+  Y: 119
   Dir: 0
   Sprite: 77
   Kind: Shop
   Source: npc/merchants/shops.txt:233
 - Name: Weapon Dealer#pay2
   X: 5
-  "Y": 129
+  Y: 129
   Dir: 7
   Sprite: 703
   Kind: Shop
   Source: npc/merchants/shops.txt:234
 - Name: Armor Dealer#pay
   X: 7
-  "Y": 119
+  Y: 119
   Dir: 2
   Sprite: 76
   Kind: Shop
   Source: npc/merchants/shops.txt:235
 - Name: Tool Dealer#pay
   X: 5
-  "Y": 49
+  Y: 49
   Dir: 7
   Sprite: 88
   Kind: Shop
   Source: npc/merchants/shops.txt:236
 - Name: PVP Narrator#pe5
   X: 142
-  "Y": 50
+  Y: 50
   Dir: 4
   Sprite: 84
   DuplicateOf: pvpe
@@ -79,7 +81,7 @@ Body:
   Source: npc/other/pvp.txt:173
 - Name: Gate Keeper#gke5
   X: 140
-  "Y": 53
+  Y: 53
   Dir: 4
   Sprite: 83
   DuplicateOf: gkut
@@ -87,313 +89,313 @@ Body:
   Source: npc/other/pvp.txt:280
 - Name: Granny
   X: 99
-  "Y": 72
+  Y: 72
   Dir: 4
   Sprite: 103
   Kind: Script
   Source: npc/quests/quests_payon.txt:25
 - Name: Mystic Lady
   X: 18
-  "Y": 10
+  Y: 10
   Dir: 4
   Sprite: 76
   Kind: Script
   Source: npc/quests/quests_payon.txt:77
 - Name: payonwarp010
   X: 172
-  "Y": 11
+  Y: 11
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon
     X: 219
-    "Y": 117
+    Y: 117
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:34
 - Name: payonwarp011
   X: 180
-  "Y": 43
+  Y: 43
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in01
     X: 181
-    "Y": 73
+    Y: 73
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:35
 - Name: payonwarp012
   X: 181
-  "Y": 70
+  Y: 70
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in01
     X: 180
-    "Y": 40
+    Y: 40
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:36
 - Name: payonwarp013
   X: 193
-  "Y": 92
+  Y: 92
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in01
     X: 143
-    "Y": 61
+    Y: 61
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:37
 - Name: payonwarp014
   X: 146
-  "Y": 61
+  Y: 61
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in01
     X: 193
-    "Y": 89
+    Y: 89
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:38
 - Name: payonwarp015
   X: 133
-  "Y": 42
+  Y: 42
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in01
     X: 133
-    "Y": 18
+    Y: 18
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:39
 - Name: payonwarp016
   X: 133
-  "Y": 21
+  Y: 21
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in01
     X: 133
-    "Y": 45
+    Y: 45
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:40
 - Name: payonwarp018
   X: 17
-  "Y": 51
+  Y: 51
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon
     X: 143
-    "Y": 85
+    Y: 85
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:44
 - Name: payonwarp019
   X: 10
-  "Y": 59
+  Y: 59
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in01
     X: 10
-    "Y": 83
+    Y: 83
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:45
 - Name: payonwarp021
   X: 10
-  "Y": 80
+  Y: 80
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in01
     X: 10
-    "Y": 56
+    Y: 56
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:46
 - Name: payonwarp022
   X: 10
-  "Y": 38
+  Y: 38
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in01
     X: 10
-    "Y": 14
+    Y: 14
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:47
 - Name: payonwarp023
   X: 10
-  "Y": 17
+  Y: 17
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in01
     X: 10
-    "Y": 41
+    Y: 41
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:48
 - Name: payonwarp025
   X: 23
-  "Y": 129
+  Y: 129
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon
     X: 138
-    "Y": 158
+    Y: 158
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:52
 - Name: payonwarp027
   X: 13
-  "Y": 139
+  Y: 139
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon
     X: 130
-    "Y": 172
+    Y: 172
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:54
 - Name: payonwarp029
   X: 56
-  "Y": 50
+  Y: 50
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon
     X: 151
-    "Y": 124
+    Y: 124
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:58
 - Name: payonwarp047
   X: 42
-  "Y": 11
+  Y: 11
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon
     X: 253
-    "Y": 285
+    Y: 285
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:82
 - Name: payonwarp087
   X: 86
-  "Y": 9
+  Y: 9
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon
     X: 266
-    "Y": 152
+    Y: 152
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:135
 - Name: payonwarp089
   X: 107
-  "Y": 71
+  Y: 71
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in01
     X: 96
-    "Y": 37
+    Y: 37
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:137
 - Name: payonwarp090
   X: 93
-  "Y": 37
+  Y: 37
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in01
     X: 104
-    "Y": 71
+    Y: 71
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:138
 - Name: Tool Dealer#Extended_Pay
   X: 5
-  "Y": 49
+  Y: 49
   Dir: 7
   Sprite: 88
   Kind: Shop
   Source: npc/re/merchants/Dealer_Update.txt:166
 - Name: Arrow Merchant#over_arrow_5
   X: 8
-  "Y": 132
+  Y: 132
   Dir: 5
   Sprite: 634
   DuplicateOf: "#over_arrow"
@@ -401,7 +403,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:263
 - Name: Ammunition Merchant#over_bullet_5
   X: 10
-  "Y": 132
+  Y: 132
   Dir: 7
   Sprite: 633
   DuplicateOf: "#over_bullet"
@@ -409,7 +411,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:264
 - Name: Ninja Tool Merchant#over_kunai_5
   X: 12
-  "Y": 132
+  Y: 132
   Dir: 6
   Sprite: 636
   DuplicateOf: "#over_kunai"
@@ -417,7 +419,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:265
 - Name: Mado Gear Merchant#over_madogear_5
   X: 14
-  "Y": 132
+  Y: 132
   Dir: 5
   Sprite: 10004
   DuplicateOf: "#over_madogear"
@@ -425,7 +427,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:266
 - Name: Talisman Merchant#over_talisman_5
   X: 6
-  "Y": 132
+  Y: 132
   Dir: 6
   Sprite: 10234
   DuplicateOf: "#over_talisman"
@@ -433,7 +435,7 @@ Body:
   Source: npc/re/merchants/Extended_Ammunition.txt:267
 - Name: Gemstone Bagger#21
   X: 12
-  "Y": 47
+  Y: 47
   Dir: 3
   Sprite: 75
   DuplicateOf: "#GemstoneBagger"
@@ -441,7 +443,7 @@ Body:
   Source: npc/re/merchants/Gemstone_Bagger.txt:52
 - Name: Vending Machine for Nov#pay2
   X: 59
-  "Y": 20
+  Y: 20
   Dir: 3
   Sprite: 564
   DuplicateOf: novice_vending_machine#main
@@ -449,7 +451,7 @@ Body:
   Source: npc/re/merchants/novice_vending_machine.txt:99
 - Name: Vestri#pay
   X: 18
-  "Y": 132
+  Y: 132
   Dir: 3
   Sprite: 826
   DuplicateOf: Vestri#prt
@@ -457,7 +459,7 @@ Body:
   Source: npc/re/merchants/refine.txt:39
 - Name: Austri#pay
   X: 14
-  "Y": 125
+  Y: 125
   Dir: 5
   Sprite: 826
   DuplicateOf: Austri#ref
@@ -465,21 +467,21 @@ Body:
   Source: npc/re/merchants/refine.txt:398
 - Name: Advanced Potion Merchant#pay2
   X: 12
-  "Y": 53
+  Y: 53
   Dir: 5
   Sprite: 558
   Kind: Shop
   Source: npc/re/merchants/shops.txt:153
 - Name: Chanmo#fgtg01
   X: 193
-  "Y": 23
+  Y: 23
   Dir: 3
   Sprite: 75
   Kind: Script
   Source: npc/re/quests/HelpMeShorty.txt:111
 - Name: Shorty#fgtg004
   X: 190
-  "Y": 24
+  Y: 24
   Dir: 5
   Sprite: 10050
   State: Cloaked
@@ -488,7 +490,7 @@ Body:
   Source: npc/re/quests/HelpMeShorty.txt:171
 - Name: Young man#1
   X: 46
-  "Y": 21
+  Y: 21
   Dir: 4
   Sprite: 89
   DuplicateOf: Young man#12
@@ -496,7 +498,7 @@ Body:
   Source: npc/re/quests/quest_payon.txt:7
 - Name: Phoenix#TKJobChange
   X: 62
-  "Y": 10
+  Y: 10
   Dir: 5
   Sprite: 753
   DuplicateOf: PhoenixTKJobChange

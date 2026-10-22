@@ -2,67 +2,69 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: naldg01
   X: 184
-  "Y": 16
+  Y: 16
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_alde
     X: 34
-    "Y": 248
+    Y: 248
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:446
 - Name: ngefg01
   X: 183
-  "Y": 183
+  Y: 183
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_gef
     X: 34
-    "Y": 140
+    Y: 140
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:468
 - Name: npayg01
   X: 18
-  "Y": 181
+  Y: 181
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_pay
     X: 214
-    "Y": 48
+    Y: 48
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:488
 - Name: nprtg01
   X: 16
-  "Y": 14
+  Y: 14
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_prt
     X: 99
-    "Y": 32
+    Y: 32
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:505

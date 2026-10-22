@@ -2,190 +2,192 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Tool Dealer#pay2
   X: 87
-  "Y": 34
+  Y: 34
   Dir: 0
   Sprite: 75
   Kind: Shop
   Source: npc/merchants/shops.txt:237
 - Name: Bard Jet#tu
   X: 67
-  "Y": 65
+  Y: 65
   Dir: 3
   Sprite: 51
   Kind: Script
   Source: npc/quests/first_class/tu_archer.txt:33
 - Name: Master Kavaruk
   X: 54
-  "Y": 13
+  Y: 13
   Dir: 3
   Sprite: 55
   Kind: Script
   Source: npc/quests/first_class/tu_archer.txt:176
 - Name: Boy
   X: 25
-  "Y": 71
+  Y: 71
   Dir: 4
   Sprite: 86
   Kind: Script
   Source: npc/quests/quests_payon.txt:125
 - Name: Hunter#htnGM2
   X: 21
-  "Y": 31
+  Y: 31
   Dir: 1
   Sprite: 59
   Kind: Script
   Source: npc/jobs/2-1/hunter.txt:783
 - Name: payonwarp052
   X: 10
-  "Y": 25
+  Y: 25
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in02
     X: 72
-    "Y": 67
+    Y: 67
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:89
 - Name: payonwarp053
   X: 35
-  "Y": 67
+  Y: 67
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in02
     X: 55
-    "Y": 67
+    Y: 67
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:90
 - Name: payonwarp054
   X: 50
-  "Y": 4
+  Y: 4
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: pay_arche
     X: 92
-    "Y": 166
+    Y: 166
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:91
 - Name: payonwarp055
   X: 52
-  "Y": 67
+  Y: 67
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in02
     X: 32
-    "Y": 67
+    Y: 67
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:92
 - Name: payonwarp056
   X: 61
-  "Y": 33
+  Y: 33
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in02
     X: 73
-    "Y": 33
+    Y: 33
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:93
 - Name: payonwarp057
   X: 64
-  "Y": 56
+  Y: 56
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: pay_arche
     X: 141
-    "Y": 161
+    Y: 161
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:94
 - Name: payonwarp058
   X: 70
-  "Y": 33
+  Y: 33
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in02
     X: 58
-    "Y": 33
+    Y: 33
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:95
 - Name: payonwarp059
   X: 75
-  "Y": 67
+  Y: 67
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: payon_in02
     X: 13
-    "Y": 25
+    Y: 25
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:96
 - Name: payonwarp060
   X: 82
-  "Y": 45
+  Y: 45
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: pay_arche
     X: 74
-    "Y": 153
+    Y: 153
     TriggerWhileHidden: false
   Source: npc/warps/cities/payon.txt:97
 - Name: Tool Dealer#Extended_Pay2
   X: 87
-  "Y": 34
+  Y: 34
   Dir: 0
   Sprite: 75
   Kind: Shop
   Source: npc/re/merchants/Dealer_Update.txt:167
 - Name: Gemstone Bagger#22
   X: 84
-  "Y": 40
+  Y: 40
   Dir: 3
   Sprite: 88
   DuplicateOf: "#GemstoneBagger"
@@ -193,7 +195,7 @@ Body:
   Source: npc/re/merchants/Gemstone_Bagger.txt:53
 - Name: Vending Machine for Nov#pay
   X: 71
-  "Y": 75
+  Y: 75
   Dir: 5
   Sprite: 564
   DuplicateOf: novice_vending_machine#main
@@ -201,14 +203,14 @@ Body:
   Source: npc/re/merchants/novice_vending_machine.txt:91
 - Name: Advanced Potion Merchant#pay3
   X: 85
-  "Y": 38
+  Y: 38
   Dir: 3
   Sprite: 558
   Kind: Shop
   Source: npc/re/merchants/shops.txt:154
 - Name: Eden Teleport Officer#11
   X: 58
-  "Y": 58
+  Y: 58
   Dir: 1
   Sprite: 729
   DuplicateOf: eto
@@ -216,7 +218,7 @@ Body:
   Source: npc/re/quests/eden/eden_common.txt:251
 - Name: Archer Guildsman#archer
   X: 64
-  "Y": 71
+  Y: 71
   Dir: 4
   Sprite: 85
   Kind: Script

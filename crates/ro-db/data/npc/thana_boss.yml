@@ -2,70 +2,72 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Memory Seal#tt1
   X: 217
-  "Y": 167
+  Y: 167
   Dir: 3
   Sprite: 1711
   SpriteIsMob: true
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/quests/thana_quest.txt:2084
 - Name: Memory Seal#tt2
   X: 202
-  "Y": 75
+  Y: 75
   Dir: 3
   Sprite: 1712
   SpriteIsMob: true
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: Memory Seal#tt1
   Kind: Script
   Source: npc/quests/thana_quest.txt:2163
 - Name: Memory Seal#tt3
   X: 80
-  "Y": 76
+  Y: 76
   Dir: 7
   Sprite: 1709
   SpriteIsMob: true
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: Memory Seal#tt1
   Kind: Script
   Source: npc/quests/thana_quest.txt:2164
 - Name: Memory Seal#tt4
   X: 62
-  "Y": 171
+  Y: 171
   Dir: 5
   Sprite: 1710
   SpriteIsMob: true
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: Memory Seal#tt1
   Kind: Script
   Source: npc/quests/thana_quest.txt:2165
 - Name: "#thanatos_seal"
   X: 141
-  "Y": 228
+  Y: 228
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/quests/thana_quest.txt:2167
 - Name: Memory Seal#tt5
   X: 141
-  "Y": 235
+  Y: 235
   Dir: 3
   Sprite: 1708
   SpriteIsMob: true
@@ -73,14 +75,14 @@ Body:
   Source: npc/quests/thana_quest.txt:2206
 - Name: "#sommon_thanatos"
   X: 141
-  "Y": 218
+  Y: 218
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/quests/thana_quest.txt:2220
 - Name: "#cooltime_thana"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 844
   Kind: Script

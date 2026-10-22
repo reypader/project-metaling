@@ -2,24 +2,26 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#wp120085"
   X: 180
-  "Y": 234
+  Y: 234
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:254
 - Name: "#tr120085"
   X: 180
-  "Y": 234
+  Y: 234
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -27,53 +29,53 @@ Body:
   Source: npc/re/other/achievements.txt:515
 - Name: Map Examiner Yirun Seo#suiroon
   X: 354
-  "Y": 280
+  Y: 280
   Dir: 3
   Sprite: 95
   Kind: Script
   Source: npc/re/quests/juno_monster_society.txt:3212
 - Name: ve_fild1-1
   X: 366
-  "Y": 267
+  Y: 267
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ve_fild02
     X: 36
-    "Y": 263
+    Y: 263
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/veins_fild.txt:16
 - Name: ve_fild1-2
   X: 184
-  "Y": 20
+  Y: 20
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ve_fild04
     X: 174
-    "Y": 334
+    Y: 334
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/veins_fild.txt:17
 - Name: ve_fild1-5
   X: 350
-  "Y": 92
+  Y: 92
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ve_fild02
     X: 78
-    "Y": 133
+    Y: 133
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/veins_fild.txt:20

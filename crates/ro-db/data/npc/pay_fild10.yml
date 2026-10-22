@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Job Change Location#hu
   X: 148
-  "Y": 252
+  Y: 252
   Dir: 3
   Sprite: 857
   DuplicateOf: HntNotice
@@ -16,18 +18,18 @@ Body:
   Source: npc/jobs/2-1/hunter.txt:77
 - Name: "#wp120031"
   X: 196
-  "Y": 38
+  Y: 38
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:230
 - Name: "#tr120031"
   X: 196
-  "Y": 38
+  Y: 38
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -35,46 +37,46 @@ Body:
   Source: npc/re/other/achievements.txt:491
 - Name: pay14-1
   X: 112
-  "Y": 382
+  Y: 382
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: pay_fild09
     X: 112
-    "Y": 19
+    Y: 19
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/payon_fild.txt:46
 - Name: payf12-1
   X: 16
-  "Y": 290
+  Y: 290
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 5
+    Y: 5
   Kind: Warp
   Warp:
     Map: pay_fild07
     X: 379
-    "Y": 290
+    Y: 290
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/payon_fild.txt:47
 - Name: w1034
   X: 99
-  "Y": 13
+  Y: 13
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: pay_fild10
     X: 148
-    "Y": 252
+    Y: 252
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/payon_fild.txt:48

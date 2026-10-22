@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Johnny James#revt04
   X: 160
-  "Y": 306
+  Y: 306
   Dir: 3
   Sprite: 10213
   State: Cloaked
@@ -17,7 +19,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:1227
 - Name: Albert Ford#revt08
   X: 168
-  "Y": 306
+  Y: 306
   Dir: 3
   Sprite: 10214
   State: Cloaked
@@ -26,7 +28,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:1228
 - Name: Ivoka Skudi#revt02
   X: 156
-  "Y": 302
+  Y: 302
   Dir: 7
   Sprite: 10212
   State: Cloaked
@@ -35,7 +37,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:1229
 - Name: Cactus Gunslinger#revt05
   X: 156
-  "Y": 306
+  Y: 306
   Dir: 5
   Sprite: 10212
   State: Cloaked
@@ -44,7 +46,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:1230
 - Name: Cactus Gunslinger#revt06
   X: 161
-  "Y": 302
+  Y: 302
   Dir: 1
   Sprite: 10212
   State: Cloaked
@@ -53,7 +55,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:1231
 - Name: Cactus Gunslinger#revt07
   X: 164
-  "Y": 306
+  Y: 306
   Dir: 3
   Sprite: 10212
   State: Cloaked
@@ -62,45 +64,45 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:1232
 - Name: Unmoving Freight Train#
   X: 156
-  "Y": 312
+  Y: 312
   Dir: 3
   Sprite: 10042
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:1234
 - Name: Wyatt Warp#revt03
   X: 153
-  "Y": 303
+  Y: 303
   Dir: 5
   Sprite: 10211
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:1355
 - Name: Mrs. Cacturon#rrrem01
   X: 341
-  "Y": 133
+  Y: 133
   Dir: 3
   Sprite: 10220
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2207
 - Name: Little Lecter#rrrem02
   X: 339
-  "Y": 134
+  Y: 134
   Dir: 3
   Sprite: 10222
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2466
 - Name: Suspicious Sand Mound#rremef05
   X: 182
-  "Y": 124
+  Y: 124
   Dir: 3
   Sprite: 10042
   Trigger:
     X: 15
-    "Y": 15
+    Y: 15
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2504
 - Name: Suspicious Sand Mound#rrem01
   X: 182
-  "Y": 124
+  Y: 124
   Dir: 3
   Sprite: 557
   DuplicateOf: Suspicious Sand Mound#rremef05
@@ -108,105 +110,105 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:2545
 - Name: Suspicious Sand Mound#rremef06
   X: 286
-  "Y": 247
+  Y: 247
   Dir: 3
   Sprite: 10042
   Trigger:
     X: 15
-    "Y": 15
+    Y: 15
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2548
 - Name: Suspicious Sand Mound#rremef07
   X: 202
-  "Y": 246
+  Y: 246
   Dir: 3
   Sprite: 10042
   Trigger:
     X: 15
-    "Y": 15
+    Y: 15
   DuplicateOf: Suspicious Sand Mound#rremef06
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2622
 - Name: Suspicious Sand Mound#rremef08
   X: 149
-  "Y": 103
+  Y: 103
   Dir: 3
   Sprite: 10042
   Trigger:
     X: 15
-    "Y": 15
+    Y: 15
   DuplicateOf: Suspicious Sand Mound#rremef06
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2623
 - Name: Suspicious Sand Mound#rremef09
   X: 96
-  "Y": 141
+  Y: 141
   Dir: 3
   Sprite: 10042
   Trigger:
     X: 15
-    "Y": 15
+    Y: 15
   DuplicateOf: Suspicious Sand Mound#rremef06
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2624
 - Name: Suspicious Sand Mound#rremef10
   X: 122
-  "Y": 243
+  Y: 243
   Dir: 3
   Sprite: 10042
   Trigger:
     X: 15
-    "Y": 15
+    Y: 15
   DuplicateOf: Suspicious Sand Mound#rremef06
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2625
 - Name: Suspicious Sand Mound#rremef11
   X: 330
-  "Y": 240
+  Y: 240
   Dir: 3
   Sprite: 10042
   Trigger:
     X: 15
-    "Y": 15
+    Y: 15
   DuplicateOf: Suspicious Sand Mound#rremef06
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2626
 - Name: Suspicious Sand Mound#rremef12
   X: 242
-  "Y": 287
+  Y: 287
   Dir: 3
   Sprite: 10042
   Trigger:
     X: 15
-    "Y": 15
+    Y: 15
   DuplicateOf: Suspicious Sand Mound#rremef06
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2627
 - Name: Suspicious Sand Mound#rremef13
   X: 89
-  "Y": 216
+  Y: 216
   Dir: 3
   Sprite: 10042
   Trigger:
     X: 15
-    "Y": 15
+    Y: 15
   DuplicateOf: Suspicious Sand Mound#rremef06
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2628
 - Name: Suspicious Sand Mound#rremef14
   X: 77
-  "Y": 259
+  Y: 259
   Dir: 3
   Sprite: 10042
   Trigger:
     X: 15
-    "Y": 15
+    Y: 15
   DuplicateOf: Suspicious Sand Mound#rremef06
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2629
 - Name: Suspicious Sand Mound#rrem02
   X: 286
-  "Y": 247
+  Y: 247
   Dir: 3
   Sprite: 557
   DuplicateOf: Suspicious Sand Mound#rremef06
@@ -214,7 +216,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:2631
 - Name: Suspicious Sand Mound#rrem03
   X: 202
-  "Y": 246
+  Y: 246
   Dir: 3
   Sprite: 557
   DuplicateOf: Suspicious Sand Mound#rremef06
@@ -222,7 +224,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:2632
 - Name: Suspicious Sand Mound#rrem04
   X: 149
-  "Y": 103
+  Y: 103
   Dir: 3
   Sprite: 557
   DuplicateOf: Suspicious Sand Mound#rremef06
@@ -230,7 +232,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:2633
 - Name: Suspicious Sand Mound#rrem05
   X: 96
-  "Y": 141
+  Y: 141
   Dir: 3
   Sprite: 557
   DuplicateOf: Suspicious Sand Mound#rremef06
@@ -238,7 +240,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:2634
 - Name: Suspicious Sand Mound#rrem06
   X: 122
-  "Y": 243
+  Y: 243
   Dir: 3
   Sprite: 557
   DuplicateOf: Suspicious Sand Mound#rremef06
@@ -246,7 +248,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:2635
 - Name: Suspicious Sand Mound#rrem07
   X: 330
-  "Y": 240
+  Y: 240
   Dir: 3
   Sprite: 557
   DuplicateOf: Suspicious Sand Mound#rremef06
@@ -254,7 +256,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:2636
 - Name: Suspicious Sand Mound#rrem08
   X: 242
-  "Y": 287
+  Y: 287
   Dir: 3
   Sprite: 557
   DuplicateOf: Suspicious Sand Mound#rremef06
@@ -262,7 +264,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:2637
 - Name: Suspicious Sand Mound#rrem09
   X: 89
-  "Y": 216
+  Y: 216
   Dir: 3
   Sprite: 557
   DuplicateOf: Suspicious Sand Mound#rremef06
@@ -270,7 +272,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:2638
 - Name: Suspicious Sand Mound#rrem10
   X: 77
-  "Y": 259
+  Y: 259
   Dir: 3
   Sprite: 557
   DuplicateOf: Suspicious Sand Mound#rremef06
@@ -278,17 +280,17 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:2639
 - Name: Wasteland Cactuten#rremef01
   X: 146
-  "Y": 164
+  Y: 164
   Dir: 1
   Sprite: 10042
   Trigger:
     X: 15
-    "Y": 15
+    Y: 15
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2642
 - Name: Wasteland Cactuten#rrem03
   X: 146
-  "Y": 164
+  Y: 164
   Dir: 1
   Sprite: 10218
   DuplicateOf: Wasteland Cactuten#rremef01
@@ -296,38 +298,38 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:2736
 - Name: Curious Coyote#rremef03
   X: 195
-  "Y": 183
+  Y: 183
   Dir: 3
   Sprite: 10042
   Trigger:
     X: 15
-    "Y": 15
+    Y: 15
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2738
 - Name: Curious Coyote#rrem05
   X: 195
-  "Y": 183
+  Y: 183
   Dir: 3
   Sprite: 3739
   SpriteIsMob: true
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2751
 - Name: Cactus Girl#rremef02
   X: 305
-  "Y": 200
+  Y: 200
   Dir: 3
   Sprite: 10042
   Trigger:
     X: 15
-    "Y": 15
+    Y: 15
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2791
 - Name: Cactus Girl#rrem04
   X: 305
-  "Y": 200
+  Y: 200
   Dir: 3
   Sprite: 10226
   DuplicateOf: Cactus Girl#rremef02
@@ -335,49 +337,49 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:2879
 - Name: Absorbed Coyote#rremef04
   X: 266
-  "Y": 219
+  Y: 219
   Dir: 3
   Sprite: 10042
   Trigger:
     X: 15
-    "Y": 15
+    Y: 15
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2881
 - Name: Absorbed Coyote#rrem06
   X: 266
-  "Y": 219
+  Y: 219
   Dir: 3
   Sprite: 3739
   SpriteIsMob: true
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2894
 - Name: Crouched Horse#rr
   X: 262
-  "Y": 90
+  Y: 90
   Dir: 7
   Sprite: 10217
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:2936
 - Name: Mr. McPhy#rkdlout
   X: 36
-  "Y": 250
+  Y: 250
   Dir: 5
   Sprite: 98
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5159
 - Name: Hole#rkdqgd1
   X: 170
-  "Y": 233
+  Y: 233
   Dir: 3
   Sprite: 550
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5223
 - Name: Hole#rkdqgd2
   X: 183
-  "Y": 143
+  Y: 143
   Dir: 3
   Sprite: 550
   DuplicateOf: Hole#rkdqgd1
@@ -385,7 +387,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:5244
 - Name: Hole#rkdqgd3
   X: 215
-  "Y": 72
+  Y: 72
   Dir: 3
   Sprite: 550
   DuplicateOf: Hole#rkdqgd1
@@ -393,14 +395,14 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:5245
 - Name: "#rkdqgd11"
   X: 170
-  "Y": 233
+  Y: 233
   Dir: 3
   Sprite: 10046
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5247
 - Name: "#rkdqgd22"
   X: 183
-  "Y": 143
+  Y: 143
   Dir: 3
   Sprite: 10046
   DuplicateOf: "#rkdqgd11"
@@ -408,7 +410,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:5253
 - Name: "#rkdqgd33"
   X: 215
-  "Y": 72
+  Y: 72
   Dir: 3
   Sprite: 10046
   DuplicateOf: "#rkdqgd11"
@@ -416,14 +418,14 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:5254
 - Name: Hole#rkq1321
   X: 43
-  "Y": 145
+  Y: 145
   Dir: 3
   Sprite: 550
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5257
 - Name: Hole#rkq1323
   X: 100
-  "Y": 230
+  Y: 230
   Dir: 3
   Sprite: 550
   DuplicateOf: Hole#rkq1321
@@ -431,7 +433,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:5322
 - Name: Hole#rkq1324
   X: 58
-  "Y": 195
+  Y: 195
   Dir: 3
   Sprite: 550
   DuplicateOf: Hole#rkq1321
@@ -439,7 +441,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:5323
 - Name: Hole#rkq1325
   X: 71
-  "Y": 149
+  Y: 149
   Dir: 3
   Sprite: 550
   DuplicateOf: Hole#rkq1321
@@ -447,7 +449,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:5324
 - Name: Hole#rkq1326
   X: 109
-  "Y": 60
+  Y: 60
   Dir: 3
   Sprite: 550
   DuplicateOf: Hole#rkq1321
@@ -455,7 +457,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:5325
 - Name: Hole#rkq1327
   X: 191
-  "Y": 101
+  Y: 101
   Dir: 3
   Sprite: 550
   DuplicateOf: Hole#rkq1321
@@ -463,7 +465,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:5326
 - Name: "#rkq1321"
   X: 43
-  "Y": 145
+  Y: 145
   Dir: 3
   Sprite: 10046
   DuplicateOf: dummy_npc
@@ -471,7 +473,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:5328
 - Name: "#rkq1323"
   X: 100
-  "Y": 230
+  Y: 230
   Dir: 3
   Sprite: 10046
   DuplicateOf: dummy_npc
@@ -479,7 +481,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:5329
 - Name: "#rkq1324"
   X: 58
-  "Y": 195
+  Y: 195
   Dir: 3
   Sprite: 10046
   DuplicateOf: dummy_npc
@@ -487,7 +489,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:5330
 - Name: "#rkq1325"
   X: 71
-  "Y": 149
+  Y: 149
   Dir: 3
   Sprite: 10046
   DuplicateOf: dummy_npc
@@ -495,7 +497,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:5331
 - Name: "#rkq1326"
   X: 109
-  "Y": 60
+  Y: 60
   Dir: 3
   Sprite: 10046
   DuplicateOf: dummy_npc
@@ -503,7 +505,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:5332
 - Name: "#rkq1327"
   X: 191
-  "Y": 101
+  Y: 101
   Dir: 3
   Sprite: 10046
   DuplicateOf: dummy_npc
@@ -511,111 +513,111 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:5333
 - Name: Curt Snake#rockc05
   X: 330
-  "Y": 104
+  Y: 104
   Dir: 3
   Sprite: 10218
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5476
 - Name: Tagliatelle#rockc07
   X: 299
-  "Y": 82
+  Y: 82
   Dir: 3
   Sprite: 10164
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5490
 - Name: Taneska#rockc08
   X: 297
-  "Y": 84
+  Y: 84
   Dir: 7
   Sprite: 549
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5503
 - Name: Glaring Eagle#rockc01
   X: 285
-  "Y": 96
+  Y: 96
   Dir: 3
   Sprite: 10219
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5517
 - Name: Karintas#rockc04
   X: 328
-  "Y": 112
+  Y: 112
   Dir: 5
   Sprite: 10226
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5531
 - Name: Juanitas#rockc02
   X: 331
-  "Y": 111
+  Y: 111
   Dir: 3
   Sprite: 10222
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5549
 - Name: Swift Scorpion#rockc03
   X: 327
-  "Y": 109
+  Y: 109
   Dir: 5
   Sprite: 10226
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5568
 - Name: Litis#rockc10
   X: 287
-  "Y": 95
+  Y: 95
   Dir: 3
   Sprite: 10227
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5585
 - Name: Roytanen#rockc10
   X: 297
-  "Y": 111
+  Y: 111
   Dir: 3
   Sprite: 10148
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5594
 - Name: Erekter#rockc06
   X: 310
-  "Y": 48
+  Y: 48
   Dir: 3
   Sprite: 10222
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:7006
 - Name: Soft Feather#rockc09
   X: 308
-  "Y": 49
+  Y: 49
   Dir: 5
   Sprite: 10228
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:7021
 - Name: rockrdg1#harboro1
   X: 33
-  "Y": 246
+  Y: 246
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: harboro1
     X: 358
-    "Y": 206
+    Y: 206
     TriggerWhileHidden: true
   Source: npc/re/warps/fields/rockridge_fild.txt:9
 - Name: rockrdg1#rockrdg2
   X: 371
-  "Y": 206
+  Y: 206
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: rockrdg2
     X: 31
-    "Y": 207
+    Y: 207
     TriggerWhileHidden: true
   Source: npc/re/warps/fields/rockridge_fild.txt:12

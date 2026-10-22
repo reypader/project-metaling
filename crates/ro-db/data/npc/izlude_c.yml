@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Airship Staff#izlude_c
   X: 202
-  "Y": 75
+  Y: 75
   Dir: 3
   Sprite: 90
   DuplicateOf: Airship_Staff_izlude
@@ -16,7 +18,7 @@ Body:
   Source: npc/re/airports/izlude.txt:20
 - Name: Sailor#izlude_c
   X: 197
-  "Y": 205
+  Y: 205
   Dir: 1
   Sprite: 100
   DuplicateOf: Sailor_izlude
@@ -24,7 +26,7 @@ Body:
   Source: npc/re/cities/izlude.txt:23
 - Name: Bonne#izlude_c
   X: 71
-  "Y": 92
+  Y: 92
   Dir: 2
   Sprite: 90
   DuplicateOf: Bonne_izlude
@@ -32,7 +34,7 @@ Body:
   Source: npc/re/cities/izlude.txt:29
 - Name: Charfri#izlude_c
   X: 172
-  "Y": 215
+  Y: 215
   Dir: 4
   Sprite: 91
   DuplicateOf: Charfri_izlude
@@ -40,7 +42,7 @@ Body:
   Source: npc/re/cities/izlude.txt:35
 - Name: Cuskoal#izlude_c
   X: 174
-  "Y": 164
+  Y: 164
   Dir: 4
   Sprite: 124
   DuplicateOf: Cuskoal_izlude
@@ -48,7 +50,7 @@ Body:
   Source: npc/re/cities/izlude.txt:41
 - Name: Dega#izlude_c
   X: 85
-  "Y": 103
+  Y: 103
   Dir: 4
   Sprite: 84
   DuplicateOf: Dega_izlude
@@ -56,7 +58,7 @@ Body:
   Source: npc/re/cities/izlude.txt:47
 - Name: Kylick#izlude_c
   X: 140
-  "Y": 186
+  Y: 186
   Dir: 4
   Sprite: 97
   DuplicateOf: Kylick_izlude
@@ -64,7 +66,7 @@ Body:
   Source: npc/re/cities/izlude.txt:53
 - Name: Red#izlude_c
   X: 57
-  "Y": 159
+  Y: 159
   Dir: 2
   Sprite: 85
   DuplicateOf: Red_izlude
@@ -72,7 +74,7 @@ Body:
   Source: npc/re/cities/izlude.txt:59
 - Name: Cebalis#izlude_c
   X: 55
-  "Y": 159
+  Y: 159
   Dir: 2
   Sprite: 98
   DuplicateOf: Cebalis_izlude
@@ -80,7 +82,7 @@ Body:
   Source: npc/re/cities/izlude.txt:65
 - Name: Soldier#izlude_c
   X: 165
-  "Y": 156
+  Y: 156
   Dir: 2
   Sprite: 105
   DuplicateOf: Soldier_izlude
@@ -88,14 +90,14 @@ Body:
   Source: npc/re/cities/izlude.txt:71
 - Name: Channel Warp Official#_c
   X: 122
-  "Y": 105
+  Y: 105
   Dir: 5
   Sprite: 64
   Kind: Script
   Source: npc/re/cities/izlude.txt:106
 - Name: Talkative Kid#izc
   X: 143
-  "Y": 205
+  Y: 205
   Dir: 7
   Sprite: 703
   DuplicateOf: Talkative Kid#iz
@@ -103,7 +105,7 @@ Body:
   Source: npc/re/cities/izlude.txt:178
 - Name: Talkative Adventurer#izc
   X: 146
-  "Y": 205
+  Y: 205
   Dir: 7
   Sprite: 706
   DuplicateOf: Talkative Adventurer#iz
@@ -111,7 +113,7 @@ Body:
   Source: npc/re/cities/izlude.txt:256
 - Name: Honeymoon Helper#Iz_c
   X: 180
-  "Y": 224
+  Y: 224
   Dir: 3
   Sprite: 71
   DuplicateOf: Honeymoon_Helper_Izlude
@@ -119,7 +121,7 @@ Body:
   Source: npc/re/cities/jawaii.txt:21
 - Name: Odgnalam#iz_c
   X: 182
-  "Y": 218
+  Y: 218
   Dir: 4
   Sprite: 554
   DuplicateOf: Odgnalam
@@ -127,7 +129,7 @@ Body:
   Source: npc/re/cities/malangdo.txt:214
 - Name: Guide#01izlude_c
   X: 129
-  "Y": 175
+  Y: 175
   Dir: 4
   Sprite: 105
   DuplicateOf: GuideIzlude
@@ -135,7 +137,7 @@ Body:
   Source: npc/re/guides/guides_izlude.txt:200
 - Name: Guide#02izlude_c
   X: 133
-  "Y": 113
+  Y: 113
   Dir: 4
   Sprite: 105
   DuplicateOf: GuideIzlude
@@ -143,7 +145,7 @@ Body:
   Source: npc/re/guides/guides_izlude.txt:206
 - Name: Kafra Employee#iz_c
   X: 128
-  "Y": 148
+  Y: 148
   Dir: 6
   Sprite: 117
   DuplicateOf: kaf_izlude
@@ -151,7 +153,7 @@ Body:
   Source: npc/re/kafras/kafras.txt:74
 - Name: Point Merchant#Izlude_c
   X: 138
-  "Y": 163
+  Y: 163
   Dir: 5
   Sprite: 700
   DuplicateOf: pss
@@ -159,7 +161,7 @@ Body:
   Source: npc/re/merchants/3rd_trader.txt:133
 - Name: Fruit Gardener#iz_c
   X: 124
-  "Y": 165
+  Y: 165
   Dir: 4
   Sprite: 53
   DuplicateOf: Fruit Gardener#iz
@@ -167,7 +169,7 @@ Body:
   Source: npc/re/merchants/shops.txt:74
 - Name: Butcher#iz_c
   X: 160
-  "Y": 186
+  Y: 186
   Dir: 0
   Sprite: 54
   DuplicateOf: Butcher#iz
@@ -175,7 +177,7 @@ Body:
   Source: npc/re/merchants/shops.txt:79
 - Name: Vendor from Milk Ranch#c
   X: 128
-  "Y": 158
+  Y: 158
   Dir: 7
   Sprite: 90
   DuplicateOf: Vendor from Milk Ranch#i
@@ -183,7 +185,7 @@ Body:
   Source: npc/re/merchants/shops.txt:84
 - Name: Mailbox#iz_c
   X: 136
-  "Y": 94
+  Y: 94
   Dir: 0
   Sprite: 888
   DuplicateOf: MailBox
@@ -191,7 +193,7 @@ Body:
   Source: npc/re/other/mail.txt:20
 - Name: Mercenary Manager#Sword3
   X: 47
-  "Y": 170
+  Y: 170
   Dir: 4
   Sprite: 734
   DuplicateOf: Mercenary Manager#main
@@ -199,7 +201,7 @@ Body:
   Source: npc/re/other/mercenary_rent.txt:21
 - Name: Mercenary Merchant#Swo_c
   X: 55
-  "Y": 170
+  Y: 170
   Dir: 4
   Sprite: 893
   DuplicateOf: MercMerchant
@@ -207,7 +209,7 @@ Body:
   Source: npc/re/other/mercenary_rent.txt:27
 - Name: Hypnotist#novice_c
   X: 127
-  "Y": 175
+  Y: 175
   Dir: 3
   Sprite: 124
   DuplicateOf: Hypnotist#novice
@@ -216,7 +218,7 @@ Body:
 - Name: Eden Teleport Officer#30
   UniqueName: eto_iz_c
   X: 131
-  "Y": 148
+  Y: 148
   Dir: 4
   Sprite: 729
   DuplicateOf: eto
@@ -224,7 +226,7 @@ Body:
   Source: npc/re/quests/eden/eden_common.txt:273
 - Name: Smile Assistance#iz_c
   X: 125
-  "Y": 175
+  Y: 175
   Dir: 4
   Sprite: 92
   DuplicateOf: SmileHelper
@@ -232,7 +234,7 @@ Body:
   Source: npc/re/quests/mrsmile.txt:21
 - Name: Promotional Staff#iz_c
   X: 102
-  "Y": 171
+  Y: 171
   Dir: 6
   Sprite: 100
   DuplicateOf: PromotionalStaff_izlude
@@ -240,14 +242,14 @@ Body:
   Source: npc/re/quests/quests_13_1.txt:20
 - Name: Fish Tails#c
   X: 136
-  "Y": 160
+  Y: 160
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:1154
 - Name: Edgar#izlude_c
   X: 179
-  "Y": 219
+  Y: 219
   Dir: 2
   Sprite: 49
   DuplicateOf: Edgar_izlude
@@ -255,7 +257,7 @@ Body:
   Source: npc/re/quests/quests_izlude.txt:20
 - Name: Scamp#iz_c
   X: 172
-  "Y": 73
+  Y: 73
   Dir: 6
   Sprite: 853
   DuplicateOf: Scamp
@@ -263,7 +265,7 @@ Body:
   Source: npc/re/quests/quests_lighthalzen.txt:23
 - Name: Cat Paw Shrimp Merchant#iz_c
   X: 117
-  "Y": 165
+  Y: 165
   Dir: 3
   Sprite: 495
   DuplicateOf: Cat Paw Shrimp Merchant#iz
@@ -271,7 +273,7 @@ Body:
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1330
 - Name: Con-Chliina Crewman#doic
   X: 195
-  "Y": 213
+  Y: 213
   Dir: 5
   Sprite: 495
   DuplicateOf: Con-Chliina Crewman#doi
@@ -279,29 +281,29 @@ Body:
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1375
 - Name: Captain Carocc#iz_c
   X: 198
-  "Y": 213
+  Y: 213
   Dir: 3
   Sprite: 873
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Captain Carocc#iz
   Kind: Script
   Source: npc/re/jobs/novice/academy.txt:802
 - Name: Criatura Academy Staff#c
   X: 122
-  "Y": 207
+  Y: 207
   Dir: 3
   Sprite: 903
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: Criatura Academy Staff#0
   Kind: Script
   Source: npc/re/jobs/novice/academy.txt:1122
 - Name: Information Staff#c
   X: 120
-  "Y": 207
+  Y: 207
   Dir: 4
   Sprite: 105
   DuplicateOf: Information Staff#0
@@ -309,52 +311,52 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:1636
 - Name: Airship#iz_c
   X: 179
-  "Y": 75
+  Y: 75
   Dir: 3
   Sprite: 858
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: Airship#iz
   Kind: Script
   Source: npc/re/jobs/novice/academy.txt:1774
 - Name: Arena#iz_c
   X: 207
-  "Y": 167
+  Y: 167
   Dir: 3
   Sprite: 858
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: Arena#iz
   Kind: Script
   Source: npc/re/jobs/novice/academy.txt:1916
 - Name: Bulletin Board#iz_c
   X: 45
-  "Y": 94
+  Y: 94
   Dir: 3
   Sprite: 858
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: Bulletin Board#iz
   Kind: Script
   Source: npc/re/jobs/novice/academy.txt:2058
 - Name: Cultivated Red Plant#c
   X: 141
-  "Y": 251
+  Y: 251
   Dir: 0
   Sprite: 1078
   SpriteIsMob: true
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: Cultivated Red Plant#0
   Kind: Script
   Source: npc/re/jobs/novice/academy.txt:2296
 - Name: Academy Student#c
   X: 140
-  "Y": 249
+  Y: 249
   Dir: 7
   Sprite: 639
   DuplicateOf: Academy Student#0
@@ -362,7 +364,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:2409
 - Name: Instructor Argos#iz_c
   X: 140
-  "Y": 260
+  Y: 260
   Dir: 3
   Sprite: 887
   DuplicateOf: Instructor Argos#iz
@@ -370,7 +372,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:2578
 - Name: Shop Helper#iz_c
   X: 115
-  "Y": 181
+  Y: 181
   Dir: 5
   Sprite: 894
   DuplicateOf: Shop Helper#iz
@@ -378,7 +380,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:3646
 - Name: Wedding Secretary#iz_c
   X: 102
-  "Y": 150
+  Y: 150
   Dir: 5
   Sprite: 71
   DuplicateOf: Wedding Secretary#iz
@@ -386,7 +388,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:5614
 - Name: Mom#iz_c
   X: 95
-  "Y": 146
+  Y: 146
   Dir: 5
   Sprite: 979
   DuplicateOf: Mom#iz
@@ -394,7 +396,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:5680
 - Name: Dad#iz_c
   X: 97
-  "Y": 147
+  Y: 147
   Dir: 3
   Sprite: 54
   DuplicateOf: Dad#iz
@@ -402,7 +404,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:5702
 - Name: Etinifni#iz_c
   X: 97
-  "Y": 144
+  Y: 144
   Dir: 1
   Sprite: 538
   DuplicateOf: Etinifni#iz
@@ -410,7 +412,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:5719
 - Name: Romantic Male#iz_c
   X: 99
-  "Y": 138
+  Y: 138
   Dir: 3
   Sprite: 881
   DuplicateOf: Romantic Male#iz
@@ -418,7 +420,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:5749
 - Name: Romantic Female#iz_c
   X: 97
-  "Y": 138
+  Y: 138
   Dir: 5
   Sprite: 882
   DuplicateOf: Romantic Female#iz
@@ -426,7 +428,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:5792
 - Name: Manufacturing Maniac#c
   X: 93
-  "Y": 143
+  Y: 143
   Dir: 3
   Sprite: 740
   DuplicateOf: Manufacturing Maniac#0
@@ -434,18 +436,18 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:5827
 - Name: Repairing Blacksmith#c
   X: 147
-  "Y": 131
+  Y: 131
   Dir: 5
   Sprite: 726
   Trigger:
     X: 5
-    "Y": 7
+    Y: 7
   DuplicateOf: Repairing Blacksmith#0
   Kind: Script
   Source: npc/re/jobs/novice/academy.txt:5847
 - Name: Refining Maniac#iz_c
   X: 148
-  "Y": 122
+  Y: 122
   Dir: 5
   Sprite: 881
   DuplicateOf: Refining Maniac#iz
@@ -453,7 +455,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:5882
 - Name: Refinery Owner Han#iz_c
   X: 153
-  "Y": 126
+  Y: 126
   Dir: 1
   Sprite: 84
   DuplicateOf: Refinery Owner Han#iz
@@ -462,7 +464,7 @@ Body:
 - Name: Refining Machine Wagjak
   UniqueName: iz_c
   X: 153
-  "Y": 121
+  Y: 121
   Dir: 3
   Sprite: 406
   DuplicateOf: izludeWagjak
@@ -470,7 +472,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:12978
 - Name: Tadde#iz_c
   X: 145
-  "Y": 122
+  Y: 122
   Dir: 7
   Sprite: 86
   DuplicateOf: Tadde#iz
@@ -478,7 +480,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:13231
 - Name: Locas#iz_c
   X: 155
-  "Y": 132
+  Y: 132
   Dir: 3
   Sprite: 84
   DuplicateOf: Locas#iz
@@ -486,7 +488,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:13590
 - Name: Enchanter Mounds#iz_c
   X: 96
-  "Y": 125
+  Y: 125
   Dir: 7
   Sprite: 545
   DuplicateOf: Enchanter Mounds#iz
@@ -494,7 +496,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:13954
 - Name: Enchanter Almond J#iz_c
   X: 108
-  "Y": 139
+  Y: 139
   Dir: 7
   Sprite: 546
   DuplicateOf: Enchanter Almond J#iz
@@ -502,7 +504,7 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:14161
 - Name: Repair Man#iz_c
   X: 158
-  "Y": 130
+  Y: 130
   Dir: 4
   Sprite: 86
   DuplicateOf: Repair Man#iz
@@ -510,91 +512,91 @@ Body:
   Source: npc/re/jobs/novice/academy.txt:14227
 - Name: iz001_c
   X: 20
-  "Y": 98
+  Y: 98
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: prt_fild08c
     X: 367
-    "Y": 212
+    Y: 212
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/izlude.txt:45
 - Name: iz01_c
   X: 110
-  "Y": 182
+  Y: 182
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: izlude_in
     X: 65
-    "Y": 87
+    Y: 87
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/izlude.txt:49
 - Name: iz04_c
   X: 52
-  "Y": 172
+  Y: 172
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: izlude_in
     X: 74
-    "Y": 161
+    Y: 161
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/izlude.txt:53
 - Name: "#to_cc01_c"
   X: 125
-  "Y": 257
+  Y: 257
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: iz_ac01_c
     X: 99
-    "Y": 29
+    Y: 29
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/izlude.txt:128
 - Name: "#to_cc02_c"
   X: 130
-  "Y": 257
+  Y: 257
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: iz_ac01_c
     X: 99
-    "Y": 29
+    Y: 29
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/izlude.txt:132
 - Name: welcome_arena_c
   X: 213
-  "Y": 161
+  Y: 161
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: arena_room
     X: 100
-    "Y": 30
+    Y: 30
     TriggerWhileHidden: false
   Source: npc/re/warps/other/arena.txt:18

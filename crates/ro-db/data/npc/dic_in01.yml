@@ -2,230 +2,232 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Waiting Galten#in_1
   X: 349
-  "Y": 282
+  Y: 282
   Dir: 4
   Sprite: 492
   Kind: Script
   Source: npc/re/cities/dicastes.txt:153
 - Name: Waiting Galten#in_2
   X: 370
-  "Y": 261
+  Y: 261
   Dir: 1
   Sprite: 492
   Kind: Script
   Source: npc/re/cities/dicastes.txt:166
 - Name: Waiting Galten#in_3
   X: 381
-  "Y": 261
+  Y: 261
   Dir: 1
   Sprite: 492
   Kind: Script
   Source: npc/re/cities/dicastes.txt:177
 - Name: Waiting Galten#in_4
   X: 370
-  "Y": 282
+  Y: 282
   Dir: 4
   Sprite: 492
   Kind: Script
   Source: npc/re/cities/dicastes.txt:188
 - Name: Resting Galten#in_5
   X: 354
-  "Y": 219
+  Y: 219
   Dir: 4
   Sprite: 492
   Kind: Script
   Source: npc/re/cities/dicastes.txt:199
 - Name: Resting Galten#in_6
   X: 365
-  "Y": 197
+  Y: 197
   Dir: 1
   Sprite: 492
   Kind: Script
   Source: npc/re/cities/dicastes.txt:210
 - Name: Resting Piom#01
   X: 87
-  "Y": 102
+  Y: 102
   Dir: 5
   Sprite: 454
   Kind: Script
   Source: npc/re/cities/dicastes.txt:225
 - Name: Resting Piom#04
   X: 29
-  "Y": 119
+  Y: 119
   Dir: 4
   Sprite: 489
   Kind: Script
   Source: npc/re/cities/dicastes.txt:229
 - Name: Suspicious Piom#a
   X: 91
-  "Y": 113
+  Y: 113
   Dir: 5
   Sprite: 489
   Kind: Script
   Source: npc/re/cities/dicastes.txt:240
 - Name: Tired Piom#c
   X: 168
-  "Y": 116
+  Y: 116
   Dir: 5
   Sprite: 491
   Kind: Script
   Source: npc/re/cities/dicastes.txt:281
 - Name: Tired Piom#b
   X: 149
-  "Y": 104
+  Y: 104
   Dir: 5
   Sprite: 455
   Kind: Script
   Source: npc/re/cities/dicastes.txt:297
 - Name: Tired Piom#a
   X: 341
-  "Y": 113
+  Y: 113
   Dir: 3
   Sprite: 491
   Kind: Script
   Source: npc/re/cities/dicastes.txt:315
 - Name: Eating Adventurer#tre
   X: 252
-  "Y": 103
+  Y: 103
   Dir: 3
   Sprite: 711
   Kind: Script
   Source: npc/re/cities/dicastes.txt:346
 - Name: Venknick#el_01
   X: 32
-  "Y": 54
+  Y: 54
   Dir: 5
   Sprite: 449
   Kind: Script
   Source: npc/re/cities/dicastes.txt:362
 - Name: Thrilled Piom#a
   X: 372
-  "Y": 116
+  Y: 116
   Dir: 3
   Sprite: 490
   Kind: Script
   Source: npc/re/cities/dicastes.txt:375
 - Name: Serious Venknicka
   X: 360
-  "Y": 125
+  Y: 125
   Dir: 5
   Sprite: 449
   Kind: Script
   Source: npc/re/cities/dicastes.txt:405
 - Name: Guide#diel_1
   X: 42
-  "Y": 250
+  Y: 250
   Dir: 5
   Sprite: 489
   Kind: Script
   Source: npc/re/cities/dicastes.txt:419
 - Name: Talkative Piom#a
   X: 335
-  "Y": 34
+  Y: 34
   Dir: 5
   Sprite: 490
   Kind: Script
   Source: npc/re/cities/dicastes.txt:466
 - Name: Manuk Piom#a
   X: 387
-  "Y": 30
+  Y: 30
   Dir: 1
   Sprite: 454
   Kind: Script
   Source: npc/re/cities/dicastes.txt:486
 - Name: Worried Piom#a
   X: 98
-  "Y": 110
+  Y: 110
   Dir: 5
   Sprite: 489
   Kind: Script
   Source: npc/re/cities/dicastes.txt:689
 - Name: Lost Galten#a
   X: 98
-  "Y": 96
+  Y: 96
   Dir: 3
   Sprite: 492
   Kind: Script
   Source: npc/re/cities/dicastes.txt:704
 - Name: Peddler#dic
   X: 238
-  "Y": 107
+  Y: 107
   Dir: 5
   Sprite: 900
   Kind: Shop
   Source: npc/re/merchants/shops.txt:61
 - Name: Mysterious Documents
   X: 25
-  "Y": 190
+  Y: 190
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/magic_books.txt:564
 - Name: Item Storage#01
   X: 254
-  "Y": 119
+  Y: 119
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:412
 - Name: Hunting Dept. 1 Manager
   X: 48
-  "Y": 263
+  Y: 263
   Dir: 5
   Sprite: 449
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:486
 - Name: Hunting Dept. 2 Manager
   X: 51
-  "Y": 266
+  Y: 266
   Dir: 6
   Sprite: 449
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:556
 - Name: Supply Dept. 1 Manager
   X: 51
-  "Y": 270
+  Y: 270
   Dir: 7
   Sprite: 449
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:625
 - Name: Supply Dept. 2 Manager
   X: 48
-  "Y": 273
+  Y: 273
   Dir: 8
   Sprite: 449
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:696
 - Name: Transport Dept. 1 Mgr
   X: 43
-  "Y": 273
+  Y: 273
   Dir: 1
   Sprite: 449
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:763
 - Name: Transport Dept. 2 Mgr
   X: 40
-  "Y": 270
+  Y: 270
   Dir: 2
   Sprite: 449
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:837
 - Name: Papyrus#0001
   X: 40
-  "Y": 193
+  Y: 193
   Dir: 1
   Sprite: 453
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:906
 - Name: Document Package#0001
   X: 31
-  "Y": 192
+  Y: 192
   Dir: 0
   Sprite: 844
   DuplicateOf: Document Package#main
@@ -233,7 +235,7 @@ Body:
   Source: npc/re/quests/quests_dicastes.txt:1116
 - Name: Document Package#0002
   X: 31
-  "Y": 187
+  Y: 187
   Dir: 0
   Sprite: 844
   DuplicateOf: Document Package#main
@@ -241,7 +243,7 @@ Body:
   Source: npc/re/quests/quests_dicastes.txt:1117
 - Name: Document Package#0003
   X: 25
-  "Y": 192
+  Y: 192
   Dir: 0
   Sprite: 844
   DuplicateOf: Document Package#main
@@ -249,7 +251,7 @@ Body:
   Source: npc/re/quests/quests_dicastes.txt:1118
 - Name: Document Package#0004
   X: 25
-  "Y": 187
+  Y: 187
   Dir: 0
   Sprite: 844
   DuplicateOf: Document Package#main
@@ -257,97 +259,97 @@ Body:
   Source: npc/re/quests/quests_dicastes.txt:1119
 - Name: Diel Guard#ep133_19
   X: 138
-  "Y": 225
+  Y: 225
   Dir: 3
   Sprite: 492
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:1198
 - Name: Elevator#5f_to_4f
   X: 242
-  "Y": 182
+  Y: 182
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:1255
 - Name: Diel Guard#ep133_20
   X: 263
-  "Y": 193
+  Y: 193
   Dir: 3
   Sprite: 450
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:1261
 - Name: "#ep133_event01"
   X: 299
-  "Y": 268
+  Y: 268
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:1315
 - Name: Secret Adjutant#ep133_2
   X: 294
-  "Y": 276
+  Y: 276
   Dir: 5
   Sprite: 498
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:1345
 - Name: Minister Ahat#ep133_21
   X: 300
-  "Y": 280
+  Y: 280
   Dir: 5
   Sprite: 493
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:1509
 - Name: "#ep133_event02"
   X: 138
-  "Y": 188
+  Y: 188
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:1796
 - Name: Jarute HesLanta#ep133_2
   X: 158
-  "Y": 188
+  Y: 188
   Dir: 3
   Sprite: 451
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:1815
 - Name: Shay#ep133_13
   X: 245
-  "Y": 119
+  Y: 119
   Dir: 4
   Sprite: 884
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:3671
 - Name: Frede#13_3_in
   X: 165
-  "Y": 104
+  Y: 104
   Dir: 0
   Sprite: 454
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:5055
 - Name: Bouy#13_3
   X: 349
-  "Y": 129
+  Y: 129
   Dir: 5
   Sprite: 449
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:5974
 - Name: Adventurer Clerk#ep133
   X: 42
-  "Y": 264
+  Y: 264
   Dir: 3
   Sprite: 453
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:6745
 - Name: Kareka#pa0829
   X: 353
-  "Y": 37
+  Y: 37
   Dir: 5
   Sprite: 454
   DuplicateOf: dic_enc#main
@@ -355,24 +357,24 @@ Body:
   Source: npc/re/quests/quests_dicastes.txt:7375
 - Name: "#ep14_1_xq02"
   X: 262
-  "Y": 191
+  Y: 191
   Dir: 0
   Sprite: 139
   Trigger:
     X: 0
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_mora.txt:1470
 - Name: Cheshire#ep14_1_xq01
   X: 260
-  "Y": 194
+  Y: 194
   Dir: 4
   Sprite: 498
   Kind: Script
   Source: npc/re/quests/quests_mora.txt:1503
 - Name: Cat Paw Shrimp Merchant#dic
   X: 242
-  "Y": 119
+  Y: 119
   Dir: 5
   Sprite: 495
   DuplicateOf: Cat Paw Shrimp Merchant#iz
@@ -380,119 +382,119 @@ Body:
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1323
 - Name: eldicastes0002
   X: 45
-  "Y": 28
+  Y: 28
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: dicastes01
     X: 281
-    "Y": 284
+    Y: 284
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/dicastes.txt:20
 - Name: eldicastes0004
   X: 372
-  "Y": 99
+  Y: 99
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: dicastes01
     X: 163
-    "Y": 295
+    Y: 295
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/dicastes.txt:22
 - Name: eldicastes0006
   X: 390
-  "Y": 55
+  Y: 55
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: dicastes01
     X: 95
-    "Y": 257
+    Y: 257
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/dicastes.txt:24
 - Name: eldicastes0008
   X: 26
-  "Y": 96
+  Y: 96
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: dicastes01
     X: 137
-    "Y": 106
+    Y: 106
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/dicastes.txt:26
 - Name: eldicastes0010
   X: 342
-  "Y": 271
+  Y: 271
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: dicastes01
     X: 255
-    "Y": 173
+    Y: 173
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/dicastes.txt:28
 - Name: eldicastes0014
   X: 45
-  "Y": 244
+  Y: 244
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: dicastes02
     X: 119
-    "Y": 235
+    Y: 235
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/dicastes.txt:32
 - Name: eldicastes0015
   X: 299
-  "Y": 248
+  Y: 248
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: dic_in01
     X: 262
-    "Y": 191
+    Y: 191
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/dicastes.txt:33
 - Name: "#eldicastes0016"
   X: 242
-  "Y": 182
+  Y: 182
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/warps/cities/dicastes.txt:35
 - Name: Elevator#1
   X: 46
-  "Y": 288
+  Y: 288
   Dir: 0
   Sprite: 844
   DuplicateOf: Elevator#main
@@ -500,7 +502,7 @@ Body:
   Source: npc/re/warps/cities/dicastes.txt:62
 - Name: Elevator#2
   X: 122
-  "Y": 284
+  Y: 284
   Dir: 0
   Sprite: 844
   DuplicateOf: Elevator#main
@@ -508,7 +510,7 @@ Body:
   Source: npc/re/warps/cities/dicastes.txt:63
 - Name: Elevator#3
   X: 121
-  "Y": 203
+  Y: 203
   Dir: 0
   Sprite: 844
   DuplicateOf: Elevator#main
@@ -516,7 +518,7 @@ Body:
   Source: npc/re/warps/cities/dicastes.txt:64
 - Name: Elevator#4
   X: 35
-  "Y": 214
+  Y: 214
   Dir: 0
   Sprite: 844
   DuplicateOf: Elevator#main
@@ -524,7 +526,7 @@ Body:
   Source: npc/re/warps/cities/dicastes.txt:65
 - Name: Elevator#5
   X: 44
-  "Y": 116
+  Y: 116
   Dir: 0
   Sprite: 844
   DuplicateOf: Elevator#main
@@ -532,7 +534,7 @@ Body:
   Source: npc/re/warps/cities/dicastes.txt:66
 - Name: Elevator#6
   X: 112
-  "Y": 108
+  Y: 108
   Dir: 0
   Sprite: 844
   DuplicateOf: Elevator#main
@@ -540,7 +542,7 @@ Body:
   Source: npc/re/warps/cities/dicastes.txt:67
 - Name: Elevator#7
   X: 180
-  "Y": 108
+  Y: 108
   Dir: 0
   Sprite: 844
   DuplicateOf: Elevator#main
@@ -548,7 +550,7 @@ Body:
   Source: npc/re/warps/cities/dicastes.txt:68
 - Name: Elevator#8
   X: 261
-  "Y": 115
+  Y: 115
   Dir: 0
   Sprite: 844
   DuplicateOf: Elevator#main
@@ -556,7 +558,7 @@ Body:
   Source: npc/re/warps/cities/dicastes.txt:69
 - Name: Elevator#9
   X: 57
-  "Y": 48
+  Y: 48
   Dir: 0
   Sprite: 844
   DuplicateOf: Elevator#main
@@ -564,7 +566,7 @@ Body:
   Source: npc/re/warps/cities/dicastes.txt:70
 - Name: Elevator#10
   X: 137
-  "Y": 46
+  Y: 46
   Dir: 0
   Sprite: 844
   DuplicateOf: Elevator#main
@@ -572,7 +574,7 @@ Body:
   Source: npc/re/warps/cities/dicastes.txt:71
 - Name: Elevator#11
   X: 222
-  "Y": 46
+  Y: 46
   Dir: 0
   Sprite: 844
   DuplicateOf: Elevator#main
@@ -580,7 +582,7 @@ Body:
   Source: npc/re/warps/cities/dicastes.txt:72
 - Name: Elevator#12
   X: 388
-  "Y": 272
+  Y: 272
   Dir: 0
   Sprite: 844
   DuplicateOf: Elevator#main
@@ -588,7 +590,7 @@ Body:
   Source: npc/re/warps/cities/dicastes.txt:73
 - Name: Elevator#13
   X: 389
-  "Y": 208
+  Y: 208
   Dir: 0
   Sprite: 844
   DuplicateOf: Elevator#main

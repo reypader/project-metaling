@@ -2,43 +2,45 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: imir1#rachel
   X: 119
-  "Y": 115
+  Y: 115
   Dir: 0
   Sprite: -1
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/quests/quests_rachel.txt:7307
 - Name: imir2#rachel
   X: 119
-  "Y": 133
+  Y: 133
   Dir: 0
   Sprite: -1
   Trigger:
     X: 20
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/quests/quests_rachel.txt:7324
 - Name: imir3#rachel
   X: 119
-  "Y": 203
+  Y: 203
   Dir: 0
   Sprite: -1
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   Kind: Script
   Source: npc/quests/quests_rachel.txt:7335
 - Name: High Priestess Niren#r2
   X: 122
-  "Y": 200
+  Y: 200
   Dir: 4
   Sprite: 915
   Kind: Script

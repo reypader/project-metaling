@@ -2,44 +2,46 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Bear Wanting Illusion Stone#ITB
   X: 177
-  "Y": 158
+  Y: 158
   Dir: 3
   Sprite: 10290
   Kind: Script
   Source: npc/re/merchants/enchan_illusion_dungeons.txt:894
 - Name: Machoko#machoco
   X: 161
-  "Y": 180
+  Y: 180
   Dir: 5
   Sprite: 700
   Kind: Script
   Source: npc/re/quests/illusion_investigation.txt:621
 - Name: Exit#IBTin
   X: 161
-  "Y": 189
+  Y: 189
   Dir: 3
   Sprite: 10043
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:11821
 - Name: Steven#IBT
   X: 170
-  "Y": 193
+  Y: 193
   Dir: 5
   Sprite: 98
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:12103
 - Name: Acid#IBT_inN
   X: 135
-  "Y": 229
+  Y: 229
   Dir: 1
   Sprite: 798
   State: Cloaked
@@ -48,7 +50,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12412
 - Name: White Teddy Bear#IBT
   X: 169
-  "Y": 193
+  Y: 193
   Dir: 5
   Sprite: 10292
   State: Cloaked
@@ -57,7 +59,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12413
 - Name: Teddy Bear#IBT
   X: 171
-  "Y": 193
+  Y: 193
   Dir: 3
   Sprite: 10290
   State: Cloaked
@@ -66,7 +68,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12414
 - Name: Acid#IBT_inN01
   X: 172
-  "Y": 192
+  Y: 192
   Dir: 1
   Sprite: 798
   State: Cloaked
@@ -75,17 +77,17 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12415
 - Name: "#ITBSuspicious place"
   X: 132
-  "Y": 233
+  Y: 233
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:12417
 - Name: ??????#IBT_inB01
   X: 142
-  "Y": 244
+  Y: 244
   Dir: 3
   Sprite: 10291
   State: Cloaked
@@ -94,7 +96,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12596
 - Name: ??????#IBT_inB02_1
   X: 141
-  "Y": 244
+  Y: 244
   Dir: 5
   Sprite: 10294
   State: Cloaked
@@ -103,7 +105,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12597
 - Name: ??????#IBT_inB02_2
   X: 141
-  "Y": 244
+  Y: 244
   Dir: 5
   Sprite: 10293
   State: Cloaked
@@ -112,7 +114,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12598
 - Name: ??????#IBT_inB03
   X: 140
-  "Y": 244
+  Y: 244
   Dir: 7
   Sprite: 10292
   State: Cloaked
@@ -121,7 +123,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12599
 - Name: ??????#IBT_inB04
   X: 141
-  "Y": 240
+  Y: 240
   Dir: 5
   Sprite: 10290
   State: Cloaked
@@ -130,7 +132,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12600
 - Name: ??????#IBT_inB05
   X: 139
-  "Y": 240
+  Y: 240
   Dir: 5
   Sprite: 10292
   State: Cloaked
@@ -139,7 +141,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12601
 - Name: ??????#IBT_inB06
   X: 140
-  "Y": 238
+  Y: 238
   Dir: 5
   Sprite: 10290
   State: Cloaked
@@ -148,7 +150,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12602
 - Name: ??????#IBT_inB07
   X: 136
-  "Y": 240
+  Y: 240
   Dir: 5
   Sprite: 10292
   State: Cloaked
@@ -157,7 +159,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12603
 - Name: ??????#IBT_inB08
   X: 133
-  "Y": 240
+  Y: 240
   Dir: 7
   Sprite: 10293
   State: Cloaked
@@ -166,7 +168,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12604
 - Name: ??????#IBT_inB09
   X: 142
-  "Y": 237
+  Y: 237
   Dir: 7
   Sprite: 10290
   State: Cloaked
@@ -175,7 +177,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12605
 - Name: ??????#IBT_inB10
   X: 140
-  "Y": 236
+  Y: 236
   Dir: 7
   Sprite: 10292
   State: Cloaked
@@ -184,7 +186,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12606
 - Name: ??????#IBT_inB11
   X: 142
-  "Y": 243
+  Y: 243
   Dir: 1
   Sprite: 10290
   State: Cloaked
@@ -193,7 +195,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12607
 - Name: ??????#IBT_inB12
   X: 144
-  "Y": 242
+  Y: 242
   Dir: 3
   Sprite: 10290
   State: Cloaked
@@ -202,7 +204,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12608
 - Name: ??????#IBT_inB13
   X: 144
-  "Y": 240
+  Y: 240
   Dir: 1
   Sprite: 10290
   State: Cloaked
@@ -211,7 +213,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12609
 - Name: ??????#IBT_inB14
   X: 141
-  "Y": 246
+  Y: 246
   Dir: 5
   Sprite: 10292
   State: Cloaked
@@ -220,7 +222,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12610
 - Name: ??????#IBT_inB15
   X: 141
-  "Y": 237
+  Y: 237
   Dir: 7
   Sprite: 10290
   State: Cloaked
@@ -229,7 +231,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12611
 - Name: ??????#IBT_inB16
   X: 141
-  "Y": 242
+  Y: 242
   Dir: 7
   Sprite: 10293
   State: Cloaked
@@ -238,7 +240,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12612
 - Name: ??????#IBT_inB17
   X: 137
-  "Y": 240
+  Y: 240
   Dir: 7
   Sprite: 10290
   State: Cloaked
@@ -247,7 +249,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12613
 - Name: ??????#IBT_inB18
   X: 136
-  "Y": 238
+  Y: 238
   Dir: 7
   Sprite: 10290
   State: Cloaked
@@ -256,7 +258,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12614
 - Name: ??????#IBT_inB19
   X: 138
-  "Y": 238
+  Y: 238
   Dir: 7
   Sprite: 10290
   State: Cloaked
@@ -265,7 +267,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12615
 - Name: ??????#IBT_inB20
   X: 141
-  "Y": 241
+  Y: 241
   Dir: 7
   Sprite: 10293
   State: Cloaked
@@ -274,7 +276,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12616
 - Name: ??????#IBT_inB21
   X: 145
-  "Y": 241
+  Y: 241
   Dir: 1
   Sprite: 10290
   State: Cloaked
@@ -283,7 +285,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12617
 - Name: ??????#IBT_inB22
   X: 140
-  "Y": 243
+  Y: 243
   Dir: 5
   Sprite: 10290
   State: Cloaked
@@ -292,7 +294,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12618
 - Name: Steven#IBT_inN
   X: 133
-  "Y": 233
+  Y: 233
   Dir: 7
   Sprite: 98
   State: Cloaked
@@ -301,31 +303,31 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:12619
 - Name: Gloomy Teddy Bear#ITB
   X: 168
-  "Y": 206
+  Y: 206
   Dir: 5
   Sprite: 10294
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:12621
 - Name: Porcelain Doll Craftsman#ITB
   X: 191
-  "Y": 192
+  Y: 192
   Dir: 3
   Sprite: 893
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:12721
 - Name: White Bear#ITBz01
   X: 169
-  "Y": 244
+  Y: 244
   Dir: 1
   Sprite: 10292
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:12797
 - Name: Sirumsireum Teddy Bear#ITBz02
   X: 169
-  "Y": 244
+  Y: 244
   Dir: 1
   Sprite: 10294
   Kind: Script

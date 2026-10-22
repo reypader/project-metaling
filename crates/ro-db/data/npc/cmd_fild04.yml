@@ -2,55 +2,57 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Zyosegirl#cmd
   X: 188
-  "Y": 74
+  Y: 74
   Dir: 4
   Sprite: 93
   Kind: Script
   Source: npc/cities/comodo.txt:237
 - Name: Ziyaol#cmd
   X: 248
-  "Y": 86
+  Y: 86
   Dir: 4
   Sprite: 709
   Kind: Script
   Source: npc/cities/comodo.txt:255
 - Name: Daeguro#cmd
   X: 267
-  "Y": 137
+  Y: 137
   Dir: 4
   Sprite: 703
   Kind: Script
   Source: npc/cities/comodo.txt:282
 - Name: Warp#3
   X: 304
-  "Y": 180
+  Y: 180
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/jobs/2-2/rogue.txt:1158
 - Name: "#wp120047"
   X: 151
-  "Y": 191
+  Y: 191
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:137
 - Name: "#tr120047"
   X: 151
-  "Y": 191
+  Y: 191
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -58,61 +60,61 @@ Body:
   Source: npc/re/other/achievements.txt:398
 - Name: cmd_fild04-1
   X: 21
-  "Y": 275
+  Y: 275
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: cmd_fild02
     X: 378
-    "Y": 264
+    Y: 264
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/com_fild.txt:27
 - Name: cmd_fild04-2
   X: 31
-  "Y": 92
+  Y: 92
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: cmd_fild02
     X: 351
-    "Y": 92
+    Y: 92
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/com_fild.txt:28
 - Name: cmd_fild04-3
   X: 376
-  "Y": 287
+  Y: 287
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: cmd_fild06
     X: 26
-    "Y": 288
+    Y: 288
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/com_fild.txt:29
 - Name: cmd_fild04-4
   X: 180
-  "Y": 372
+  Y: 372
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: cmd_fild03
     X: 183
-    "Y": 23
+    Y: 23
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/com_fild.txt:30

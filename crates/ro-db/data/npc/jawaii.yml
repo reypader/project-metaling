@@ -2,113 +2,115 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Mariner#toizu
   X: 239
-  "Y": 112
+  Y: 112
   Dir: 7
   Sprite: 100
   Kind: Script
   Source: npc/cities/jawaii.txt:43
 - Name: Mariner#toalbe
   X: 122
-  "Y": 263
+  Y: 263
   Dir: 5
   Sprite: 100
   Kind: Script
   Source: npc/cities/jawaii.txt:78
 - Name: Tavern Lady#Jawaii
   X: 188
-  "Y": 218
+  Y: 218
   Dir: 7
   Sprite: 80
   Kind: Script
   Source: npc/cities/jawaii.txt:112
 - Name: Jawaii Resident#heart
   X: 220
-  "Y": 235
+  Y: 235
   Dir: 3
   Sprite: 724
   Kind: Script
   Source: npc/cities/jawaii.txt:145
 - Name: Jawaii Resident#desc1
   X: 240
-  "Y": 146
+  Y: 146
   Dir: 5
   Sprite: 724
   Kind: Script
   Source: npc/cities/jawaii.txt:167
 - Name: Jawaii Resident#desc2
   X: 168
-  "Y": 247
+  Y: 247
   Dir: 5
   Sprite: 724
   Kind: Script
   Source: npc/cities/jawaii.txt:180
 - Name: Jawaii Resident#desc3
   X: 165
-  "Y": 121
+  Y: 121
   Dir: 1
   Sprite: 724
   Kind: Script
   Source: npc/cities/jawaii.txt:196
 - Name: Employee#sroom
   X: 141
-  "Y": 200
+  Y: 200
   Dir: 3
   Sprite: 798
   Kind: Script
   Source: npc/cities/jawaii.txt:221
 - Name: Employee#antroom
   X: 108
-  "Y": 199
+  Y: 199
   Dir: 5
   Sprite: 74
   Kind: Script
   Source: npc/cities/jawaii.txt:267
 - Name: Employee#horoom
   X: 107
-  "Y": 189
+  Y: 189
   Dir: 5
   Sprite: 93
   Kind: Script
   Source: npc/cities/jawaii.txt:315
 - Name: Employee#villroom
   X: 112
-  "Y": 173
+  Y: 173
   Dir: 7
   Sprite: 93
   Kind: Script
   Source: npc/cities/jawaii.txt:346
 - Name: Honeymoon Helper#Jawaii
   X: 214
-  "Y": 168
+  Y: 168
   Dir: 5
   Sprite: 71
   Kind: Script
   Source: npc/cities/jawaii.txt:391
 - Name: Ice Cream Guy#ja
   X: 186
-  "Y": 174
+  Y: 174
   Dir: 3
   Sprite: 85
   Kind: Shop
   Source: npc/merchants/shops.txt:146
 - Name: jawaiiwarp005
   X: 192
-  "Y": 215
+  Y: 215
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: jawaii_in
     X: 28
-    "Y": 94
+    Y: 94
     TriggerWhileHidden: false
   Source: npc/warps/fields/jawaii.txt:23

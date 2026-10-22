@@ -2,145 +2,147 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Missing, the Cleaner#0
   X: 63
-  "Y": 100
+  Y: 100
   Dir: 4
   Sprite: 545
   Kind: Script
   Source: npc/re/instances/MalangdoCulvert.txt:457
 - Name: Culvert Entrance#i
   X: 84
-  "Y": 105
+  Y: 105
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/instances/MalangdoCulvert.txt:514
 - Name: Missing, the Cleaner#nf
   X: 84
-  "Y": 105
+  Y: 105
   Dir: 4
   Sprite: 545
   Kind: Script
   Source: npc/re/instances/MalangdoCulvert.txt:571
 - Name: Missing, the Cleaner#n
   X: 84
-  "Y": 105
+  Y: 105
   Dir: 4
   Sprite: 545
   Kind: Script
   Source: npc/re/instances/MalangdoCulvert.txt:609
 - Name: Monster Hole#n
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 4
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/MalangdoCulvert.txt:691
 - Name: "#Culvert_n1"
   X: 36
-  "Y": 111
+  Y: 111
   Dir: 4
   Sprite: 844
   Trigger:
     X: 14
-    "Y": 14
+    Y: 14
   Kind: Script
   Source: npc/re/instances/MalangdoCulvert.txt:712
 - Name: "#Culvert_n2"
   X: 68
-  "Y": 124
+  Y: 124
   Dir: 4
   Sprite: 844
   Trigger:
     X: 14
-    "Y": 14
+    Y: 14
   DuplicateOf: "#Culvert_n1"
   Kind: Script
   Source: npc/re/instances/MalangdoCulvert.txt:767
 - Name: "#Culvert_n3"
   X: 80
-  "Y": 114
+  Y: 114
   Dir: 4
   Sprite: 844
   Trigger:
     X: 14
-    "Y": 14
+    Y: 14
   DuplicateOf: "#Culvert_n1"
   Kind: Script
   Source: npc/re/instances/MalangdoCulvert.txt:768
 - Name: "#Culvert_n4"
   X: 40
-  "Y": 80
+  Y: 80
   Dir: 4
   Sprite: 844
   Trigger:
     X: 14
-    "Y": 14
+    Y: 14
   DuplicateOf: "#Culvert_n1"
   Kind: Script
   Source: npc/re/instances/MalangdoCulvert.txt:769
 - Name: "#Culvert_n5"
   X: 75
-  "Y": 80
+  Y: 80
   Dir: 4
   Sprite: 844
   Trigger:
     X: 14
-    "Y": 14
+    Y: 14
   DuplicateOf: "#Culvert_n1"
   Kind: Script
   Source: npc/re/instances/MalangdoCulvert.txt:770
 - Name: "#Culvert_n6"
   X: 58
-  "Y": 101
+  Y: 101
   Dir: 4
   Sprite: 844
   Trigger:
     X: 14
-    "Y": 14
+    Y: 14
   DuplicateOf: "#Culvert_n1"
   Kind: Script
   Source: npc/re/instances/MalangdoCulvert.txt:771
 - Name: Boss Creation#n
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 4
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/MalangdoCulvert.txt:773
 - Name: Missing, the Cleaner#no
   X: 84
-  "Y": 105
+  Y: 105
   Dir: 4
   Sprite: 545
   Kind: Script
   Source: npc/re/instances/MalangdoCulvert.txt:848
 - Name: Culvert Entrance#n
   X: 32
-  "Y": 100
+  Y: 100
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: mal_in01
     X: 161
-    "Y": 32
+    Y: 32
     TriggerWhileHidden: true
   Source: npc/re/instances/MalangdoCulvert.txt:882
 - Name: Hydra#n
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 4
   Sprite: -1
   Kind: Script

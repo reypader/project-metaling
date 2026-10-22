@@ -2,61 +2,63 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Switch#ufe
   X: 51
-  "Y": 98
+  Y: 98
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_juperos.txt:4252
 - Name: Switch On#ufe
   X: 51
-  "Y": 98
+  Y: 98
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/quests/quests_juperos.txt:4403
 - Name: Elevator Guard1#ufe
   X: 10
-  "Y": 50
+  Y: 50
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/quests/quests_juperos.txt:4417
 - Name: Elevator Safety#ufe
   X: 10
-  "Y": 52
+  Y: 52
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/quests/quests_juperos.txt:4486
 - Name: Annihilation#ufe
   X: 50
-  "Y": 89
+  Y: 89
   Dir: 0
   Sprite: -1
   Trigger:
     X: 35
-    "Y": 50
+    Y: 50
   Kind: Script
   Source: npc/quests/quests_juperos.txt:4511
 - Name: Elevator Escape#ufe
   X: 50
-  "Y": 89
+  Y: 89
   Dir: 0
   Sprite: -1
   Trigger:
     X: 35
-    "Y": 50
+    Y: 50
   Kind: Script
   Source: npc/quests/quests_juperos.txt:4539
 - Name: Elevator On#ufe
   X: 10
-  "Y": 54
+  Y: 54
   Dir: 0
   Sprite: -1
   Kind: Script

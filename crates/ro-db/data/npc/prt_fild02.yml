@@ -2,41 +2,43 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#brisindwarf2"
   X: 185
-  "Y": 269
+  Y: 269
   Dir: 0
   Sprite: 111
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/quests/seals/brisingamen_seal.txt:3798
 - Name: Dvalin#1
   X: 185
-  "Y": 270
+  Y: 270
   Dir: 3
   Sprite: 826
   Kind: Script
   Source: npc/quests/seals/brisingamen_seal.txt:3972
 - Name: "#wp120002"
   X: 142
-  "Y": 221
+  Y: 221
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:234
 - Name: "#tr120002"
   X: 142
-  "Y": 221
+  Y: 221
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -44,119 +46,119 @@ Body:
   Source: npc/re/other/achievements.txt:495
 - Name: Sticky Mucus
   X: 102
-  "Y": 97
+  Y: 97
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:1181
 - Name: Feathers
   X: 142
-  "Y": 116
+  Y: 116
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:1192
 - Name: Red Herbs
   X: 97
-  "Y": 209
+  Y: 209
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:1193
 - Name: Carrots
   X: 280
-  "Y": 328
+  Y: 328
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:1194
 - Name: prtf03-1
   X: 17
-  "Y": 242
+  Y: 242
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 5
+    Y: 5
   Kind: Warp
   Warp:
     Map: prt_fild01
     X: 377
-    "Y": 243
+    Y: 243
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/prontera_fild.txt:34
 - Name: prtf04-1
   X: 17
-  "Y": 305
+  Y: 305
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 5
+    Y: 5
   Kind: Warp
   Warp:
     Map: prt_fild01
     X: 379
-    "Y": 302
+    Y: 302
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/prontera_fild.txt:35
 - Name: prtf05-1
   X: 17
-  "Y": 350
+  Y: 350
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 7
+    Y: 7
   Kind: Warp
   Warp:
     Map: prt_fild01
     X: 379
-    "Y": 351
+    Y: 351
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/prontera_fild.txt:36
 - Name: prtf012
   X: 173
-  "Y": 382
+  Y: 382
   Dir: 0
   Sprite: 45
   Trigger:
     X: 4
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: mjolnir_11
     X: 174
-    "Y": 23
+    Y: 23
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/prontera_fild.txt:37
 - Name: prtf06
   X: 305
-  "Y": 17
+  Y: 17
   Dir: 0
   Sprite: 45
   Trigger:
     X: 10
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_fild06
     X: 277
-    "Y": 315
+    Y: 315
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/prontera_fild.txt:38
 - Name: prtf07
   X: 380
-  "Y": 347
+  Y: 347
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 10
+    Y: 10
   Kind: Warp
   Warp:
     Map: prt_fild03
     X: 23
-    "Y": 249
+    Y: 249
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/prontera_fild.txt:39

@@ -2,27 +2,29 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Test Waiting Room#jr_03
   X: 30
-  "Y": 44
+  Y: 44
   Dir: 3
   Sprite: 88
   Kind: Script
   Source: npc/re/jobs/3-1/ranger.txt:684
 - Name: Ranger Master#jr_29
   X: 90
-  "Y": 43
+  Y: 43
   Dir: 3
   Sprite: 832
   Kind: Script
   Source: npc/re/jobs/3-1/ranger.txt:1630
 - Name: Worker#job_ranger
   X: 58
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 88
   Kind: Script

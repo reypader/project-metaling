@@ -2,20 +2,22 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Orb of Seal#frozen1
   X: 126
-  "Y": 126
+  Y: 126
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:4829
 - Name: Orb of Seal#frozen2
   X: 172
-  "Y": 126
+  Y: 126
   Dir: 3
   Sprite: 844
   DuplicateOf: Orb of Seal#frozen1
@@ -23,7 +25,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:4853
 - Name: Orb of Seal#frozen3
   X: 172
-  "Y": 173
+  Y: 173
   Dir: 3
   Sprite: 844
   DuplicateOf: Orb of Seal#frozen1
@@ -31,7 +33,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:4854
 - Name: Orb of Seal#frozen4
   X: 127
-  "Y": 172
+  Y: 172
   Dir: 3
   Sprite: 844
   DuplicateOf: Orb of Seal#frozen1
@@ -39,44 +41,44 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:4855
 - Name: bosseff#frozen
   X: 149
-  "Y": 112
+  Y: 112
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:4857
 - Name: "#fromfrozen"
   X: 149
-  "Y": 19
+  Y: 19
   Dir: 1
   Sprite: 10237
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:4890
 - Name: dream#frozen
   X: 149
-  "Y": 24
+  Y: 24
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:4897
 - Name: cine1#frozen
   X: 152
-  "Y": 43
+  Y: 43
   Dir: 0
   Sprite: 139
   Trigger:
     X: 13
-    "Y": 13
+    Y: 13
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:4907
 - Name: Zeith#frozen01
   X: 155
-  "Y": 43
+  Y: 43
   Dir: 3
   Sprite: 10035
   State: Cloaked
@@ -84,7 +86,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:4935
 - Name: Zeith#frozen02
   X: 155
-  "Y": 43
+  Y: 43
   Dir: 3
   Sprite: 467
   State: Cloaked
@@ -92,7 +94,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5281
 - Name: Vrid#frozen01
   X: 150
-  "Y": 43
+  Y: 43
   Dir: 5
   Sprite: 10036
   State: Cloaked
@@ -100,7 +102,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5422
 - Name: Vrid#frozen02
   X: 150
-  "Y": 43
+  Y: 43
   Dir: 5
   Sprite: 468
   State: Cloaked
@@ -108,14 +110,14 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5439
 - Name: Heap of Dry Soil#frozen1
   X: 137
-  "Y": 38
+  Y: 38
   Dir: 3
   Sprite: 557
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:5449
 - Name: Heap of Dry Soil#frozen2
   X: 111
-  "Y": 45
+  Y: 45
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -123,7 +125,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5479
 - Name: Heap of Dry Soil#frozen3
   X: 65
-  "Y": 70
+  Y: 70
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -131,7 +133,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5480
 - Name: Heap of Dry Soil#frozen4
   X: 86
-  "Y": 87
+  Y: 87
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -139,7 +141,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5481
 - Name: Heap of Dry Soil#frozen5
   X: 70
-  "Y": 113
+  Y: 113
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -147,7 +149,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5482
 - Name: Heap of Dry Soil#frozen6
   X: 46
-  "Y": 206
+  Y: 206
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -155,7 +157,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5483
 - Name: Heap of Dry Soil#frozen7
   X: 64
-  "Y": 231
+  Y: 231
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -163,7 +165,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5484
 - Name: Heap of Dry Soil#frozen8
   X: 84
-  "Y": 208
+  Y: 208
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -171,7 +173,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5485
 - Name: Heap of Dry Soil#frozen9
   X: 100
-  "Y": 246
+  Y: 246
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -179,7 +181,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5486
 - Name: Heap of Dry Soil#frozen10
   X: 196
-  "Y": 246
+  Y: 246
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -187,7 +189,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5487
 - Name: Heap of Dry Soil#frozen11
   X: 238
-  "Y": 231
+  Y: 231
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -195,7 +197,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5488
 - Name: Heap of Dry Soil#frozen12
   X: 252
-  "Y": 206
+  Y: 206
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -203,7 +205,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5489
 - Name: Heap of Dry Soil#frozen13
   X: 238
-  "Y": 64
+  Y: 64
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -211,7 +213,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5490
 - Name: Heap of Dry Soil#frozen14
   X: 186
-  "Y": 44
+  Y: 44
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -219,7 +221,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5491
 - Name: Heap of Dry Soil#frozen15
   X: 160
-  "Y": 48
+  Y: 48
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -227,7 +229,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5492
 - Name: Heap of Dry Soil#frozen16
   X: 126
-  "Y": 73
+  Y: 73
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -235,7 +237,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5493
 - Name: Heap of Dry Soil#frozen17
   X: 70
-  "Y": 184
+  Y: 184
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -243,7 +245,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5494
 - Name: Heap of Dry Soil#frozen18
   X: 214
-  "Y": 208
+  Y: 208
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -251,7 +253,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5495
 - Name: Heap of Dry Soil#frozen19
   X: 228
-  "Y": 184
+  Y: 184
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -259,7 +261,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5496
 - Name: Heap of Dry Soil#frozen20
   X: 230
-  "Y": 111
+  Y: 111
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -267,7 +269,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5497
 - Name: Heap of Dry Soil#frozen21
   X: 219
-  "Y": 90
+  Y: 90
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -275,7 +277,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5498
 - Name: Heap of Dry Soil#frozen22
   X: 171
-  "Y": 72
+  Y: 72
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -283,7 +285,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5499
 - Name: Heap of Dry Soil#frozen23
   X: 112
-  "Y": 111
+  Y: 111
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -291,7 +293,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5500
 - Name: Heap of Dry Soil#frozen24
   X: 112
-  "Y": 188
+  Y: 188
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -299,7 +301,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5501
 - Name: Heap of Dry Soil#frozen25
   X: 186
-  "Y": 188
+  Y: 188
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -307,7 +309,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5502
 - Name: Heap of Dry Soil#frozen26
   X: 189
-  "Y": 112
+  Y: 112
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -315,7 +317,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5503
 - Name: Heap of Dry Soil#frozen27
   X: 150
-  "Y": 104
+  Y: 104
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -323,7 +325,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5504
 - Name: Heap of Dry Soil#frozen28
   X: 110
-  "Y": 150
+  Y: 150
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -331,7 +333,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5505
 - Name: Heap of Dry Soil#frozen29
   X: 150
-  "Y": 187
+  Y: 187
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1
@@ -339,7 +341,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:5506
 - Name: Heap of Dry Soil#frozen30
   X: 187
-  "Y": 149
+  Y: 149
   Dir: 3
   Sprite: 557
   DuplicateOf: Heap of Dry Soil#frozen1

@@ -2,20 +2,22 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Something#ami1
   X: 57
-  "Y": 242
+  Y: 242
   Dir: 3
   Sprite: 10082
   Kind: Script
   Source: npc/re/quests/quests_dungeons_200.txt:1704
 - Name: Something#ami2
   X: 152
-  "Y": 159
+  Y: 159
   Dir: 3
   Sprite: 10082
   DuplicateOf: Something#ami1
@@ -23,7 +25,7 @@ Body:
   Source: npc/re/quests/quests_dungeons_200.txt:1731
 - Name: Something#ami3
   X: 262
-  "Y": 139
+  Y: 139
   Dir: 3
   Sprite: 10082
   DuplicateOf: Something#ami1
@@ -31,7 +33,7 @@ Body:
   Source: npc/re/quests/quests_dungeons_200.txt:1732
 - Name: Something#ami4
   X: 36
-  "Y": 106
+  Y: 106
   Dir: 3
   Sprite: 10082
   DuplicateOf: Something#ami1
@@ -39,7 +41,7 @@ Body:
   Source: npc/re/quests/quests_dungeons_200.txt:1733
 - Name: Something#ami5
   X: 244
-  "Y": 49
+  Y: 49
   Dir: 3
   Sprite: 10082
   DuplicateOf: Something#ami1
@@ -47,26 +49,26 @@ Body:
   Source: npc/re/quests/quests_dungeons_200.txt:1734
 - Name: "#wami1"
   X: 248
-  "Y": 244
+  Y: 244
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: ein_fild08
     X: 152
-    "Y": 95
+    Y: 95
     TriggerWhileHidden: true
   Source: npc/re/warps/dungeons/amicitia.txt:7
 - Name: "#wami2"
   X: 149
-  "Y": 19
+  Y: 19
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/warps/dungeons/amicitia.txt:9

@@ -2,356 +2,358 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Chaos#0
   X: 110
-  "Y": 348
+  Y: 348
   Dir: 6
   Sprite: 683
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:441
 - Name: Chaos#01
   X: 110
-  "Y": 348
+  Y: 348
   Dir: 6
   Sprite: 683
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:477
 - Name: Iris#0
   X: 116
-  "Y": 346
+  Y: 346
   Dir: 3
   Sprite: 666
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:516
 - Name: "#fwormcontrol1"
   X: 1
-  "Y": 5
+  Y: 5
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:525
 - Name: "#fwormboss1"
   X: 1
-  "Y": 4
+  Y: 4
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:552
 - Name: "#fwormboss12"
   X: 1
-  "Y": 4
+  Y: 4
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:601
 - Name: "#fwormenter1"
   X: 149
-  "Y": 92
+  Y: 92
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:659
 - Name: "#fwormexit1"
   X: 129
-  "Y": 86
+  Y: 86
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:669
 - Name: Chaos#1
   X: 120
-  "Y": 97
+  Y: 97
   Dir: 6
   Sprite: 683
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:681
 - Name: Chaos#11
   X: 120
-  "Y": 97
+  Y: 97
   Dir: 6
   Sprite: 683
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:713
 - Name: Iris#1
   X: 129
-  "Y": 97
+  Y: 97
   Dir: 3
   Sprite: 666
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:749
 - Name: "#fwormcontrol2"
   X: 2
-  "Y": 5
+  Y: 5
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:762
 - Name: "#fwormboss2"
   X: 2
-  "Y": 5
+  Y: 5
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:788
 - Name: "#fwormboss22"
   X: 1
-  "Y": 4
+  Y: 4
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:837
 - Name: "#fwormenter2"
   X: 139
-  "Y": 100
+  Y: 100
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:875
 - Name: "#fwormexit2"
   X: 151
-  "Y": 106
+  Y: 106
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:885
 - Name: Chaos#2
   X: 153
-  "Y": 113
+  Y: 113
   Dir: 7
   Sprite: 683
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:897
 - Name: Chaos#22
   X: 153
-  "Y": 113
+  Y: 113
   Dir: 7
   Sprite: 683
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:919
 - Name: Iris#2
   X: 160
-  "Y": 113
+  Y: 113
   Dir: 1
   Sprite: 666
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:939
 - Name: "#fwormcontrol3"
   X: 2
-  "Y": 5
+  Y: 5
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:952
 - Name: "#fwormboss3"
   X: 2
-  "Y": 5
+  Y: 5
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:975
 - Name: "#fwormboss32"
   X: 1
-  "Y": 4
+  Y: 4
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1031
 - Name: "#fwormenter3"
   X: 248
-  "Y": 185
+  Y: 185
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1065
 - Name: "#fwormexit3"
   X: 254
-  "Y": 175
+  Y: 175
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1075
 - Name: "#chaoson"
   X: 261
-  "Y": 169
+  Y: 169
   Dir: 0
   Sprite: 139
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1087
 - Name: "#announcer1"
   X: 1
-  "Y": 10
+  Y: 10
   Dir: 7
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1098
 - Name: "#fwormcontrol4"
   X: 2
-  "Y": 5
+  Y: 5
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1113
 - Name: "#fwormcontrol42"
   X: 2
-  "Y": 6
+  Y: 6
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1139
 - Name: "#fwormboss4"
   X: 2
-  "Y": 5
+  Y: 5
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1155
 - Name: "#fwormboss42"
   X: 1
-  "Y": 4
+  Y: 4
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1206
 - Name: "#fwormenter4"
   X: 204
-  "Y": 122
+  Y: 122
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1253
 - Name: "#fwormexit4"
   X: 198
-  "Y": 142
+  Y: 142
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1263
 - Name: "#chaoson2"
   X: 213
-  "Y": 147
+  Y: 147
   Dir: 0
   Sprite: 139
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1275
 - Name: Chaos#5
   X: 213
-  "Y": 153
+  Y: 153
   Dir: 6
   Sprite: 683
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1286
 - Name: Chaos#4
   X: 208
-  "Y": 149
+  Y: 149
   Dir: 7
   Sprite: 683
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1293
 - Name: Iris#4
   X: 220
-  "Y": 149
+  Y: 149
   Dir: 1
   Sprite: 666
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1361
 - Name: "#fwormboss5"
   X: 1
-  "Y": 4
+  Y: 4
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1374
 - Name: "#support"
   X: 2
-  "Y": 3
+  Y: 3
   Dir: 5
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1606
 - Name: "#chaos_north"
   X: 214
-  "Y": 172
+  Y: 172
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1629
 - Name: "#chaos_south"
   X: 214
-  "Y": 143
+  Y: 143
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1660
 - Name: "#chaos_east"
   X: 226
-  "Y": 158
+  Y: 158
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1691
 - Name: "#chaos_west"
   X: 200
-  "Y": 158
+  Y: 158
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1722
 - Name: Chaos#north
   X: 214
-  "Y": 172
+  Y: 172
   Dir: 5
   Sprite: 683
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1753
 - Name: Chaos#south
   X: 214
-  "Y": 143
+  Y: 143
   Dir: 0
   Sprite: 683
   DuplicateOf: Chaos#north
@@ -359,7 +361,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:1766
 - Name: Chaos#east
   X: 226
-  "Y": 158
+  Y: 158
   Dir: 3
   Sprite: 683
   DuplicateOf: Chaos#north
@@ -367,7 +369,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:1767
 - Name: Chaos#west
   X: 200
-  "Y": 158
+  Y: 158
   Dir: 6
   Sprite: 683
   DuplicateOf: Chaos#north
@@ -375,778 +377,778 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:1768
 - Name: "#fwormboss50"
   X: 1
-  "Y": 4
+  Y: 4
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1770
 - Name: "#fwormboss51"
   X: 1
-  "Y": 4
+  Y: 4
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1787
 - Name: "#fwormboss52"
   X: 1
-  "Y": 4
+  Y: 4
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1832
 - Name: "#fwormboss53"
   X: 1
-  "Y": 4
+  Y: 4
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1874
 - Name: "#fwormboss54"
   X: 1
-  "Y": 4
+  Y: 4
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1908
 - Name: "#chaoson3"
   X: 212
-  "Y": 156
+  Y: 156
   Dir: 0
   Sprite: 139
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1951
 - Name: Chaos#6
   X: 209
-  "Y": 159
+  Y: 159
   Dir: 6
   Sprite: 683
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:1962
 - Name: Iris#6
   X: 220
-  "Y": 159
+  Y: 159
   Dir: 4
   Sprite: 666
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2006
 - Name: Dimensional Device#6
   X: 215
-  "Y": 159
+  Y: 159
   Dir: 4
   Sprite: 10007
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2019
 - Name: Suspicious Mound#1
   X: 61
-  "Y": 132
+  Y: 132
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2034
 - Name: Suspicious Mound#2
   X: 62
-  "Y": 195
+  Y: 195
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2059
 - Name: Suspicious Mound#3
   X: 66
-  "Y": 94
+  Y: 94
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2060
 - Name: Suspicious Mound#4
   X: 68
-  "Y": 265
+  Y: 265
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2061
 - Name: Suspicious Mound#5
   X: 68
-  "Y": 108
+  Y: 108
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2062
 - Name: Suspicious Mound#6
   X: 72
-  "Y": 202
+  Y: 202
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2063
 - Name: Suspicious Mound#7
   X: 75
-  "Y": 73
+  Y: 73
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2064
 - Name: Suspicious Mound#8
   X: 76
-  "Y": 241
+  Y: 241
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2065
 - Name: Suspicious Mound#9
   X: 79
-  "Y": 274
+  Y: 274
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2066
 - Name: Suspicious Mound#10
   X: 79
-  "Y": 119
+  Y: 119
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2067
 - Name: Suspicious Mound#11
   X: 97
-  "Y": 59
+  Y: 59
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2068
 - Name: Suspicious Mound#12
   X: 99
-  "Y": 211
+  Y: 211
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2069
 - Name: Suspicious Mound#13
   X: 100
-  "Y": 122
+  Y: 122
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2070
 - Name: Suspicious Mound#14
   X: 105
-  "Y": 190
+  Y: 190
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2071
 - Name: Suspicious Mound#15
   X: 108
-  "Y": 264
+  Y: 264
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2072
 - Name: Suspicious Mound#16
   X: 108
-  "Y": 74
+  Y: 74
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2073
 - Name: Suspicious Mound#17
   X: 111
-  "Y": 178
+  Y: 178
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2074
 - Name: Suspicious Mound#18
   X: 112
-  "Y": 137
+  Y: 137
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2075
 - Name: Suspicious Mound#19
   X: 112
-  "Y": 159
+  Y: 159
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2076
 - Name: Suspicious Mound#20
   X: 112
-  "Y": 236
+  Y: 236
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2077
 - Name: Suspicious Mound#21
   X: 118
-  "Y": 109
+  Y: 109
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2078
 - Name: Suspicious Mound#22
   X: 119
-  "Y": 201
+  Y: 201
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2079
 - Name: Suspicious Mound#23
   X: 123
-  "Y": 257
+  Y: 257
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2080
 - Name: Suspicious Mound#24
   X: 124
-  "Y": 216
+  Y: 216
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2081
 - Name: Suspicious Mound#25
   X: 125
-  "Y": 228
+  Y: 228
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2082
 - Name: Suspicious Mound#26
   X: 126
-  "Y": 290
+  Y: 290
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2083
 - Name: Suspicious Mound#27
   X: 128
-  "Y": 174
+  Y: 174
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2084
 - Name: Suspicious Mound#28
   X: 133
-  "Y": 244
+  Y: 244
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2085
 - Name: Suspicious Mound#29
   X: 139
-  "Y": 218
+  Y: 218
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2086
 - Name: Suspicious Mound#30
   X: 140
-  "Y": 255
+  Y: 255
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2087
 - Name: Suspicious Mound#31
   X: 148
-  "Y": 238
+  Y: 238
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2088
 - Name: Suspicious Mound#32
   X: 157
-  "Y": 293
+  Y: 293
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2089
 - Name: Suspicious Mound#33
   X: 158
-  "Y": 138
+  Y: 138
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2090
 - Name: Suspicious Mound#34
   X: 158
-  "Y": 163
+  Y: 163
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2091
 - Name: Suspicious Mound#35
   X: 167
-  "Y": 277
+  Y: 277
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2092
 - Name: Suspicious Mound#36
   X: 168
-  "Y": 194
+  Y: 194
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2093
 - Name: Suspicious Mound#37
   X: 170
-  "Y": 251
+  Y: 251
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2094
 - Name: Suspicious Mound#38
   X: 171
-  "Y": 62
+  Y: 62
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2095
 - Name: Suspicious Mound#39
   X: 171
-  "Y": 149
+  Y: 149
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2096
 - Name: Suspicious Mound#40
   X: 172
-  "Y": 173
+  Y: 173
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2097
 - Name: Suspicious Mound#41
   X: 175
-  "Y": 296
+  Y: 296
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2098
 - Name: Suspicious Mound#42
   X: 178
-  "Y": 234
+  Y: 234
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2099
 - Name: Suspicious Mound#43
   X: 183
-  "Y": 185
+  Y: 185
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2100
 - Name: Suspicious Mound#44
   X: 191
-  "Y": 289
+  Y: 289
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2101
 - Name: Suspicious Mound#45
   X: 194
-  "Y": 192
+  Y: 192
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2102
 - Name: Suspicious Mound#46
   X: 196
-  "Y": 207
+  Y: 207
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2103
 - Name: Suspicious Mound#47
   X: 198
-  "Y": 257
+  Y: 257
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2104
 - Name: Suspicious Mound#48
   X: 199
-  "Y": 273
+  Y: 273
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2105
 - Name: Suspicious Mound#49
   X: 211
-  "Y": 244
+  Y: 244
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2106
 - Name: Suspicious Mound#50
   X: 229
-  "Y": 200
+  Y: 200
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2107
 - Name: Suspicious Mound#51
   X: 232
-  "Y": 271
+  Y: 271
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2108
 - Name: Suspicious Mound#52
   X: 250
-  "Y": 223
+  Y: 223
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2109
 - Name: Suspicious Mound#53
   X: 254
-  "Y": 324
+  Y: 324
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2110
 - Name: Suspicious Mound#54
   X: 255
-  "Y": 263
+  Y: 263
   Dir: 5
   Sprite: 557
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Suspicious Mound#1
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2111
 - Name: "#toxicarea1"
   X: 163
-  "Y": 130
+  Y: 130
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2115
 - Name: "#toxicarea2"
   X: 165
-  "Y": 147
+  Y: 147
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#toxicarea1"
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2147
 - Name: "#toxicarea3"
   X: 163
-  "Y": 166
+  Y: 166
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#toxicarea1"
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2148
 - Name: "#toxicarea4"
   X: 183
-  "Y": 197
+  Y: 197
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#toxicarea1"
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2149
 - Name: "#toxicarea5"
   X: 202
-  "Y": 204
+  Y: 204
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#toxicarea1"
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2150
 - Name: "#toxicarea6"
   X: 237
-  "Y": 220
+  Y: 220
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#toxicarea1"
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2151
 - Name: "#toxicarea7"
   X: 245
-  "Y": 241
+  Y: 241
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#toxicarea1"
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2152
 - Name: "#toxicarea8"
   X: 292
-  "Y": 277
+  Y: 277
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#toxicarea1"
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2153
 - Name: "#toxicarea9"
   X: 248
-  "Y": 322
+  Y: 322
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: "#toxicarea1"
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2154
 - Name: "#globaltimer22"
   X: 3
-  "Y": 1
+  Y: 1
   Dir: 5
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2158
 - Name: "#fwormprize1"
   X: 155
-  "Y": 82
+  Y: 82
   Dir: 3
   Sprite: 10005
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2206
 - Name: "#fwormprize2"
   X: 162
-  "Y": 271
+  Y: 271
   Dir: 3
   Sprite: 10005
   DuplicateOf: "#fwormprize1"
@@ -1154,7 +1156,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2379
 - Name: "#fwormprize3"
   X: 278
-  "Y": 308
+  Y: 308
   Dir: 3
   Sprite: 10005
   DuplicateOf: "#fwormprize1"
@@ -1162,7 +1164,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2380
 - Name: "#fwormprize4"
   X: 214
-  "Y": 108
+  Y: 108
   Dir: 3
   Sprite: 10005
   DuplicateOf: "#fwormprize1"
@@ -1170,21 +1172,21 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2381
 - Name: "#fwormprize5"
   X: 213
-  "Y": 157
+  Y: 157
   Dir: 3
   Sprite: 10005
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2383
 - Name: Merchant Prince's Box#1
   X: 183
-  "Y": 314
+  Y: 314
   Dir: 3
   Sprite: 10005
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2574
 - Name: Merchant Prince's Box#2
   X: 164
-  "Y": 343
+  Y: 343
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1192,7 +1194,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2712
 - Name: Merchant Prince's Box#3
   X: 31
-  "Y": 364
+  Y: 364
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1200,7 +1202,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2713
 - Name: Merchant Prince's Box#4
   X: 26
-  "Y": 290
+  Y: 290
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1208,7 +1210,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2714
 - Name: Merchant Prince's Box#5
   X: 56
-  "Y": 269
+  Y: 269
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1216,7 +1218,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2715
 - Name: Merchant Prince's Box#6
   X: 80
-  "Y": 213
+  Y: 213
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1224,7 +1226,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2716
 - Name: Merchant Prince's Box#7
   X: 51
-  "Y": 174
+  Y: 174
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1232,7 +1234,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2717
 - Name: Merchant Prince's Box#8
   X: 261
-  "Y": 62
+  Y: 62
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1240,7 +1242,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2718
 - Name: Merchant Prince's Box#9
   X: 70
-  "Y": 36
+  Y: 36
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1248,7 +1250,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2719
 - Name: Merchant Prince's Box#10
   X: 182
-  "Y": 51
+  Y: 51
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1256,7 +1258,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2720
 - Name: Merchant Prince's Box#11
   X: 128
-  "Y": 139
+  Y: 139
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1264,7 +1266,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2721
 - Name: Merchant Prince's Box#12
   X: 108
-  "Y": 232
+  Y: 232
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1272,7 +1274,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2722
 - Name: Merchant Prince's Box#13
   X: 117
-  "Y": 303
+  Y: 303
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1280,7 +1282,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2723
 - Name: Merchant Prince's Box#14
   X: 134
-  "Y": 294
+  Y: 294
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1288,7 +1290,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2724
 - Name: Merchant Prince's Box#15
   X: 152
-  "Y": 159
+  Y: 159
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1296,7 +1298,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2725
 - Name: Merchant Prince's Box#16
   X: 177
-  "Y": 208
+  Y: 208
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1304,7 +1306,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2726
 - Name: Merchant Prince's Box#17
   X: 260
-  "Y": 220
+  Y: 220
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1312,7 +1314,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2727
 - Name: Merchant Prince's Box#18
   X: 216
-  "Y": 357
+  Y: 357
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1320,7 +1322,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2728
 - Name: Merchant Prince's Box#19
   X: 310
-  "Y": 263
+  Y: 263
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1328,7 +1330,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2729
 - Name: Merchant Prince's Box#20
   X: 307
-  "Y": 158
+  Y: 158
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1336,7 +1338,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2730
 - Name: Merchant Prince's Box#21
   X: 307
-  "Y": 56
+  Y: 56
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1344,7 +1346,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2731
 - Name: Merchant Prince's Box#22
   X: 240
-  "Y": 64
+  Y: 64
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1352,7 +1354,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2732
 - Name: Merchant Prince's Box#23
   X: 214
-  "Y": 90
+  Y: 90
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1360,7 +1362,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2733
 - Name: Merchant Prince's Box#24
   X: 237
-  "Y": 108
+  Y: 108
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1368,7 +1370,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2734
 - Name: Merchant Prince's Box#25
   X: 284
-  "Y": 165
+  Y: 165
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1376,7 +1378,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2735
 - Name: Merchant Prince's Box#26
   X: 184
-  "Y": 363
+  Y: 363
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1384,7 +1386,7 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2736
 - Name: Merchant Prince's Box#27
   X: 48
-  "Y": 220
+  Y: 220
   Dir: 3
   Sprite: 10005
   DuplicateOf: Merchant Prince's Box#1
@@ -1392,14 +1394,14 @@ Body:
   Source: npc/re/instances/FacewormsNest.txt:2737
 - Name: "#forestspirit1"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 3
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/FacewormsNest.txt:2741
 - Name: "#forestspiritboss1"
   X: 3
-  "Y": 1
+  Y: 1
   Dir: 3
   Sprite: 844
   Kind: Script

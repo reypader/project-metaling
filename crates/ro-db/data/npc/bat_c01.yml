@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#RedcellA1-1"
   X: 54
-  "Y": 124
+  Y: 124
   Dir: 3
   Sprite: 139
   DuplicateOf: CellEffect
@@ -16,7 +18,7 @@ Body:
   Source: npc/battleground/kvm/kvm01.txt:56
 - Name: "#RedcellA2-1"
   X: 55
-  "Y": 124
+  Y: 124
   Dir: 3
   Sprite: 139
   DuplicateOf: CellEffect
@@ -24,7 +26,7 @@ Body:
   Source: npc/battleground/kvm/kvm01.txt:57
 - Name: "#RedcellA3-1"
   X: 56
-  "Y": 124
+  Y: 124
   Dir: 3
   Sprite: 139
   DuplicateOf: CellEffect
@@ -32,7 +34,7 @@ Body:
   Source: npc/battleground/kvm/kvm01.txt:58
 - Name: "#RedcellA4-1"
   X: 57
-  "Y": 124
+  Y: 124
   Dir: 3
   Sprite: 139
   DuplicateOf: CellEffect
@@ -40,7 +42,7 @@ Body:
   Source: npc/battleground/kvm/kvm01.txt:59
 - Name: "#RedcellA5-1"
   X: 57
-  "Y": 125
+  Y: 125
   Dir: 3
   Sprite: 139
   DuplicateOf: CellEffect
@@ -48,7 +50,7 @@ Body:
   Source: npc/battleground/kvm/kvm01.txt:60
 - Name: "#RedcellA6-1"
   X: 57
-  "Y": 126
+  Y: 126
   Dir: 3
   Sprite: 139
   DuplicateOf: CellEffect
@@ -56,7 +58,7 @@ Body:
   Source: npc/battleground/kvm/kvm01.txt:61
 - Name: "#RedcellA7-1"
   X: 57
-  "Y": 127
+  Y: 127
   Dir: 3
   Sprite: 139
   DuplicateOf: CellEffect
@@ -64,7 +66,7 @@ Body:
   Source: npc/battleground/kvm/kvm01.txt:62
 - Name: "#RedcellB1-1"
   X: 145
-  "Y": 59
+  Y: 59
   Dir: 3
   Sprite: 139
   DuplicateOf: CellEffect
@@ -72,7 +74,7 @@ Body:
   Source: npc/battleground/kvm/kvm01.txt:64
 - Name: "#RedcellB2-1"
   X: 144
-  "Y": 59
+  Y: 59
   Dir: 3
   Sprite: 139
   DuplicateOf: CellEffect
@@ -80,7 +82,7 @@ Body:
   Source: npc/battleground/kvm/kvm01.txt:65
 - Name: "#RedcellB3-1"
   X: 143
-  "Y": 59
+  Y: 59
   Dir: 3
   Sprite: 139
   DuplicateOf: CellEffect
@@ -88,7 +90,7 @@ Body:
   Source: npc/battleground/kvm/kvm01.txt:66
 - Name: "#RedcellB4-1"
   X: 142
-  "Y": 59
+  Y: 59
   Dir: 3
   Sprite: 139
   DuplicateOf: CellEffect
@@ -96,7 +98,7 @@ Body:
   Source: npc/battleground/kvm/kvm01.txt:67
 - Name: "#RedcellB5-1"
   X: 142
-  "Y": 56
+  Y: 56
   Dir: 3
   Sprite: 139
   DuplicateOf: CellEffect
@@ -104,7 +106,7 @@ Body:
   Source: npc/battleground/kvm/kvm01.txt:68
 - Name: "#RedcellB6-1"
   X: 142
-  "Y": 57
+  Y: 57
   Dir: 3
   Sprite: 139
   DuplicateOf: CellEffect
@@ -112,7 +114,7 @@ Body:
   Source: npc/battleground/kvm/kvm01.txt:69
 - Name: "#RedcellB7-1"
   X: 142
-  "Y": 58
+  Y: 58
   Dir: 3
   Sprite: 139
   DuplicateOf: CellEffect
@@ -120,34 +122,34 @@ Body:
   Source: npc/battleground/kvm/kvm01.txt:70
 - Name: "#A_camp_start01"
   X: 54
-  "Y": 128
+  Y: 128
   Dir: 3
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/battleground/kvm/kvm01.txt:72
 - Name: "#B_camp_start01"
   X: 146
-  "Y": 56
+  Y: 56
   Dir: 3
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/battleground/kvm/kvm01.txt:90
 - Name: KVM Officer#KVM01A
   X: 51
-  "Y": 130
+  Y: 130
   Dir: 5
   Sprite: 419
   Kind: Script
   Source: npc/battleground/kvm/kvm01.txt:373
 - Name: KVM Officer#KVM01B
   X: 148
-  "Y": 53
+  Y: 53
   Dir: 1
   Sprite: 415
   DuplicateOf: KVM Officer#KVM01A

@@ -2,37 +2,39 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: lou_dun1-2
   X: 221
-  "Y": 195
+  Y: 195
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: louyang
     X: 40
-    "Y": 273
+    Y: 273
     TriggerWhileHidden: false
   Source: npc/warps/dungeons/lou_dun.txt:17
 - Name: lou_dun2-1
   X: 40
-  "Y": 201
+  Y: 201
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: lou_dun02
     X: 285
-    "Y": 18
+    Y: 18
     TriggerWhileHidden: false
   Source: npc/warps/dungeons/lou_dun.txt:18

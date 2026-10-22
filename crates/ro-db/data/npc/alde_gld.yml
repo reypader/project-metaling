@@ -2,44 +2,46 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Repairman#alde_gld
   X: 220
-  "Y": 152
+  Y: 152
   Dir: 4
   Sprite: 86
   Kind: Script
   Source: npc/merchants/refine.txt:1240
 - Name: en_turbo
   X: 183
-  "Y": 204
+  Y: 204
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/other/turbo_track.txt:4596
 - Name: Turbo Track Guide#Entran
   X: 186
-  "Y": 199
+  Y: 199
   Dir: 3
   Sprite: 845
   Kind: Script
   Source: npc/other/turbo_track.txt:4675
 - Name: Sign#TBT
   X: 178
-  "Y": 180
+  Y: 180
   Dir: 0
   Sprite: 837
   Kind: Script
   Source: npc/other/turbo_track.txt:4808
 - Name: Neuschwanstein#1-2
   X: 61
-  "Y": 87
+  Y: 87
   Dir: 6
   Sprite: 722
   DuplicateOf: OutsideFlagsA1
@@ -47,7 +49,7 @@ Body:
   Source: npc/guild/aldeg_cas01.txt:69
 - Name: Neuschwanstein#2
   X: 61
-  "Y": 79
+  Y: 79
   Dir: 6
   Sprite: 722
   DuplicateOf: OutsideFlagsA1
@@ -55,7 +57,7 @@ Body:
   Source: npc/guild/aldeg_cas01.txt:70
 - Name: Neuschwanstein#3
   X: 45
-  "Y": 87
+  Y: 87
   Dir: 8
   Sprite: 722
   DuplicateOf: OutsideFlagsA1
@@ -63,7 +65,7 @@ Body:
   Source: npc/guild/aldeg_cas01.txt:71
 - Name: Neuschwanstein#4
   X: 51
-  "Y": 87
+  Y: 87
   Dir: 8
   Sprite: 722
   DuplicateOf: OutsideFlagsA1
@@ -71,7 +73,7 @@ Body:
   Source: npc/guild/aldeg_cas01.txt:72
 - Name: Hohenschwangau#1-2
   X: 99
-  "Y": 251
+  Y: 251
   Dir: 4
   Sprite: 722
   DuplicateOf: OutsideFlagsA2
@@ -79,7 +81,7 @@ Body:
   Source: npc/guild/aldeg_cas02.txt:69
 - Name: Hohenschwangau#2
   X: 99
-  "Y": 244
+  Y: 244
   Dir: 4
   Sprite: 722
   DuplicateOf: OutsideFlagsA2
@@ -87,7 +89,7 @@ Body:
   Source: npc/guild/aldeg_cas02.txt:70
 - Name: Nuernberg#1-2
   X: 146
-  "Y": 82
+  Y: 82
   Dir: 8
   Sprite: 722
   DuplicateOf: OutsideFlagsA3
@@ -95,7 +97,7 @@ Body:
   Source: npc/guild/aldeg_cas03.txt:69
 - Name: Nuernberg#2
   X: 138
-  "Y": 82
+  Y: 82
   Dir: 8
   Sprite: 722
   DuplicateOf: OutsideFlagsA3
@@ -103,7 +105,7 @@ Body:
   Source: npc/guild/aldeg_cas03.txt:70
 - Name: Wuerzburg#1-2
   X: 239
-  "Y": 246
+  Y: 246
   Dir: 2
   Sprite: 722
   DuplicateOf: OutsideFlagsA4
@@ -111,7 +113,7 @@ Body:
   Source: npc/guild/aldeg_cas04.txt:69
 - Name: Wuerzburg#2
   X: 239
-  "Y": 239
+  Y: 239
   Dir: 2
   Sprite: 722
   DuplicateOf: OutsideFlagsA4
@@ -119,7 +121,7 @@ Body:
   Source: npc/guild/aldeg_cas04.txt:70
 - Name: Rothenburg#1-2
   X: 265
-  "Y": 93
+  Y: 93
   Dir: 6
   Sprite: 722
   DuplicateOf: OutsideFlagsA5
@@ -127,7 +129,7 @@ Body:
   Source: npc/guild/aldeg_cas05.txt:69
 - Name: Rothenburg#2
   X: 265
-  "Y": 87
+  Y: 87
   Dir: 6
   Sprite: 722
   DuplicateOf: OutsideFlagsA5
@@ -135,111 +137,111 @@ Body:
   Source: npc/guild/aldeg_cas05.txt:70
 - Name: aldeg01_alde-a
   X: 284
-  "Y": 160
+  Y: 160
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: aldebaran
     X: 39
-    "Y": 140
+    Y: 140
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:303
 - Name: aldeg-1_aldeg-1-1
   X: 48
-  "Y": 79
+  Y: 79
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: aldeg_cas01
     X: 34
-    "Y": 248
+    Y: 248
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:304
 - Name: aldeg-2_aldeg-2-1
   X: 95
-  "Y": 253
+  Y: 253
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: aldeg_cas02
     X: 88
-    "Y": 163
+    Y: 163
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:305
 - Name: aldeg-3_aldeg-3-1
   X: 142
-  "Y": 81
+  Y: 81
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: aldeg_cas03
     X: 114
-    "Y": 286
+    Y: 286
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:306
 - Name: aldeg-4_aldeg-4-1
   X: 243
-  "Y": 242
+  Y: 242
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: aldeg_cas04
     X: 149
-    "Y": 17
+    Y: 17
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:307
 - Name: aldeg-5_aldeg-5-1
   X: 259
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: aldeg_cas05
     X: 216
-    "Y": 103
+    Y: 103
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:308
 - Name: Sorin of Kafragarten
   X: 228
-  "Y": 189
+  Y: 189
   Dir: 3
   Sprite: 115
   Kind: Script
   Source: npc/re/guides/guides_woe_te.txt:88
 - Name: Defolty of Kafragarten
   X: 224
-  "Y": 185
+  Y: 185
   Dir: 5
   Sprite: 117
   Kind: Script
   Source: npc/re/guides/guides_woe_te.txt:136
 - Name: ClickClick MeowMeow-GX#1
   X: 180
-  "Y": 163
+  Y: 163
   Dir: 3
   Sprite: 564
   DuplicateOf: "#GldDungeonReward"
@@ -247,7 +249,7 @@ Body:
   Source: npc/re/merchants/gld_mission_exchange.txt:462
 - Name: Mount Manager
   X: 181
-  "Y": 199
+  Y: 199
   Dir: 5
   Sprite: 845
   DuplicateOf: MountManager_turbo
@@ -255,7 +257,7 @@ Body:
   Source: npc/re/other/turbo_track.txt:16
 - Name: Cat Paw Merchant Megrez
   X: 186
-  "Y": 157
+  Y: 157
   Dir: 3
   Sprite: 549
   DuplicateOf: Cat Paw Merchant Guild
@@ -263,7 +265,7 @@ Body:
   Source: npc/re/guild/invest_npc.txt:21
 - Name: Gate Manager#alde_f00
   X: 191
-  "Y": 164
+  Y: 164
   Dir: 3
   Sprite: 421
   DuplicateOf: Gate Manager#realm
@@ -272,7 +274,7 @@ Body:
 - Name: Investment Status Board
   UniqueName: InvestStatus_Alde
   X: 188
-  "Y": 158
+  Y: 158
   Dir: 3
   Sprite: 857
   DuplicateOf: Investment Status Board
@@ -280,14 +282,14 @@ Body:
   Source: npc/re/guild/invest_npc.txt:23
 - Name: "#Enterance Button ald"
   X: 1
-  "Y": 4
+  Y: 4
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/guild3/agit_main_te.txt:1165
 - Name: Glaris#te_aldecas1
   X: 222
-  "Y": 186
+  Y: 186
   Dir: 4
   Sprite: 722
   DuplicateOf: flag_te
@@ -295,7 +297,7 @@ Body:
   Source: npc/re/guild3/te_aldecas1.txt:12
 - Name: Defolty#te_aldecas2
   X: 220
-  "Y": 184
+  Y: 184
   Dir: 4
   Sprite: 722
   DuplicateOf: flag_te
@@ -303,7 +305,7 @@ Body:
   Source: npc/re/guild3/te_aldecas2.txt:12
 - Name: Sorin#te_aldecas3
   X: 218
-  "Y": 182
+  Y: 182
   Dir: 4
   Sprite: 722
   DuplicateOf: flag_te
@@ -311,7 +313,7 @@ Body:
   Source: npc/re/guild3/te_aldecas3.txt:12
 - Name: Bennit#te_aldecas4
   X: 216
-  "Y": 180
+  Y: 180
   Dir: 4
   Sprite: 722
   DuplicateOf: flag_te
@@ -319,7 +321,7 @@ Body:
   Source: npc/re/guild3/te_aldecas4.txt:12
 - Name: W#te_aldecas5
   X: 214
-  "Y": 178
+  Y: 178
   Dir: 4
   Sprite: 722
   DuplicateOf: flag_te
@@ -327,7 +329,7 @@ Body:
   Source: npc/re/guild3/te_aldecas5.txt:12
 - Name: Luina Training Instructor#gqaldeg
   X: 176
-  "Y": 163
+  Y: 163
   Dir: 5
   Sprite: 899
   DuplicateOf: gld_mission#core
@@ -335,16 +337,16 @@ Body:
   Source: npc/re/guild/mission_npc.txt:10
 - Name: to_kafragarten
   X: 225
-  "Y": 188
+  Y: 188
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: te_alde_gld
     X: 228
-    "Y": 185
+    Y: 185
     TriggerWhileHidden: false
   Source: npc/re/warps/guildcastles.txt:55

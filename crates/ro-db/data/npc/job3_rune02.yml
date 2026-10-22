@@ -2,126 +2,128 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#RK Test Hidden Portal 1"
   X: 38
-  "Y": 40
+  Y: 40
   Dir: 0
   Sprite: 139
   Trigger:
     X: 15
-    "Y": 15
+    Y: 15
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:1566
 - Name: job_rune_edq#1st_tb
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:1600
 - Name: job_rune_edq#1st_tc
   X: 1
-  "Y": 2
+  Y: 2
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:1629
 - Name: job_rune_edq#1st_tcmc
   X: 3
-  "Y": 10
+  Y: 10
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:1665
 - Name: job_rune_edq#1st_tcmc2
   X: 3
-  "Y": 11
+  Y: 11
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:1718
 - Name: job_rune_edq#1st_tcnc
   X: 1
-  "Y": 10
+  Y: 10
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:1768
 - Name: Captain Tigris#jrt1
   X: 34
-  "Y": 46
+  Y: 46
   Dir: 5
   Sprite: 470
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:1814
 - Name: Rune Knight Lunarea#jrt1
   X: 43
-  "Y": 46
+  Y: 46
   Dir: 3
   Sprite: 469
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:1860
 - Name: Rune Knight Renoa#jrt1
   X: 43
-  "Y": 34
+  Y: 34
   Dir: 1
   Sprite: 469
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:1905
 - Name: Rune Knight Velpino#jrt1
   X: 34
-  "Y": 34
+  Y: 34
   Dir: 7
   Sprite: 468
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:1951
 - Name: job_rune_edq#3rd_tb
   X: 2
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:1996
 - Name: job_rune_edq#3rd_tc
   X: 2
-  "Y": 2
+  Y: 2
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:2025
 - Name: job_rune_edq#3rd_tc1
   X: 2
-  "Y": 3
+  Y: 3
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:2062
 - Name: job_rune_edq#3rd_tc2
   X: 2
-  "Y": 4
+  Y: 4
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/jobs/3-1/rune_knight.txt:2086
 - Name: job_rune_edq#3rd_tc3
   X: 2
-  "Y": 5
+  Y: 5
   Dir: 0
   Sprite: 139
   Kind: Script

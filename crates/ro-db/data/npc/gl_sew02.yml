@@ -2,97 +2,99 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: gl19-1
   X: 109
-  "Y": 294
+  Y: 294
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gl_sew01
     X: 19
-    "Y": 24
+    Y: 24
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:68
 - Name: gl11
   X: 16
-  "Y": 26
+  Y: 26
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gl_prison1
     X: 61
-    "Y": 183
+    Y: 183
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:69
 - Name: gl23
   X: 290
-  "Y": 156
+  Y: 156
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gl_step
     X: 117
-    "Y": 124
+    Y: 124
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:70
 - Name: gl24
   X: 296
-  "Y": 18
+  Y: 18
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gl_knt01
     X: 231
-    "Y": 192
+    Y: 192
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:71
 - Name: gl20
   X: 299
-  "Y": 294
+  Y: 294
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gl_sew03
     X: 171
-    "Y": 283
+    Y: 283
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:72
 - Name: gl22-1
   X: 30
-  "Y": 273
+  Y: 273
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gl_chyard
     X: 15
-    "Y": 149
+    Y: 149
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:73

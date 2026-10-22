@@ -2,89 +2,91 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Test Supervisor#jr_04
   X: 100
-  "Y": 95
+  Y: 95
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/jobs/3-1/ranger.txt:810
 - Name: First Test Timer#jr_05
   X: 102
-  "Y": 95
+  Y: 95
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/jobs/3-1/ranger.txt:853
 - Name: CallCorrectAnswer#jr
   X: 104
-  "Y": 95
+  Y: 95
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/jobs/3-1/ranger.txt:954
 - Name: CallWrongAnswer#jr
   X: 106
-  "Y": 95
+  Y: 95
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/jobs/3-1/ranger.txt:981
 - Name: Second Test Timer#jr_08
   X: 100
-  "Y": 93
+  Y: 93
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/jobs/3-1/ranger.txt:1071
 - Name: Staff Rust#jr_09
   X: 111
-  "Y": 56
+  Y: 56
   Dir: 3
   Sprite: 89
   Kind: Script
   Source: npc/re/jobs/3-1/ranger.txt:1178
 - Name: Summon Monster#jr_10
   X: 136
-  "Y": 21
+  Y: 21
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/jobs/3-1/ranger.txt:1223
 - Name: Test Supervisor#jr_11
   X: 180
-  "Y": 78
+  Y: 78
   Dir: 3
   Sprite: 882
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/jobs/3-1/ranger.txt:1272
 - Name: Third Test Timer#jr_12
   X: 104
-  "Y": 93
+  Y: 93
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/jobs/3-1/ranger.txt:1372
 - Name: Test Supervisor#jr_13
   X: 251
-  "Y": 49
+  Y: 49
   Dir: 3
   Sprite: 732
   Kind: Script
   Source: npc/re/jobs/3-1/ranger.txt:1459
 - Name: Egg Bomb#14
   X: 246
-  "Y": 42
+  Y: 42
   Dir: 0
   Sprite: 139
   DuplicateOf: Egg Bomb#0
@@ -92,7 +94,7 @@ Body:
   Source: npc/re/jobs/3-1/ranger.txt:1614
 - Name: Egg Bomb#15
   X: 249
-  "Y": 46
+  Y: 46
   Dir: 0
   Sprite: 139
   DuplicateOf: Egg Bomb#0
@@ -100,7 +102,7 @@ Body:
   Source: npc/re/jobs/3-1/ranger.txt:1615
 - Name: Egg Bomb#16
   X: 256
-  "Y": 43
+  Y: 43
   Dir: 0
   Sprite: 139
   DuplicateOf: Egg Bomb#0
@@ -108,7 +110,7 @@ Body:
   Source: npc/re/jobs/3-1/ranger.txt:1616
 - Name: Egg Bomb#17
   X: 243
-  "Y": 54
+  Y: 54
   Dir: 0
   Sprite: 139
   DuplicateOf: Egg Bomb#0
@@ -116,7 +118,7 @@ Body:
   Source: npc/re/jobs/3-1/ranger.txt:1617
 - Name: Egg Bomb#18
   X: 246
-  "Y": 58
+  Y: 58
   Dir: 0
   Sprite: 139
   DuplicateOf: Egg Bomb#0
@@ -124,7 +126,7 @@ Body:
   Source: npc/re/jobs/3-1/ranger.txt:1618
 - Name: Egg Bomb#19
   X: 255
-  "Y": 56
+  Y: 56
   Dir: 0
   Sprite: 139
   DuplicateOf: Egg Bomb#0
@@ -132,7 +134,7 @@ Body:
   Source: npc/re/jobs/3-1/ranger.txt:1619
 - Name: Egg Bomb#20
   X: 260
-  "Y": 48
+  Y: 48
   Dir: 0
   Sprite: 139
   DuplicateOf: Egg Bomb#0
@@ -140,7 +142,7 @@ Body:
   Source: npc/re/jobs/3-1/ranger.txt:1620
 - Name: Egg Bomb#21
   X: 244
-  "Y": 53
+  Y: 53
   Dir: 0
   Sprite: 139
   DuplicateOf: Egg Bomb#0
@@ -148,7 +150,7 @@ Body:
   Source: npc/re/jobs/3-1/ranger.txt:1621
 - Name: Egg Bomb#22
   X: 254
-  "Y": 50
+  Y: 50
   Dir: 0
   Sprite: 139
   DuplicateOf: Egg Bomb#0
@@ -156,7 +158,7 @@ Body:
   Source: npc/re/jobs/3-1/ranger.txt:1622
 - Name: Egg Bomb#23
   X: 241
-  "Y": 41
+  Y: 41
   Dir: 0
   Sprite: 139
   DuplicateOf: Egg Bomb#0
@@ -164,7 +166,7 @@ Body:
   Source: npc/re/jobs/3-1/ranger.txt:1623
 - Name: Egg Bomb#24
   X: 259
-  "Y": 41
+  Y: 41
   Dir: 0
   Sprite: 139
   DuplicateOf: Egg Bomb#0
@@ -172,7 +174,7 @@ Body:
   Source: npc/re/jobs/3-1/ranger.txt:1624
 - Name: Egg Bomb#25
   X: 256
-  "Y": 52
+  Y: 52
   Dir: 0
   Sprite: 139
   DuplicateOf: Egg Bomb#0
@@ -180,7 +182,7 @@ Body:
   Source: npc/re/jobs/3-1/ranger.txt:1625
 - Name: Egg Bomb#26
   X: 259
-  "Y": 58
+  Y: 58
   Dir: 0
   Sprite: 139
   DuplicateOf: Egg Bomb#0
@@ -188,7 +190,7 @@ Body:
   Source: npc/re/jobs/3-1/ranger.txt:1626
 - Name: Egg Bomb#27
   X: 254
-  "Y": 52
+  Y: 52
   Dir: 0
   Sprite: 139
   DuplicateOf: Egg Bomb#0
@@ -196,7 +198,7 @@ Body:
   Source: npc/re/jobs/3-1/ranger.txt:1627
 - Name: Egg Bomb#28
   X: 247
-  "Y": 42
+  Y: 42
   Dir: 0
   Sprite: 139
   DuplicateOf: Egg Bomb#0

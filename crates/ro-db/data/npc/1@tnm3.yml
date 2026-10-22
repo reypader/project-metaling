@@ -2,149 +2,151 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#tnm3event01"
   X: 21
-  "Y": 171
+  Y: 171
   Dir: 0
   Sprite: 111
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1414
 - Name: Young Girl#tnm01
   X: 43
-  "Y": 175
+  Y: 175
   Dir: 3
   Sprite: 941
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1461
 - Name: "#tnm3gate01"
   X: 52
-  "Y": 176
+  Y: 176
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@tnm3
     X: 85
-    "Y": 178
+    Y: 178
     TriggerWhileHidden: false
   Source: npc/re/instances/DevilTower.txt:1524
 - Name: "#tnm3event02ect"
   X: 85
-  "Y": 178
+  Y: 178
   Dir: 0
   Sprite: 111
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1527
 - Name: Young Girl#tnm02
   X: 89
-  "Y": 179
+  Y: 179
   Dir: 4
   Sprite: 941
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1571
 - Name: Young Girl#tnm03
   X: 128
-  "Y": 164
+  Y: 164
   Dir: 3
   Sprite: 941
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1586
 - Name: "#tnm3gate02"
   X: 134
-  "Y": 156
+  Y: 156
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: 1@tnm3
     X: 169
-    "Y": 165
+    Y: 165
     TriggerWhileHidden: false
   Source: npc/re/instances/DevilTower.txt:1595
 - Name: Evil Shadow#tnm3mob01
   X: 179
-  "Y": 172
+  Y: 172
   Dir: 3
   Sprite: 2941
   SpriteIsMob: true
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1598
 - Name: Evil Shadow kill#tnm3mob01
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1617
 - Name: "#tnm3gate03"
   X: 183
-  "Y": 177
+  Y: 177
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: 1@tnm3
     X: 97
-    "Y": 6
+    Y: 6
     TriggerWhileHidden: false
   Source: npc/re/instances/DevilTower.txt:1645
 - Name: Demonic Shade#mobmaster
   X: 97
-  "Y": 18
+  Y: 18
   Dir: 3
   Sprite: 2939
   SpriteIsMob: true
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1648
 - Name: "#mobmaster_kill"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1669
 - Name: Morocc Lord Knight#mocl
   X: 93
-  "Y": 52
+  Y: 52
   Dir: 4
   Sprite: 106
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1717
 - Name: Loki#tnmloki01
   X: 97
-  "Y": 48
+  Y: 48
   Dir: 3
   Sprite: 512
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1723
 - Name: Young Girl#tnm04
   X: 94
-  "Y": 51
+  Y: 51
   Dir: 4
   Sprite: 941
   DuplicateOf: Officer Heim#heim0
@@ -152,28 +154,28 @@ Body:
   Source: npc/re/instances/DevilTower.txt:1734
 - Name: Loki#tnmloki02
   X: 137
-  "Y": 65
+  Y: 65
   Dir: 3
   Sprite: 512
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1831
 - Name: "#boss_skills_timer"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:1886
 - Name: box#tnmbosang
   X: 69
-  "Y": 70
+  Y: 70
   Dir: 3
   Sprite: 10005
   Kind: Script
   Source: npc/re/instances/DevilTower.txt:2017
 - Name: Loki#tnmloki03
   X: 69
-  "Y": 72
+  Y: 72
   Dir: 3
   Sprite: 512
   Kind: Script

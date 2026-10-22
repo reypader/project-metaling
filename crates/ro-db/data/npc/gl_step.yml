@@ -2,37 +2,39 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: gl23-1
   X: 120
-  "Y": 124
+  Y: 124
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gl_sew02
     X: 285
-    "Y": 158
+    Y: 158
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:78
 - Name: gl1-1
   X: 8
-  "Y": 7
+  Y: 7
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: glast_01
     X: 54
-    "Y": 108
+    Y: 108
     TriggerWhileHidden: false
   Source: npc/warps/fields/glastheim.txt:79

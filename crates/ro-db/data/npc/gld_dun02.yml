@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Grunburti#2
   X: 85
-  "Y": 84
+  Y: 84
   Dir: 0
   Sprite: 826
   DuplicateOf: GodDwarf
@@ -16,31 +18,31 @@ Body:
   Source: npc/quests/seals/god_weapon_creation.txt:345
 - Name: gdun02a_aldega
   X: 20
-  "Y": 160
+  Y: 160
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: alde_gld
     X: 229
-    "Y": 185
+    Y: 185
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:527
 - Name: gdun02b_aldegb
   X: 180
-  "Y": 112
+  Y: 112
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: alde_gld
     X: 242
-    "Y": 121
+    Y: 121
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:528

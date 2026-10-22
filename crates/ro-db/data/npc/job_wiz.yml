@@ -2,108 +2,110 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Arena Assistant
   X: 50
-  "Y": 165
+  Y: 165
   Dir: 4
   Sprite: 700
   Kind: Script
   Source: npc/jobs/2-1/wizard.txt:1058
 - Name: Room of Water
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 1
   Sprite: 66
   Kind: Script
   Source: npc/jobs/2-1/wizard.txt:1091
 - Name: Room of Water#Door
   X: 1
-  "Y": 2
+  Y: 2
   Dir: 1
   Sprite: 66
   Kind: Script
   Source: npc/jobs/2-1/wizard.txt:1185
 - Name: Room of Water#Failed
   X: 114
-  "Y": 169
+  Y: 169
   Dir: 0
   Sprite: -1
   Trigger:
     X: 16
-    "Y": 16
+    Y: 16
   Kind: Script
   Source: npc/jobs/2-1/wizard.txt:1251
 - Name: Room of Earth
   X: 1
-  "Y": 3
+  Y: 3
   Dir: 1
   Sprite: 66
   Kind: Script
   Source: npc/jobs/2-1/wizard.txt:1264
 - Name: Room of Earth#Door
   X: 1
-  "Y": 4
+  Y: 4
   Dir: 1
   Sprite: 66
   Kind: Script
   Source: npc/jobs/2-1/wizard.txt:1359
 - Name: Room of Earth#Failed
   X: 116
-  "Y": 97
+  Y: 97
   Dir: 0
   Sprite: -1
   Trigger:
     X: 16
-    "Y": 16
+    Y: 16
   Kind: Script
   Source: npc/jobs/2-1/wizard.txt:1431
 - Name: Room of Fire
   X: 1
-  "Y": 5
+  Y: 5
   Dir: 1
   Sprite: 66
   Kind: Script
   Source: npc/jobs/2-1/wizard.txt:1444
 - Name: Room of Fire#Door
   X: 1
-  "Y": 6
+  Y: 6
   Dir: 1
   Sprite: 66
   Kind: Script
   Source: npc/jobs/2-1/wizard.txt:1537
 - Name: Room of Fire#Failed
   X: 46
-  "Y": 99
+  Y: 99
   Dir: 0
   Sprite: -1
   Trigger:
     X: 16
-    "Y": 16
+    Y: 16
   Kind: Script
   Source: npc/jobs/2-1/wizard.txt:1614
 - Name: Test Helper#wiz
   X: 1
-  "Y": 7
+  Y: 7
   Dir: 1
   Sprite: 66
   Kind: Script
   Source: npc/jobs/2-1/wizard.txt:1624
 - Name: wiz_out
   X: 49
-  "Y": 154
+  Y: 154
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: gef_tower
     X: 108
-    "Y": 29
+    Y: 29
     TriggerWhileHidden: false
   Source: npc/re/warps/other/jobquests.txt:21

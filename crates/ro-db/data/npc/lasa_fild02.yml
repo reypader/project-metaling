@@ -2,75 +2,77 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Florin#dorcon
   X: 102
-  "Y": 372
+  Y: 372
   Dir: 5
   Sprite: 10165
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:2545
 - Name: Prok#dorcon
   X: 177
-  "Y": 241
+  Y: 241
   Dir: 5
   Sprite: 10164
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:2692
 - Name: Fisher#dorcon
   X: 326
-  "Y": 170
+  Y: 170
   Dir: 5
   Sprite: 560
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:2834
 - Name: Sleepy meow#dorcon
   X: 331
-  "Y": 251
+  Y: 251
   Dir: 5
   Sprite: 554
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:2960
 - Name: Thorny Vine's Thorn#las
   X: 340
-  "Y": 251
+  Y: 251
   Dir: 3
   Sprite: 111
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:4477
 - Name: lasadun01_in
   X: 348
-  "Y": 244
+  Y: 244
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: lasa_dun01
     X: 24
-    "Y": 143
+    Y: 143
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/lasagna.txt:8
 - Name: lasagna_in03#01
   X: 16
-  "Y": 98
+  Y: 98
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: lasagna
     X: 355
-    "Y": 92
+    Y: 92
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/lasagna.txt:26

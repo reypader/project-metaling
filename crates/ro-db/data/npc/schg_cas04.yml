@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Guide#gq_sch04
   X: 376
-  "Y": 307
+  Y: 307
   Dir: 3
   Sprite: 899
   DuplicateOf: Guide#gq_main
@@ -16,7 +18,7 @@ Body:
   Source: npc/quests/okolnir.txt:157
 - Name: Steward#sc04
   X: 247
-  "Y": 305
+  Y: 305
   Dir: 3
   Sprite: 55
   DuplicateOf: Steward#template
@@ -24,7 +26,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:23
 - Name: Ef#sc04
   X: 123
-  "Y": 306
+  Y: 306
   Dir: 3
   Sprite: 868
   DuplicateOf: Guardian#template
@@ -32,7 +34,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:24
 - Name: Kafra Employee#sc04
   X: 300
-  "Y": 287
+  Y: 287
   Dir: 5
   Sprite: 117
   DuplicateOf: Kafra#template
@@ -40,7 +42,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:25
 - Name: 1st Guardian Stone#sc04
   X: 27
-  "Y": 36
+  Y: 36
   Dir: 0
   Sprite: 844
   DuplicateOf: Guardian Stone#template
@@ -48,7 +50,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:26
 - Name: 2nd Guardian Stone#sc04
   X: 208
-  "Y": 75
+  Y: 75
   Dir: 0
   Sprite: 844
   DuplicateOf: Guardian Stone#template
@@ -56,7 +58,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:27
 - Name: Control Device01#sc04
   X: 124
-  "Y": 52
+  Y: 52
   Dir: 0
   Sprite: 111
   DuplicateOf: Control#template
@@ -64,7 +66,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:28
 - Name: Control Device02#sc04
   X: 128
-  "Y": 157
+  Y: 157
   Dir: 0
   Sprite: 111
   DuplicateOf: Control#template
@@ -72,7 +74,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:29
 - Name: Control Device03#sc04
   X: 109
-  "Y": 247
+  Y: 247
   Dir: 0
   Sprite: 111
   DuplicateOf: Control#template
@@ -80,7 +82,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:30
 - Name: " #sch04_switch"
   X: 391
-  "Y": 391
+  Y: 391
   Dir: 0
   Sprite: 111
   DuplicateOf: Switch#template
@@ -88,7 +90,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:31
 - Name: Mysterious Sunflower#04
   X: 280
-  "Y": 391
+  Y: 391
   Dir: 3
   Sprite: 976
   DuplicateOf: Sunflower#template
@@ -96,70 +98,70 @@ Body:
   Source: npc/guild2/schg_cas04.txt:32
 - Name: LF-01#schg_cas04
   X: 106
-  "Y": 302
+  Y: 302
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/schg_cas04.txt:34
 - Name: LF-02#schg_cas04
   X: 109
-  "Y": 302
+  Y: 302
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/schg_cas04.txt:35
 - Name: LF-03#schg_cas04
   X: 112
-  "Y": 302
+  Y: 302
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/schg_cas04.txt:36
 - Name: LF-04#schg_cas04
   X: 115
-  "Y": 302
+  Y: 302
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/schg_cas04.txt:37
 - Name: LF-05#schg_cas04
   X: 118
-  "Y": 302
+  Y: 302
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/schg_cas04.txt:38
 - Name: LF-06#schg_cas04
   X: 121
-  "Y": 302
+  Y: 302
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/schg_cas04.txt:39
 - Name: LF-07#schg_cas04
   X: 124
-  "Y": 302
+  Y: 302
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/schg_cas04.txt:40
 - Name: LF-08#schg_cas04
   X: 127
-  "Y": 302
+  Y: 302
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/schg_cas04.txt:41
 - Name: LF-09#schg_cas04
   X: 130
-  "Y": 302
+  Y: 302
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/schg_cas04.txt:42
 - Name: LF-10#schg_cas04
   X: 133
-  "Y": 302
+  Y: 302
   Dir: 0
   Sprite: 111
   Kind: Script
@@ -167,14 +169,14 @@ Body:
 - Name: Hljod#LF_sc04_1
   UniqueName: LF_sc04_1
   X: 17
-  "Y": 45
+  Y: 45
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild2/schg_cas04.txt:44
 - Name: Hljod#LF_sc04_2
   X: 207
-  "Y": 95
+  Y: 95
   Dir: 0
   Sprite: 111
   DuplicateOf: LF_sc04_1
@@ -183,14 +185,14 @@ Body:
 - Name: Hljod#LF_sc04_3
   UniqueName: LF_sc04_2
   X: 111
-  "Y": 46
+  Y: 46
   Dir: 4
   Sprite: 722
   Kind: Script
   Source: npc/guild2/schg_cas04.txt:46
 - Name: Hljod#LF_sc04_4
   X: 129
-  "Y": 46
+  Y: 46
   Dir: 4
   Sprite: 722
   DuplicateOf: LF_sc04_2
@@ -198,7 +200,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:54
 - Name: Hljod#LF_sc04_5
   X: 99
-  "Y": 77
+  Y: 77
   Dir: 0
   Sprite: 111
   DuplicateOf: LF_sc04_1
@@ -206,7 +208,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:55
 - Name: Hljod#LF_sc04_6
   X: 140
-  "Y": 77
+  Y: 77
   Dir: 0
   Sprite: 111
   DuplicateOf: LF_sc04_1
@@ -214,7 +216,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:56
 - Name: Hljod#LF_sc04_7
   X: 109
-  "Y": 150
+  Y: 150
   Dir: 4
   Sprite: 722
   DuplicateOf: LF_sc04_2
@@ -222,7 +224,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:57
 - Name: Hljod#LF_sc04_8
   X: 130
-  "Y": 150
+  Y: 150
   Dir: 4
   Sprite: 722
   DuplicateOf: LF_sc04_2
@@ -230,7 +232,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:58
 - Name: Hljod#LF_sc04_9
   X: 112
-  "Y": 212
+  Y: 212
   Dir: 0
   Sprite: 111
   DuplicateOf: LF_sc04_1
@@ -238,7 +240,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:59
 - Name: Hljod#LF_sc04_10
   X: 127
-  "Y": 212
+  Y: 212
   Dir: 0
   Sprite: 111
   DuplicateOf: LF_sc04_1
@@ -246,7 +248,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:60
 - Name: Hljod#LF_sc04_11
   X: 113
-  "Y": 238
+  Y: 238
   Dir: 0
   Sprite: 111
   DuplicateOf: LF_sc04_1
@@ -254,7 +256,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:61
 - Name: Hljod#LF_sc04_12
   X: 126
-  "Y": 238
+  Y: 238
   Dir: 0
   Sprite: 111
   DuplicateOf: LF_sc04_1
@@ -262,7 +264,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:62
 - Name: Hljod#LF_sc04_13
   X: 95
-  "Y": 247
+  Y: 247
   Dir: 0
   Sprite: 111
   DuplicateOf: LF_sc04_1
@@ -270,7 +272,7 @@ Body:
   Source: npc/guild2/schg_cas04.txt:63
 - Name: Hljod#LF_sc04_14
   X: 144
-  "Y": 247
+  Y: 247
   Dir: 0
   Sprite: 111
   DuplicateOf: LF_sc04_1
@@ -278,31 +280,31 @@ Body:
   Source: npc/guild2/schg_cas04.txt:64
 - Name: schg401
   X: 119
-  "Y": 4
+  Y: 4
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: sch_gld
     X: 137
-    "Y": 90
+    Y: 90
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:416
 - Name: schg403
   X: 275
-  "Y": 240
+  Y: 240
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: schg_cas04
     X: 120
-    "Y": 7
+    Y: 7
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:418

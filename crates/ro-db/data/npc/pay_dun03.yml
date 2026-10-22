@@ -2,70 +2,72 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Nine Tails#Kitsune Mask
   X: 48
-  "Y": 84
+  Y: 84
   Dir: 4
   Sprite: 1180
   SpriteIsMob: true
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/quests/newgears/2004_headgears.txt:2458
 - Name: Nine Tails#Kitsune Man
   X: 48
-  "Y": 84
+  Y: 84
   Dir: 4
   Sprite: 762
   Kind: Script
   Source: npc/quests/newgears/2004_headgears.txt:2514
 - Name: SpawnManager#Kitsune
   X: 48
-  "Y": 84
+  Y: 84
   Dir: 4
   Sprite: -1
   Kind: Script
   Source: npc/quests/newgears/2004_headgears.txt:2613
 - Name: payd03-1
   X: 155
-  "Y": 161
+  Y: 161
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: pay_dun02
     X: 137
-    "Y": 126
+    Y: 126
     TriggerWhileHidden: false
   Source: npc/warps/dungeons/pay_dun.txt:22
 - Name: payd04r
   X: 127
-  "Y": 62
+  Y: 62
   Dir: 4
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/warps/dungeons/pay_dun.txt:23
 - Name: Shimmering Portal#ill_moon_in
   X: 140
-  "Y": 46
+  Y: 46
   Dir: 0
   Sprite: 10043
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:625
 - Name: Junghee#ill_moon_pdun
   X: 143
-  "Y": 45
+  Y: 45
   Dir: 4
   Sprite: 708
   State: Cloaked
@@ -74,7 +76,7 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:687
 - Name: Young Scholar#ill_moon_pdun
   X: 138
-  "Y": 43
+  Y: 43
   Dir: 7
   Sprite: 92
   State: Cloaked

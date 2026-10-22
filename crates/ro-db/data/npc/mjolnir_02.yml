@@ -2,6 +2,8 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
@@ -9,162 +11,162 @@ Body:
 - Name: Kafra Employee
   UniqueName: kaf_mjolnir_02
   X: 83
-  "Y": 362
+  Y: 362
   Dir: 4
   Sprite: 116
   Kind: Script
   Source: npc/kafras/kafras.txt:635
 - Name: Blacksmith Miner
   X: 85
-  "Y": 362
+  Y: 362
   Dir: 3
   Sprite: 726
   Kind: Script
   Source: npc/other/comodo_gambling.txt:483
 - Name: Middle-Aged Man#magum1
   X: 186
-  "Y": 193
+  Y: 193
   Dir: 4
   Sprite: 57
   Kind: Script
   Source: npc/quests/doomed_swords_quest.txt:21
 - Name: "#mj02_01"
   X: 90
-  "Y": 195
+  Y: 195
   Dir: 3
   Sprite: 111
   Trigger:
     X: 5
-    "Y": 10
+    Y: 10
   DuplicateOf: mjo_find
   Kind: Script
   Source: npc/quests/quests_13_2.txt:4943
 - Name: "#mj02_02"
   X: 206
-  "Y": 187
+  Y: 187
   Dir: 3
   Sprite: 111
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   DuplicateOf: mjo_find
   Kind: Script
   Source: npc/quests/quests_13_2.txt:4944
 - Name: "#mj02_find_1"
   X: 313
-  "Y": 289
+  Y: 289
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/quests/quests_13_2.txt:4984
 - Name: "#mj02_find_2"
   X: 78
-  "Y": 258
+  Y: 258
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/quests/quests_13_2.txt:4994
 - Name: "#mj02_01_t"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 3
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_13_2.txt:5005
 - Name: "#mj02_02_t"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 3
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_13_2.txt:5016
 - Name: Muriniel's Cottage#juno
   X: 170
-  "Y": 193
+  Y: 193
   Dir: 4
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_yuno.txt:1205
 - Name: mjol01-1
   X: 28
-  "Y": 258
+  Y: 258
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: mjolnir_01
     X: 374
-    "Y": 256
+    Y: 256
     TriggerWhileHidden: false
   Source: npc/warps/fields/mtmjolnir.txt:20
 - Name: mjol02
   X: 326
-  "Y": 289
+  Y: 289
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: mjolnir_03
     X: 24
-    "Y": 258
+    Y: 258
     TriggerWhileHidden: false
   Source: npc/warps/fields/mtmjolnir.txt:21
 - Name: mjol03
   X: 361
-  "Y": 18
+  Y: 18
   Dir: 0
   Sprite: 45
   Trigger:
     X: 4
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: mjolnir_06
     X: 366
-    "Y": 380
+    Y: 380
     TriggerWhileHidden: false
   Source: npc/warps/fields/mtmjolnir.txt:22
 - Name: mjol013
   X: 79
-  "Y": 365
+  Y: 365
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: mjo_dun01
     X: 52
-    "Y": 17
+    Y: 17
     TriggerWhileHidden: false
   Source: npc/warps/fields/mtmjolnir.txt:23
 - Name: "#wp120033"
   X: 77
-  "Y": 49
+  Y: 49
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:202
 - Name: "#tr120033"
   X: 77
-  "Y": 49
+  Y: 49
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -172,7 +174,7 @@ Body:
   Source: npc/re/other/achievements.txt:463
 - Name: Signposts#Mjolnir Dead
   X: 76
-  "Y": 362
+  Y: 362
   Dir: 0
   Sprite: 837
   Kind: Script

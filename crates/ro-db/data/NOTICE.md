@@ -19,8 +19,8 @@ dataset is regenerated from a different commit, update its section.
 
 - **Source:** rAthena commit `d4b8e7b8f16061cc2496d377ac8f777ce72a4f39`. The NPC source files
   under `npc/` and `npc/re/` that the renewal manifest `npc/re/scripts_main.conf` loads.
-- **Modified on 2026-10-22 by `tools/npc-import`:** converted from tab-delimited `.txt` to per-map
-  YAML (`NPC_SPAWN_DB` version 1). The conversion:
+- **Modified on 2026-10-22 by `tools/npc-import`** (regenerated 2026-10-23 as YAML 1.2): converted
+  from tab-delimited `.txt` to per-map YAML (`NPC_SPAWN_DB` version 1). The conversion:
   - keeps only the headers of NPCs placed on a map (`warp`, `warp2`, `script`, `duplicate(...)`,
     and the shop keywords);
   - drops script bodies, shop item lists, floating NPCs, functions, monster spawns and mapflags;

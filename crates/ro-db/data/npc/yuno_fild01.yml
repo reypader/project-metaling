@@ -2,24 +2,26 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#wp120052"
   X: 284
-  "Y": 138
+  Y: 138
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:261
 - Name: "#tr120052"
   X: 284
-  "Y": 138
+  Y: 138
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -27,14 +29,14 @@ Body:
   Source: npc/re/other/achievements.txt:522
 - Name: Border Guards#ep16lug01
   X: 239
-  "Y": 173
+  Y: 173
   Dir: 7
   Sprite: 734
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:8490
 - Name: Border Guards#ep16lug02
   X: 241
-  "Y": 173
+  Y: 173
   Dir: 7
   Sprite: 469
   DuplicateOf: Border Guards#ep16lug01
@@ -42,7 +44,7 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:8491
 - Name: Border Guards#ep16lug03
   X: 243
-  "Y": 173
+  Y: 173
   Dir: 1
   Sprite: 469
   DuplicateOf: Border Guards#ep16lug01
@@ -50,7 +52,7 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:8492
 - Name: Border Guards#ep16lug04
   X: 245
-  "Y": 173
+  Y: 173
   Dir: 1
   Sprite: 734
   DuplicateOf: Border Guards#ep16lug01
@@ -58,7 +60,7 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:8493
 - Name: Border Guards#ep16lug05
   X: 239
-  "Y": 171
+  Y: 171
   Dir: 7
   Sprite: 875
   DuplicateOf: Border Guards#ep16lug01
@@ -66,7 +68,7 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:8494
 - Name: Border Guards#ep16lug06
   X: 241
-  "Y": 171
+  Y: 171
   Dir: 7
   Sprite: 735
   DuplicateOf: Border Guards#ep16lug01
@@ -74,7 +76,7 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:8495
 - Name: Border Guards#ep16lug07
   X: 243
-  "Y": 171
+  Y: 171
   Dir: 1
   Sprite: 735
   DuplicateOf: Border Guards#ep16lug01
@@ -82,7 +84,7 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:8496
 - Name: Border Guards#ep16lug08
   X: 245
-  "Y": 171
+  Y: 171
   Dir: 1
   Sprite: 875
   DuplicateOf: Border Guards#ep16lug01
@@ -90,78 +92,78 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:8497
 - Name: Helmut Roegenburg#ep16lug02
   X: 242
-  "Y": 175
+  Y: 175
   Dir: 5
   Sprite: 10127
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:8499
 - Name: Kalbern#ep16lug02
   X: 244
-  "Y": 176
+  Y: 176
   Dir: 3
   Sprite: 962
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:8599
 - Name: newjun01
   X: 26
-  "Y": 246
+  Y: 246
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: yuno_fild12
     X: 373
-    "Y": 239
+    Y: 239
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/yuno_fild.txt:33
 - Name: newjun06
   X: 70
-  "Y": 378
+  Y: 378
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: yuno_fild09
     X: 70
-    "Y": 19
+    Y: 19
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/yuno_fild.txt:43
 - Name: newjun07
   X: 286
-  "Y": 368
+  Y: 368
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: yuno_fild09
     X: 280
-    "Y": 30
+    Y: 30
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/yuno_fild.txt:45
 - Name: yunfild-alde
   X: 208
-  "Y": 17
+  Y: 17
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: aldebaran
     X: 140
-    "Y": 242
+    Y: 242
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/yuno_fild.txt:67

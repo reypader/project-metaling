@@ -2,24 +2,26 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#wp120028"
   X: 365
-  "Y": 37
+  Y: 37
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:227
 - Name: "#tr120028"
   X: 365
-  "Y": 37
+  Y: 37
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -27,82 +29,82 @@ Body:
   Source: npc/re/other/achievements.txt:488
 - Name: Zoologist
   X: 83
-  "Y": 89
+  Y: 89
   Dir: 7
   Sprite: 89
   Kind: Script
   Source: npc/re/quests/eden/26-40.txt:268
 - Name: Insect Feelers
   X: 126
-  "Y": 49
+  Y: 49
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:1172
 - Name: Bear's Footskin
   X: 269
-  "Y": 164
+  Y: 164
   Dir: 0
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/quests_dicastes.txt:1191
 - Name: payf03-1
   X: 16
-  "Y": 200
+  Y: 200
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Warp
   Warp:
     Map: pay_fild01
     X: 371
-    "Y": 205
+    Y: 205
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/payon_fild.txt:37
 - Name: payf08-1
   X: 163
-  "Y": 17
+  Y: 17
   Dir: 0
   Sprite: 45
   Trigger:
     X: 5
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: pay_fild03
     X: 177
-    "Y": 275
+    Y: 275
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/payon_fild.txt:38
 - Name: payf11
   X: 280
-  "Y": 382
+  Y: 382
   Dir: 0
   Sprite: 45
   Trigger:
     X: 4
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: pay_fild08
     X: 160
-    "Y": 19
+    Y: 19
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/payon_fild.txt:39
 - Name: payf12
   X: 382
-  "Y": 290
+  Y: 290
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 5
+    Y: 5
   Kind: Warp
   Warp:
     Map: pay_fild10
     X: 19
-    "Y": 290
+    Y: 290
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/payon_fild.txt:40

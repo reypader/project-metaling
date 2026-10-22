@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#ext1"
   X: 36
-  "Y": 71
+  Y: 71
   Dir: 6
   Sprite: 10062
   DuplicateOf: dummy_npc
@@ -16,7 +18,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:212
 - Name: "#ext2"
   X: 36
-  "Y": 68
+  Y: 68
   Dir: 6
   Sprite: 10063
   DuplicateOf: dummy_npc
@@ -24,7 +26,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:213
 - Name: "#ext3"
   X: 36
-  "Y": 65
+  Y: 65
   Dir: 6
   Sprite: 10062
   DuplicateOf: dummy_npc
@@ -32,7 +34,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:214
 - Name: "#ext4"
   X: 36
-  "Y": 62
+  Y: 62
   Dir: 6
   Sprite: 10063
   DuplicateOf: dummy_npc
@@ -40,7 +42,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:215
 - Name: "#ext5"
   X: 36
-  "Y": 59
+  Y: 59
   Dir: 6
   Sprite: 10062
   DuplicateOf: dummy_npc
@@ -48,7 +50,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:216
 - Name: "#ext6"
   X: 33
-  "Y": 71
+  Y: 71
   Dir: 6
   Sprite: 10063
   DuplicateOf: dummy_npc
@@ -56,7 +58,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:217
 - Name: "#ext7"
   X: 33
-  "Y": 68
+  Y: 68
   Dir: 6
   Sprite: 10062
   DuplicateOf: dummy_npc
@@ -64,7 +66,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:218
 - Name: "#ext8"
   X: 33
-  "Y": 65
+  Y: 65
   Dir: 6
   Sprite: 10063
   DuplicateOf: dummy_npc
@@ -72,7 +74,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:219
 - Name: "#ext9"
   X: 33
-  "Y": 62
+  Y: 62
   Dir: 6
   Sprite: 10062
   DuplicateOf: dummy_npc
@@ -80,7 +82,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:220
 - Name: "#ext10"
   X: 33
-  "Y": 59
+  Y: 59
   Dir: 6
   Sprite: 10063
   DuplicateOf: dummy_npc
@@ -88,7 +90,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:221
 - Name: "#ext11"
   X: 30
-  "Y": 71
+  Y: 71
   Dir: 6
   Sprite: 10062
   DuplicateOf: dummy_npc
@@ -96,7 +98,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:222
 - Name: "#ext12"
   X: 30
-  "Y": 68
+  Y: 68
   Dir: 6
   Sprite: 10063
   DuplicateOf: dummy_npc
@@ -104,7 +106,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:223
 - Name: "#ext13"
   X: 30
-  "Y": 65
+  Y: 65
   Dir: 6
   Sprite: 10062
   DuplicateOf: dummy_npc
@@ -112,7 +114,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:224
 - Name: "#ext14"
   X: 30
-  "Y": 62
+  Y: 62
   Dir: 6
   Sprite: 10063
   DuplicateOf: dummy_npc
@@ -120,7 +122,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:225
 - Name: "#ext15"
   X: 30
-  "Y": 59
+  Y: 59
   Dir: 6
   Sprite: 10062
   DuplicateOf: dummy_npc
@@ -128,7 +130,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:226
 - Name: "#wl1"
   X: 116
-  "Y": 30
+  Y: 30
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -136,7 +138,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:230
 - Name: "#wl2"
   X: 116
-  "Y": 31
+  Y: 31
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -144,7 +146,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:231
 - Name: "#wl3"
   X: 116
-  "Y": 32
+  Y: 32
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -152,7 +154,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:232
 - Name: "#wl4"
   X: 116
-  "Y": 33
+  Y: 33
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -160,7 +162,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:233
 - Name: "#wl5"
   X: 116
-  "Y": 34
+  Y: 34
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -168,7 +170,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:234
 - Name: "#wl6"
   X: 116
-  "Y": 35
+  Y: 35
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -176,7 +178,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:235
 - Name: "#wl7"
   X: 116
-  "Y": 36
+  Y: 36
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -184,7 +186,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:236
 - Name: "#wl8"
   X: 116
-  "Y": 37
+  Y: 37
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -192,7 +194,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:237
 - Name: "#wl9"
   X: 116
-  "Y": 38
+  Y: 38
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -200,7 +202,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:238
 - Name: "#wl10"
   X: 116
-  "Y": 39
+  Y: 39
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -208,7 +210,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:239
 - Name: "#wl11"
   X: 116
-  "Y": 40
+  Y: 40
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -216,7 +218,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:240
 - Name: "#wl12"
   X: 116
-  "Y": 41
+  Y: 41
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -224,7 +226,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:241
 - Name: "#wl13"
   X: 116
-  "Y": 42
+  Y: 42
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -232,7 +234,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:242
 - Name: "#wl14"
   X: 116
-  "Y": 43
+  Y: 43
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -240,7 +242,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:243
 - Name: "#wl15"
   X: 116
-  "Y": 44
+  Y: 44
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -248,7 +250,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:244
 - Name: "#wl16"
   X: 116
-  "Y": 45
+  Y: 45
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -256,7 +258,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:245
 - Name: "#wl17"
   X: 116
-  "Y": 46
+  Y: 46
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -264,7 +266,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:246
 - Name: "#wl18"
   X: 116
-  "Y": 47
+  Y: 47
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -272,7 +274,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:247
 - Name: "#wl19"
   X: 116
-  "Y": 48
+  Y: 48
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -280,7 +282,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:248
 - Name: "#wl20"
   X: 116
-  "Y": 49
+  Y: 49
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -288,7 +290,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:249
 - Name: "#wl21"
   X: 116
-  "Y": 50
+  Y: 50
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -296,7 +298,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:250
 - Name: "#wl22"
   X: 116
-  "Y": 51
+  Y: 51
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -304,7 +306,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:251
 - Name: "#wl23"
   X: 116
-  "Y": 52
+  Y: 52
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -312,7 +314,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:252
 - Name: "#wl24"
   X: 116
-  "Y": 53
+  Y: 53
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -320,7 +322,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:253
 - Name: "#wl25"
   X: 116
-  "Y": 54
+  Y: 54
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -328,7 +330,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:254
 - Name: "#wl26"
   X: 116
-  "Y": 55
+  Y: 55
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -336,7 +338,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:255
 - Name: "#wl27"
   X: 116
-  "Y": 56
+  Y: 56
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -344,7 +346,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:256
 - Name: "#wl28"
   X: 116
-  "Y": 57
+  Y: 57
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -352,7 +354,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:257
 - Name: "#wl29"
   X: 116
-  "Y": 58
+  Y: 58
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -360,7 +362,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:258
 - Name: "#wl30"
   X: 116
-  "Y": 59
+  Y: 59
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -368,7 +370,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:259
 - Name: "#wl31"
   X: 116
-  "Y": 60
+  Y: 60
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -376,7 +378,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:260
 - Name: "#wl32"
   X: 116
-  "Y": 61
+  Y: 61
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -384,7 +386,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:261
 - Name: "#wl33"
   X: 116
-  "Y": 62
+  Y: 62
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -392,7 +394,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:262
 - Name: "#wl34"
   X: 116
-  "Y": 63
+  Y: 63
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -400,7 +402,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:263
 - Name: "#wl35"
   X: 116
-  "Y": 64
+  Y: 64
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -408,7 +410,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:264
 - Name: "#wl36"
   X: 116
-  "Y": 65
+  Y: 65
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -416,7 +418,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:265
 - Name: "#wl37"
   X: 151
-  "Y": 30
+  Y: 30
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -424,7 +426,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:268
 - Name: "#wl38"
   X: 151
-  "Y": 31
+  Y: 31
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -432,7 +434,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:269
 - Name: "#wl39"
   X: 151
-  "Y": 32
+  Y: 32
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -440,7 +442,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:270
 - Name: "#wl40"
   X: 151
-  "Y": 33
+  Y: 33
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -448,7 +450,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:271
 - Name: "#wl41"
   X: 151
-  "Y": 34
+  Y: 34
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -456,7 +458,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:272
 - Name: "#wl42"
   X: 151
-  "Y": 35
+  Y: 35
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -464,7 +466,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:273
 - Name: "#wl43"
   X: 151
-  "Y": 36
+  Y: 36
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -472,7 +474,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:274
 - Name: "#wl44"
   X: 151
-  "Y": 37
+  Y: 37
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -480,7 +482,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:275
 - Name: "#wl45"
   X: 151
-  "Y": 38
+  Y: 38
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -488,7 +490,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:276
 - Name: "#wl46"
   X: 151
-  "Y": 39
+  Y: 39
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -496,7 +498,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:277
 - Name: "#wl47"
   X: 151
-  "Y": 40
+  Y: 40
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -504,7 +506,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:278
 - Name: "#wl48"
   X: 151
-  "Y": 41
+  Y: 41
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -512,7 +514,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:279
 - Name: "#wl49"
   X: 151
-  "Y": 42
+  Y: 42
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -520,7 +522,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:280
 - Name: "#wl50"
   X: 151
-  "Y": 43
+  Y: 43
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -528,7 +530,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:281
 - Name: "#wl51"
   X: 151
-  "Y": 44
+  Y: 44
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -536,7 +538,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:282
 - Name: "#wl52"
   X: 151
-  "Y": 45
+  Y: 45
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -544,7 +546,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:283
 - Name: "#wl53"
   X: 151
-  "Y": 46
+  Y: 46
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -552,7 +554,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:284
 - Name: "#wl54"
   X: 151
-  "Y": 47
+  Y: 47
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -560,7 +562,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:285
 - Name: "#wl55"
   X: 151
-  "Y": 48
+  Y: 48
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -568,7 +570,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:286
 - Name: "#wl56"
   X: 151
-  "Y": 49
+  Y: 49
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -576,7 +578,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:287
 - Name: "#wl57"
   X: 151
-  "Y": 50
+  Y: 50
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -584,7 +586,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:288
 - Name: "#wl58"
   X: 151
-  "Y": 51
+  Y: 51
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -592,7 +594,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:289
 - Name: "#wl59"
   X: 151
-  "Y": 52
+  Y: 52
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -600,7 +602,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:290
 - Name: "#wl60"
   X: 151
-  "Y": 53
+  Y: 53
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -608,7 +610,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:291
 - Name: "#wl61"
   X: 151
-  "Y": 54
+  Y: 54
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -616,7 +618,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:292
 - Name: "#wl62"
   X: 151
-  "Y": 55
+  Y: 55
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -624,7 +626,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:293
 - Name: "#wl63"
   X: 151
-  "Y": 56
+  Y: 56
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -632,7 +634,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:294
 - Name: "#wl64"
   X: 151
-  "Y": 57
+  Y: 57
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -640,7 +642,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:295
 - Name: "#wl65"
   X: 151
-  "Y": 58
+  Y: 58
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -648,7 +650,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:296
 - Name: "#wl66"
   X: 151
-  "Y": 59
+  Y: 59
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -656,7 +658,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:297
 - Name: "#wl67"
   X: 250
-  "Y": 30
+  Y: 30
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -664,7 +666,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:300
 - Name: "#wl68"
   X: 250
-  "Y": 31
+  Y: 31
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -672,7 +674,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:301
 - Name: "#wl69"
   X: 250
-  "Y": 32
+  Y: 32
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -680,7 +682,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:302
 - Name: "#wl70"
   X: 250
-  "Y": 33
+  Y: 33
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -688,7 +690,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:303
 - Name: "#wl71"
   X: 250
-  "Y": 34
+  Y: 34
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -696,7 +698,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:304
 - Name: "#wl72"
   X: 250
-  "Y": 35
+  Y: 35
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -704,7 +706,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:305
 - Name: "#wl73"
   X: 250
-  "Y": 36
+  Y: 36
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -712,7 +714,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:306
 - Name: "#wl74"
   X: 250
-  "Y": 37
+  Y: 37
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -720,7 +722,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:307
 - Name: "#wl75"
   X: 250
-  "Y": 38
+  Y: 38
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -728,7 +730,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:308
 - Name: "#wl76"
   X: 250
-  "Y": 39
+  Y: 39
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -736,7 +738,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:309
 - Name: "#wl77"
   X: 250
-  "Y": 40
+  Y: 40
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -744,7 +746,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:310
 - Name: "#wl78"
   X: 250
-  "Y": 41
+  Y: 41
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -752,7 +754,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:311
 - Name: "#wl79"
   X: 250
-  "Y": 42
+  Y: 42
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -760,7 +762,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:312
 - Name: "#wl80"
   X: 250
-  "Y": 43
+  Y: 43
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -768,7 +770,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:313
 - Name: "#wl81"
   X: 250
-  "Y": 44
+  Y: 44
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -776,7 +778,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:314
 - Name: "#wl82"
   X: 23
-  "Y": 222
+  Y: 222
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -784,7 +786,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:317
 - Name: "#wl83"
   X: 24
-  "Y": 222
+  Y: 222
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -792,7 +794,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:318
 - Name: "#wl84"
   X: 25
-  "Y": 222
+  Y: 222
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -800,7 +802,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:319
 - Name: "#wl85"
   X: 26
-  "Y": 222
+  Y: 222
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -808,7 +810,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:320
 - Name: "#wl86"
   X: 27
-  "Y": 222
+  Y: 222
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -816,7 +818,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:321
 - Name: "#wl87"
   X: 28
-  "Y": 222
+  Y: 222
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -824,7 +826,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:322
 - Name: "#wl88"
   X: 29
-  "Y": 222
+  Y: 222
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -832,7 +834,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:323
 - Name: "#wl89"
   X: 30
-  "Y": 222
+  Y: 222
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -840,7 +842,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:324
 - Name: "#wl90"
   X: 31
-  "Y": 222
+  Y: 222
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -848,7 +850,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:325
 - Name: "#wl91"
   X: 32
-  "Y": 222
+  Y: 222
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -856,7 +858,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:326
 - Name: "#wl92"
   X: 33
-  "Y": 222
+  Y: 222
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -864,7 +866,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:327
 - Name: "#wl93"
   X: 34
-  "Y": 222
+  Y: 222
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -872,7 +874,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:328
 - Name: "#wl94"
   X: 35
-  "Y": 222
+  Y: 222
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -880,7 +882,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:329
 - Name: "#wl95"
   X: 36
-  "Y": 222
+  Y: 222
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -888,7 +890,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:330
 - Name: "#wl96"
   X: 37
-  "Y": 222
+  Y: 222
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -896,7 +898,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:331
 - Name: "#wl97"
   X: 38
-  "Y": 222
+  Y: 222
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -904,7 +906,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:332
 - Name: "#wl98"
   X: 39
-  "Y": 222
+  Y: 222
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -912,7 +914,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:333
 - Name: "#wl99"
   X: 22
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -920,7 +922,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:336
 - Name: "#wl100"
   X: 23
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -928,7 +930,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:337
 - Name: "#wl101"
   X: 24
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -936,7 +938,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:338
 - Name: "#wl102"
   X: 25
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -944,7 +946,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:339
 - Name: "#wl103"
   X: 26
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -952,7 +954,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:340
 - Name: "#wl104"
   X: 27
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -960,7 +962,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:341
 - Name: "#wl105"
   X: 28
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -968,7 +970,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:342
 - Name: "#wl106"
   X: 29
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -976,7 +978,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:343
 - Name: "#wl107"
   X: 30
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -984,7 +986,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:344
 - Name: "#wl108"
   X: 31
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -992,7 +994,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:345
 - Name: "#wl109"
   X: 32
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1000,7 +1002,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:346
 - Name: "#wl110"
   X: 33
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1008,7 +1010,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:347
 - Name: "#wl111"
   X: 34
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1016,7 +1018,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:348
 - Name: "#wl112"
   X: 35
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1024,7 +1026,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:349
 - Name: "#wl113"
   X: 36
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1032,7 +1034,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:350
 - Name: "#wl114"
   X: 37
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1040,7 +1042,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:351
 - Name: "#wl115"
   X: 38
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1048,7 +1050,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:352
 - Name: "#wl116"
   X: 39
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1056,7 +1058,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:353
 - Name: "#wl117"
   X: 40
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1064,7 +1066,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:354
 - Name: "#wl118"
   X: 41
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1072,7 +1074,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:355
 - Name: "#wl119"
   X: 42
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1080,7 +1082,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:356
 - Name: "#wl120"
   X: 43
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1088,7 +1090,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:357
 - Name: "#wl121"
   X: 44
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1096,7 +1098,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:358
 - Name: "#wl122"
   X: 45
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1104,7 +1106,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:359
 - Name: "#wl123"
   X: 46
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1112,7 +1114,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:360
 - Name: "#wl124"
   X: 47
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1120,7 +1122,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:361
 - Name: "#wl125"
   X: 48
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1128,7 +1130,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:362
 - Name: "#wl126"
   X: 49
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1136,7 +1138,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:363
 - Name: "#wl127"
   X: 50
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1144,7 +1146,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:364
 - Name: "#wl128"
   X: 51
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1152,7 +1154,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:365
 - Name: "#wl129"
   X: 52
-  "Y": 272
+  Y: 272
   Dir: 6
   Sprite: 10024
   DuplicateOf: dummy_npc
@@ -1160,1795 +1162,1795 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:366
 - Name: "#tr115"
   X: 113
-  "Y": 66
+  Y: 66
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:370
 - Name: "#tr116"
   X: 113
-  "Y": 60
+  Y: 60
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:377
 - Name: "#tr117"
   X: 113
-  "Y": 54
+  Y: 54
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:378
 - Name: "#tr118"
   X: 113
-  "Y": 48
+  Y: 48
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:379
 - Name: "#tr119"
   X: 113
-  "Y": 42
+  Y: 42
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:380
 - Name: "#tr120"
   X: 113
-  "Y": 36
+  Y: 36
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:381
 - Name: "#tr121"
   X: 113
-  "Y": 30
+  Y: 30
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:382
 - Name: "#tr122"
   X: 149
-  "Y": 66
+  Y: 66
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:385
 - Name: "#tr123"
   X: 149
-  "Y": 60
+  Y: 60
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:386
 - Name: "#tr124"
   X: 149
-  "Y": 54
+  Y: 54
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:387
 - Name: "#tr125"
   X: 149
-  "Y": 48
+  Y: 48
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:388
 - Name: "#tr126"
   X: 149
-  "Y": 42
+  Y: 42
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:389
 - Name: "#tr127"
   X: 149
-  "Y": 36
+  Y: 36
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:390
 - Name: "#tr128"
   X: 149
-  "Y": 30
+  Y: 30
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:391
 - Name: "#tr129"
   X: 247
-  "Y": 43
+  Y: 43
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:394
 - Name: "#tr130"
   X: 247
-  "Y": 37
+  Y: 37
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:395
 - Name: "#tr131"
   X: 247
-  "Y": 31
+  Y: 31
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:396
 - Name: "#tr132"
   X: 25
-  "Y": 220
+  Y: 220
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:399
 - Name: "#tr133"
   X: 31
-  "Y": 220
+  Y: 220
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:400
 - Name: "#tr134"
   X: 37
-  "Y": 220
+  Y: 220
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:401
 - Name: "#tr135"
   X: 25
-  "Y": 270
+  Y: 270
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:404
 - Name: "#tr136"
   X: 30
-  "Y": 270
+  Y: 270
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:405
 - Name: "#tr137"
   X: 35
-  "Y": 270
+  Y: 270
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:406
 - Name: "#tr138"
   X: 40
-  "Y": 270
+  Y: 270
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:407
 - Name: "#tr139"
   X: 45
-  "Y": 270
+  Y: 270
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:408
 - Name: "#tr140"
   X: 50
-  "Y": 270
+  Y: 270
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:409
 - Name: "#tr1"
   X: 26
-  "Y": 330
+  Y: 330
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:412
 - Name: "#tr2"
   X: 26
-  "Y": 324
+  Y: 324
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:413
 - Name: "#tr3"
   X: 26
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:414
 - Name: "#tr4"
   X: 26
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:415
 - Name: "#tr5"
   X: 26
-  "Y": 306
+  Y: 306
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:416
 - Name: "#tr6"
   X: 26
-  "Y": 300
+  Y: 300
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:417
 - Name: "#tr7"
   X: 32
-  "Y": 330
+  Y: 330
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:418
 - Name: "#tr8"
   X: 32
-  "Y": 324
+  Y: 324
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:419
 - Name: "#tr9"
   X: 32
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:420
 - Name: "#tr10"
   X: 32
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:421
 - Name: "#tr11"
   X: 32
-  "Y": 306
+  Y: 306
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:422
 - Name: "#tr12"
   X: 32
-  "Y": 300
+  Y: 300
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:423
 - Name: "#tr13"
   X: 38
-  "Y": 330
+  Y: 330
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:424
 - Name: "#tr14"
   X: 38
-  "Y": 324
+  Y: 324
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:425
 - Name: "#tr15"
   X: 38
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:426
 - Name: "#tr16"
   X: 38
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:427
 - Name: "#tr17"
   X: 38
-  "Y": 306
+  Y: 306
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:428
 - Name: "#tr18"
   X: 38
-  "Y": 300
+  Y: 300
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:429
 - Name: "#tr19"
   X: 44
-  "Y": 330
+  Y: 330
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:430
 - Name: "#tr20"
   X: 44
-  "Y": 324
+  Y: 324
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:431
 - Name: "#tr21"
   X: 44
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:432
 - Name: "#tr22"
   X: 44
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:433
 - Name: "#tr23"
   X: 44
-  "Y": 306
+  Y: 306
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:434
 - Name: "#tr24"
   X: 44
-  "Y": 300
+  Y: 300
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:435
 - Name: "#tr25"
   X: 50
-  "Y": 330
+  Y: 330
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:436
 - Name: "#tr26"
   X: 50
-  "Y": 324
+  Y: 324
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:437
 - Name: "#tr27"
   X: 50
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:438
 - Name: "#tr28"
   X: 50
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:439
 - Name: "#tr29"
   X: 50
-  "Y": 306
+  Y: 306
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:440
 - Name: "#tr30"
   X: 50
-  "Y": 300
+  Y: 300
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:441
 - Name: "#tr31"
   X: 56
-  "Y": 330
+  Y: 330
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:442
 - Name: "#tr32"
   X: 56
-  "Y": 324
+  Y: 324
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:443
 - Name: "#tr33"
   X: 56
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:444
 - Name: "#tr34"
   X: 56
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:445
 - Name: "#tr35"
   X: 56
-  "Y": 306
+  Y: 306
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:446
 - Name: "#tr36"
   X: 56
-  "Y": 300
+  Y: 300
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:447
 - Name: "#tr37"
   X: 62
-  "Y": 330
+  Y: 330
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:448
 - Name: "#tr38"
   X: 62
-  "Y": 324
+  Y: 324
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:449
 - Name: "#tr39"
   X: 62
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:450
 - Name: "#tr40"
   X: 62
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:451
 - Name: "#tr41"
   X: 62
-  "Y": 306
+  Y: 306
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:452
 - Name: "#tr42"
   X: 62
-  "Y": 300
+  Y: 300
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:453
 - Name: "#tr43"
   X: 68
-  "Y": 330
+  Y: 330
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:454
 - Name: "#tr44"
   X: 68
-  "Y": 324
+  Y: 324
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:455
 - Name: "#tr45"
   X: 68
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:456
 - Name: "#tr46"
   X: 68
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:457
 - Name: "#tr47"
   X: 68
-  "Y": 306
+  Y: 306
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:458
 - Name: "#tr48"
   X: 68
-  "Y": 300
+  Y: 300
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:459
 - Name: "#tr49"
   X: 74
-  "Y": 330
+  Y: 330
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:460
 - Name: "#tr50"
   X: 74
-  "Y": 324
+  Y: 324
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:461
 - Name: "#tr51"
   X: 74
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:462
 - Name: "#tr52"
   X: 74
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:463
 - Name: "#tr53"
   X: 74
-  "Y": 306
+  Y: 306
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:464
 - Name: "#tr54"
   X: 74
-  "Y": 300
+  Y: 300
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:465
 - Name: "#tr55"
   X: 80
-  "Y": 330
+  Y: 330
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:466
 - Name: "#tr56"
   X: 80
-  "Y": 324
+  Y: 324
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:467
 - Name: "#tr57"
   X: 80
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:468
 - Name: "#tr58"
   X: 80
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:469
 - Name: "#tr59"
   X: 80
-  "Y": 306
+  Y: 306
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:470
 - Name: "#tr60"
   X: 80
-  "Y": 300
+  Y: 300
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:471
 - Name: "#tr61"
   X: 86
-  "Y": 330
+  Y: 330
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:472
 - Name: "#tr62"
   X: 86
-  "Y": 324
+  Y: 324
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:473
 - Name: "#tr63"
   X: 86
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:474
 - Name: "#tr64"
   X: 86
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:475
 - Name: "#tr65"
   X: 86
-  "Y": 306
+  Y: 306
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:476
 - Name: "#tr66"
   X: 86
-  "Y": 300
+  Y: 300
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:477
 - Name: "#tr67"
   X: 92
-  "Y": 330
+  Y: 330
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:478
 - Name: "#tr68"
   X: 92
-  "Y": 324
+  Y: 324
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:479
 - Name: "#tr69"
   X: 92
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:480
 - Name: "#tr70"
   X: 92
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:481
 - Name: "#tr71"
   X: 92
-  "Y": 306
+  Y: 306
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:482
 - Name: "#tr72"
   X: 92
-  "Y": 300
+  Y: 300
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:483
 - Name: "#tr73"
   X: 98
-  "Y": 330
+  Y: 330
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:484
 - Name: "#tr74"
   X: 98
-  "Y": 324
+  Y: 324
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:485
 - Name: "#tr75"
   X: 98
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:486
 - Name: "#tr76"
   X: 98
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:487
 - Name: "#tr77"
   X: 98
-  "Y": 306
+  Y: 306
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:488
 - Name: "#tr78"
   X: 98
-  "Y": 300
+  Y: 300
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:489
 - Name: "#tr79"
   X: 104
-  "Y": 330
+  Y: 330
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:490
 - Name: "#tr80"
   X: 104
-  "Y": 324
+  Y: 324
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:491
 - Name: "#tr81"
   X: 104
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:492
 - Name: "#tr82"
   X: 104
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:493
 - Name: "#tr83"
   X: 104
-  "Y": 306
+  Y: 306
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:494
 - Name: "#tr84"
   X: 104
-  "Y": 300
+  Y: 300
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:495
 - Name: "#tr85"
   X: 110
-  "Y": 330
+  Y: 330
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:496
 - Name: "#tr86"
   X: 110
-  "Y": 324
+  Y: 324
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:497
 - Name: "#tr87"
   X: 110
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:498
 - Name: "#tr88"
   X: 110
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:499
 - Name: "#tr89"
   X: 110
-  "Y": 306
+  Y: 306
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:500
 - Name: "#tr90"
   X: 110
-  "Y": 300
+  Y: 300
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:501
 - Name: "#tr91"
   X: 116
-  "Y": 330
+  Y: 330
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:502
 - Name: "#tr92"
   X: 116
-  "Y": 324
+  Y: 324
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:503
 - Name: "#tr93"
   X: 116
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:504
 - Name: "#tr94"
   X: 116
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:505
 - Name: "#tr95"
   X: 116
-  "Y": 306
+  Y: 306
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:506
 - Name: "#tr96"
   X: 116
-  "Y": 300
+  Y: 300
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:507
 - Name: "#tr97"
   X: 122
-  "Y": 330
+  Y: 330
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:508
 - Name: "#tr98"
   X: 122
-  "Y": 324
+  Y: 324
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:509
 - Name: "#tr99"
   X: 122
-  "Y": 318
+  Y: 318
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:510
 - Name: "#tr100"
   X: 122
-  "Y": 312
+  Y: 312
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:511
 - Name: "#tr101"
   X: 122
-  "Y": 306
+  Y: 306
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:512
 - Name: "#tr102"
   X: 122
-  "Y": 300
+  Y: 300
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:513
 - Name: "#tr103"
   X: 92
-  "Y": 294
+  Y: 294
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:514
 - Name: "#tr104"
   X: 98
-  "Y": 294
+  Y: 294
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:515
 - Name: "#tr105"
   X: 104
-  "Y": 294
+  Y: 294
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:516
 - Name: "#tr106"
   X: 110
-  "Y": 294
+  Y: 294
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:517
 - Name: "#tr107"
   X: 117
-  "Y": 294
+  Y: 294
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:518
 - Name: "#tr108"
   X: 123
-  "Y": 294
+  Y: 294
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:519
 - Name: "#tr109"
   X: 92
-  "Y": 288
+  Y: 288
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:520
 - Name: "#tr110"
   X: 98
-  "Y": 288
+  Y: 288
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:521
 - Name: "#tr111"
   X: 104
-  "Y": 288
+  Y: 288
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:522
 - Name: "#tr112"
   X: 110
-  "Y": 288
+  Y: 288
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:523
 - Name: "#tr113"
   X: 116
-  "Y": 288
+  Y: 288
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:524
 - Name: "#tr114"
   X: 122
-  "Y": 288
+  Y: 288
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:525
 - Name: "#tr141"
   X: 122
-  "Y": 274
+  Y: 274
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:528
 - Name: "#tr142"
   X: 114
-  "Y": 258
+  Y: 258
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:529
 - Name: "#tr143"
   X: 125
-  "Y": 258
+  Y: 258
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:530
 - Name: "#tr144"
   X: 138
-  "Y": 258
+  Y: 258
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:531
 - Name: "#tr145"
   X: 143
-  "Y": 266
+  Y: 266
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:532
 - Name: "#tr146"
   X: 146
-  "Y": 249
+  Y: 249
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:533
 - Name: "#tr147"
   X: 154
-  "Y": 247
+  Y: 247
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:534
 - Name: "#tr148"
   X: 166
-  "Y": 251
+  Y: 251
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:535
 - Name: "#tr149"
   X: 174
-  "Y": 256
+  Y: 256
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:536
 - Name: "#tr150"
   X: 173
-  "Y": 266
+  Y: 266
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:537
 - Name: "#tr151"
   X: 183
-  "Y": 266
+  Y: 266
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:538
 - Name: "#tr152"
   X: 182
-  "Y": 248
+  Y: 248
   Dir: 4
   Sprite: 10080
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#tr115"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:539
 - Name: Julian#0_1
   X: 40
-  "Y": 65
+  Y: 65
   Dir: 6
   Sprite: 10197
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:544
 - Name: "#start_npc"
   X: 40
-  "Y": 65
+  Y: 65
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:608
 - Name: "#hunter_instance_1_mob_1"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:616
 - Name: "#start_npc2"
   X: 105
-  "Y": 50
+  Y: 50
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:635
 - Name: Julian#1
   X: 105
-  "Y": 50
+  Y: 50
   Dir: 6
   Sprite: 10197
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:643
 - Name: Julian#1_1
   X: 105
-  "Y": 50
+  Y: 50
   Dir: 6
   Sprite: 10197
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:677
 - Name: Pile of gunpowder#1
   X: 58
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: 10044
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:717
 - Name: "#start_npc3"
   X: 140
-  "Y": 50
+  Y: 50
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:738
 - Name: Julian#1_2
   X: 140
-  "Y": 50
+  Y: 50
   Dir: 6
   Sprite: 10197
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:764
 - Name: Suspicious instrument#1
   X: 150
-  "Y": 119
+  Y: 119
   Dir: 0
   Sprite: 10044
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:804
 - Name: "#hunter_instance_1_mob_2"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:833
 - Name: "#start_npc4"
   X: 238
-  "Y": 39
+  Y: 39
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:863
 - Name: Pile of gunpowder#2
   X: 163
-  "Y": 58
+  Y: 58
   Dir: 0
   Sprite: 10044
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:887
 - Name: "#hunter_instance_1_mob_3"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:902
 - Name: Julian#2_ep16_2
   X: 238
-  "Y": 39
+  Y: 39
   Dir: 5
   Sprite: 10197
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:920
 - Name: "#expl1"
   X: 305
-  "Y": 58
+  Y: 58
   Dir: 0
   Sprite: 844
   DuplicateOf: dummy_npc
@@ -2956,7 +2958,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:974
 - Name: "#expl2"
   X: 305
-  "Y": 44
+  Y: 44
   Dir: 0
   Sprite: 844
   DuplicateOf: dummy_npc
@@ -2964,7 +2966,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:975
 - Name: "#expl3"
   X: 320
-  "Y": 58
+  Y: 58
   Dir: 0
   Sprite: 844
   DuplicateOf: dummy_npc
@@ -2972,7 +2974,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:976
 - Name: "#expl4"
   X: 320
-  "Y": 44
+  Y: 44
   Dir: 0
   Sprite: 844
   DuplicateOf: dummy_npc
@@ -2980,99 +2982,99 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:977
 - Name: "#wp_b1_1"
   X: 283
-  "Y": 32
+  Y: 32
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:979
 - Name: "#wp_b1_2"
   X: 283
-  "Y": 39
+  Y: 39
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#wp_b1_1"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:986
 - Name: "#wp_b1_3"
   X: 283
-  "Y": 46
+  Y: 46
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#wp_b1_1"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:987
 - Name: "#wp_b1_4"
   X: 283
-  "Y": 53
+  Y: 53
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#wp_b1_1"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:988
 - Name: "#wp_b1_5"
   X: 283
-  "Y": 60
+  Y: 60
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   DuplicateOf: "#wp_b1_1"
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:989
 - Name: "#start_boss1"
   X: 310
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:991
 - Name: Julian#3
   X: 310
-  "Y": 47
+  Y: 47
   Dir: 6
   Sprite: 10197
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:999
 - Name: "#hunter_instance_ebel"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1080
 - Name: Ebel#1_1
   X: 315
-  "Y": 47
+  Y: 47
   Dir: 3
   Sprite: 10191
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1110
 - Name: Julian#3_1
   X: 320
-  "Y": 47
+  Y: 47
   Dir: 4
   Sprite: 10197
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1117
 - Name: "#ext1_1"
   X: 308
-  "Y": 49
+  Y: 49
   Dir: 6
   Sprite: 10183
   DuplicateOf: dummy_npc
@@ -3080,7 +3082,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:1169
 - Name: "#ext1_2"
   X: 308
-  "Y": 45
+  Y: 45
   Dir: 6
   Sprite: 10183
   DuplicateOf: dummy_npc
@@ -3088,7 +3090,7 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:1170
 - Name: Ebel#1_3
   X: 310
-  "Y": 47
+  Y: 47
   Dir: 6
   Sprite: 10191
   DuplicateOf: dummy_npc
@@ -3096,196 +3098,196 @@ Body:
   Source: npc/re/instances/HeartHunterWarBase.txt:1171
 - Name: Julian#3_2
   X: 320
-  "Y": 47
+  Y: 47
   Dir: 4
   Sprite: 10197
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1173
 - Name: "#wp_boss"
   X: 169
-  "Y": 295
+  Y: 295
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@swat
     X: 150
-    "Y": 263
+    Y: 263
     TriggerWhileHidden: false
   Source: npc/re/instances/HeartHunterWarBase.txt:1244
 - Name: "#wp_out"
   X: 151
-  "Y": 266
+  Y: 266
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: ein_fild04
     X: 279
-    "Y": 339
+    Y: 339
     TriggerWhileHidden: false
   Source: npc/re/instances/HeartHunterWarBase.txt:1245
 - Name: Julian#4
   X: 53
-  "Y": 122
+  Y: 122
   Dir: 1
   Sprite: 10197
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1249
 - Name: Julian#4_1
   X: 53
-  "Y": 122
+  Y: 122
   Dir: 1
   Sprite: 10197
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1284
 - Name: "#remaining_hunter2_step1"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 1
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1318
 - Name: "#start2_1_1"
   X: 31
-  "Y": 211
+  Y: 211
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1347
 - Name: "#start2_2_1"
   X: 31
-  "Y": 233
+  Y: 233
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1372
 - Name: Julian#5
   X: 31
-  "Y": 233
+  Y: 233
   Dir: 1
   Sprite: 10197
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1380
 - Name: "#remaining_hunter2_step2"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 1
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1402
 - Name: "#start2_2_2"
   X: 56
-  "Y": 283
+  Y: 283
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1449
 - Name: Julian#6
   X: 56
-  "Y": 283
+  Y: 283
   Dir: 1
   Sprite: 10197
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1457
 - Name: SWT_8309#1
   X: 60
-  "Y": 286
+  Y: 286
   Dir: 4
   Sprite: 10080
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1490
 - Name: "#hunter_instance_2_maze"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 1
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1512
 - Name: Pile of gunpowder#4
   X: 82
-  "Y": 248
+  Y: 248
   Dir: 0
   Sprite: 10044
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1555
 - Name: Julian#7
   X: 164
-  "Y": 300
+  Y: 300
   Dir: 6
   Sprite: 10197
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1564
 - Name: "#start2_boss"
   X: 136
-  "Y": 258
+  Y: 258
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1574
 - Name: Ebel#3
   X: 129
-  "Y": 258
+  Y: 258
   Dir: 6
   Sprite: 10191
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1582
 - Name: Julian#8_0
   X: 136
-  "Y": 258
+  Y: 258
   Dir: 3
   Sprite: 10197
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1589
 - Name: Julian#8
   X: 136
-  "Y": 258
+  Y: 258
   Dir: 3
   Sprite: 10197
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1630
 - Name: "#hunter_instance_2_talk"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 1
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1664
 - Name: "#hunter_instance_2_ebel"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 1
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1693
 - Name: Ebel#3_1
   X: 129
-  "Y": 258
+  Y: 258
   Dir: 6
   Sprite: 10191
   Kind: Script
   Source: npc/re/instances/HeartHunterWarBase.txt:1718
 - Name: Julian#8_1
   X: 136
-  "Y": 258
+  Y: 258
   Dir: 3
   Sprite: 10197
   Kind: Script

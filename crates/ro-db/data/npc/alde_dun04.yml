@@ -2,124 +2,126 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: aldd016
   X: 80
-  "Y": 273
+  Y: 273
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: alde_dun03
     X: 263
-    "Y": 26
+    Y: 26
     TriggerWhileHidden: false
   Source: npc/warps/dungeons/alde_dun.txt:61
 - Name: ald017
   X: 207
-  "Y": 225
+  Y: 225
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: c_tower3
     X: 7
-    "Y": 34
+    Y: 34
     TriggerWhileHidden: false
   Source: npc/warps/dungeons/alde_dun.txt:62
 - Name: ald018
   X: 215
-  "Y": 192
+  Y: 192
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: c_tower2
     X: 148
-    "Y": 283
+    Y: 283
     TriggerWhileHidden: false
   Source: npc/warps/dungeons/alde_dun.txt:63
 - Name: aldd19
   X: 32
-  "Y": 74
+  Y: 74
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: alde_dun02
     X: 187
-    "Y": 239
+    Y: 239
     TriggerWhileHidden: false
   Source: npc/warps/dungeons/alde_dun.txt:64
 - Name: aldd20
   X: 208
-  "Y": 58
+  Y: 58
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: alde_dun04
     X: 268
-    "Y": 74
+    Y: 74
     TriggerWhileHidden: false
   Source: npc/warps/dungeons/alde_dun.txt:65
 - Name: aldd021
   X: 272
-  "Y": 74
+  Y: 74
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: alde_dun04
     X: 204
-    "Y": 62
+    Y: 62
     TriggerWhileHidden: false
   Source: npc/warps/dungeons/alde_dun.txt:66
 - Name: ald022r
   X: 80
-  "Y": 34
+  Y: 34
   Dir: 4
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/warps/dungeons/alde_dun.txt:67
 - Name: "#wp120118"
   X: 90
-  "Y": 107
+  Y: 107
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:52
 - Name: "#tr120118"
   X: 90
-  "Y": 107
+  Y: 107
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click

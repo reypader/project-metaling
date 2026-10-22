@@ -2,58 +2,60 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Horen#Horen
   X: 134
-  "Y": 228
+  Y: 228
   Dir: 4
   Sprite: 704
   Kind: Script
   Source: npc/re/merchants/enchan_illusion_dungeons.txt:800
 - Name: Lister#ristar
   X: 127
-  "Y": 224
+  Y: 224
   Dir: 5
   Sprite: 90
   Kind: Script
   Source: npc/re/quests/illusion_investigation.txt:1397
 - Name: Jerrymon#jerry3
   X: 127
-  "Y": 228
+  Y: 228
   Dir: 4
   Sprite: 47
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:9370
 - Name: Jane#Jane01
   X: 134
-  "Y": 223
+  Y: 223
   Dir: 4
   Sprite: 66
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:9727
 - Name: Sunrin#Sun01
   X: 142
-  "Y": 216
+  Y: 216
   Dir: 4
   Sprite: 92
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:9752
 - Name: Sirood#SRD3
   X: 125
-  "Y": 226
+  Y: 226
   Dir: 0
   Sprite: 139
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:9784
 - Name: Sirood#SRD4
   X: 125
-  "Y": 226
+  Y: 226
   Dir: 5
   Sprite: 50
   State: Cloaked
@@ -61,14 +63,14 @@ Body:
   Source: npc/re/quests/quests_illusion_dungeons.txt:9792
 - Name: Nick#Nick01
   X: 146
-  "Y": 226
+  Y: 226
   Dir: 4
   Sprite: 742
   Kind: Script
   Source: npc/re/quests/quests_illusion_dungeons.txt:9853
 - Name: Gatekeeper#guard1
   X: 129
-  "Y": 232
+  Y: 232
   Dir: 5
   Sprite: 417
   Kind: Script

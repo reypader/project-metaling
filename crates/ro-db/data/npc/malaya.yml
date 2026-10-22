@@ -2,132 +2,134 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Optamara Crew#malaya
   X: 276
-  "Y": 55
+  Y: 55
   Dir: 4
   Sprite: 100
   Kind: Script
   Source: npc/re/cities/malaya.txt:65
 - Name: Grandma#ma01
   X: 227
-  "Y": 311
+  Y: 311
   Dir: 4
   Sprite: 575
   Kind: Script
   Source: npc/re/cities/malaya.txt:274
 - Name: Drumming Young Man#ma02
   X: 189
-  "Y": 263
+  Y: 263
   Dir: 4
   Sprite: 578
   Kind: Script
   Source: npc/re/cities/malaya.txt:326
 - Name: Port Guard#ma03
   X: 270
-  "Y": 59
+  Y: 59
   Dir: 4
   Sprite: 570
   Kind: Script
   Source: npc/re/cities/malaya.txt:379
 - Name: Little Girl#ma04
   X: 88
-  "Y": 252
+  Y: 252
   Dir: 4
   Sprite: 576
   Kind: Script
   Source: npc/re/cities/malaya.txt:432
 - Name: Little Kid#ma05
   X: 219
-  "Y": 92
+  Y: 92
   Dir: 6
   Sprite: 577
   Kind: Script
   Source: npc/re/cities/malaya.txt:464
 - Name: Local#ma06
   X: 363
-  "Y": 283
+  Y: 283
   Dir: 4
   Sprite: 582
   Kind: Script
   Source: npc/re/cities/malaya.txt:502
 - Name: "Old Man #ma07"
   X: 41
-  "Y": 127
+  Y: 127
   Dir: 6
   Sprite: 574
   Kind: Script
   Source: npc/re/cities/malaya.txt:565
 - Name: Woman#ma08
   X: 63
-  "Y": 185
+  Y: 185
   Dir: 4
   Sprite: 583
   Kind: Script
   Source: npc/re/cities/malaya.txt:605
 - Name: Jeepney Driver#01
   X: 237
-  "Y": 240
+  Y: 240
   Dir: 4
   Sprite: 582
   Kind: Script
   Source: npc/re/cities/malaya.txt:777
 - Name: Jeepney Driver#02
   X: 67
-  "Y": 44
+  Y: 44
   Dir: 4
   Sprite: 582
   Kind: Script
   Source: npc/re/cities/malaya.txt:797
 - Name: Jeepney Driver#03
   X: 282
-  "Y": 129
+  Y: 129
   Dir: 4
   Sprite: 582
   Kind: Script
   Source: npc/re/cities/malaya.txt:815
 - Name: Jeepney Driver#04
   X: 134
-  "Y": 250
+  Y: 250
   Dir: 6
   Sprite: 582
   Kind: Script
   Source: npc/re/cities/malaya.txt:833
 - Name: Jeepney Driver#05
   X: 341
-  "Y": 153
+  Y: 153
   Dir: 4
   Sprite: 582
   Kind: Script
   Source: npc/re/cities/malaya.txt:851
 - Name: Jeepney Driver#06
   X: 293
-  "Y": 290
+  Y: 290
   Dir: 6
   Sprite: 582
   Kind: Script
   Source: npc/re/cities/malaya.txt:869
 - Name: Jeepney Driver#07
   X: 242
-  "Y": 221
+  Y: 221
   Dir: 4
   Sprite: 582
   Kind: Script
   Source: npc/re/cities/malaya.txt:887
 - Name: Jeepney Driver#08
   X: 62
-  "Y": 245
+  Y: 245
   Dir: 6
   Sprite: 582
   Kind: Script
   Source: npc/re/cities/malaya.txt:902
 - Name: Jeepney Driver#09
   X: 257
-  "Y": 58
+  Y: 58
   Dir: 6
   Sprite: 582
   Kind: Script
@@ -135,14 +137,14 @@ Body:
 - Name: Port Malaya Guide#01
   UniqueName: GuideMalaya
   X: 71
-  "Y": 72
+  Y: 72
   Dir: 4
   Sprite: 579
   Kind: Script
   Source: npc/re/guides/guides_malaya.txt:16
 - Name: Port Malaya Guide#02
   X: 250
-  "Y": 83
+  Y: 83
   Dir: 6
   Sprite: 579
   DuplicateOf: GuideMalaya
@@ -150,7 +152,7 @@ Body:
   Source: npc/re/guides/guides_malaya.txt:82
 - Name: Port Malaya Guide#03
   X: 224
-  "Y": 204
+  Y: 204
   Dir: 6
   Sprite: 579
   DuplicateOf: GuideMalaya
@@ -159,7 +161,7 @@ Body:
 - Name: Kafra Employee
   UniqueName: kaf_malaya1
   X: 71
-  "Y": 79
+  Y: 79
   Dir: 4
   Sprite: 581
   Kind: Script
@@ -167,14 +169,14 @@ Body:
 - Name: Kafra Employee
   UniqueName: kaf_malaya2
   X: 234
-  "Y": 204
+  Y: 204
   Dir: 4
   Sprite: 581
   Kind: Script
   Source: npc/re/kafras/kafras.txt:85
 - Name: Guild Warehouse Manager#malaya
   X: 238
-  "Y": 206
+  Y: 206
   Dir: 3
   Sprite: 896
   DuplicateOf: GuildWarehouse
@@ -182,14 +184,14 @@ Body:
   Source: npc/re/merchants/guild_warehouse.txt:101
 - Name: Fruit Gardener#ma
   X: 150
-  "Y": 261
+  Y: 261
   Dir: 3
   Sprite: 535
   Kind: Shop
   Source: npc/re/merchants/shops.txt:161
 - Name: Eden Teleport Officer#32
   X: 225
-  "Y": 218
+  Y: 218
   Dir: 1
   Sprite: 729
   DuplicateOf: eto
@@ -197,59 +199,59 @@ Body:
   Source: npc/re/quests/eden/eden_common.txt:276
 - Name: Rodel the Guard#malaya
   X: 266
-  "Y": 76
+  Y: 76
   Dir: 3
   Sprite: 570
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:31
 - Name: Leader Phong in Mumbaki
   X: 185
-  "Y": 358
+  Y: 358
   Dir: 3
   Sprite: 580
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:193
 - Name: Imelda#malaya
   X: 169
-  "Y": 350
+  Y: 350
   Dir: 5
   Sprite: 475
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:530
 - Name: Old Man Nardo#malaya
   X: 181
-  "Y": 353
+  Y: 353
   Dir: 5
   Sprite: 574
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:907
 - Name: Romel#malaya
   X: 224
-  "Y": 267
+  Y: 267
   Dir: 3
   Sprite: 573
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:1174
 - Name: Talah#malaya
   X: 223
-  "Y": 267
+  Y: 267
   Dir: 5
   Sprite: 941
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:1330
 - Name: Sand Trap#malaya
   X: 62
-  "Y": 274
+  Y: 274
   Dir: 0
   Sprite: 557
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:1461
 - Name: Sand Trap#malaya01
   X: 66
-  "Y": 277
+  Y: 277
   Dir: 0
   Sprite: 557
   DuplicateOf: Sand Trap#malaya
@@ -257,7 +259,7 @@ Body:
   Source: npc/re/quests/quests_malaya.txt:1492
 - Name: Sand Trap#malaya02
   X: 70
-  "Y": 282
+  Y: 282
   Dir: 0
   Sprite: 557
   DuplicateOf: Sand Trap#malaya
@@ -265,39 +267,39 @@ Body:
   Source: npc/re/quests/quests_malaya.txt:1493
 - Name: Collection Dealer Woeon
   X: 295
-  "Y": 171
+  Y: 171
   Dir: 3
   Sprite: 582
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:1534
 - Name: Blacksmith Pandoi
   X: 119
-  "Y": 217
+  Y: 217
   Dir: 3
   Sprite: 538
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:1772
 - Name: Pedro the Sailor
   X: 326
-  "Y": 68
+  Y: 68
   Dir: 2
   Sprite: 100
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:2119
 - Name: Guard#buwaya
   X: 305
-  "Y": 281
+  Y: 281
   Dir: 3
   Sprite: 570
   Trigger:
     X: 7
-    "Y": 7
+    Y: 7
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:3844
 - Name: Port Malaya Villager
   UniqueName: buwaya_A
   X: 276
-  "Y": 288
+  Y: 288
   Dir: 5
   Sprite: 582
   Kind: Script
@@ -305,7 +307,7 @@ Body:
 - Name: Port Malaya Villager
   UniqueName: buwaya_B
   X: 278
-  "Y": 288
+  Y: 288
   Dir: 3
   Sprite: 583
   DuplicateOf: buwaya_A
@@ -314,7 +316,7 @@ Body:
 - Name: Port Malaya Villager
   UniqueName: buwaya_C
   X: 276
-  "Y": 286
+  Y: 286
   Dir: 7
   Sprite: 582
   DuplicateOf: buwaya_A
@@ -322,175 +324,175 @@ Body:
   Source: npc/re/quests/quests_malaya.txt:4005
 - Name: Master of Hunting#buwaya
   X: 290
-  "Y": 152
+  Y: 152
   Dir: 5
   Sprite: 578
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:4317
 - Name: "#buwaya_soil"
   X: 291
-  "Y": 152
+  Y: 152
   Dir: 3
   Sprite: 557
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:4461
 - Name: Guard Leader#buwaya
   X: 290
-  "Y": 340
+  Y: 340
   Dir: 3
   Sprite: 571
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:4573
 - Name: Singing Man#bako1
   X: 280
-  "Y": 331
+  Y: 331
   Dir: 4
   Sprite: 578
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:4819
 - Name: Singing Woman#bako1
   X: 275
-  "Y": 333
+  Y: 333
   Dir: 5
   Sprite: 579
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:4873
 - Name: Frightened Boy#bako1
   X: 290
-  "Y": 329
+  Y: 329
   Dir: 4
   Sprite: 577
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:4916
 - Name: Frightened Maiden#bako1
   X: 264
-  "Y": 338
+  Y: 338
   Dir: 4
   Sprite: 576
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:4937
 - Name: Old Fortune Teller#bako1
   X: 272
-  "Y": 339
+  Y: 339
   Dir: 5
   Sprite: 575
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:4988
 - Name: Old Legend Teller#bako1
   X: 285
-  "Y": 332
+  Y: 332
   Dir: 4
   Sprite: 574
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:5021
 - Name: Old Man's Granddaughter
   X: 304
-  "Y": 100
+  Y: 100
   Dir: 4
   Sprite: 576
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:5555
 - Name: Angry Man#bako2
   X: 286
-  "Y": 269
+  Y: 269
   Dir: 4
   Sprite: 578
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:5598
 - Name: Calm Woman#bako2
   X: 276
-  "Y": 269
+  Y: 269
   Dir: 5
   Sprite: 579
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:5611
 - Name: Angry Boy#bako2
   X: 276
-  "Y": 262
+  Y: 262
   Dir: 4
   Sprite: 577
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:5624
 - Name: Village Chief#bako2
   X: 283
-  "Y": 265
+  Y: 265
   Dir: 4
   Sprite: 580
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:5636
 - Name: Missing Person's Father
   X: 269
-  "Y": 267
+  Y: 267
   Dir: 5
   Sprite: 582
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:5881
 - Name: Missing Person's Friend
   X: 265
-  "Y": 274
+  Y: 274
   Dir: 5
   Sprite: 577
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:5932
 - Name: Missing Person's Son
   X: 270
-  "Y": 278
+  Y: 278
   Dir: 4
   Sprite: 578
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:5987
 - Name: Missing Person's Mother
   X: 265
-  "Y": 284
+  Y: 284
   Dir: 4
   Sprite: 579
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:6033
 - Name: Young Fortune Teller
   X: 289
-  "Y": 364
+  Y: 364
   Dir: 4
   Sprite: 583
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:6087
 - Name: Nurse#ma_n1
   X: 55
-  "Y": 72
+  Y: 72
   Dir: 4
   Sprite: 569
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:6841
 - Name: Hospital Door#ma_n1
   X: 48
-  "Y": 76
+  Y: 76
   Dir: 4
   Sprite: 844
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:7525
 - Name: Village Woman#mab
   X: 64
-  "Y": 78
+  Y: 78
   Dir: 4
   Sprite: 583
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:7560
 - Name: Village Man#mab
   X: 62
-  "Y": 37
+  Y: 37
   Dir: 4
   Sprite: 582
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:7624
 - Name: Dr. Boon#ma
   X: 210
-  "Y": 200
+  Y: 200
   Dir: 5
   Sprite: 865
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:7706
 - Name: Bushes#ma
   X: 53
-  "Y": 68
+  Y: 68
   Dir: 4
   Sprite: 844
   Kind: Script
@@ -498,7 +500,7 @@ Body:
 - Name: Suspicious Wooden Stick
   UniqueName: MalayaStick1
   X: 40
-  "Y": 52
+  Y: 52
   Dir: 4
   Sprite: 858
   DuplicateOf: MalayaStick
@@ -507,7 +509,7 @@ Body:
 - Name: Suspicious Wooden Stick
   UniqueName: MalayaStick2
   X: 31
-  "Y": 42
+  Y: 42
   Dir: 4
   Sprite: 858
   DuplicateOf: MalayaStick
@@ -516,7 +518,7 @@ Body:
 - Name: Suspicious Wooden Stick
   UniqueName: MalayaStick3
   X: 34
-  "Y": 36
+  Y: 36
   Dir: 4
   Sprite: 858
   DuplicateOf: MalayaStick
@@ -525,7 +527,7 @@ Body:
 - Name: Suspicious Wooden Stick
   UniqueName: MalayaStick4
   X: 40
-  "Y": 32
+  Y: 32
   Dir: 4
   Sprite: 858
   DuplicateOf: MalayaStick
@@ -534,7 +536,7 @@ Body:
 - Name: Suspicious Wooden Stick
   UniqueName: MalayaStick5
   X: 50
-  "Y": 85
+  Y: 85
   Dir: 4
   Sprite: 858
   DuplicateOf: MalayaStick
@@ -543,7 +545,7 @@ Body:
 - Name: Suspicious Wooden Stick
   UniqueName: MalayaStick6
   X: 46
-  "Y": 93
+  Y: 93
   Dir: 4
   Sprite: 858
   DuplicateOf: MalayaStick
@@ -552,7 +554,7 @@ Body:
 - Name: Suspicious Wooden Stick
   UniqueName: MalayaStick7
   X: 36
-  "Y": 98
+  Y: 98
   Dir: 4
   Sprite: 858
   DuplicateOf: MalayaStick
@@ -561,7 +563,7 @@ Body:
 - Name: Suspicious Wooden Stick
   UniqueName: MalayaStick8
   X: 48
-  "Y": 79
+  Y: 79
   Dir: 4
   Sprite: 858
   DuplicateOf: MalayaStick
@@ -570,7 +572,7 @@ Body:
 - Name: Suspicious Wooden Stick
   UniqueName: MalayaStick9
   X: 50
-  "Y": 46
+  Y: 46
   Dir: 4
   Sprite: 858
   DuplicateOf: MalayaStick
@@ -579,7 +581,7 @@ Body:
 - Name: Suspicious Wooden Stick
   UniqueName: MalayaStick10
   X: 59
-  "Y": 84
+  Y: 84
   Dir: 4
   Sprite: 858
   DuplicateOf: MalayaStick
@@ -587,21 +589,21 @@ Body:
   Source: npc/re/quests/quests_malaya.txt:7956
 - Name: Bent Old Lady#ma
   X: 114
-  "Y": 183
+  Y: 183
   Dir: 3
   Sprite: 575
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:7990
 - Name: Bent Shaman#ma
   X: 276
-  "Y": 367
+  Y: 367
   Dir: 4
   Sprite: 782
   Kind: Script
   Source: npc/re/quests/quests_malaya.txt:8179
 - Name: Cat Paw Shrimp Merchant#mal
   X: 286
-  "Y": 175
+  Y: 175
   Dir: 3
   Sprite: 495
   DuplicateOf: Cat Paw Shrimp Merchant#iz
@@ -609,81 +611,81 @@ Body:
   Source: npc/re/custom/lasagna/lasagna_npcs.txt:1335
 - Name: malaya_mal_fild01
   X: 370
-  "Y": 277
+  Y: 277
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ma_fild01
     X: 40
-    "Y": 272
+    Y: 272
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/malaya.txt:21
 - Name: malaya_ship_mal_in_ship
   X: 309
-  "Y": 70
+  Y: 70
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ma_in01
     X: 108
-    "Y": 92
+    Y: 92
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/malaya.txt:24
 - Name: malaya_inn
   X: 178
-  "Y": 211
+  Y: 211
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/warps/cities/malaya.txt:37
 - Name: malaya_ws
   X: 112
-  "Y": 212
+  Y: 212
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/warps/cities/malaya.txt:48
 - Name: malaya_ts
   X: 299
-  "Y": 167
+  Y: 167
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/warps/cities/malaya.txt:59
 - Name: malaya_shop
   X: 261
-  "Y": 240
+  Y: 240
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/warps/cities/malaya.txt:70
 - Name: malaya_house01
   X: 300
-  "Y": 211
+  Y: 211
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/warps/cities/malaya.txt:81

@@ -2,41 +2,43 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Postell Schuwell
   X: 34
-  "Y": 123
+  Y: 123
   Dir: 3
   Sprite: 97
   Kind: Script
   Source: npc/quests/quests_hugel.txt:441
 - Name: Moks Mushrooms#Mush1
   X: 168
-  "Y": 359
+  Y: 359
   Dir: 3
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_hugel.txt:3488
 - Name: Moks Mushrooms#Mush2
   X: 194
-  "Y": 341
+  Y: 341
   Dir: 3
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_hugel.txt:3543
 - Name: Moks Mushrooms#Mush3
   X: 198
-  "Y": 339
+  Y: 339
   Dir: 3
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_hugel.txt:3598
 - Name: Moks Bugs#Bug1
   X: 155
-  "Y": 309
+  Y: 309
   Dir: 1
   Sprite: 1053
   SpriteIsMob: true
@@ -44,7 +46,7 @@ Body:
   Source: npc/quests/quests_hugel.txt:3873
 - Name: Moks Bugs#Bug2
   X: 218
-  "Y": 320
+  Y: 320
   Dir: 1
   Sprite: 1053
   SpriteIsMob: true
@@ -52,7 +54,7 @@ Body:
   Source: npc/quests/quests_hugel.txt:3928
 - Name: Moks Bugs#Bug3
   X: 249
-  "Y": 329
+  Y: 329
   Dir: 1
   Sprite: 1053
   SpriteIsMob: true
@@ -60,7 +62,7 @@ Body:
   Source: npc/quests/quests_hugel.txt:3983
 - Name: Moks Bugs#Bug4
   X: 218
-  "Y": 373
+  Y: 373
   Dir: 1
   Sprite: 1053
   SpriteIsMob: true
@@ -68,50 +70,50 @@ Body:
   Source: npc/quests/quests_hugel.txt:4038
 - Name: Torpy's Mom
   X: 190
-  "Y": 367
+  Y: 367
   Dir: 3
   Sprite: 701
   Kind: Script
   Source: npc/quests/quests_hugel.txt:5073
 - Name: Burupu
   X: 217
-  "Y": 270
+  Y: 270
   Dir: 3
   Sprite: 896
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/quests/quests_hugel.txt:7228
 - Name: hugel01
   X: 200
-  "Y": 372
+  Y: 372
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: hugel
     X: 95
-    "Y": 37
+    Y: 37
     TriggerWhileHidden: false
   Source: npc/warps/cities/hugel.txt:26
 - Name: "#wp120065"
   X: 204
-  "Y": 228
+  Y: 228
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:166
 - Name: "#tr120065"
   X: 204
-  "Y": 228
+  Y: 228
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -119,16 +121,16 @@ Body:
   Source: npc/re/other/achievements.txt:427
 - Name: hugel011a
   X: 28
-  "Y": 119
+  Y: 119
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: hu_fild05
     X: 347
-    "Y": 130
+    Y: 130
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/hugel_fild.txt:42

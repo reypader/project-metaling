@@ -2,20 +2,22 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Guide#rockridge01
   X: 356
-  "Y": 211
+  Y: 211
   Dir: 5
   Sprite: 10193
   Kind: Script
   Source: npc/re/guides/guides_rockridge.txt:9
 - Name: Guide#rockridge02
   X: 80
-  "Y": 211
+  Y: 211
   Dir: 3
   Sprite: 10193
   DuplicateOf: Guide#rockridge01
@@ -24,14 +26,14 @@ Body:
 - Name: Kafra Employee
   UniqueName: kaf_rock
   X: 291
-  "Y": 207
+  Y: 207
   Dir: 5
   Sprite: 117
   Kind: Script
   Source: npc/re/kafras/kafras.txt:101
 - Name: Guild Warehouse Manager#harboro1
   X: 288
-  "Y": 212
+  Y: 212
   Dir: 5
   Sprite: 896
   DuplicateOf: GuildWarehouse
@@ -39,35 +41,35 @@ Body:
   Source: npc/re/merchants/guild_warehouse.txt:96
 - Name: Costello#harboro1
   X: 80
-  "Y": 218
+  Y: 218
   Dir: 5
   Sprite: 10210
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:177
 - Name: Shawn McCurdy#harboro1
   X: 288
-  "Y": 193
+  Y: 193
   Dir: 5
   Sprite: 10215
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:1381
 - Name: Exotic Merchant
   X: 231
-  "Y": 254
+  Y: 254
   Dir: 3
   Sprite: 58
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:3133
 - Name: Food Distributer
   X: 357
-  "Y": 163
+  Y: 163
   Dir: 3
   Sprite: 886
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:3232
 - Name: Hungry Laborer#2
   X: 352
-  "Y": 196
+  Y: 196
   Dir: 5
   Sprite: 98
   DuplicateOf: dummy_npc
@@ -75,7 +77,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3420
 - Name: Hungry Laborer#3
   X: 352
-  "Y": 193
+  Y: 193
   Dir: 5
   Sprite: 855
   DuplicateOf: dummy_npc
@@ -83,7 +85,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3421
 - Name: Hungry Laborer#4
   X: 352
-  "Y": 190
+  Y: 190
   Dir: 5
   Sprite: 100
   DuplicateOf: dummy_npc
@@ -91,7 +93,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3422
 - Name: Hungry Laborer#6
   X: 352
-  "Y": 184
+  Y: 184
   Dir: 5
   Sprite: 99
   DuplicateOf: dummy_npc
@@ -99,7 +101,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3423
 - Name: Hungry Laborer#7
   X: 352
-  "Y": 181
+  Y: 181
   Dir: 5
   Sprite: 846
   DuplicateOf: dummy_npc
@@ -107,7 +109,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3424
 - Name: Hungry Laborer#9
   X: 352
-  "Y": 175
+  Y: 175
   Dir: 5
   Sprite: 99
   DuplicateOf: dummy_npc
@@ -115,7 +117,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3425
 - Name: Hungry Laborer#10
   X: 352
-  "Y": 172
+  Y: 172
   Dir: 5
   Sprite: 98
   DuplicateOf: dummy_npc
@@ -123,7 +125,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3426
 - Name: Hungry Laborer#12
   X: 353
-  "Y": 166
+  Y: 166
   Dir: 5
   Sprite: 99
   DuplicateOf: dummy_npc
@@ -131,7 +133,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3427
 - Name: Enthusiastic Job Seeker#1
   X: 354
-  "Y": 149
+  Y: 149
   Dir: 7
   Sprite: 733
   DuplicateOf: dummy_npc
@@ -139,7 +141,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3430
 - Name: Enthusiastic Job Seeker#2
   X: 345
-  "Y": 149
+  Y: 149
   Dir: 7
   Sprite: 734
   DuplicateOf: dummy_npc
@@ -147,7 +149,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3431
 - Name: Enthusiastic Job Seeker#3
   X: 350
-  "Y": 149
+  Y: 149
   Dir: 7
   Sprite: 753
   DuplicateOf: dummy_npc
@@ -155,7 +157,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3432
 - Name: Enthusiastic Job Seeker#4
   X: 348
-  "Y": 148
+  Y: 148
   Dir: 7
   Sprite: 753
   DuplicateOf: dummy_npc
@@ -163,7 +165,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3433
 - Name: Enthusiastic Job Seeker#5
   X: 346
-  "Y": 157
+  Y: 157
   Dir: 6
   Sprite: 732
   DuplicateOf: dummy_npc
@@ -171,7 +173,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3434
 - Name: Enthusiastic Job Seeker#6
   X: 349
-  "Y": 157
+  Y: 157
   Dir: 6
   Sprite: 734
   DuplicateOf: dummy_npc
@@ -179,7 +181,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3435
 - Name: Enthusiastic Job Seeker#7
   X: 353
-  "Y": 156
+  Y: 156
   Dir: 6
   Sprite: 755
   DuplicateOf: dummy_npc
@@ -187,7 +189,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3436
 - Name: Enthusiastic Job Seeker#8
   X: 347
-  "Y": 155
+  Y: 155
   Dir: 6
   Sprite: 733
   DuplicateOf: dummy_npc
@@ -195,7 +197,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3437
 - Name: Enthusiastic Job Seeker#9
   X: 351
-  "Y": 154
+  Y: 154
   Dir: 7
   Sprite: 735
   DuplicateOf: dummy_npc
@@ -203,7 +205,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3438
 - Name: Enthusiastic Job Seeker#10
   X: 354
-  "Y": 153
+  Y: 153
   Dir: 7
   Sprite: 732
   DuplicateOf: dummy_npc
@@ -211,7 +213,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3439
 - Name: Enthusiastic Job Seeker#11
   X: 347
-  "Y": 151
+  Y: 151
   Dir: 7
   Sprite: 732
   DuplicateOf: dummy_npc
@@ -219,7 +221,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3440
 - Name: Enthusiastic Job Seeker#12
   X: 352
-  "Y": 150
+  Y: 150
   Dir: 7
   Sprite: 735
   DuplicateOf: dummy_npc
@@ -227,31 +229,31 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3441
 - Name: "#r_q1"
   X: 352
-  "Y": 154
+  Y: 154
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:3443
 - Name: Steel Vigilante#1
   X: 357
-  "Y": 155
+  Y: 155
   Dir: 3
   Sprite: 880
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:3476
 - Name: Steel Vigilante#2
   X: 357
-  "Y": 152
+  Y: 152
   Dir: 3
   Sprite: 884
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:3662
 - Name: Scared Artificer#1
   X: 347
-  "Y": 133
+  Y: 133
   Dir: 2
   Sprite: 870
   DuplicateOf: dummy_npc
@@ -259,7 +261,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3799
 - Name: Scared Artificer#2
   X: 344
-  "Y": 133
+  Y: 133
   Dir: 2
   Sprite: 85
   DuplicateOf: dummy_npc
@@ -267,7 +269,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3800
 - Name: Scared Artificer#3
   X: 340
-  "Y": 137
+  Y: 137
   Dir: 3
   Sprite: 826
   DuplicateOf: dummy_npc
@@ -275,7 +277,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3801
 - Name: Scared Artificer#4
   X: 338
-  "Y": 132
+  Y: 132
   Dir: 2
   Sprite: 854
   DuplicateOf: dummy_npc
@@ -283,7 +285,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3802
 - Name: Scared Artificer#5
   X: 343
-  "Y": 137
+  Y: 137
   Dir: 3
   Sprite: 88
   DuplicateOf: dummy_npc
@@ -291,7 +293,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3803
 - Name: Scared Artificer#6
   X: 342
-  "Y": 135
+  Y: 135
   Dir: 2
   Sprite: 870
   DuplicateOf: dummy_npc
@@ -299,7 +301,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3804
 - Name: Scared Artificer#7
   X: 344
-  "Y": 142
+  Y: 142
   Dir: 3
   Sprite: 709
   DuplicateOf: dummy_npc
@@ -307,7 +309,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3805
 - Name: Scared Artificer#8
   X: 341
-  "Y": 131
+  Y: 131
   Dir: 2
   Sprite: 826
   DuplicateOf: dummy_npc
@@ -315,7 +317,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3806
 - Name: Scared Artificer#9
   X: 338
-  "Y": 141
+  Y: 141
   Dir: 3
   Sprite: 855
   DuplicateOf: dummy_npc
@@ -323,7 +325,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3807
 - Name: Scared Artificer#10
   X: 347
-  "Y": 137
+  Y: 137
   Dir: 3
   Sprite: 88
   DuplicateOf: dummy_npc
@@ -331,7 +333,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3808
 - Name: Scared Artificer#11
   X: 341
-  "Y": 141
+  Y: 141
   Dir: 3
   Sprite: 826
   DuplicateOf: dummy_npc
@@ -339,7 +341,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3809
 - Name: Scared Artificer#12
   X: 338
-  "Y": 136
+  Y: 136
   Dir: 3
   Sprite: 870
   DuplicateOf: dummy_npc
@@ -347,409 +349,409 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:3810
 - Name: "#r_q2"
   X: 341
-  "Y": 136
+  Y: 136
   Dir: 0
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:3812
 - Name: Desalination Facility Manager
   X: 334
-  "Y": 135
+  Y: 135
   Dir: 6
   Sprite: 853
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:3845
 - Name: Jamie
   X: 333
-  "Y": 138
+  Y: 138
   Dir: 6
   Sprite: 861
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:4015
 - Name: Underground Passage#1
   X: 332
-  "Y": 144
+  Y: 144
   Dir: 6
   Sprite: 10007
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:4021
 - Name: Donovan
   X: 138
-  "Y": 157
+  Y: 157
   Dir: 5
   Sprite: 854
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:4116
 - Name: Mrs. McPhy#rockdaily
   X: 347
-  "Y": 65
+  Y: 65
   Dir: 3
   Sprite: 74
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:4904
 - Name: Spotty#rockdaily
   X: 345
-  "Y": 61
+  Y: 61
   Dir: 3
   Sprite: 81
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5337
 - Name: Mr. McPhy#rockdaily
   X: 344
-  "Y": 61
+  Y: 61
   Dir: 5
   Sprite: 98
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5350
 - Name: "#rockno01"
   X: 91
-  "Y": 211
+  Y: 211
   Dir: 3
   Sprite: 111
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5608
 - Name: "#rockno02"
   X: 299
-  "Y": 211
+  Y: 211
   Dir: 3
   Sprite: 111
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5621
 - Name: "#rockno03"
   X: 260
-  "Y": 211
+  Y: 211
   Dir: 3
   Sprite: 111
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5634
 - Name: "#rockno04"
   X: 215
-  "Y": 212
+  Y: 212
   Dir: 3
   Sprite: 111
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5641
 - Name: "#rockno05"
   X: 134
-  "Y": 211
+  Y: 211
   Dir: 3
   Sprite: 111
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5648
 - Name: "#rockno06"
   X: 310
-  "Y": 201
+  Y: 201
   Dir: 3
   Sprite: 111
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5655
 - Name: Karam Pucci#harboro1
   X: 60
-  "Y": 215
+  Y: 215
   Dir: 5
   Sprite: 709
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5662
 - Name: Rubina Adler#rockn07
   X: 321
-  "Y": 237
+  Y: 237
   Dir: 5
   Sprite: 882
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5679
 - Name: Zebedee#rockwn13
   X: 75
-  "Y": 211
+  Y: 211
   Dir: 1
   Sprite: 82
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5696
 - Name: Irene#rockwn14
   X: 75
-  "Y": 219
+  Y: 219
   Dir: 3
   Sprite: 96
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5709
 - Name: Miles Wiesner#rockwn12
   X: 79
-  "Y": 224
+  Y: 224
   Dir: 5
   Sprite: 881
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5723
 - Name: Cheerful Leaf#rockwn16
   X: 82
-  "Y": 221
+  Y: 221
   Dir: 3
   Sprite: 10226
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5737
 - Name: Mahua Kaya#rockwn15
   X: 83
-  "Y": 221
+  Y: 221
   Dir: 3
   Sprite: 10225
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5753
 - Name: Welch#rockwn01
   X: 86
-  "Y": 218
+  Y: 218
   Dir: 3
   Sprite: 634
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5776
 - Name: Edith Richie#rockwn02
   X: 88
-  "Y": 217
+  Y: 217
   Dir: 3
   Sprite: 703
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5793
 - Name: Carmen O'Neil#rockwn06
   X: 86
-  "Y": 210
+  Y: 210
   Dir: 4
   Sprite: 102
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5805
 - Name: Leland Wenkins#rockwn03
   X: 85
-  "Y": 208
+  Y: 208
   Dir: 7
   Sprite: 778
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5818
 - Name: Maybell#rockn02
   X: 100
-  "Y": 77
+  Y: 77
   Dir: 4
   Sprite: 102
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5859
 - Name: Rosemary Weber#rockn03
   X: 229
-  "Y": 64
+  Y: 64
   Dir: 3
   Sprite: 850
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5874
 - Name: Drunk Doram#rockwn11
   X: 87
-  "Y": 207
+  Y: 207
   Dir: 1
   Sprite: 561
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5888
 - Name: Elsie#rockwn05
   X: 80
-  "Y": 204
+  Y: 204
   Dir: 7
   Sprite: 96
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5902
 - Name: Mortimer#rockwn07
   X: 81
-  "Y": 205
+  Y: 205
   Dir: 1
   Sprite: 828
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5932
 - Name: Walter Greenwald#rockwn
   X: 73
-  "Y": 206
+  Y: 206
   Dir: 5
   Sprite: 486
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5954
 - Name: Delbert Lake#rockwn04
   X: 84
-  "Y": 200
+  Y: 200
   Dir: 5
   Sprite: 848
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5969
 - Name: Constance#rockwn18
   X: 85
-  "Y": 195
+  Y: 195
   Dir: 1
   Sprite: 850
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:5985
 - Name: Roland Burts#rockwn17
   X: 93
-  "Y": 201
+  Y: 201
   Dir: 1
   Sprite: 10203
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6004
 - Name: Loretta#rockwn08
   X: 98
-  "Y": 211
+  Y: 211
   Dir: 3
   Sprite: 641
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6016
 - Name: Dolores#rockwn09
   X: 100
-  "Y": 211
+  Y: 211
   Dir: 3
   Sprite: 79
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6054
 - Name: Maurice#rockwn10
   X: 101
-  "Y": 210
+  Y: 210
   Dir: 3
   Sprite: 60
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6070
 - Name: Cordell#rockn01
   X: 94
-  "Y": 237
+  Y: 237
   Dir: 3
   Sprite: 573
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6082
 - Name: Eloise McCurdy#rockn14
   X: 74
-  "Y": 259
+  Y: 259
   Dir: 3
   Sprite: 633
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6099
 - Name: Loading Dock Foreman#ro
   X: 130
-  "Y": 237
+  Y: 237
   Dir: 3
   Sprite: 712
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6110
 - Name: Jader#rockn11
   X: 126
-  "Y": 236
+  Y: 236
   Dir: 7
   Sprite: 881
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6125
 - Name: Rosco Richie#rockn12
   X: 128
-  "Y": 233
+  Y: 233
   Dir: 7
   Sprite: 642
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6142
 - Name: Portnias#rockn13
   X: 130
-  "Y": 232
+  Y: 232
   Dir: 7
   Sprite: 545
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6152
 - Name: Scrap Metal Collector#s1
   X: 144
-  "Y": 262
+  Y: 262
   Dir: 7
   Sprite: 996
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6167
 - Name: Scrap Metal Collector#s2
   X: 146
-  "Y": 264
+  Y: 264
   Dir: 3
   Sprite: 896
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6185
 - Name: Stray Dog#srdg02
   X: 182
-  "Y": 241
+  Y: 241
   Dir: 5
   Sprite: 81
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6203
 - Name: Stray Dog#srdg01
   X: 183
-  "Y": 241
+  Y: 241
   Dir: 5
   Sprite: 81
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6209
 - Name: Customer#srdg01
   X: 187
-  "Y": 236
+  Y: 236
   Dir: 3
   Sprite: 690
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6215
 - Name: Customer#srdg02
   X: 182
-  "Y": 236
+  Y: 236
   Dir: 5
   Sprite: 688
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6238
 - Name: Merchant's Chest
   X: 231
-  "Y": 251
+  Y: 251
   Dir: 4
   Sprite: 10005
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6252
 - Name: Charlotte
   X: 229
-  "Y": 256
+  Y: 256
   Dir: 7
   Sprite: 938
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6257
 - Name: Bulk Trader's Camel#1
   X: 192
-  "Y": 262
+  Y: 262
   Dir: 7
   Sprite: 938
   DuplicateOf: dummy_npc
@@ -757,7 +759,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6264
 - Name: Bulk Trader's Camel#2
   X: 197
-  "Y": 262
+  Y: 262
   Dir: 7
   Sprite: 938
   DuplicateOf: dummy_npc
@@ -765,7 +767,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6265
 - Name: Bulk Trader's Camel#7
   X: 210
-  "Y": 262
+  Y: 262
   Dir: 7
   Sprite: 938
   DuplicateOf: dummy_npc
@@ -773,7 +775,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6266
 - Name: Bulk Trader's Camel#8
   X: 216
-  "Y": 262
+  Y: 262
   Dir: 7
   Sprite: 938
   DuplicateOf: dummy_npc
@@ -781,7 +783,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6267
 - Name: Bulk Trader's Camel#9
   X: 223
-  "Y": 261
+  Y: 261
   Dir: 1
   Sprite: 938
   DuplicateOf: dummy_npc
@@ -789,7 +791,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6268
 - Name: Bulk Trader's Camel#10
   X: 225
-  "Y": 257
+  Y: 257
   Dir: 6
   Sprite: 938
   DuplicateOf: dummy_npc
@@ -797,7 +799,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6269
 - Name: Bulk Trader's Camel#11
   X: 227
-  "Y": 263
+  Y: 263
   Dir: 1
   Sprite: 938
   DuplicateOf: dummy_npc
@@ -805,7 +807,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6270
 - Name: Bulk Trader's Camel#12
   X: 229
-  "Y": 258
+  Y: 258
   Dir: 6
   Sprite: 938
   DuplicateOf: dummy_npc
@@ -813,7 +815,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6271
 - Name: Bulk Trader's Camel#13
   X: 234
-  "Y": 259
+  Y: 259
   Dir: 3
   Sprite: 938
   DuplicateOf: dummy_npc
@@ -821,7 +823,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6272
 - Name: Bulk Trader's Camel#14
   X: 236
-  "Y": 252
+  Y: 252
   Dir: 6
   Sprite: 938
   DuplicateOf: dummy_npc
@@ -829,7 +831,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6273
 - Name: Bulk Trader's Camel#15
   X: 237
-  "Y": 256
+  Y: 256
   Dir: 3
   Sprite: 938
   DuplicateOf: dummy_npc
@@ -837,7 +839,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6274
 - Name: Bulk Trader's Camel#16
   X: 238
-  "Y": 258
+  Y: 258
   Dir: 3
   Sprite: 938
   DuplicateOf: dummy_npc
@@ -845,21 +847,21 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6275
 - Name: Bulk Trader's Camel#3
   X: 226
-  "Y": 255
+  Y: 255
   Dir: 3
   Sprite: 938
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6277
 - Name: Bulk Trader's Camel#4
   X: 227
-  "Y": 260
+  Y: 260
   Dir: 3
   Sprite: 938
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6283
 - Name: Bulk Trader's Camel#6
   X: 227
-  "Y": 260
+  Y: 260
   Dir: 3
   Sprite: 938
   DuplicateOf: Bulk Trader's Camel#4
@@ -867,90 +869,90 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6288
 - Name: Bulk Trader's Camel#5
   X: 232
-  "Y": 258
+  Y: 258
   Dir: 6
   Sprite: 938
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6290
 - Name: Priest#srdg01
   X: 210
-  "Y": 219
+  Y: 219
   Dir: 5
   Sprite: 110
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6303
 - Name: Herman Farland#rockn19
   X: 229
-  "Y": 212
+  Y: 212
   Dir: 7
   Sprite: 778
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6312
 - Name: Edel Peppina#rockn16
   X: 231
-  "Y": 212
+  Y: 212
   Dir: 7
   Sprite: 879
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6328
 - Name: Wilfred Sagan#rockn15
   X: 233
-  "Y": 215
+  Y: 215
   Dir: 3
   Sprite: 881
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6340
 - Name: Hilliard#rockn09
   X: 168
-  "Y": 216
+  Y: 216
   Dir: 3
   Sprite: 698
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6346
 - Name: Innkeeper#rockridge
   X: 156
-  "Y": 215
+  Y: 215
   Dir: 5
   Sprite: 46
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6357
 - Name: Wanderer Doram#rkrgtwn
   X: 228
-  "Y": 170
+  Y: 170
   Dir: 3
   Sprite: 10156
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6392
 - Name: Akuha#rockn19
   X: 130
-  "Y": 158
+  Y: 158
   Dir: 3
   Sprite: 10222
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6409
 - Name: Nahari#rockn19
   X: 132
-  "Y": 157
+  Y: 157
   Dir: 3
   Sprite: 10226
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6438
 - Name: Kid#srdg01
   X: 99
-  "Y": 127
+  Y: 127
   Dir: 7
   Sprite: 82
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6457
 - Name: Thunder#srdg01
   X: 96
-  "Y": 130
+  Y: 130
   Dir: 3
   Sprite: 955
   DuplicateOf: dummy_npc
@@ -958,7 +960,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6462
 - Name: Lightning#srdg01
   X: 104
-  "Y": 130
+  Y: 130
   Dir: 5
   Sprite: 955
   DuplicateOf: dummy_npc
@@ -966,7 +968,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6463
 - Name: Speed Racer 2#srdg01
   X: 102
-  "Y": 133
+  Y: 133
   Dir: 7
   Sprite: 955
   DuplicateOf: dummy_npc
@@ -974,7 +976,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6464
 - Name: Speed Racer 1#srdg01
   X: 104
-  "Y": 132
+  Y: 132
   Dir: 5
   Sprite: 955
   DuplicateOf: dummy_npc
@@ -982,146 +984,146 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6465
 - Name: Villager#srdg01
   X: 174
-  "Y": 125
+  Y: 125
   Dir: 3
   Sprite: 53
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6468
 - Name: Traveler#srdg02_1
   X: 184
-  "Y": 123
+  Y: 123
   Dir: 5
   Sprite: 567
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6473
 - Name: Traveler#srdg02_2
   X: 188
-  "Y": 123
+  Y: 123
   Dir: 3
   Sprite: 881
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6491
 - Name: Worker#srdg01
   X: 211
-  "Y": 115
+  Y: 115
   Dir: 5
   Sprite: 808
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6503
 - Name: Worker#srdg02
   X: 213
-  "Y": 117
+  Y: 117
   Dir: 3
   Sprite: 54
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6515
 - Name: Foreman#srdg01
   X: 211
-  "Y": 113
+  Y: 113
   Dir: 7
   Sprite: 952
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6527
 - Name: Worker#srdg03
   X: 214
-  "Y": 115
+  Y: 115
   Dir: 3
   Sprite: 52
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6554
 - Name: Eznia#rockn04
   X: 290
-  "Y": 104
+  Y: 104
   Dir: 5
   Sprite: 10164
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6572
 - Name: Alain Morlein#dy
   X: 273
-  "Y": 259
+  Y: 259
   Dir: 4
   Sprite: 853
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6583
 - Name: Bank Clerk#dy
   X: 270
-  "Y": 252
+  Y: 252
   Dir: 6
   Sprite: 109
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6612
 - Name: Gunslinger Posh#rockn05
   X: 241
-  "Y": 200
+  Y: 200
   Dir: 5
   Sprite: 900
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6660
 - Name: White Twig#rockn19
   X: 274
-  "Y": 214
+  Y: 214
   Dir: 5
   Sprite: 10228
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6677
 - Name: Carola Firth#rockn17
   X: 278
-  "Y": 195
+  Y: 195
   Dir: 5
   Sprite: 879
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6695
 - Name: Lucas Richie#rockn08
   X: 280
-  "Y": 195
+  Y: 195
   Dir: 3
   Sprite: 828
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6716
 - Name: Bakery Owner#dy
   X: 314
-  "Y": 211
+  Y: 211
   Dir: 4
   Sprite: 886
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6735
 - Name: Rock Ridge Tiger#srdg01
   X: 282
-  "Y": 201
+  Y: 201
   Dir: 3
   Sprite: 554
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6759
 - Name: Sammy#srdg01
   X: 302
-  "Y": 175
+  Y: 175
   Dir: 7
   Sprite: 81
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6764
 - Name: Bounty Hunter#rockn18
   X: 312
-  "Y": 173
+  Y: 173
   Dir: 8
   Sprite: 700
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6770
 - Name: Shepherd#srdg01
   X: 301
-  "Y": 175
+  Y: 175
   Dir: 7
   Sprite: 726
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6782
 - Name: Malnourished Sheep#srdg
   X: 303
-  "Y": 179
+  Y: 179
   Dir: 3
   Sprite: 890
   DuplicateOf: dummy_npc
@@ -1129,7 +1131,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6795
 - Name: Frail Sheep#srdg01
   X: 299
-  "Y": 179
+  Y: 179
   Dir: 7
   Sprite: 890
   DuplicateOf: dummy_npc
@@ -1137,7 +1139,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6796
 - Name: Coarse-haired Sheep#srd
   X: 305
-  "Y": 178
+  Y: 178
   Dir: 5
   Sprite: 890
   DuplicateOf: dummy_npc
@@ -1145,7 +1147,7 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6797
 - Name: Dozing Sheep#srdg01
   X: 297
-  "Y": 178
+  Y: 178
   Dir: 5
   Sprite: 890
   DuplicateOf: dummy_npc
@@ -1153,124 +1155,124 @@ Body:
   Source: npc/re/quests/quests_rockridge.txt:6798
 - Name: Joyce Leslie#rockn06
   X: 311
-  "Y": 53
+  Y: 53
   Dir: 5
   Sprite: 90
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6800
 - Name: Joe
   X: 324
-  "Y": 124
+  Y: 124
   Dir: 7
   Sprite: 571
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6819
 - Name: Hungry Laborer#1
   X: 352
-  "Y": 199
+  Y: 199
   Dir: 5
   Sprite: 99
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6849
 - Name: Curious Person#5
   X: 352
-  "Y": 187
+  Y: 187
   Dir: 5
   Sprite: 870
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Hungry Laborer#1
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6867
 - Name: Hungry Laborer#8
   X: 352
-  "Y": 178
+  Y: 178
   Dir: 5
   Sprite: 100
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Hungry Laborer#1
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6868
 - Name: Hungry Laborer#11
   X: 352
-  "Y": 169
+  Y: 169
   Dir: 5
   Sprite: 855
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Hungry Laborer#1
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6869
 - Name: Hungry Laborer#13
   X: 355
-  "Y": 164
+  Y: 164
   Dir: 5
   Sprite: 100
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: Hungry Laborer#1
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:6870
 - Name: Manager#1
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 3
   Sprite: 844
   Trigger:
     X: 3
-    "Y": 0
+    Y: 0
   Kind: Script
   Source: npc/re/quests/quests_rockridge.txt:7039
 - Name: harboro1#har_in01
   X: 241
-  "Y": 218
+  Y: 218
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: har_in01
     X: 18
-    "Y": 18
+    Y: 18
     TriggerWhileHidden: true
   Source: npc/re/warps/cities/rockridge.txt:7
 - Name: harboro1_2#har_in01
   X: 312
-  "Y": 193
+  Y: 193
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: har_in01
     X: 26
-    "Y": 87
+    Y: 87
     TriggerWhileHidden: true
   Source: npc/re/warps/cities/rockridge.txt:12
 - Name: harboro1#rockrdg1
   X: 362
-  "Y": 206
+  Y: 206
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: rockrdg1
     X: 37
-    "Y": 246
+    Y: 246
     TriggerWhileHidden: true
   Source: npc/re/warps/fields/rockridge_fild.txt:8

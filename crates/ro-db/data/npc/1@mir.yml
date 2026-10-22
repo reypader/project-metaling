@@ -2,107 +2,109 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Fenrir#1mir
   X: 103
-  "Y": 40
+  Y: 40
   Dir: 3
   Sprite: 664
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:13
 - Name: Iris#2mir
   X: 100
-  "Y": 94
+  Y: 94
   Dir: 7
   Sprite: 666
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:91
 - Name: eq#mir1
   X: 101
-  "Y": 104
+  Y: 104
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:156
 - Name: Iris#3mir
   X: 103
-  "Y": 85
+  Y: 85
   Dir: 1
   Sprite: 666
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:218
 - Name: eq#mir2
   X: 101
-  "Y": 104
+  Y: 104
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:269
 - Name: eq#mir3
   X: 101
-  "Y": 104
+  Y: 104
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:320
 - Name: Fenrir#boss1a
   X: 103
-  "Y": 80
+  Y: 80
   Dir: 3
   Sprite: 664
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:346
 - Name: Iris#4mir
   X: 100
-  "Y": 90
+  Y: 90
   Dir: 7
   Sprite: 666
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:418
 - Name: eq#mir4
   X: 101
-  "Y": 104
+  Y: 104
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:463
 - Name: Fenrir#5mir
   X: 103
-  "Y": 90
+  Y: 90
   Dir: 1
   Sprite: 664
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:495
 - Name: eq#mir5
   X: 101
-  "Y": 104
+  Y: 104
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:699
 - Name: eq#mir6
   X: 101
-  "Y": 104
+  Y: 104
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:755
 - Name: Iris#6mir
   X: 100
-  "Y": 95
+  Y: 95
   Dir: 5
   Sprite: 666
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:776
 - Name: Iris#1mir
   X: 100
-  "Y": 40
+  Y: 40
   Dir: 5
   Sprite: 666
   DuplicateOf: dummy_npc
@@ -110,7 +112,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:894
 - Name: Fenrir#2mir
   X: 103
-  "Y": 94
+  Y: 94
   Dir: 1
   Sprite: 664
   DuplicateOf: dummy_npc
@@ -118,7 +120,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:895
 - Name: Bijou#2mir
   X: 102
-  "Y": 98
+  Y: 98
   Dir: 3
   Sprite: 10143
   DuplicateOf: dummy_npc
@@ -126,7 +128,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:896
 - Name: Fenrir#3mir
   X: 100
-  "Y": 85
+  Y: 85
   Dir: 7
   Sprite: 664
   DuplicateOf: dummy_npc
@@ -134,7 +136,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:898
 - Name: Bijou#3mir
   X: 102
-  "Y": 88
+  Y: 88
   Dir: 3
   Sprite: 10143
   DuplicateOf: dummy_npc
@@ -142,7 +144,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:899
 - Name: Renovated Amdarais#3mir
   X: 101
-  "Y": 95
+  Y: 95
   Dir: 1
   Sprite: 3448
   SpriteIsMob: true
@@ -151,40 +153,40 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:900
 - Name: Fenrir#boss1b
   X: 94
-  "Y": 73
+  Y: 73
   Dir: 3
   Sprite: 664
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Fenrir#boss1a
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:902
 - Name: Fenrir#boss1c
   X: 112
-  "Y": 73
+  Y: 73
   Dir: 3
   Sprite: 664
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Fenrir#boss1a
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:903
 - Name: Fenrir#boss1d
   X: 103
-  "Y": 60
+  Y: 60
   Dir: 3
   Sprite: 664
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Fenrir#boss1a
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:904
 - Name: Iris#boss1a
   X: 100
-  "Y": 80
+  Y: 80
   Dir: 5
   Sprite: 666
   DuplicateOf: dummy_npc
@@ -192,7 +194,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:906
 - Name: Iris#boss1b
   X: 91
-  "Y": 73
+  Y: 73
   Dir: 5
   Sprite: 666
   DuplicateOf: dummy_npc
@@ -200,7 +202,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:907
 - Name: Iris#boss1c
   X: 109
-  "Y": 73
+  Y: 73
   Dir: 5
   Sprite: 666
   DuplicateOf: dummy_npc
@@ -208,7 +210,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:908
 - Name: Iris#boss1d
   X: 100
-  "Y": 60
+  Y: 60
   Dir: 5
   Sprite: 666
   DuplicateOf: dummy_npc
@@ -216,51 +218,51 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:909
 - Name: Fenrir#boss2a
   X: 103
-  "Y": 76
+  Y: 76
   Dir: 3
   Sprite: 664
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Fenrir#boss1a
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:911
 - Name: Fenrir#boss2b
   X: 94
-  "Y": 70
+  Y: 70
   Dir: 3
   Sprite: 664
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Fenrir#boss1a
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:912
 - Name: Fenrir#boss2c
   X: 112
-  "Y": 70
+  Y: 70
   Dir: 3
   Sprite: 664
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Fenrir#boss1a
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:913
 - Name: Fenrir#boss2d
   X: 103
-  "Y": 63
+  Y: 63
   Dir: 3
   Sprite: 664
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: Fenrir#boss1a
   Kind: Script
   Source: npc/re/instances/RoomOfConsciousness.txt:914
 - Name: Iris#boss2a
   X: 100
-  "Y": 76
+  Y: 76
   Dir: 5
   Sprite: 666
   DuplicateOf: dummy_npc
@@ -268,7 +270,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:916
 - Name: Iris#boss2b
   X: 91
-  "Y": 70
+  Y: 70
   Dir: 5
   Sprite: 666
   DuplicateOf: dummy_npc
@@ -276,7 +278,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:917
 - Name: Iris#boss2c
   X: 109
-  "Y": 70
+  Y: 70
   Dir: 5
   Sprite: 666
   DuplicateOf: dummy_npc
@@ -284,7 +286,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:918
 - Name: Iris#boss2d
   X: 100
-  "Y": 63
+  Y: 63
   Dir: 5
   Sprite: 666
   DuplicateOf: dummy_npc
@@ -292,7 +294,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:919
 - Name: Bijou#4mir
   X: 102
-  "Y": 95
+  Y: 95
   Dir: 3
   Sprite: 10143
   DuplicateOf: dummy_npc
@@ -300,7 +302,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:921
 - Name: Fenrir#4mir
   X: 103
-  "Y": 90
+  Y: 90
   Dir: 1
   Sprite: 664
   DuplicateOf: dummy_npc
@@ -308,7 +310,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:922
 - Name: Bijou#5mir
   X: 102
-  "Y": 95
+  Y: 95
   Dir: 3
   Sprite: 10143
   DuplicateOf: dummy_npc
@@ -316,7 +318,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:924
 - Name: Sarah#5mir
   X: 99
-  "Y": 95
+  Y: 95
   Dir: 5
   Sprite: 10066
   DuplicateOf: dummy_npc
@@ -324,7 +326,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:925
 - Name: Iris#5mir
   X: 100
-  "Y": 90
+  Y: 90
   Dir: 7
   Sprite: 666
   DuplicateOf: dummy_npc
@@ -332,7 +334,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:926
 - Name: Bijou#6mir
   X: 102
-  "Y": 95
+  Y: 95
   Dir: 3
   Sprite: 10143
   DuplicateOf: dummy_npc
@@ -340,7 +342,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:928
 - Name: Sarah#6mir
   X: 104
-  "Y": 95
+  Y: 95
   Dir: 3
   Sprite: 10066
   DuplicateOf: dummy_npc
@@ -348,7 +350,7 @@ Body:
   Source: npc/re/instances/RoomOfConsciousness.txt:929
 - Name: Fenrir#6mir
   X: 103
-  "Y": 90
+  Y: 90
   Dir: 1
   Sprite: 664
   DuplicateOf: dummy_npc

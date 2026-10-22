@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Minister#tu
   X: 97
-  "Y": 289
+  Y: 289
   Dir: 3
   Sprite: 55
   DuplicateOf: Minister#tu_
@@ -16,25 +18,25 @@ Body:
   Source: npc/re/quests/first_class/tu_archer.txt:21
 - Name: "#sound_tu"
   X: 94
-  "Y": 270
+  Y: 270
   Dir: 5
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: "#sound_tu_"
   Kind: Script
   Source: npc/re/quests/first_class/tu_archer.txt:25
 - Name: Personnel Record#hidden
   X: 372
-  "Y": 74
+  Y: 74
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/re/quests/seals/brisingamen_seal.txt:10
 - Name: Librarian#2
   X: 373
-  "Y": 75
+  Y: 75
   Dir: 3
   Sprite: 105
   DuplicateOf: Librarian#2_
@@ -42,7 +44,7 @@ Body:
   Source: npc/re/quests/seals/brisingamen_seal.txt:193
 - Name: Rebarev Doug
   X: 180
-  "Y": 269
+  Y: 269
   Dir: 6
   Sprite: 56
   DuplicateOf: Rebarev Doug_
@@ -50,7 +52,7 @@ Body:
   Source: npc/re/quests/seals/megingard_seal.txt:10
 - Name: Crusader#God
   X: 241
-  "Y": 100
+  Y: 100
   Dir: 1
   Sprite: 734
   DuplicateOf: Crusader#God_
@@ -58,7 +60,7 @@ Body:
   Source: npc/re/quests/seals/megingard_seal.txt:11
 - Name: Charles Orleans#cook
   X: 324
-  "Y": 200
+  Y: 200
   Dir: 5
   Sprite: 878
   DuplicateOf: Charles Orleans#cook_
@@ -66,7 +68,7 @@ Body:
   Source: npc/re/quests/cooking_quest.txt:10
 - Name: Madeleine Chu#cook
   X: 329
-  "Y": 206
+  Y: 206
   Dir: 3
   Sprite: 886
   DuplicateOf: Madeleine Chu#cook_
@@ -74,7 +76,7 @@ Body:
   Source: npc/re/quests/cooking_quest.txt:11
 - Name: Child with Cat#cook
   X: 329
-  "Y": 194
+  Y: 194
   Dir: 3
   Sprite: 877
   DuplicateOf: Child with Cat#cook_
@@ -82,7 +84,7 @@ Body:
   Source: npc/re/quests/cooking_quest.txt:12
 - Name: Wickebine#cook
   X: 329
-  "Y": 192
+  Y: 192
   Dir: 3
   Sprite: 725
   DuplicateOf: Wickebine#cook_
@@ -90,7 +92,7 @@ Body:
   Source: npc/re/quests/cooking_quest.txt:15
 - Name: Alliance Manager#prt
   X: 19
-  "Y": 98
+  Y: 98
   Dir: 7
   Sprite: 752
   DuplicateOf: Alliance Manager#prt_
@@ -98,7 +100,7 @@ Body:
   Source: npc/re/quests/quests_13_1.txt:23
 - Name: Member of Alliance#prt
   X: 23
-  "Y": 104
+  Y: 104
   Dir: 5
   Sprite: 754
   DuplicateOf: Member of Alliance#prt_
@@ -106,7 +108,7 @@ Body:
   Source: npc/re/quests/quests_13_1.txt:24
 - Name: Recruiter for the Brave
   X: 207
-  "Y": 165
+  Y: 165
   Dir: 5
   Sprite: 109
   DuplicateOf: Recruiter for the Brave_
@@ -114,7 +116,7 @@ Body:
   Source: npc/re/quests/quests_13_1.txt:25
 - Name: Laur
   X: 108
-  "Y": 265
+  Y: 265
   Dir: 5
   Sprite: 57
   DuplicateOf: Laur_
@@ -122,145 +124,145 @@ Body:
   Source: npc/re/quests/quests_13_1.txt:26
 - Name: "#ep16_evt_01_on"
   X: 215
-  "Y": 146
+  Y: 146
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:163
 - Name: Chamberlain Bell#ep16_01
   X: 217
-  "Y": 150
+  Y: 150
   Dir: 3
   Sprite: 967
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:176
 - Name: "#ep16_evt_02_on"
   X: 163
-  "Y": 163
+  Y: 163
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:208
 - Name: Chamberlain Bell#ep16_02
   X: 155
-  "Y": 165
+  Y: 165
   Dir: 4
   Sprite: 967
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:218
 - Name: "#ep16_evt_7688"
   X: 177
-  "Y": 164
+  Y: 164
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:917
 - Name: Mysterious Guest#ep16_01
   X: 179
-  "Y": 155
+  Y: 155
   Dir: 6
   Sprite: 865
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:960
 - Name: Chamberlain#ep16_01
   X: 181
-  "Y": 154
+  Y: 154
   Dir: 2
   Sprite: 47
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:961
 - Name: Nyhill M. Heine#ep16_02
   X: 107
-  "Y": 237
+  Y: 237
   Dir: 2
   Sprite: 10114
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1262
 - Name: Violeta#ep16_02
   X: 103
-  "Y": 235
+  Y: 235
   Dir: 7
   Sprite: 959
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1263
 - Name: Royal Chamberlain#ep16_02
   X: 108
-  "Y": 235
+  Y: 235
   Dir: 2
   Sprite: 80
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1264
 - Name: Skia Nerius#ep16_02
   X: 104
-  "Y": 240
+  Y: 240
   Dir: 5
   Sprite: 10116
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1266
 - Name: Spica Nerius#ep16_02
   X: 106
-  "Y": 240
+  Y: 240
   Dir: 3
   Sprite: 10115
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1311
 - Name: Crux Findel#ep16_02
   X: 108
-  "Y": 240
+  Y: 240
   Dir: 3
   Sprite: 10118
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1363
 - Name: "#ep16_evt_7689"
   X: 183
-  "Y": 164
+  Y: 164
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1427
 - Name: Skia Nerius#ep16_7689
   X: 186
-  "Y": 163
+  Y: 163
   Dir: 3
   Sprite: 10116
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1488
 - Name: "#ep16_7689_02"
   X: 181
-  "Y": 157
+  Y: 157
   Dir: 3
   Sprite: 47
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1489
 - Name: "#ep16_7689_01"
   X: 179
-  "Y": 158
+  Y: 158
   Dir: 4
   Sprite: 865
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1490
 - Name: Skia Nerius#ep16_7690
   X: 25
-  "Y": 35
+  Y: 35
   Dir: 5
   Sprite: 10116
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1492
 - Name: Unstable Nyhill#ep16_7690
   X: 27
-  "Y": 34
+  Y: 34
   Dir: 3
   Sprite: 10114
   DuplicateOf: Skia Nerius#ep16_7690
@@ -268,686 +270,686 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:1567
 - Name: "#ep16_evt_7690"
   X: 27
-  "Y": 43
+  Y: 43
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:1569
 - Name: Royal Chef#ep16_1
   X: 213
-  "Y": 177
+  Y: 177
   Dir: 5
   Sprite: 46
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:2786
 - Name: Royal Head Chef#ep16_1
   X: 309
-  "Y": 200
+  Y: 200
   Dir: 5
   Sprite: 10122
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:2833
 - Name: "#ep16_1"
   X: 313
-  "Y": 199
+  Y: 199
   Dir: 0
   Sprite: 139
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3047
 - Name: Royal Sauce Master#ep16
   X: 319
-  "Y": 211
+  Y: 211
   Dir: 3
   Sprite: 749
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3123
 - Name: Muka Juice#ep16_1
   X: 303
-  "Y": 216
+  Y: 216
   Dir: 5
   Sprite: 10043
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3320
 - Name: Poring Jelly#ep16_1
   X: 307
-  "Y": 196
+  Y: 196
   Dir: 5
   Sprite: 10042
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3327
 - Name: Shining Plant#ep16_1
   X: 338
-  "Y": 206
+  Y: 206
   Dir: 5
   Sprite: 10046
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3334
 - Name: Giantaurus Butter#ep16_
   X: 330
-  "Y": 211
+  Y: 211
   Dir: 5
   Sprite: 10044
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3341
 - Name: Dishwasher#ep16_1
   X: 302
-  "Y": 205
+  Y: 205
   Dir: 5
   Sprite: 883
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3348
 - Name: Chef#ep16_1
   X: 315
-  "Y": 204
+  Y: 204
   Dir: 1
   Sprite: 886
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3471
 - Name: Chef#ep16_2
   X: 313
-  "Y": 204
+  Y: 204
   Dir: 3
   Sprite: 886
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3477
 - Name: Chef#ep16_3
   X: 313
-  "Y": 202
+  Y: 202
   Dir: 3
   Sprite: 886
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3484
 - Name: Chef#ep16_4
   X: 313
-  "Y": 200
+  Y: 200
   Dir: 3
   Sprite: 886
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3490
 - Name: Chef#ep16_5
   X: 313
-  "Y": 196
+  Y: 196
   Dir: 3
   Sprite: 886
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3496
 - Name: Chef#ep16_6
   X: 313
-  "Y": 194
+  Y: 194
   Dir: 3
   Sprite: 886
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3502
 - Name: Mark Ishar#ep16_1
   X: 82
-  "Y": 268
+  Y: 268
   Dir: 5
   Sprite: 10123
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3510
 - Name: Alice Ishar#ep16_1
   X: 83
-  "Y": 270
+  Y: 270
   Dir: 3
   Sprite: 641
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3575
 - Name: Magi Steen#ep16_1
   X: 111
-  "Y": 234
+  Y: 234
   Dir: 3
   Sprite: 612
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3612
 - Name: Dyu Rianne#ep16_1
   X: 111
-  "Y": 235
+  Y: 235
   Dir: 3
   Sprite: 628
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3658
 - Name: Tamarin#ep16_1
   X: 361
-  "Y": 142
+  Y: 142
   Dir: 5
   Sprite: 10124
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3753
 - Name: Grilled Griffon#ep16_1
   X: 358
-  "Y": 124
+  Y: 124
   Dir: 0
   Sprite: 10131
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:3879
 - Name: Scarlet Jaha#ep16_1
   X: 73
-  "Y": 244
+  Y: 244
   Dir: 5
   Sprite: 71
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:9434
 - Name: Lidion Geoborg#ep16_1
   X: 82
-  "Y": 240
+  Y: 240
   Dir: 3
   Sprite: 923
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:9581
 - Name: "#ep16_1Whisper1"
   X: 76
-  "Y": 258
+  Y: 258
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:9652
 - Name: "#ep16_1Whisper2"
   X: 84
-  "Y": 232
+  Y: 232
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:9677
 - Name: "#ep16_1Whisper3"
   X: 110
-  "Y": 242
+  Y: 242
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:9698
 - Name: "#ep16_1Whisper4"
   X: 111
-  "Y": 218
+  Y: 218
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:9730
 - Name: "#ep16_1Whisper5"
   X: 92
-  "Y": 224
+  Y: 224
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:9747
 - Name: "#ep16_1Whisper6"
   X: 77
-  "Y": 223
+  Y: 223
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:9767
 - Name: "#ep16_1Whisper7"
   X: 93
-  "Y": 226
+  Y: 226
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:9795
 - Name: Maid#ep16wig02
   X: 322
-  "Y": 216
+  Y: 216
   Dir: 5
   Sprite: 69
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:12061
 - Name: Dark and Damp Wall#ep16wig
   X: 339
-  "Y": 212
+  Y: 212
   Dir: 5
   Sprite: 111
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:12575
 - Name: Sticky Wall#ep16wig
   X: 339
-  "Y": 198
+  Y: 198
   Dir: 5
   Sprite: 111
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:12673
 - Name: Pitch-black Floor#ep16wig
   X: 309
-  "Y": 215
+  Y: 215
   Dir: 5
   Sprite: 111
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:12778
 - Name: Investigator Ryosun#ep16
   X: 165
-  "Y": 245
+  Y: 245
   Dir: 0
   Sprite: 748
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13093
 - Name: "#vip_alimi"
   X: 93
-  "Y": 212
+  Y: 212
   Dir: 0
   Sprite: 139
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13105
 - Name: Chamberlain#vip_alimi
   X: 97
-  "Y": 216
+  Y: 216
   Dir: 2
   Sprite: 968
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13139
 - Name: Banquet Hall Guest#ep16wig01
   X: 104
-  "Y": 231
+  Y: 231
   Dir: 3
   Sprite: 817
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13147
 - Name: Banquet Hall Guest#ep16wig02
   X: 103
-  "Y": 232
+  Y: 232
   Dir: 3
   Sprite: 824
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13153
 - Name: Banquet Hall Guest#ep16wig03
   X: 81
-  "Y": 235
+  Y: 235
   Dir: 3
   Sprite: 478
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13159
 - Name: Banquet Hall Guest#ep16wig04
   X: 79
-  "Y": 219
+  Y: 219
   Dir: 7
   Sprite: 583
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13165
 - Name: Banquet Hall Guest#ep16wig05
   X: 88
-  "Y": 246
+  Y: 246
   Dir: 7
   Sprite: 839
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13171
 - Name: Banquet Hall Guest#ep16wig06
   X: 114
-  "Y": 226
+  Y: 226
   Dir: 5
   Sprite: 537
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13177
 - Name: Banquet Hall Guest#ep16wig07
   X: 87
-  "Y": 231
+  Y: 231
   Dir: 5
   Sprite: 778
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13183
 - Name: Banquet Hall Guest#ep16wig08
   X: 86
-  "Y": 251
+  Y: 251
   Dir: 5
   Sprite: 967
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13189
 - Name: Banquet Hall Guest#1
   X: 72
-  "Y": 227
+  Y: 227
   Dir: 5
   Sprite: 766
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13195
 - Name: Banquet Hall Guest#2
   X: 71
-  "Y": 227
+  Y: 227
   Dir: 5
   Sprite: 763
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13201
 - Name: Banquet Hall Guest#3
   X: 100
-  "Y": 100
+  Y: 100
   Dir: 3
   Sprite: 421
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13207
 - Name: Banquet Hall Guest#5
   X: 89
-  "Y": 250
+  Y: 250
   Dir: 5
   Sprite: 895
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13216
 - Name: Banquet Hall Guest#6
   X: 89
-  "Y": 244
+  Y: 244
   Dir: 7
   Sprite: 642
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13227
 - Name: Ekinasia#ep16_etc01
   X: 91
-  "Y": 237
+  Y: 237
   Dir: 3
   Sprite: 803
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13234
 - Name: Lin#ep16_etc02
   X: 89
-  "Y": 238
+  Y: 238
   Dir: 5
   Sprite: 885
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13266
 - Name: Mayssel#ep16_etc05
   X: 78
-  "Y": 255
+  Y: 255
   Dir: 3
   Sprite: 640
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13273
 - Name: Verkhasel#ep_etc06
   X: 78
-  "Y": 252
+  Y: 252
   Dir: 2
   Sprite: 467
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13316
 - Name: Vicente#ep16_etc07
   X: 76
-  "Y": 254
+  Y: 254
   Dir: 5
   Sprite: 899
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13345
 - Name: Banquet Hall Aristocrat#1
   X: 113
-  "Y": 243
+  Y: 243
   Dir: 3
   Sprite: 90
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13374
 - Name: Banquet Hall Aristocrat#2
   X: 70
-  "Y": 239
+  Y: 239
   Dir: 5
   Sprite: 86
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13381
 - Name: Banquet Hall Aristocrat#3
   X: 73
-  "Y": 232
+  Y: 232
   Dir: 5
   Sprite: 967
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13387
 - Name: Banquet Hall Aristocrat#4
   X: 99
-  "Y": 247
+  Y: 247
   Dir: 3
   Sprite: 573
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13393
 - Name: Court Musician#3
   X: 93
-  "Y": 248
+  Y: 248
   Dir: 5
   Sprite: 485
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13400
 - Name: Court Musician#4
   X: 91
-  "Y": 248
+  Y: 248
   Dir: 5
   Sprite: 479
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13421
 - Name: Court Musician#occi
   X: 95
-  "Y": 248
+  Y: 248
   Dir: 5
   Sprite: 485
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13437
 - Name: Cat#ep16bgm
   X: 98
-  "Y": 248
+  Y: 248
   Dir: 5
   Sprite: 876
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13452
 - Name: Hiba Ajif#ep16
   X: 98
-  "Y": 231
+  Y: 231
   Dir: 5
   Sprite: 459
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13457
 - Name: Avidal the Advisor#ep16
   X: 100
-  "Y": 231
+  Y: 231
   Dir: 3
   Sprite: 755
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13473
 - Name: Instructor Igrid#ep16
   X: 97
-  "Y": 229
+  Y: 229
   Dir: 7
   Sprite: 751
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13479
 - Name: Bruno#ep16_1
   X: 106
-  "Y": 258
+  Y: 258
   Dir: 5
   Sprite: 484
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13486
 - Name: Karian#ep16_1
   X: 89
-  "Y": 257
+  Y: 257
   Dir: 3
   Sprite: 480
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13500
 - Name: Maximilian Roegenburg#ep16wig01
   X: 85
-  "Y": 223
+  Y: 223
   Dir: 1
   Sprite: 10133
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13508
 - Name: Catherine Wigner#ep16wig01
   X: 85
-  "Y": 225
+  Y: 225
   Dir: 4
   Sprite: 71
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13520
 - Name: Levuiere Wigner#ep16wig01
   X: 84
-  "Y": 225
+  Y: 225
   Dir: 4
   Sprite: 10132
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13532
 - Name: Bagette Teeblack#ep16_1
   X: 76
-  "Y": 236
+  Y: 236
   Dir: 3
   Sprite: 883
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13541
 - Name: Isabella#ep16wig
   X: 105
-  "Y": 221
+  Y: 221
   Dir: 1
   Sprite: 90
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13550
 - Name: Beatrice#ep16wig
   X: 105
-  "Y": 224
+  Y: 224
   Dir: 4
   Sprite: 91
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13556
 - Name: Isaac Wigner#ep16wig01
   X: 107
-  "Y": 225
+  Y: 225
   Dir: 5
   Sprite: 10126
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13565
 - Name: Bryan#ep16wig
   X: 108
-  "Y": 223
+  Y: 223
   Dir: 3
   Sprite: 995
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13599
 - Name: Sophia#ep16wig
   X: 107
-  "Y": 222
+  Y: 222
   Dir: 1
   Sprite: 71
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13617
 - Name: Uptight Librarian#ep16lug0
   X: 343
-  "Y": 67
+  Y: 67
   Dir: 4
   Sprite: 71
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13634
 - Name: Erich Nerius#ep16_erihi
   X: 321
-  "Y": 25
+  Y: 25
   Dir: 1
   Sprite: 881
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13813
 - Name: Oliver#ep16_1
   X: 373
-  "Y": 57
+  Y: 57
   Dir: 8
   Sprite: 626
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13864
 - Name: Alf Ocat#ep16_1
   X: 341
-  "Y": 79
+  Y: 79
   Dir: 2
   Sprite: 615
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13878
 - Name: Nervous Man#ep16lug01
   X: 364
-  "Y": 69
+  Y: 69
   Dir: 3
   Sprite: 748
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13891
 - Name: Taunting Man#ep16lug01
   X: 365
-  "Y": 68
+  Y: 68
   Dir: 3
   Sprite: 898
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13923
 - Name: Royal Guardian Knight#01
   X: 218
-  "Y": 182
+  Y: 182
   Dir: 3
   Sprite: 751
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13927
 - Name: Court Musician#orint
   X: 97
-  "Y": 248
+  Y: 248
   Dir: 5
   Sprite: 741
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:13944
 - Name: Woman with Glasses#nir
   X: 375
-  "Y": 124
+  Y: 124
   Dir: 7
   Sprite: 915
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14027
 - Name: Glamorous Girl#pop
   X: 379
-  "Y": 124
+  Y: 124
   Dir: 3
   Sprite: 936
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14032
 - Name: Dumk#ep16_etc03
   X: 368
-  "Y": 125
+  Y: 125
   Dir: 3
   Sprite: 481
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14120
 - Name: Kid#ep16_etc04
   X: 367
-  "Y": 123
+  Y: 123
   Dir: 7
   Sprite: 884
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14173
 - Name: Royal Guardian Knight#02
   X: 161
-  "Y": 168
+  Y: 168
   Dir: 5
   Sprite: 751
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14209
 - Name: Royal Guardian Knight#03
   X: 270
-  "Y": 168
+  Y: 168
   Dir: 3
   Sprite: 751
   DuplicateOf: Royal Guardian Knight#02
@@ -955,66 +957,66 @@ Body:
   Source: npc/re/quests/quests_16_1.txt:14233
 - Name: Noblesse Operator#ext161
   X: 165
-  "Y": 260
+  Y: 260
   Dir: 6
   Sprite: 745
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14236
 - Name: Commissary#ep16
   X: 165
-  "Y": 255
+  Y: 255
   Dir: 7
   Sprite: 734
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14326
 - Name: Logistics Manager#sin
   X: 180
-  "Y": 275
+  Y: 275
   Dir: 5
   Sprite: 733
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14387
 - Name: Guardian Knight#ep16_prigate01
   X: 180
-  "Y": 264
+  Y: 264
   Dir: 3
   Sprite: 751
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14430
 - Name: Guardian Knight#ep16_prigate02
   X: 180
-  "Y": 251
+  Y: 251
   Dir: 3
   Sprite: 751
   Kind: Script
   Source: npc/re/quests/quests_16_1.txt:14435
 - Name: "#ep172_main_evt04"
   X: 138
-  "Y": 342
+  Y: 342
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_17_2.txt:4473
 - Name: Chamberlain Bell#ep172
   X: 140
-  "Y": 344
+  Y: 344
   Dir: 3
   Sprite: 967
   Kind: Script
   Source: npc/re/quests/quests_17_2.txt:4519
 - Name: Nyhill M. Heine#ep172
   X: 325
-  "Y": 263
+  Y: 263
   Dir: 3
   Sprite: 10304
   Kind: Script
   Source: npc/re/quests/quests_17_2.txt:4538
 - Name: Soldier#s11
   X: 87
-  "Y": 214
+  Y: 214
   Dir: 8
   Sprite: 105
   DuplicateOf: Soldier#s11_
@@ -1022,7 +1024,7 @@ Body:
   Source: npc/re/quests/the_sign_quest.txt:12
 - Name: Senior Crusader
   X: 251
-  "Y": 75
+  Y: 75
   Dir: 1
   Sprite: 752
   DuplicateOf: Senior Crusader_
@@ -1030,7 +1032,7 @@ Body:
   Source: npc/re/jobs/2-2/crusader.txt:12
 - Name: Man in Anguish
   X: 238
-  "Y": 94
+  Y: 94
   Dir: 5
   Sprite: 733
   DuplicateOf: Man in Anguish_
@@ -1038,7 +1040,7 @@ Body:
   Source: npc/re/jobs/2-2/crusader.txt:16
 - Name: Patron Knight
   X: 261
-  "Y": 101
+  Y: 101
   Dir: 3
   Sprite: 751
   DuplicateOf: Patron Knight_
@@ -1046,548 +1048,548 @@ Body:
   Source: npc/re/jobs/2-2/crusader.txt:20
 - Name: Middle-aged Gentleman#rg
   X: 172
-  "Y": 275
+  Y: 275
   Dir: 5
   Sprite: 57
   Kind: Script
   Source: npc/re/jobs/3-2/royal_guard.txt:21
 - Name: way_to_qroom_L_qroom_L_to_way
   X: 152
-  "Y": 163
+  Y: 163
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/warps/cities/prontera.txt:23
 - Name: way_to_qroom_R_qroom_R_to_way
   X: 278
-  "Y": 163
+  Y: 163
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/warps/cities/prontera.txt:38
 - Name: prt_cas_to_prt_pri00
   X: 188
-  "Y": 258
+  Y: 258
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/warps/cities/prontera.txt:95
 - Name: mainhall_in_mainhall_out
   X: 216
-  "Y": 184
+  Y: 184
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 93
-    "Y": 212
+    Y: 212
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:133
 - Name: mainhall_out_mainhall_in
   X: 93
-  "Y": 208
+  Y: 208
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 216
-    "Y": 180
+    Y: 180
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:134
 - Name: guestroom_l1_in_guestroom_l1
   X: 197
-  "Y": 148
+  Y: 148
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 31
-    "Y": 117
+    Y: 117
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:135
 - Name: guestroom_l1_guestroom_l1_in
   X: 31
-  "Y": 120
+  Y: 120
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 197
-    "Y": 152
+    Y: 152
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:136
 - Name: guestroom_l2_in_guestroom_l2
   X: 178
-  "Y": 148
+  Y: 148
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 27
-    "Y": 43
+    Y: 43
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:137
 - Name: guestroom_l2_guestroom_l2_in
   X: 27
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 178
-    "Y": 152
+    Y: 152
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:138
 - Name: guestroom_r1_in_guestroom_r1
   X: 235
-  "Y": 148
+  Y: 148
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 174
-    "Y": 104
+    Y: 104
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:139
 - Name: guestroom_r1_guestroom_r1_in
   X: 174
-  "Y": 108
+  Y: 108
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 235
-    "Y": 152
+    Y: 152
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:140
 - Name: guestroom_r2_in_guestroom_r2
   X: 253
-  "Y": 148
+  Y: 148
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 174
-    "Y": 37
+    Y: 37
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:141
 - Name: guestroom_r2_guestroom_r2_in
   X: 174
-  "Y": 40
+  Y: 40
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 253
-    "Y": 152
+    Y: 152
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:142
 - Name: way_up_L_way_down_L
   X: 164
-  "Y": 177
+  Y: 177
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 54
-    "Y": 156
+    Y: 156
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:143
 - Name: way_down_L_way_up_L
   X: 54
-  "Y": 152
+  Y: 152
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 164
-    "Y": 172
+    Y: 172
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:144
 - Name: way_up_R_way_down_R
   X: 268
-  "Y": 176
+  Y: 176
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 110
-    "Y": 156
+    Y: 156
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:145
 - Name: way_down_R_way_up_R
   X: 110
-  "Y": 152
+  Y: 152
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 268
-    "Y": 172
+    Y: 172
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:146
 - Name: way_to_gld_gld_to_cas
   X: 82
-  "Y": 175
+  Y: 175
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_gld
     X: 159
-    "Y": 30
+    Y: 30
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:147
 - Name: library_in_library_out
   X: 130
-  "Y": 218
+  Y: 218
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 303
-    "Y": 48
+    Y: 48
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:149
 - Name: library_out_library_in
   X: 300
-  "Y": 48
+  Y: 48
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 127
-    "Y": 218
+    Y: 218
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:150
 - Name: cruroom_in_cruroom_out
   X: 174
-  "Y": 234
+  Y: 234
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 247
-    "Y": 107
+    Y: 107
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:151
 - Name: cruroom_out_cruroom_in
   X: 247
-  "Y": 111
+  Y: 111
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 174
-    "Y": 237
+    Y: 237
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:152
 - Name: cuisine_in_cuisine_out
   X: 41
-  "Y": 275
+  Y: 275
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 320
-    "Y": 182
+    Y: 182
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:153
 - Name: cuisine_out_cuisine_in
   X: 320
-  "Y": 178
+  Y: 178
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 41
-    "Y": 271
+    Y: 271
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:154
 - Name: dining_in_dining_out
   X: 54
-  "Y": 217
+  Y: 217
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 388
-    "Y": 137
+    Y: 137
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:155
 - Name: dining_out_dining_in
   X: 392
-  "Y": 137
+  Y: 137
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 58
-    "Y": 217
+    Y: 217
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:156
 - Name: cas_out_prt_to_cas
   X: 216
-  "Y": 142
+  Y: 142
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prontera
     X: 156
-    "Y": 354
+    Y: 354
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:157
 - Name: "#ep172_prt_to_prt-0"
   X: 146
-  "Y": 330
+  Y: 330
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 309
-    "Y": 288
+    Y: 288
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:163
 - Name: "#ep172_prt_to_prt-1"
   X: 309
-  "Y": 291
+  Y: 291
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 146
-    "Y": 334
+    Y: 334
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:164
 - Name: "#ep172_prt_to_prt-2"
   X: 48
-  "Y": 330
+  Y: 330
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 252
-    "Y": 242
+    Y: 242
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:165
 - Name: "#ep172_prt_to_prt-3"
   X: 251
-  "Y": 246
+  Y: 246
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 48
-    "Y": 334
+    Y: 334
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:166
 - Name: "#ep172_prt_to_prt-4"
   X: 20
-  "Y": 342
+  Y: 342
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 269
-    "Y": 313
+    Y: 313
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:167
 - Name: "#ep172_prt_to_prt-5"
   X: 273
-  "Y": 313
+  Y: 313
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 23
-    "Y": 342
+    Y: 342
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:168
 - Name: "#ep172_prt_to_prt-6"
   X: 254
-  "Y": 347
+  Y: 347
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 96
-    "Y": 18
+    Y: 18
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:169
 - Name: "#ep172_prt_to_prt-7"
   X: 96
-  "Y": 14
+  Y: 14
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 254
-    "Y": 343
+    Y: 343
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:170
 - Name: "#ep172_prt_to_prt-8"
   X: 174
-  "Y": 342
+  Y: 342
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 322
-    "Y": 336
+    Y: 336
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:171
 - Name: "#ep172_prt_to_prt-9"
   X: 318
-  "Y": 336
+  Y: 336
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_cas
     X: 170
-    "Y": 342
+    Y: 342
     TriggerWhileHidden: false
   Source: npc/re/warps/cities/prontera.txt:172

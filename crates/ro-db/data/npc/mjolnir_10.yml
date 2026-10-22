@@ -2,167 +2,169 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: "#mj10_01"
   X: 188
-  "Y": 260
+  Y: 260
   Dir: 3
   Sprite: 111
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   DuplicateOf: mjo_find
   Kind: Script
   Source: npc/quests/quests_13_2.txt:4948
 - Name: "#mj10_find_1"
   X: 201
-  "Y": 355
+  Y: 355
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/quests/quests_13_2.txt:5135
 - Name: "#mj10_find_2"
   X: 374
-  "Y": 215
+  Y: 215
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/quests/quests_13_2.txt:5144
 - Name: "#mj10_find_3"
   X: 272
-  "Y": 20
+  Y: 20
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/quests/quests_13_2.txt:5153
 - Name: "#mj10_find_4"
   X: 75
-  "Y": 22
+  Y: 22
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/quests/quests_13_2.txt:5162
 - Name: "#mj10_find_5"
   X: 27
-  "Y": 258
+  Y: 258
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/quests/quests_13_2.txt:5171
 - Name: "#mj10_01_t"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 3
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_13_2.txt:5180
 - Name: mjol15-1
   X: 15
-  "Y": 258
+  Y: 258
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 4
+    Y: 4
   Kind: Warp
   Warp:
     Map: mjolnir_08
     X: 366
-    "Y": 257
+    Y: 257
     TriggerWhileHidden: false
   Source: npc/warps/fields/mtmjolnir.txt:54
 - Name: mjol09-1
   X: 235
-  "Y": 381
+  Y: 381
   Dir: 0
   Sprite: 45
   Trigger:
     X: 4
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: mjolnir_05
     X: 235
-    "Y": 19
+    Y: 19
     TriggerWhileHidden: false
   Source: npc/warps/fields/mtmjolnir.txt:55
 - Name: mjol008
   X: 265
-  "Y": 13
+  Y: 13
   Dir: 0
   Sprite: 45
   Trigger:
     X: 3
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_fild01
     X: 261
-    "Y": 370
+    Y: 370
     TriggerWhileHidden: false
   Source: npc/warps/fields/mtmjolnir.txt:56
 - Name: mjol16
   X: 384
-  "Y": 220
+  Y: 220
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 4
+    Y: 4
   Kind: Warp
   Warp:
     Map: mjolnir_11
     X: 23
-    "Y": 220
+    Y: 220
     TriggerWhileHidden: false
   Source: npc/warps/fields/mtmjolnir.txt:57
 - Name: mjol009
   X: 66
-  "Y": 15
+  Y: 15
   Dir: 0
   Sprite: 45
   Trigger:
     X: 4
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: prt_fild01
     X: 66
-    "Y": 370
+    Y: 370
     TriggerWhileHidden: false
   Source: npc/warps/fields/mtmjolnir.txt:58
 - Name: "#wp120041"
   X: 353
-  "Y": 371
+  Y: 371
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:210
 - Name: "#tr120041"
   X: 353
-  "Y": 371
+  Y: 371
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click

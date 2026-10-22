@@ -2,377 +2,379 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: advs_init
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:132
 - Name: "#wp1"
   X: 124
-  "Y": 101
+  Y: 101
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@advs
     X: 124
-    "Y": 115
+    Y: 115
     TriggerWhileHidden: false
   Source: npc/re/instances/VillaofDeception.txt:270
 - Name: "#wp2"
   X: 124
-  "Y": 205
+  Y: 205
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:273
 - Name: "#wp3"
   X: 124
-  "Y": 266
+  Y: 266
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@advs
     X: 124
-    "Y": 277
+    Y: 277
     TriggerWhileHidden: false
   Source: npc/re/instances/VillaofDeception.txt:286
 - Name: "#wp4"
   X: 124
-  "Y": 307
+  Y: 307
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: 1@advs
     X: 124
-    "Y": 319
+    Y: 319
     TriggerWhileHidden: false
   Source: npc/re/instances/VillaofDeception.txt:287
 - Name: "#advs_step_1"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:294
 - Name: "#sw_1"
   X: 67
-  "Y": 182
+  Y: 182
   Dir: 5
   Sprite: 802
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:338
 - Name: "#sw_2"
   X: 180
-  "Y": 182
+  Y: 182
   Dir: 5
   Sprite: 802
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:357
 - Name: "#sw_timer"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 5
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:376
 - Name: "#trap_1"
   X: 75
-  "Y": 89
+  Y: 89
   Dir: 5
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:407
 - Name: "#trap_2"
   X: 80
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#trap_1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:447
 - Name: "#trap_3"
   X: 85
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#trap_1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:448
 - Name: "#trap_4"
   X: 90
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#trap_1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:449
 - Name: "#trap_5"
   X: 95
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#trap_1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:450
 - Name: "#trap_6"
   X: 100
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#trap_1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:451
 - Name: "#trap_7"
   X: 105
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#trap_1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:452
 - Name: "#trap_8"
   X: 110
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#trap_1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:453
 - Name: "#trap_9"
   X: 115
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#trap_1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:454
 - Name: "#trap_10"
   X: 130
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#trap_1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:456
 - Name: "#trap_11"
   X: 135
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#trap_1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:457
 - Name: "#trap_12"
   X: 140
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#trap_1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:458
 - Name: "#trap_13"
   X: 145
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#trap_1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:459
 - Name: "#trap_14"
   X: 150
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#trap_1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:460
 - Name: "#trap_15"
   X: 155
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#trap_1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:461
 - Name: "#trap_16"
   X: 160
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#trap_1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:462
 - Name: "#trap_17"
   X: 165
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#trap_1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:463
 - Name: "#trap_18"
   X: 170
-  "Y": 89
+  Y: 89
   Dir: 1
   Sprite: 10028
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#trap_1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:464
 - Name: "#advs_step_2"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:470
 - Name: "#food1"
   X: 101
-  "Y": 159
+  Y: 159
   Dir: 5
   Sprite: 10131
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:525
 - Name: "#food2"
   X: 101
-  "Y": 125
+  Y: 125
   Dir: 5
   Sprite: 10131
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#food1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:549
 - Name: "#food3"
   X: 147
-  "Y": 162
+  Y: 162
   Dir: 5
   Sprite: 10131
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#food1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:550
 - Name: "#food4"
   X: 147
-  "Y": 122
+  Y: 122
   Dir: 5
   Sprite: 10131
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: "#food1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:551
 - Name: "#advs_step_3_A"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 5
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:557
 - Name: "#advs_step_3_B"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:593
 - Name: "#boss1_advs"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 4
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:643
 - Name: "#boss1"
   X: 124
-  "Y": 295
+  Y: 295
   Dir: 4
   Sprite: 21316
   SpriteIsMob: true
@@ -380,133 +382,133 @@ Body:
   Source: npc/re/instances/VillaofDeception.txt:664
 - Name: "#boss1_advs_skill_1"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:689
 - Name: "#boss2_sw"
   X: 124
-  "Y": 358
+  Y: 358
   Dir: 4
   Sprite: 844
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:738
 - Name: "#boss2"
   X: 124
-  "Y": 356
+  Y: 356
   Dir: 4
   Sprite: 844
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: dummy_npc
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:799
 - Name: "#advs_boss_relieve"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 4
   Sprite: -1
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:801
 - Name: "#b_tr1"
   X: 124
-  "Y": 337
+  Y: 337
   Dir: 5
   Sprite: 20847
   SpriteIsMob: true
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:824
 - Name: "#b_tr2"
   X: 124
-  "Y": 337
+  Y: 337
   Dir: 5
   Sprite: 20847
   SpriteIsMob: true
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#b_tr1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:863
 - Name: "#b_tr3"
   X: 124
-  "Y": 337
+  Y: 337
   Dir: 5
   Sprite: 20847
   SpriteIsMob: true
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#b_tr1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:864
 - Name: "#b_tr4"
   X: 124
-  "Y": 337
+  Y: 337
   Dir: 5
   Sprite: 20847
   SpriteIsMob: true
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#b_tr1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:865
 - Name: "#b_sw1"
   X: 108
-  "Y": 358
+  Y: 358
   Dir: 4
   Sprite: 10044
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:869
 - Name: "#b_sw2"
   X: 101
-  "Y": 351
+  Y: 351
   Dir: 4
   Sprite: 10044
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#b_sw1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:924
 - Name: "#b_sw3"
   X: 139
-  "Y": 358
+  Y: 358
   Dir: 4
   Sprite: 10044
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#b_sw1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:925
 - Name: "#b_sw4"
   X: 145
-  "Y": 351
+  Y: 351
   Dir: 4
   Sprite: 10044
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   DuplicateOf: "#b_sw1"
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:926
 - Name: "#box_admin"
   X: 123
-  "Y": 358
+  Y: 358
   Dir: 4
   Sprite: 10044
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/re/instances/VillaofDeception.txt:929

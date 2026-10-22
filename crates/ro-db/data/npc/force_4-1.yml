@@ -2,114 +2,116 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Octus#arena
   X: 99
-  "Y": 20
+  Y: 20
   Dir: 4
   Sprite: 124
   Kind: Script
   Source: npc/other/arena/arena_lvl80.txt:37
 - Name: force_08_01#80
   X: 62
-  "Y": 26
+  Y: 26
   Dir: 1
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/other/arena/arena_lvl80.txt:315
 - Name: force_01_02#80
   X: 25
-  "Y": 44
+  Y: 44
   Dir: 1
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/other/arena/arena_lvl80.txt:322
 - Name: force_02_03#80
   X: 25
-  "Y": 134
+  Y: 134
   Dir: 1
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/other/arena/arena_lvl80.txt:329
 - Name: force_03_04#80
   X: 44
-  "Y": 174
+  Y: 174
   Dir: 1
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/other/arena/arena_lvl80.txt:336
 - Name: force_04_05#80
   X: 134
-  "Y": 174
+  Y: 174
   Dir: 1
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/other/arena/arena_lvl80.txt:344
 - Name: force_05_06#80
   X: 174
-  "Y": 155
+  Y: 155
   Dir: 1
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/other/arena/arena_lvl80.txt:351
 - Name: force_06_07#80
   X: 174
-  "Y": 65
+  Y: 65
   Dir: 1
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/other/arena/arena_lvl80.txt:358
 - Name: force_07_08#80
   X: 155
-  "Y": 26
+  Y: 26
   Dir: 1
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/other/arena/arena_lvl80.txt:365
 - Name: force_08_09#80
   X: 99
-  "Y": 54
+  Y: 54
   Dir: 1
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/other/arena/arena_lvl80.txt:373
 - Name: force_exit#80
   X: 99
-  "Y": 124
+  Y: 124
   Dir: 1
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/other/arena/arena_lvl80.txt:380

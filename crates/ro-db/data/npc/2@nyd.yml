@@ -2,134 +2,136 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: nyd_2f_enter
   X: 200
-  "Y": 14
+  Y: 14
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:1807
 - Name: nyd_2f_enter_broad
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:1814
 - Name: nyd_2f_ddr_control
   X: 199
-  "Y": 178
+  Y: 178
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:1840
 - Name: nyd_2f_boss_enter
   X: 199
-  "Y": 268
+  Y: 268
   Dir: 0
   Sprite: -1
   Trigger:
     X: 8
-    "Y": 8
+    Y: 8
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:1851
 - Name: nyd_2f_boss_enter_call
   X: 2
-  "Y": 2
+  Y: 2
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:1861
 - Name: nyd_2f_boss_enter_logic
   X: 2
-  "Y": 4
+  Y: 4
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:1937
 - Name: World Tree Yggdrasil#2F
   X: 202
-  "Y": 324
+  Y: 324
   Dir: 5
   Sprite: 437
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:1958
 - Name: nyd_2f_red
   X: 115
-  "Y": 278
+  Y: 278
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:2005
 - Name: nyd_2f_red_c
   X: 6
-  "Y": 6
+  Y: 6
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:2050
 - Name: nyd_2f_red_warp1
   X: 130
-  "Y": 298
+  Y: 298
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:2118
 - Name: nyd_2f_red_warp2
   X: 142
-  "Y": 296
+  Y: 296
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: nyd_2f_red_warp1
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:2139
 - Name: nyd_2f_red_warp3
   X: 145
-  "Y": 283
+  Y: 283
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: nyd_2f_red_warp1
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:2140
 - Name: nyd_2f_white
   X: 115
-  "Y": 373
+  Y: 373
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: nyd_2f_red
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:2142
 - Name: nyd_2f_white_c
   X: 6
-  "Y": 7
+  Y: 7
   Dir: 0
   Sprite: -1
   DuplicateOf: nyd_2f_red_c
@@ -137,51 +139,51 @@ Body:
   Source: npc/instances/NydhoggsNest.txt:2143
 - Name: nyd_2f_white_warp1
   X: 127
-  "Y": 354
+  Y: 354
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: nyd_2f_red_warp1
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:2144
 - Name: nyd_2f_white_warp2
   X: 140
-  "Y": 357
+  Y: 357
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: nyd_2f_red_warp1
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:2145
 - Name: nyd_2f_white_warp3
   X: 145
-  "Y": 367
+  Y: 367
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: nyd_2f_red_warp1
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:2146
 - Name: nyd_2f_yellow
   X: 284
-  "Y": 278
+  Y: 278
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: nyd_2f_red
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:2148
 - Name: nyd_2f_yellow_c
   X: 6
-  "Y": 8
+  Y: 8
   Dir: 0
   Sprite: -1
   DuplicateOf: nyd_2f_red_c
@@ -189,51 +191,51 @@ Body:
   Source: npc/instances/NydhoggsNest.txt:2149
 - Name: nyd_2f_yellow_warp1
   X: 255
-  "Y": 285
+  Y: 285
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: nyd_2f_red_warp1
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:2150
 - Name: nyd_2f_yellow_warp2
   X: 257
-  "Y": 296
+  Y: 296
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: nyd_2f_red_warp1
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:2151
 - Name: nyd_2f_yellow_warp3
   X: 268
-  "Y": 300
+  Y: 300
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: nyd_2f_red_warp1
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:2152
 - Name: nyd_2f_green
   X: 284
-  "Y": 374
+  Y: 374
   Dir: 0
   Sprite: -1
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: nyd_2f_red
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:2154
 - Name: nyd_2f_green_c
   X: 6
-  "Y": 9
+  Y: 9
   Dir: 0
   Sprite: -1
   DuplicateOf: nyd_2f_red_c
@@ -241,40 +243,40 @@ Body:
   Source: npc/instances/NydhoggsNest.txt:2155
 - Name: nyd_2f_green_warp1
   X: 274
-  "Y": 356
+  Y: 356
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: nyd_2f_red_warp1
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:2156
 - Name: nyd_2f_green_warp2
   X: 260
-  "Y": 356
+  Y: 356
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: nyd_2f_red_warp1
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:2157
 - Name: nyd_2f_green_warp3
   X: 258
-  "Y": 368
+  Y: 368
   Dir: 0
   Sprite: -1
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: nyd_2f_red_warp1
   Kind: Script
   Source: npc/instances/NydhoggsNest.txt:2158
 - Name: ins_nyd2_spawn_mobs
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script

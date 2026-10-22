@@ -2,6 +2,8 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
@@ -9,29 +11,29 @@ Body:
 - Name: Hunter Info#hnt
   UniqueName: HntNotice
   X: 99
-  "Y": 99
+  Y: 99
   Dir: 4
   Sprite: 727
   Kind: Script
   Source: npc/jobs/2-1/hunter.txt:60
 - Name: jhun01
   X: 100
-  "Y": 15
+  Y: 15
   Dir: 0
   Sprite: 45
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   Kind: Warp
   Warp:
     Map: pay_fild10
     X: 143
-    "Y": 250
+    Y: 250
     TriggerWhileHidden: false
   Source: npc/warps/other/jobquests.txt:77
 - Name: Arrow Merchant#over_arrow_25
   X: 104
-  "Y": 108
+  Y: 108
   Dir: 3
   Sprite: 634
   DuplicateOf: "#over_arrow"

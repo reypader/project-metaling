@@ -2,83 +2,85 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Baba Yaga#rus32
   X: 48
-  "Y": 214
+  Y: 214
   Dir: 5
   Sprite: 970
   Kind: Script
   Source: npc/quests/quests_moscovia.txt:9359
 - Name: Cow#rus33
   X: 257
-  "Y": 193
+  Y: 193
   Dir: 0
   Sprite: 889
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/quests/quests_moscovia.txt:9998
 - Name: Cow#rus34
   X: 146
-  "Y": 247
+  Y: 247
   Dir: 4
   Sprite: 889
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: Cow#rus33
   Kind: Script
   Source: npc/quests/quests_moscovia.txt:10080
 - Name: Cow#rus35
   X: 102
-  "Y": 107
+  Y: 107
   Dir: 4
   Sprite: 889
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: Cow#rus33
   Kind: Script
   Source: npc/quests/quests_moscovia.txt:10081
 - Name: Noisy Coffin#rus36
   X: 65
-  "Y": 232
+  Y: 232
   Dir: 0
   Sprite: 801
   Kind: Script
   Source: npc/quests/quests_moscovia.txt:10083
 - Name: House Ghost Jar#rus43
   X: 57
-  "Y": 220
+  Y: 220
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_moscovia.txt:10546
 - Name: "#babayagain"
   X: 53
-  "Y": 220
+  Y: 220
   Dir: 4
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/warps/dungeons/mosk_dun.txt:23
 - Name: Soldier1#mos
   X: 53
-  "Y": 215
+  Y: 215
   Dir: 3
   Sprite: 966
   Kind: Script
   Source: npc/warps/dungeons/mosk_dun.txt:87
 - Name: Soldier2#mos
   X: 50
-  "Y": 217
+  Y: 217
   Dir: 3
   Sprite: 966
   DuplicateOf: Soldier1#mos
@@ -86,7 +88,7 @@ Body:
   Source: npc/warps/dungeons/mosk_dun.txt:101
 - Name: Soldier3#mos
   X: 56
-  "Y": 217
+  Y: 217
   Dir: 5
   Sprite: 966
   DuplicateOf: Soldier1#mos
@@ -94,14 +96,14 @@ Body:
   Source: npc/warps/dungeons/mosk_dun.txt:102
 - Name: Milestone#2-1
   X: 168
-  "Y": 28
+  Y: 28
   Dir: 3
   Sprite: 111
   Kind: Script
   Source: npc/warps/dungeons/mosk_dun.txt:143
 - Name: Milestone#2-3
   X: 268
-  "Y": 117
+  Y: 117
   Dir: 3
   Sprite: 111
   Kind: Script

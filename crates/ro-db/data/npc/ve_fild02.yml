@@ -2,39 +2,41 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: arug001
   X: 191
-  "Y": 21
+  Y: 21
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: aru_gld
     X: 195
-    "Y": 360
+    Y: 360
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:424
 - Name: "#wp120086"
   X: 65
-  "Y": 194
+  Y: 194
   Dir: 4
   Sprite: 139
   Trigger:
     X: 5
-    "Y": 5
+    Y: 5
   DuplicateOf: ach_treasure#touch
   Kind: Script
   Source: npc/re/other/achievements.txt:255
 - Name: "#tr120086"
   X: 65
-  "Y": 194
+  Y: 194
   Dir: 4
   Sprite: 10005
   DuplicateOf: ach_treasure#click
@@ -42,7 +44,7 @@ Body:
   Source: npc/re/other/achievements.txt:516
 - Name: Wincing Old Man#ve
   X: 337
-  "Y": 314
+  Y: 314
   Dir: 4
   Sprite: 945
   DuplicateOf: WincingOldMan_veins
@@ -50,53 +52,53 @@ Body:
   Source: npc/re/quests/quests_veins.txt:15
 - Name: Girl#3rdgc14
   X: 330
-  "Y": 384
+  Y: 384
   Dir: 3
   Sprite: 466
   Kind: Script
   Source: npc/re/jobs/3-1/guillotine_cross.txt:2668
 - Name: ve_fild2-3
   X: 195
-  "Y": 382
+  Y: 382
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: rachel
     X: 130
-    "Y": 25
+    Y: 25
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/veins_fild.txt:23
 - Name: ve_fild2-4
   X: 31
-  "Y": 263
+  Y: 263
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ve_fild01
     X: 361
-    "Y": 267
+    Y: 267
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/veins_fild.txt:24
 - Name: ve_fild2-5
   X: 73
-  "Y": 133
+  Y: 133
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ve_fild01
     X: 345
-    "Y": 92
+    Y: 92
     TriggerWhileHidden: false
   Source: npc/re/warps/fields/veins_fild.txt:25

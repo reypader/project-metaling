@@ -2,262 +2,264 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: nprtg01-1
   X: 103
-  "Y": 32
+  Y: 32
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: n_castle
     X: 19
-    "Y": 14
+    Y: 14
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:506
 - Name: nprtg107
   X: 109
-  "Y": 163
+  Y: 163
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_prt
     X: 202
-    "Y": 183
+    Y: 183
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:508
 - Name: nprtg106
   X: 147
-  "Y": 120
+  Y: 120
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_prt
     X: 75
-    "Y": 187
+    Y: 187
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:509
 - Name: nprtg103-1
   X: 196
-  "Y": 119
+  Y: 119
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_prt
     X: 40
-    "Y": 54
+    Y: 54
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:510
 - Name: nprtg104-1
   X: 196
-  "Y": 65
+  Y: 65
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_prt
     X: 75
-    "Y": 54
+    Y: 54
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:511
 - Name: nprtg107-1
   X: 206
-  "Y": 183
+  Y: 183
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_prt
     X: 113
-    "Y": 163
+    Y: 163
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:512
 - Name: nprtg105-1
   X: 206
-  "Y": 92
+  Y: 92
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_prt
     X: 55
-    "Y": 70
+    Y: 70
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:513
 - Name: nprtg102-1
   X: 37
-  "Y": 47
+  Y: 47
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_prt
     X: 45
-    "Y": 34
+    Y: 34
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:514
 - Name: nprtg103
   X: 37
-  "Y": 54
+  Y: 54
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_prt
     X: 192
-    "Y": 119
+    Y: 119
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:515
 - Name: nprtg102
   X: 41
-  "Y": 34
+  Y: 34
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_prt
     X: 40
-    "Y": 47
+    Y: 47
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:516
 - Name: nprtg105
   X: 51
-  "Y": 70
+  Y: 70
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_prt
     X: 202
-    "Y": 92
+    Y: 92
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:517
 - Name: nprtg101
   X: 57
-  "Y": 19
+  Y: 19
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_prt
     X: 80
-    "Y": 49
+    Y: 49
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:518
 - Name: nprtg108
   X: 62
-  "Y": 34
+  Y: 34
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_prt
     X: 192
-    "Y": 119
+    Y: 119
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:519
 - Name: nprtg104
   X: 71
-  "Y": 54
+  Y: 54
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_prt
     X: 192
-    "Y": 65
+    Y: 65
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:520
 - Name: nprtg106-1
   X: 75
-  "Y": 183
+  Y: 183
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_prt
     X: 147
-    "Y": 116
+    Y: 116
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:521
 - Name: nprtg109
   X: 84
-  "Y": 19
+  Y: 19
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_prt
     X: 192
-    "Y": 65
+    Y: 65
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:522
 - Name: nprtg101-1
   X: 84
-  "Y": 49
+  Y: 49
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: nguild_prt
     X: 61
-    "Y": 19
+    Y: 19
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:523

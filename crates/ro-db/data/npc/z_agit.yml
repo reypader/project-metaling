@@ -2,54 +2,56 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: EntranceCheck#1
   X: 98
-  "Y": 44
+  Y: 44
   Dir: 0
   Sprite: -1
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/quests/quests_nameless.txt:8450
 - Name: EntranceCheck#2
   X: 98
-  "Y": 92
+  Y: 92
   Dir: 0
   Sprite: -1
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/quests/quests_nameless.txt:8479
 - Name: "#zdan_broad"
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/quests/quests_nameless.txt:8508
 - Name: Louis
   X: 97
-  "Y": 101
+  Y: 101
   Dir: 3
   Sprite: 931
   Kind: Script
   Source: npc/quests/quests_nameless.txt:8653
 - Name: Martha
   X: 99
-  "Y": 101
+  Y: 101
   Dir: 3
   Sprite: 101
   Kind: Script
   Source: npc/quests/quests_nameless.txt:8773
 - Name: Catfoii
   X: 95
-  "Y": 101
+  Y: 101
   Dir: 3
   Sprite: 876
   Kind: Script

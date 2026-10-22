@@ -2,20 +2,22 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Chirp#172wh01
   X: 150
-  "Y": 51
+  Y: 51
   Dir: 5
   Sprite: 10357
   Kind: Script
   Source: npc/re/quests/quests_17_2.txt:6643
 - Name: Beta#ep172_2whs01-00
   X: 153
-  "Y": 49
+  Y: 49
   Dir: 1
   Sprite: 10345
   State: Cloaked
@@ -24,39 +26,39 @@ Body:
   Source: npc/re/quests/quests_17_2.txt:7338
 - Name: "#ep172_key_ev_0"
   X: 110
-  "Y": 218
+  Y: 218
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   Kind: Script
   Source: npc/re/quests/quests_17_2.txt:7340
 - Name: "#ep172_key_ev_1"
   X: 14
-  "Y": 282
+  Y: 282
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#ep172_key_ev_0"
   Kind: Script
   Source: npc/re/quests/quests_17_2.txt:7352
 - Name: "#ep172_key_ev_2"
   X: 222
-  "Y": 257
+  Y: 257
   Dir: 0
   Sprite: 139
   Trigger:
     X: 3
-    "Y": 3
+    Y: 3
   DuplicateOf: "#ep172_key_ev_0"
   Kind: Script
   Source: npc/re/quests/quests_17_2.txt:7353
 - Name: Emergency Key#ep172_0
   X: 110
-  "Y": 218
+  Y: 218
   Dir: 0
   Sprite: 10046
   State: Cloaked
@@ -64,7 +66,7 @@ Body:
   Source: npc/re/quests/quests_17_2.txt:7355
 - Name: Emergency Key#ep172_1
   X: 14
-  "Y": 282
+  Y: 282
   Dir: 0
   Sprite: 10046
   State: Cloaked
@@ -73,7 +75,7 @@ Body:
   Source: npc/re/quests/quests_17_2.txt:7404
 - Name: Emergency Key#ep172_2
   X: 222
-  "Y": 257
+  Y: 257
   Dir: 0
   Sprite: 10046
   State: Cloaked
@@ -82,23 +84,23 @@ Body:
   Source: npc/re/quests/quests_17_2.txt:7405
 - Name: Lock#ep172_2whs01-00
   X: 276
-  "Y": 290
+  Y: 290
   Dir: 0
   Sprite: 10043
   Kind: Script
   Source: npc/re/quests/quests_17_2.txt:7407
 - Name: "#ep172_2whs01_out"
   X: 156
-  "Y": 29
+  Y: 29
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ba_maison
     X: 305
-    "Y": 319
+    Y: 319
     TriggerWhileHidden: false
   Source: npc/re/warps/other/ba_2whs.txt:11

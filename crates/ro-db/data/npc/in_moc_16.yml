@@ -2,64 +2,66 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Sepulchral Merchant#moc
   X: 22
-  "Y": 20
+  Y: 20
   Dir: 7
   Sprite: 880
   Kind: Shop
   Source: npc/merchants/shops.txt:201
 - Name: Guildsman#asn
   X: 19
-  "Y": 33
+  Y: 33
   Dir: 1
   Sprite: 55
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:50
 - Name: Guildsman#ASN2
   X: 25
-  "Y": 90
+  Y: 90
   Dir: 1
   Sprite: 730
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:292
 - Name: nameless_one
   X: 19
-  "Y": 154
+  Y: 154
   Dir: 0
   Sprite: -1
   Trigger:
     X: 8
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:664
 - Name: Standby Room#ASNTEST
   X: 21
-  "Y": 165
+  Y: 165
   Dir: 2
   Sprite: 725
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1099
 - Name: Test Guide#ASN
   X: 21
-  "Y": 165
+  Y: 165
   Dir: 2
   Sprite: 725
   Trigger:
     X: 4
-    "Y": 4
+    Y: 4
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1127
 - Name: Beholder#ASNTEST
   X: 1
-  "Y": 1
+  Y: 1
   Dir: 0
   Sprite: -1
   Kind: Script
@@ -67,1081 +69,1081 @@ Body:
 - Name: "01_1"
   UniqueName: SinTrap
   X: 68
-  "Y": 158
+  Y: 158
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1353
 - Name: "01_2"
   X: 69
-  "Y": 158
+  Y: 158
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1365
 - Name: "01_3"
   X: 68
-  "Y": 159
+  Y: 159
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1366
 - Name: "01_4"
   X: 69
-  "Y": 159
+  Y: 159
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1367
 - Name: "02_1"
   X: 64
-  "Y": 162
+  Y: 162
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1368
 - Name: "02_2"
   X: 65
-  "Y": 162
+  Y: 162
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1369
 - Name: "02_3"
   X: 64
-  "Y": 163
+  Y: 163
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1370
 - Name: "02_4"
   X: 65
-  "Y": 163
+  Y: 163
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1371
 - Name: "03_1"
   X: 62
-  "Y": 168
+  Y: 168
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1372
 - Name: "03_2"
   X: 63
-  "Y": 168
+  Y: 168
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1373
 - Name: "03_3"
   X: 62
-  "Y": 169
+  Y: 169
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1374
 - Name: "03_4"
   X: 63
-  "Y": 169
+  Y: 169
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1375
 - Name: "04_1"
   X: 66
-  "Y": 170
+  Y: 170
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1376
 - Name: "04_2"
   X: 67
-  "Y": 170
+  Y: 170
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1377
 - Name: "04_3"
   X: 66
-  "Y": 171
+  Y: 171
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1378
 - Name: "04_4"
   X: 67
-  "Y": 171
+  Y: 171
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1379
 - Name: "05_1"
   X: 64
-  "Y": 174
+  Y: 174
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1380
 - Name: "05_2"
   X: 64
-  "Y": 175
+  Y: 175
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1381
 - Name: "05_3"
   X: 65
-  "Y": 174
+  Y: 174
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1382
 - Name: "05_4"
   X: 65
-  "Y": 175
+  Y: 175
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1383
 - Name: "06_1"
   X: 72
-  "Y": 174
+  Y: 174
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1384
 - Name: "06_2"
   X: 72
-  "Y": 175
+  Y: 175
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1385
 - Name: "06_3"
   X: 73
-  "Y": 174
+  Y: 174
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1386
 - Name: "06_4"
   X: 73
-  "Y": 175
+  Y: 175
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1387
 - Name: "07_1"
   X: 72
-  "Y": 166
+  Y: 166
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1388
 - Name: "07_2"
   X: 72
-  "Y": 167
+  Y: 167
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1389
 - Name: "07_3"
   X: 73
-  "Y": 166
+  Y: 166
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1390
 - Name: "07_4"
   X: 73
-  "Y": 167
+  Y: 167
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1391
 - Name: "08_1"
   X: 72
-  "Y": 168
+  Y: 168
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1392
 - Name: "08_2"
   X: 72
-  "Y": 169
+  Y: 169
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1393
 - Name: "08_3"
   X: 73
-  "Y": 168
+  Y: 168
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1394
 - Name: "08_4"
   X: 73
-  "Y": 169
+  Y: 169
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1395
 - Name: "09_1"
   X: 78
-  "Y": 168
+  Y: 168
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1396
 - Name: "09_2"
   X: 78
-  "Y": 169
+  Y: 169
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1397
 - Name: "09_3"
   X: 79
-  "Y": 168
+  Y: 168
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1398
 - Name: "09_4"
   X: 79
-  "Y": 169
+  Y: 169
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1399
 - Name: "10_1"
   X: 80
-  "Y": 172
+  Y: 172
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1400
 - Name: "10_2"
   X: 81
-  "Y": 172
+  Y: 172
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1401
 - Name: "10_3"
   X: 82
-  "Y": 172
+  Y: 172
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1402
 - Name: "10_4"
   X: 83
-  "Y": 172
+  Y: 172
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1403
 - Name: "10_5"
   X: 80
-  "Y": 173
+  Y: 173
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1404
 - Name: "10_6"
   X: 81
-  "Y": 173
+  Y: 173
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1405
 - Name: "10_7"
   X: 82
-  "Y": 173
+  Y: 173
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1406
 - Name: "10_8"
   X: 83
-  "Y": 173
+  Y: 173
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1407
 - Name: "11_1"
   X: 88
-  "Y": 174
+  Y: 174
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1408
 - Name: "11_2"
   X: 88
-  "Y": 175
+  Y: 175
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1409
 - Name: "11_3"
   X: 89
-  "Y": 174
+  Y: 174
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1410
 - Name: "11_4"
   X: 89
-  "Y": 175
+  Y: 175
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1411
 - Name: "12_1"
   X: 86
-  "Y": 166
+  Y: 166
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1412
 - Name: "12_2"
   X: 86
-  "Y": 167
+  Y: 167
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1413
 - Name: "12_3"
   X: 87
-  "Y": 166
+  Y: 166
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1414
 - Name: "12_4"
   X: 87
-  "Y": 167
+  Y: 167
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1415
 - Name: "13_1"
   X: 90
-  "Y": 164
+  Y: 164
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1416
 - Name: "13_2"
   X: 90
-  "Y": 165
+  Y: 165
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1417
 - Name: "13_3"
   X: 91
-  "Y": 164
+  Y: 164
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1418
 - Name: "13_4"
   X: 91
-  "Y": 165
+  Y: 165
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1419
 - Name: "14_1"
   X: 84
-  "Y": 160
+  Y: 160
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1420
 - Name: "14_2"
   X: 85
-  "Y": 160
+  Y: 160
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1421
 - Name: "14_3"
   X: 86
-  "Y": 160
+  Y: 160
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1422
 - Name: "14_4"
   X: 87
-  "Y": 160
+  Y: 160
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1423
 - Name: "14_5"
   X: 88
-  "Y": 160
+  Y: 160
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1424
 - Name: "14_6"
   X: 89
-  "Y": 160
+  Y: 160
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1425
 - Name: "14_7"
   X: 84
-  "Y": 161
+  Y: 161
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1426
 - Name: "14_8"
   X: 85
-  "Y": 161
+  Y: 161
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1427
 - Name: "14_9"
   X: 86
-  "Y": 161
+  Y: 161
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1428
 - Name: "14_10"
   X: 87
-  "Y": 161
+  Y: 161
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1429
 - Name: "14_11"
   X: 88
-  "Y": 161
+  Y: 161
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1430
 - Name: "14_12"
   X: 89
-  "Y": 161
+  Y: 161
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1431
 - Name: "15_1"
   X: 86
-  "Y": 154
+  Y: 154
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1432
 - Name: "15_2"
   X: 86
-  "Y": 155
+  Y: 155
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1433
 - Name: "15_3"
   X: 87
-  "Y": 154
+  Y: 154
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1434
 - Name: "15_4"
   X: 87
-  "Y": 155
+  Y: 155
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1435
 - Name: "16_1"
   X: 84
-  "Y": 150
+  Y: 150
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1436
 - Name: "16_2"
   X: 84
-  "Y": 151
+  Y: 151
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1437
 - Name: "16_3"
   X: 85
-  "Y": 150
+  Y: 150
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1438
 - Name: "16_4"
   X: 85
-  "Y": 151
+  Y: 151
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1439
 - Name: "17_1"
   X: 90
-  "Y": 150
+  Y: 150
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1440
 - Name: "17_2"
   X: 90
-  "Y": 151
+  Y: 151
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1441
 - Name: "17_3"
   X: 91
-  "Y": 150
+  Y: 150
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1442
 - Name: "17_4"
   X: 91
-  "Y": 151
+  Y: 151
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1443
 - Name: "18_1"
   X: 86
-  "Y": 146
+  Y: 146
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1444
 - Name: "18_2"
   X: 86
-  "Y": 147
+  Y: 147
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1445
 - Name: "18_3"
   X: 87
-  "Y": 146
+  Y: 146
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1446
 - Name: "18_4"
   X: 87
-  "Y": 147
+  Y: 147
   Dir: 0
   Sprite: -1
   Trigger:
     X: 0
-    "Y": 0
+    Y: 0
   DuplicateOf: SinTrap
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1447
 - Name: Keeper of the Door#ASN
   X: 87
-  "Y": 137
+  Y: 137
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1449
 - Name: timestopper#1
   X: 3
-  "Y": 3
+  Y: 3
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1474
 - Name: Thomas#ASNTEST
   X: 89
-  "Y": 98
+  Y: 98
   Dir: 1
   Sprite: 118
   Trigger:
     X: 5
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1497
 - Name: Barcardi#ASN
   X: 87
-  "Y": 48
+  Y: 48
   Dir: 2
   Sprite: 725
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1586
 - Name: Maze Assistant
   X: 182
-  "Y": 169
+  Y: 169
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1601
 - Name: Guildmaster#ASN1
   X: 167
-  "Y": 110
+  Y: 110
   Dir: 0
   Sprite: -1
   Trigger:
     X: 3
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1618
 - Name: Guildmaster#ASN2
   X: 149
-  "Y": 80
+  Y: 80
   Dir: 4
   Sprite: 106
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:1639
 - Name: Master Assist
   X: 186
-  "Y": 81
+  Y: 81
   Dir: 1
   Sprite: 55
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:2185
 - Name: info 1
   X: 170
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:2191
 - Name: info 2
   X: 153
-  "Y": 85
+  Y: 85
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:2199
 - Name: info 3
   X: 160
-  "Y": 85
+  Y: 85
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:2206
 - Name: info 4
   X: 175
-  "Y": 89
+  Y: 89
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:2215
 - Name: info 5
   X: 164
-  "Y": 88
+  Y: 88
   Dir: 0
   Sprite: -1
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:2223
 - Name: info 6
   X: 149
-  "Y": 95
+  Y: 95
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:2231
 - Name: info 7
   X: 180
-  "Y": 101
+  Y: 101
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:2238
 - Name: info 8
   X: 186
-  "Y": 107
+  Y: 107
   Dir: 0
   Sprite: -1
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/jobs/2-1/assassin.txt:2245
 - Name: "[Huey]"
   X: 156
-  "Y": 87
+  Y: 87
   Dir: 1
   Sprite: 55
   DuplicateOf: "#moc_assin_dup"
@@ -1149,7 +1151,7 @@ Body:
   Source: npc/jobs/2-1/assassin.txt:2259
 - Name: "[Khai]"
   X: 156
-  "Y": 85
+  Y: 85
   Dir: 1
   Sprite: 730
   DuplicateOf: "#moc_assin_dup"
@@ -1157,7 +1159,7 @@ Body:
   Source: npc/jobs/2-1/assassin.txt:2260
 - Name: "[The Anonymous One]"
   X: 156
-  "Y": 83
+  Y: 83
   Dir: 1
   Sprite: 106
   DuplicateOf: "#moc_assin_dup"
@@ -1165,7 +1167,7 @@ Body:
   Source: npc/jobs/2-1/assassin.txt:2261
 - Name: "[Barcardi]"
   X: 156
-  "Y": 81
+  Y: 81
   Dir: 2
   Sprite: 725
   DuplicateOf: "#moc_assin_dup"
@@ -1173,7 +1175,7 @@ Body:
   Source: npc/jobs/2-1/assassin.txt:2262
 - Name: "[Beholder]"
   X: 156
-  "Y": 79
+  Y: 79
   Dir: 1
   Sprite: 118
   DuplicateOf: "#moc_assin_dup"
@@ -1181,7 +1183,7 @@ Body:
   Source: npc/jobs/2-1/assassin.txt:2263
 - Name: "[Thomas]"
   X: 156
-  "Y": 77
+  Y: 77
   Dir: 1
   Sprite: 118
   DuplicateOf: "#moc_assin_dup"
@@ -1189,7 +1191,7 @@ Body:
   Source: npc/jobs/2-1/assassin.txt:2264
 - Name: "[Gayle Maroubitz]"
   X: 156
-  "Y": 75
+  Y: 75
   Dir: 1
   Sprite: 55
   DuplicateOf: "#moc_assin_dup"
@@ -1197,36 +1199,36 @@ Body:
   Source: npc/jobs/2-1/assassin.txt:2265
 - Name: Assassin#realman
   X: 14
-  "Y": 27
+  Y: 27
   Dir: 5
   Sprite: 884
   Kind: Script
   Source: npc/quests/skills/assassin_skills.txt:17
 - Name: Assassin#realgirl
   X: 23
-  "Y": 27
+  Y: 27
   Dir: 5
   Sprite: 885
   Kind: Script
   Source: npc/quests/skills/assassin_skills.txt:289
 - Name: guild_to_16
   X: 18
-  "Y": 8
+  Y: 8
   Dir: 0
   Sprite: 45
   Trigger:
     X: 2
-    "Y": 2
+    Y: 2
   Kind: Warp
   Warp:
     Map: moc_fild16
     X: 205
-    "Y": 291
+    Y: 291
     TriggerWhileHidden: false
   Source: npc/warps/other/jobquests.txt:71
 - Name: Valerie#asn
   X: 17
-  "Y": 33
+  Y: 33
   Dir: 4
   Sprite: 837
   DuplicateOf: Valerie#sign

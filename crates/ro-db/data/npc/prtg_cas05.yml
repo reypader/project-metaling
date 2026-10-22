@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Hermod#05
   X: 52
-  "Y": 70
+  Y: 70
   Dir: 5
   Sprite: 754
   DuplicateOf: GuildRelay1
@@ -16,7 +18,7 @@ Body:
   Source: npc/quests/guildrelay.txt:3231
 - Name: Atila#05
   X: 253
-  "Y": 91
+  Y: 91
   Dir: 3
   Sprite: 728
   DuplicateOf: GuildRelay2
@@ -24,7 +26,7 @@ Body:
   Source: npc/quests/guildrelay.txt:3232
 - Name: Cecil#05
   X: 276
-  "Y": 93
+  Y: 93
   Dir: 3
   Sprite: 92
   DuplicateOf: GuildRelay3
@@ -32,7 +34,7 @@ Body:
   Source: npc/quests/guildrelay.txt:3233
 - Name: Diligo#05
   X: 211
-  "Y": 36
+  Y: 36
   Dir: 3
   Sprite: 754
   DuplicateOf: GuildRelay4
@@ -40,7 +42,7 @@ Body:
   Source: npc/quests/guildrelay.txt:3234
 - Name: Gondul#5-2
   X: 19
-  "Y": 247
+  Y: 247
   Dir: 4
   Sprite: 722
   DuplicateOf: InsideFlagsPR5
@@ -48,7 +50,7 @@ Body:
   Source: npc/guild/prtg_cas05.txt:86
 - Name: Gondul#6
   X: 19
-  "Y": 243
+  Y: 243
   Dir: 4
   Sprite: 722
   DuplicateOf: InsideFlagsPR5
@@ -56,7 +58,7 @@ Body:
   Source: npc/guild/prtg_cas05.txt:87
 - Name: Gondul#7
   X: 26
-  "Y": 247
+  Y: 247
   Dir: 4
   Sprite: 722
   DuplicateOf: InsideFlagsPR5
@@ -64,7 +66,7 @@ Body:
   Source: npc/guild/prtg_cas05.txt:88
 - Name: Gondul#8
   X: 26
-  "Y": 243
+  Y: 243
   Dir: 4
   Sprite: 722
   DuplicateOf: InsideFlagsPR5
@@ -72,7 +74,7 @@ Body:
   Source: npc/guild/prtg_cas05.txt:89
 - Name: Gondul#9
   X: 249
-  "Y": 289
+  Y: 289
   Dir: 4
   Sprite: 722
   DuplicateOf: InsideFlagsPR5
@@ -80,7 +82,7 @@ Body:
   Source: npc/guild/prtg_cas05.txt:90
 - Name: Gondul#10
   X: 256
-  "Y": 289
+  Y: 289
   Dir: 4
   Sprite: 722
   DuplicateOf: InsideFlagsPR5
@@ -88,7 +90,7 @@ Body:
   Source: npc/guild/prtg_cas05.txt:91
 - Name: Gondul#11
   X: 253
-  "Y": 271
+  Y: 271
   Dir: 4
   Sprite: 722
   DuplicateOf: InsideFlagsPR5
@@ -96,7 +98,7 @@ Body:
   Source: npc/guild/prtg_cas05.txt:92
 - Name: Gondul#12
   X: 273
-  "Y": 257
+  Y: 257
   Dir: 4
   Sprite: 722
   DuplicateOf: InsideFlagsPR5
@@ -104,7 +106,7 @@ Body:
   Source: npc/guild/prtg_cas05.txt:93
 - Name: Kafra Staff#prtg_cas05
   X: 52
-  "Y": 41
+  Y: 41
   Dir: 4
   Sprite: 117
   DuplicateOf: guildkafra
@@ -112,7 +114,7 @@ Body:
   Source: npc/guild/prtg_cas05.txt:101
 - Name: Raynor#prtg_cas05
   X: 36
-  "Y": 37
+  Y: 37
   Dir: 4
   Sprite: 55
   DuplicateOf: cm
@@ -120,14 +122,14 @@ Body:
   Source: npc/guild/prtg_cas05.txt:105
 - Name: "#Lever_PR05"
   X: 281
-  "Y": 176
+  Y: 176
   Dir: 0
   Sprite: 111
   Kind: Script
   Source: npc/guild/prtg_cas05.txt:109
 - Name: "#prtg_cas05"
   X: 212
-  "Y": 95
+  Y: 95
   Dir: 0
   Sprite: 111
   DuplicateOf: gdlever
@@ -135,7 +137,7 @@ Body:
   Source: npc/guild/prtg_cas05.txt:123
 - Name: Treasure#prtg_cas05
   X: 276
-  "Y": 178
+  Y: 178
   Dir: 0
   Sprite: -1
   DuplicateOf: Gld_Trea_Spawn
@@ -143,7 +145,7 @@ Body:
   Source: npc/guild/prtg_cas05.txt:127
 - Name: Agit#prtg_cas05
   X: 266
-  "Y": 266
+  Y: 266
   Dir: 0
   Sprite: -1
   DuplicateOf: Gld_Agit_Manager
@@ -151,7 +153,7 @@ Body:
   Source: npc/guild/prtg_cas05.txt:131
 - Name: Guardian#prtg_cas05
   X: 36
-  "Y": 37
+  Y: 37
   Dir: 4
   Sprite: -1
   DuplicateOf: Gld_Guard_Template
@@ -159,202 +161,202 @@ Body:
   Source: npc/guild/prtg_cas05.txt:135
 - Name: prtg-5-01_prtg-5-14
   X: 38
-  "Y": 250
+  Y: 250
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prtg_cas05
     X: 244
-    "Y": 7
+    Y: 7
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:97
 - Name: prtg-5-02_prtg-5-13
   X: 76
-  "Y": 242
+  Y: 242
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prtg_cas05
     X: 288
-    "Y": 13
+    Y: 13
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:98
 - Name: prtg-5-03_prtg-5-12
   X: 66
-  "Y": 225
+  Y: 225
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prtg_cas05
     X: 260
-    "Y": 92
+    Y: 92
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:99
 - Name: prtg-5-04_prtg-5
   X: 17
-  "Y": 231
+  Y: 231
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prt_gld
     X: 208
-    "Y": 240
+    Y: 240
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:100
 - Name: prtg-5-05_prtg-5-15
   X: 53
-  "Y": 246
+  Y: 246
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prtg_cas05
     X: 199
-    "Y": 13
+    Y: 13
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:101
 - Name: prtg-5-11_prtg-5-21
   X: 228
-  "Y": 96
+  Y: 96
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prtg_cas05
     X: 26
-    "Y": 7
+    Y: 7
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:102
 - Name: prtg-5-12_prtg-5-03
   X: 260
-  "Y": 96
+  Y: 96
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prtg_cas05
     X: 66
-    "Y": 229
+    Y: 229
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:103
 - Name: prtg-5-13_prtg-5-02
   X: 292
-  "Y": 13
+  Y: 13
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prtg_cas05
     X: 76
-    "Y": 246
+    Y: 246
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:104
 - Name: prtg-5-14_prtg-5-01
   X: 244
-  "Y": 3
+  Y: 3
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prtg_cas05
     X: 35
-    "Y": 247
+    Y: 247
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:105
 - Name: prtg-5-15_prtg-5-05
   X: 195
-  "Y": 13
+  Y: 13
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prtg_cas05
     X: 55
-    "Y": 248
+    Y: 248
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:106
 - Name: prtg-5-21_prtg-5-11
   X: 26
-  "Y": 3
+  Y: 3
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prtg_cas05
     X: 228
-    "Y": 92
+    Y: 92
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:107
 - Name: prtg-5-22_prtg-5-31
   X: 58
-  "Y": 7
+  Y: 7
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prtg_cas05
     X: 253
-    "Y": 290
+    Y: 290
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:108
 - Name: prtg-5-31_prtg-5-22
   X: 253
-  "Y": 294
+  Y: 294
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: prtg_cas05
     X: 58
-    "Y": 11
+    Y: 11
     TriggerWhileHidden: false
   Source: npc/warps/guildcastles.txt:109
 - Name: Gate Manager#prt_f05
   X: 24
-  "Y": 23
+  Y: 23
   Dir: 4
   Sprite: 421
   DuplicateOf: Gate Manager#castle

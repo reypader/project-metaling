@@ -2,13 +2,15 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Stefan.J.E.Wolf#sthd_04
   X: 103
-  "Y": 115
+  Y: 115
   Dir: 6
   Sprite: 10140
   DuplicateOf: dummy_npc
@@ -16,334 +18,334 @@ Body:
   Source: npc/re/instances/SkyFortress.txt:1513
 - Name: "#Stefan for display3"
   X: 103
-  "Y": 115
+  Y: 115
   Dir: 0
   Sprite: 139
   Trigger:
     X: 10
-    "Y": 10
+    Y: 10
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1515
 - Name: "#Last_Boss"
   X: 96
-  "Y": 127
+  Y: 127
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1560
 - Name: "#Last_Boss2_Monster"
   X: 99
-  "Y": 128
+  Y: 128
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1897
 - Name: "#Last_Boss_Monster"
   X: 99
-  "Y": 127
+  Y: 127
   Dir: 0
   Sprite: 139
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1916
 - Name: "#pantheon_damage1"
   X: 94
-  "Y": 119
+  Y: 119
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1942
 - Name: "#pantheon_damage2"
   X: 96
-  "Y": 109
+  Y: 109
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1961
 - Name: "#pantheon_damage3"
   X: 104
-  "Y": 110
+  Y: 110
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1962
 - Name: "#pantheon_damage4"
   X: 110
-  "Y": 110
+  Y: 110
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1963
 - Name: "#pantheon_damage5"
   X: 113
-  "Y": 117
+  Y: 117
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1964
 - Name: "#pantheon_damage6"
   X: 112
-  "Y": 103
+  Y: 103
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1965
 - Name: "#pantheon_damage7"
   X: 104
-  "Y": 103
+  Y: 103
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1966
 - Name: "#pantheon_damage8"
   X: 97
-  "Y": 103
+  Y: 103
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1967
 - Name: "#pantheon_damage9"
   X: 92
-  "Y": 97
+  Y: 97
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1968
 - Name: "#pantheon_damage10"
   X: 99
-  "Y": 95
+  Y: 95
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1969
 - Name: "#pantheon_damage11"
   X: 108
-  "Y": 95
+  Y: 95
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1970
 - Name: "#pantheon_damage12"
   X: 116
-  "Y": 95
+  Y: 95
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1971
 - Name: "#pantheon_damage13"
   X: 112
-  "Y": 87
+  Y: 87
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1972
 - Name: "#pantheon_damage14"
   X: 104
-  "Y": 88
+  Y: 88
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1973
 - Name: "#pantheon_damage15"
   X: 95
-  "Y": 87
+  Y: 87
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1974
 - Name: "#pantheon_damage16"
   X: 96
-  "Y": 78
+  Y: 78
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1975
 - Name: "#pantheon_damage17"
   X: 94
-  "Y": 72
+  Y: 72
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1976
 - Name: "#pantheon_damage18"
   X: 104
-  "Y": 81
+  Y: 81
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1977
 - Name: "#pantheon_damage19"
   X: 111
-  "Y": 81
+  Y: 81
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1978
 - Name: "#pantheon_damage20"
   X: 114
-  "Y": 72
+  Y: 72
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 5
+    Y: 5
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1979
 - Name: "#pantheon_damage21"
   X: 126
-  "Y": 96
+  Y: 96
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1980
 - Name: "#pantheon_damage22"
   X: 81
-  "Y": 96
+  Y: 96
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1981
 - Name: "#pantheon_damage23"
   X: 100
-  "Y": 71
+  Y: 71
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1982
 - Name: "#pantheon_damage24"
   X: 91
-  "Y": 101
+  Y: 101
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1983
 - Name: "#pantheon_damage25"
   X: 117
-  "Y": 101
+  Y: 101
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1984
 - Name: "#pantheon_damage26"
   X: 117
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1985
 - Name: "#pantheon_damage27"
   X: 90
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: 139
   Trigger:
     X: 6
-    "Y": 6
+    Y: 6
   DuplicateOf: "#pantheon_damage1"
   Kind: Script
   Source: npc/re/instances/SkyFortress.txt:1986
 - Name: Sky Fortress Escape Warp#end_warp
   X: 104
-  "Y": 96
+  Y: 96
   Dir: 4
   Sprite: 723
   Kind: Script

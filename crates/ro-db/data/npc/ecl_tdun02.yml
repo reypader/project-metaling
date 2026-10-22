@@ -2,69 +2,71 @@
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
 # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
 Header:
   Type: NPC_SPAWN_DB
   Version: 1
 Body:
 - Name: Rosi#No.1
   X: 99
-  "Y": 63
+  Y: 63
   Dir: 5
   Sprite: 893
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:11371
 - Name: Rosi#No.2
   X: 84
-  "Y": 21
+  Y: 21
   Dir: 5
   Sprite: 893
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Rosi#No.1
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:11425
 - Name: Rosi#No.3
   X: 22
-  "Y": 36
+  Y: 36
   Dir: 5
   Sprite: 893
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   DuplicateOf: Rosi#No.1
   Kind: Script
   Source: npc/re/quests/quests_eclage.txt:11426
 - Name: tdun2dn_tdun1up
   X: 60
-  "Y": 90
+  Y: 90
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ecl_tdun01
     X: 70
-    "Y": 105
+    Y: 105
     TriggerWhileHidden: false
   Source: npc/re/warps/dungeons/ecl_dun.txt:20
 - Name: tdun2up_tdun3dn
   X: 52
-  "Y": 9
+  Y: 9
   Dir: 0
   Sprite: 45
   Trigger:
     X: 1
-    "Y": 1
+    Y: 1
   Kind: Warp
   Warp:
     Map: ecl_tdun03
     X: 47
-    "Y": 13
+    Y: 13
     TriggerWhileHidden: false
   Source: npc/re/warps/dungeons/ecl_dun.txt:21
