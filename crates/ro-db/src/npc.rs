@@ -122,7 +122,10 @@ impl MapNpcs {
             },
             body: &self.npcs,
         };
-        serde_saphyr::to_string(&file).map_err(|e| DbLoadError::Schema {
+        // YAML 1.2 rules: the loader is YAML 1.2, so keys like `Y` need no 1.1-boolean quoting.
+        let mut options = serde_saphyr::SerializerOptions::default();
+        options.yaml_12 = true;
+        serde_saphyr::to_string_with_options(&file, options).map_err(|e| DbLoadError::Schema {
             path: String::new(),
             message: e.to_string(),
         })
