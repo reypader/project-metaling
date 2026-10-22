@@ -1,6 +1,9 @@
 //! Per-map entity storage: dense columns indexed by `Entity::index()` plus sparse components.
 
-use ro_core::{AccountId, CharId, CharacterSpawn, MapPosition, Sex};
+use std::sync::Arc;
+
+use ro_core::{AccountId, CharId, CharacterSpawn, MapPosition, Sex, UnitObjectType};
+use ro_db::WarpDest;
 use rustc_hash::FxHashMap;
 
 use crate::entity::{Entity, EntityAllocator};
@@ -14,6 +17,7 @@ pub(crate) enum EntityKind {
     /// Unused slot.
     Free,
     Player,
+    Npc,
 }
 
 /// Static appearance and identity of a player entity.
@@ -21,12 +25,32 @@ pub(crate) enum EntityKind {
 pub(crate) struct PlayerInfo {
     pub(crate) account_id: AccountId,
     pub(crate) char_id: CharId,
-    pub(crate) name: String,
+    pub(crate) name: Arc<str>,
     pub(crate) sex: Sex,
     pub(crate) job: u16,
     pub(crate) hair_style: u16,
     pub(crate) hair_color: u16,
     pub(crate) clevel: u16,
+}
+
+/// Static appearance and identity of an NPC entity (warps included).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct NpcInfo {
+    pub(crate) gid: u32,
+    pub(crate) name: Arc<str>,
+    pub(crate) object_type: UnitObjectType,
+    /// Class id sent as `job`.
+    pub(crate) sprite: u16,
+    /// `effect_state` (`sc.option`): hidden/cloaked NPCs.
+    pub(crate) effect_state: i32,
+}
+
+/// A warp's touch area and destination (used by warp map change).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct WarpTrigger {
+    /// `(xs, ys)`: the area is `(2xs+1) x (2ys+1)` around the warp's cell.
+    pub(crate) half_extents: (u16, u16),
+    pub(crate) dest: WarpDest,
 }
 
 const ORIGIN: MapPosition = MapPosition { x: 0, y: 0, dir: 0 };
@@ -47,6 +71,8 @@ pub(crate) struct World {
     pub(crate) pending_move: Vec<Option<(u16, u16)>>,
     // Sparse components.
     pub(crate) players: SparseSet<PlayerInfo>,
+    pub(crate) npcs: SparseSet<NpcInfo>,
+    pub(crate) warps: SparseSet<WarpTrigger>,
     pub(crate) walking_paths: SparseSet<WalkingPath>,
     // Network id lookups.
     char_to_entity: FxHashMap<CharId, Entity>,
@@ -66,6 +92,8 @@ impl World {
             in_grid: Vec::new(),
             pending_move: Vec::new(),
             players: SparseSet::new(),
+            npcs: SparseSet::new(),
+            warps: SparseSet::new(),
             walking_paths: SparseSet::new(),
             char_to_entity: FxHashMap::default(),
             gid_to_entity: FxHashMap::default(),
@@ -89,6 +117,53 @@ impl World {
         {
             return Err(EngineError::CharacterAlreadyEntered(spawn.char_id));
         }
+        let entity = self.allocate(EntityKind::Player, spawn.pos, spawn.speed)?;
+        self.players.insert(
+            entity,
+            PlayerInfo {
+                account_id: spawn.account_id,
+                char_id: spawn.char_id,
+                name: Arc::from(spawn.name.as_str()),
+                sex: spawn.sex,
+                job: spawn.job_class,
+                hair_style: spawn.hair_style,
+                hair_color: spawn.hair_color,
+                clevel: spawn.base_level,
+            },
+        );
+        self.char_to_entity.insert(spawn.char_id, entity);
+        self.gid_to_entity.insert(spawn.account_id.0, entity);
+        Ok(entity)
+    }
+
+    /// Creates an NPC entity (not in the grid; call `show` for visible ones). The gid must be
+    /// unused.
+    pub(crate) fn spawn_npc(
+        &mut self,
+        info: NpcInfo,
+        pos: MapPosition,
+        speed: u16,
+        warp: Option<WarpTrigger>,
+    ) -> Result<Entity, EngineError> {
+        if self.gid_to_entity.contains_key(&info.gid) {
+            return Err(EngineError::DuplicateGid(info.gid));
+        }
+        let entity = self.allocate(EntityKind::Npc, pos, speed)?;
+        self.gid_to_entity.insert(info.gid, entity);
+        self.npcs.insert(entity, info);
+        if let Some(warp) = warp {
+            self.warps.insert(entity, warp);
+        }
+        Ok(entity)
+    }
+
+    /// Allocates a slot and resets its dense columns.
+    fn allocate(
+        &mut self,
+        kind: EntityKind,
+        pos: MapPosition,
+        speed: u16,
+    ) -> Result<Entity, EngineError> {
         let entity = self.entities.allocate()?;
         let slots = self.entities.slot_count();
         if self.positions.len() < slots {
@@ -101,28 +176,13 @@ impl World {
             self.pending_move.resize(slots, None);
         }
         let i = entity.index();
-        self.positions[i] = spawn.pos;
-        self.kinds[i] = EntityKind::Player;
+        self.positions[i] = pos;
+        self.kinds[i] = kind;
         self.dead_sit[i] = 0;
         self.head_dir[i] = 0;
-        self.speed[i] = spawn.speed;
+        self.speed[i] = speed;
         self.in_grid[i] = false;
         self.pending_move[i] = None;
-        self.players.insert(
-            entity,
-            PlayerInfo {
-                account_id: spawn.account_id,
-                char_id: spawn.char_id,
-                name: spawn.name.clone(),
-                sex: spawn.sex,
-                job: spawn.job_class,
-                hair_style: spawn.hair_style,
-                hair_color: spawn.hair_color,
-                clevel: spawn.base_level,
-            },
-        );
-        self.char_to_entity.insert(spawn.char_id, entity);
-        self.gid_to_entity.insert(spawn.account_id.0, entity);
         Ok(entity)
     }
 
@@ -155,6 +215,12 @@ impl World {
                 self.gid_to_entity.remove(&info.account_id.0);
             }
         }
+        if let Some(info) = self.npcs.remove(entity) {
+            if self.gid_to_entity.get(&info.gid) == Some(&entity) {
+                self.gid_to_entity.remove(&info.gid);
+            }
+        }
+        self.warps.remove(entity);
         self.walking_paths.remove(entity);
         self.pending_move[i] = None;
         self.kinds[i] = EntityKind::Free;
@@ -205,10 +271,7 @@ mod tests {
         assert_eq!(world.dead_sit[a.index()], 0);
         assert_eq!(world.entity_by_char(CharId(150002)), Some(b));
         assert_eq!(world.entity_by_gid(2000001), Some(a));
-        assert_eq!(
-            world.players.get(a).map(|p| p.name.as_str()),
-            Some("c150001")
-        );
+        assert_eq!(world.players.get(a).map(|p| &*p.name), Some("c150001"));
         assert!(
             !world.in_grid[a.index()],
             "spawned entities are not visible yet"

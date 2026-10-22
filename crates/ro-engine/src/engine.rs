@@ -9,11 +9,11 @@ use std::sync::Arc;
 
 use ro_core::{
     BroadcastScope, CharId, CharacterSpawn, ClientIntent, MapPosition, ScopedServerEvent,
-    ServerEvent, SessionIntent, UnitAppearance,
+    ServerEvent, SessionIntent, Sex, UnitAppearance, UnitObjectType,
 };
-use ro_db::{CellType, MapGrid};
+use ro_db::{CellType, MapGrid, MapNpcs, NpcKind, NpcSpawn, NpcState};
 use smallvec::SmallVec;
-use tracing::debug;
+use tracing::{debug, warn};
 
 use crate::entity::Entity;
 use crate::error::EngineError;
@@ -25,7 +25,7 @@ use crate::spatial::{step_visibility, AREA_SIZE};
 /// `clif_parse_ActionRequest_sub`).
 const ACTION_ATTACK: u8 = 0;
 const ACTION_ATTACK_REPEAT: u8 = 7;
-use crate::world::World;
+use crate::world::{NpcInfo, WarpTrigger, World};
 
 /// Default entity capacity of one map instance.
 pub const DEFAULT_ENTITY_CAPACITY: u32 = 4096;
@@ -44,6 +44,17 @@ const ACTION_STAND: u8 = 3;
 /// rAthena `dead_sit` values.
 const STANDING: u8 = 0;
 const SITTING: u8 = 2;
+
+/// rAthena `START_NPC_NUM`: first NPC unit id. Above every account id (< 100,000,000).
+pub const START_NPC_ID: u32 = 110_000_000;
+/// rAthena `DEFAULT_NPC_WALK_SPEED`, sent as an NPC's speed.
+const NPC_SPEED: u16 = 200;
+/// NPC classes the client is never sent: `JT_FAKENPC` and `JT_INVISIBLE`.
+const FAKE_NPC_SPRITE: i16 = -1;
+const INVISIBLE_SPRITE: i16 = 32767;
+/// `effect_state` bits (`sc.option`) for hidden and cloaked NPCs.
+const OPTION_HIDE: i32 = 0x2;
+const OPTION_CLOAK: i32 = 0x4;
 
 /// `ZC_NOTIFY_VANISH` types.
 const VANISH_OUT_OF_SIGHT: u8 = 0;
@@ -70,6 +81,8 @@ pub struct MapInstance {
     entered: Vec<Entity>,
     scratch: AStarScratchBuffer,
     events: Vec<ScopedServerEvent>,
+    /// Next NPC unit id (per instance; a client only sees one map at a time).
+    next_npc_id: u32,
 }
 
 /// rAthena direction of a one-cell step (0 N, 1 NW, 2 W, 3 SW, 4 S, 5 SE, 6 E, 7 NE; y+ is north).
@@ -114,6 +127,7 @@ impl MapInstance {
             entered: Vec::new(),
             scratch: AStarScratchBuffer::new(),
             events: Vec::new(),
+            next_npc_id: START_NPC_ID,
         }
     }
 
@@ -133,7 +147,10 @@ impl MapInstance {
     // ---------- helpers ----------
 
     fn gid(&self, e: Entity) -> u32 {
-        self.world.players.get(e).map_or(0, |p| p.account_id.0)
+        if let Some(p) = self.world.players.get(e) {
+            return p.account_id.0;
+        }
+        self.world.npcs.get(e).map_or(0, |n| n.gid)
     }
 
     fn char_of(&self, e: Entity) -> Option<CharId> {
@@ -150,12 +167,31 @@ impl MapInstance {
     }
 
     fn appearance(&self, e: Entity) -> Option<UnitAppearance> {
-        let info = self.world.players.get(e)?;
         let i = e.index();
+        let Some(info) = self.world.players.get(e) else {
+            let npc = self.world.npcs.get(e)?;
+            return Some(UnitAppearance {
+                object_type: npc.object_type,
+                gid: npc.gid,
+                char_id: None,
+                name: Arc::clone(&npc.name),
+                job: npc.sprite,
+                sex: Sex::Female,
+                hair_style: 0,
+                hair_color: 0,
+                head_dir: 0,
+                pos: self.world.positions[i],
+                speed: self.world.speed[i],
+                dead_sit: 0,
+                clevel: 0,
+                effect_state: npc.effect_state,
+            });
+        };
         Some(UnitAppearance {
+            object_type: UnitObjectType::Pc,
             gid: info.account_id.0,
             char_id: Some(info.char_id),
-            name: info.name.clone(),
+            name: Arc::clone(&info.name),
             job: info.job,
             sex: info.sex,
             hair_style: info.hair_style,
@@ -165,6 +201,7 @@ impl MapInstance {
             speed: self.world.speed[i],
             dead_sit: self.world.dead_sit[i],
             clevel: info.clevel,
+            effect_state: 0,
         })
     }
 
@@ -376,7 +413,12 @@ impl MapInstance {
         if me.x.abs_diff(them.x) > AREA_SIZE || me.y.abs_diff(them.y) > AREA_SIZE {
             return;
         }
-        let Some(name) = self.world.players.get(target).map(|p| p.name.clone()) else {
+        if let Some(npc) = self.world.npcs.get(target) {
+            let name = Arc::clone(&npc.name);
+            self.emit_self(e, ServerEvent::AckNpcName { gid, name });
+            return;
+        }
+        let Some(name) = self.world.players.get(target).map(|p| p.name.to_string()) else {
             return;
         };
         self.emit_self(
@@ -633,6 +675,71 @@ impl MapInstance {
         Ok(Vec::new())
     }
 
+    /// Creates the map's static NPCs (spec ENG-NPC-01). Emits nothing: no player is on the map
+    /// yet, and each one sees the NPCs when it enters or walks into range. Entries outside the
+    /// grid are skipped with a warning. Returns how many were created.
+    pub fn spawn_npcs(&mut self, npcs: &MapNpcs) -> usize {
+        let mut created = 0;
+        for npc in &npcs.npcs {
+            match self.spawn_npc(npc) {
+                Ok(()) => created += 1,
+                Err(err) => warn!(
+                    map = %self.map_name,
+                    npc = %npc.name,
+                    source = %npc.source,
+                    "NPC not spawned: {err}"
+                ),
+            }
+        }
+        created
+    }
+
+    fn spawn_npc(&mut self, npc: &NpcSpawn) -> Result<(), EngineError> {
+        if npc.x >= self.walkability.width() || npc.y >= self.walkability.height() {
+            return Err(EngineError::InvalidCell { x: npc.x, y: npc.y });
+        }
+        let gid = self.next_npc_id;
+        let object_type = if npc.sprite_is_mob {
+            UnitObjectType::MobSpriteNpc
+        } else {
+            UnitObjectType::Npc
+        };
+        let effect_state = match npc.state {
+            NpcState::Hidden => OPTION_HIDE,
+            NpcState::Cloaked => OPTION_CLOAK,
+            NpcState::Normal | NpcState::Disabled => 0,
+        };
+        let warp = match &npc.kind {
+            NpcKind::Warp(dest) => Some(WarpTrigger {
+                half_extents: npc.trigger.unwrap_or((0, 0)),
+                dest: dest.clone(),
+            }),
+            NpcKind::Script | NpcKind::Shop => None,
+        };
+        let info = NpcInfo {
+            gid,
+            name: Arc::from(npc.name.as_str()),
+            object_type,
+            // -1 is never sent, so its wire value doesn't matter.
+            sprite: u16::try_from(npc.sprite).unwrap_or(0),
+            effect_state,
+        };
+        let pos = MapPosition {
+            x: npc.x,
+            y: npc.y,
+            dir: npc.dir,
+        };
+        let e = self.world.spawn_npc(info, pos, NPC_SPEED, warp)?;
+        self.next_npc_id = self.next_npc_id.wrapping_add(1);
+        let never_sent = npc.sprite == FAKE_NPC_SPRITE
+            || npc.sprite == INVISIBLE_SPRITE
+            || npc.state == NpcState::Disabled;
+        if !never_sent {
+            self.world.show(e);
+        }
+        Ok(())
+    }
+
     /// Changes one cell at runtime (rAthena `setcell`; later Ice Wall and similar). Copies the
     /// grid first if other instances share it. Paths already planned are not re-checked until
     /// their next repath. Returns `false` when out of bounds.
@@ -713,5 +820,51 @@ impl MapInstance {
         self.intents.retain(|i| i.char_id != Some(char_id));
         self.world.despawn(e)?;
         Ok(events)
+    }
+}
+
+#[cfg(test)]
+mod npc_tests {
+    use super::*;
+    use ro_db::WarpDest;
+
+    /// ENG-NPC-05: a warp keeps its trigger area and destination for map change.
+    #[test]
+    fn eng_npc_05_warp_data_kept() {
+        let grid = Arc::new(MapGrid::all_walkable(50, 50).expect("valid dims"));
+        let mut engine = MapInstance::new("prontera.gat", grid);
+        let dest = WarpDest {
+            map: "geffen".into(),
+            x: 119,
+            y: 59,
+            trigger_while_hidden: true,
+        };
+        let warp = NpcSpawn {
+            name: "prt001".into(),
+            unique_name: "prt001".into(),
+            x: 10,
+            y: 12,
+            dir: 0,
+            sprite: 45,
+            sprite_is_mob: false,
+            state: NpcState::Normal,
+            trigger: Some((2, 3)),
+            duplicate_of: None,
+            kind: NpcKind::Warp(dest.clone()),
+            source: "t:1".into(),
+        };
+        assert_eq!(engine.spawn_npcs(&MapNpcs { npcs: vec![warp] }), 1);
+        let e = engine
+            .world
+            .entity_by_gid(START_NPC_ID)
+            .expect("warp entity");
+        assert_eq!(
+            engine.world.warps.get(e),
+            Some(&WarpTrigger {
+                half_extents: (2, 3),
+                dest
+            })
+        );
+        assert_eq!(engine.world.kinds[e.index()], crate::world::EntityKind::Npc);
     }
 }

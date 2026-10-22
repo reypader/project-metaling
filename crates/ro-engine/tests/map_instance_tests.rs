@@ -377,7 +377,7 @@ fn eng_09_lifecycle() {
         ServerEvent::UnitSpawned { unit } => {
             assert_eq!(unit.gid, account(A));
             assert_eq!(unit.char_id, Some(char_id(A)));
-            assert_eq!(unit.name, "Char1");
+            assert_eq!(&*unit.name, "Char1");
             assert_eq!(unit.clevel, 10);
             assert_eq!(unit.speed, 150);
         }

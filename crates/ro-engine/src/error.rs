@@ -32,6 +32,9 @@ pub enum EngineError {
     #[error("Character already entered the map: {0:?}")]
     CharacterAlreadyEntered(CharId),
 
+    #[error("Unit id already in use: {0}")]
+    DuplicateGid(u32),
+
     #[error("World entity capacity exceeded")]
     WorldCapacityExceeded,
 }
