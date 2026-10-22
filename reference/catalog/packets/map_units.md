@@ -115,7 +115,7 @@ Target client version: `PACKETVER = 20260219`. All integers little-endian, struc
 ## `0x0a30` `ZC_ACK_REQNAMEALL` (reply to `CZ_REQNAME` for a player)
 
 * **Direction:** Map to Client. **Frame:** Fixed `106`. **Provenance:** `rathena` `packets_struct.hpp:3562-3573` (branch `PACKETVER_MAIN_NUM >= 20150225`), `clif.cpp:9927-9985` (`clif_name`, BL_PC case; called from `clif_parse_GetCharNameRequest` L11471). Capture `login_sequence-rathena.log` line 111 shows `0x0a30` as reply to `CZ_REQNAME` (the proxy's table lacked it, so the frame was mis-split; ignore those garbage rows). Not in rAthena packet DB (struct size).
-* Players always get `0x0a30`. Non-PC units (NPC/pet/hom/merc/elem) get a different `PACKET_ZC_ACK_REQNAMEALL_NPC` (`packets_struct.hpp:3586+`, not catalogued yet); mobs get `0x0195`-family layouts (guardian) or the NPC form.
+* Players always get `0x0a30`. Non-PC units (NPC/pet/hom/merc/elem) get `0x0adf` `ZC_ACK_REQNAMEALL_NPC` (see [below](#0x0adf-zc_ack_reqnameall_npc-reply-to-cz_reqname-for-an-npc)); mobs get `0x0195`-family layouts (guardian) or the NPC form.
 
 | Offset | Size | Type | Field | Notes |
 | :--- | :--- | :--- | :--- | :--- |
@@ -227,6 +227,55 @@ Target client version: `PACKETVER = 20260219`. All integers little-endian, struc
 | `87` | `1` | `u8` | `is_boss` | |
 | `88` | `2` | `u16` | `body` | |
 | `90` | `24` | `[u8; 24]` | `name` | |
+
+## NPC units in entry packets (static script/shop/warp NPCs)
+
+Full lifecycle, hide/disable rules and ids: [mechanics/npcs.md](../mechanics/npcs.md). `PACKETVER = 20260219`, source `clif.cpp` unless noted.
+
+* **Which packet:** an NPC (BL_NPC) never gets `0x09fe`/`0x09fd` in the static case. `clif_spawn` (L1680) sends `0x09ff` (`clif_set_unit_idle`, L1041) to `AREA_WOS` when `vd->dead_sit == 0` (always, for static NPCs; `0x09fe` only if `dead_sit != 0`). `clif_getareachar_unit` (L5029) sends `0x09ff` to the single observer (`SELF`) unless `ud->walktimer` is running (never for static NPCs). Map load spawns NOTHING to anyone (no players yet: `if(map_getmapdata(nd->m)->users) clif_spawn(nd)`, `npc.cpp:3866,3934`). Players get NPCs via `clif_getareachar` (map entry, `BL_ALL`) and `clif_insight` (walk).
+* **`object_type`** = `clif_bl_type(bl, walking=false)` (L345-383, branch `PACKETVER >= 20170726`): `pcdb_checkid(job) && walking` -> `0` (irrelevant, static); `mobdb_checkid(job)` -> `0xC`; otherwise **`0x6`**. So every normal NPC and every warp is `0x06`; a script NPC that uses a mob sprite id (1001..) is `0x0C`; a script NPC that uses a PC job sprite id is still `0x06` when idle. No special case for warps / `NPCTYPE_WARP`.
+
+| Field | Value for a static NPC | Source |
+| :--- | :--- | :--- |
+| `object_type` | `0x06` (`0x0C` if sprite id is a mob id) | L345-383 |
+| `aid` | `nd->id` (>= 110000000, see npcs.md) | L1041-1140 |
+| `gid` | `0` (`sd == nullptr`) | L1041-1140 |
+| `speed` | `nd->speed` = `DEFAULT_NPC_WALK_SPEED` = **200** (`common/mmo.hpp:94`, set in every parse fn; `status_get_speed` returns `nd->speed` for BL_NPC, `status.cpp:9107`) | |
+| `body_state`, `health_state` | `sc.opt1`, `sc.opt2` = 0 | |
+| `effect_state` | `sc.option` = 0 normally; `0x2` (OPTION_HIDE) for state `HIDDEN`; `0x4` (OPTION_CLOAK) for `CLOAKED` (per-player xor for `cloaked_npc`, L1112-1125) | |
+| `job` | sprite/class id (`vd->look[LOOK_BASE]`): numeric or constant from the script line (`npc_parseview`, `npc.cpp:3743`), warps = `45` (`JT_WARPNPC`) | `npc.cpp:3857,3926` |
+| `head`, `weapon`, `shield`, `accessory`, `accessory2`, `accessory3`, `head_palette`, `body_palette`, `robe` | all `0` (`npc_viewdb` is zeroed, only `LOOK_BASE` set). Exception: sprite is a PC job id: `LOOK_BODY2 = class`, hair clamped to [MIN,MAX_HAIR_STYLE] (`status.cpp:9496-9500`). Exception: class `JT_GUILD_FLAG` (`warp_point_debug` only) swaps accessory/accessory2/accessory3 to emblem/guild id words. | |
+| `head_dir` | `0` | |
+| `guild_id`, `emblem_ver` | `0` unless a castle-flag script NPC (`u.scr.guild_id`, `status.cpp:9191,9240`) | |
+| `honor`, `virtue`, `is_pk_mode_on` | `0` (`virtue` = `sc.opt3` = 0) | |
+| `sex` | `0` (`vd->sex`, never set for NPCs) | |
+| `pos_dir` | `WBUFPOS(x, y, unit_getdir)`; `dir` = facing from the script line (`nd->ud.dir`), warps `0` | |
+| `x_size`, `y_size` | `0` (only PCs get 5) | |
+| `state` | `0` (`vd->dead_sit`) | |
+| `clevel` | `0` (`clif_setlevel` returns 0 for BL_NPC, default `client_limit_unit_lv: 0`, `clif.cpp:1025-1034`) | |
+| `font` | `0` | |
+| `max_hp`, `hp` | `-1`, `-1` (`0xFFFFFFFF`) | |
+| `is_boss` | `0` (`BOSSTYPE_NONE`) | |
+| `body` | `0` (`LOOK_BODY2`; = class only for PC-sprite NPCs) | |
+| `name` | `nd->name` copied with `safestrncpy(.., NAME_LENGTH=24)` -> at most 23 chars + NUL, rest zero. NOT truncated at `#`; the `#...` suffix is sent and the client hides it. For `Display::unique` names, `nd->name` is the Display part only. Warps: `nd->name` = the warp name from the file (e.g. `prt001`). | `npc.cpp:3668-3706` |
+
+* Total length stays `108` (`0x09ff`). Layout/offsets: see the `0x09ff` section above (identical).
+* **`CLR_OUTSIGHT` vanish:** `0x0080` type `0` (see npcs.md).
+* No capture available: `tools/proxy/packet_captures/` does not exist in the repo (captures were removed); everything here is source-derived, not capture-verified.
+
+## `0x0adf` `ZC_ACK_REQNAMEALL_NPC` (reply to `CZ_REQNAME` for an NPC)
+
+* **Direction:** Map to Client. **Frame:** Fixed `58`. **Provenance:** `rathena` `packets_struct.hpp:3586-3594` (branch `PACKETVER_MAIN_NUM >= 20180207`, true at 20260219; older form was `0x0095` 30 bytes), sender `clif.cpp:9987-10020` (`clif_name`, case BL_NPC; also pet/hom/merc/elem and mobs without `show_mob_info`). Request side: `0x0368` `CZ_REQNAME`, see [map.md](./map.md) / [map_entry_actions.md](../mechanics/map_entry_actions.md#name-request-cz_reqname). Not in rAthena packet DB (struct size).
+
+| Offset | Size | Type | Field | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| `0` | `2` | `u16` | `packet_id` | `0x0adf` |
+| `2` | `4` | `i32` | `gid` | `nd->id` |
+| `6` | `4` | `i32` | `group_id` | `ud->group_id` (0 unless set by script) |
+| `10` | `24` | `[u8; 24]` | `name` | `nd->name`, `safestrncpy` 23 chars + NUL (includes any `#suffix`) |
+| `34` | `24` | `[u8; 24]` | `title` | `ud->title` (empty unless `unittitle`-style script set it) |
+
+* Range check: same map and `check_distance_bl(sd, bl, AREA_SIZE)` (Chebyshev 14) else silent drop; no visibility check (disabled/invisible NPCs still answer). Reply `SELF` only.
 
 ## `0x0091` `ZC_NPCACK_MAPMOVE` (length confirmation)
 

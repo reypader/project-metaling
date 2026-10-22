@@ -31,6 +31,8 @@ This master index maps extracted protocol opcodes, bit-packing algorithms, Aegis
 | `0x09fe` | `ZC_NOTIFY_NEWENTRY11` (spawn) | Map to Client | Dynamic (107) | [packets/map_units.md#0x09fe-zc_notify_newentry11-unit-spawns-in-view](./packets/map_units.md#0x09fe-zc_notify_newentry11-unit-spawns-in-view) |
 | `0x09ff` | `ZC_NOTIFY_STANDENTRY11` (idle unit) | Map to Client | Dynamic (108) | [packets/map_units.md#0x09ff-zc_notify_standentry11-idle-unit-comes-into-view](./packets/map_units.md#0x09ff-zc_notify_standentry11-idle-unit-comes-into-view) |
 | `0x0a30` | `ZC_ACK_REQNAMEALL` (CZ_REQNAME reply, players) | Map to Client | Fixed 106 bytes | [packets/map_units.md#0x0a30-zc_ack_reqnameall-reply-to-cz_reqname-for-a-player](./packets/map_units.md#0x0a30-zc_ack_reqnameall-reply-to-cz_reqname-for-a-player) |
+| `0x0adf` | `ZC_ACK_REQNAMEALL_NPC` (CZ_REQNAME reply, NPC/pet/mob) | Map to Client | Fixed 58 bytes | [packets/map_units.md#0x0adf-zc_ack_reqnameall_npc-reply-to-cz_reqname-for-an-npc](./packets/map_units.md#0x0adf-zc_ack_reqnameall_npc-reply-to-cz_reqname-for-an-npc) |
+| Policy | NPC fields inside `0x09ff` (object_type 0x06, speed 200, name) | Map to Client | 108 | [packets/map_units.md#npc-units-in-entry-packets-static-scriptshopwarp-npcs](./packets/map_units.md#npc-units-in-entry-packets-static-scriptshopwarp-npcs) |
 | `0x0af7` | `ZC_ACK_REQNAME_BYGID` (char_id lookup) | Map to Client | Fixed 32 bytes | [packets/map_units.md#0x0af7-zc_ack_reqname_bygid-not-the-cz_reqname-reply](./packets/map_units.md#0x0af7-zc_ack_reqname_bygid-not-the-cz_reqname-reply) |
 | `0x0ac4` | `AC_ACCEPT_LOGIN` | Login to Client | Dynamic | [packets/login.md#0x0ac4-ac_accept_login](./packets/login.md#0x0ac4-ac_accept_login) |
 | `0x0ac5` | `HC_NOTIFY_ZONESVR` | Char to Client | Fixed 156 bytes | [packets/char.md#0x0ac5-hc_notify_zonesvr](./packets/char.md#0x0ac5-hc_notify_zonesvr) |
@@ -51,6 +53,7 @@ This master index maps extracted protocol opcodes, bit-packing algorithms, Aegis
 | Map Entry (`LoadEndAck`) | Order of ops, `map_addblock`, spawn to others, nearby to self, self packets (no `VAR_SPEED`) | [mechanics/map_entry_actions.md#map-entry-cz_notify_actorinit-clif_parse_loadendack](./mechanics/map_entry_actions.md#map-entry-cz_notify_actorinit-clif_parse_loadendack) |
 | Sit / Stand | `ZC_NOTIFY_ACT` type 2/3 to `AREA` incl. self, stop-walk first, idle-entry state=2 | [mechanics/map_entry_actions.md#sit--stand-cz_request_act-action-2--3](./mechanics/map_entry_actions.md#sit--stand-cz_request_act-action-2--3) |
 | Direction / Name / Time | `ZC_CHANGE_DIRECTION` to `AREA_WOS`, `CZ_REQNAME` range 14 self-only reply, `ZC_NOTIFY_TIME` = server tick | [mechanics/map_entry_actions.md#direction-change-cz_change_direction](./mechanics/map_entry_actions.md#direction-change-cz_change_direction) |
+| NPC Presentation | Never-sent classes (-1, 32767, disabled), hide/cloak, ids from 110000000 shared with mobs, vanish, warp trigger | [mechanics/npcs.md](./mechanics/npcs.md) |
 | Status Effects | Status change lifecycles, timers, and stat modifiers | [mechanics/status.md#status-change-lifecycle](./mechanics/status.md#status-change-lifecycle) |
 
 ## 3. Scripting VM (`./scripting/`)
@@ -70,3 +73,4 @@ This master index maps extracted protocol opcodes, bit-packing algorithms, Aegis
 | Relational SQL: `char` | Character slots, base and trait attributes, vitals, appearance, and coordinates | [db/sql_schemas.md#char-table-schema](./db/sql_schemas.md#char-table-schema) |
 | `.gat` / `.rsw` & Spawns | Map cell walkability grid binary layout and mob/warp script definitions | [db/map_gat.md#map-walkability-and-spawn-formats](./db/map_gat.md#map-walkability-and-spawn-formats) |
 | `.gat` Cell Types | Raw type 0-6 to walkable/shootable/water, unknown = wall, water promotion, last row/col quirk | [db/map_gat.md#gat-cell-type-mapping](./db/map_gat.md#gat-cell-type-mapping) |
+| NPC source files | Manifest (`npc/re/scripts_main.conf`, `npc:`/`import:`/`delnpc:`), lexing, header grammar (warp/warp2/script/duplicate/shops), names, sprite constants (`JT_` enum), counts | [db/npc_files.md#rathena-npc-source-files-npctxt-conf](./db/npc_files.md#rathena-npc-source-files-npctxt-conf) |

@@ -50,7 +50,7 @@ Target client version: `PACKETVER = 20260219`. Citations are `$RATHENA_PATH/src/
 * Provenance: `clif.cpp:11467-11505`, `packets_struct.hpp:3562-3583`, `clif.cpp:9928-9960`.
 * Frame `<id>.L`. Lookup `map_id2bl(id)`; unknown id -> silent return. Negative id equal to `-sd->id` is the disguise self-lookup.
 * Range check: `sd->m != bl->m || !check_distance_bl(sd, bl, AREA_SIZE)` -> silent drop (Chebyshev 14).
-* Reply: `clif_name(sd, bl, SELF)` to the requester only. For a player target: `ZC_ACK_REQNAMEALL` (PACKETVER >= 20150225/RE 20141126 -> opcode `0x0a30`: `<gid>.L name[24] party_name[24] guild_name[24] position_name[24] title_id.L`; older `0x0195` without title; both with fixed 24-byte NUL-padded strings, empty strings when no party/guild). Party name is only shown together with a guild. NPC/mob targets use other reply forms (`ZC_ACK_REQNAMEALL_NPC` / `0x0095`).
+* Reply: `clif_name(sd, bl, SELF)` to the requester only. For a player target: `ZC_ACK_REQNAMEALL` (PACKETVER >= 20150225/RE 20141126 -> opcode `0x0a30`: `<gid>.L name[24] party_name[24] guild_name[24] position_name[24] title_id.L`; older `0x0195` without title; both with fixed 24-byte NUL-padded strings, empty strings when no party/guild). Party name is only shown together with a guild. NPC targets get `0x0adf` (58 bytes, see [map_units.md](../packets/map_units.md#0x0adf-zc_ack_reqnameall_npc-reply-to-cz_reqname-for-an-npc)); mob targets get `0x0adf` too unless `show_mob_info`/guardian.
 
 ## Time sync: CZ_REQUEST_TIME
 
