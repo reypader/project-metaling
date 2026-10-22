@@ -31,6 +31,7 @@ ro-scripting = { path = "crates/ro-scripting" }
 tokio = { version = "1.53", features = ["full"] }
 bytes = "1.12"
 serde = { version = "1.0", features = ["derive"] }
+serde-saphyr = "1.3"
 thiserror = "2.0"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }

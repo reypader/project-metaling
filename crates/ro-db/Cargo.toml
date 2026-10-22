@@ -6,6 +6,7 @@ edition.workspace = true
 [dependencies]
 bytes.workspace = true
 serde.workspace = true
+serde-saphyr.workspace = true
 thiserror.workspace = true
 
 [lints]

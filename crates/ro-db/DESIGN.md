@@ -15,9 +15,9 @@
 │  1. MapCacheLoader      -> Flat 1D CellFlags grid (width * height)           │
 │  2. YamlRegistryLoader  -> MobBlueprint, ItemBlueprint, SkillBlueprint       │
 │  3. ItemBonusCompiler   -> AOT-compiled `EquipmentModifiers` structs         │
-│  4. NpcHeaderParser     -> Per-map `MapSpawnBlueprint` + raw script bodies   │
+│  4. MapNpcs (YAML)      -> Per-map `NpcSpawn` lists (tools/npc-import)       │
 └────────────────┬─────────────────────────────────────────────┬───────────────┘
-                 │ (MapSpawnBlueprint, Registries)             │ (Uncompiled `{...}` blocks)
+                 │ (MapNpcs, Registries)                       │ (Uncompiled `{...}` blocks)
                  ▼                                             ▼
       crates/ro-engine                            crates/ro-scripting
   Spawns Portals, Mobs, & NPCs into               Compiles into Athena VM or Lua
@@ -55,23 +55,15 @@ To keep `ro-engine`'s **Stage 1 (Present Status Establishment)** 100% pure and p
 2. **Fast-Path Compilation (`EquipmentModifiers`):** Standard declarative stat statements (`bonus bStr, N;`, `bonus bAtkEle, Ele_Fire;`, `bonus2 bSubEle, Ele, Rate;`, `bonus2 bAddRace, Race, Rate;`) are compiled directly into the item's static `EquipmentModifiers` struct. When a player equips the item in `ro-engine`, Stage 1 folds `EquipmentModifiers` via pure SIMD-friendly addition without touching `ro-scripting`.
 3. **Dynamic Fallback (`Option<ScriptId>`):** Only items containing imperative control flow (`if`, `callfunc`) or reactive combat procs (`autobonus`, `skill`) emit an uncompiled script snippet to `ro-scripting` and store a fallback `ScriptId` hook (`OnEquip`, `OnUnequip`, `OnAttack`, `OnWhenHit`).
 
-### 2.4 Pipeline 4: Tab-Delimited Map Entity & Spawn Parser (`env(RATHENA_PATH)/npc/re/`)
+### 2.4 Pipeline 4: NPC Spawn Lists (offline import -> per-map YAML)
 
-In rAthena, warp portals, monster spawns, shops, mapflags, and interactive NPCs are all defined inside tab-delimited `.txt` files organized under `env(RATHENA_PATH)/npc/re/scripts_main.conf`.
+rAthena defines warps, NPCs, shops, mob spawns and mapflags in tab-delimited `.txt` files reached from `npc/re/scripts_main.conf`. `ro-db` never parses that format at runtime:
 
-`ro-db` decouples **where entities exist on a map** from **how scripts execute**:
+1. **Offline import (`tools/npc-import`, dev-only, MIT, clean-room):** resolves the manifest, skips `{...}` script bodies, parses the positioned `warp`/`warp2`/`script`/`duplicate(...)`/shop-family headers, resolves sprite names and duplicates, and writes one `NPC_SPAWN_DB` YAML file per map. Grammar: `reference/catalog/db/npc_files.md`; spec: `specs/npc-spawning/spec.md`.
+2. **Committed data (`crates/ro-db/data/npc/<map>.yml`):** GPL-3.0, a modified copy of rAthena data with its own `LICENSE` and `NOTICE.md`. Excluded from crate packaging.
+3. **Runtime (`MapNpcs::load_yaml`):** serde (`serde-saphyr`) into `NpcSpawn`s when a map world starts. A missing file means the map has no NPCs.
 
-1. **Recursive Manifest Resolver:** Starts at `npc/re/scripts_main.conf` and follows `import:` directives (`scripts_warps.conf`, `scripts_monsters.conf`, `scripts_athena.conf`, `scripts_jobs.conf`).
-2. **Strict 4-Column Tab Splitter:** Splits top-level definition lines strictly by literal ASCII Tab (`\t`) characters into 4 header columns and categorizes them into a per-map `MapSpawnBlueprint`:
-
-| Column 2 Keyword | Header Format (`\t`-delimited) | Resulting `ro-db` Blueprint Variant |
-| :--- | :--- | :--- |
-| **`warp`** | `<map>,<x>,<y>,0\twarp\t<name>\t<xs>,<ys>,<dest_map>,<dx>,<dy>` | `WarpBlueprint`: Pure spatial trigger box `(xs, ys)` and destination `(dest_map, dx, dy)`. Zero scripting required. |
-| **`monster`** / **`boss_monster`** | `<map>,<x>,<y>\tmonster\t<name>\t<mob_id>,<amount>,<delay1>,<delay2>,"<event>"` | `MobSpawnBlueprint`: Spawns `amount` entities of `MobId(u32)` at `(x, y)` (or random walkable cell if `0,0`) with respawn timers. |
-| **`shop`** / **`cashshop`** | `<map>,<x>,<y>,<dir>\tshop\t<name>\t<sprite>,<item_id>:<price>,...` | `ShopBlueprint`: Spawns an NPC entity with a static buy/sell catalog (`Vec<(ItemId, Option<u32>)>`). Zero scripting required. |
-| **`mapflag`** | `<map>\tmapflag\t<flag_name>\t<opt_param>` | Mutates `MapFlags` bitmask on the map's `MapSpawnBlueprint` (`NO_TELEPORT`, `NO_MEMO`, `PVP`, `INDOORS`). |
-| **`script`** | `<map>,<x>,<y>,<dir>\tscript\t<name>\t<sprite>,{<xs>,<ys>,}{ ... }` | `NpcBlueprint` + `RawScriptRegistration`: Extracts coordinates, sprite ID, and optional `OnTouch` `(xs, ys)` area for `MapWorld`, and forwards the `{ ... }` source slice to `ro-scripting`. |
-| **`duplicate(<src>)`** | `<map>,<x>,<y>,<dir>\tduplicate(<src>)\t<name>\t<sprite>` | `NpcBlueprint`: Clones the `ScriptId` handle of `<src>` at the new map coordinates and direction. |
+Script bodies are not imported; each entry records `Source: <file>:<line>` for the scripting phase. Mob spawns, mapflags, floating NPCs and shop catalogs are future work (same importer, new YAML types).
 
 ---
 
@@ -89,56 +81,25 @@ pub struct MobId(pub u32);
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct ScriptId(pub u32);
 
-/// All static entities and rules to initialize when spinning up a `MapWorld`.
-#[derive(Debug, Clone, Default)]
-pub struct MapSpawnBlueprint {
-    pub map_name: String,
-    pub flags: MapFlags,
-    pub warps: Vec<WarpBlueprint>,
-    pub mobs: Vec<MobSpawnBlueprint>,
-    pub shops: Vec<ShopBlueprint>,
-    pub npcs: Vec<NpcBlueprint>,
+/// One map's NPCs (`MapNpcs::load_yaml`, `from_yaml_str`, `to_yaml_string`).
+pub struct MapNpcs { pub npcs: Vec<NpcSpawn> }
+
+pub struct NpcSpawn {
+    pub name: String,                 // rAthena nd->name (keeps any `#suffix`)
+    pub unique_name: String,          // exname
+    pub x: u16, pub y: u16,
+    pub dir: u8,                      // raw, not validated
+    pub sprite: i16,                  // -1 / 32767 never sent
+    pub sprite_is_mob: bool,          // object_type 0x0C
+    pub state: NpcState,              // Normal | Hidden | Cloaked | Disabled
+    pub trigger: Option<(u16, u16)>,  // half-extents
+    pub duplicate_of: Option<String>,
+    pub kind: NpcKind,                // Script | Shop | Warp(WarpDest { map, x, y, trigger_while_hidden })
+    pub source: String,               // "<rAthena path>:<line>"
 }
 
-#[derive(Debug, Clone)]
-pub struct WarpBlueprint {
-    pub name: String,
-    pub pos: MapPosition,
-    pub trigger_half_extents: (u8, u8), // (xs, ys) -> (2*xs + 1) x (2*ys + 1) area
-    pub dest_map: String,
-    pub dest_pos: (u16, u16),
-}
-
-#[derive(Debug, Clone)]
-pub struct MobSpawnBlueprint {
-    pub display_name: String,
-    pub mob_id: MobId,
-    pub spawn_pos: Option<(u16, u16)>,  // None if (0, 0) -> random walkable cell
-    pub spawn_rect: Option<(u16, u16)>, // Optional bounding box (xs, ys)
-    pub count: u16,
-    pub respawn_delay_ms: u32,
-    pub variance_delay_ms: u32,
-    pub is_boss: bool,
-    pub on_death_event: Option<String>, // e.g., "NpcName::OnMyMobDead"
-}
-
-#[derive(Debug, Clone)]
-pub struct ShopBlueprint {
-    pub unique_name: String,
-    pub pos: MapPosition,
-    pub sprite_id: i16,
-    pub catalog: Vec<(ItemId, Option<u32>)>, // None = use default ItemBlueprint BuyPrice
-}
-
-#[derive(Debug, Clone)]
-pub struct NpcBlueprint {
-    pub unique_name: String,
-    pub display_name: String,
-    pub pos: MapPosition,
-    pub sprite_id: i16,                 // -1 for invisible/floating controller
-    pub touch_half_extents: Option<(u8, u8)>,
-    pub script_id: ScriptId,
-}
+// Future (mob spawns): MobSpawnBlueprint { mob_id: MobId, spawn_pos, spawn_rect, count,
+// respawn_delay_ms, variance_delay_ms, is_boss, on_death_event }, from the same importer.
 
 /// Exists today as the concrete `ro_db::MapGrid`, one per map (shared via `Arc` across instances).
 /// Methods marked `future` are added as inherent methods; don't introduce a walkability trait.
