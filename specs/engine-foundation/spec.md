@@ -429,7 +429,7 @@ WBUFPOS (3 bytes) and WBUFPOS2 (6 bytes) round-trip. `(100,140,6)` packs to `[0x
 - **Valid input:** `GatMapGrid::from_bytes(label, &buf)` with the `"GRAT\x01\x02"` header, width/height
   `u32` LE at offsets 6/10, and `w*h` 20-byte records (type `u32` at record offset 16) gives a row-major grid with width 3, height 2.
 - **Errors**
-  - Bad magic → `BadMagic`.
+  - First 4 bytes not `GRAT` → `BadMagic`. The 2 version bytes are not checked (rAthena checks neither).
   - Fewer than 14 bytes, or fewer than `14 + w*h*20` → `Truncated`.
   - Zero width/height, or a dimension > `u16::MAX` → `InvalidDimensions`.
 - **File loading:** `GatMapGrid::load(path)` wraps I/O errors in `Io`.
