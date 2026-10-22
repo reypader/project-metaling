@@ -786,3 +786,43 @@ fn test_login_sequence_trace_exact_byte_layouts() {
     assert_eq!(raw_accept.opcode, PacketOpcode(0x0ac4));
     assert_eq!(raw_accept.payload_len(), 220);
 }
+
+/// PKT-02: streaming framing. Partial frames wait, concatenated frames decode in order, and a
+/// dynamic length below the 4-byte header is rejected. (A dynamic length can't exceed
+/// `MAX_PACKET_SIZE`: the field is a u16 and the cap is 65535.)
+#[test]
+fn pkt_02_streaming_framing() {
+    let mut decoder = PacketDecoder::new(RathenaPacketLengthTable, ro_contracts::TARGET_PACKETVER);
+
+    // Partial fixed frame (CZ_REQUEST_TIME, 6 bytes): bytes stay buffered.
+    let mut stream = BytesMut::from(&[0x60u8, 0x03, 1, 2][..]);
+    assert!(decoder.decode(&mut stream).expect("partial ok").is_none());
+    assert_eq!(stream.len(), 4, "partial bytes are kept");
+    stream.extend_from_slice(&[3, 4]);
+    let raw = decoder.decode(&mut stream).expect("ok").expect("complete");
+    assert_eq!(raw.opcode, PacketOpcode(0x0360));
+    assert_eq!(raw.payload.as_ref(), &[1, 2, 3, 4]);
+
+    // Partial dynamic header, then the rest.
+    let mut stream = BytesMut::from(&[0xff_u8, 0x09, 6][..]);
+    assert!(decoder.decode(&mut stream).expect("ok").is_none());
+    assert_eq!(stream.len(), 3);
+
+    // Concatenated frames decode in order.
+    let mut stream = BytesMut::new();
+    stream.extend_from_slice(&[0x7d, 0x00]);
+    stream.extend_from_slice(&[0x60, 0x03, 9, 0, 0, 0]);
+    stream.extend_from_slice(&[0x7d, 0x00]);
+    let ops: Vec<u16> = std::iter::from_fn(|| decoder.decode(&mut stream).expect("ok"))
+        .map(|raw| raw.opcode.0)
+        .collect();
+    assert_eq!(ops, vec![0x007d, 0x0360, 0x007d]);
+    assert!(stream.is_empty());
+
+    // Dynamic length smaller than its own header.
+    let mut stream = BytesMut::from(&[0xfd_u8, 0x09, 3, 0][..]);
+    assert!(matches!(
+        decoder.decode(&mut stream),
+        Err(ro_contracts::PacketCodecError::MalformedHeader(_))
+    ));
+}

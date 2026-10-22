@@ -135,31 +135,30 @@ pub async fn handle_client_session(
 
                             let entered_account_id = *account_id;
                             let entered_char_id = *char_id;
+                            let Some((target_world_tx, character, spawn_pos)) = service
+                                .resolve_entry(entered_account_id, entered_char_id)
+                                .await
+                            else {
+                                // Unknown or foreign character: close without sending anything.
+                                break 'session_loop;
+                            };
                             authenticated_account = Some(entered_account_id);
                             authenticated_char = Some(entered_char_id);
 
-                            let (target_world_tx, spawn_pos) =
-                                service.resolve_world_for_character(entered_char_id).await;
-
-                            let session_intent = SessionIntent::new(
-                                session_id,
-                                authenticated_account,
-                                authenticated_char,
-                                intent,
-                            );
-
+                            // The actor answers with the entry burst, or drops `tx` (which ends
+                            // this session) if the character can't enter.
                             if let Err(err) = target_world_tx
                                 .send(WorldCommand::JoinSession {
                                     session_id,
                                     account_id: entered_account_id,
-                                    char_id: entered_char_id,
+                                    character,
                                     spawn_pos,
                                     outbound_tx: tx,
-                                    initial_intent: session_intent,
                                 })
                                 .await
                             {
                                 error!("Failed to join MapWorldActor: {}", err);
+                                service.release_character(entered_char_id);
                                 break 'session_loop;
                             }
                             world_tx = Some(target_world_tx);
@@ -196,7 +195,12 @@ pub async fn handle_client_session(
                     );
                 }
                 Err(err) => {
-                    warn!("Packet parsing error from {}: {}", peer_addr, err);
+                    // Malformed or out-of-range client data (e.g. InvalidField): drop the session.
+                    warn!(
+                        "Closing {:?} ({}): bad client packet: {}",
+                        session_id, peer_addr, err
+                    );
+                    break 'session_loop;
                 }
             }
         }
@@ -205,13 +209,16 @@ pub async fn handle_client_session(
     cancel_token.cancel();
 
     if let Some(tx) = &world_tx {
-        let leave_cmd = WorldCommand::LeaveSession { session_id };
-        if let Err(err) =
-            tokio::time::timeout(std::time::Duration::from_millis(500), tx.send(leave_cmd)).await
+        // No timeout: a lost leave would leave the character in the world. The actor always
+        // drains its queue, so this completes.
+        if tx
+            .send(WorldCommand::LeaveSession { session_id })
+            .await
+            .is_err()
         {
             warn!(
-                "Session {:?} timed out sending LeaveSession to MapWorldActor: {}",
-                session_id, err
+                "Session {:?}: map actor gone before LeaveSession",
+                session_id
             );
         }
     }

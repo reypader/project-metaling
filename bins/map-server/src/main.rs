@@ -4,7 +4,9 @@ use anyhow::Context;
 use tokio::net::TcpListener;
 use tracing::{error, info, warn};
 
-use map_server::{create_http_router, handle_client_session, MapConfig, MapServiceHandle};
+use map_server::{
+    create_http_router, handle_client_session, map_data_loader, MapConfig, MapServiceHandle,
+};
 use ro_contracts::TARGET_PACKETVER;
 use ro_persistence::PostgresRepo;
 
@@ -23,7 +25,8 @@ async fn main() -> anyhow::Result<()> {
             .await
             .with_context(|| format!("Failed to connect to database at {}", config.database_url))?,
     );
-    let service_handle = MapServiceHandle::new(char_repo);
+    let service_handle =
+        MapServiceHandle::new(char_repo, map_data_loader(config.map_data_dir.clone()));
 
     let http_router = create_http_router(service_handle.clone());
 

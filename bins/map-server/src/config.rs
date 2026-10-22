@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use clap::{error::ErrorKind, Parser};
 
 /// Configuration for `map-server` network ports and database connection.
@@ -7,6 +9,9 @@ pub struct MapConfig {
     pub http_port: u16,
     pub advertised_port: u16,
     pub database_url: String,
+    /// Directory holding `<map>.gat` files (`MAP_DATA_DIR`). Unset: every map uses the
+    /// all-walkable fallback grid.
+    pub map_data_dir: Option<PathBuf>,
 }
 
 impl Default for MapConfig {
@@ -16,6 +21,7 @@ impl Default for MapConfig {
             http_port: 5122,
             advertised_port: 5121,
             database_url: "postgres://ragnarok:ragnarok@localhost:5432/ragnarok".to_string(),
+            map_data_dir: None,
         }
     }
 }
@@ -43,6 +49,10 @@ struct MapCliArgs {
     /// Map server client host.
     #[arg(long = "map-host")]
     map_host: Option<String>,
+
+    /// Directory holding `<map>.gat` walkability files.
+    #[arg(long = "map-data-dir")]
+    map_data_dir: Option<PathBuf>,
 }
 
 impl MapConfig {
@@ -86,11 +96,16 @@ impl MapConfig {
             .or_else(|| env("DATABASE_URL"))
             .unwrap_or(defaults.database_url);
 
+        let map_data_dir = parsed
+            .map_data_dir
+            .or_else(|| env("MAP_DATA_DIR").map(PathBuf::from));
+
         Self {
             client_port,
             http_port,
             advertised_port,
             database_url,
+            map_data_dir,
         }
     }
 

@@ -3,7 +3,10 @@ pub mod service;
 pub mod session;
 
 pub use config::MapConfig;
-pub use service::{is_valid_map_name, MapServiceHandle, WorldCommand};
+pub use service::{
+    is_valid_map_name, load_walkability, map_data_loader, MapServiceHandle, WalkabilityLoader,
+    WorldCommand, FALLBACK_MAP_SIZE, TICK_INTERVAL,
+};
 pub use session::handle_client_session;
 
 use axum::{

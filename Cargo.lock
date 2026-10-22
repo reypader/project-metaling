@@ -898,6 +898,7 @@ name = "map-server"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "async-trait",
  "axum",
  "bytes",
  "clap",
@@ -1246,6 +1247,7 @@ dependencies = [
  "bytes",
  "fixedbitset",
  "ro-contracts",
+ "ro-db",
  "rustc-hash",
  "serde",
  "smallvec",

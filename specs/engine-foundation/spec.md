@@ -74,8 +74,9 @@ When this spec and the catalog disagree, the catalog wins, and this spec gets fi
   `BroadcastScope::SelfOnly(char_id)`. `query_aoi_characters` remains for queries.
 
 ### 0.5 Clock
-The map-server actor owns a monotonic clock (`now_ms` since actor start, from `Instant`) and passes it to
-`step_tick(now_ms)`, `spawn_character`, and so on. Every wire tick field is `now_ms as u32`.
+The map-server owns one process-wide monotonic clock (`now_ms` since the service started, from `Instant`),
+shared by every map actor, which passes it to `step_tick(now_ms)`, `spawn_character`, and so on. Every
+wire tick field is `now_ms as u32`.
 
 ---
 
@@ -149,7 +150,10 @@ All BIN tests use the in-memory repo seeded with characters `150001..150004` (ac
   - After ACTORINIT, A gets at least one `ZC_PAR_CHANGE` (weight / max weight) and a `0x09ff` for B (AID 2000002, GID 150002).
   - B gets a `0x09fe` for A with AID 2000001 and GID 150001.
 - **Edge cases**
-  - A truncated `CZ_ENTER` closes the connection, and no bytes are sent.
+  - A truncated `CZ_ENTER` followed by EOF closes the connection, and no bytes are sent. (A pre-auth
+    handshake timeout is deferred.)
+  - A stored position off the map enters at the map centre instead of failing.
+  - A character already online (on any map) can't enter again; the new session closes with no bytes.
   - An unknown char_id closes the connection without `ZC_AID`.
   - A second session entering an already-present char is rejected (closes the new session).
 
@@ -226,7 +230,9 @@ A gameplay packet before `CZ_ENTER` closes the session. If the actor channel is 
 
 ### BIN-SRV-04: Leave
 `LeaveSession` → `remove_character` → vanish dispatched → persist `character_position` asynchronously.
-`UnknownCharacter` is logged, and cleanup still proceeds.
+`UnknownCharacter` is logged, and cleanup still proceeds. A re-entry before the write lands uses the
+just-left position. `CZ_RESTART` type 1 leaves the map the same way but keeps the socket open until the
+client closes it. Each session gets at most one queued write per flush (its frames are batched).
 
 ### BIN-SRV-06: Transfer reservation (existing behaviour, kept)
 `accept_transfer` validates the name, reserves a slot, and spawns the world. The next `CZ_ENTER` claims the
@@ -270,8 +276,9 @@ These opcodes resolve to these lengths:
 `0xffff` and `0x0086` → `None`. (\*verify `0x0088` in M3.)
 
 ### PKT-02: Streaming framing
-Partial frames return `Ok(None)` and keep their bytes. Concatenated frames decode in order. An oversize
-dynamic length returns `PacketTooLarge`. (Already covered by `tests/framing_tests.rs`; keep it passing.)
+Partial frames return `Ok(None)` and keep their bytes. Concatenated frames decode in order. A dynamic
+length below 4 returns `MalformedHeader`. (A dynamic length can't exceed `MAX_PACKET_SIZE`: the field is
+a u16 and the cap is 65535, so `PacketTooLarge` is unreachable for dynamic frames.)
 
 ### PKT-03: Move / direction decode
 - `0x035f` to (104,100) decodes to `RequestMove{104,100}`, and 1023 boundaries round-trip.
