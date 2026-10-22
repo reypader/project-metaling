@@ -1017,6 +1017,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2bf50223579dc7cdcfb3bfcacf7069ff68243f8c363f62ffa99cf000a6b9c451"
 
 [[package]]
+name = "npc-import"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "encoding_rs",
+ "ro-db",
+ "serde",
+ "serde-saphyr",
+]
+
+[[package]]
 name = "nu-ansi-term"
 version = "0.50.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"

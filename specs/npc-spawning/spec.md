@@ -58,7 +58,7 @@ Body:
 
 - `Kind` is the resolved kind. A duplicate of a warp is a `Warp` that takes its destination and `warp2` flag from the source and its trigger from its own line. A duplicate of a shop is a `Shop`.
 - Every warp's sprite is `45` (`WARPNPC`).
-- Entries in a file are sorted by `(Source path, line)`. Output must be byte-identical across runs.
+- Entries in a file are in rAthena load order (manifest file order, then line). Output must be byte-identical across runs.
 
 ## 2. Scenarios
 
