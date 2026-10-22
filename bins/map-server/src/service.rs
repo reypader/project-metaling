@@ -14,7 +14,7 @@ use ro_core::{
     AccountId, BroadcastScope, CharId, CharacterSpawn, CharacterSummary, ClientIntent, MapPosition,
     ScopedServerEvent, ServerEvent, SessionId, SessionIntent, TARGET_PACKETVER,
 };
-use ro_db::MapGrid;
+use ro_db::{MapGrid, MapNpcs};
 use ro_engine::{EngineError, MapInstance};
 use ro_packets::{EventEncoder, Phase0EventEncoder};
 use ro_persistence::CharacterRepository;
@@ -54,8 +54,15 @@ impl SharedState {
     }
 }
 
-/// Builds a map's walkability grid from its name.
-pub type WalkabilityLoader = Arc<dyn Fn(&str) -> Arc<MapGrid> + Send + Sync>;
+/// Static data a map world starts with.
+#[derive(Clone)]
+pub struct MapData {
+    pub grid: Arc<MapGrid>,
+    pub npcs: Arc<MapNpcs>,
+}
+
+/// Builds a map's static data from its name (`prontera.gat`).
+pub type MapDataLoader = Arc<dyn Fn(&str) -> MapData + Send + Sync>;
 
 /// Loads `<dir>/<map_name>` as a `.gat`. A missing directory, missing file, or bad file logs a
 /// warning and falls back to an all-walkable `FALLBACK_MAP_SIZE` square grid.
@@ -90,9 +97,32 @@ fn fallback_grid() -> Arc<MapGrid> {
     Arc::clone(grid)
 }
 
-/// Loader reading `.gat` files from `map_data_dir`.
-pub fn map_data_loader(map_data_dir: Option<PathBuf>) -> WalkabilityLoader {
-    Arc::new(move |map_name: &str| load_walkability(map_data_dir.as_deref(), map_name))
+/// Loads `<dir>/<map>.yml` (map name without `.gat`). No directory or no file means no NPCs;
+/// a bad file logs a warning and also means no NPCs (BIN-NPC-01).
+pub fn load_npcs(npc_data_dir: Option<&Path>, map_name: &str) -> Arc<MapNpcs> {
+    let Some(dir) = npc_data_dir else {
+        return Arc::new(MapNpcs::default());
+    };
+    let stem = map_name.strip_suffix(".gat").unwrap_or(map_name);
+    match MapNpcs::load_yaml(&dir.join(format!("{stem}.yml"))) {
+        Ok(Some(npcs)) => Arc::new(npcs),
+        Ok(None) => Arc::new(MapNpcs::default()),
+        Err(err) => {
+            warn!("Map '{}': {}; spawning no NPCs", map_name, err);
+            Arc::new(MapNpcs::default())
+        }
+    }
+}
+
+/// Loader reading `.gat` files from `map_data_dir` and NPC lists from `npc_data_dir`.
+pub fn map_data_loader(
+    map_data_dir: Option<PathBuf>,
+    npc_data_dir: Option<PathBuf>,
+) -> MapDataLoader {
+    Arc::new(move |map_name: &str| MapData {
+        grid: load_walkability(map_data_dir.as_deref(), map_name),
+        npcs: load_npcs(npc_data_dir.as_deref(), map_name),
+    })
 }
 
 /// Commands sent to a long-lived `MapWorldActor`.
@@ -128,7 +158,7 @@ pub struct MapServiceHandle {
     char_repo: Arc<dyn CharacterRepository>,
     worlds: Arc<RwLock<HashMap<String, mpsc::Sender<WorldCommand>>>>,
     pending_transfers: Arc<RwLock<PendingTransfers>>,
-    loader: WalkabilityLoader,
+    loader: MapDataLoader,
     shared: Arc<SharedState>,
     /// Process clock origin; every map's `now_ms` counts from here.
     start_time: Instant,
@@ -152,7 +182,7 @@ pub fn is_valid_map_name(map_name: &str) -> bool {
 }
 
 impl MapServiceHandle {
-    pub fn new(char_repo: Arc<dyn CharacterRepository>, loader: WalkabilityLoader) -> Self {
+    pub fn new(char_repo: Arc<dyn CharacterRepository>, loader: MapDataLoader) -> Self {
         let handle = Self {
             next_session_id: Arc::new(AtomicU64::new(1)),
             char_repo,
@@ -367,8 +397,8 @@ impl MapServiceHandle {
         if let Some(tx) = self.existing_world(map_name) {
             return tx;
         }
-        // Read the map file before taking the write lock so other sessions aren't blocked on it.
-        let walkability = (self.loader)(map_name);
+        // Read the map files before taking the write lock so other sessions aren't blocked on it.
+        let data = (self.loader)(map_name);
 
         let mut worlds = match self.worlds.write() {
             Ok(guard) => guard,
@@ -385,7 +415,7 @@ impl MapServiceHandle {
         let world_actor = MapWorldActor::new(
             map_name.to_string(),
             Arc::clone(&self.char_repo),
-            walkability,
+            data,
             Arc::clone(&self.shared),
             self.start_time,
         );
@@ -441,12 +471,14 @@ impl MapWorldActor {
     fn new(
         map_name: String,
         char_repo: Arc<dyn CharacterRepository>,
-        walkability: Arc<MapGrid>,
+        data: MapData,
         shared: Arc<SharedState>,
         started: Instant,
     ) -> Self {
-        let map_size = (walkability.width(), walkability.height());
-        let engine = MapInstance::new(map_name.clone(), walkability);
+        let map_size = (data.grid.width(), data.grid.height());
+        let mut engine = MapInstance::new(map_name.clone(), data.grid);
+        let spawned = engine.spawn_npcs(&data.npcs);
+        info!("Map '{}': {} NPCs spawned", map_name, spawned);
         Self {
             map_name,
             char_repo,

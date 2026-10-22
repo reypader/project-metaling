@@ -25,8 +25,13 @@ async fn main() -> anyhow::Result<()> {
             .await
             .with_context(|| format!("Failed to connect to database at {}", config.database_url))?,
     );
-    let service_handle =
-        MapServiceHandle::new(char_repo, map_data_loader(config.map_data_dir.clone()));
+    if config.npc_data_dir.is_none() {
+        warn!("NPC_DATA_DIR not set; maps will have no NPCs");
+    }
+    let service_handle = MapServiceHandle::new(
+        char_repo,
+        map_data_loader(config.map_data_dir.clone(), config.npc_data_dir.clone()),
+    );
 
     let http_router = create_http_router(service_handle.clone());
 

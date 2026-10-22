@@ -12,6 +12,9 @@ pub struct MapConfig {
     /// Directory holding `<map>.gat` files (`MAP_DATA_DIR`). Unset: every map uses the
     /// all-walkable fallback grid.
     pub map_data_dir: Option<PathBuf>,
+    /// Directory holding `<map>.yml` NPC spawn lists (`NPC_DATA_DIR`), normally
+    /// `crates/ro-db/data/npc`. Unset: no map has NPCs.
+    pub npc_data_dir: Option<PathBuf>,
 }
 
 impl Default for MapConfig {
@@ -22,6 +25,7 @@ impl Default for MapConfig {
             advertised_port: 5121,
             database_url: "postgres://ragnarok:ragnarok@localhost:5432/ragnarok".to_string(),
             map_data_dir: None,
+            npc_data_dir: None,
         }
     }
 }
@@ -53,6 +57,10 @@ struct MapCliArgs {
     /// Directory holding `<map>.gat` walkability files.
     #[arg(long = "map-data-dir")]
     map_data_dir: Option<PathBuf>,
+
+    /// Directory holding `<map>.yml` NPC spawn lists.
+    #[arg(long = "npc-data-dir")]
+    npc_data_dir: Option<PathBuf>,
 }
 
 impl MapConfig {
@@ -100,12 +108,17 @@ impl MapConfig {
             .map_data_dir
             .or_else(|| env("MAP_DATA_DIR").map(PathBuf::from));
 
+        let npc_data_dir = parsed
+            .npc_data_dir
+            .or_else(|| env("NPC_DATA_DIR").map(PathBuf::from));
+
         Self {
             client_port,
             http_port,
             advertised_port,
             database_url,
             map_data_dir,
+            npc_data_dir,
         }
     }
 

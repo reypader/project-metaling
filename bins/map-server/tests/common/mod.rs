@@ -13,11 +13,11 @@ use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::{TcpListener, TcpStream};
 use tokio_util::codec::Decoder;
 
-use map_server::{handle_client_session, MapServiceHandle, WalkabilityLoader};
+use map_server::{handle_client_session, MapData, MapDataLoader, MapServiceHandle};
 use ro_core::{
     AccountId, CharId, CharacterSummary, CreateCharacterRequest, MapPosition, Sex, TARGET_PACKETVER,
 };
-use ro_db::{CellType, MapGrid};
+use ro_db::{CellType, MapGrid, MapNpcs};
 use ro_packets::{
     pack_pos_dir, unpack_pos2, PacketDecoder, PacketOpcode, RathenaPacketLengthTable, RawPacket,
 };
@@ -155,14 +155,22 @@ impl CharacterRepository for InMemoryRepo {
     }
 }
 
-/// Loader handing every map the same 200x200 grid with `walls`.
-pub fn grid_loader(walls: &[(u16, u16)]) -> WalkabilityLoader {
+/// Loader handing every map the same 200x200 grid with `walls` and no NPCs.
+pub fn grid_loader(walls: &[(u16, u16)]) -> MapDataLoader {
+    data_loader(walls, MapNpcs::default())
+}
+
+/// Loader handing every map the same 200x200 grid with `walls` and the same `npcs`.
+pub fn data_loader(walls: &[(u16, u16)], npcs: MapNpcs) -> MapDataLoader {
     let mut grid = MapGrid::all_walkable(200, 200).expect("valid dims");
     for &(x, y) in walls {
         assert!(grid.set(x, y, CellType::Wall));
     }
-    let shared = Arc::new(grid);
-    Arc::new(move |_map: &str| Arc::clone(&shared))
+    let data = MapData {
+        grid: Arc::new(grid),
+        npcs: Arc::new(npcs),
+    };
+    Arc::new(move |_map: &str| data.clone())
 }
 
 pub struct TestServer {
@@ -177,8 +185,12 @@ impl TestServer {
     }
 
     pub async fn start_with(repo: InMemoryRepo, walls: &[(u16, u16)]) -> Self {
+        Self::start_with_loader(repo, grid_loader(walls)).await
+    }
+
+    pub async fn start_with_loader(repo: InMemoryRepo, loader: MapDataLoader) -> Self {
         let repo = Arc::new(repo);
-        let service = MapServiceHandle::new(repo.clone(), grid_loader(walls));
+        let service = MapServiceHandle::new(repo.clone(), loader);
         let listener = TcpListener::bind("127.0.0.1:0").await.expect("bind");
         let addr = listener.local_addr().expect("local addr");
         let srv = service.clone();
