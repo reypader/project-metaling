@@ -11,4 +11,3 @@ pub(crate) mod world;
 
 pub use engine::{MapInstance, DEFAULT_ENTITY_CAPACITY};
 pub use error::EngineError;
-pub use ro_core;

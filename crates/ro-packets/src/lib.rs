@@ -44,5 +44,3 @@ pub use wire::{
     EventEncoder, PacketCodecError, PacketIntentParser, PacketLength, PacketLengthTable, RawPacket,
     MAX_PACKET_SIZE,
 };
-
-pub use ro_core;

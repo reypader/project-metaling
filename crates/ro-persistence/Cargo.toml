@@ -8,10 +8,6 @@ ro-core.workspace = true
 bytes.workspace = true
 serde.workspace = true
 thiserror.workspace = true
-tracing.workspace = true
-smallvec.workspace = true
-fixedbitset.workspace = true
-rustc-hash.workspace = true
 async-trait.workspace = true
 sqlx.workspace = true
 

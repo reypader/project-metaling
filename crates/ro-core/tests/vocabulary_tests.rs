@@ -1,4 +1,4 @@
-//! Contract-level tests for the engine-foundation touchpoints (spec §1).
+//! `ro-core` vocabulary types: spawn snapshots and server events.
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use ro_core::{

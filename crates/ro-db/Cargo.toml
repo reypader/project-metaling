@@ -4,15 +4,9 @@ version.workspace = true
 edition.workspace = true
 
 [dependencies]
-ro-core.workspace = true
 bytes.workspace = true
 serde.workspace = true
 thiserror.workspace = true
-tracing.workspace = true
-smallvec.workspace = true
-fixedbitset.workspace = true
-rustc-hash.workspace = true
-async-trait.workspace = true
 
 [lints]
 workspace = true

@@ -6,4 +6,3 @@ pub mod map;
 
 pub use cell::{CellType, DbLoadError, MapDataError, MapWalkability};
 pub use map::{GatMapGrid, MemoryMapGrid};
-pub use ro_core;
