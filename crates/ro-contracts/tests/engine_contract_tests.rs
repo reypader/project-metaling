@@ -210,8 +210,12 @@ impl MapEngine for NullEngine {
         Err(EngineError::CharacterAlreadyEntered(spawn.char_id))
     }
     fn push_intent(&mut self, _intent: SessionIntent) {}
-    fn step_tick(&mut self, _now_ms: u64) -> Result<Vec<ScopedServerEvent>, EngineError> {
-        Ok(Vec::new())
+    fn step_tick(
+        &mut self,
+        _now_ms: u64,
+        _out: &mut Vec<ScopedServerEvent>,
+    ) -> Result<(), EngineError> {
+        Ok(())
     }
     fn query_aoi_characters(&self, _center: MapPosition, out: &mut Vec<CharId>) {
         out.clear();
@@ -234,7 +238,9 @@ fn map_engine_is_object_safe() {
         None,
         ClientIntent::NotifyActorInit,
     ));
-    assert_eq!(engine.step_tick(0), Ok(Vec::new()));
+    let mut out = Vec::new();
+    assert_eq!(engine.step_tick(0, &mut out), Ok(()));
+    assert!(out.is_empty());
     assert_eq!(
         engine.remove_character(CharId(1)),
         Err(EngineError::UnknownCharacter(CharId(1)))

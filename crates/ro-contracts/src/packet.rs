@@ -59,6 +59,9 @@ impl From<BroadcastScope> for OutboundTarget {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum BroadcastScope {
     SelfOnly(CharId),
+    /// Explicit recipients, resolved by the emitter at emission time (the engine resolves its
+    /// AoI events this way, like rAthena's `clif_send(AREA)`).
+    Characters(Vec<CharId>),
     /// Everyone whose character is in AoI range of `center`, minus `exclude`.
     AreaOfInterest {
         map_name: String,

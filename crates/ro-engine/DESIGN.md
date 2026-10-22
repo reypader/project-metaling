@@ -8,6 +8,22 @@
 
 ---
 
+## 1a. Foundation Subset (Implemented)
+
+Spec: `specs/engine-foundation/spec.md`. Everything else in this document is a **future phase** unless listed here.
+
+* **Single-threaded.** No `rayon` yet; one `MapInstance` per map, driven by the map-server actor's `step_tick(now_ms)`.
+* **Entities:** `Entity` (u32 index + u32 generation) and `EntityAllocator` with a fixed capacity; a slot whose generation reaches `u32::MAX` is retired (`src/entity.rs`).
+* **Storage (`src/world.rs`):** dense columns `positions`, `kinds`, `dead_sit`, `head_dir`, `speed`, `in_grid`; sparse `players: SparseSet<PlayerInfo>` (name, job, sex, hair, ids) and `walking_paths: SparseSet<WalkingPath>`; `char_to_entity` / `gid_to_entity` (`FxHashMap`). Only players exist (`EntityKind::{Free, Player}`).
+* **Spatial grid (`src/spatial.rs`):** `SpatialGrid8x8` buckets entities per 8x8 block (`SmallVec<[Entity; 8]>`); `query_radius` filters by exact Chebyshev distance (`AREA_SIZE = 14`). Visibility on each step: one query of radius 15 around the old cell (a step moves at most one cell), then each candidate is classified by whether it was / is within 14 of the old / new cell.
+* **Pathfinding (`src/path.rs`):** rAthena rules — cost 10/14, **Manhattan x 10** heuristic (not octile), no corner cutting, last row/column blocked, start cell unchecked, paths over `MAX_WALKPATH = 32` steps rejected; clicks additionally capped at `max_walk_path = 17` (a destination farther than the cap in either axis is rejected before searching). Closed nodes are reopened when a cheaper route appears, as rAthena's `add_path` does. The search runs in a fixed 65x65 window around the start with stamped scratch arrays, reused across searches.
+* **Movement (`src/movement.rs`):** step duration `speed` / `speed * 14 / 10`; the cell changes at the END of a step; the next step starts when the previous one ended. Sub-cell is always (8, 8).
+* **Tick order (`MapInstance::step_tick(now, out)`):** advance due steps (AoI diff per step, pending-redirect repath) -> drain intents FIFO (last move per entity per tick wins, via a `pending_move` column) -> validate and plan paths -> append events to the caller's buffer. Steps run before intents so a click at `now` sees steps that ended before it.
+* **Event routing:** AoI events are resolved to recipients **at emission** (`BroadcastScope::Characters`, sorted), like rAthena's `clif_send(AREA)`; per-observer visibility events are `SelfOnly`. Resolving after the tick would double-send entries to units that come into view later in the same tick.
+* **Not implemented yet:** Stage 1 (status), Stage 2b (mob AI), Stage 3c (combat/portals), Tier 2 combat columns, `rayon` parallelism, sub-cell redirect offsets, `OFFICIAL_WALKPATH`.
+
+---
+
 ## 2. Memory Layout in `World`: Hybrid Dense Columns & Sparse Sets
 
 Because `World` has a known, fixed domain schema at compile time, it avoids the dynamic type erasure (`TypeId`, raw `BlobVec` byte buffers, and runtime borrow tracking) of general-purpose archetype ECS frameworks like `bevy_ecs`. Instead, `World` organizes component data into **three explicit storage tiers** where the Rust compiler itself enforces disjoint borrows across systems:
@@ -59,7 +75,7 @@ pub struct World {
 | **`fixedbitset`** | • `ActiveStatuses.bitmask` (`FixedBitSet`) on every combat actor | Ragnarok Online has 600+ status effects (`SC_*`). `FixedBitSet` packs 640 status presence flags into ten `u64` words (80 bytes), giving Stage 1 and Stage 3 systems $O(1)$ `"is frozen/stunned?"` checks without archetype table moves. |
 | **`bitflags`** | • `StatDirtyFlags` (`DIRTY_BASE \| DIRTY_EQUIP \| DIRTY_STATUS`) in Stage 1<br>• `CombatLockFlags` & `EntityStateFlags` | Provides zero-cost, strongly-typed bitmask operations so Stage 1's `stat_aggregation_system` only recalculates entities whose specific attribute layers mutated. |
 | **`rustc-hash`** (`FxHashMap` / `FxHashSet`) | • `char_to_entity` and `gid_to_entity` lookup tables in `World`<br>• Rare, low-cardinality state (<50 instances per map, such as open trade windows or chat rooms) | Replaces Rust's default cryptographic SipHash with a fast single-multiply hash tailored for integer keys (`u32`, `u64`, `CharId`, `Entity`), resolving network IDs in nanoseconds. |
-| **`rayon`** | • Inter-map parallel `World::step_tick()` execution<br>• Intra-map parallel iteration in Stage 1 (`par_iter_mut` over dirty stats), Stage 2b (Mob AI), Stage 3 (`par_iter().fold()` into thread-local `Vec<EngineEvent>` buffers), and Stage 5 (AoI gather) | Work-stealing data parallelism that pairs directly with contiguous `SparseSet<T>` dense slices (`&[T]` and `&mut [T]`) and read-only `&World` simulation passes. |
+| **`rayon`** *(future phase)* | • Inter-map parallel `World::step_tick()` execution<br>• Intra-map parallel iteration in Stage 1 (`par_iter_mut` over dirty stats), Stage 2b (Mob AI), Stage 3 (`par_iter().fold()` into thread-local `Vec<EngineEvent>` buffers), and Stage 5 (AoI gather) | Work-stealing data parallelism that pairs directly with contiguous `SparseSet<T>` dense slices (`&[T]` and `&mut [T]`) and read-only `&World` simulation passes. |
 | **`tracing`** | • Structured tick instrumentation, unhandled intent diagnostics, and slow-tick warnings | Zero-allocation structured logging compatible with async and multi-threaded `rayon` spans. |
 
 ~~~toml
@@ -103,6 +119,8 @@ A player can send multiple packets within a single server tick window (e.g., cli
 ---
 
 ## 5. The 5-Stage Deterministic Tick Schedule
+
+> **Future phase.** The foundation runs a reduced, single-threaded version of this schedule (see §1a). Stage 1, Stage 2b, Stage 3c and all `rayon` usage are not implemented.
 
 `World::step_tick()` runs on a fixed heartbeat (e.g., **`TICK_DELTA_MS = 20ms` / 50 Hz**). Every tick advances a monotonic millisecond clock:
 
@@ -169,13 +187,13 @@ In *Ragnarok Online*, movement is **hybrid predictive**: the server does *not* b
 3. **Why Server Tick (`20ms`) is Finer Than `move_speed` (`150ms`):**
    * An entity does **not** change its `(x, y)` grid coordinate on every 20ms tick.
    * Instead, `WalkingPath` records `step_started_at_ms` and `next_step_at_ms`. On ticks where `now_ms < next_step_at_ms`, the entity is in transit between cells.
-   * **Mid-Stride Redirection (`sx0, sy0` in `WBUFPOS2`):** If a player is 50% of the way from `(100, 100)` to `(101, 100)` and clicks a new destination `(101, 105)`, `ro-engine` computes the 4-bit sub-cell fraction (`0..15`, where `8` is the cell center) from the elapsed step time. Passing `(sx0, sy0)` in `ServerEventPayload::PlayerMovementStarted` tells the client to smoothly pivot from its exact sub-tile pixel position without rubber-banding!
+   * **Mid-Stride Redirection (`sx0, sy0` in `WBUFPOS2`):** If a player is 50% of the way from `(100, 100)` to `(101, 100)` and clicks a new destination `(101, 105)`, (future phase; the foundation always sends (8, 8)) `ro-engine` computes the 4-bit sub-cell fraction (`0..15`, where `8` is the cell center) from the elapsed step time. Passing `(sx0, sy0)` in `ServerEventPayload::PlayerMovementStarted` tells the client to smoothly pivot from its exact sub-tile pixel position without rubber-banding!
 
 ### 6.2 RO-Compliant A* Pathfinding Rules
 When `intent_to_pathfinding_system` queries `MapWalkabilityProvider`:
 * **Max Path Length:** `MAX_WALKPATH = 32` waypoints.
 * **Step Costs:** Orthogonal neighbor cost = `10`; Diagonal neighbor cost = `14`.
-* **Heuristic:** Octile distance (`10 * (dx + dy) + (14 - 20) * min(dx, dy)`).
+* **Heuristic:** Manhattan distance x 10 (`10 * (dx + dy)`), as rAthena does (deliberately inadmissible; see `reference/catalog/mechanics/movement_aoi.md`).
 * **Strict Diagonal Corner-Cutting Rule:** A diagonal step from `(x, y)` to `(x + dx, y + dy)` is **only valid** if `(x + dx, y + dy)` is walkable **AND both adjacent cardinal cells `(x + dx, y)` and `(x, y + dy)` are also walkable**.
 
 ### 6.3 Component & System Sketches for Movement
@@ -405,7 +423,7 @@ pub enum ServerEventPayload {
 
     /// Sent to `AreaOfInterest` (excluding self) when any actor starts/redirects movement,
     /// OR sent to `SelfOnly` when a moving actor enters a player's AoI mid-walk.
-    /// Wire Packet: `ZC_NOTIFY_MOVE` (`0x0086`) / `ZC_NOTIFY_MOVEENTRY` (`0x09FD`).
+    /// Wire Packet: `ZC_NOTIFY_MOVEENTRY11` (`0x09FD`). `0x0086` is never sent at 20260219.
     ActorMovementStarted {
         entity: Entity,
         gid: u32,          // AccountId for players, runtime GID for mobs
@@ -500,7 +518,7 @@ pub enum ServerEventPayload {
 | `ServerEventPayload` Variant | `BroadcastScope` | Target `ZC_` Wire Packet | Trigger Stage in `World` |
 | :--- | :--- | :--- | :--- |
 | `PlayerMovementStarted` | `SelfOnly(char_id)` | `ZC_NOTIFY_PLAYERMOVE` (`0x0087`) | Stage 4 (from Stage 3a A* Path) |
-| `ActorMovementStarted` | `AreaOfInterest` *(excl. self)* | `ZC_NOTIFY_MOVE` / `ZC_NOTIFY_MOVEENTRY` | Stage 4 (Path start or AoI enter) |
+| `ActorMovementStarted` | `AreaOfInterest` *(excl. self)* | `ZC_NOTIFY_MOVEENTRY11` (`0x09fd`; never `0x0086`) | Stage 4 (Path start or AoI enter) |
 | `ActorSpawnedOrEnteredAoI` | `AreaOfInterest` / `SelfOnly` | `ZC_NOTIFY_STANDENTRY` / `ZC_NOTIFY_NEWENTRY` | Stage 4 (AoI block diff or Spawn) |
 | `ActorVanished` | `AreaOfInterest` | `ZC_NOTIFY_VANISH` (`0x0080`) | Stage 4 (AoI leave, Death, Warp) |
 | `ActorStoppedAt` | `AreaOfInterest` | `ZC_STOPMOVE` (`0x0088`) | Stage 4 (Knockback / Immobilize) |

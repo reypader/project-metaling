@@ -23,7 +23,7 @@ it from M1. M0 (research + spec rewrite) is done.
 | Entry | Sync `MapEngine::spawn_character(CharacterSpawn, now_ms)`; `EnterMap` never reaches the engine | `EnterMap` has no appearance data, and duplicate-entry errors can't surface from inside `step_tick` |
 | Visibility | Entity created at spawn, put in the grid and announced at `NotifyActorInit` | rAthena's `map_addblock` runs in LoadEndAck |
 | Redirect | rAthena style (§0.3); sub-cell always (8,8) | The client expects it, and it's simpler |
-| AoI routing | Engine emits `AreaOfInterest{center, exclude}` and per-observer `SelfOnly`; actor resolves via `query_aoi_characters` | Positions live only in the engine |
+| AoI routing | Engine resolves AoI recipients at emission into `Characters(list)` and per-observer `SelfOnly` (changed in M5: resolving after the tick double-sent entries) | Positions live only in the engine; matches rAthena `clif_send` |
 | Map data | `MAP_DATA_DIR`; missing `.gat` → warn + 512x512 all-walkable `MemoryMapGrid` | Smoke tests run without client data |
 | Fixture | `MemoryMapGrid` is a plain public ro-db type | Shared by tests and the runtime fallback |
 | Clock | Actor-owned monotonic `now_ms`; wire tick = `now_ms as u32` | One time source |
@@ -88,12 +88,12 @@ it from M1. M0 (research + spec rewrite) is done.
 
 ## M5 — `ro-engine` `MapInstance` (ENG-07..12)
 - `engine.rs`: `MapInstance { world, walkability: Arc<dyn MapWalkability>, intents: Vec<SessionIntent>, scratch, events }` implementing `MapEngine`.
-- `step_tick` order:
-  1. drain intents FIFO (last move wins per tick)
-  2. validate and plan paths (`max_walk_path` 17)
-  3. advance steps (loop while `now >= next_step_at`)
-  4. per completed step: move in the grid, run the visibility diff (§0.4), and do the pending-redirect repath
-  5. return events
+- `step_tick` order (changed in M5 so a click sees steps that ended before it):
+  1. advance steps (loop while `now >= next_step_at`); per completed step: move in the grid, run the
+     visibility diff (§0.4), and do the pending-redirect repath
+  2. drain intents FIFO (last move wins per tick)
+  3. validate and plan paths (`max_walk_path` 17)
+  4. append events to the caller's buffer
 - Also: sit/stand, direction, name (range 14), time sync, and `remove_character`.
 - Verify: `./verify.sh -p ro-engine`.
 

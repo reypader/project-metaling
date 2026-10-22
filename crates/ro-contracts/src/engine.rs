@@ -55,8 +55,13 @@ pub trait MapEngine: Send {
     /// Queues an intent for the next `step_tick`. `EnterMap` is not accepted here.
     fn push_intent(&mut self, intent: SessionIntent);
 
-    /// Runs one tick. Bad per-intent input is logged and dropped; `Err` only for engine-wide faults.
-    fn step_tick(&mut self, now_ms: u64) -> Result<Vec<ScopedServerEvent>, EngineError>;
+    /// Runs one tick and appends its events to `out` (the caller reuses the buffer).
+    /// Bad per-intent input is logged and dropped; `Err` only for engine-wide faults.
+    fn step_tick(
+        &mut self,
+        now_ms: u64,
+        out: &mut Vec<ScopedServerEvent>,
+    ) -> Result<(), EngineError>;
 
     /// Clears `out`, then fills it with the characters visible from `center` (Chebyshev range
     /// `AREA_SIZE`). The caller reuses `out` across calls so routing doesn't allocate per event.

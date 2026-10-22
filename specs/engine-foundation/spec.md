@@ -67,9 +67,11 @@ When this spec and the catalog disagree, the catalog wins, and this spec gets fi
   - **Entered view:** the mover gets `UnitWalking`/`UnitStanding` about the other unit (walking or
     standing). The other unit gets `UnitWalking` about the mover (still walking) or `UnitStanding`
     (path just finished on this step).
-- The engine emits AoI-wide events as `BroadcastScope::AreaOfInterest{center, exclude}`. It emits
-  per-observer visibility events as `BroadcastScope::SelfOnly(char_id)`. The map-server actor resolves
-  `AreaOfInterest` via `MapEngine::query_aoi_characters(center)`.
+- The engine resolves AoI-wide events **when it emits them** (like rAthena's `clif_send(AREA)`) into
+  `BroadcastScope::Characters(Vec<CharId>)`: every visible character within 14 of the unit, sorted,
+  minus the excluded one. Resolving after the tick instead would double-send entry packets to units
+  that come into view later in the same tick. Per-observer visibility events use
+  `BroadcastScope::SelfOnly(char_id)`. `query_aoi_characters` remains for queries.
 
 ### 0.5 Clock
 The map-server actor owns a monotonic clock (`now_ms` since actor start, from `Instant`) and passes it to
@@ -89,7 +91,8 @@ pub trait MapEngine: Send {
     /// Queues an intent for the next step_tick. EnterMap is not accepted here.
     fn push_intent(&mut self, intent: SessionIntent);
     /// Bad per-intent input is logged and dropped. Err only for engine-wide faults.
-    fn step_tick(&mut self, now_ms: u64) -> Result<Vec<ScopedServerEvent>, EngineError>;
+    /// Appends this tick's events to `out` (the caller reuses the buffer).
+    fn step_tick(&mut self, now_ms: u64, out: &mut Vec<ScopedServerEvent>) -> Result<(), EngineError>;
     /// Clears and fills `out` (reused by the caller; no per-event allocation).
     fn query_aoi_characters(&self, center: MapPosition, out: &mut Vec<CharId>);
     fn character_position(&self, char_id: CharId) -> Option<MapPosition>;
@@ -111,6 +114,7 @@ against the session's account and closes the session on mismatch.
 `MapDataError` keeps `path` fields. Byte parsers take a `path` label argument.
 
 ### 1.4 `packet.rs`
+- `BroadcastScope::Characters(Vec<CharId>)`: recipients the engine resolved at emission (§0.4).
 - `BroadcastScope::AreaOfInterest { map_name, center, exclude: Option<CharId> }`. Update
   `OutboundPacket::broadcast_aoi` and its callers.
 - `UnitAppearance` (shared by entry packets): `gid` (account_id), `char_id: Option<CharId>`, `name`,
@@ -215,7 +219,8 @@ A gameplay packet before `CZ_ENTER` closes the session. If the actor channel is 
 ### BIN-SRV-03: Event routing
 - The actor encodes each `ScopedServerEvent` once.
 - `SelfOnly(char)` goes to that session.
-- `AreaOfInterest{center, exclude}` goes to `query_aoi_characters(center)` minus `exclude`.
+- `Characters(list)` goes to each listed character's session.
+- `AreaOfInterest{center, exclude}` (not emitted by the engine today) goes to `query_aoi_characters(center)` minus `exclude`.
 - `MapWide` goes to all sessions.
 - Sending uses `try_send`. A full or closed channel removes the session, calls `remove_character`, and persists the position.
 
