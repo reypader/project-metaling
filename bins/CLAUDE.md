@@ -1,6 +1,6 @@
 # Server binaries
 
-Keep binaries thin: config, wiring, TCP session supervision, internal HTTP (DTOs in `ro-contracts/src/http.rs`), and actor channels. Game logic belongs in `crates/`.
+Keep binaries thin: config, wiring, TCP session supervision, internal HTTP (DTOs in `crates/ro-core/src/http.rs`), and actor channels. Game logic belongs in `crates/`.
 
 ## Socket lifecycle invariant (the official client depends on this)
 

@@ -1,12 +1,12 @@
 # Project Metaling
 
-Clean-room Ragnarok Online server in Rust with a custom ECS. Targets one client version: **`PACKETVER = 20260219`** (`ro_contracts::TARGET_PACKETVER`). No backwards compatibility.
+Clean-room Ragnarok Online server in Rust with a custom ECS. Targets one client version: **`PACKETVER = 20260219`** (`ro_core::TARGET_PACKETVER`). No backwards compatibility.
 
 ## Layout
 
 | Path | Role | Design doc |
 | :--- | :--- | :--- |
-| `crates/ro-contracts` | Shared traits, DTOs, IDs. Every crate talks through these. | — |
+| `crates/ro-core` | Vocabulary shared by more than one crate: IDs, DTOs, client intents and server events, internal HTTP DTOs | — |
 | `crates/ro-packets` | Wire framing, length table, intent parsing, event serialization | — |
 | `crates/ro-engine` | Map ECS runtime (tick schedule, movement, AoI) | `DESIGN.md` |
 | `crates/ro-db` | Static data: YAML registries, `.gat` walkability, spawns. Read-only at runtime. | `DESIGN.md` |
@@ -42,6 +42,7 @@ Located via env vars only: `RATHENA_PATH`, `RUSTRO_PATH`, `RATHENA_SCRIPT_INTERP
 - **Reference lookups:** read `reference/catalog/INDEX.md` and the linked entry directly. Spawn `metaling-explorer` only when the catalog doesn't answer the question, or for web research; it writes new findings back. Don't browse the reference trees or the web from the main session. Batch independent lookups into parallel `metaling-explorer` calls.
 - **Scripts:** do short scripts inline. Data extraction from reference repos goes to `metaling-explorer`. Other exploratory or large-output scripting where only the result matters goes to a general-purpose subagent with `model: sonnet`. Keep scratch files out of the repo.
 - **Review once per milestone or feature:** when a `plan.md` milestone or feature is complete, run the `reviewer` agent over its full diff. For large milestones, also run `/code-review`. For small edits, `./verify.sh` plus self-review is enough.
+- **Crate dependencies:** `ro-core` is a shared base and `ro-db` a leaf; `ro-packets`/`ro-persistence` depend only on `ro-core`; `ro-engine` → `ro-core`, `ro-db` (later `ro-mechanics`, `ro-scripting`). Bins wire these together: login/char use core + packets + persistence, and map adds db + engine. A type, error or trait lives in the crate that owns it, and goes in `ro-core` only when 2+ crates share it. Add a trait only when there's a second implementation (test doubles count). When a peer needs to call back, define the trait in the crate that is depended on (e.g. a world-query trait in `ro-scripting` that `ro-engine` implements); never add a reverse dependency.
 - **No `unwrap()`/`expect()` in production code** (enforced by the workspace `clippy::unwrap_used`/`expect_used` lints; `clippy.toml` exempts tests). On bad client input, drop that session instead of panicking the server, as long as shared state stays consistent. New crates need `[lints] workspace = true`. Integration test files with helper fns need a file-level `#![allow(clippy::unwrap_used, clippy::expect_used)]`.
 - **In tests, prefer `.expect("what should have happened")`** over bare `.unwrap()` so failures explain themselves.
 - **map-server hot path:** prefer cache locality and avoid moves/clones in the tick loop unless needed.

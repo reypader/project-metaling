@@ -84,9 +84,9 @@ The Athena scripting language relies on **variable name prefixes** to determine 
 
 ---
 
-## 4. World Commands & Event Label Dispatch (`ro-contracts`)
+## 4. World Commands & Event Label Dispatch
 
-Because `ro-scripting` cannot mutate `MapWorld` ECS columns (`Vitals`, `Inventory`, `MapPosition`) directly, all side effects produced by built-in script commands (`warp`, `getitem`, `delitem`, `heal`, `monster`, `sc_start`) are emitted as buffered `ScriptWorldCommand` messages defined in `crates/ro-contracts`:
+Because `ro-scripting` cannot mutate `MapWorld` ECS columns (`Vitals`, `Inventory`, `MapPosition`) directly, all side effects produced by built-in script commands (`warp`, `getitem`, `delitem`, `heal`, `monster`, `sc_start`) are emitted as buffered `ScriptWorldCommand` messages defined in `ro-scripting` (`ro-engine` depends on `ro-scripting` and applies them):
 
 ~~~rust
 use crate::{CharId, Entity, ItemId, MapPosition, MobId, ScriptId};

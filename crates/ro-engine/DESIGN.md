@@ -81,7 +81,8 @@ pub struct World {
 ~~~toml
 # crates/ro-engine/Cargo.toml dependencies
 [dependencies]
-ro-contracts.workspace = true
+ro-core.workspace = true
+ro-db.workspace = true
 smallvec.workspace = true
 fixedbitset.workspace = true
 rustc-hash.workspace = true

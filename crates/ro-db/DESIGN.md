@@ -2,7 +2,7 @@
 
 ## 1. Architectural Overview & Crate Boundaries
 
-`ro-db` is the static data ingestion, compilation, and map geometry cache layer for **Project Metaling**. It transforms raw file formats from `./env(RATHENA_PATH)/` and binary client map caches into immutable, cache-friendly Rust data structures exposed through `ro-contracts` (`crates/ro-contracts`).
+`ro-db` is the static data ingestion, compilation, and map geometry cache layer for **Project Metaling**. It transforms raw file formats from `./env(RATHENA_PATH)/` and binary client map caches into immutable, cache-friendly Rust data structures that `ro-db` owns and exposes (`ro-engine` and `bins/map-server` depend on it).
 
 ~~~text
                         ./env(RATHENA_PATH)/ & Map Files
@@ -36,7 +36,7 @@
   * `WALKABLE` (`1 << 0`): Entities can pathfind and step onto this cell.
   * `SHOOTABLE` (`1 << 1`): Ranged attacks and magic Line-of-Sight (LoS) can pass across this cell (e.g., shootable walls/cliffs).
   * `WATER` (`1 << 2`): Water surface cell (required for *Water Ball* / *Aqua Benedicta*).
-* **Contract Implementation:** Implements the `MapWalkabilityProvider` trait from `ro-contracts` so `ro-engine`'s Stage 3 Movement & A* Pathfinding system can query cell walkability in $O(1)$ time with zero lock contention.
+* **Contract Implementation:** Defines and implements the walkability trait (today `ro_db::MapWalkability`) so `ro-engine`'s Stage 3 Movement & A* Pathfinding system can query cell walkability in $O(1)$ time with zero lock contention.
 
 ### 2.2 Pipeline 2: YAML Static Registries (`db/re/` & `db/import/`)
 
@@ -75,12 +75,12 @@ In rAthena, warp portals, monster spawns, shops, mapflags, and interactive NPCs 
 
 ---
 
-## 3. Shared Contract Definitions (`crates/ro-contracts` Interface)
+## 3. Public Data Types (owned by `ro-db`)
 
-`ro-db` exposes its parsed data to `ro-engine` and `bins/map-server` using these contract types in `crates/ro-contracts`:
+`ro-db` exposes its parsed data to `ro-engine` and `bins/map-server` using these types, defined in `ro-db`:
 
 ~~~rust
-use crate::{ItemId, MapPosition};
+use ro_core::{ItemId, MapPosition};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct MobId(pub u32);

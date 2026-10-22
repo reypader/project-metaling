@@ -47,6 +47,9 @@ Rule: library crates never depend on bins or tools. A crate may depend on a peer
 direction shown. Future engine↔scripting needs are met by a trait owned by ro-scripting
 (e.g. a world-query trait) that ro-engine implements, so no cycle forms.
 
+**Outcome:** after step 7, ro-db no longer needs ro-core at all, so it's a leaf with no metaling
+dependencies. ro-mechanics and ro-scripting have no dependencies until they get code.
+
 ## Where each item goes
 
 | Item (current `ro-contracts` file) | New home |

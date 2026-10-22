@@ -10,16 +10,15 @@ The `ro-persistence` crate standardizes on `PostgresRepo` as the single authorit
 
 ### 1.2 Integration with Server Binaries and Contracts
 
-The `PostgresRepo` repository implements persistence traits from `crates/ro-contracts` and is injected into server services:
+The `PostgresRepo` repository implements the repository traits defined in this crate (`src/repository/`) and is injected into server services:
 
 * `bins/login-server` (`LoginService`): Consumes `AccountRepository` to authenticate credentials during client login (`CA_LOGIN`) and retrieve account records during session ticket validation or account queries.
 * `bins/char-server` (`CharService`): Consumes `CharacterRepository` to retrieve character summaries (`list_by_account` for `CH_ENTER`), select active characters (`find_by_slot` for `CH_SELECT_CHAR`), create new characters (`create_character` for `CH_MAKE_CHAR`), and manage character deletion reservations (`reserve_delete` for `CH_DELETE_CHAR3_RESERVED`, `cancel_delete` for `CH_DELETE_CHAR3_CANCEL`).
 * `bins/map-server` (`MapService`): Consumes `CharacterRepository` to load character spawn coordinates (`find_by_id` for `CZ_ENTER`) and flush updated coordinates (`last_map`, `last_pos`) upon map transfers, checkpoint saves, or disconnects.
 
-The domain contracts include:
-* Identifiers: `AccountId`, `CharId`, `Sex`, and `MapPosition`.
-* Account models: `Account`, `AccountState`, `AccountRepository`, and `AuthError`.
-* Character models: `CharacterSummary`, `CharacterRepository`, `CreateCharacterRequest`, `CreateCharacterError`, `DeleteReserveOutcome`, and `CancelDeleteOutcome`.
+Types involved:
+* From `ro-core` (shared DTOs): `AccountId`, `CharId`, `Sex`, `MapPosition`, `Account`, `AccountState`, `CharacterSummary`, and `CreateCharacterRequest`.
+* Owned by `ro-persistence`: `AccountRepository`, `AuthError`, `CharacterRepository`, `CreateCharacterError`, `DeleteReserveOutcome`, `CancelDeleteOutcome`, and `RepositoryError`.
 
 ---
 
@@ -69,7 +68,7 @@ To maximize PostgreSQL MVCC performance and eliminate write amplification, `ro-p
 
 ### 3.1 Pattern 1: Accounts Table (`accounts`)
 
-The `accounts` table stores user authentication records and administrative states, matching `ro_contracts::account::Account`. The primary key starts at `2000000` to conform with rAthena conventions:
+The `accounts` table stores user authentication records and administrative states, matching `ro_core::Account`. The primary key starts at `2000000` to conform with rAthena conventions:
 
 ```sql
 CREATE TABLE accounts (
