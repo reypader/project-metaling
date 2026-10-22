@@ -1,16 +1,16 @@
-# Project Metaling — Custom ECS Engine Design (`crates/engine` / `ro-engine`)
+# Project Metaling — Custom ECS Engine Design (`crates/ro-engine`)
 
 ## 1. Architectural Overview & Design Goals
-`ro-engine` (`crates/engine`) is the deterministic, lock-free, data-oriented Map Server runtime for **Project Metaling**[cite: 2]. Each active map on the server owns an isolated `World` instance that replaces legacy eAthena/rAthena `struct block_list` pointer chains and `map_session_data` God Objects[cite: 4] with:
-1. **64-bit Generational `Entity` IDs** (`u32` index + `u32` generation) to eliminate use-after-free bugs during Area-of-Interest (AoI) iteration[cite: 2, 4].
-2. **Hybrid SoA + `SparseSet<T>` Storage** inside `World`, tailored to fixed RO entity categories and high-frequency transient states[cite: 2, 4].
-3. **A 5-Stage Tick Pipeline** where simulation systems execute pure read-only queries (`&World`), emit buffered `EngineEvent` values, collapse net state deltas in a single-threaded barrier, and emit high-level `ServerEvent` messages[cite: 4].
+`ro-engine` is the deterministic, lock-free, data-oriented Map Server runtime for **Project Metaling**. Each active map on the server owns an isolated `World` instance that replaces legacy eAthena/rAthena `struct block_list` pointer chains and `map_session_data` God Objects with:
+1. **64-bit Generational `Entity` IDs** (`u32` index + `u32` generation) to eliminate use-after-free bugs during Area-of-Interest (AoI) iteration.
+2. **Hybrid SoA + `SparseSet<T>` Storage** inside `World`, tailored to fixed RO entity categories and high-frequency transient states.
+3. **A 5-Stage Tick Pipeline** where simulation systems execute pure read-only queries (`&World`), emit buffered `EngineEvent` values, collapse net state deltas in a single-threaded barrier, and emit high-level `ServerEvent` messages.
 
 ---
 
 ## 2. Memory Layout in `World`: Hybrid Dense Columns & Sparse Sets
 
-Because `World` has a known, fixed domain schema at compile time, it avoids the dynamic type erasure (`TypeId`, raw `BlobVec` byte buffers, and runtime borrow tracking) of general-purpose archetype ECS frameworks like `bevy_ecs`[cite: 4]. Instead, `World` organizes component data into **three explicit storage tiers** where the Rust compiler itself enforces disjoint borrows across systems[cite: 4]:
+Because `World` has a known, fixed domain schema at compile time, it avoids the dynamic type erasure (`TypeId`, raw `BlobVec` byte buffers, and runtime borrow tracking) of general-purpose archetype ECS frameworks like `bevy_ecs`. Instead, `World` organizes component data into **three explicit storage tiers** where the Rust compiler itself enforces disjoint borrows across systems:
 
 ~~~rust
 pub struct World {
@@ -49,21 +49,21 @@ pub struct World {
 
 ## 3. `ro-engine` Library Stack & Custom Primitives
 
-`ro-engine` deliberately avoids heavy external ECS or pathfinding frameworks in favor of six focused crates and three small custom primitives[cite: 2, 4].
+`ro-engine` deliberately avoids heavy external ECS or pathfinding frameworks in favor of six focused crates and three small custom primitives.
 
 ### 3.1 External Libraries Used Inside `ro-engine`
 
 | Crate | Where It Fits in `ro-engine` | Why It Fits Our Model |
 | :--- | :--- | :--- |
-| **`smallvec`** *(features: `union`, `const_generics`)*[cite: 2] | • `SpatialGrid8x8` cell blocks (`SmallVec<[Entity; 8]>`)[cite: 2, 4]<br>• `ActiveStatuses.entries` (`SmallVec<[StatusEntry; 16]>`)[cite: 2, 4]<br>• `WalkingPath.waypoints` (`SmallVec<[(u16, u16); 32]>`)\br>• `instant_intents` (`SmallVec<[InstantIntent; 4]>`) | Keeps 99% of spatial block lists, status arrays, intent queues, and 32-step walk paths inline on the stack/struct without heap allocations during 50 Hz ticks, while spilling safely to the heap if 40 entities stack on one cell[cite: 4]. |
-| **`fixedbitset`**[cite: 2] | • `ActiveStatuses.bitmask` (`FixedBitSet`) on every combat actor[cite: 2, 4] | Ragnarok Online has 600+ status effects (`SC_*`)[cite: 4]. `FixedBitSet` packs 640 status presence flags into ten `u64` words (80 bytes), giving Stage 1 and Stage 3 systems $O(1)$ `"is frozen/stunned?"` checks without archetype table moves[cite: 4]. |
+| **`smallvec`** *(features: `union`, `const_generics`)* | • `SpatialGrid8x8` cell blocks (`SmallVec<[Entity; 8]>`)<br>• `ActiveStatuses.entries` (`SmallVec<[StatusEntry; 16]>`)<br>• `WalkingPath.waypoints` (`SmallVec<[(u16, u16); 32]>`)\br>• `instant_intents` (`SmallVec<[InstantIntent; 4]>`) | Keeps 99% of spatial block lists, status arrays, intent queues, and 32-step walk paths inline on the stack/struct without heap allocations during 50 Hz ticks, while spilling safely to the heap if 40 entities stack on one cell. |
+| **`fixedbitset`** | • `ActiveStatuses.bitmask` (`FixedBitSet`) on every combat actor | Ragnarok Online has 600+ status effects (`SC_*`). `FixedBitSet` packs 640 status presence flags into ten `u64` words (80 bytes), giving Stage 1 and Stage 3 systems $O(1)$ `"is frozen/stunned?"` checks without archetype table moves. |
 | **`bitflags`** | • `StatDirtyFlags` (`DIRTY_BASE \| DIRTY_EQUIP \| DIRTY_STATUS`) in Stage 1<br>• `CombatLockFlags` & `EntityStateFlags` | Provides zero-cost, strongly-typed bitmask operations so Stage 1's `stat_aggregation_system` only recalculates entities whose specific attribute layers mutated. |
-| **`rustc-hash`** (`FxHashMap` / `FxHashSet`)[cite: 2, 4] | • `char_to_entity` and `gid_to_entity` lookup tables in `World`<br>• Rare, low-cardinality state (<50 instances per map, such as open trade windows or chat rooms)[cite: 4] | Replaces Rust's default cryptographic SipHash with a fast single-multiply hash tailored for integer keys (`u32`, `u64`, `CharId`, `Entity`), resolving network IDs in nanoseconds[cite: 4]. |
-| **`rayon`** | • Inter-map parallel `World::step_tick()` execution[cite: 4]<br>• Intra-map parallel iteration in Stage 1 (`par_iter_mut` over dirty stats), Stage 2b (Mob AI), Stage 3 (`par_iter().fold()` into thread-local `Vec<EngineEvent>` buffers), and Stage 5 (AoI gather) | Work-stealing data parallelism that pairs directly with contiguous `SparseSet<T>` dense slices (`&[T]` and `&mut [T]`) and read-only `&World` simulation passes[cite: 4]. |
-| **`tracing`**[cite: 2] | • Structured tick instrumentation, unhandled intent diagnostics, and slow-tick warnings[cite: 2] | Zero-allocation structured logging compatible with async and multi-threaded `rayon` spans[cite: 2]. |
+| **`rustc-hash`** (`FxHashMap` / `FxHashSet`) | • `char_to_entity` and `gid_to_entity` lookup tables in `World`<br>• Rare, low-cardinality state (<50 instances per map, such as open trade windows or chat rooms) | Replaces Rust's default cryptographic SipHash with a fast single-multiply hash tailored for integer keys (`u32`, `u64`, `CharId`, `Entity`), resolving network IDs in nanoseconds. |
+| **`rayon`** | • Inter-map parallel `World::step_tick()` execution<br>• Intra-map parallel iteration in Stage 1 (`par_iter_mut` over dirty stats), Stage 2b (Mob AI), Stage 3 (`par_iter().fold()` into thread-local `Vec<EngineEvent>` buffers), and Stage 5 (AoI gather) | Work-stealing data parallelism that pairs directly with contiguous `SparseSet<T>` dense slices (`&[T]` and `&mut [T]`) and read-only `&World` simulation passes. |
+| **`tracing`** | • Structured tick instrumentation, unhandled intent diagnostics, and slow-tick warnings | Zero-allocation structured logging compatible with async and multi-threaded `rayon` spans. |
 
 ~~~toml
-# crates/engine/Cargo.toml dependencies
+# crates/ro-engine/Cargo.toml dependencies
 [dependencies]
 ro-contracts.workspace = true
 smallvec.workspace = true
@@ -76,11 +76,11 @@ tracing.workspace = true
 
 ### 3.2 Custom Primitives Written Inside `ro-engine` (Why We Don't Use `slotmap` or `pathfinding`)
 1. **`Entity` & `EntityAllocator` (~40 lines of safe Rust):**
-   * Packs a `u32` slot index and `u32` generation counter into a 64-bit `Entity` handle[cite: 4].
-   * Exposes `Entity::index() -> usize` directly so Tier 1 universal columns (`positions`, `kinds`) can be indexed via a single bounds-checked array read (`world.positions[entity.index()]`) after verifying generation liveliness[cite: 1, 4].
+   * Packs a `u32` slot index and `u32` generation counter into a 64-bit `Entity` handle.
+   * Exposes `Entity::index() -> usize` directly so Tier 1 universal columns (`positions`, `kinds`) can be indexed via a single bounds-checked array read (`world.positions[entity.index()]`) after verifying generation liveliness.
 2. **`SparseSet<T>` (~60 lines of safe Rust) vs. `slotmap::SecondaryMap`:**
-   * Consists of three contiguous vectors: `sparse: Vec<Option<u32>>`, `dense_entities: Vec<Entity>`, and `dense_data: Vec<T>`[cite: 4].
-   * Unlike third-party arena maps, our `SparseSet<T>` exposes `(dense_entities: &[Entity], dense_data: &mut [T])` as raw contiguous slices, allowing `rayon`'s `.par_iter_mut()` to split component arrays across CPU cores in Stage 1 with zero wrapper overhead[cite: 4].
+   * Consists of three contiguous vectors: `sparse: Vec<Option<u32>>`, `dense_entities: Vec<Entity>`, and `dense_data: Vec<T>`.
+   * Unlike third-party arena maps, our `SparseSet<T>` exposes `(dense_entities: &[Entity], dense_data: &mut [T])` as raw contiguous slices, allowing `rayon`'s `.par_iter_mut()` to split component arrays across CPU cores in Stage 1 with zero wrapper overhead.
 3. **`AStarScratchBuffer` (~70 lines of safe Rust) vs. `pathfinding` crate:**
    * Generic pathfinding crates allocate a new `HashMap` and `BinaryHeap` on the heap on every click.
    * Because RO walk paths are strictly bounded to `MAX_WALKPATH = 32` steps, `ro-engine` uses a pre-allocated, reusable `AStarScratchBuffer` (flat generational `visited` grid + fixed-capacity binary heap) that computes octile A* paths with **zero heap allocations** per click.
@@ -98,7 +98,7 @@ A player can send multiple packets within a single server tick window (e.g., cli
    * **Variants:** `UseConsumable { inv_index }`, `EquipItem { inv_index, equip_pos }`, `UnequipItem { inv_index }`.
    * **Conflict Rule:** Executes orthogonally to `PrimaryActionIntent` (players can drink potions or swap weapons mid-walk) unless blocked by status effects or item reuse delays.
 3. **`ZeroLockIntent` (Immediate / Non-Gameplay):**
-   * **Variants:** `ChangeDirection { head_dir, body_dir }`, `RequestEntityName { target }`, `RequestTime { client_tick }`[cite: 2].
+   * **Variants:** `ChangeDirection { head_dir, body_dir }`, `RequestEntityName { target }`, `RequestTime { client_tick }`.
 
 ---
 
@@ -146,17 +146,17 @@ pub struct ServerTick {
 ~~~
 
 ### 5.1 Stage-by-Stage Execution Rules
-* **Stage 1 (Present Status Establishment):** Applies queued status changes from the end of the previous tick, expires statuses where `expires_at_ms <= tick.now_ms`, and runs a `rayon` parallel pass over entities with non-zero `StatDirtyFlags` (`BaseAttributes` $\rightarrow$ `EquipmentModifiers` $\rightarrow$ `StatusModifiers` $\rightarrow$ `PresentAttributes`)[cite: 4].
-* **Stage 2 (Intent Ingestion & AI Planning):** Drains inbound `ClientIntent` items into `primary_intents` and `instant_intents`[cite: 2], then runs Monster AI sensors in parallel (`&World`) to populate monster `PrimaryActionIntent` slots.
-* **Stage 3 (Simulation & Read-Only Event Generation):** Holds immutable borrows (`&World`)[cite: 4]. Worker threads evaluate consumables, pathfinding, cell steps, portal triggers, and combat formulas, pushing results into thread-local `Vec<EngineEvent>` buffers via `rayon::par_iter().fold()`[cite: 4].
-* **Stage 4 (Event Traversal, Net Delta Collapse & State Commit):** Single-threaded reduction barrier[cite: 4]. Traverses all buffered `EngineEvent` items, folding net deltas to **HP, SP, Position, and MoveSpeed** per entity (clamping overkill damage at `0 HP` so dead entities ignore subsequent actions) while queueing status additions/removals for the next tick's Stage 1. Preserves discrete combat hits and movement starts so client visual animations are never lost.
-* **Stage 5 (Server Event Dispatch):** Emits `ServerEvent` messages for singlecast gauge updates (`ZC_PAR_CHANGE`) and AoI multicast visual animations (`ZC_NOTIFY_PLAYERMOVE`, `ZC_NOTIFY_ACT`, `ZC_MSG_STATE_CHANGE2`)[cite: 2].
+* **Stage 1 (Present Status Establishment):** Applies queued status changes from the end of the previous tick, expires statuses where `expires_at_ms <= tick.now_ms`, and runs a `rayon` parallel pass over entities with non-zero `StatDirtyFlags` (`BaseAttributes` $\rightarrow$ `EquipmentModifiers` $\rightarrow$ `StatusModifiers` $\rightarrow$ `PresentAttributes`).
+* **Stage 2 (Intent Ingestion & AI Planning):** Drains inbound `ClientIntent` items into `primary_intents` and `instant_intents`, then runs Monster AI sensors in parallel (`&World`) to populate monster `PrimaryActionIntent` slots.
+* **Stage 3 (Simulation & Read-Only Event Generation):** Holds immutable borrows (`&World`). Worker threads evaluate consumables, pathfinding, cell steps, portal triggers, and combat formulas, pushing results into thread-local `Vec<EngineEvent>` buffers via `rayon::par_iter().fold()`.
+* **Stage 4 (Event Traversal, Net Delta Collapse & State Commit):** Single-threaded reduction barrier. Traverses all buffered `EngineEvent` items, folding net deltas to **HP, SP, Position, and MoveSpeed** per entity (clamping overkill damage at `0 HP` so dead entities ignore subsequent actions) while queueing status additions/removals for the next tick's Stage 1. Preserves discrete combat hits and movement starts so client visual animations are never lost.
+* **Stage 5 (Server Event Dispatch):** Emits `ServerEvent` messages for singlecast gauge updates (`ZC_PAR_CHANGE`) and AoI multicast visual animations (`ZC_NOTIFY_PLAYERMOVE`, `ZC_NOTIFY_ACT`, `ZC_MSG_STATE_CHANGE2`).
 
 ---
 
 ## 6. Deep Dive: Click-to-Move, A* Pathfinding & Speed-Based Position Updates
 
-In *Ragnarok Online*, movement is **hybrid predictive**: the server does *not* broadcast a packet on every single tile step. When an entity begins moving (or changes direction), the server calculates the full path, validates walkability, and broadcasts the **start cell, destination cell, sub-cell offset, and start timestamp** (`WBUFPOS2`)[cite: 2]. Both the client and `World` then step the entity along the identical A* path at the entity's `move_speed`.
+In *Ragnarok Online*, movement is **hybrid predictive**: the server does *not* broadcast a packet on every single tile step. When an entity begins moving (or changes direction), the server calculates the full path, validates walkability, and broadcasts the **start cell, destination cell, sub-cell offset, and start timestamp** (`WBUFPOS2`). Both the client and `World` then step the entity along the identical A* path at the entity's `move_speed`.
 
 ### 6.1 Move Speed, Step Duration & Sub-Cell Coordinates
 1. **`move_speed` Definition (`PresentAttributes.move_speed: u16`):**
@@ -172,7 +172,7 @@ In *Ragnarok Online*, movement is **hybrid predictive**: the server does *not* b
    * **Mid-Stride Redirection (`sx0, sy0` in `WBUFPOS2`):** If a player is 50% of the way from `(100, 100)` to `(101, 100)` and clicks a new destination `(101, 105)`, `ro-engine` computes the 4-bit sub-cell fraction (`0..15`, where `8` is the cell center) from the elapsed step time. Passing `(sx0, sy0)` in `ServerEventPayload::PlayerMovementStarted` tells the client to smoothly pivot from its exact sub-tile pixel position without rubber-banding!
 
 ### 6.2 RO-Compliant A* Pathfinding Rules
-When `intent_to_pathfinding_system` queries `MapWalkabilityProvider`[cite: 1, 2]:
+When `intent_to_pathfinding_system` queries `MapWalkabilityProvider`:
 * **Max Path Length:** `MAX_WALKPATH = 32` waypoints.
 * **Step Costs:** Orthogonal neighbor cost = `10`; Diagonal neighbor cost = `14`.
 * **Heuristic:** Octile distance (`10 * (dx + dy) + (14 - 20) * min(dx, dy)`).
@@ -351,19 +351,19 @@ pub fn movement_step_system(
 
 #### Sketch 3: Stage 4 Reducer — Committing Position Deltas & AoI Boundary Diffs
 When Stage 4 folds `EngineEvent::MovementStarted` and `EngineEvent::EntitySteppedCell`:
-1. **`MovementStarted`:** Installs the new `WalkingPath` into `world.walking_paths` and pushes `ServerEventPayload::PlayerMovementStarted` (to self) and `ServerEventPayload::ActorMovementStarted` (to AoI observers)[cite: 2].
+1. **`MovementStarted`:** Installs the new `WalkingPath` into `world.walking_paths` and pushes `ServerEventPayload::PlayerMovementStarted` (to self) and `ServerEventPayload::ActorMovementStarted` (to AoI observers).
 2. **`EntitySteppedCell`:**
    * Updates `world.positions[entity.index()] = to`.
-   * If `from.block_coords() != to.block_coords()` (where a block is `x / 8, y / 8`), moves `entity` in `world.spatial_grid` and computes the **Area-of-Interest (AoI) Set Difference**[cite: 2, 4]:
-     * **Entering Blocks:** New observers entering visual range receive `ServerEventPayload::ActorMovementStarted` (`ZC_NOTIFY_MOVEENTRY`) if the entity is still walking, or `ServerEventPayload::ActorSpawnedOrEnteredAoI` (`ZC_NOTIFY_STANDENTRY`) if it finished its path on that cell[cite: 2].
+   * If `from.block_coords() != to.block_coords()` (where a block is `x / 8, y / 8`), moves `entity` in `world.spatial_grid` and computes the **Area-of-Interest (AoI) Set Difference**:
+     * **Entering Blocks:** New observers entering visual range receive `ServerEventPayload::ActorMovementStarted` (`ZC_NOTIFY_MOVEENTRY`) if the entity is still walking, or `ServerEventPayload::ActorSpawnedOrEnteredAoI` (`ZC_NOTIFY_STANDENTRY`) if it finished its path on that cell.
      * **Leaving Blocks:** Old observers falling out of visual range receive `ServerEventPayload::ActorVanished` (`ZC_NOTIFY_VANISH`).
-   * Queries the new cell in `world.spatial_grid` for overlapping `EntityKind::Portal` or `OnTouch` NPC trigger boxes, emitting `ServerEventPayload::PlayerMapMove` (`ZC_NPCACK_MAPMOVE`) or `ScriptTriggerEvent::TouchNpc` if triggered[cite: 1, 2].
+   * Queries the new cell in `world.spatial_grid` for overlapping `EntityKind::Portal` or `OnTouch` NPC trigger boxes, emitting `ServerEventPayload::PlayerMapMove` (`ZC_NPCACK_MAPMOVE`) or `ScriptTriggerEvent::TouchNpc` if triggered.
 
 ---
 
 ## 7. `ServerEvent` Contract & Outbound `ZC_` Packet Translation
 
-Systems inside `ro-engine` never construct raw byte buffers or touch TCP sockets[cite: 2]. At the end of Stage 4 / Stage 5, `World` emits high-level `ServerEvent` structs:
+Systems inside `ro-engine` never construct raw byte buffers or touch TCP sockets. At the end of Stage 4 / Stage 5, `World` emits high-level `ServerEvent` structs:
 
 ~~~rust
 use crate::{AccountId, CharId, Entity, EntityKind, MapPosition, StatusId};
@@ -499,12 +499,12 @@ pub enum ServerEventPayload {
 
 | `ServerEventPayload` Variant | `BroadcastScope` | Target `ZC_` Wire Packet | Trigger Stage in `World` |
 | :--- | :--- | :--- | :--- |
-| `PlayerMovementStarted` | `SelfOnly(char_id)` | `ZC_NOTIFY_PLAYERMOVE` (`0x0087`)[cite: 2] | Stage 4 (from Stage 3a A* Path) |
+| `PlayerMovementStarted` | `SelfOnly(char_id)` | `ZC_NOTIFY_PLAYERMOVE` (`0x0087`) | Stage 4 (from Stage 3a A* Path) |
 | `ActorMovementStarted` | `AreaOfInterest` *(excl. self)* | `ZC_NOTIFY_MOVE` / `ZC_NOTIFY_MOVEENTRY` | Stage 4 (Path start or AoI enter) |
-| `ActorSpawnedOrEnteredAoI` | `AreaOfInterest` / `SelfOnly` | `ZC_NOTIFY_STANDENTRY` / `ZC_NOTIFY_NEWENTRY`[cite: 2] | Stage 4 (AoI block diff or Spawn) |
+| `ActorSpawnedOrEnteredAoI` | `AreaOfInterest` / `SelfOnly` | `ZC_NOTIFY_STANDENTRY` / `ZC_NOTIFY_NEWENTRY` | Stage 4 (AoI block diff or Spawn) |
 | `ActorVanished` | `AreaOfInterest` | `ZC_NOTIFY_VANISH` (`0x0080`) | Stage 4 (AoI leave, Death, Warp) |
 | `ActorStoppedAt` | `AreaOfInterest` | `ZC_STOPMOVE` (`0x0088`) | Stage 4 (Knockback / Immobilize) |
-| `PlayerParamsUpdated` | `SelfOnly(char_id)` | `ZC_PAR_CHANGE` (`0x00B0`)[cite: 2] | Stage 5 (Collapsed Net Deltas) |
-| `ActorActionPerformed` | `AreaOfInterest` | `ZC_NOTIFY_ACT` (`0x008A` / `0x08C8`)[cite: 2] | Stage 5 (Discrete Combat/Sit/Stand) |
+| `PlayerParamsUpdated` | `SelfOnly(char_id)` | `ZC_PAR_CHANGE` (`0x00B0`) | Stage 5 (Collapsed Net Deltas) |
+| `ActorActionPerformed` | `AreaOfInterest` | `ZC_NOTIFY_ACT` (`0x008A` / `0x08C8`) | Stage 5 (Discrete Combat/Sit/Stand) |
 | `StatusStateChanged` | `AreaOfInterest` | `ZC_MSG_STATE_CHANGE2` (`0x0983`) | Stage 1 (Status Applied / Expired) |
-| `PlayerMapMove` | `SelfOnly(char_id)` | `ZC_NPCACK_MAPMOVE` (`0x0091`)[cite: 2] | Stage 4 (Portal collision) |
+| `PlayerMapMove` | `SelfOnly(char_id)` | `ZC_NPCACK_MAPMOVE` (`0x0091`) | Stage 4 (Portal collision) |

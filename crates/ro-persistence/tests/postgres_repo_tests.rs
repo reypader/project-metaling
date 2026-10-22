@@ -1,5 +1,7 @@
 //! Integration tests for PostgresRepo implementing test scenarios PERSIST-AUTH-001 through PERSIST-SCHEMA-002.
 
+#![allow(clippy::unwrap_used, clippy::expect_used)] // test helpers aren't covered by clippy.toml allow-*-in-tests
+
 use std::sync::atomic::{AtomicU32, Ordering};
 
 use ro_contracts::account::{Account, AccountRepository, AccountState, AuthError};

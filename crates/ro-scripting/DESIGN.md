@@ -1,27 +1,28 @@
-# Project Metaling — Dual-VM Scripting & Coroutine Design (`crates/scripting` / `ro-scripting`)
+# Project Metaling — Dual-VM Scripting & Coroutine Design (`crates/ro-scripting`)
 
 ## 1. Architectural Overview & Dual-Backend Philosophy
-`ro-scripting` (`crates/scripting`) is the asynchronous NPC dialog, quest progression, and event scripting subsystem for **Project Metaling**.
+
+`ro-scripting` is the asynchronous NPC dialog, quest progression, and event scripting subsystem for **Project Metaling**.
 
 ### 1.1 Why Decouple `ro-engine` from the Scripting Language?
+
 In legacy rAthena and Hercules, the custom C-like Athena Script bytecode VM (`script.cpp`) is tightly coupled to `map_session_data` and `npc_data` pointers. In **Project Metaling**:
+
 1. `ro-engine` (`MapWorld`) has **zero knowledge** of Athena Script or Lua syntax. It stores only an opaque `ScriptId(pub u32)` on `EntityKind::Npc` entities.
 2. `ro-scripting` implements a **Backend-Agnostic Script Runner** capable of dispatching any `ScriptId` to either:
-   * **Backend A (`AthenaVmBackend`):** Wraps and adapts `reference/rathena-script-lang-interpreter` to execute unmodified official rAthena `.txt` quest and episode scripts.
-   * **Backend B (`LuaVmBackend` via `mlua`):** Runs modern **Lua 5.4 / Luau** scripts using native Rust `async`/`await` coroutines (`Lua::create_async_function`), enabling clean, strongly-typed custom NPCs, instances, and boss AI scripts.
+   * **Backend(`LuaVmBackend` via `mlua`):** Runs modern **Lua 5.4 / Luau** scripts using native Rust `async`/`await` coroutines (`Lua::create_async_function`), enabling clean, strongly-typed custom NPCs, instances, and boss AI scripts.
 
 ~~~text
 ┌──────────────────────────────────────────────────────────────────────────┐
-│ crates/engine (MapWorld Stage 2 / Stage 3)                               │
+│ crates/ro-engine (MapWorld Stage 2 / Stage 3)                            │
 │  • Player clicks NPC (`CZ_CONTACTNPC`) or steps into `OnTouch` box       │
 │  • Emits `ScriptTriggerEvent { char_id, entity, npc_entity, script_id }` │
 └────────────────────────────────────┬─────────────────────────────────────┘
                                      │
                                      ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
-│ crates/scripting (ScriptHost & ActiveDialogRegistry)                     │
+│ crates/ro-scripting (ScriptHost & ActiveDialogRegistry)                  │
 │  Routes `ScriptId` by backend tag:                                       │
-│   ├─► [AthenaVmBackend] (`rathena-script-lang-interpreter` VM thread/fiber)│
 │   └─► [LuaVmBackend]    (`mlua` async coroutine: `npc:say()`, `npc:next()`)│
 │                                                                          │
 │  Executes until hitting a Yield Point (`next`, `select`, `sleep2`, `end`)│
@@ -44,6 +45,7 @@ NPC scripts are inherently conversational and stateful: a script sends lines of 
 **Strict Rule:** A script suspension MUST NEVER block an ECS worker thread or hold a borrow on `MapWorld`.
 
 ### 2.1 The 4-Phase Suspension & Resumption Cycle
+
 Each active player-NPC conversation is managed as an isolated `DialogSession` indexed by `CharId` inside `ro-scripting`:
 
 1. **Initiation (`ScriptTriggerEvent::ContactNpc` / `OnTouch`):**
@@ -84,7 +86,7 @@ The Athena scripting language relies on **variable name prefixes** to determine 
 
 ## 4. World Commands & Event Label Dispatch (`ro-contracts`)
 
-Because `ro-scripting` cannot mutate `MapWorld` ECS columns (`Vitals`, `Inventory`, `MapPosition`) directly, all side effects produced by built-in script commands (`warp`, `getitem`, `delitem`, `heal`, `monster`, `sc_start`) are emitted as buffered `ScriptWorldCommand` messages defined in `crates/contracts`:
+Because `ro-scripting` cannot mutate `MapWorld` ECS columns (`Vitals`, `Inventory`, `MapPosition`) directly, all side effects produced by built-in script commands (`warp`, `getitem`, `delitem`, `heal`, `monster`, `sc_start`) are emitted as buffered `ScriptWorldCommand` messages defined in `crates/ro-contracts`:
 
 ~~~rust
 use crate::{CharId, Entity, ItemId, MapPosition, MobId, ScriptId};
@@ -192,5 +194,6 @@ pub enum ScriptValue {
 ## 5. Pre-Check Guards for Transactional Commands (`getitem` / `Zeny`)
 
 When a script executes an economy command like `if (Zeny >= 500) { Zeny -= 500; getitem 501, 1; }`, `ro-scripting` requires synchronous read access to the player's current Zeny, Weight, and Inventory counts without holding a lock on `MapWorld`:
+
 1. **Read Snapshot on Dialog Start (`PlayerScriptSnapshot`):** When `ro-engine` emits `ScriptTriggerEvent::ContactNpc`, it attaches a lightweight copy of the player's current scalar state (`zeny`, `base_level`, `job_class`, `current_weight`, `max_weight`, and inventory item counts) plus a read handle to the player's `ScriptVars`.
 2. **Optimistic Validation & Atomic Commit:** The script validates `Zeny >= 500` and weight limits against its local `PlayerScriptSnapshot`, updates the snapshot in-place for subsequent lines in the same script step, and emits `ScriptWorldCommand::ModifyEconomy` so `ro-engine` commits the authoritative delta during Stage 4.

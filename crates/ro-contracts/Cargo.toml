@@ -8,3 +8,6 @@ bytes.workspace = true
 serde.workspace = true
 thiserror.workspace = true
 async-trait.workspace = true
+
+[lints]
+workspace = true

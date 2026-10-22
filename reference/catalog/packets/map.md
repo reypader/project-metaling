@@ -5,7 +5,7 @@ Target client version: `PACKETVER = 20260219`. Packet entries are sorted by asce
 ## Packet Shuffling Precedence and Macro Offset Rules
 
 * **Provenance:** Workspace Architecture Policy (`./AGENTS.md`, Section 4) & `rathena` (`src/map/clif_shuffle.hpp`, `src/map/clif_packetdb.hpp`, `src/map/packets_struct.hpp`, `PACKETVER = 20260219`).
-* **Shuffle Precedence:** For `PACKETVER = 20260219`, incoming client-to-map (`CZ_*`) opcodes defined in `reference/rathena/src/map/clif_shuffle.hpp` override baseline definitions in `clif_packetdb.hpp`.
+* **Shuffle Precedence:** For `PACKETVER = 20260219`, incoming client-to-map (`CZ_*`) opcodes defined in `env(RATHENA_PATH)/src/map/clif_shuffle.hpp` override baseline definitions in `clif_packetdb.hpp`.
 * **Macro Offset Interpretation:** In `parseable_packet(opcode, length, handler, pos0, pos1, ...)`, the trailing integer arguments (`pos0`, `pos1`, and subsequent indices) specify exact byte offsets from byte `0` of the raw packet frame.
 * **32-bit Item Identifiers:** `MAX_ITEMID` exceeds `UINT16_MAX` in `PACKETVER = 20260219`. Every item identifier field across map packets uses `u32`.
 * **Unhandled Opcode Policy:** When the map server receives an unimplemented opcode, it logs `tracing::debug!("Unhandled packet opcode={:#06x} len={}", opcode, bytes.len())`, advances the read buffer using the `PacketLengthTable`, and continues processing the session.

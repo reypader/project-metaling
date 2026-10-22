@@ -72,7 +72,7 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-DOCKER_COMPOSE_FILE="$WORKSPACE_ROOT/reference/rathena/tools/docker/docker-compose.yml"
+DOCKER_COMPOSE_FILE="$RATHENA_PATH/tools/docker/docker-compose.yml"
 if docker compose version >/dev/null 2>&1; then
     DOCKER_COMPOSE_CMD=(docker compose -f "$DOCKER_COMPOSE_FILE")
 elif command -v docker-compose >/dev/null 2>&1; then

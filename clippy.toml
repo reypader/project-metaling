@@ -1,0 +1,3 @@
+# Tests may panic: a failed unwrap/expect is a test failure with file:line.
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true

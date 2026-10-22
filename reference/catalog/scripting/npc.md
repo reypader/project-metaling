@@ -11,4 +11,4 @@ Target client version: `PACKETVER = 20260219`.
   * `close`: Appends a Close button to the dialog window and terminates conversation state upon acknowledgement.
   * `select` / `menu`: Suspends script execution to display a 1-indexed choice menu and resumes with the selected index.
   * `warp`: Teleports the interacting character to a target map name and `(x, y)` coordinate pair.
-* **Catalog Status:** Initialized overview. Detailed VM hook signatures and packet sequences are populated by `reference-curator` as `reference-explorer` extracts specifications from `rathena-script-lang-interpreter` and `src/map/script.cpp`.
+* **Catalog Status:** Initialized overview. Detailed VM hook signatures and packet sequences are extracts specifications from `rathena-script-lang-interpreter` and `src/map/script.cpp`.

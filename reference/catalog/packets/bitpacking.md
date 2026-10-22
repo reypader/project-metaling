@@ -4,7 +4,7 @@ Target client version: `PACKETVER = 20260219`.
 
 ## `WBUFPOS` (3-Byte Coordinate and Direction Packing)
 
-* **Provenance:** `rathena` (`src/map/clif.cpp`, `WBUFPOS` / `RBUFPOS` macros) & `rust-ro` (`lib/packets/`), `PACKETVER = 20260219`.
+* **Provenance:** `rathena` (`src/map/clif.cpp`, `WBUFPOS` / `RBUFPOS` macros), `PACKETVER = 20260219`.
 * **Purpose:** Encodes a 10-bit `x` coordinate (`0..1023`), a 10-bit `y` coordinate (`0..1023`), and a 4-bit `dir` orientation (`0..15`) into 3 contiguous bytes (`[u8; 3]`).
 * **Bit Layout:**
   * `byte[0] = (x >> 2) as u8`
@@ -17,7 +17,7 @@ Target client version: `PACKETVER = 20260219`.
 
 ## `WBUFPOS2` (6-Byte Movement Pair Packing)
 
-* **Provenance:** `rathena` (`src/map/clif.cpp`, `WBUFPOS2` / `RBUFPOS2` macros) & `rust-ro` (`lib/packets/`), `PACKETVER = 20260219`.
+* **Provenance:** `rathena` (`src/map/clif.cpp`, `WBUFPOS2` / `RBUFPOS2` macros), `PACKETVER = 20260219`.
 * **Purpose:** Encodes origin coordinates `(x0, y0)` (10 bits each), destination coordinates `(x1, y1)` (10 bits each), and sub-cell offsets `(sx0, sy0)` (4 bits each, typically `8` for cell center) into 6 contiguous bytes (`[u8; 6]`).
 * **Bit Layout:**
   * `byte[0] = (x0 >> 2) as u8`

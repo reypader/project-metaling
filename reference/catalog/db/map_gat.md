@@ -4,7 +4,7 @@ Target client version: `PACKETVER = 20260219`.
 
 ## Map Walkability and Spawn Formats
 
-* **Provenance:** `rathena` (`src/map/map.cpp`, `src/map/npc.cpp`, `npc/re/warps/`, `npc/re/mobs/`) & `rust-ro` (`tools/map-cache/`), `PACKETVER = 20260219`.
+* **Provenance:** `rathena` (`src/map/map.cpp`, `src/map/npc.cpp`, `npc/re/warps/`, `npc/re/mobs/`), `PACKETVER = 20260219`.
 * **`.gat` Ground Altitude Format:**
   * Magic Header: `6` bytes (`"GRAT\x01\x02"`).
   * Dimensions: `width` (`u32` little-endian) at offset `6`, `height` (`u32` little-endian) at offset `10`.

@@ -15,7 +15,7 @@ It logs bidirectional wire protocol traffic, decodes recognized intents and even
    Each client connection maintains a single monotonic sequence counter (`Seq #1`, `Seq #2`, `Seq #3`...) that tracks packets in both directions (`CLIENT -> SERVER` and `SERVER -> CLIENT`). When a session closes, the proxy outputs a chronological packet trace for the entire connection.
 
 3. **Domain Codec Integration**:
-   The proxy frames packets using `RathenaPacketLengthTable` from `ro-packets` and evaluates them against `TARGET_PACKETVER` (default: `20211103`). High-level intents and frames are decoded via `ro_packets::incoming::decode_frame` and `Phase0IntentParser`.
+   The proxy frames packets using `RathenaPacketLengthTable` from `ro-packets` and evaluates them against `TARGET_PACKETVER` (`20260219`). High-level intents and frames are decoded via `ro_packets::incoming::decode_frame` and `Phase0IntentParser`.
 
 4. **Multi-Packet Chain Validation on Unmapped Packets**:
    If a packet opcode is not yet registered in `table.rs`, the proxy logs the raw opcode hex and employs chain validation (predicting follow-up packet boundaries) to avoid misinterpreting payload data as "phantom opcodes".

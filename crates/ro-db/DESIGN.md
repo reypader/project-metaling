@@ -1,21 +1,17 @@
-# Project Metaling — Static Database & Map Blueprint Design (`crates/db` / `ro-db`)
+# Project Metaling — Static Database & Map Blueprint Design (`crates/ro-db`)
 
 ## 1. Architectural Overview & Crate Boundaries
-`ro-db` (`crates/db`) is the static data ingestion, compilation, and map geometry cache layer for **Project Metaling**. It transforms raw file formats from `./reference/rathena/` and binary client map caches into immutable, cache-friendly Rust data structures exposed through `ro-contracts` (`crates/contracts`).
 
-### 1.1 Subagent Isolation & Ownership Rules
-* **Read Scope:** `./crates/db/**`, `./crates/contracts/src/**`, and `./reference/**` (`rathena/db/`, `rathena/npc/re/`, `rathena/src/map/map.cpp`, `rust-ro/tools/map-cache/`).
-* **Write Scope:** `./crates/db/**` ONLY.
-* **Core Separation Principle:** `ro-db` is strictly **read-only at runtime** after server startup (or hot-reload). It never owns mutable entity state (`ro-engine`) and never executes script bytecode (`ro-scripting`).
+`ro-db` is the static data ingestion, compilation, and map geometry cache layer for **Project Metaling**. It transforms raw file formats from `./env(RATHENA_PATH)/` and binary client map caches into immutable, cache-friendly Rust data structures exposed through `ro-contracts` (`crates/ro-contracts`).
 
 ~~~text
-                        ./reference/rathena/ & Map Files
+                        ./env(RATHENA_PATH)/ & Map Files
                  ┌──────────────┬───────────────┬──────────────┐
                  ▼              ▼               ▼              ▼
            (.gat / .rsw)   (db/re/*.yml)  (item_db Script) (npc/re/*.txt)
                  │              │               │              │
 ┌────────────────┴──────────────┴───────────────┴──────────────┴───────────────┐
-│ crates/db (ro-db)                                                            │
+│ crates/ro-db                                                                 │
 │  1. MapCacheLoader      -> Flat 1D CellFlags grid (width * height)           │
 │  2. YamlRegistryLoader  -> MobBlueprint, ItemBlueprint, SkillBlueprint       │
 │  3. ItemBonusCompiler   -> AOT-compiled `EquipmentModifiers` structs         │
@@ -23,7 +19,7 @@
 └────────────────┬─────────────────────────────────────────────┬───────────────┘
                  │ (MapSpawnBlueprint, Registries)             │ (Uncompiled `{...}` blocks)
                  ▼                                             ▼
-      crates/engine (ro-engine)                   crates/scripting (ro-scripting)
+      crates/ro-engine                            crates/ro-scripting
   Spawns Portals, Mobs, & NPCs into               Compiles into Athena VM or Lua
   Tier 1 Dense Arrays & SpatialGrid8x8            and binds to opaque `ScriptId`
 ~~~
@@ -33,7 +29,8 @@
 ## 2. The Four Ingestion Pipelines
 
 ### 2.1 Pipeline 1: Map Walkability & Cell Geometry (`.gat` / `.rsw` / `.mcache`)
-* **References:** `reference/rust-ro/tools/map-cache/` and `reference/rathena/src/map/map.cpp` (`map_gat2cell`).
+
+* **References:** `env(RATHENA_PATH)/src/map/map.cpp` (`map_gat2cell`).
 * **Storage Layout:** Each map's terrain grid is stored as a contiguous 1D `Vec<CellFlags>` of length `width as usize * height as usize`, indexed via `y * width + x`.
 * **Cell Bitflags (`CellFlags`):**
   * `WALKABLE` (`1 << 0`): Entities can pathfind and step onto this cell.
@@ -42,23 +39,28 @@
 * **Contract Implementation:** Implements the `MapWalkabilityProvider` trait from `ro-contracts` so `ro-engine`'s Stage 3 Movement & A* Pathfinding system can query cell walkability in $O(1)$ time with zero lock contention.
 
 ### 2.2 Pipeline 2: YAML Static Registries (`db/re/` & `db/import/`)
-* **References:** `reference/rathena/db/re/mob_db.yml`, `item_db.yml` (`item_db_usable.yml`, `item_db_equip.yml`, `item_db_etc.yml`), `skill_db.yml`, and `job_stats.yml`.
-* **32-Bit ID Invariant:** Per our modern `TARGET_PACKETVER` (`20211103`), all item and monster identifiers deserialize into 32-bit newtypes (`ItemId(pub u32)`, `MobId(pub u32)`).
+
+* **References:** `env(RATHENA_PATH)/db/re/mob_db.yml`, `item_db.yml` (`item_db_usable.yml`, `item_db_equip.yml`, `item_db_etc.yml`), `skill_db.yml`, and `job_stats.yml`.
+* **32-Bit ID Invariant:** Per our modern `TARGET_PACKETVER` (`20260219`), all item and monster identifiers deserialize into 32-bit newtypes (`ItemId(pub u32)`, `MobId(pub u32)`).
 * **Layered Import Merging:** Following rAthena's YAML specification, `ro-db` loads `db/re/<file>.yml` first and overlays entries from `db/import/<file>.yml` by primary key (`Id`), supporting partial field overrides and `Clear: true` resets.
 * **Lookup Performance:** Once loaded, registries are frozen into immutable `FxHashMap<ItemId, ItemBlueprint>` and `FxHashMap<MobId, MobBlueprint>` tables wrapped in `Arc<StaticDb>` for lock-free sharing across all `MapWorld` worker threads.
 
 ### 2.3 Pipeline 3: Ahead-of-Time (AOT) Item Bonus Compiler
+
 In legacy rAthena, every equipped item's `Script` block (e.g., `bonus bStr,1; bonus bMaxHP,100;`) is compiled into Athena Script bytecode and executed inside the script VM every time `status_calc_pc()` recalculates player stats.
 
 To keep `ro-engine`'s **Stage 1 (Present Status Establishment)** 100% pure and parallelizable (`par_iter` over dirty entities):
+
 1. **Static Modifier Extraction:** When `ro-db` parses `item_db_equip.yml`, a lightweight combinator parser (`winnow` / `nom`) inspects the `Script:` string.
 2. **Fast-Path Compilation (`EquipmentModifiers`):** Standard declarative stat statements (`bonus bStr, N;`, `bonus bAtkEle, Ele_Fire;`, `bonus2 bSubEle, Ele, Rate;`, `bonus2 bAddRace, Race, Rate;`) are compiled directly into the item's static `EquipmentModifiers` struct. When a player equips the item in `ro-engine`, Stage 1 folds `EquipmentModifiers` via pure SIMD-friendly addition without touching `ro-scripting`.
 3. **Dynamic Fallback (`Option<ScriptId>`):** Only items containing imperative control flow (`if`, `callfunc`) or reactive combat procs (`autobonus`, `skill`) emit an uncompiled script snippet to `ro-scripting` and store a fallback `ScriptId` hook (`OnEquip`, `OnUnequip`, `OnAttack`, `OnWhenHit`).
 
-### 2.4 Pipeline 4: Tab-Delimited Map Entity & Spawn Parser (`reference/rathena/npc/re/`)
-In rAthena and Hercules, warp portals, monster spawns, shops, mapflags, and interactive NPCs are all defined inside tab-delimited `.txt` files organized under `reference/rathena/npc/re/scripts_main.conf`.
+### 2.4 Pipeline 4: Tab-Delimited Map Entity & Spawn Parser (`env(RATHENA_PATH)/npc/re/`)
+
+In rAthena, warp portals, monster spawns, shops, mapflags, and interactive NPCs are all defined inside tab-delimited `.txt` files organized under `env(RATHENA_PATH)/npc/re/scripts_main.conf`.
 
 `ro-db` decouples **where entities exist on a map** from **how scripts execute**:
+
 1. **Recursive Manifest Resolver:** Starts at `npc/re/scripts_main.conf` and follows `import:` directives (`scripts_warps.conf`, `scripts_monsters.conf`, `scripts_athena.conf`, `scripts_jobs.conf`).
 2. **Strict 4-Column Tab Splitter:** Splits top-level definition lines strictly by literal ASCII Tab (`\t`) characters into 4 header columns and categorizes them into a per-map `MapSpawnBlueprint`:
 
@@ -73,9 +75,9 @@ In rAthena and Hercules, warp portals, monster spawns, shops, mapflags, and inte
 
 ---
 
-## 3. Shared Contract Definitions (`crates/contracts` Interface)
+## 3. Shared Contract Definitions (`crates/ro-contracts` Interface)
 
-`ro-db` exposes its parsed data to `ro-engine` and `bins/map-server` using these contract types in `crates/contracts`:
+`ro-db` exposes its parsed data to `ro-engine` and `bins/map-server` using these contract types in `crates/ro-contracts`:
 
 ~~~rust
 use crate::{ItemId, MapPosition};

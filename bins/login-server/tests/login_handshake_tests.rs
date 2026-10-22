@@ -1,3 +1,5 @@
+#![allow(clippy::unwrap_used, clippy::expect_used)] // test helpers aren't covered by clippy.toml allow-*-in-tests
+
 use std::{sync::Arc, time::Duration};
 
 use axum::{extract::State, http::StatusCode, Json};

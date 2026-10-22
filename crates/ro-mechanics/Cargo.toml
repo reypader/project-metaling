@@ -13,3 +13,6 @@ smallvec.workspace = true
 fixedbitset.workspace = true
 rustc-hash.workspace = true
 async-trait.workspace = true
+
+[lints]
+workspace = true
