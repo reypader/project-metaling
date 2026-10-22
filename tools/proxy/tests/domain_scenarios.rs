@@ -1,18 +1,16 @@
 #![allow(clippy::unwrap_used, clippy::expect_used)] // test helpers aren't covered by clippy.toml allow-*-in-tests
 
+use clap::Parser;
+use ro_contracts::http::ServerType;
+use ro_proxy::{
+    forwarder::run_proxy_server, logger::PacketDirection, PacketSequenceRecorder, ProxyArgs,
+};
 use std::{
     net::SocketAddr,
     path::PathBuf,
     process::{Child, Command, Stdio},
     sync::{Arc, Mutex},
     time::{Duration, Instant},
-};
-use clap::Parser;
-use ro_contracts::http::ServerType;
-use ro_proxy::{
-    forwarder::run_proxy_server,
-    logger::PacketDirection,
-    PacketSequenceRecorder, ProxyArgs,
 };
 use tokio::{
     io::{AsyncReadExt, AsyncWriteExt},
@@ -34,7 +32,10 @@ impl ChildGuard {
     }
 
     fn try_wait(&mut self) -> std::io::Result<Option<std::process::ExitStatus>> {
-        self.0.as_mut().expect("Child process unavailable").try_wait()
+        self.0
+            .as_mut()
+            .expect("Child process unavailable")
+            .try_wait()
     }
 }
 
@@ -49,8 +50,12 @@ impl Drop for ChildGuard {
 
 /// Helper to find a free local TCP port.
 fn get_free_port() -> u16 {
-    let listener = std::net::TcpListener::bind("127.0.0.1:0").expect("Failed to bind ephemeral port");
-    listener.local_addr().expect("Failed to get local addr").port()
+    let listener =
+        std::net::TcpListener::bind("127.0.0.1:0").expect("Failed to bind ephemeral port");
+    listener
+        .local_addr()
+        .expect("Failed to get local addr")
+        .port()
 }
 
 /// Helper to wait until a TCP port accepts connections.
@@ -133,7 +138,8 @@ async fn test_dom_proxy_02_sigterm_clean_shutdown_and_log_flush() {
     let char_port = get_free_port();
     let map_port = get_free_port();
 
-    let temp_log: PathBuf = std::env::temp_dir().join(format!("proxy_test_sigterm_{}.log", login_port));
+    let temp_log: PathBuf =
+        std::env::temp_dir().join(format!("proxy_test_sigterm_{}.log", login_port));
     if temp_log.exists() {
         let _ = std::fs::remove_file(&temp_log);
     }
@@ -168,7 +174,10 @@ async fn test_dom_proxy_02_sigterm_clean_shutdown_and_log_flush() {
         .arg(pid.to_string())
         .status()
         .expect("Failed to execute kill command");
-    assert!(kill_status.success(), "Failed to send SIGTERM to proxy process");
+    assert!(
+        kill_status.success(),
+        "Failed to send SIGTERM to proxy process"
+    );
 
     // Wait for the child process to terminate.
     let exit_status = tokio::time::timeout(Duration::from_secs(5), async {
@@ -189,7 +198,10 @@ async fn test_dom_proxy_02_sigterm_clean_shutdown_and_log_flush() {
     );
 
     // Verify the log file was created and contains the header.
-    assert!(temp_log.exists(), "Sequence log file was not created on SIGTERM");
+    assert!(
+        temp_log.exists(),
+        "Sequence log file was not created on SIGTERM"
+    );
     let content = std::fs::read_to_string(&temp_log).expect("Failed to read log file");
     assert!(
         content.contains("Ragnarok Online Packet Proxy - Global Sequence Log"),
@@ -205,7 +217,8 @@ async fn test_dom_proxy_02_sigint_clean_shutdown_and_log_flush() {
     let char_port = get_free_port();
     let map_port = get_free_port();
 
-    let temp_log: PathBuf = std::env::temp_dir().join(format!("proxy_test_sigint_{}.log", login_port));
+    let temp_log: PathBuf =
+        std::env::temp_dir().join(format!("proxy_test_sigint_{}.log", login_port));
     if temp_log.exists() {
         let _ = std::fs::remove_file(&temp_log);
     }
@@ -239,7 +252,10 @@ async fn test_dom_proxy_02_sigint_clean_shutdown_and_log_flush() {
         .arg(pid.to_string())
         .status()
         .expect("Failed to execute kill command");
-    assert!(kill_status.success(), "Failed to send SIGINT to proxy process");
+    assert!(
+        kill_status.success(),
+        "Failed to send SIGINT to proxy process"
+    );
 
     let exit_status = tokio::time::timeout(Duration::from_secs(5), async {
         loop {
@@ -258,7 +274,10 @@ async fn test_dom_proxy_02_sigint_clean_shutdown_and_log_flush() {
         exit_status
     );
 
-    assert!(temp_log.exists(), "Sequence log file was not created on SIGINT");
+    assert!(
+        temp_log.exists(),
+        "Sequence log file was not created on SIGINT"
+    );
     let content = std::fs::read_to_string(&temp_log).expect("Failed to read log file");
     assert!(
         content.contains("Ragnarok Online Packet Proxy - Global Sequence Log"),
@@ -275,8 +294,12 @@ async fn test_dom_proxy_02_sigint_clean_shutdown_and_log_flush() {
 #[tokio::test]
 async fn test_dom_proxy_03_eaddrinuse_clean_exit() {
     // Occupy a port with an existing listener.
-    let occupied_listener = std::net::TcpListener::bind("127.0.0.1:0").expect("Failed to bind occupying listener");
-    let occupied_port = occupied_listener.local_addr().expect("Failed to get port").port();
+    let occupied_listener =
+        std::net::TcpListener::bind("127.0.0.1:0").expect("Failed to bind occupying listener");
+    let occupied_port = occupied_listener
+        .local_addr()
+        .expect("Failed to get port")
+        .port();
 
     let other_port1 = get_free_port();
     let other_port2 = get_free_port();
@@ -305,7 +328,9 @@ async fn test_dom_proxy_03_eaddrinuse_clean_exit() {
     let combined_logs = format!("{}\n{}", stdout, stderr);
 
     assert!(
-        combined_logs.to_lowercase().contains("address already in use")
+        combined_logs
+            .to_lowercase()
+            .contains("address already in use")
             || combined_logs.to_lowercase().contains("failed to bind"),
         "Output must report the port collision. Output: {}",
         combined_logs
@@ -347,7 +372,10 @@ async fn test_dom_proxy_04_concurrent_multiservice_forwarding() {
         assert_eq!(buf[0], 0x65);
         assert_eq!(buf[1], 0x00);
         // Reply with 4-byte AccountId handshake echo followed by HC_ACK_CHARINFO_PER_PAGE
-        socket.write_all(&[0x01, 0x00, 0x00, 0x00, 0x6b, 0x00, 0x04, 0x00]).await.unwrap();
+        socket
+            .write_all(&[0x01, 0x00, 0x00, 0x00, 0x6b, 0x00, 0x04, 0x00])
+            .await
+            .unwrap();
         socket.flush().await.unwrap();
     });
 
@@ -359,7 +387,10 @@ async fn test_dom_proxy_04_concurrent_multiservice_forwarding() {
         assert_eq!(buf[0], 0x36);
         assert_eq!(buf[1], 0x04);
         // Reply with 4-byte AccountId handshake echo followed by ZC_AUTH_ACK
-        socket.write_all(&[0x01, 0x00, 0x00, 0x00, 0x73, 0x00, 0x04, 0x00]).await.unwrap();
+        socket
+            .write_all(&[0x01, 0x00, 0x00, 0x00, 0x73, 0x00, 0x04, 0x00])
+            .await
+            .unwrap();
         socket.flush().await.unwrap();
     });
 
@@ -378,13 +409,20 @@ async fn test_dom_proxy_04_concurrent_multiservice_forwarding() {
     let rec1 = recorder.clone();
     let login_target_str = login_target_addr.to_string();
     let proxy_login_task = tokio::spawn(async move {
-        let _ = run_proxy_server(proxy_login_listener, login_target_str, ServerType::Login, rec1).await;
+        let _ = run_proxy_server(
+            proxy_login_listener,
+            login_target_str,
+            ServerType::Login,
+            rec1,
+        )
+        .await;
     });
 
     let rec2 = recorder.clone();
     let char_target_str = char_target_addr.to_string();
     let proxy_char_task = tokio::spawn(async move {
-        let _ = run_proxy_server(proxy_char_listener, char_target_str, ServerType::Char, rec2).await;
+        let _ =
+            run_proxy_server(proxy_char_listener, char_target_str, ServerType::Char, rec2).await;
     });
 
     let rec3 = recorder.clone();
@@ -452,10 +490,20 @@ async fn test_dom_proxy_04_concurrent_multiservice_forwarding() {
     assert!(has_char, "Recorder must contain Char server packets");
     assert!(has_map, "Recorder must contain Map server packets");
 
-    let has_client_to_server = entries.iter().any(|e| e.direction == PacketDirection::ClientToServer);
-    let has_server_to_client = entries.iter().any(|e| e.direction == PacketDirection::ServerToClient);
-    assert!(has_client_to_server, "Recorder must contain client to server packets");
-    assert!(has_server_to_client, "Recorder must contain server to client packets");
+    let has_client_to_server = entries
+        .iter()
+        .any(|e| e.direction == PacketDirection::ClientToServer);
+    let has_server_to_client = entries
+        .iter()
+        .any(|e| e.direction == PacketDirection::ServerToClient);
+    assert!(
+        has_client_to_server,
+        "Recorder must contain client to server packets"
+    );
+    assert!(
+        has_server_to_client,
+        "Recorder must contain server to client packets"
+    );
 
     proxy_login_task.abort();
     proxy_char_task.abort();

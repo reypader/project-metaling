@@ -279,7 +279,11 @@ mod tests {
 
         let raw = RawPacket::new(PacketOpcode(0x0a39), Bytes::from(payload));
         match ChMakeCharPacket::decode(&raw) {
-            Err(PacketCodecError::InvalidField { opcode, field, value }) => {
+            Err(PacketCodecError::InvalidField {
+                opcode,
+                field,
+                value,
+            }) => {
                 assert_eq!(opcode, PacketOpcode(0x0a39));
                 assert_eq!(field, "sex");
                 assert_eq!(value, 99);
@@ -294,7 +298,11 @@ mod tests {
 
         let raw_ch_enter = RawPacket::new(PacketOpcode(0x0065), short_payload);
         match ChEnterPacket::decode(&raw_ch_enter) {
-            Err(PacketCodecError::TruncatedPayload { opcode, expected, actual }) => {
+            Err(PacketCodecError::TruncatedPayload {
+                opcode,
+                expected,
+                actual,
+            }) => {
                 assert_eq!(opcode, PacketOpcode(0x0065));
                 assert_eq!(expected, 15);
                 assert_eq!(actual, 2);
@@ -305,7 +313,11 @@ mod tests {
         let empty_payload = Bytes::new();
         let raw_select = RawPacket::new(PacketOpcode(0x0066), empty_payload);
         match ChSelectCharPacket::decode(&raw_select) {
-            Err(PacketCodecError::TruncatedPayload { opcode, expected, actual }) => {
+            Err(PacketCodecError::TruncatedPayload {
+                opcode,
+                expected,
+                actual,
+            }) => {
                 assert_eq!(opcode, PacketOpcode(0x0066));
                 assert_eq!(expected, 1);
                 assert_eq!(actual, 0);

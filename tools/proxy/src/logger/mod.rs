@@ -1,9 +1,9 @@
-pub mod logger;
+pub mod packet_logger;
 pub mod recorder;
 pub mod resync;
 pub mod session;
 
-pub use logger::PacketLogger;
+pub use packet_logger::PacketLogger;
 pub use recorder::{
     civil_from_timestamp, generate_log_filename, GlobalSequenceEntry, PacketSequenceRecorder,
     DEFAULT_MAX_RECORDED_PACKETS,

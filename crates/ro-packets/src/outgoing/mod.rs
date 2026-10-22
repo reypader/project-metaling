@@ -51,6 +51,6 @@ pub use map::{
     encode_zc_notify_act_params, encode_zc_notify_move, encode_zc_notify_move_modern,
     encode_zc_notify_newentry, encode_zc_notify_newentry_modern, encode_zc_notify_playermove,
     encode_zc_notify_standentry, encode_zc_notify_standentry_modern, encode_zc_notify_time,
-    encode_zc_notify_vanish, encode_zc_par_change, encode_zc_par_change_i32,
-    encode_zc_restart_ack, ActParams, NewEntryParams,
+    encode_zc_notify_vanish, encode_zc_par_change, encode_zc_par_change_i32, encode_zc_restart_ack,
+    ActParams, NewEntryParams,
 };

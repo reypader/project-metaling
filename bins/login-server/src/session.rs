@@ -75,16 +75,10 @@ pub async fn handle_stream<R, W>(
                 break 'session_loop;
             }
             Ok(bytes_read) => {
-                debug!(
-                    "Read {} bytes from client {:?}",
-                    bytes_read, session_id
-                );
+                debug!("Read {} bytes from client {:?}", bytes_read, session_id);
             }
             Err(err) => {
-                error!(
-                    "Socket read error from client {:?}: {}",
-                    session_id, err
-                );
+                error!("Socket read error from client {:?}: {}", session_id, err);
                 break 'session_loop;
             }
         }
@@ -135,11 +129,8 @@ pub async fn handle_stream<R, W>(
     }
 }
 
-pub async fn handle_in_memory_session<R, W>(
-    reader: R,
-    writer: W,
-    service: LoginServiceHandle,
-) where
+pub async fn handle_in_memory_session<R, W>(reader: R, writer: W, service: LoginServiceHandle)
+where
     R: AsyncRead + Unpin + Send + 'static,
     W: AsyncWrite + Unpin + Send + 'static,
 {

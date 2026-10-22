@@ -49,7 +49,10 @@ impl<T: PacketLengthTable> PacketDecoder<T> {
     /// Decodes next frame directly into a high-level `DecodedFrame`.
     ///
     /// Consumes the raw frame and returns `DecodedFrame::Unhandled` for unhandled opcodes.
-    pub fn decode_frame(&mut self, src: &mut BytesMut) -> Result<Option<DecodedFrame>, PacketCodecError> {
+    pub fn decode_frame(
+        &mut self,
+        src: &mut BytesMut,
+    ) -> Result<Option<DecodedFrame>, PacketCodecError> {
         let raw = match self.decode(src)? {
             Some(pkt) => pkt,
             None => return Ok(None),

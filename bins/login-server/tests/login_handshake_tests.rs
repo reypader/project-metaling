@@ -25,7 +25,8 @@ fn make_ca_login_frame(username: &str, password: &str) -> [u8; 55] {
     let user_bytes = username.as_bytes();
     frame[6..6 + user_bytes.len().min(24)].copy_from_slice(&user_bytes[..user_bytes.len().min(24)]);
     let pass_bytes = password.as_bytes();
-    frame[30..30 + pass_bytes.len().min(24)].copy_from_slice(&pass_bytes[..pass_bytes.len().min(24)]);
+    frame[30..30 + pass_bytes.len().min(24)]
+        .copy_from_slice(&pass_bytes[..pass_bytes.len().min(24)]);
     frame[54] = 0;
     frame
 }
@@ -103,7 +104,10 @@ async fn test_trace_session_2_valid_password_and_ticket_lifecycle() {
     let mut response_buf = [0u8; 512];
     let mut total_read = 0;
     loop {
-        let n = client_stream.read(&mut response_buf[total_read..]).await.unwrap();
+        let n = client_stream
+            .read(&mut response_buf[total_read..])
+            .await
+            .unwrap();
         if n == 0 {
             break;
         }
@@ -162,13 +166,17 @@ async fn test_trace_session_2_valid_password_and_ticket_lifecycle() {
         login_id2,
         sex: Sex::Male,
     };
-    let res1 = validate_session(State(service.clone()), Json(validate_req.clone())).await.0;
+    let res1 = validate_session(State(service.clone()), Json(validate_req.clone()))
+        .await
+        .0;
     assert!(res1.valid);
     assert_eq!(res1.account_id, AccountId(account_id_val));
     assert!(res1.error_message.is_none());
 
     // Return to Character Selection (second validation with exact same ticket)
-    let res2 = validate_session(State(service.clone()), Json(validate_req.clone())).await.0;
+    let res2 = validate_session(State(service.clone()), Json(validate_req.clone()))
+        .await
+        .0;
     assert!(res2.valid);
     assert_eq!(res2.account_id, AccountId(account_id_val));
 
@@ -179,7 +187,9 @@ async fn test_trace_session_2_valid_password_and_ticket_lifecycle() {
         login_id2,
         sex: Sex::Male,
     };
-    let res3 = validate_session(State(service.clone()), Json(bad_validate_req)).await.0;
+    let res3 = validate_session(State(service.clone()), Json(bad_validate_req))
+        .await
+        .0;
     assert!(!res3.valid);
 }
 
@@ -210,7 +220,9 @@ async fn test_char_server_registration_and_heartbeat_flow() {
         user_count: 77,
         timestamp_ms: 99999,
     };
-    let hb_res = handle_heartbeat(State(service.clone()), Json(hb_req)).await.0;
+    let hb_res = handle_heartbeat(State(service.clone()), Json(hb_req))
+        .await
+        .0;
     assert!(hb_res.acknowledged);
 
     // Connect client via duplex stream and assert updated descriptor in 0x0ac4
@@ -231,7 +243,12 @@ async fn test_char_server_registration_and_heartbeat_flow() {
     let mut total_read = 0;
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while total_read < 224 && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client_stream.read(&mut response_buf[total_read..])).await {
+        if let Ok(Ok(n)) = tokio::time::timeout(
+            Duration::from_millis(100),
+            client_stream.read(&mut response_buf[total_read..]),
+        )
+        .await
+        {
             if n == 0 {
                 break;
             }
@@ -273,7 +290,12 @@ async fn test_login_socket_remains_open_until_client_disconnects() {
     let mut total_read = 0;
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while total_read < 224 && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client_stream.read(&mut response_buf[total_read..])).await {
+        if let Ok(Ok(n)) = tokio::time::timeout(
+            Duration::from_millis(100),
+            client_stream.read(&mut response_buf[total_read..]),
+        )
+        .await
+        {
             assert!(n > 0, "Unexpected early EOF");
             total_read += n;
         }
@@ -288,17 +310,26 @@ async fn test_login_socket_remains_open_until_client_disconnects() {
         client_stream.read(&mut check_buf),
     )
     .await;
-    assert!(timeout_check.is_err(), "Socket must remain open waiting for client closure");
+    assert!(
+        timeout_check.is_err(),
+        "Socket must remain open waiting for client closure"
+    );
 
     // Server task must still be running
-    assert!(!session_handle.is_finished(), "Server session task must not exit before client disconnects");
+    assert!(
+        !session_handle.is_finished(),
+        "Server session task must not exit before client disconnects"
+    );
 
     // Client closes the stream
     drop(client_stream);
 
     // Server task now terminates cleanly within timeout
     let join_result = tokio::time::timeout(Duration::from_millis(500), session_handle).await;
-    assert!(join_result.is_ok(), "Server session task should terminate upon client EOF");
+    assert!(
+        join_result.is_ok(),
+        "Server session task should terminate upon client EOF"
+    );
 }
 
 #[tokio::test]
@@ -352,7 +383,10 @@ async fn test_register_char_server_capacity_limit() {
 async fn test_bin_cfg_persist_002_login_startup_failure_on_unreachable_db() {
     let unreachable_url = "postgres://invalid:invalid@127.0.0.1:5433/nonexistent";
     let connect_result = PostgresRepo::connect(unreachable_url).await;
-    assert!(connect_result.is_err(), "Expected connection to unreachable DB to fail fast");
+    assert!(
+        connect_result.is_err(),
+        "Expected connection to unreachable DB to fail fast"
+    );
 }
 
 #[tokio::test]
@@ -362,7 +396,10 @@ async fn test_bin_login_persist_001_auth_against_postgres() {
     let repo = match PostgresRepo::connect(&db_url).await {
         Ok(r) => r,
         Err(err) => {
-            eprintln!("Skipping test_bin_login_persist_001: DB unavailable ({})", err);
+            eprintln!(
+                "Skipping test_bin_login_persist_001: DB unavailable ({})",
+                err
+            );
             return;
         }
     };
@@ -374,7 +411,12 @@ async fn test_bin_login_persist_001_auth_against_postgres() {
         .process_login("test", "password", 0x80000000, 0)
         .await;
     match event {
-        ServerEvent::LoginAccepted { account_id, sex, char_servers, .. } => {
+        ServerEvent::LoginAccepted {
+            account_id,
+            sex,
+            char_servers,
+            ..
+        } => {
             assert_eq!(account_id, AccountId(2000000));
             assert_eq!(sex, Sex::Male);
             assert!(!char_servers.is_empty());

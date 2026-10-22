@@ -1,4 +1,3 @@
-use std::{io::ErrorKind, sync::Arc, time::SystemTime};
 use anyhow::{Context, Result};
 use clap::Parser;
 use ro_contracts::{http::ServerType, TARGET_PACKETVER};
@@ -7,6 +6,7 @@ use ro_proxy::{
     forwarder::run_proxy_server,
     generate_log_filename, PacketSequenceRecorder,
 };
+use std::{io::ErrorKind, sync::Arc, time::SystemTime};
 use tokio::net::TcpListener;
 use tracing::{error, info};
 
@@ -53,40 +53,59 @@ async fn main() -> Result<()> {
         Ok(listener) => listener,
         Err(err) => {
             if err.kind() == ErrorKind::AddrInUse {
-                error!("Failed to bind Login listener on {}: Address already in use", login_bind);
+                error!(
+                    "Failed to bind Login listener on {}: Address already in use",
+                    login_bind
+                );
             } else {
                 error!("Failed to bind Login listener on {}: {}", login_bind, err);
             }
-            return Err(err).with_context(|| format!("Failed to bind Login listener on {}", login_bind));
+            return Err(err)
+                .with_context(|| format!("Failed to bind Login listener on {}", login_bind));
         }
     };
     let char_listener = match TcpListener::bind(&char_bind).await {
         Ok(listener) => listener,
         Err(err) => {
             if err.kind() == ErrorKind::AddrInUse {
-                error!("Failed to bind Char listener on {}: Address already in use", char_bind);
+                error!(
+                    "Failed to bind Char listener on {}: Address already in use",
+                    char_bind
+                );
             } else {
                 error!("Failed to bind Char listener on {}: {}", char_bind, err);
             }
-            return Err(err).with_context(|| format!("Failed to bind Char listener on {}", char_bind));
+            return Err(err)
+                .with_context(|| format!("Failed to bind Char listener on {}", char_bind));
         }
     };
     let map_listener = match TcpListener::bind(&map_bind).await {
         Ok(listener) => listener,
         Err(err) => {
             if err.kind() == ErrorKind::AddrInUse {
-                error!("Failed to bind Map listener on {}: Address already in use", map_bind);
+                error!(
+                    "Failed to bind Map listener on {}: Address already in use",
+                    map_bind
+                );
             } else {
                 error!("Failed to bind Map listener on {}: {}", map_bind, err);
             }
-            return Err(err).with_context(|| format!("Failed to bind Map listener on {}", map_bind));
+            return Err(err)
+                .with_context(|| format!("Failed to bind Map listener on {}", map_bind));
         }
     };
 
     let login_target = config.login_target;
     let login_recorder = recorder.clone();
     let login_task = tokio::spawn(async move {
-        if let Err(err) = run_proxy_server(login_listener, login_target, ServerType::Login, login_recorder).await {
+        if let Err(err) = run_proxy_server(
+            login_listener,
+            login_target,
+            ServerType::Login,
+            login_recorder,
+        )
+        .await
+        {
             error!("[Login] Server listener error: {}", err);
         }
     });
@@ -94,7 +113,9 @@ async fn main() -> Result<()> {
     let char_target = config.char_target;
     let char_recorder = recorder.clone();
     let char_task = tokio::spawn(async move {
-        if let Err(err) = run_proxy_server(char_listener, char_target, ServerType::Char, char_recorder).await {
+        if let Err(err) =
+            run_proxy_server(char_listener, char_target, ServerType::Char, char_recorder).await
+        {
             error!("[Char] Server listener error: {}", err);
         }
     });
@@ -102,7 +123,9 @@ async fn main() -> Result<()> {
     let map_target = config.map_target;
     let map_recorder = recorder.clone();
     let map_task = tokio::spawn(async move {
-        if let Err(err) = run_proxy_server(map_listener, map_target, ServerType::Map, map_recorder).await {
+        if let Err(err) =
+            run_proxy_server(map_listener, map_target, ServerType::Map, map_recorder).await
+        {
             error!("[Map] Server listener error: {}", err);
         }
     });

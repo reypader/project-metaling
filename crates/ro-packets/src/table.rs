@@ -26,12 +26,12 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
     match op {
         0x0064 => Some(Fixed(55)), // CA_LOGIN
         0x0065 => Some(Fixed(17)), // CH_ENTER
-        0x0066 => Some(Fixed(3)), // CH_SELECT_CHAR
-        0x006b => Some(Dynamic), // HC_ACCEPT_ENTER
-        0x006c => Some(Fixed(3)), // HC_REFUSE_ENTER
-        0x006e => Some(Fixed(3)), // HC_REFUSE_MAKECHAR
-        0x006f => Some(Fixed(2)), // HC_ACCEPT_DELETECHAR
-        0x0070 => Some(Fixed(3)), // HC_REFUSE_DELETECHAR
+        0x0066 => Some(Fixed(3)),  // CH_SELECT_CHAR
+        0x006b => Some(Dynamic),   // HC_ACCEPT_ENTER
+        0x006c => Some(Fixed(3)),  // HC_REFUSE_ENTER
+        0x006e => Some(Fixed(3)),  // HC_REFUSE_MAKECHAR
+        0x006f => Some(Fixed(2)),  // HC_ACCEPT_DELETECHAR
+        0x0070 => Some(Fixed(3)),  // HC_REFUSE_DELETECHAR
         0x0075 => Some(Dynamic),
         0x0076 => Some(Fixed(9)),
         0x0077 => Some(Fixed(5)),
@@ -234,8 +234,8 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x01d8 => Some(Fixed(54)),
         0x01d9 => Some(Fixed(53)),
         0x01da => Some(Fixed(60)),
-        0x01db => Some(Fixed(2)), // CA_REQ_HASH
-        0x01dc => Some(Dynamic), // AC_ACK_HASH
+        0x01db => Some(Fixed(2)),  // CA_REQ_HASH
+        0x01dc => Some(Dynamic),   // AC_ACK_HASH
         0x01dd => Some(Fixed(48)), // CA_LOGIN2
         0x01de => Some(Fixed(33)),
         0x01df => Some(Fixed(6)),
@@ -558,17 +558,17 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x035c => Some(Fixed(2)),
         0x035d => Some(Dynamic),
         0x035e => Some(Fixed(2)),
-        0x035f => Some(Fixed(5)), // CZ_REQUEST_MOVE
-        0x0360 => Some(Fixed(6)), // CZ_REQUEST_TIME
-        0x0361 => Some(Fixed(5)), // CZ_CHANGE_DIRECTION
-        0x0362 => Some(Fixed(6)), // CZ_TAKE_ITEM
-        0x0363 => Some(Fixed(6)), // CZ_DROP_ITEM
-        0x0364 => Some(Fixed(8)), // CZ_MOVE_TO_KAFRA
-        0x0365 => Some(Fixed(8)), // CZ_MOVE_FROM_KAFRA
+        0x035f => Some(Fixed(5)),  // CZ_REQUEST_MOVE
+        0x0360 => Some(Fixed(6)),  // CZ_REQUEST_TIME
+        0x0361 => Some(Fixed(5)),  // CZ_CHANGE_DIRECTION
+        0x0362 => Some(Fixed(6)),  // CZ_TAKE_ITEM
+        0x0363 => Some(Fixed(6)),  // CZ_DROP_ITEM
+        0x0364 => Some(Fixed(8)),  // CZ_MOVE_TO_KAFRA
+        0x0365 => Some(Fixed(8)),  // CZ_MOVE_FROM_KAFRA
         0x0366 => Some(Fixed(10)), // CZ_USE_SKILL_TO_POS
         0x0367 => Some(Fixed(31)), // CZ_USE_SKILL_TO_POS_MOREINFO
-        0x0368 => Some(Fixed(6)), // CZ_REQNAME
-        0x0369 => Some(Fixed(6)), // CZ_SOLVE_CHAR_NAME
+        0x0368 => Some(Fixed(6)),  // CZ_REQNAME
+        0x0369 => Some(Fixed(6)),  // CZ_SOLVE_CHAR_NAME
         0x0389 => Some(Dynamic),
         0x040c => Some(Dynamic),
         0x040d => Some(Dynamic),
@@ -613,7 +613,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0434 => Some(Dynamic),
         0x0435 => Some(Dynamic),
         0x0436 => Some(Fixed(23)), // CZ_ENTER
-        0x0437 => Some(Fixed(7)), // CZ_REQUEST_ACT
+        0x0437 => Some(Fixed(7)),  // CZ_REQUEST_ACT
         0x0438 => Some(Fixed(10)), // CZ_USE_SKILL_TO_ID
         0x0439 => Some(Fixed(8)),
         0x043e => Some(Dynamic),
@@ -666,12 +666,12 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x081c => Some(Fixed(10)),
         0x081d => Some(Fixed(22)),
         0x0820 => Some(Fixed(11)),
-        0x0825 => Some(Dynamic), // CA_SSO_LOGIN_REQ
-        0x0827 => Some(Fixed(6)), // CH_DELETE_CHAR3_RESERVED
+        0x0825 => Some(Dynamic),   // CA_SSO_LOGIN_REQ
+        0x0827 => Some(Fixed(6)),  // CH_DELETE_CHAR3_RESERVED
         0x0828 => Some(Fixed(14)), // HC_DELETE_CHAR3_RESERVED
         0x0829 => Some(Fixed(12)), // CH_DELETE_CHAR3
         0x082a => Some(Fixed(10)), // HC_DELETE_CHAR3
-        0x082b => Some(Fixed(6)), // CH_DELETE_CHAR3_CANCEL
+        0x082b => Some(Fixed(6)),  // CH_DELETE_CHAR3_CANCEL
         0x082c => Some(Fixed(10)), // HC_DELETE_CHAR3_CANCEL
         0x082d => Some(Fixed(29)), // HC_ACCEPT_ENTER2
         0x0835 => Some(Dynamic),
@@ -679,8 +679,8 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x083b => Some(Fixed(2)),
         0x083c => Some(Fixed(14)), // CZ_SSILIST_ITEM_CLICK
         0x083e => Some(Fixed(26)), // AC_REFUSE_LOGIN
-        0x0840 => Some(Dynamic), // HC_NOTIFY_ACCESSIBLE_MAPNAME
-        0x0841 => Some(Fixed(6)), // CH_SELECT_ACCESSIBLE_MAPNAME
+        0x0840 => Some(Dynamic),   // HC_NOTIFY_ACCESSIBLE_MAPNAME
+        0x0841 => Some(Fixed(6)),  // CH_SELECT_ACCESSIBLE_MAPNAME
         0x0842 => Some(Fixed(6)),
         0x0843 => Some(Fixed(6)),
         0x0844 => Some(Fixed(2)),
@@ -738,12 +738,12 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x08ac => Some(Fixed(8)),
         0x08ad => Some(Fixed(90)),
         0x08b3 => Some(Dynamic),
-        0x08b8 => Some(Fixed(8)), // CH_SECOND_PASSWD_ACK
+        0x08b8 => Some(Fixed(8)),  // CH_SECOND_PASSWD_ACK
         0x08b9 => Some(Fixed(12)), // HC_SECOND_PASSWD_LOGIN
         0x08ba => Some(Fixed(12)), // CH_MAKE_SECOND_PASSWD
         0x08bb => Some(Fixed(16)), // CH_EDIT_SECOND_PASSWD
-        0x08bc => Some(Fixed(2)), // CH_NOT_AVAILABLE_SECOND_PASSWD
-        0x08bd => Some(Fixed(2)), // CH_AVAILABLE_SECOND_PASSWD
+        0x08bc => Some(Fixed(2)),  // CH_NOT_AVAILABLE_SECOND_PASSWD
+        0x08bd => Some(Fixed(2)),  // CH_AVAILABLE_SECOND_PASSWD
         0x08c7 => Some(Fixed(20)),
         0x08c8 => Some(Fixed(34)), // ZC_NOTIFY_ACT
         0x08c9 => Some(Fixed(2)),
@@ -784,7 +784,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x08fa => Some(Fixed(6)),
         0x08fb => Some(Fixed(6)),
         0x08fc => Some(Fixed(46)), // CH_REQ_CHANGE_CHARNAME
-        0x08fd => Some(Fixed(4)), // HC_ACK_CHANGE_CHARNAME
+        0x08fd => Some(Fixed(4)),  // HC_ACK_CHANGE_CHARNAME
         0x08fe => Some(Dynamic),
         0x0907 => Some(Fixed(5)),
         0x090a => Some(Fixed(26)),
@@ -946,7 +946,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0ab6 => Some(Fixed(8)),
         0x0ac0 => Some(Fixed(26)),
         0x0ac1 => Some(Fixed(26)),
-        0x0ac4 => Some(Dynamic), // AC_ACCEPT_LOGIN
+        0x0ac4 => Some(Dynamic),    // AC_ACCEPT_LOGIN
         0x0ac5 => Some(Fixed(156)), // HC_NOTIFY_ZONESVR
         0x0acc => Some(Fixed(18)),
         0x0ace => Some(Fixed(4)),
@@ -987,8 +987,8 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0b66 => Some(Fixed(26)),
         0x0b6d => Some(Fixed(6)),
         0x0b6f => Some(Fixed(177)), // HC_ACCEPT_MAKECHAR
-        0x0b70 => Some(Dynamic), // HC_ACK_CHANGE_CHARACTER_SLOT
-        0x0b72 => Some(Dynamic), // HC_ACK_CHARINFO_PER_PAGE
+        0x0b70 => Some(Dynamic),    // HC_ACK_CHANGE_CHARACTER_SLOT
+        0x0b72 => Some(Dynamic),    // HC_ACK_CHARINFO_PER_PAGE
         0x0b90 => Some(Fixed(2)),
         0x0b91 => Some(Fixed(8)),
         0x0b93 => Some(Fixed(12)),
@@ -1022,17 +1022,50 @@ mod tests {
         let table = RathenaPacketLengthTable;
         let ver = ro_contracts::TARGET_PACKETVER;
 
-        assert_eq!(table.packet_length(PacketOpcode(0x0064), ver), Some(PacketLength::Fixed(55)));
-        assert_eq!(table.packet_length(PacketOpcode(0x0277), ver), Some(PacketLength::Fixed(84)));
-        assert_eq!(table.packet_length(PacketOpcode(0x0065), ver), Some(PacketLength::Fixed(17)));
-        assert_eq!(table.packet_length(PacketOpcode(0x0066), ver), Some(PacketLength::Fixed(3)));
-        assert_eq!(table.packet_length(PacketOpcode(0x0436), ver), Some(PacketLength::Fixed(23)));
-        assert_eq!(table.packet_length(PacketOpcode(0x007d), ver), Some(PacketLength::Fixed(2)));
-        assert_eq!(table.packet_length(PacketOpcode(0x0360), ver), Some(PacketLength::Fixed(6)));
-        assert_eq!(table.packet_length(PacketOpcode(0x035f), ver), Some(PacketLength::Fixed(5)));
-        assert_eq!(table.packet_length(PacketOpcode(0x0361), ver), Some(PacketLength::Fixed(5)));
-        assert_eq!(table.packet_length(PacketOpcode(0x0437), ver), Some(PacketLength::Fixed(7)));
-        assert_eq!(table.packet_length(PacketOpcode(0x0368), ver), Some(PacketLength::Fixed(6)));
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x0064), ver),
+            Some(PacketLength::Fixed(55))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x0277), ver),
+            Some(PacketLength::Fixed(84))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x0065), ver),
+            Some(PacketLength::Fixed(17))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x0066), ver),
+            Some(PacketLength::Fixed(3))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x0436), ver),
+            Some(PacketLength::Fixed(23))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x007d), ver),
+            Some(PacketLength::Fixed(2))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x0360), ver),
+            Some(PacketLength::Fixed(6))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x035f), ver),
+            Some(PacketLength::Fixed(5))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x0361), ver),
+            Some(PacketLength::Fixed(5))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x0437), ver),
+            Some(PacketLength::Fixed(7))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x0368), ver),
+            Some(PacketLength::Fixed(6))
+        );
     }
 
     #[test]
@@ -1040,25 +1073,82 @@ mod tests {
         let table = RathenaPacketLengthTable;
         let ver = ro_contracts::TARGET_PACKETVER;
 
-        assert_eq!(table.packet_length(PacketOpcode(0x0ac4), ver), Some(PacketLength::Dynamic));
-        assert_eq!(table.packet_length(PacketOpcode(0x083e), ver), Some(PacketLength::Fixed(26)));
-        assert_eq!(table.packet_length(PacketOpcode(0x006b), ver), Some(PacketLength::Dynamic));
-        assert_eq!(table.packet_length(PacketOpcode(0x0ac5), ver), Some(PacketLength::Fixed(156)));
-        assert_eq!(table.packet_length(PacketOpcode(0x0b6f), ver), Some(PacketLength::Fixed(177)));
-        assert_eq!(table.packet_length(PacketOpcode(0x02eb), ver), Some(PacketLength::Fixed(13)));
-        assert_eq!(table.packet_length(PacketOpcode(0x007f), ver), Some(PacketLength::Fixed(6)));
-        assert_eq!(table.packet_length(PacketOpcode(0x0080), ver), Some(PacketLength::Fixed(7)));
-        assert_eq!(table.packet_length(PacketOpcode(0x0087), ver), Some(PacketLength::Fixed(12)));
-        assert_eq!(table.packet_length(PacketOpcode(0x08c8), ver), Some(PacketLength::Fixed(34)));
-        assert_eq!(table.packet_length(PacketOpcode(0x09fe), ver), Some(PacketLength::Dynamic));
-        assert_eq!(table.packet_length(PacketOpcode(0x09ff), ver), Some(PacketLength::Dynamic));
-        assert_eq!(table.packet_length(PacketOpcode(0x09fd), ver), Some(PacketLength::Dynamic));
-        assert_eq!(table.packet_length(PacketOpcode(0x0af7), ver), Some(PacketLength::Dynamic));
-        assert_eq!(table.packet_length(PacketOpcode(0x0b72), ver), Some(PacketLength::Dynamic));
-        assert_eq!(table.packet_length(PacketOpcode(0x00b3), ver), Some(PacketLength::Fixed(3)));
-        assert_eq!(table.packet_length(PacketOpcode(0x0829), ver), Some(PacketLength::Fixed(12)));
-        assert_eq!(table.packet_length(PacketOpcode::ZC_INVENTORY_EXPANSION_INFO, ver), Some(PacketLength::Fixed(4)));
-        assert_eq!(table.packet_length(PacketOpcode::ZC_AID, ver), Some(PacketLength::Fixed(6)));
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x0ac4), ver),
+            Some(PacketLength::Dynamic)
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x083e), ver),
+            Some(PacketLength::Fixed(26))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x006b), ver),
+            Some(PacketLength::Dynamic)
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x0ac5), ver),
+            Some(PacketLength::Fixed(156))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x0b6f), ver),
+            Some(PacketLength::Fixed(177))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x02eb), ver),
+            Some(PacketLength::Fixed(13))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x007f), ver),
+            Some(PacketLength::Fixed(6))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x0080), ver),
+            Some(PacketLength::Fixed(7))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x0087), ver),
+            Some(PacketLength::Fixed(12))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x08c8), ver),
+            Some(PacketLength::Fixed(34))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x09fe), ver),
+            Some(PacketLength::Dynamic)
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x09ff), ver),
+            Some(PacketLength::Dynamic)
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x09fd), ver),
+            Some(PacketLength::Dynamic)
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x0af7), ver),
+            Some(PacketLength::Dynamic)
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x0b72), ver),
+            Some(PacketLength::Dynamic)
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x00b3), ver),
+            Some(PacketLength::Fixed(3))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode(0x0829), ver),
+            Some(PacketLength::Fixed(12))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode::ZC_INVENTORY_EXPANSION_INFO, ver),
+            Some(PacketLength::Fixed(4))
+        );
+        assert_eq!(
+            table.packet_length(PacketOpcode::ZC_AID, ver),
+            Some(PacketLength::Fixed(6))
+        );
         assert_eq!(table.packet_length(PacketOpcode(0x099d), ver), None);
     }
 
@@ -1068,12 +1158,16 @@ mod tests {
         let ver = ro_contracts::TARGET_PACKETVER;
 
         let legacy = [
-            0x0067, 0x0068, 0x0069, 0x006a, 0x006d, 0x0071, 0x0072, 0x0073,
-            0x007e, 0x0085, 0x0086, 0x0089, 0x008a, 0x0094, 0x0095, 0x009b,
-            0x009c, 0x009d,
+            0x0067, 0x0068, 0x0069, 0x006a, 0x006d, 0x0071, 0x0072, 0x0073, 0x007e, 0x0085, 0x0086,
+            0x0089, 0x008a, 0x0094, 0x0095, 0x009b, 0x009c, 0x009d,
         ];
         for op in legacy {
-            assert_eq!(table.packet_length(PacketOpcode(op), ver), None, "Legacy opcode {:#06x} must be None", op);
+            assert_eq!(
+                table.packet_length(PacketOpcode(op), ver),
+                None,
+                "Legacy opcode {:#06x} must be None",
+                op
+            );
         }
     }
 }

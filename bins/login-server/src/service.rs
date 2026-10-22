@@ -260,7 +260,10 @@ impl LoginService {
             return false;
         }
 
-        let current_users = servers.get(&req.server_id).map(|s| s.info.users).unwrap_or(0);
+        let current_users = servers
+            .get(&req.server_id)
+            .map(|s| s.info.users)
+            .unwrap_or(0);
         let info = CharServerInfo {
             ip,
             port: req.client_port,

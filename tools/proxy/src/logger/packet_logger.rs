@@ -439,9 +439,10 @@ mod tests {
         );
 
         let buffer = [
-            0xAA,                               // 1 stray byte at offset 0
-            0x7d, 0x00,                         // Real packet 1: CZ_NOTIFY_ACTORINIT (offset 1, len 2)
-            0x7f, 0x00, 0x01, 0x02, 0x03, 0x04, // Real packet 2: ZC_NOTIFY_TIME (offset 3, len 6)
+            0xAA, // 1 stray byte at offset 0
+            0x7d, 0x00, // Real packet 1: CZ_NOTIFY_ACTORINIT (offset 1, len 2)
+            0x7f, 0x00, 0x01, 0x02, 0x03,
+            0x04, // Real packet 2: ZC_NOTIFY_TIME (offset 3, len 6)
         ];
 
         logger.feed_and_log(&buffer);

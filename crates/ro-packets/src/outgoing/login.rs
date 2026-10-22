@@ -123,7 +123,9 @@ pub fn encode_ac_accept_login_modern(
     _token: &str,
     servers: &[CharServerEntry],
 ) -> Result<Bytes, PacketCodecError> {
-    encode_ac_accept_login(login_id1, account_id, login_id2, last_ip, last_login, sex, servers)
+    encode_ac_accept_login(
+        login_id1, account_id, login_id2, last_ip, last_login, sex, servers,
+    )
 }
 
 /// Encodes `AC_REFUSE_LOGIN` (0x083e).
@@ -199,9 +201,8 @@ mod tests {
         let bytes = encoder.encode_event(&event, TARGET_PACKETVER).unwrap();
 
         let expected: [u8; 26] = [
-            0x3e, 0x08, 0x01, 0x00, 0x00, 0x00,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0x3e, 0x08, 0x01, 0x00, 0x00, 0x00, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0,
         ];
         assert_eq!(bytes.len(), 26);
         assert_eq!(bytes.as_ref(), &expected);
@@ -271,7 +272,11 @@ mod tests {
             &dummy_servers,
         );
         match res_login {
-            Err(PacketCodecError::PacketTooLarge { opcode, length, max }) => {
+            Err(PacketCodecError::PacketTooLarge {
+                opcode,
+                length,
+                max,
+            }) => {
                 assert_eq!(opcode, PacketOpcode::AC_ACCEPT_LOGIN);
                 assert_eq!(length, 64 + 410 * 160);
                 assert_eq!(max, u16::MAX as usize);

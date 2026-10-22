@@ -71,7 +71,16 @@ fn test_encode_zc_inventory_expansion_info_layout() {
 /// Scenario `PKT-ENC-003`: Serialization of `encode_zc_accept_enter`
 #[test]
 fn test_encode_zc_accept_enter_layout() {
-    let bytes = encode_zc_accept_enter(54321, MapPosition { x: 120, y: 240, dir: 4 }, 5, 5);
+    let bytes = encode_zc_accept_enter(
+        54321,
+        MapPosition {
+            x: 120,
+            y: 240,
+            dir: 4,
+        },
+        5,
+        5,
+    );
     assert_eq!(bytes.len(), 13);
     assert_eq!(&bytes[0..2], &[0xeb, 0x02]);
     assert_eq!(&bytes[2..6], &54321u32.to_le_bytes());
@@ -88,7 +97,11 @@ fn test_accept_enter_event_encodes_23_byte_atomic_burst() {
     let event = ServerEvent::AcceptEnter {
         account_id: AccountId(2000001),
         server_tick: 8888,
-        pos: MapPosition { x: 100, y: 200, dir: 1 },
+        pos: MapPosition {
+            x: 100,
+            y: 200,
+            dir: 1,
+        },
     };
     let bytes = encoder.encode_event(&event, 20260219).unwrap();
     assert_eq!(bytes.len(), 23);
@@ -101,12 +114,18 @@ fn test_accept_enter_event_encodes_23_byte_atomic_burst() {
     assert_eq!(pkt1.payload.len(), 4);
     assert_eq!(&pkt1.payload[..], &2000001u32.to_le_bytes());
 
-    let pkt2 = decoder.decode(&mut stream).unwrap().expect("ZC_INVENTORY_EXPANSION_INFO");
+    let pkt2 = decoder
+        .decode(&mut stream)
+        .unwrap()
+        .expect("ZC_INVENTORY_EXPANSION_INFO");
     assert_eq!(pkt2.opcode, PacketOpcode::ZC_INVENTORY_EXPANSION_INFO);
     assert_eq!(pkt2.payload.len(), 2);
     assert_eq!(&pkt2.payload[..], &[0x00, 0x00]);
 
-    let pkt3 = decoder.decode(&mut stream).unwrap().expect("ZC_ACCEPT_ENTER");
+    let pkt3 = decoder
+        .decode(&mut stream)
+        .unwrap()
+        .expect("ZC_ACCEPT_ENTER");
     assert_eq!(pkt3.opcode, PacketOpcode::ZC_ACCEPT_ENTER);
     assert_eq!(pkt3.payload.len(), 11);
     assert_eq!(&pkt3.payload[0..4], &8888u32.to_le_bytes());
@@ -152,7 +171,10 @@ fn test_decode_actorinit_and_request_time() {
         20260219,
     )
     .unwrap();
-    assert_eq!(frame_init, DecodedFrame::Intent(ClientIntent::NotifyActorInit));
+    assert_eq!(
+        frame_init,
+        DecodedFrame::Intent(ClientIntent::NotifyActorInit)
+    );
 
     let frame_time = decode_frame(
         &RawPacket::new(

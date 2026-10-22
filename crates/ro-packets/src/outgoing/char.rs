@@ -241,12 +241,7 @@ pub fn encode_hc_delete_char3_cancel(char_id: CharId, result: u32) -> Bytes {
 /// - 22..26: ip (4 bytes)
 /// - 26..28: port (u16 LE)
 /// - 28..156: unknown padding (128 bytes)
-pub fn encode_hc_notify_zonesvr(
-    char_id: CharId,
-    map_name: &str,
-    ip: [u8; 4],
-    port: u16,
-) -> Bytes {
+pub fn encode_hc_notify_zonesvr(char_id: CharId, map_name: &str, ip: [u8; 4], port: u16) -> Bytes {
     let mut buf = BytesMut::with_capacity(156);
     buf.put_u16_le(PacketOpcode::HC_NOTIFY_ZONESVR.raw());
     buf.put_u32_le(char_id.0);
@@ -260,18 +255,13 @@ pub fn encode_hc_notify_zonesvr(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::outgoing::encoder::ModernEventEncoder;
     use ro_contracts::ids::{AccountId, MapPosition, Sex};
     use ro_contracts::packet::{EventEncoder, ServerEvent};
-    use crate::outgoing::encoder::ModernEventEncoder;
 
     #[test]
     fn test_encode_hc_notify_zonesvr() {
-        let bytes = encode_hc_notify_zonesvr(
-            CharId(150001),
-            "prontera.gat",
-            [127, 0, 0, 1],
-            5121,
-        );
+        let bytes = encode_hc_notify_zonesvr(CharId(150001), "prontera.gat", [127, 0, 0, 1], 5121);
 
         assert_eq!(bytes.len(), 156);
         assert_eq!(&bytes[0..2], &0x0ac5u16.to_le_bytes());
@@ -299,7 +289,11 @@ mod tests {
             hair_style: 22,
             hair_color: 0,
             last_map: "prontera.gat".to_string(),
-            last_pos: MapPosition { x: 50, y: 50, dir: 0 },
+            last_pos: MapPosition {
+                x: 50,
+                y: 50,
+                dir: 0,
+            },
             delete_date: Some(delete_ts),
         };
 
@@ -336,7 +330,11 @@ mod tests {
             hair_style: 1,
             hair_color: 1,
             last_map: "prontera.gat".to_string(),
-            last_pos: MapPosition { x: 10, y: 10, dir: 0 },
+            last_pos: MapPosition {
+                x: 10,
+                y: 10,
+                dir: 0,
+            },
             delete_date: None,
         };
         let chars = vec![make_char(0), make_char(1), make_char(2)];
@@ -375,13 +373,21 @@ mod tests {
             hair_style: 1,
             hair_color: 1,
             last_map: "prontera.gat".to_string(),
-            last_pos: MapPosition { x: 50, y: 50, dir: 0 },
+            last_pos: MapPosition {
+                x: 50,
+                y: 50,
+                dir: 0,
+            },
             delete_date: None,
         };
         let dummy_chars = vec![dummy_char; 375];
         let res_char_list = encode_hc_accept_enter(9, 0, 0, &dummy_chars);
         match res_char_list {
-            Err(PacketCodecError::PacketTooLarge { opcode, length, max }) => {
+            Err(PacketCodecError::PacketTooLarge {
+                opcode,
+                length,
+                max,
+            }) => {
                 assert_eq!(opcode, PacketOpcode::HC_ACCEPT_ENTER);
                 assert_eq!(length, 27 + 375 * 175);
                 assert_eq!(max, u16::MAX as usize);
@@ -391,7 +397,11 @@ mod tests {
 
         let res_page = encode_hc_ack_charinfo_per_page(&dummy_chars);
         match res_page {
-            Err(PacketCodecError::PacketTooLarge { opcode, length, max }) => {
+            Err(PacketCodecError::PacketTooLarge {
+                opcode,
+                length,
+                max,
+            }) => {
                 assert_eq!(opcode, PacketOpcode::HC_ACK_CHARINFO_PER_PAGE);
                 assert_eq!(length, 4 + 375 * 175);
                 assert_eq!(max, u16::MAX as usize);

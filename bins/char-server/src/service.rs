@@ -190,9 +190,9 @@ impl CharSessionActor {
                             "Session {:?} failed to list characters for account id {}: {}",
                             self.session_id, account_id.0, err
                         );
-                        let _ = self.outbound_tx.try_send(ServerEvent::CharacterListRefused {
-                            error_code: 0,
-                        });
+                        let _ = self
+                            .outbound_tx
+                            .try_send(ServerEvent::CharacterListRefused { error_code: 0 });
                         return false;
                     }
                 };
@@ -233,9 +233,9 @@ impl CharSessionActor {
                             "Session {:?} failed to list character page for account id {}: {}",
                             self.session_id, account_id.0, err
                         );
-                        let _ = self.outbound_tx.try_send(ServerEvent::CharacterListRefused {
-                            error_code: 0,
-                        });
+                        let _ = self
+                            .outbound_tx
+                            .try_send(ServerEvent::CharacterListRefused { error_code: 0 });
                         return false;
                     }
                 };
@@ -369,10 +369,7 @@ impl CharSessionActor {
                     }
                 };
 
-                let event = ServerEvent::CharacterDeleteCancelled {
-                    char_id,
-                    result,
-                };
+                let event = ServerEvent::CharacterDeleteCancelled { char_id, result };
 
                 if self.outbound_tx.try_send(event).is_err() {
                     warn!(

@@ -20,9 +20,7 @@ use ro_contracts::{
 };
 use tracing::info;
 
-pub async fn health_check(
-    State(service): State<CharServiceHandle>,
-) -> Json<HealthResponse> {
+pub async fn health_check(State(service): State<CharServiceHandle>) -> Json<HealthResponse> {
     Json(HealthResponse {
         status: ServerStatus::Ready,
         server_type: ServerType::Char,
@@ -52,12 +50,8 @@ pub async fn register_map_server(
         .unwrap_or([127, 0, 0, 1]);
 
     let registered_maps_count = payload.maps.len();
-    let accepted = service.register_map_server(
-        payload.name,
-        payload.maps,
-        host,
-        payload.client_port,
-    );
+    let accepted =
+        service.register_map_server(payload.name, payload.maps, host, payload.client_port);
 
     Json(RegisterMapServerResponse {
         accepted,

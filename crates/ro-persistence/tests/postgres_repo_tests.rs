@@ -61,7 +61,9 @@ async fn create_test_account(repo: &PostgresRepo, state: AccountState) -> Accoun
         unban_time: None,
         expiration_time: None,
     };
-    repo.insert_account(&account).await.expect("account insertion failed");
+    repo.insert_account(&account)
+        .await
+        .expect("account insertion failed");
     account
 }
 
@@ -80,7 +82,10 @@ async fn test_persist_auth_001_valid_credentials() {
 #[tokio::test]
 async fn test_persist_auth_002_invalid_password() {
     let repo = get_repo().await;
-    let err = repo.authenticate("test", "wrong_password").await.unwrap_err();
+    let err = repo
+        .authenticate("test", "wrong_password")
+        .await
+        .unwrap_err();
 
     assert_eq!(err, AuthError::IncorrectPassword);
     assert_eq!(err.wire_error_code(), 1);
@@ -131,18 +136,25 @@ async fn test_persist_auth_004_state_gating() {
 async fn test_persist_auth_005_find_by_id_and_username() {
     let repo = get_repo().await;
 
-    let by_id = AccountRepository::find_by_id(&repo, AccountId(2000000)).await.unwrap();
+    let by_id = AccountRepository::find_by_id(&repo, AccountId(2000000))
+        .await
+        .unwrap();
     assert!(by_id.is_some());
     let account = by_id.unwrap();
     assert_eq!(account.username, "test");
 
-    let by_missing_id = AccountRepository::find_by_id(&repo, AccountId(9999999)).await.unwrap();
+    let by_missing_id = AccountRepository::find_by_id(&repo, AccountId(9999999))
+        .await
+        .unwrap();
     assert!(by_missing_id.is_none());
 
     let by_username = repo.find_by_username("test").await.unwrap();
     assert_eq!(by_username, Some(account));
 
-    let by_missing_username = repo.find_by_username("non_existent_username").await.unwrap();
+    let by_missing_username = repo
+        .find_by_username("non_existent_username")
+        .await
+        .unwrap();
     assert!(by_missing_username.is_none());
 }
 
@@ -221,10 +233,14 @@ async fn test_persist_char_003_find_by_slot_and_id() {
     let by_missing_slot = repo.find_by_slot(acc.id, 0).await.unwrap();
     assert!(by_missing_slot.is_none());
 
-    let by_id = CharacterRepository::find_by_id(&repo, created.char_id).await.unwrap();
+    let by_id = CharacterRepository::find_by_id(&repo, created.char_id)
+        .await
+        .unwrap();
     assert_eq!(by_id, Some(created));
 
-    let by_missing_id = CharacterRepository::find_by_id(&repo, CharId(9999999)).await.unwrap();
+    let by_missing_id = CharacterRepository::find_by_id(&repo, CharId(9999999))
+        .await
+        .unwrap();
     assert!(by_missing_id.is_none());
 }
 
@@ -353,7 +369,10 @@ async fn test_persist_char_008_slot_boundary_and_conflict() {
         starting_job: 0,
         sex: Sex::Male,
     };
-    let err_bounds = repo.create_character(req_out_of_bounds, 9).await.unwrap_err();
+    let err_bounds = repo
+        .create_character(req_out_of_bounds, 9)
+        .await
+        .unwrap_err();
     assert_eq!(err_bounds, CreateCharacterError::IneligibleSlot);
 
     let req_slot_0 = CreateCharacterRequest {
@@ -399,7 +418,10 @@ async fn test_persist_char_008_slot_boundary_and_conflict() {
         starting_job: 0,
         sex: Sex::Male,
     };
-    let err_cap = repo.create_character(req_capacity_exceeded, 2).await.unwrap_err();
+    let err_cap = repo
+        .create_character(req_capacity_exceeded, 2)
+        .await
+        .unwrap_err();
     assert_eq!(err_cap, CreateCharacterError::CreationDenied);
 }
 
@@ -523,7 +545,10 @@ async fn test_persist_char_010_deletion_reservation() {
     };
     let created = repo.create_character(req, 9).await.unwrap();
 
-    let outcome = repo.reserve_delete(acc.id, created.char_id, 86400).await.unwrap();
+    let outcome = repo
+        .reserve_delete(acc.id, created.char_id, 86400)
+        .await
+        .unwrap();
     assert_eq!(
         outcome,
         DeleteReserveOutcome::Success {
@@ -531,7 +556,10 @@ async fn test_persist_char_010_deletion_reservation() {
         }
     );
 
-    let updated = CharacterRepository::find_by_id(&repo, created.char_id).await.unwrap().unwrap();
+    let updated = CharacterRepository::find_by_id(&repo, created.char_id)
+        .await
+        .unwrap()
+        .unwrap();
     assert!(updated.delete_date.is_some());
 }
 
@@ -552,10 +580,16 @@ async fn test_persist_char_011_invalid_reservation_rejection() {
     };
     let created = repo.create_character(req, 9).await.unwrap();
 
-    let outcome = repo.reserve_delete(acc.id, created.char_id, 86400).await.unwrap();
+    let outcome = repo
+        .reserve_delete(acc.id, created.char_id, 86400)
+        .await
+        .unwrap();
     assert!(matches!(outcome, DeleteReserveOutcome::Success { .. }));
 
-    let duplicate_outcome = repo.reserve_delete(acc.id, created.char_id, 86400).await.unwrap();
+    let duplicate_outcome = repo
+        .reserve_delete(acc.id, created.char_id, 86400)
+        .await
+        .unwrap();
     assert_eq!(duplicate_outcome, DeleteReserveOutcome::Denied);
 
     let wrong_acc_outcome = repo
@@ -568,7 +602,10 @@ async fn test_persist_char_011_invalid_reservation_rejection() {
         .reserve_delete(acc.id, CharId(9999999), 86400)
         .await
         .unwrap();
-    assert_eq!(missing_char_outcome, DeleteReserveOutcome::NotFoundOrDbError);
+    assert_eq!(
+        missing_char_outcome,
+        DeleteReserveOutcome::NotFoundOrDbError
+    );
 }
 
 #[tokio::test]
@@ -587,12 +624,17 @@ async fn test_persist_char_012_cancellation_success() {
     };
     let created = repo.create_character(req, 9).await.unwrap();
 
-    repo.reserve_delete(acc.id, created.char_id, 86400).await.unwrap();
+    repo.reserve_delete(acc.id, created.char_id, 86400)
+        .await
+        .unwrap();
 
     let outcome = repo.cancel_delete(acc.id, created.char_id).await.unwrap();
     assert_eq!(outcome, CancelDeleteOutcome::Success);
 
-    let updated = CharacterRepository::find_by_id(&repo, created.char_id).await.unwrap().unwrap();
+    let updated = CharacterRepository::find_by_id(&repo, created.char_id)
+        .await
+        .unwrap()
+        .unwrap();
     assert!(updated.delete_date.is_none());
 }
 
@@ -651,7 +693,10 @@ async fn test_persist_char_014_coordinate_persistence() {
         .await
         .unwrap();
 
-    let updated = CharacterRepository::find_by_id(&repo, created.char_id).await.unwrap().unwrap();
+    let updated = CharacterRepository::find_by_id(&repo, created.char_id)
+        .await
+        .unwrap()
+        .unwrap();
     assert_eq!(updated.last_map, "geffen.gat");
     assert_eq!(updated.last_pos.x, 120);
     assert_eq!(updated.last_pos.y, 100);
@@ -694,16 +739,56 @@ async fn test_persist_char_016_consecutive_hot_updates() {
     let created = repo.create_character(req, 9).await.unwrap();
 
     let checkpoints = [
-        ("prontera.gat", MapPosition { x: 160, y: 190, dir: 1 }),
-        ("prontera.gat", MapPosition { x: 165, y: 185, dir: 2 }),
-        ("payon.gat", MapPosition { x: 100, y: 100, dir: 3 }),
-        ("alberta.gat", MapPosition { x: 50, y: 60, dir: 4 }),
-        ("morocc.gat", MapPosition { x: 150, y: 150, dir: 0 }),
+        (
+            "prontera.gat",
+            MapPosition {
+                x: 160,
+                y: 190,
+                dir: 1,
+            },
+        ),
+        (
+            "prontera.gat",
+            MapPosition {
+                x: 165,
+                y: 185,
+                dir: 2,
+            },
+        ),
+        (
+            "payon.gat",
+            MapPosition {
+                x: 100,
+                y: 100,
+                dir: 3,
+            },
+        ),
+        (
+            "alberta.gat",
+            MapPosition {
+                x: 50,
+                y: 60,
+                dir: 4,
+            },
+        ),
+        (
+            "morocc.gat",
+            MapPosition {
+                x: 150,
+                y: 150,
+                dir: 0,
+            },
+        ),
     ];
 
     for (map, pos) in checkpoints {
-        repo.update_position(created.char_id, map, pos).await.unwrap();
-        let current = CharacterRepository::find_by_id(&repo, created.char_id).await.unwrap().unwrap();
+        repo.update_position(created.char_id, map, pos)
+            .await
+            .unwrap();
+        let current = CharacterRepository::find_by_id(&repo, created.char_id)
+            .await
+            .unwrap()
+            .unwrap();
         assert_eq!(current.last_map, map);
         assert_eq!(current.last_pos.x, pos.x);
         assert_eq!(current.last_pos.y, pos.y);

@@ -9,10 +9,19 @@ pub fn format_hex_preview(bytes: &[u8]) -> String {
     }
     const MAX_PREVIEW_BYTES: usize = 32;
     let take_count = min(bytes.len(), MAX_PREVIEW_BYTES);
-    let hex_part: Vec<String> = bytes[..take_count].iter().map(|b| format!("{:02x}", b)).collect();
+    let hex_part: Vec<String> = bytes[..take_count]
+        .iter()
+        .map(|b| format!("{:02x}", b))
+        .collect();
     let ascii_part: String = bytes[..take_count]
         .iter()
-        .map(|&b| if (0x20..=0x7e).contains(&b) { b as char } else { '.' })
+        .map(|&b| {
+            if (0x20..=0x7e).contains(&b) {
+                b as char
+            } else {
+                '.'
+            }
+        })
         .collect();
 
     if bytes.len() > MAX_PREVIEW_BYTES {
@@ -39,7 +48,9 @@ pub fn is_valid_resync_boundary(
 ) -> bool {
     if buffer.len() >= next_offset + 2 {
         let follow_op = u16::from_le_bytes([buffer[next_offset], buffer[next_offset + 1]]);
-        table.packet_length(PacketOpcode(follow_op), packetver).is_some()
+        table
+            .packet_length(PacketOpcode(follow_op), packetver)
+            .is_some()
     } else {
         next_offset == buffer.len()
     }
@@ -49,16 +60,15 @@ pub fn is_valid_resync_boundary(
 ///
 /// Uses multi-packet chain validation to prevent phantom opcodes (random payload bytes
 /// matching a known opcode by coincidence) from falsely triggering a frame boundary.
-pub fn find_resync_offset(
-    buffer: &[u8],
-    table: &impl PacketLengthTable,
-    packetver: u32,
-) -> usize {
+pub fn find_resync_offset(buffer: &[u8], table: &impl PacketLengthTable, packetver: u32) -> usize {
     // 1. High-confidence dynamic length check:
     // If bytes 2..4 specify a length L, verify if L points directly to another recognized opcode.
     if buffer.len() >= 4 {
         let cand_len = u16::from_le_bytes([buffer[2], buffer[3]]) as usize;
-        if cand_len >= 4 && cand_len <= buffer.len() && is_valid_resync_boundary(buffer, cand_len, table, packetver) {
+        if cand_len >= 4
+            && cand_len <= buffer.len()
+            && is_valid_resync_boundary(buffer, cand_len, table, packetver)
+        {
             return cand_len;
         }
     }
@@ -77,7 +87,8 @@ pub fn find_resync_offset(
                 }
                 PacketLength::Dynamic => {
                     if buffer.len() >= offset + 4 {
-                        let dyn_sz = u16::from_le_bytes([buffer[offset + 2], buffer[offset + 3]]) as usize;
+                        let dyn_sz =
+                            u16::from_le_bytes([buffer[offset + 2], buffer[offset + 3]]) as usize;
                         if dyn_sz >= 4 {
                             let next_offset = offset + dyn_sz;
                             if is_valid_resync_boundary(buffer, next_offset, table, packetver) {
@@ -93,7 +104,10 @@ pub fn find_resync_offset(
     // 3. Fallback: single opcode match if chain confirmation was not possible.
     for offset in 1..buffer.len().saturating_sub(1) {
         let next_op = u16::from_le_bytes([buffer[offset], buffer[offset + 1]]);
-        if table.packet_length(PacketOpcode(next_op), packetver).is_some() {
+        if table
+            .packet_length(PacketOpcode(next_op), packetver)
+            .is_some()
+        {
             return offset;
         }
     }
@@ -129,8 +143,9 @@ mod tests {
         // [6..8]: valid 2-byte packet: 0x007d (CZ_NOTIFY_ACTORINIT, fixed 2)
         // [8..14]: valid 6-byte packet: 0x007f (ZC_NOTIFY_TIME, fixed 6)
         let buffer = [
-            0xfe, 0x0a, 0x85, 0x00, 0x99, 0x99, // Unmapped packet (contains phantom 0x0085 at offset 2)
-            0x7d, 0x00,                         // Real packet 1 (offset 6, len 2)
+            0xfe, 0x0a, 0x85, 0x00, 0x99,
+            0x99, // Unmapped packet (contains phantom 0x0085 at offset 2)
+            0x7d, 0x00, // Real packet 1 (offset 6, len 2)
             0x7f, 0x00, 0x01, 0x02, 0x03, 0x04, // Real packet 2 (offset 8, len 6)
         ];
 
@@ -147,9 +162,10 @@ mod tests {
 
         // Buffer starts with 1 stray byte at offset 0, followed by valid 0x007d and 0x007f packets.
         let buffer = [
-            0xAA,                               // 1 stray byte at offset 0
-            0x7d, 0x00,                         // Real packet 1: CZ_NOTIFY_ACTORINIT (offset 1, len 2)
-            0x7f, 0x00, 0x01, 0x02, 0x03, 0x04, // Real packet 2: ZC_NOTIFY_TIME (offset 3, len 6)
+            0xAA, // 1 stray byte at offset 0
+            0x7d, 0x00, // Real packet 1: CZ_NOTIFY_ACTORINIT (offset 1, len 2)
+            0x7f, 0x00, 0x01, 0x02, 0x03,
+            0x04, // Real packet 2: ZC_NOTIFY_TIME (offset 3, len 6)
         ];
 
         let resync_offset = find_resync_offset(&buffer, &table, ver);

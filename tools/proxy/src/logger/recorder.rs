@@ -1,7 +1,6 @@
 use std::{
     collections::VecDeque,
-    fs,
-    io,
+    fs, io,
     path::Path,
     sync::{
         atomic::{AtomicUsize, Ordering},
@@ -118,7 +117,11 @@ impl PacketSequenceRecorder {
         self.format_entries(&entries, generated_at)
     }
 
-    pub fn format_entries(&self, entries: &[GlobalSequenceEntry], generated_at: SystemTime) -> String {
+    pub fn format_entries(
+        &self,
+        entries: &[GlobalSequenceEntry],
+        generated_at: SystemTime,
+    ) -> String {
         let (gy, gm, gd, gh, gmin, gs, gms) = civil_from_timestamp(generated_at);
         let timestamp_str = format!(
             "{:04}-{:02}-{:02} {:02}:{:02}:{:02}.{:03} UTC",
@@ -145,12 +148,16 @@ impl PacketSequenceRecorder {
         };
 
         let mut output = String::new();
-        output.push_str("================================================================================\n");
+        output.push_str(
+            "================================================================================\n",
+        );
         output.push_str("Ragnarok Online Packet Proxy - Global Sequence Log\n");
         output.push_str(&format!("Target PACKETVER: {}\n", TARGET_PACKETVER));
         output.push_str(&format!("Generated: {}\n", timestamp_str));
         output.push_str(&format!("Total Packets Recorded: {}\n", total_str));
-        output.push_str("================================================================================\n\n");
+        output.push_str(
+            "================================================================================\n\n",
+        );
 
         output.push_str("Chronological Packet Sequence:\n");
         if entries.is_empty() {
@@ -158,7 +165,14 @@ impl PacketSequenceRecorder {
         } else {
             output.push_str(&format!(
                 "{:<6} {:<23} {:<7} {:<8} {:<18} {:<24} {:<6} {}\n",
-                "#", "Timestamp (UTC)", "Server", "Session", "Direction", "Opcode", "Len", "Details"
+                "#",
+                "Timestamp (UTC)",
+                "Server",
+                "Session",
+                "Direction",
+                "Opcode",
+                "Len",
+                "Details"
             ));
             output.push_str(&"-".repeat(110));
             output.push('\n');
@@ -189,13 +203,17 @@ impl PacketSequenceRecorder {
             output.push('\n');
         }
 
-        output.push_str("================================================================================\n");
+        output.push_str(
+            "================================================================================\n",
+        );
         output.push_str("Summary by Server:\n");
         output.push_str(&format!("  Login Server: {} packets\n", login_count));
         output.push_str(&format!("  Char Server:  {} packets\n", char_count));
         output.push_str(&format!("  Map Server:   {} packets\n", map_count));
         output.push_str(&format!("  Total:        {} packets\n", total_str));
-        output.push_str("================================================================================\n");
+        output.push_str(
+            "================================================================================\n",
+        );
 
         output
     }
@@ -242,7 +260,15 @@ pub fn civil_from_timestamp(time: SystemTime) -> (i64, u32, u32, u32, u32, u32, 
     let m = if mp < 10 { mp + 3 } else { mp - 9 };
     let year = if m <= 2 { y + 1 } else { y };
 
-    (year, m as u32, d as u32, hour, minute, second, subsec_millis)
+    (
+        year,
+        m as u32,
+        d as u32,
+        hour,
+        minute,
+        second,
+        subsec_millis,
+    )
 }
 
 /// Generates a standardized log filename: `packet_sequence-%Y%m%d_%H%M%S.log`.

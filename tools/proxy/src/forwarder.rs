@@ -1,3 +1,4 @@
+use ro_contracts::http::ServerType;
 use std::{
     net::SocketAddr,
     sync::{
@@ -5,14 +6,15 @@ use std::{
         Arc,
     },
 };
-use ro_contracts::http::ServerType;
 use tokio::{
     io::{AsyncReadExt, AsyncWriteExt},
     net::{TcpListener, TcpStream},
 };
 use tracing::{debug, error, info, warn};
 
-use crate::logger::{PacketDirection, PacketLogger, PacketSequenceRecorder, SessionSequenceTracker};
+use crate::logger::{
+    PacketDirection, PacketLogger, PacketSequenceRecorder, SessionSequenceTracker,
+};
 
 static NEXT_SESSION_ID: AtomicUsize = AtomicUsize::new(1);
 
@@ -35,7 +37,15 @@ pub async fn run_proxy_server(
                 let target = target_addr.clone();
                 let rec = recorder.clone();
                 tokio::spawn(async move {
-                    handle_proxy_connection(client_stream, client_addr, target, server_type, session_id, rec).await;
+                    handle_proxy_connection(
+                        client_stream,
+                        client_addr,
+                        target,
+                        server_type,
+                        session_id,
+                        rec,
+                    )
+                    .await;
                 });
             }
             Err(err) => {
@@ -98,12 +108,18 @@ pub async fn handle_proxy_connection(
             loop {
                 let n = match client_reader.read(&mut read_buf).await {
                     Ok(0) => {
-                        debug!("[{:?} Session #{}] Client {} sent EOF", server_type, session_id, client_addr);
+                        debug!(
+                            "[{:?} Session #{}] Client {} sent EOF",
+                            server_type, session_id, client_addr
+                        );
                         break;
                     }
                     Ok(n) => n,
                     Err(err) => {
-                        debug!("[{:?} Session #{}] Read error from client {}: {}", server_type, session_id, client_addr, err);
+                        debug!(
+                            "[{:?} Session #{}] Read error from client {}: {}",
+                            server_type, session_id, client_addr, err
+                        );
                         break;
                     }
                 };
@@ -150,12 +166,18 @@ pub async fn handle_proxy_connection(
             loop {
                 let n = match target_reader.read(&mut read_buf).await {
                     Ok(0) => {
-                        debug!("[{:?} Session #{}] Target {} sent EOF to client {}", server_type, session_id, target_addr, client_addr);
+                        debug!(
+                            "[{:?} Session #{}] Target {} sent EOF to client {}",
+                            server_type, session_id, target_addr, client_addr
+                        );
                         break;
                     }
                     Ok(n) => n,
                     Err(err) => {
-                        debug!("[{:?} Session #{}] Read error from target {}: {}", server_type, session_id, target_addr, err);
+                        debug!(
+                            "[{:?} Session #{}] Read error from target {}: {}",
+                            server_type, session_id, target_addr, err
+                        );
                         break;
                     }
                 };
@@ -198,6 +220,10 @@ pub async fn handle_proxy_connection(
 
     info!(
         "[{:?} Session #{}] Connection closed for client {} <-> target {} (recorded {} packets)",
-        server_type, session_id, client_addr, target_addr, tracker.packet_count()
+        server_type,
+        session_id,
+        client_addr,
+        target_addr,
+        tracker.packet_count()
     );
 }

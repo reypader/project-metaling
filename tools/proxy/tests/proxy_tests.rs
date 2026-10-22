@@ -1,6 +1,6 @@
-use std::{sync::Arc, time::Duration};
 use ro_contracts::http::ServerType;
 use ro_proxy::{forwarder::handle_proxy_connection, PacketSequenceRecorder};
+use std::{sync::Arc, time::Duration};
 use tokio::{
     io::{AsyncReadExt, AsyncWriteExt},
     net::{TcpListener, TcpStream},
@@ -37,7 +37,15 @@ async fn test_proxy_end_to_end_packet_passthrough() {
     let rec = recorder.clone();
     let proxy_task = tokio::spawn(async move {
         let (client_socket, client_addr) = proxy_listener.accept().await.unwrap();
-        handle_proxy_connection(client_socket, client_addr, target_str, ServerType::Login, 1, rec).await;
+        handle_proxy_connection(
+            client_socket,
+            client_addr,
+            target_str,
+            ServerType::Login,
+            1,
+            rec,
+        )
+        .await;
     });
 
     // 3. Mock Client connects to Proxy
@@ -105,7 +113,15 @@ async fn test_proxy_unparseable_raw_passthrough_and_resync() {
     let rec = recorder.clone();
     let proxy_task = tokio::spawn(async move {
         let (client_socket, client_addr) = proxy_listener.accept().await.unwrap();
-        handle_proxy_connection(client_socket, client_addr, target_str, ServerType::Map, 2, rec).await;
+        handle_proxy_connection(
+            client_socket,
+            client_addr,
+            target_str,
+            ServerType::Map,
+            2,
+            rec,
+        )
+        .await;
     });
 
     // 3. Mock Client connects to Proxy
@@ -155,7 +171,15 @@ async fn test_proxy_trailing_buffer_flushed_on_connection_close() {
     let rec = recorder.clone();
     let proxy_task = tokio::spawn(async move {
         let (client_socket, client_addr) = proxy_listener.accept().await.unwrap();
-        handle_proxy_connection(client_socket, client_addr, target_str, ServerType::Login, 3, rec).await;
+        handle_proxy_connection(
+            client_socket,
+            client_addr,
+            target_str,
+            ServerType::Login,
+            3,
+            rec,
+        )
+        .await;
     });
 
     let mut client_socket = TcpStream::connect(proxy_addr).await.unwrap();
@@ -174,6 +198,8 @@ async fn test_proxy_trailing_buffer_flushed_on_connection_close() {
     // Verify trailing bytes were flushed into recorder
     assert!(!recorder.is_empty());
     let entries = recorder.entries();
-    let trailing_entry = entries.iter().find(|e| e.detail.contains("TRAILING PARTIAL FRAME on EOF"));
+    let trailing_entry = entries
+        .iter()
+        .find(|e| e.detail.contains("TRAILING PARTIAL FRAME on EOF"));
     assert!(trailing_entry.is_some());
 }

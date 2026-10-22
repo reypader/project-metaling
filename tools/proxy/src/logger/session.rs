@@ -74,7 +74,12 @@ impl SessionSequenceTracker {
         session_id: usize,
         recorder: Arc<PacketSequenceRecorder>,
     ) -> Self {
-        Self::with_global_and_limit(server_type, session_id, recorder, DEFAULT_MAX_SESSION_HISTORY)
+        Self::with_global_and_limit(
+            server_type,
+            session_id,
+            recorder,
+            DEFAULT_MAX_SESSION_HISTORY,
+        )
     }
 
     pub fn with_global_and_limit(
@@ -136,7 +141,10 @@ impl SessionSequenceTracker {
         }
 
         let mut lines = Vec::new();
-        lines.push(format!("Chronological Packet Sequence ({} packets):", hist.len()));
+        lines.push(format!(
+            "Chronological Packet Sequence ({} packets):",
+            hist.len()
+        ));
         for entry in &hist {
             lines.push(format!(
                 "  Seq #{:<3} [{}] {} (len={}) => {}",

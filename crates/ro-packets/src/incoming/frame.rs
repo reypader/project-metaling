@@ -144,16 +144,15 @@ mod tests {
         let parser = Phase0IntentParser;
         let ver = TARGET_PACKETVER;
 
-        let raw_time = RawPacket::new(PacketOpcode(0x0360), Bytes::copy_from_slice(&55555u32.to_le_bytes()));
-        let intent = parser.parse_intent(&raw_time, ver).unwrap().unwrap();
-        assert_eq!(
-            intent,
-            ClientIntent::RequestTime {
-                client_tick: 55555,
-            }
+        let raw_time = RawPacket::new(
+            PacketOpcode(0x0360),
+            Bytes::copy_from_slice(&55555u32.to_le_bytes()),
         );
+        let intent = parser.parse_intent(&raw_time, ver).unwrap().unwrap();
+        assert_eq!(intent, ClientIntent::RequestTime { client_tick: 55555 });
 
-        let raw_unknown = RawPacket::new(PacketOpcode(0x009f), Bytes::copy_from_slice(&[1, 2, 3, 4]));
+        let raw_unknown =
+            RawPacket::new(PacketOpcode(0x009f), Bytes::copy_from_slice(&[1, 2, 3, 4]));
         assert_eq!(parser.parse_intent(&raw_unknown, ver).unwrap(), None);
 
         let mut login_payload = vec![0u8; 53];
@@ -222,13 +221,14 @@ mod tests {
         let frame_move = decode_frame(&raw_move, ver).unwrap();
         assert_eq!(frame_move, DecodedFrame::Intent(move_intent));
 
-        let raw_time = RawPacket::new(PacketOpcode(0x0360), Bytes::copy_from_slice(&77777u32.to_le_bytes()));
+        let raw_time = RawPacket::new(
+            PacketOpcode(0x0360),
+            Bytes::copy_from_slice(&77777u32.to_le_bytes()),
+        );
         let time_intent = parser.parse_intent(&raw_time, ver).unwrap().unwrap();
         assert_eq!(
             time_intent,
-            ClientIntent::RequestTime {
-                client_tick: 77777,
-            }
+            ClientIntent::RequestTime { client_tick: 77777 }
         );
         let frame_time = decode_frame(&raw_time, ver).unwrap();
         assert_eq!(frame_time, DecodedFrame::Intent(time_intent));
@@ -263,13 +263,14 @@ mod tests {
         let frame_act = decode_frame(&raw_act, ver).unwrap();
         assert_eq!(frame_act, DecodedFrame::Intent(act_intent));
 
-        let raw_reqname = RawPacket::new(PacketOpcode(0x0368), Bytes::copy_from_slice(&1002u32.to_le_bytes()));
+        let raw_reqname = RawPacket::new(
+            PacketOpcode(0x0368),
+            Bytes::copy_from_slice(&1002u32.to_le_bytes()),
+        );
         let reqname_intent = parser.parse_intent(&raw_reqname, ver).unwrap().unwrap();
         assert_eq!(
             reqname_intent,
-            ClientIntent::RequestEntityName {
-                entity_id: 1002,
-            }
+            ClientIntent::RequestEntityName { entity_id: 1002 }
         );
         let frame_reqname = decode_frame(&raw_reqname, ver).unwrap();
         assert_eq!(frame_reqname, DecodedFrame::Intent(reqname_intent));
@@ -304,7 +305,10 @@ mod tests {
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00,
             0x00, 0x16, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         ];
-        let raw_make = RawPacket::new(PacketOpcode(0x0a39), Bytes::copy_from_slice(&make_char_bytes[2..]));
+        let raw_make = RawPacket::new(
+            PacketOpcode(0x0a39),
+            Bytes::copy_from_slice(&make_char_bytes[2..]),
+        );
         let intent_make = parser.parse_intent(&raw_make, ver).unwrap().unwrap();
         assert_eq!(
             intent_make,
@@ -321,7 +325,10 @@ mod tests {
         assert_eq!(frame_make, DecodedFrame::Intent(intent_make));
 
         let del_res_bytes: [u8; 6] = [0x27, 0x08, 0xf4, 0x49, 0x02, 0x00];
-        let raw_del_res = RawPacket::new(PacketOpcode(0x0827), Bytes::copy_from_slice(&del_res_bytes[2..]));
+        let raw_del_res = RawPacket::new(
+            PacketOpcode(0x0827),
+            Bytes::copy_from_slice(&del_res_bytes[2..]),
+        );
         let intent_del_res = parser.parse_intent(&raw_del_res, ver).unwrap().unwrap();
         assert_eq!(
             intent_del_res,
@@ -333,7 +340,10 @@ mod tests {
         assert_eq!(frame_del_res, DecodedFrame::Intent(intent_del_res));
 
         let del_cancel_bytes: [u8; 6] = [0x2b, 0x08, 0xf4, 0x49, 0x02, 0x00];
-        let raw_del_cancel = RawPacket::new(PacketOpcode(0x082b), Bytes::copy_from_slice(&del_cancel_bytes[2..]));
+        let raw_del_cancel = RawPacket::new(
+            PacketOpcode(0x082b),
+            Bytes::copy_from_slice(&del_cancel_bytes[2..]),
+        );
         let intent_del_cancel = parser.parse_intent(&raw_del_cancel, ver).unwrap().unwrap();
         assert_eq!(
             intent_del_cancel,
@@ -351,7 +361,10 @@ mod tests {
         assert_eq!(frame_charlist, DecodedFrame::Intent(intent_charlist));
 
         let ping_bytes: [u8; 6] = [0x87, 0x01, 0x01, 0x00, 0x1f, 0x00];
-        let raw_ping = RawPacket::new(PacketOpcode(0x0187), Bytes::copy_from_slice(&ping_bytes[2..]));
+        let raw_ping = RawPacket::new(
+            PacketOpcode(0x0187),
+            Bytes::copy_from_slice(&ping_bytes[2..]),
+        );
         let intent_ping = parser.parse_intent(&raw_ping, ver).unwrap().unwrap();
         assert_eq!(
             intent_ping,
@@ -363,14 +376,12 @@ mod tests {
         assert_eq!(frame_ping, DecodedFrame::Intent(intent_ping));
 
         let restart_bytes: [u8; 3] = [0xb2, 0x00, 0x01];
-        let raw_restart = RawPacket::new(PacketOpcode(0x00b2), Bytes::copy_from_slice(&restart_bytes[2..]));
-        let intent_restart = parser.parse_intent(&raw_restart, ver).unwrap().unwrap();
-        assert_eq!(
-            intent_restart,
-            ClientIntent::Restart {
-                restart_type: 1,
-            }
+        let raw_restart = RawPacket::new(
+            PacketOpcode(0x00b2),
+            Bytes::copy_from_slice(&restart_bytes[2..]),
         );
+        let intent_restart = parser.parse_intent(&raw_restart, ver).unwrap().unwrap();
+        assert_eq!(intent_restart, ClientIntent::Restart { restart_type: 1 });
         let frame_restart = decode_frame(&raw_restart, ver).unwrap();
         assert_eq!(frame_restart, DecodedFrame::Intent(intent_restart));
     }

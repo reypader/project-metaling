@@ -23,7 +23,8 @@ async fn main() -> anyhow::Result<()> {
             .await
             .with_context(|| format!("Failed to connect to database at {}", config.database_url))?,
     );
-    let service_handle = CharServiceHandle::with_default_map_port(char_repo, config.default_map_port);
+    let service_handle =
+        CharServiceHandle::with_default_map_port(char_repo, config.default_map_port);
 
     let http_router = create_http_router(service_handle.clone());
 
@@ -38,9 +39,12 @@ async fn main() -> anyhow::Result<()> {
     let client_addr: SocketAddr = format!("0.0.0.0:{}", config.client_port)
         .parse()
         .context("Failed to parse char-server client TCP address")?;
-    let client_listener = TcpListener::bind(client_addr)
-        .await
-        .with_context(|| format!("Failed to bind char-server client TCP listener to {}", client_addr))?;
+    let client_listener = TcpListener::bind(client_addr).await.with_context(|| {
+        format!(
+            "Failed to bind char-server client TCP listener to {}",
+            client_addr
+        )
+    })?;
     info!("Character client TCP listener active on {}", client_addr);
 
     let http_task = tokio::spawn(async move {

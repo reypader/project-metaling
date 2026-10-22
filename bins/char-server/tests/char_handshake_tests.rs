@@ -35,11 +35,17 @@ async fn setup_test_repo() -> Arc<dyn CharacterRepository> {
 async fn test_char_handshake_via_channel_service() {
     let char_repo = setup_test_repo().await;
 
-    if char_repo.find_by_slot(AccountId(2000000), 0).await.unwrap().is_none() {
+    if char_repo
+        .find_by_slot(AccountId(2000000), 0)
+        .await
+        .unwrap()
+        .is_none()
+    {
         let unique_suffix = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .unwrap()
-            .as_millis() % 1000000;
+            .as_millis()
+            % 1000000;
         let req = CreateCharacterRequest {
             account_id: AccountId(2000000),
             slot: 0,
@@ -49,7 +55,10 @@ async fn test_char_handshake_via_channel_service() {
             starting_job: 0,
             sex: Sex::Male,
         };
-        char_repo.create_character(req, 15).await.expect("Failed to create character in slot 0");
+        char_repo
+            .create_character(req, 15)
+            .await
+            .expect("Failed to create character in slot 0");
     }
 
     let service_handle = CharServiceHandle::new(char_repo);
@@ -84,7 +93,9 @@ async fn test_char_handshake_via_channel_service() {
     let mut received_opcodes = Vec::new();
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while received_opcodes.len() < 5 && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client.read_buf(&mut buffer)).await {
+        if let Ok(Ok(n)) =
+            tokio::time::timeout(Duration::from_millis(100), client.read_buf(&mut buffer)).await
+        {
             if n == 0 {
                 break;
             }
@@ -93,7 +104,10 @@ async fn test_char_handshake_via_channel_service() {
             }
         }
     }
-    assert!(received_opcodes.len() >= 5, "Timed out waiting for initial opcodes");
+    assert!(
+        received_opcodes.len() >= 5,
+        "Timed out waiting for initial opcodes"
+    );
     assert_eq!(received_opcodes[0], PacketOpcode::HC_ACCEPT_ENTER2);
     assert_eq!(received_opcodes[1], PacketOpcode::HC_ACCEPT_ENTER);
     assert_eq!(received_opcodes[2], PacketOpcode(0x09a0));
@@ -107,7 +121,9 @@ async fn test_char_handshake_via_channel_service() {
     let mut notify_raw = None;
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while notify_raw.is_none() && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client.read_buf(&mut buffer)).await {
+        if let Ok(Ok(n)) =
+            tokio::time::timeout(Duration::from_millis(100), client.read_buf(&mut buffer)).await
+        {
             if n == 0 {
                 break;
             }
@@ -170,7 +186,9 @@ async fn test_full_login_sequence_char_flow() {
     let mut enter_opcodes = Vec::new();
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while enter_opcodes.len() < 5 && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await {
+        if let Ok(Ok(n)) =
+            tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await
+        {
             if n == 0 {
                 break;
             }
@@ -179,7 +197,11 @@ async fn test_full_login_sequence_char_flow() {
             }
         }
     }
-    assert_eq!(enter_opcodes.len(), 5, "Timed out waiting for enter opcodes");
+    assert_eq!(
+        enter_opcodes.len(),
+        5,
+        "Timed out waiting for enter opcodes"
+    );
     assert_eq!(enter_opcodes[0], PacketOpcode::HC_ACCEPT_ENTER2);
     assert_eq!(enter_opcodes[1], PacketOpcode::HC_ACCEPT_ENTER);
     assert_eq!(enter_opcodes[2], PacketOpcode(0x09a0));
@@ -192,7 +214,9 @@ async fn test_full_login_sequence_char_flow() {
     let mut charlist_ack = None;
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while charlist_ack.is_none() && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await {
+        if let Ok(Ok(n)) =
+            tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await
+        {
             if n == 0 {
                 break;
             }
@@ -206,7 +230,11 @@ async fn test_full_login_sequence_char_flow() {
     }
     assert!(charlist_ack.is_some(), "Timed out waiting for charlist_ack");
 
-    let unique_id = (SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_millis() % 1000000) as u32;
+    let unique_id = (SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap()
+        .as_millis()
+        % 1000000) as u32;
     let created_name = format!("tst_{}", unique_id);
     let mut make_char_bytes = vec![0x39, 0x0a];
     let mut name_bytes = [0u8; 24];
@@ -224,7 +252,9 @@ async fn test_full_login_sequence_char_flow() {
     let mut make_char_ack = None;
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while make_char_ack.is_none() && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await {
+        if let Ok(Ok(n)) =
+            tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await
+        {
             if n == 0 {
                 break;
             }
@@ -246,7 +276,9 @@ async fn test_full_login_sequence_char_flow() {
     let mut notify_raw = None;
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while notify_raw.is_none() && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await {
+        if let Ok(Ok(n)) =
+            tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await
+        {
             if n == 0 {
                 break;
             }
@@ -277,7 +309,9 @@ async fn test_full_login_sequence_char_flow() {
     let mut enter_opcodes2 = Vec::new();
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while enter_opcodes2.len() < 5 && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client2.read_buf(&mut buffer2)).await {
+        if let Ok(Ok(n)) =
+            tokio::time::timeout(Duration::from_millis(100), client2.read_buf(&mut buffer2)).await
+        {
             if n == 0 {
                 break;
             }
@@ -286,7 +320,11 @@ async fn test_full_login_sequence_char_flow() {
             }
         }
     }
-    assert_eq!(enter_opcodes2.len(), 5, "Timed out waiting for client2 enter opcodes");
+    assert_eq!(
+        enter_opcodes2.len(),
+        5,
+        "Timed out waiting for client2 enter opcodes"
+    );
     assert_eq!(enter_opcodes2[0], PacketOpcode::HC_ACCEPT_ENTER2);
     assert_eq!(enter_opcodes2[1], PacketOpcode::HC_ACCEPT_ENTER);
     assert_eq!(enter_opcodes2[2], PacketOpcode(0x09a0));
@@ -299,7 +337,9 @@ async fn test_full_login_sequence_char_flow() {
     let mut charlist_ack2 = None;
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while charlist_ack2.is_none() && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client2.read_buf(&mut buffer2)).await {
+        if let Ok(Ok(n)) =
+            tokio::time::timeout(Duration::from_millis(100), client2.read_buf(&mut buffer2)).await
+        {
             if n == 0 {
                 break;
             }
@@ -311,12 +351,12 @@ async fn test_full_login_sequence_char_flow() {
             }
         }
     }
-    assert!(charlist_ack2.is_some(), "Timed out waiting for client2 charlist_ack");
+    assert!(
+        charlist_ack2.is_some(),
+        "Timed out waiting for client2 charlist_ack"
+    );
 
-    let chars = char_repo
-        .list_by_account(AccountId(2000000))
-        .await
-        .unwrap();
+    let chars = char_repo.list_by_account(AccountId(2000000)).await.unwrap();
     let test5_char = chars
         .iter()
         .find(|c| c.name == created_name)
@@ -333,7 +373,9 @@ async fn test_full_login_sequence_char_flow() {
     let mut del_ack = None;
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while del_ack.is_none() && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client2.read_buf(&mut buffer2)).await {
+        if let Ok(Ok(n)) =
+            tokio::time::timeout(Duration::from_millis(100), client2.read_buf(&mut buffer2)).await
+        {
             if n == 0 {
                 break;
             }
@@ -364,7 +406,9 @@ async fn test_full_login_sequence_char_flow() {
     let mut cancel_ack = None;
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while cancel_ack.is_none() && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client2.read_buf(&mut buffer2)).await {
+        if let Ok(Ok(n)) =
+            tokio::time::timeout(Duration::from_millis(100), client2.read_buf(&mut buffer2)).await
+        {
             if n == 0 {
                 break;
             }
@@ -378,10 +422,8 @@ async fn test_full_login_sequence_char_flow() {
     }
     let cancel_raw = cancel_ack.expect("expected HC_DELETE_CHAR3_CANCEL 0x082c");
     assert_eq!(cancel_raw.opcode, PacketOpcode::HC_DELETE_CHAR3_CANCEL);
-    let returned_cancel_char_id =
-        u32::from_le_bytes(cancel_raw.payload[0..4].try_into().unwrap());
-    let returned_cancel_result =
-        u32::from_le_bytes(cancel_raw.payload[4..8].try_into().unwrap());
+    let returned_cancel_char_id = u32::from_le_bytes(cancel_raw.payload[0..4].try_into().unwrap());
+    let returned_cancel_result = u32::from_le_bytes(cancel_raw.payload[4..8].try_into().unwrap());
     assert_eq!(returned_cancel_char_id, test5_char_id.0);
     assert_eq!(returned_cancel_result, 1);
 }
@@ -390,7 +432,10 @@ async fn test_full_login_sequence_char_flow() {
 async fn test_bin_cfg_persist_002_char_startup_failure_on_unreachable_db() {
     let unreachable_url = "postgres://invalid:invalid@127.0.0.1:5433/nonexistent";
     let connect_result = PostgresRepo::connect(unreachable_url).await;
-    assert!(connect_result.is_err(), "Expected connection to unreachable DB to fail fast");
+    assert!(
+        connect_result.is_err(),
+        "Expected connection to unreachable DB to fail fast"
+    );
 }
 
 #[tokio::test]
@@ -400,7 +445,10 @@ async fn test_bin_char_persist_lifecycle() {
     let repo = match PostgresRepo::connect(&db_url).await {
         Ok(r) => r,
         Err(err) => {
-            eprintln!("Skipping test_bin_char_persist_lifecycle: DB unavailable ({})", err);
+            eprintln!(
+                "Skipping test_bin_char_persist_lifecycle: DB unavailable ({})",
+                err
+            );
             return;
         }
     };
@@ -412,7 +460,11 @@ async fn test_bin_char_persist_lifecycle() {
         .execute(repo.pool())
         .await;
 
-    let unique_id = (SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_millis() % 1000000) as u32;
+    let unique_id = (SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap()
+        .as_millis()
+        % 1000000) as u32;
     let persist_name = format!("per_{}", unique_id);
 
     let service_handle = CharServiceHandle::new(Arc::new(repo.clone()));
@@ -450,7 +502,9 @@ async fn test_bin_char_persist_lifecycle() {
     let mut enter_opcodes = Vec::new();
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while enter_opcodes.len() < 5 && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await {
+        if let Ok(Ok(n)) =
+            tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await
+        {
             if n == 0 {
                 break;
             }
@@ -459,7 +513,11 @@ async fn test_bin_char_persist_lifecycle() {
             }
         }
     }
-    assert_eq!(enter_opcodes.len(), 5, "Timed out waiting for enter opcodes");
+    assert_eq!(
+        enter_opcodes.len(),
+        5,
+        "Timed out waiting for enter opcodes"
+    );
     assert_eq!(enter_opcodes[0], PacketOpcode::HC_ACCEPT_ENTER2);
 
     // Request character list
@@ -469,7 +527,9 @@ async fn test_bin_char_persist_lifecycle() {
     let mut charlist_ack = None;
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while charlist_ack.is_none() && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await {
+        if let Ok(Ok(n)) =
+            tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await
+        {
             if n == 0 {
                 break;
             }
@@ -500,7 +560,9 @@ async fn test_bin_char_persist_lifecycle() {
     let mut make_char_ack = None;
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while make_char_ack.is_none() && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await {
+        if let Ok(Ok(n)) =
+            tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await
+        {
             if n == 0 {
                 break;
             }
@@ -517,7 +579,10 @@ async fn test_bin_char_persist_lifecycle() {
 
     // Verify created character in PostgreSQL repository
     let chars = repo.list_by_account(AccountId(2000000)).await.unwrap();
-    let persist_char = chars.iter().find(|c| c.name == persist_name).expect("persist char should exist");
+    let persist_char = chars
+        .iter()
+        .find(|c| c.name == persist_name)
+        .expect("persist char should exist");
     assert_eq!(persist_char.slot, 2);
     let created_char_id = persist_char.char_id;
 
@@ -530,7 +595,9 @@ async fn test_bin_char_persist_lifecycle() {
     let mut del_ack = None;
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while del_ack.is_none() && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await {
+        if let Ok(Ok(n)) =
+            tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await
+        {
             if n == 0 {
                 break;
             }
@@ -554,7 +621,9 @@ async fn test_bin_char_persist_lifecycle() {
     let mut cancel_ack = None;
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while cancel_ack.is_none() && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await {
+        if let Ok(Ok(n)) =
+            tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await
+        {
             if n == 0 {
                 break;
             }
@@ -577,7 +646,9 @@ async fn test_bin_char_persist_lifecycle() {
     let mut notify_raw = None;
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while notify_raw.is_none() && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await {
+        if let Ok(Ok(n)) =
+            tokio::time::timeout(Duration::from_millis(100), client1.read_buf(&mut buffer)).await
+        {
             if n == 0 {
                 break;
             }
@@ -609,7 +680,9 @@ async fn test_bin_char_persist_lifecycle() {
     let mut enter_opcodes2 = Vec::new();
     let deadline = tokio::time::Instant::now() + Duration::from_secs(5);
     while enter_opcodes2.len() < 5 && tokio::time::Instant::now() < deadline {
-        if let Ok(Ok(n)) = tokio::time::timeout(Duration::from_millis(100), client2.read_buf(&mut buffer2)).await {
+        if let Ok(Ok(n)) =
+            tokio::time::timeout(Duration::from_millis(100), client2.read_buf(&mut buffer2)).await
+        {
             if n == 0 {
                 break;
             }
@@ -618,9 +691,15 @@ async fn test_bin_char_persist_lifecycle() {
             }
         }
     }
-    assert_eq!(enter_opcodes2.len(), 5, "Timed out waiting for client2 enter opcodes");
+    assert_eq!(
+        enter_opcodes2.len(),
+        5,
+        "Timed out waiting for client2 enter opcodes"
+    );
     assert_eq!(enter_opcodes2[0], PacketOpcode::HC_ACCEPT_ENTER2);
 
     let chars_reconnect = repo.list_by_account(AccountId(2000000)).await.unwrap();
-    assert!(chars_reconnect.iter().any(|c| c.name == persist_name && c.slot == 2));
+    assert!(chars_reconnect
+        .iter()
+        .any(|c| c.name == persist_name && c.slot == 2));
 }

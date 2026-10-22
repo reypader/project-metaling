@@ -15,7 +15,13 @@ pub const DEFAULT_MAP_PORT: u16 = 5121;
 )]
 pub struct ProxyArgs {
     /// Configurable target IP/host where servers are running (used when target host is not explicitly specified)
-    #[arg(short = 't', short_alias = 'i', long = "target-ip", alias = "ip", default_value = "127.0.0.1")]
+    #[arg(
+        short = 't',
+        short_alias = 'i',
+        long = "target-ip",
+        alias = "ip",
+        default_value = "127.0.0.1"
+    )]
     pub target_ip: String,
 
     /// Login server target in "host:port" format (defaults to PROXY_LOGIN_TARGET or <target-ip>:6900)
@@ -85,11 +91,7 @@ pub fn format_host_port(host: &str, port: u16) -> String {
     }
 }
 
-pub fn resolve_target(
-    input: Option<&str>,
-    default_ip: &str,
-    default_port: u16,
-) -> Result<String> {
+pub fn resolve_target(input: Option<&str>, default_ip: &str, default_port: u16) -> Result<String> {
     match input {
         Some(s) if !s.trim().is_empty() => {
             let s = s.trim();

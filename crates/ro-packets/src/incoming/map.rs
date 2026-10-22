@@ -248,9 +248,9 @@ impl CzRestartPacket {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::coords::pack_pos_dir;
     use bytes::Bytes;
     use ro_contracts::packet::PacketOpcode;
-    use crate::coords::pack_pos_dir;
 
     #[test]
     fn test_decode_cz_enter() {
@@ -308,7 +308,11 @@ mod tests {
 
         let raw_cz_enter = RawPacket::new(PacketOpcode(0x0436), short_payload.clone());
         match CzEnterPacket::decode(&raw_cz_enter) {
-            Err(PacketCodecError::TruncatedPayload { opcode, expected, actual }) => {
+            Err(PacketCodecError::TruncatedPayload {
+                opcode,
+                expected,
+                actual,
+            }) => {
                 assert_eq!(opcode, PacketOpcode(0x0436));
                 assert_eq!(expected, 17);
                 assert_eq!(actual, 2);
@@ -318,7 +322,11 @@ mod tests {
 
         let raw_time = RawPacket::new(PacketOpcode(0x0360), short_payload);
         match CzRequestTimePacket::decode(&raw_time) {
-            Err(PacketCodecError::TruncatedPayload { opcode, expected, actual }) => {
+            Err(PacketCodecError::TruncatedPayload {
+                opcode,
+                expected,
+                actual,
+            }) => {
                 assert_eq!(opcode, PacketOpcode(0x0360));
                 assert_eq!(expected, 4);
                 assert_eq!(actual, 2);
