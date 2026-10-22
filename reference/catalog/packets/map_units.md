@@ -19,6 +19,7 @@ Target client version: `PACKETVER = 20260219`. All integers little-endian, struc
 | Unit leaves sight / dies / logs out / teleports | `clif_clearunit_area` L970 / `clif_clearunit_single` L952 | `0x0080` | `AREA_WOS` (`AREA` for type 1 died) / `SELF` |
 | Turn | `clif_changed_dir` L11581 | `0x009c` | `AREA_WOS` (parser L11619) or `SELF` |
 | Sit / stand | `clif_sitting` L5329 / `clif_standing` L5347 | `0x08c8` | `AREA` (includes the actor) |
+| Walk interrupted (sit/stand/NPC click/pickup via `unit_stop_walking(USW_FIXPOS)`, failed mid-walk repath, knockback) | `clif_fixpos` L2205 | `0x0088` | `AREA` (includes the unit; see section) |
 
 `0x0086` (`ZC_NOTIFY_MOVE`, 16 bytes if it existed) is **commented out as "Unused packet (alpha?)"** (`packets.hpp:667-679`) and is never sent. `clif_walkok` sx/sy: `WBUFPOS2(moveData, 0, sd.x, sd.y, sd.ud.to_x, sd.ud.to_y, 8, 8)` (`clif.cpp:2059`) so the mover gets sx0 = sy0 = 8 always. `0x09fd` uses `ud.sx, ud.sy` (`clif.cpp:1414`), which are 8 at walk start (`unit.cpp:561-562,1685,1734`) and a sub-cell 0..15 only when a walk is shortened mid-cell (`unit.cpp:1654`).
 
@@ -43,13 +44,32 @@ Target client version: `PACKETVER = 20260219`. All integers little-endian, struc
 | `2` | `4` | `u32` | `move_start_time` | `client_tick(gettick())` |
 | `6` | `6` | `[u8; 6]` | `move_data` | `WBUFPOS2(x0,y0,x1,y1,sx0=8,sy0=8)`, see [bitpacking.md](./bitpacking.md) |
 
+## `0x0088` `ZC_STOPMOVE`
+
+* **Direction:** Map to Client. **Frame:** Fixed `10` = `sizeof(PACKET_ZC_STOPMOVE)` (`int16 + uint32 + uint16 + uint16`, packed). **Packet DB:** NOT in `clif_packetdb.hpp`/`clif_shuffle.hpp` (no `0x0088` entry; length is the struct size). Project `table.rs` has `Fixed(10)` (since engine-foundation M3). No capture shows it (`login_sequence-*.log` have no walk/sit). Applies to 20260219 (no `#if PACKETVER` branch).
+* **Provenance:** `rathena` `src/map/packets.hpp:728-734` (struct + `DEFINE_PACKET_HEADER(ZC_STOPMOVE, 0x88)`), sender `clif.cpp:2204-2219` (`clif_fixpos(const block_list& bl)`).
+
+| Offset | Size | Type | Field | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| `0` | `2` | `u16` | `packet_id` | `0x0088` |
+| `2` | `4` | `u32` | `gid` | `bl.id` (account_id for players) |
+| `6` | `2` | `u16` | `x` | `bl.x` at send time (cell the unit is pinned to) |
+| `8` | `2` | `u16` | `y` | `bl.y` |
+
+* **Sender:** `clif_fixpos(bl)`: `clif_send(&packet, 10, &bl, AREA)`. `AREA` = every player within `AREA_SIZE` (14) of the unit INCLUDING the unit itself (no `_WOS`; `clif.cpp:517-526`). If the unit is disguised, a second packet with the disguise id is sent `SELF`.
+* **When (movement-relevant):**
+  * `unit_stop_walking(bl, type)` with `USW_FIXPOS` (0x1) (`unit.cpp:1696-1755`, fixpos at `:1734-1738`). Sets `ud->sx = ud->sy = 8` first. It is a no-op returning false (NO packet) if `walktimer == INVALID_TIMER` and `USW_FORCE_STOP` (0x8) is not set (`:1711`). So a unit that is not walking gets no `0x0088` from a plain `USW_FIXPOS`.
+  * Player non-attack `CZ_REQUEST_ACT` (sit, stand, pickup, ...): `unit_stop_walking(&sd, USW_FIXPOS)` (`clif.cpp:11704-11709`), and `pc_setsit` uses `USW_FIXPOS|USW_MOVE_FULL_CELL` (`pc.cpp:13099+`). With `USW_MOVE_FULL_CELL`, if at least half the current step has elapsed the unit is advanced to the next cell BEFORE the fixpos, so x/y in the packet is the destination cell of the in-flight step; otherwise the last completed cell. Sequence on the wire: `0x0088` then `0x08c8` (sit).
+  * Mid-walk repath failure (`change_walk_target`), `unit.cpp:742`; monster blocked by icewall `:614`; skill/dash cancels (`unit.cpp:211,1034,2975,3286`), knockback/slide (`clif_blown` L2192-2197, `skill.cpp`, `status.cpp:15005`).
+* The client treats it as "snap this unit to (x,y) and stop its walk animation". `ud->to_x/to_y` are reset to the current cell and the path is cleared after the send.
+
 ## `0x0086` `ZC_NOTIFY_MOVE` (unused)
 
 * **Never sent by rAthena at 20260219** (struct commented out, `packets.hpp:667-679`). Layout if it were: `u16 id, u32 gid, [u8;6] move_data, u32 move_start_time` = 16 bytes. Not in rAthena's packet DB. Do not implement; observers get `0x09fd`.
 
 ## `0x009c` `ZC_CHANGE_DIRECTION`
 
-* **Direction:** Map to Client. **Frame:** Fixed `9`. **Provenance:** `rathena` `packets.hpp:688-694`, `clif.cpp:11559-11600`. Not in rAthena packet DB, absent from project `table.rs`.
+* **Direction:** Map to Client. **Frame:** Fixed `9`. **Provenance:** `rathena` `packets.hpp:688-694`, `clif.cpp:11559-11600`. Not in rAthena packet DB; project `table.rs` has `Fixed(9)` (since M3).
 
 | Offset | Size | Type | Field | Notes |
 | :--- | :--- | :--- | :--- | :--- |
@@ -67,6 +87,10 @@ Target client version: `PACKETVER = 20260219`. All integers little-endian, struc
 | `0` | `2` | `u16` | `packet_id` | `0x00b0` |
 | `2` | `2` | `u16` | `var_id` | `SP_*` status id (see `clif_updatestatus`, `clif.cpp:3600+`) |
 | `4` | `4` | `i32` | `count` | New value |
+
+* **Weight vars (`enum _sp`, `map.hpp:498-505`, positional):** `SP_WEIGHT = 24` (`0x18`), `SP_MAXWEIGHT = 25` (`0x19`). (Neighbours: `SP_NEXTJOBEXP = 23`, `SP_1a = 26`.) Sent via `clif_par_change` (`clif.cpp:3550-3558`) from `clif_updatestatus` (`:3637-3646`): `SP_WEIGHT` -> `sd.weight`, `SP_MAXWEIGHT` -> `sd.max_weight`, both plain `i32` in `0x00b0` (NOT `0x00b1 ZC_LONGPAR_CHANGE`, `packets_struct.hpp:361-366`, which rAthena does not use for weight). `SP_WEIGHT` also calls `pc_updateweightstatus` (SC_WEIGHT50/90 icons) first.
+* **Units: 0.1 weight per unit** (item db weight 10 = 1.0). `max_weight = job_db max_weight_base + STR * 300 (+ bonuses)` (`status.cpp:3663`; base 20000 = 2000.0). Capture `login_sequence-rathena.log` (STR 1 novice): `SP_MAXWEIGHT` payload `19 00 4c 4f 00 00` = 20300 (20000 + 300) and `SP_WEIGHT` payload `18 00 f4 01 00 00` = 500 (50.0). Overweight thresholds use `weight * 100 / max_weight` (`pc.cpp:3016`).
+* **Order on map entry:** `clif_parse_LoadEndAck` sends `SP_WEIGHT` then `SP_MAXWEIGHT` (`clif.cpp:10793-10794`); capture frames 72-73 confirm (after `CZ_NOTIFY_ACTORINIT`, before `0x099b` map property and the `0x09ff` nearby units). The same pair is also sent by `clif_refresh` (`:9851-9852`), and individually on change (`pc_additem` `pc.cpp:6070`, `status_calc_pc` `status.cpp:3693-3697`).
 
 ## `0x08c8` `ZC_NOTIFY_ACT` (a.k.a. ZC_NOTIFY_ACT3)
 
@@ -105,7 +129,7 @@ Target client version: `PACKETVER = 20260219`. All integers little-endian, struc
 
 ## `0x0af7` `ZC_ACK_REQNAME_BYGID` (NOT the CZ_REQNAME reply)
 
-* **Direction:** Map to Client. **Frame:** Fixed `32` (project `table.rs:960` marks it Dynamic; that disagrees with the struct). **Provenance:** `rathena` `packets.hpp:1736-1741` (branch `PACKETVER >= 20180221`), `clif.cpp:7057-7071` (`clif_solved_charname`, answer to `CZ_REQNAME_BYGID` via `map_reqnickdb`, `clif_parse_SolveCharName` L13553). Used for char_id -> name resolution (e.g. whisper/friend/party lookups), not for entities in view.
+* **Direction:** Map to Client. **Frame:** Fixed `32` (project `table.rs` fixed from Dynamic in M3). **Provenance:** `rathena` `packets.hpp:1736-1741` (branch `PACKETVER >= 20180221`), `clif.cpp:7057-7071` (`clif_solved_charname`, answer to `CZ_REQNAME_BYGID` via `map_reqnickdb`, `clif_parse_SolveCharName` L13553). Used for char_id -> name resolution (e.g. whisper/friend/party lookups), not for entities in view.
 
 | Offset | Size | Type | Field | Notes |
 | :--- | :--- | :--- | :--- | :--- |
@@ -206,15 +230,8 @@ Target client version: `PACKETVER = 20260219`. All integers little-endian, struc
 
 ## `0x0091` `ZC_NPCACK_MAPMOVE` (length confirmation)
 
-* Confirmed **22 bytes**: `packets.hpp:696-701` (`2 + 16 + 2 + 2`). Capture `login_sequence-rathena.log:35-36` proves it: the proxy table framed it as 18 bytes, and the leftover 4 bytes (`9b 00 b5 00` = x 155, y 181) were mis-parsed as bogus opcode `0x009b`. Project `crates/ro-packets/src/table.rs:54` has `Fixed(18)`, which is wrong (see below). Section: [map.md#0x0091-zc_npcack_mapmove](./map.md#0x0091-zc_npcack_mapmove).
+* Confirmed **22 bytes**: `packets.hpp:696-701` (`2 + 16 + 2 + 2`). Capture `login_sequence-rathena.log:35-36` proves it: the proxy table framed it as 18 bytes, and the leftover 4 bytes (`9b 00 b5 00` = x 155, y 181) were mis-parsed as bogus opcode `0x009b`. Project `table.rs` had `Fixed(18)`; fixed to `Fixed(22)` in engine-foundation M3. Section: [map.md#0x0091-zc_npcack_mapmove](./map.md#0x0091-zc_npcack_mapmove).
 
-## Discrepancies found in the project length table (`crates/ro-packets/src/table.rs`, read-only check)
+## Project length table status
 
-| Opcode | Table says | Correct at 20260219 |
-| :--- | :--- | :--- |
-| `0x0091` | `Fixed(18)` | `Fixed(22)` |
-| `0x0af7` | `Dynamic` | `Fixed(32)` |
-| `0x0a30` | missing | `Fixed(106)` |
-| `0x009c` | missing | `Fixed(9)` |
-| `0x0086` | missing | unused; `Fixed(16)` if ever needed |
-| `0x09fd` comment | `ZC_NOTIFY_MOVE` | name is `ZC_NOTIFY_MOVEENTRY11` (distinct from `0x0086 ZC_NOTIFY_MOVE`) |
+All discrepancies found during engine-foundation research (`0x0091` 18 -> 22, `0x0af7` Dynamic -> Fixed(32), missing `0x0a30`/`0x009c`/`0x0088`) were fixed in `crates/ro-packets/src/table.rs` in M3 and are covered by its `pkt_01_engine_foundation_lengths` test. `0x0086` stays unmapped (never sent).

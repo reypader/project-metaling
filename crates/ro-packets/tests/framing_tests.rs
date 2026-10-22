@@ -2,16 +2,15 @@
 
 use bytes::BytesMut;
 use ro_contracts::ids::{AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, Sex};
-use ro_contracts::packet::{ClientIntent, EventEncoder, PacketOpcode, ServerEvent};
+use ro_contracts::packet::{ClientIntent, EventEncoder, PacketOpcode, ServerEvent, UnitAppearance};
 use ro_packets::codec::PacketDecoder;
 use ro_packets::coords::{pack_pos2, pack_pos_dir, unpack_pos2, unpack_pos_dir};
 use ro_packets::incoming::{decode_frame, DecodedFrame};
 use ro_packets::outgoing::{
     encode_ac_accept_login, encode_ac_refuse_login, encode_hc_notify_zonesvr,
     encode_zc_accept_enter, encode_zc_notify_act, encode_zc_notify_act_params,
-    encode_zc_notify_newentry, encode_zc_notify_playermove, encode_zc_notify_time,
-    encode_zc_par_change, ActParams, CharServerEntry, ModernEventEncoder, NewEntryParams,
-    Phase0EventEncoder,
+    encode_zc_notify_playermove, encode_zc_notify_time, encode_zc_par_change, ActParams,
+    CharServerEntry, ModernEventEncoder, Phase0EventEncoder,
 };
 use ro_packets::table::RathenaPacketLengthTable;
 use tokio_util::codec::Decoder;
@@ -194,39 +193,32 @@ fn test_outgoing_serializers_and_redecoding() {
     assert_eq!(raw.opcode, PacketOpcode(0x007f));
     assert_eq!(raw.payload_len(), 4);
 
-    // 6. ZC_NOTIFY_NEWENTRY (53 bytes)
-    let entry_params = NewEntryParams {
-        gid: 150001,
-        speed: 150,
-        body_state: 0,
-        health_state: 0,
-        effect_state: 0,
-        job: 1,
-        head: 2,
-        weapon: 0,
-        accessory: 0,
-        shield: 0,
-        accessory2: 0,
-        accessory3: 0,
-        headpalette: 0,
-        bodypalette: 0,
-        head_dir: 0,
-        guid: 0,
-        gemblem_ver: 0,
-        honor: 0,
-        virtue: 0,
-        is_pkmode_on: 0,
-        sex: Sex::Female,
-        pos: MapPosition {
-            x: 100,
-            y: 150,
-            dir: 6,
-        },
-        x_size: 5,
-        y_size: 5,
-        clevel: 10,
-    };
-    let newentry_bytes = encode_zc_notify_newentry(&entry_params);
+    // 6. ZC_NOTIFY_NEWENTRY11 (107 bytes)
+    let newentry_bytes = ModernEventEncoder
+        .encode_event(
+            &ServerEvent::UnitSpawned {
+                unit: UnitAppearance {
+                    gid: 2000001,
+                    char_id: Some(CharId(150001)),
+                    name: "Novice".to_string(),
+                    job: 1,
+                    sex: Sex::Female,
+                    hair_style: 2,
+                    hair_color: 0,
+                    head_dir: 0,
+                    pos: MapPosition {
+                        x: 100,
+                        y: 150,
+                        dir: 6,
+                    },
+                    speed: 150,
+                    dead_sit: 0,
+                    clevel: 10,
+                },
+            },
+            ro_contracts::TARGET_PACKETVER,
+        )
+        .expect("UnitSpawned encodes");
     let mut stream = BytesMut::from(newentry_bytes.as_ref());
     let raw = decoder
         .decode(&mut stream)

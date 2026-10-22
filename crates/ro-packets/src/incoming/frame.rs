@@ -234,14 +234,14 @@ mod tests {
         assert_eq!(frame_time, DecodedFrame::Intent(time_intent));
 
         let mut dir_payload = vec![0u8; 3];
-        dir_payload[0..2].copy_from_slice(&6u16.to_le_bytes());
+        dir_payload[0..2].copy_from_slice(&2u16.to_le_bytes());
         dir_payload[2] = 4;
         let raw_dir = RawPacket::new(PacketOpcode(0x0361), Bytes::from(dir_payload));
         let dir_intent = parser.parse_intent(&raw_dir, ver).unwrap().unwrap();
         assert_eq!(
             dir_intent,
             ClientIntent::ChangeDirection {
-                head_dir: 6,
+                head_dir: 2,
                 body_dir: 4,
             }
         );

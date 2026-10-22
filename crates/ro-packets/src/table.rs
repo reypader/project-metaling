@@ -46,15 +46,17 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0083 => Some(Fixed(2)),
         0x0084 => Some(Fixed(2)),
         0x0087 => Some(Fixed(12)), // ZC_NOTIFY_PLAYERMOVE
+        0x0088 => Some(Fixed(10)), // ZC_STOPMOVE (struct size; not in rAthena packet DB)
         0x008b => Some(Fixed(2)),
         0x008c => Some(Fixed(14)),
         0x008d => Some(Dynamic),
         0x008e => Some(Dynamic),
         0x0090 => Some(Fixed(7)),
-        0x0091 => Some(Fixed(18)), // ZC_NPCACK_MAPMOVE
+        0x0091 => Some(Fixed(22)), // ZC_NPCACK_MAPMOVE
         0x0093 => Some(Fixed(2)),
         0x0096 => Some(Dynamic),
         0x0099 => Some(Dynamic),
+        0x009c => Some(Fixed(9)), // ZC_CHANGE_DIRECTION (struct size)
         0x009e => Some(Fixed(17)),
         0x009f => Some(Fixed(20)),
         0x00a2 => Some(Fixed(14)),
@@ -874,9 +876,9 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x09fa => Some(Dynamic),
         0x09fb => Some(Dynamic),
         0x09fc => Some(Fixed(6)),
-        0x09fd => Some(Dynamic), // ZC_NOTIFY_MOVE
-        0x09fe => Some(Dynamic), // ZC_NOTIFY_NEWENTRY
-        0x09ff => Some(Dynamic), // ZC_NOTIFY_STANDENTRY
+        0x09fd => Some(Dynamic), // ZC_NOTIFY_MOVEENTRY11 (rAthena writes 114)
+        0x09fe => Some(Dynamic), // ZC_NOTIFY_NEWENTRY11 (rAthena writes 107)
+        0x09ff => Some(Dynamic), // ZC_NOTIFY_STANDENTRY11 (rAthena writes 108)
         0x0a00 => Some(Fixed(269)),
         0x0a01 => Some(Fixed(3)),
         0x0a03 => Some(Fixed(2)),
@@ -904,6 +906,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0a26 => Some(Fixed(7)),
         0x0a2e => Some(Fixed(6)),
         0x0a2f => Some(Fixed(7)),
+        0x0a30 => Some(Fixed(106)), // ZC_ACK_REQNAMEALL (struct size)
         0x0a32 => Some(Fixed(2)),
         0x0a35 => Some(Fixed(4)),
         0x0a39 => Some(Fixed(36)), // CH_MAKE_CHAR
@@ -957,7 +960,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0aef => Some(Fixed(2)),
         0x0af0 => Some(Fixed(10)),
         0x0af4 => Some(Fixed(11)),
-        0x0af7 => Some(Dynamic), // ZC_ACK_REQNAME
+        0x0af7 => Some(Fixed(32)), // ZC_ACK_REQNAME_BYGID
         0x0af8 => Some(Fixed(11)),
         0x0afc => Some(Fixed(16)),
         0x0b09 => Some(Dynamic),
@@ -1127,7 +1130,7 @@ mod tests {
         );
         assert_eq!(
             table.packet_length(PacketOpcode(0x0af7), ver),
-            Some(PacketLength::Dynamic)
+            Some(PacketLength::Fixed(32))
         );
         assert_eq!(
             table.packet_length(PacketOpcode(0x0b72), ver),
@@ -1153,13 +1156,52 @@ mod tests {
     }
 
     #[test]
+    fn pkt_01_engine_foundation_lengths() {
+        use PacketLength::{Dynamic, Fixed};
+        let table = RathenaPacketLengthTable;
+        let ver = ro_contracts::TARGET_PACKETVER;
+        let expected = [
+            (0x035f, Fixed(5)),
+            (0x0361, Fixed(5)),
+            (0x0368, Fixed(6)),
+            (0x0437, Fixed(7)),
+            (0x0360, Fixed(6)),
+            (0x0283, Fixed(6)),
+            (0x0b18, Fixed(4)),
+            (0x02eb, Fixed(13)),
+            (0x007f, Fixed(6)),
+            (0x0087, Fixed(12)),
+            (0x0088, Fixed(10)),
+            (0x009c, Fixed(9)),
+            (0x09fd, Dynamic),
+            (0x09fe, Dynamic),
+            (0x09ff, Dynamic),
+            (0x0080, Fixed(7)),
+            (0x0a30, Fixed(106)),
+            (0x0af7, Fixed(32)),
+            (0x08c8, Fixed(34)),
+            (0x00b0, Fixed(8)),
+            (0x0091, Fixed(22)),
+        ];
+        for (op, len) in expected {
+            assert_eq!(
+                table.packet_length(PacketOpcode(op), ver),
+                Some(len),
+                "opcode {op:#06x}"
+            );
+        }
+        assert_eq!(table.packet_length(PacketOpcode(0xffff), ver), None);
+        assert_eq!(table.packet_length(PacketOpcode(0x0086), ver), None);
+    }
+
+    #[test]
     fn test_legacy_opcodes_are_rejected() {
         let table = RathenaPacketLengthTable;
         let ver = ro_contracts::TARGET_PACKETVER;
 
         let legacy = [
             0x0067, 0x0068, 0x0069, 0x006a, 0x006d, 0x0071, 0x0072, 0x0073, 0x007e, 0x0085, 0x0086,
-            0x0089, 0x008a, 0x0094, 0x0095, 0x009b, 0x009c, 0x009d,
+            0x0089, 0x008a, 0x0094, 0x0095, 0x009b, 0x009d,
         ];
         for op in legacy {
             assert_eq!(

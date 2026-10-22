@@ -16,10 +16,14 @@
 //! - `ZC_INVENTORY_EXPANSION_INFO` (0x0b18)
 //! - `ZC_ACCEPT_ENTER` (0x02eb)
 //! - `ZC_NOTIFY_TIME` (0x007f)
-//! - `ZC_NOTIFY_NEWENTRY` (0x09fe)
-//! - `ZC_NOTIFY_STANDENTRY` (0x09ff)
-//! - `ZC_NOTIFY_MOVE` (0x09fd)
+//! - `ZC_NOTIFY_NEWENTRY11` (0x09fe)
+//! - `ZC_NOTIFY_STANDENTRY11` (0x09ff)
+//! - `ZC_NOTIFY_MOVEENTRY11` (0x09fd)
 //! - `ZC_NOTIFY_PLAYERMOVE` (0x0087)
+//! - `ZC_STOPMOVE` (0x0088)
+//! - `ZC_NPCACK_MAPMOVE` (0x0091)
+//! - `ZC_CHANGE_DIRECTION` (0x009c)
+//! - `ZC_ACK_REQNAMEALL` (0x0a30)
 //! - `ZC_NOTIFY_VANISH` (0x0080)
 //! - `ZC_PAR_CHANGE` (0x00b0)
 //! - `ZC_NOTIFY_ACT` (0x08c8)
@@ -46,11 +50,10 @@ pub use login::{
     encode_ac_refuse_login_modern, CharServerEntry,
 };
 pub use map::{
-    encode_zc_accept_enter, encode_zc_accept_enter2, encode_zc_aid,
-    encode_zc_inventory_expansion_info, encode_zc_notify_act, encode_zc_notify_act_modern,
-    encode_zc_notify_act_params, encode_zc_notify_move, encode_zc_notify_move_modern,
-    encode_zc_notify_newentry, encode_zc_notify_newentry_modern, encode_zc_notify_playermove,
-    encode_zc_notify_standentry, encode_zc_notify_standentry_modern, encode_zc_notify_time,
-    encode_zc_notify_vanish, encode_zc_par_change, encode_zc_par_change_i32, encode_zc_restart_ack,
-    ActParams, NewEntryParams,
+    encode_zc_accept_enter, encode_zc_accept_enter2, encode_zc_ack_reqnameall, encode_zc_aid,
+    encode_zc_change_direction, encode_zc_inventory_expansion_info, encode_zc_notify_act,
+    encode_zc_notify_act_modern, encode_zc_notify_act_params, encode_zc_notify_moveentry11,
+    encode_zc_notify_newentry11, encode_zc_notify_playermove, encode_zc_notify_standentry11,
+    encode_zc_notify_time, encode_zc_notify_vanish, encode_zc_npcack_mapmove, encode_zc_par_change,
+    encode_zc_par_change_i32, encode_zc_restart_ack, encode_zc_stopmove, ActParams,
 };

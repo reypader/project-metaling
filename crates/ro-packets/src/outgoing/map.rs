@@ -1,8 +1,8 @@
 //! Outgoing map server packet encoders supporting ZC_* opcodes.
 
 use bytes::{BufMut, Bytes, BytesMut};
-use ro_contracts::ids::{AccountId, CharId, MapPosition, Sex};
-use ro_contracts::packet::PacketOpcode;
+use ro_contracts::ids::{AccountId, MapPosition};
+use ro_contracts::packet::{PacketOpcode, UnitAppearance};
 
 use crate::coords::{pack_pos2, pack_pos_dir};
 use crate::outgoing::helpers::write_fixed_string;
@@ -66,177 +66,171 @@ pub fn encode_zc_notify_time(server_tick: u32) -> Bytes {
     buf.freeze()
 }
 
-/// Parameters required to construct `ZC_NOTIFY_NEWENTRY` (0x009d) and `ZC_NOTIFY_STANDENTRY` (0x09ff).
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct NewEntryParams {
-    pub gid: u32,
-    pub speed: i16,
-    pub body_state: i16,
-    pub health_state: i16,
-    pub effect_state: i16,
-    pub job: i16,
-    pub head: i16,
-    pub weapon: i16,
-    pub accessory: i16,
-    pub shield: i16,
-    pub accessory2: i16,
-    pub accessory3: i16,
-    pub headpalette: i16,
-    pub bodypalette: i16,
-    pub head_dir: i16,
-    pub guid: u32,
-    pub gemblem_ver: i16,
-    pub honor: i16,
-    pub virtue: i16,
-    pub is_pkmode_on: u8,
-    pub sex: Sex,
-    pub pos: MapPosition,
-    pub x_size: u8,
-    pub y_size: u8,
-    pub clevel: i16,
-}
+/// Total lengths rAthena writes for the dynamic unit entry packets.
+const MOVEENTRY11_LEN: u16 = 114;
+const NEWENTRY11_LEN: u16 = 107;
+const STANDENTRY11_LEN: u16 = 108;
 
-/// Encodes `ZC_NOTIFY_NEWENTRY` (0x09fe) for PACKETVER >= 20150513, 107 bytes dynamic.
-pub fn encode_zc_notify_newentry(params: &NewEntryParams) -> Bytes {
-    let mut buf = BytesMut::with_capacity(107);
-    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_NEWENTRY11.raw());
-    buf.put_u16_le(107);
-    buf.put_u8(0); // objecttype: BL_PC = 0
-    buf.put_u32_le(params.gid); // AID
-    buf.put_u32_le(params.gid); // GID
-    buf.put_i16_le(params.speed);
-    buf.put_i16_le(params.body_state);
-    buf.put_i16_le(params.health_state);
-    buf.put_i32_le(params.effect_state as i32);
-    buf.put_i16_le(params.job);
-    buf.put_u16_le(params.head as u16);
-    buf.put_u32_le(params.weapon as u32);
-    buf.put_u32_le(params.shield as u32);
-    buf.put_u16_le(params.accessory as u16);
-    buf.put_u16_le(params.accessory2 as u16);
-    buf.put_u16_le(params.accessory3 as u16);
-    buf.put_i16_le(params.headpalette);
-    buf.put_i16_le(params.bodypalette);
-    buf.put_i16_le(params.head_dir);
-    buf.put_u16_le(0); // robe
-    buf.put_u32_le(params.guid);
-    buf.put_i16_le(params.gemblem_ver);
-    buf.put_i16_le(params.honor);
-    buf.put_i32_le(params.virtue as i32);
-    buf.put_u8(params.is_pkmode_on);
-    buf.put_u8(params.sex as u8);
-    buf.put_slice(&pack_pos_dir(params.pos.x, params.pos.y, params.pos.dir));
-    buf.put_u8(params.x_size);
-    buf.put_u8(params.y_size);
-    buf.put_i16_le(params.clevel);
-    buf.put_i16_le(0); // font
-    buf.put_i32_le(100); // maxHP
-    buf.put_i32_le(100); // HP
-    buf.put_u8(0); // isBoss
-    buf.put_i16_le(0); // body
-    buf.put_slice(&write_fixed_string::<24>(""));
-    buf.freeze()
-}
+/// `object_type` for a player (`clif_bl_type`, BL_PC).
+const OBJECT_TYPE_PC: u8 = 0;
+/// `x_size`/`y_size` rAthena sends for players.
+const PC_CELL_SIZE: u8 = 5;
 
-pub use encode_zc_notify_newentry as encode_zc_notify_newentry_modern;
-
-/// Encodes `ZC_NOTIFY_STANDENTRY` (0x09ff) for PACKETVER >= 20150513, 108 bytes dynamic.
-pub fn encode_zc_notify_standentry(params: &NewEntryParams, state: u8) -> Bytes {
-    let mut buf = BytesMut::with_capacity(108);
-    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_STANDENTRY11.raw());
-    buf.put_u16_le(108);
-    buf.put_u8(0); // objecttype: BL_PC = 0
-    buf.put_u32_le(params.gid); // AID
-    buf.put_u32_le(params.gid); // GID
-    buf.put_i16_le(params.speed);
-    buf.put_i16_le(params.body_state);
-    buf.put_i16_le(params.health_state);
-    buf.put_i32_le(params.effect_state as i32);
-    buf.put_i16_le(params.job);
-    buf.put_u16_le(params.head as u16);
-    buf.put_u32_le(params.weapon as u32);
-    buf.put_u32_le(params.shield as u32);
-    buf.put_u16_le(params.accessory as u16);
-    buf.put_u16_le(params.accessory2 as u16);
-    buf.put_u16_le(params.accessory3 as u16);
-    buf.put_i16_le(params.headpalette);
-    buf.put_i16_le(params.bodypalette);
-    buf.put_i16_le(params.head_dir);
-    buf.put_u16_le(0); // robe
-    buf.put_u32_le(params.guid);
-    buf.put_i16_le(params.gemblem_ver);
-    buf.put_i16_le(params.honor);
-    buf.put_i32_le(params.virtue as i32);
-    buf.put_u8(params.is_pkmode_on);
-    buf.put_u8(params.sex as u8);
-    buf.put_slice(&pack_pos_dir(params.pos.x, params.pos.y, params.pos.dir));
-    buf.put_u8(params.x_size);
-    buf.put_u8(params.y_size);
-    buf.put_u8(state);
-    buf.put_i16_le(params.clevel);
-    buf.put_i16_le(0); // font
-    buf.put_i32_le(100); // maxHP
-    buf.put_i32_le(100); // HP
-    buf.put_u8(0); // isBoss
-    buf.put_i16_le(0); // body
-    buf.put_slice(&write_fixed_string::<24>(""));
-    buf.freeze()
-}
-
-pub use encode_zc_notify_standentry as encode_zc_notify_standentry_modern;
-
-/// Encodes `ZC_NOTIFY_MOVE` (0x09fd) for PACKETVER >= 20150513, 114 bytes dynamic.
-pub fn encode_zc_notify_move(
-    char_id: CharId,
-    x0: u16,
-    y0: u16,
-    x1: u16,
-    y1: u16,
-    move_start_time: u32,
-    name: &str,
-) -> Bytes {
-    let mut buf = BytesMut::with_capacity(114);
-    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_MOVEENTRY11.raw());
-    buf.put_u16_le(114);
-    buf.put_u8(0); // objecttype: BL_PC = 0
-    buf.put_u32_le(char_id.0); // AID
-    buf.put_u32_le(char_id.0); // GID
-    buf.put_i16_le(150); // speed
-    buf.put_i16_le(0); // body_state
-    buf.put_i16_le(0); // health_state
-    buf.put_i32_le(0); // effect_state
-    buf.put_i16_le(0); // job
-    buf.put_u16_le(0); // head
+/// Writes offsets `0..37`, shared by `0x09fd/0x09fe/0x09ff`: header, ids, speed, status
+/// words, job, hair, gear up to `accessory`.
+fn put_unit_head(buf: &mut BytesMut, opcode: PacketOpcode, len: u16, unit: &UnitAppearance) {
+    buf.put_u16_le(opcode.raw());
+    buf.put_u16_le(len);
+    buf.put_u8(OBJECT_TYPE_PC);
+    buf.put_u32_le(unit.gid); // AID: account id for players
+    buf.put_u32_le(unit.char_id.map_or(0, |c| c.0)); // GID: char id, 0 for non-players
+    buf.put_u16_le(unit.speed);
+    buf.put_i16_le(0); // body_state (sc.opt1); NOT dead_sit
+    buf.put_i16_le(0); // health_state (sc.opt2)
+    buf.put_i32_le(0); // effect_state (sc.option)
+    buf.put_u16_le(unit.job);
+    buf.put_u16_le(unit.hair_style); // head
     buf.put_u32_le(0); // weapon
     buf.put_u32_le(0); // shield
-    buf.put_u16_le(0); // accessory
-    buf.put_u32_le(move_start_time);
-    buf.put_u16_le(0); // accessory2
-    buf.put_u16_le(0); // accessory3
-    buf.put_i16_le(0); // headpalette
-    buf.put_i16_le(0); // bodypalette
-    buf.put_i16_le(0); // head_dir
+    buf.put_u16_le(0); // accessory (head bottom)
+}
+
+/// Writes `accessory2` through `sex` (26 bytes), shared by all three entry packets.
+fn put_unit_middle(buf: &mut BytesMut, unit: &UnitAppearance) {
+    buf.put_u16_le(0); // accessory2 (head top)
+    buf.put_u16_le(0); // accessory3 (head mid)
+    buf.put_u16_le(unit.hair_color); // head_palette
+    buf.put_i16_le(0); // body_palette
+    buf.put_u16_le(unit.head_dir);
     buf.put_u16_le(0); // robe
-    buf.put_u32_le(0); // guid
-    buf.put_i16_le(0); // gemblem_ver
+    buf.put_u32_le(0); // guild_id
+    buf.put_i16_le(0); // emblem_ver
     buf.put_i16_le(0); // honor
-    buf.put_i32_le(0); // virtue
-    buf.put_u8(0); // is_pkmode_on
-    buf.put_u8(1); // sex: Male
-    buf.put_slice(&pack_pos2(x0, y0, x1, y1, 8, 8));
-    buf.put_u8(5); // x_size
-    buf.put_u8(5); // y_size
-    buf.put_i16_le(1); // clevel
+    buf.put_i32_le(0); // virtue (sc.opt3)
+    buf.put_u8(0); // is_pk_mode_on
+    buf.put_u8(unit.sex as u8);
+}
+
+/// Writes `clevel` through `name` (32 bytes), shared by all three entry packets.
+fn put_unit_tail(buf: &mut BytesMut, unit: &UnitAppearance) {
+    buf.put_u16_le(unit.clevel);
     buf.put_i16_le(0); // font
-    buf.put_i32_le(100); // maxHP
-    buf.put_i32_le(100); // HP
-    buf.put_u8(0); // isBoss
-    buf.put_i16_le(0); // body
-    buf.put_slice(&write_fixed_string::<24>(name));
+    buf.put_i32_le(-1); // max_hp: -1 unless a damaged mob
+    buf.put_i32_le(-1); // hp
+    buf.put_u8(0); // is_boss
+    buf.put_u16_le(0); // body (LOOK_BODY2)
+    buf.put_slice(&write_fixed_string::<24>(&unit.name));
+}
+
+/// Encodes `ZC_NOTIFY_MOVEENTRY11` (0x09fd): a walking unit, 114 bytes.
+/// Cells come from `start`/`dest`; `unit.pos` is not on the wire.
+pub fn encode_zc_notify_moveentry11(
+    unit: &UnitAppearance,
+    start: (u16, u16),
+    dest: (u16, u16),
+    move_start_time: u32,
+) -> Bytes {
+    let mut buf = BytesMut::with_capacity(usize::from(MOVEENTRY11_LEN));
+    put_unit_head(
+        &mut buf,
+        PacketOpcode::ZC_NOTIFY_MOVEENTRY11,
+        MOVEENTRY11_LEN,
+        unit,
+    );
+    buf.put_u32_le(move_start_time);
+    put_unit_middle(&mut buf, unit);
+    buf.put_slice(&pack_pos2(start.0, start.1, dest.0, dest.1, 8, 8));
+    buf.put_u8(PC_CELL_SIZE);
+    buf.put_u8(PC_CELL_SIZE);
+    put_unit_tail(&mut buf, unit);
     buf.freeze()
 }
 
-pub use encode_zc_notify_move as encode_zc_notify_move_modern;
+/// Encodes `ZC_NOTIFY_NEWENTRY11` (0x09fe): a unit spawned in view, 107 bytes.
+pub fn encode_zc_notify_newentry11(unit: &UnitAppearance) -> Bytes {
+    let mut buf = BytesMut::with_capacity(usize::from(NEWENTRY11_LEN));
+    put_unit_head(
+        &mut buf,
+        PacketOpcode::ZC_NOTIFY_NEWENTRY11,
+        NEWENTRY11_LEN,
+        unit,
+    );
+    put_unit_middle(&mut buf, unit);
+    buf.put_slice(&pack_pos_dir(unit.pos.x, unit.pos.y, unit.pos.dir));
+    buf.put_u8(PC_CELL_SIZE);
+    buf.put_u8(PC_CELL_SIZE);
+    put_unit_tail(&mut buf, unit);
+    buf.freeze()
+}
+
+/// Encodes `ZC_NOTIFY_STANDENTRY11` (0x09ff): an idle unit came into view, 108 bytes.
+/// The `state` byte at offset 68 carries `dead_sit`.
+pub fn encode_zc_notify_standentry11(unit: &UnitAppearance) -> Bytes {
+    let mut buf = BytesMut::with_capacity(usize::from(STANDENTRY11_LEN));
+    put_unit_head(
+        &mut buf,
+        PacketOpcode::ZC_NOTIFY_STANDENTRY11,
+        STANDENTRY11_LEN,
+        unit,
+    );
+    put_unit_middle(&mut buf, unit);
+    buf.put_slice(&pack_pos_dir(unit.pos.x, unit.pos.y, unit.pos.dir));
+    buf.put_u8(PC_CELL_SIZE);
+    buf.put_u8(PC_CELL_SIZE);
+    buf.put_u8(unit.dead_sit);
+    put_unit_tail(&mut buf, unit);
+    buf.freeze()
+}
+
+/// Encodes `ZC_STOPMOVE` (0x0088), fixed 10 bytes: gid, x, y.
+pub fn encode_zc_stopmove(gid: u32, x: u16, y: u16) -> Bytes {
+    let mut buf = BytesMut::with_capacity(10);
+    buf.put_u16_le(PacketOpcode::ZC_STOPMOVE.raw());
+    buf.put_u32_le(gid);
+    buf.put_u16_le(x);
+    buf.put_u16_le(y);
+    buf.freeze()
+}
+
+/// Encodes `ZC_CHANGE_DIRECTION` (0x009c), fixed 9 bytes: src, head dir (u16), body dir (u8).
+pub fn encode_zc_change_direction(gid: u32, head_dir: u16, body_dir: u8) -> Bytes {
+    let mut buf = BytesMut::with_capacity(9);
+    buf.put_u16_le(PacketOpcode::ZC_CHANGE_DIRECTION.raw());
+    buf.put_u32_le(gid);
+    buf.put_u16_le(head_dir);
+    buf.put_u8(body_dir);
+    buf.freeze()
+}
+
+/// Encodes `ZC_ACK_REQNAMEALL` (0x0a30), fixed 106 bytes: the `CZ_REQNAME` reply for players.
+pub fn encode_zc_ack_reqnameall(
+    gid: u32,
+    name: &str,
+    party_name: &str,
+    guild_name: &str,
+    position_name: &str,
+    title_id: i32,
+) -> Bytes {
+    let mut buf = BytesMut::with_capacity(106);
+    buf.put_u16_le(PacketOpcode::ZC_ACK_REQNAMEALL.raw());
+    buf.put_u32_le(gid);
+    buf.put_slice(&write_fixed_string::<24>(name));
+    buf.put_slice(&write_fixed_string::<24>(party_name));
+    buf.put_slice(&write_fixed_string::<24>(guild_name));
+    buf.put_slice(&write_fixed_string::<24>(position_name));
+    buf.put_i32_le(title_id);
+    buf.freeze()
+}
+
+/// Encodes `ZC_NPCACK_MAPMOVE` (0x0091), fixed 22 bytes: 16-byte map name, x, y.
+pub fn encode_zc_npcack_mapmove(map_name: &str, x: u16, y: u16) -> Bytes {
+    let mut buf = BytesMut::with_capacity(22);
+    buf.put_u16_le(PacketOpcode::ZC_NPCACK_MAPMOVE.raw());
+    buf.put_slice(&write_fixed_string::<16>(map_name));
+    buf.put_u16_le(x);
+    buf.put_u16_le(y);
+    buf.freeze()
+}
 
 /// Encodes `ZC_NOTIFY_PLAYERMOVE` (0x0087).
 ///
@@ -411,47 +405,6 @@ mod tests {
         assert_eq!(bytes.len(), 6);
         assert_eq!(&bytes[0..2], &0x007fu16.to_le_bytes());
         assert_eq!(&bytes[2..6], &123456u32.to_le_bytes());
-    }
-
-    #[test]
-    fn test_encode_zc_notify_newentry() {
-        let params = NewEntryParams {
-            gid: 150001,
-            speed: 150,
-            body_state: 0,
-            health_state: 0,
-            effect_state: 0,
-            job: 0,
-            head: 1,
-            weapon: 0,
-            accessory: 0,
-            shield: 0,
-            accessory2: 0,
-            accessory3: 0,
-            headpalette: 0,
-            bodypalette: 0,
-            head_dir: 0,
-            guid: 0,
-            gemblem_ver: 0,
-            honor: 0,
-            virtue: 0,
-            is_pkmode_on: 0,
-            sex: Sex::Male,
-            pos: MapPosition {
-                x: 100,
-                y: 100,
-                dir: 0,
-            },
-            x_size: 5,
-            y_size: 5,
-            clevel: 1,
-        };
-
-        let bytes = encode_zc_notify_newentry(&params);
-        assert_eq!(bytes.len(), 107);
-        assert_eq!(&bytes[0..2], &0x09feu16.to_le_bytes());
-        assert_eq!(&bytes[2..4], &107u16.to_le_bytes());
-        assert_eq!(&bytes[5..9], &150001u32.to_le_bytes());
     }
 
     #[test]

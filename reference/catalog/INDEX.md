@@ -23,8 +23,9 @@ This master index maps extracted protocol opcodes, bit-packing algorithms, Aegis
 | `0x0080` | `ZC_NOTIFY_VANISH` | Map to Client | Fixed 7 bytes | [packets/map_units.md#0x0080-zc_notify_vanish](./packets/map_units.md#0x0080-zc_notify_vanish) |
 | `0x0086` | `ZC_NOTIFY_MOVE` (unused; observers get 0x09fd) | Map to Client | n/a (16 if used) | [packets/map_units.md#0x0086-zc_notify_move-unused](./packets/map_units.md#0x0086-zc_notify_move-unused) |
 | `0x0087` | `ZC_NOTIFY_PLAYERMOVE` | Map to Client | Fixed 12 bytes | [packets/map_units.md#0x0087-zc_notify_playermove](./packets/map_units.md#0x0087-zc_notify_playermove) |
+| `0x0088` | `ZC_STOPMOVE` (`clif_fixpos`, `AREA` incl. self) | Map to Client | Fixed 10 bytes | [packets/map_units.md#0x0088-zc_stopmove](./packets/map_units.md#0x0088-zc_stopmove) |
 | `0x009c` | `ZC_CHANGE_DIRECTION` | Map to Client | Fixed 9 bytes | [packets/map_units.md#0x009c-zc_change_direction](./packets/map_units.md#0x009c-zc_change_direction) |
-| `0x00b0` | `ZC_PAR_CHANGE` | Map to Client | Fixed 8 bytes | [packets/map_units.md#0x00b0-zc_par_change](./packets/map_units.md#0x00b0-zc_par_change) |
+| `0x00b0` | `ZC_PAR_CHANGE` (incl. `SP_WEIGHT`=24, `SP_MAXWEIGHT`=25, 0.1 units) | Map to Client | Fixed 8 bytes | [packets/map_units.md#0x00b0-zc_par_change](./packets/map_units.md#0x00b0-zc_par_change) |
 | `0x08c8` | `ZC_NOTIFY_ACT` (sit/stand/damage) | Map to Client | Fixed 34 bytes | [packets/map_units.md#0x08c8-zc_notify_act-aka-zc_notify_act3](./packets/map_units.md#0x08c8-zc_notify_act-aka-zc_notify_act3) |
 | `0x09fd` | `ZC_NOTIFY_MOVEENTRY11` (walking unit) | Map to Client | Dynamic (114) | [packets/map_units.md#0x09fd-zc_notify_moveentry11-walking-unit-new-or-changed-walk](./packets/map_units.md#0x09fd-zc_notify_moveentry11-walking-unit-new-or-changed-walk) |
 | `0x09fe` | `ZC_NOTIFY_NEWENTRY11` (spawn) | Map to Client | Dynamic (107) | [packets/map_units.md#0x09fe-zc_notify_newentry11-unit-spawns-in-view](./packets/map_units.md#0x09fe-zc_notify_newentry11-unit-spawns-in-view) |

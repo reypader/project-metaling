@@ -4,7 +4,7 @@ use ro_contracts::ids::{AccountId, CharId, Sex};
 use ro_contracts::packet::{ClientIntent, PacketCodecError, RawPacket};
 
 use crate::coords::unpack_pos_dir;
-use crate::incoming::helpers::{parse_sex, read_u16_le, read_u32_le};
+use crate::incoming::helpers::{parse_sex, read_u32_le};
 
 /// Decoded representation of `CZ_ENTER` (0x0436).
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -127,7 +127,13 @@ impl CzRequestMovePacket {
     }
 }
 
-/// Decoded representation of `CZ_CHANGE_DIRECTION` (0x0361).
+/// Head direction: 0 straight, 1 clockwise, 2 counter-clockwise.
+const MAX_HEAD_DIR: u16 = 2;
+/// Body direction: 0 (N) through 7 (NE).
+const MAX_BODY_DIR: u8 = 7;
+
+/// Decoded representation of `CZ_CHANGE_DIRECTION` (0x0361). Out-of-range directions are
+/// `InvalidField`, which closes the session.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CzChangeDirectionPacket {
     pub head_dir: u16,
@@ -144,8 +150,23 @@ impl CzChangeDirectionPacket {
             });
         }
 
-        let head_dir = read_u16_le(&raw.payload, 0, raw.opcode)?;
+        // rAthena reads head_dir as one byte at frame offset 2 and never reads offset 3.
+        let head_dir = u16::from(raw.payload[0]);
         let body_dir = raw.payload[2];
+        if head_dir > MAX_HEAD_DIR {
+            return Err(PacketCodecError::InvalidField {
+                opcode: raw.opcode,
+                field: "head_dir",
+                value: head_dir.into(),
+            });
+        }
+        if body_dir > MAX_BODY_DIR {
+            return Err(PacketCodecError::InvalidField {
+                opcode: raw.opcode,
+                field: "body_dir",
+                value: body_dir.into(),
+            });
+        }
         Ok(Self { head_dir, body_dir })
     }
 

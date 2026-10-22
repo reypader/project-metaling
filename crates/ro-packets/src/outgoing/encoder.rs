@@ -11,10 +11,16 @@ use super::char::{
 };
 use super::login::{encode_ac_accept_login, encode_ac_refuse_login, CharServerEntry};
 use super::map::{
-    encode_zc_accept_enter, encode_zc_aid, encode_zc_inventory_expansion_info,
-    encode_zc_notify_act, encode_zc_notify_newentry, encode_zc_notify_time,
-    encode_zc_par_change_i32, encode_zc_restart_ack, NewEntryParams,
+    encode_zc_accept_enter, encode_zc_ack_reqnameall, encode_zc_aid, encode_zc_change_direction,
+    encode_zc_inventory_expansion_info, encode_zc_notify_act, encode_zc_notify_moveentry11,
+    encode_zc_notify_newentry11, encode_zc_notify_playermove, encode_zc_notify_standentry11,
+    encode_zc_notify_time, encode_zc_notify_vanish, encode_zc_npcack_mapmove,
+    encode_zc_par_change_i32, encode_zc_restart_ack, encode_zc_stopmove,
 };
+
+/// `ZC_NOTIFY_ACT` types for sit down / stand up (`e_damage_type`).
+const ACT_SIT_DOWN: u8 = 2;
+const ACT_STAND_UP: u8 = 3;
 
 /// Default event encoder connecting domain `ServerEvent` variants to Phase 0 packet serializers.
 #[derive(Debug, Default, Clone, Copy)]
@@ -132,37 +138,59 @@ impl EventEncoder for ModernEventEncoder {
             ServerEvent::TimeSynchronized { server_tick } => {
                 Ok(encode_zc_notify_time(*server_tick))
             }
-            // Transitional (M1): real encoders for every new unit event land in M3.
-            ServerEvent::UnitSpawned { unit } => {
-                let params = NewEntryParams {
-                    gid: unit.gid,
-                    speed: unit.speed as i16,
-                    body_state: 0,
-                    health_state: 0,
-                    effect_state: 0,
-                    job: unit.job as i16,
-                    head: unit.hair_style as i16,
-                    weapon: 0,
-                    accessory: 0,
-                    shield: 0,
-                    accessory2: 0,
-                    accessory3: 0,
-                    headpalette: unit.hair_color as i16,
-                    bodypalette: 0,
-                    head_dir: unit.head_dir as i16,
-                    guid: 0,
-                    gemblem_ver: 0,
-                    honor: 0,
-                    virtue: 0,
-                    is_pkmode_on: 0,
-                    sex: unit.sex,
-                    pos: unit.pos,
-                    x_size: 5,
-                    y_size: 5,
-                    clevel: unit.clevel as i16,
-                };
-                Ok(encode_zc_notify_newentry(&params))
+            ServerEvent::PlayerMoved {
+                start,
+                dest,
+                move_start_tick,
+            } => Ok(encode_zc_notify_playermove(
+                start.0,
+                start.1,
+                dest.0,
+                dest.1,
+                *move_start_tick,
+            )),
+            ServerEvent::UnitWalking {
+                unit,
+                start,
+                dest,
+                move_start_tick,
+            } => Ok(encode_zc_notify_moveentry11(
+                unit,
+                *start,
+                *dest,
+                *move_start_tick,
+            )),
+            ServerEvent::UnitStanding { unit } => Ok(encode_zc_notify_standentry11(unit)),
+            ServerEvent::UnitSpawned { unit } => Ok(encode_zc_notify_newentry11(unit)),
+            ServerEvent::UnitVanished { gid, vanish_type } => {
+                Ok(encode_zc_notify_vanish(*gid, *vanish_type))
             }
+            ServerEvent::UnitStopped { gid, x, y } => Ok(encode_zc_stopmove(*gid, *x, *y)),
+            ServerEvent::DirectionChanged {
+                gid,
+                head_dir,
+                body_dir,
+            } => Ok(encode_zc_change_direction(*gid, *head_dir, *body_dir)),
+            ServerEvent::AckEntityName {
+                gid,
+                name,
+                party_name,
+                guild_name,
+                position_name,
+                title_id,
+            } => Ok(encode_zc_ack_reqnameall(
+                *gid,
+                name,
+                party_name,
+                guild_name,
+                position_name,
+                *title_id,
+            )),
+            ServerEvent::PlayerMapMove {
+                dest_map,
+                dest_x,
+                dest_y,
+            } => Ok(encode_zc_npcack_mapmove(dest_map, *dest_x, *dest_y)),
             ServerEvent::ParameterChanged { var_id, value } => {
                 Ok(encode_zc_par_change_i32(*var_id, *value))
             }
@@ -173,17 +201,32 @@ impl EventEncoder for ModernEventEncoder {
                 action_tick,
             } => {
                 if *action_type <= 8 {
-                    Ok(encode_zc_notify_act(
-                        *source_id,
-                        *target_id,
-                        *action_tick,
-                        0,
-                        0,
-                        0,
-                        1,
-                        *action_type,
-                        0,
-                    ))
+                    if matches!(*action_type, ACT_SIT_DOWN | ACT_STAND_UP) {
+                        // rAthena zero-initializes sit/stand and sets only src and type.
+                        Ok(encode_zc_notify_act(
+                            *source_id,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            *action_type,
+                            0,
+                        ))
+                    } else {
+                        Ok(encode_zc_notify_act(
+                            *source_id,
+                            *target_id,
+                            *action_tick,
+                            0,
+                            0,
+                            0,
+                            1,
+                            *action_type,
+                            0,
+                        ))
+                    }
                 } else {
                     Err(PacketCodecError::UnsupportedEvent(format!(
                         "Action type {action_type} is not implemented"
@@ -191,10 +234,6 @@ impl EventEncoder for ModernEventEncoder {
                 }
             }
             ServerEvent::RestartAck { result } => Ok(encode_zc_restart_ack(*result)),
-            #[allow(unreachable_patterns)]
-            unsupported => Err(PacketCodecError::UnsupportedEvent(format!(
-                "{unsupported:?}"
-            ))),
         }
     }
 }
@@ -226,6 +265,10 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
             | PacketOpcode::HC_BLOCK_CHARACTER
             | PacketOpcode::HC_SECOND_PASSWD_LOGIN
             | PacketOpcode::ZC_NOTIFY_MOVEENTRY11
+            | PacketOpcode::ZC_STOPMOVE
+            | PacketOpcode::ZC_CHANGE_DIRECTION
+            | PacketOpcode::ZC_ACK_REQNAMEALL
+            | PacketOpcode::ZC_NPCACK_MAPMOVE
             | PacketOpcode::ZC_NOTIFY_NEWENTRY11
             | PacketOpcode::ZC_NOTIFY_STANDENTRY11
             | PacketOpcode::AC_ACCEPT_LOGIN
@@ -610,7 +653,7 @@ mod tests {
             PacketOpcode::CA_LOGIN,
             PacketOpcode::CZ_ENTER,
             PacketOpcode::CZ_REQUEST_MOVE,
-            PacketOpcode(0x0091),
+            PacketOpcode::ZC_ACK_REQNAME_BYGID,
             PacketOpcode(0x1234),
         ];
 
