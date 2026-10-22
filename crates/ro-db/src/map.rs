@@ -7,7 +7,7 @@
 use std::path::Path;
 use std::sync::Arc;
 
-use ro_core::{CellType, MapDataError, MapWalkability};
+use crate::{CellType, MapDataError, MapWalkability};
 
 /// rAthena reads sizes at fixed offsets and never checks the magic; we check the `GRAT` tag
 /// but accept any version bytes (offsets 4..6, `\x01\x02` in shipped maps).

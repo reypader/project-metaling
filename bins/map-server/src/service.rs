@@ -14,8 +14,9 @@ use ro_core::{
     character::{CharacterRepository, CharacterSpawn},
     ids::{AccountId, CharId, CharacterSummary, MapPosition, SessionId},
     message::{BroadcastScope, ClientIntent, ScopedServerEvent, ServerEvent, SessionIntent},
-    EngineError, MapEngine, MapWalkability, TARGET_PACKETVER,
+    EngineError, MapEngine, TARGET_PACKETVER,
 };
+use ro_db::MapWalkability;
 use ro_db::{GatMapGrid, MemoryMapGrid};
 use ro_engine::MapInstance;
 use ro_packets::EventEncoder;
@@ -101,7 +102,7 @@ impl MapWalkability for EmptyMap {
     fn is_walkable(&self, _x: u16, _y: u16) -> bool {
         false
     }
-    fn cell_type(&self, _x: u16, _y: u16) -> Option<ro_core::CellType> {
+    fn cell_type(&self, _x: u16, _y: u16) -> Option<ro_db::CellType> {
         None
     }
 }

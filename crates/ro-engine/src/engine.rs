@@ -9,8 +9,9 @@ use std::sync::Arc;
 
 use ro_core::{
     BroadcastScope, CharId, CharacterSpawn, ClientIntent, EngineError, MapEngine, MapPosition,
-    MapWalkability, ScopedServerEvent, ServerEvent, SessionIntent, UnitAppearance,
+    ScopedServerEvent, ServerEvent, SessionIntent, UnitAppearance,
 };
+use ro_db::MapWalkability;
 use smallvec::SmallVec;
 use tracing::debug;
 

@@ -1,4 +1,4 @@
-//! Map collision, walkability abstractions, and cell types.
+//! `.gat` cell types, the walkability trait the engine reads, and static-data load errors.
 
 use serde::{Deserialize, Serialize};
 

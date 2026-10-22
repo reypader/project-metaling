@@ -9,7 +9,7 @@
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 
-use ro_core::MapWalkability;
+use ro_db::MapWalkability;
 use smallvec::SmallVec;
 
 /// rAthena `MAX_WALKPATH`.
@@ -243,8 +243,8 @@ impl AStarScratchBuffer {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ro_core::{CellType, MapWalkability};
     use ro_db::MemoryMapGrid;
+    use ro_db::{CellType, MapWalkability};
 
     fn grid(w: u16, h: u16, walls: &[(u16, u16)]) -> MemoryMapGrid {
         let mut g = MemoryMapGrid::all_walkable(w, h).expect("valid dims");

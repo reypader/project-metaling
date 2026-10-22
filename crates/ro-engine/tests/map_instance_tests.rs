@@ -5,11 +5,11 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 
 use ro_core::{
-    AccountId, BroadcastScope, CellType, CharId, CharacterSpawn, ClientIntent, EngineError,
-    MapEngine, MapPosition, MapWalkability, ScopedServerEvent, ServerEvent, SessionId,
-    SessionIntent, Sex,
+    AccountId, BroadcastScope, CharId, CharacterSpawn, ClientIntent, EngineError, MapEngine,
+    MapPosition, ScopedServerEvent, ServerEvent, SessionId, SessionIntent, Sex,
 };
 use ro_db::MemoryMapGrid;
+use ro_db::{CellType, MapWalkability};
 use ro_engine::MapInstance;
 
 const MAP: &str = "prontera.gat";

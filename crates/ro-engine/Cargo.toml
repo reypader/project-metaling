@@ -5,6 +5,7 @@ edition.workspace = true
 
 [dependencies]
 ro-core.workspace = true
+ro-db.workspace = true
 bytes.workspace = true
 serde.workspace = true
 thiserror.workspace = true
@@ -16,6 +17,3 @@ async-trait.workspace = true
 
 [lints]
 workspace = true
-
-[dev-dependencies]
-ro-db.workspace = true

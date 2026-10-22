@@ -15,11 +15,12 @@ use tokio_util::codec::Decoder;
 
 use map_server::{handle_client_session, MapServiceHandle, WalkabilityLoader};
 use ro_core::{
-    AccountId, CancelDeleteOutcome, CellType, CharId, CharacterRepository, CharacterSummary,
+    AccountId, CancelDeleteOutcome, CharId, CharacterRepository, CharacterSummary,
     CreateCharacterError, CreateCharacterRequest, DeleteReserveOutcome, MapPosition,
-    MapWalkability, RepositoryError, Sex, TARGET_PACKETVER,
+    RepositoryError, Sex, TARGET_PACKETVER,
 };
 use ro_db::MemoryMapGrid;
+use ro_db::{CellType, MapWalkability};
 use ro_packets::{pack_pos_dir, unpack_pos2, PacketDecoder, RathenaPacketLengthTable};
 use ro_packets::{PacketOpcode, RawPacket};
 
