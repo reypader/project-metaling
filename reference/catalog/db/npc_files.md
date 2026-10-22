@@ -51,6 +51,7 @@ Location `w1`: `<map>,<x>,<y>,<dir>` or `-` for floating (only scripts, shops, d
 | mapflag | `mapflag` | `map` (coordinates optional) | flag name | `on|off` or flag argument |
 
 - `warp2` differs only by `trigger_on_hidden = true` (can be triggered while hidden); `warp` has it false (`npc.cpp:3935-3940`). Both may carry a state suffix. Duplicates of a warp copy `trigger_on_hidden`.
+- State suffix parsing (`npc_parse_script` `npc.cpp:4480-4500`, warp `3958-3978`): runs when `strcasecmp("script", w2) < 0`, requires `w2[6]=='('` (no space before `(`) and `w2[last]==')'`, then compares the inner text case-insensitively and EXACTLY (no inner trimming). Anything else warns and stays visible. A converter that lowercases and matches `(cloaked)` etc. is equivalent. Floating `-` scripts accept the suffix too (3 in the manifest, all `-1` sprite dummies); verified by scanning every file reachable from `npc/re/scripts_main.conf` (835 files), no odd spacing/casing exists.
 - State suffix: `script(CLOAKED)`, `script(HIDDEN)`, `script(DISABLED)`, `warp(DISABLED)`, `warp2(DISABLED)` set the initial NPC view state (cloak/hide/disable). Unknown state: warning, defaults to visible. Duplicates inherit the source's state; duplicate headers do not take their own suffix.
 - `duplicate(<src>)`: the sprite token is NOT optional for positioned script/shop duplicates (it is read from `w4`; floating ones ignore it but data still writes `-1` or a number). For warp duplicates `w4` is only `xs,ys`. Source must already be registered: lookup is `npc_name2id(src)` over the unique name (exname) table, global across all files loaded so far, case-sensitive; missing source logs an error and skips the line. Source name length limit 127, `src` taken between `duplicate(` and the final `)`. A duplicate of a duplicate works (resolves to the root `src_id`).
 - `trader`/`barter` are not text keywords. The non-NPC headers a converter must recognise-and-skip are `function`, `monster`, `boss_monster` and `mapflag`. `setcell`, `unloadnpc` etc. are script commands inside bodies, not header keywords.
@@ -82,7 +83,7 @@ Manifest resolves to 835 files (all exist; 0 missing; 3 use CRLF line endings; 0
 | :--- | ---: | ---: |
 | warp (incl. `(DISABLED)`) | 3876 | n/a |
 | warp2 (incl. `(DISABLED)`) | 229 | n/a |
-| script (incl. 163 `(CLOAKED)`, 128 `(DISABLED)`, 1 `(HIDDEN)`) | 8635 (2 have 5-field `w1`) | 584 |
+| script (incl. 162 positioned `(CLOAKED)`, 127 positioned `(DISABLED)`, 0 positioned `(HIDDEN)`; plus 3 floating `-` dummies, one per state, `npc/re/other/global_npcs.txt:15,19,23`) | 8635 (2 have 5-field `w1`) | 584 |
 | duplicate | 10377 | 121 |
 | shop | 270 | 32 |
 | marketshop | 0 | 45 |

@@ -295,10 +295,29 @@ m,5,5,0\tscript\tGuide#prt\t117,{{ }}\n"
     );
     assert_eq!(
         report.warnings.len(),
-        1,
-        "collision warns: {:?}",
+        2,
+        "truncation and collision warn: {:?}",
         report.warnings
     );
+    assert!(
+        report.warnings[0].contains("truncated"),
+        "{:?}",
+        report.warnings
+    );
+    assert!(
+        report.warnings[1].contains("taken"),
+        "{:?}",
+        report.warnings
+    );
+}
+
+#[test]
+fn tool_npc_04_rejected_npc_is_not_a_duplicate_source() {
+    let (maps, report) =
+        convert(b"m,-1,5\twarp\tbadwarp\t1,1,g,1,1\nm,2,2,0\tduplicate(badwarp)\tcopy\t1,1\n");
+    assert!(maps.is_empty());
+    assert_eq!(report.skipped.get("negative coordinates"), Some(&1));
+    assert_eq!(report.skipped.get("duplicate of unknown source"), Some(&1));
 }
 
 // ---------- TOOL-NPC-05: sprites ----------

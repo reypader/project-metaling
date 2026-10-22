@@ -220,25 +220,38 @@ impl Importer {
         duplicate_of: Option<String>,
         label: &str,
     ) {
-        let (name, unique) = header::parse_name(&rec.w3);
+        let parsed = header::parse_name(&rec.w3);
+        if parsed.truncated {
+            self.report.warnings.push(format!(
+                "{at}: name longer than {} bytes truncated",
+                header::NPC_NAME_LENGTH
+            ));
+        }
         let loc = match &place {
             Place::Map(loc) => Some(loc),
             Place::Floating => None,
         };
-        let unique = self.unique_name(unique, loc, at);
+        // rAthena rejects out-of-map coordinates before registering the NPC, so a later
+        // duplicate can't name it.
+        let cell = match loc.map(|l| (u16::try_from(l.x), u16::try_from(l.y))) {
+            Some((Ok(x), Ok(y))) => Some((x, y)),
+            Some(_) => {
+                Report::count(&mut self.report.skipped, "negative coordinates");
+                self.report
+                    .warnings
+                    .push(format!("{at}: negative coordinates"));
+                return;
+            }
+            None => None,
+        };
+        let unique = self.unique_name(parsed.unique, loc, at);
         self.by_unique.insert(unique.clone(), source.clone());
 
-        let Some(loc) = loc else {
+        let (Some(loc), Some((x, y))) = (loc, cell) else {
             Report::count(&mut self.report.skipped, "floating");
             return;
         };
-        let (Ok(x), Ok(y)) = (u16::try_from(loc.x), u16::try_from(loc.y)) else {
-            Report::count(&mut self.report.skipped, "negative coordinates");
-            self.report
-                .warnings
-                .push(format!("{at}: negative coordinates {},{}", loc.x, loc.y));
-            return;
-        };
+        let name = parsed.display;
         // Floating NPCs never resolve their sprite (rAthena forces FAKENPC), so only here.
         let sprite = match sprite {
             SpriteSpec::Warp => WARPNPC_SPRITE,

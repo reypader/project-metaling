@@ -15,9 +15,9 @@ Spec: `specs/npc-spawning/spec.md`. M0 (research, catalog, spec) is done.
 ## Milestones
 Write tests first and name them with spec IDs. Iterate with `./verify.sh -p <crate>`.
 
-- [ ] **M1 ro-db**: `npc.rs` (types with Serialize + Deserialize, `MapNpcs::load_yaml`, `from_yaml_str`), `NpcDataError`, DB-NPC-01/02 tests, `DESIGN.md` §2.4/§3 update.
-- [ ] **M2 tools/npc-import**: TOOL-NPC-01..07 with `.txt` fixtures. Then generate the data and add the licensing files, README, root LICENSE, Cargo `exclude` and the CLAUDE.md rule. Add the DB-NPC-03 test. The data commit is separate from the code commit.
-- [ ] **M3 ro-core + ro-packets**: `ObjectType` and `effect_state` on `UnitAppearance`, `name: Arc<str>`, the NPC name event plus `0x0adf` encoder/opcode/table. PKT-NPC-01/02.
-- [ ] **M4 ro-engine**: `EntityKind::Npc`, `NpcInfo`, `WarpTrigger`, `spawn_npcs`, and kind dispatch in `gid`/`appearance`/`name_request`. ENG-NPC-01..05.
-- [ ] **M5 map-server**: `npc_data_dir` config, `MapDataLoader`, `run_metaling_servers.sh`. BIN-NPC-01.
-- [ ] **Finish**: `reviewer` over the full diff, `DEFERRED.md` (spec §4), `./verify.sh --smoke`.
+- [x] **M1 ro-db**: `npc.rs` (types with Serialize + Deserialize, `MapNpcs::load_yaml`, `from_yaml_str`; errors reuse `DbLoadError`), DB-NPC-01/02 tests, `DESIGN.md` §2.4/§3 update.
+- [x] **M2 tools/npc-import**: TOOL-NPC-01..07 with `.txt` fixtures. Then generate the data and add the licensing files, README, root LICENSE, Cargo `exclude` and the CLAUDE.md rule. Add the DB-NPC-03 test. The data commit is separate from the code commit.
+- [x] **M3 ro-core + ro-packets**: `ObjectType` and `effect_state` on `UnitAppearance`, `name: Arc<str>`, the NPC name event plus `0x0adf` encoder/opcode/table. PKT-NPC-01/02.
+- [x] **M4 ro-engine**: `EntityKind::Npc`, `NpcInfo`, `WarpTrigger`, `spawn_npcs`, and kind dispatch in `gid`/`appearance`/`name_request`. ENG-NPC-01..05.
+- [x] **M5 map-server**: `npc_data_dir` config, `MapDataLoader`, `run_metaling_servers.sh`. BIN-NPC-01.
+- [x] **Finish**: `reviewer` over the full diff, `DEFERRED.md` (spec §4), `./verify.sh --smoke`.

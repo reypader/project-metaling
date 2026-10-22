@@ -67,7 +67,7 @@ A valid file loads into `MapNpcs`. Every field round-trips: `MapNpcs` â†’ YAML â
 
 ### DB-NPC-02: Reject bad files
 A wrong `Header.Type`, an unsupported `Version`, a missing required field, `Kind: Warp` without `Warp`,
-or a YAML syntax error each give an `NpcDataError` naming the path. YAML errors also give the line.
+or a YAML syntax error each give a `DbLoadError` naming the path. YAML errors also give the line.
 A missing file is `Ok(None)`, meaning the map has no NPCs.
 
 ### DB-NPC-03: Shipped data loads
@@ -152,7 +152,9 @@ A player who walks so an NPC enters view gets `UnitStanding` for it. When it lea
 `CZ_REQNAME` on a visible NPC within `AREA_SIZE` replies to the requester only with the NPC name event (`0x0adf`). Out of range, or an unknown gid, gets no reply.
 
 ### ENG-NPC-05: Warp data kept
-A `Kind: Warp` entity carries `WarpTrigger { half_extents, dest_map, dest_x, dest_y, trigger_while_hidden }`, readable through a crate-internal accessor. Nothing uses it yet; map change will.
+- A `Kind: Warp` entity with a `Trigger` carries `WarpTrigger { half_extents, dest }`. A warp without one gets no trigger, as rAthena's `npc_setcells` skips negative spans.
+- `NpcInfo.state` keeps `Disabled`/`Cloaked` for the trigger check.
+- Both are crate-internal. Nothing uses them yet; map change will.
 
 ### BIN-NPC-01: Loaded per map
 - With `NPC_DATA_DIR` (`--npc-data-dir`) set, a world that starts for `<map>.gat` loads `<dir>/<map>.yml`, and a player entering sees its NPCs.

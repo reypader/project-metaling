@@ -23,6 +23,21 @@ Checked in `clif_spawn` (L1680-1692), `clif_getareachar_unit` (L5029-5050); NPC 
 | Dynamic NPC owned by another char (`npc_is_hidden_dynamicnpc`) | not used by us | only `getareachar_unit` |
 | `hide_cloaked_units` battle conf | default `0` (`conf/battle/client.conf:177`) | if non-zero for BL_NPC, option HIDE/CLOAK/INVISIBLE NPCs are skipped |
 
+**`status_set_viewdata(nd, class_)` for BL_NPC** (`status.cpp:9379-9390`, case at ~9477-9495). `vd` is chosen by the first match of: `mobdb_checkid` (or clone) -> mob vd; `npcdb_checkid` -> NPC vd; `homdb_checkid` -> homunculus vd; `mercenary_db.exists`; `elemental_db.exists`; else null. For BL_NPC: non-null `vd` is `memcpy`'d into `nd->vd`; else `pcdb_checkid` -> fresh vd with `look[LOOK_BASE]=look[LOOK_BODY2]=class_`; else `ShowError("Invalid view data")` and `nd->vd` stays `JT_INVISIBLE` (never sent). Result by class id:
+
+| Class id | Branch | `look[LOOK_BASE]` | Sent? |
+| :--- | :--- | :--- | :--- |
+| 45-125, 139, 401-999, 10001-19999 (`npcdb_checkid`, `npc.hpp:1595`) | npc vd (`npc_get_viewdata`, `npc.cpp:899`) | id | yes |
+| 32767 | npc vd[0] | 32767 | no |
+| existing `mob_db` id (non-clone), e.g. 1001+ | mob vd | mob id (or its Sprite override) | yes; `clif_bl_type` 0xC (`mobdb_checkid`) |
+| PC job ids (`pcdb_checkid`, `pc.hpp:1219`) not shadowed by a mob/NPC/hom/merc/elem id | PC fallback | id | yes; `clif_bl_type` 0x0 if not walking |
+| 6001-6052 (`HM_CLASS_BASE..HM_CLASS_MAX`, `mmo.hpp:187-189`) | hom vd (`hom_viewdb[i].look[LOOK_BASE]=6001+i`, `homunculus.cpp:2056-2058`) | id | yes; `clif_bl_type` 0x6 |
+| ids in `mercenary_db` (2114.. to 3570 in `db/re/mercenary_db.yml`) | merc vd (but mob_db checked first) | db Sprite | yes if not shadowed |
+| ids in `elemental_db` | elemental vd | db Sprite | yes |
+| `-1` (`JT_FAKENPC`), 0-44 non-PC, 126-138, 140-399, 1000 gaps, 20000+ unknown | none | stays 32767 | no (error logged) |
+
+Example: `Jonathan#homun_s` (`npc/re/quests/homun_s.txt:1334`, sprite 6002) is sent: `homdb_checkid(6002)` true, `mob_db` has no 6002, so `nd->vd.look[LOOK_BASE]=6002`, other looks 0; `clif_bl_type` = `0x6` (not PC, `mobdb_checkid` false, `clif.cpp:364-374`); `0x09ff` with `job=6002` (`clif.cpp:1051-1063`, non-PC path). Client rendering of a homunculus sprite on an NPC is not captured. Our `Sprite: 6002` should be forwarded as-is.
+
 **Sent even though the client draws nothing:** sprite `111` (`JT_HIDDEN_NPC`), `139` (`JT_HIDDEN_WARP_NPC`, `npc.hpp:333`) and warp class `45` (`JT_WARPNPC`, `npc.hpp:250`). The server sends a normal `0x09ff` with that `job`; invisibility is a client sprite property. `139` is a script-NPC sprite for invisible OnTouch triggers (e.g. `// ecl_in01,47,92,0 script #ecl_buff_N HIDDEN_WARP_NPC`), not a warp type.
 
 **State keywords** (`warp(HIDDEN)`, `script(HIDDEN)` etc., `npc.cpp:3963-3978,4506-4520`; enum `npc.hpp:146-155`): `HIDDEN` -> `sc.option |= OPTION_HIDE (0x2)`, still in the block grid and still sent in `0x09ff` with `effect_state = 0x2` when a player later sees it (nothing filters OPTION_HIDE in `getareachar_unit` at default config); `CLOAKED` -> `OPTION_CLOAK (0x4)`, same, with a per-player xor; `DISABLED` -> `is_invisible = true` (never sent, trigger and click disabled). Applied after `map_addblock`, via `npc_enable_target` (`npc.cpp:1030-1110`).

@@ -231,17 +231,30 @@ pub fn sprite_token(w4: &str) -> &str {
     &w4[..end]
 }
 
-/// `(display, unique)` from `w3`: split at the first `::`; without it both are the full
-/// string. Each is cut to `NPC_NAME_LENGTH` bytes (on a char boundary). The unique name is
-/// `None` when rAthena would generate one (empty, or still containing `::`).
-pub fn parse_name(w3: &str) -> (String, Option<String>) {
+/// An NPC name split into its parts.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ParsedName {
+    pub display: String,
+    /// `None` when rAthena would generate one (empty, or still containing `::`).
+    pub unique: Option<String>,
+    /// A part was longer than `NPC_NAME_LENGTH` and was cut (rAthena warns).
+    pub truncated: bool,
+}
+
+/// Splits `w3` at the first `::`; without it both parts are the full string. Each is cut to
+/// `NPC_NAME_LENGTH` bytes (on a char boundary).
+pub fn parse_name(w3: &str) -> ParsedName {
     let (display, unique) = match w3.split_once("::") {
         Some((d, u)) => (d, u),
         None => (w3, w3),
     };
+    let truncated = display.len() > NPC_NAME_LENGTH || unique.len() > NPC_NAME_LENGTH;
     let unique = truncate(unique);
-    let unique = (!unique.is_empty() && !unique.contains("::")).then_some(unique);
-    (truncate(display), unique)
+    ParsedName {
+        display: truncate(display),
+        unique: (!unique.is_empty() && !unique.contains("::")).then_some(unique),
+        truncated,
+    }
 }
 
 fn truncate(s: &str) -> String {

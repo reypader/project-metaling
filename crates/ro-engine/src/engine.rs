@@ -594,6 +594,10 @@ impl MapInstance {
                     vanish_type: VANISH_OUT_OF_SIGHT,
                 },
             );
+            // NPCs see nothing; skip building events for them.
+            if !self.world.players.contains(other) {
+                continue;
+            }
             self.emit_self(
                 other,
                 ServerEvent::UnitVanished {
@@ -607,6 +611,9 @@ impl MapInstance {
             let other = self.entered[k];
             if let Some(event) = self.entry_event(other, tick) {
                 self.emit_self(e, event);
+            }
+            if !self.world.players.contains(other) {
+                continue;
             }
             let about_mover = if finished {
                 self.appearance(e)
@@ -709,12 +716,13 @@ impl MapInstance {
             NpcState::Cloaked => OPTION_CLOAK,
             NpcState::Normal | NpcState::Disabled => 0,
         };
-        let warp = match &npc.kind {
-            NpcKind::Warp(dest) => Some(WarpTrigger {
-                half_extents: npc.trigger.unwrap_or((0, 0)),
+        // A warp without a (non-negative) span has no touch area, like rAthena's `npc_setcells`.
+        let warp = match (&npc.kind, npc.trigger) {
+            (NpcKind::Warp(dest), Some(half_extents)) => Some(WarpTrigger {
+                half_extents,
                 dest: dest.clone(),
             }),
-            NpcKind::Script | NpcKind::Shop => None,
+            _ => None,
         };
         let info = NpcInfo {
             gid,
@@ -723,6 +731,7 @@ impl MapInstance {
             // -1 is never sent, so its wire value doesn't matter.
             sprite: u16::try_from(npc.sprite).unwrap_or(0),
             effect_state,
+            state: npc.state,
         };
         let pos = MapPosition {
             x: npc.x,
@@ -866,5 +875,52 @@ mod npc_tests {
             })
         );
         assert_eq!(engine.world.kinds[e.index()], crate::world::EntityKind::Npc);
+    }
+
+    /// Disabled warps keep their state for the trigger check; a warp without a span gets no
+    /// trigger at all.
+    #[test]
+    fn eng_npc_05_disabled_and_spanless_warps() {
+        let grid = Arc::new(MapGrid::all_walkable(50, 50).expect("valid dims"));
+        let mut engine = MapInstance::new("prontera.gat", grid);
+        let warp = |name: &str, state, trigger| NpcSpawn {
+            name: name.into(),
+            unique_name: name.into(),
+            x: 5,
+            y: 5,
+            dir: 0,
+            sprite: 45,
+            sprite_is_mob: false,
+            state,
+            trigger,
+            duplicate_of: None,
+            kind: NpcKind::Warp(WarpDest {
+                map: "geffen".into(),
+                x: 1,
+                y: 1,
+                trigger_while_hidden: false,
+            }),
+            source: "t:1".into(),
+        };
+        let npcs = vec![
+            warp("off", NpcState::Disabled, Some((1, 1))),
+            warp("nospan", NpcState::Normal, None),
+        ];
+        assert_eq!(engine.spawn_npcs(&MapNpcs { npcs }), 2);
+        let off = engine
+            .world
+            .entity_by_gid(START_NPC_ID)
+            .expect("disabled warp");
+        assert_eq!(
+            engine.world.npcs.get(off).map(|n| n.state),
+            Some(NpcState::Disabled)
+        );
+        assert!(engine.world.warps.contains(off));
+        assert!(!engine.world.in_grid[off.index()], "disabled is never sent");
+        let nospan = engine
+            .world
+            .entity_by_gid(START_NPC_ID + 1)
+            .expect("spanless warp");
+        assert!(!engine.world.warps.contains(nospan));
     }
 }

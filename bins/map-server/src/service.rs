@@ -397,8 +397,17 @@ impl MapServiceHandle {
         if let Some(tx) = self.existing_world(map_name) {
             return tx;
         }
-        // Read the map files before taking the write lock so other sessions aren't blocked on it.
+        // Read the map files and build the world (NPC spawns included) before taking the write
+        // lock so other sessions aren't blocked on it. A racing spawn of the same map wins and
+        // this one is dropped.
         let data = (self.loader)(map_name);
+        let world_actor = MapWorldActor::new(
+            map_name.to_string(),
+            Arc::clone(&self.char_repo),
+            data,
+            Arc::clone(&self.shared),
+            self.start_time,
+        );
 
         let mut worlds = match self.worlds.write() {
             Ok(guard) => guard,
@@ -412,13 +421,6 @@ impl MapServiceHandle {
         }
 
         let (tx, rx) = mpsc::channel(256);
-        let world_actor = MapWorldActor::new(
-            map_name.to_string(),
-            Arc::clone(&self.char_repo),
-            data,
-            Arc::clone(&self.shared),
-            self.start_time,
-        );
         tokio::spawn(async move {
             world_actor.run(rx).await;
         });

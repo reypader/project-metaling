@@ -3,7 +3,7 @@
 use std::sync::Arc;
 
 use ro_core::{AccountId, CharId, CharacterSpawn, MapPosition, Sex, UnitObjectType};
-use ro_db::WarpDest;
+use ro_db::{NpcState, WarpDest};
 use rustc_hash::FxHashMap;
 
 use crate::entity::{Entity, EntityAllocator};
@@ -43,6 +43,9 @@ pub(crate) struct NpcInfo {
     pub(crate) sprite: u16,
     /// `effect_state` (`sc.option`): hidden/cloaked NPCs.
     pub(crate) effect_state: i32,
+    /// Initial state. Warp map change must skip `Disabled` and `Cloaked` warps
+    /// (rAthena `npc_touch_areanpc`).
+    pub(crate) state: NpcState,
 }
 
 /// A warp's touch area and destination (used by warp map change).

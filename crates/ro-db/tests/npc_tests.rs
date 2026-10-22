@@ -208,14 +208,11 @@ fn shipped_dir() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("data/npc")
 }
 
-/// DB-NPC-03: every committed file loads and carries the license header. Vacuous until the
-/// importer output is committed.
+/// DB-NPC-03: every committed file loads and carries the license header.
 #[test]
 fn db_npc_03_shipped_data_loads() {
     let dir = shipped_dir();
-    let Ok(entries) = std::fs::read_dir(&dir) else {
-        return;
-    };
+    let entries = std::fs::read_dir(&dir).expect("crates/ro-db/data/npc is committed");
     let mut files = 0;
     for entry in entries {
         let path = entry.expect("dir entry").path();
@@ -237,11 +234,13 @@ fn db_npc_03_shipped_data_loads() {
         MapNpcs::from_yaml_str(&path.display().to_string(), &text)
             .unwrap_or_else(|e| panic!("{e}"));
     }
-    if files > 0 {
-        assert!(dir.join("LICENSE").is_file(), "data/npc/LICENSE missing");
-        assert!(
-            dir.join("NOTICE.md").is_file(),
-            "data/npc/NOTICE.md missing"
-        );
-    }
+    assert!(
+        files > 800,
+        "expected the full rAthena import, found {files} files"
+    );
+    assert!(dir.join("LICENSE").is_file(), "data/npc/LICENSE missing");
+    assert!(
+        dir.join("NOTICE.md").is_file(),
+        "data/npc/NOTICE.md missing"
+    );
 }
