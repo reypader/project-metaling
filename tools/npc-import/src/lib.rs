@@ -52,12 +52,12 @@ pub fn render_map_file(npcs: &MapNpcs, rathena_commit: &str) -> anyhow::Result<S
         "# SPDX-License-Identifier: GPL-3.0-only\n\
          # Derived from rAthena (https://github.com/rathena/rathena) commit {rathena_commit}, files under npc/.\n\
          # Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.\n\
-         # See LICENSE and NOTICE.md in this directory.\n{yaml}"
+         # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.\n{yaml}"
     ))
 }
 
-/// Replaces every `*.yml` in `out_dir` with one file per map. Other files (LICENSE, NOTICE.md)
-/// are kept. Returns the number of files written.
+/// Replaces every `*.yml` in `out_dir` with one file per map; other files are kept. Returns the
+/// number of files written.
 pub fn write_output(
     out_dir: &Path,
     maps: &BTreeMap<String, MapNpcs>,

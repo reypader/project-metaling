@@ -227,7 +227,7 @@ fn db_npc_03_shipped_data_loads() {
             path.display()
         );
         assert!(
-            text.contains("rAthena"),
+            text.contains("rAthena") && text.contains("crates/ro-db/data/NOTICE.md"),
             "{} lacks attribution",
             path.display()
         );
@@ -238,9 +238,11 @@ fn db_npc_03_shipped_data_loads() {
         files > 800,
         "expected the full rAthena import, found {files} files"
     );
-    assert!(dir.join("LICENSE").is_file(), "data/npc/LICENSE missing");
+    let data = dir.parent().expect("data dir");
+    assert!(data.join("LICENSE").is_file(), "data/LICENSE missing");
+    let notice = std::fs::read_to_string(data.join("NOTICE.md")).expect("data/NOTICE.md");
     assert!(
-        dir.join("NOTICE.md").is_file(),
-        "data/npc/NOTICE.md missing"
+        notice.contains("## NPC spawn lists"),
+        "NOTICE.md lacks the NPC dataset section"
     );
 }

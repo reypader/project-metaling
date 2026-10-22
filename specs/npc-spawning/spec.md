@@ -72,7 +72,7 @@ A missing file is `Ok(None)`, meaning the map has no NPCs.
 
 ### DB-NPC-03: Shipped data loads
 Every `crates/ro-db/data/npc/*.yml` loads without error and starts with the SPDX + attribution header.
-`LICENSE` and `NOTICE.md` exist in that directory.
+`crates/ro-db/data/LICENSE` exists, and `crates/ro-db/data/NOTICE.md` has an NPC section.
 
 ### TOOL-NPC-01: Manifest
 Follows `npc:`, `delnpc:` and `import:` (case-insensitive), plus `npc: clear` / `delnpc: all`, and strips `//` comments.
@@ -163,9 +163,9 @@ A player who walks so an NPC enters view gets `UnitStanding` for it. When it lea
 - An unset `NPC_DATA_DIR` logs one warning at startup and means no NPCs.
 
 ## 3. Licensing
-The repo is mixed-license. Code is MIT. `crates/ro-db/data/npc/` is a modified copy of rAthena data and stays GPL-3.0. That directory holds:
+The repo is mixed-license. Code is MIT. Everything under `crates/ro-db/data/` (here `npc/`) is a modified copy of rAthena data and stays GPL-3.0. `crates/ro-db/data/` holds, for all datasets:
 - the verbatim rAthena `LICENSE`;
-- `NOTICE.md`, giving the origin, commit, copyright and modification with its date.
+- `NOTICE.md`, with one section per dataset giving the origin, commit, copyright and modification with its date.
 
 Other licensing changes:
 - `crates/ro-db/Cargo.toml` excludes `data/` from packaging.

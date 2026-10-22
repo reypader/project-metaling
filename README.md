@@ -21,11 +21,11 @@ client version, `PACKETVER = 20260219`.
 This repository is **mixed-license**:
 
 - **Code and documentation:** MIT. See [`LICENSE`](./LICENSE).
-- **`crates/ro-db/data/npc/`:** GPL-3.0. This is NPC spawn data converted from rAthena. It
-  carries its own [`LICENSE`](./crates/ro-db/data/npc/LICENSE) and
-  [`NOTICE.md`](./crates/ro-db/data/npc/NOTICE.md), which describe the origin and the changes made.
-  The servers read these files from disk at runtime; they are not compiled into any binary or
-  crate package.
+- **`crates/ro-db/data/`:** GPL-3.0. This is game data derived from rAthena: NPC spawns today,
+  and later monsters, items, skills and scripts. It carries its own
+  [`LICENSE`](./crates/ro-db/data/LICENSE) and [`NOTICE.md`](./crates/ro-db/data/NOTICE.md),
+  which describe each dataset's origin and the changes made. The servers read these files from
+  disk at runtime; they are not compiled into any binary or crate package.
 
 No code is copied from the reference projects below. Metaling is written from our own notes in
 `reference/catalog/`.
@@ -34,7 +34,7 @@ No code is copied from the reference projects below. Metaling is written from ou
 
 - **[rAthena](https://github.com/rathena/rathena)** (GPL-3.0), by the rAthena Dev Teams and
   contributors. It is the reference implementation for protocol and game behavior, and the source
-  of the NPC data in `crates/ro-db/data/npc/`.
+  of the data in `crates/ro-db/data/`.
 - **[rust-ro](https://github.com/nmeylan/rust-ro)** (MIT), by Nicolas Meylan. It was a
   reference for a Rust take on the server.
 - **[rathena-script-lang-interpreter](https://github.com/nmeylan/rathena-script-lang-interpreter)**,

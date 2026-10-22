@@ -60,7 +60,7 @@ To keep `ro-engine`'s **Stage 1 (Present Status Establishment)** 100% pure and p
 rAthena defines warps, NPCs, shops, mob spawns and mapflags in tab-delimited `.txt` files reached from `npc/re/scripts_main.conf`. `ro-db` never parses that format at runtime:
 
 1. **Offline import (`tools/npc-import`, dev-only, MIT, clean-room):** resolves the manifest, skips `{...}` script bodies, parses the positioned `warp`/`warp2`/`script`/`duplicate(...)`/shop-family headers, resolves sprite names and duplicates, and writes one `NPC_SPAWN_DB` YAML file per map. Grammar: `reference/catalog/db/npc_files.md`; spec: `specs/npc-spawning/spec.md`.
-2. **Committed data (`crates/ro-db/data/npc/<map>.yml`):** GPL-3.0, a modified copy of rAthena data with its own `LICENSE` and `NOTICE.md`. Excluded from crate packaging.
+2. **Committed data (`crates/ro-db/data/npc/<map>.yml`):** GPL-3.0, a modified copy of rAthena data. `crates/ro-db/data/LICENSE` and `NOTICE.md` cover every dataset under `data/` (one section each). Excluded from crate packaging.
 3. **Runtime (`MapNpcs::load_yaml`):** serde (`serde-saphyr`) into `NpcSpawn`s when a map world starts. A missing file means the map has no NPCs.
 
 Script bodies are not imported; each entry records `Source: <file>:<line>` for the scripting phase. Mob spawns, mapflags, floating NPCs and shop catalogs are future work (same importer, new YAML types).

@@ -37,7 +37,26 @@ Use `./verify.sh` instead of raw `cargo test`/`clippy`/`fmt`, which produce much
 
 Located via env vars only: `RATHENA_PATH`, `RUSTRO_PATH`, `RATHENA_SCRIPT_INTERPRETER_PATH`. If one is unset, ask the user. `reference/` holds only our own `catalog/`.
 
-**Licensing:** the repo is MIT except `crates/ro-db/data/`, which holds GPL-3.0 data converted from rAthena (each data dir has `LICENSE` + `NOTICE.md`; regenerate with the matching tool, e.g. `tools/npc-import`). Never copy code from the reference repos (rAthena is GPL, the script interpreter is unlicensed); write from `reference/catalog/` notes.
+## Licensing (MIT code, GPL-3.0 data)
+
+The repo is MIT except `crates/ro-db/data/`, which holds GPL-3.0 data derived from rAthena. No other path may contain rAthena-derived content. See `README.md` and `crates/ro-db/data/NOTICE.md`.
+
+- **Copying data from rAthena** (db YAML, NPC/script files, constant tables, anything else): only via an import tool `tools/<dataset>-import`, writing under `crates/ro-db/data/<dataset>/`.
+  - Each generated file starts with `# SPDX-License-Identifier: GPL-3.0-only` and an attribution comment: rAthena URL, commit, source files, "Modified: … by `tools/<dataset>-import`", and a pointer to `crates/ro-db/data/NOTICE.md`.
+  - Add or update the dataset's section in `NOTICE.md`: source paths, commit, date, what changed, and the regenerate command.
+  - Never hand-edit generated files; regenerate them.
+  - Add an `ro-db` test that every committed file loads and has the header (like `db_npc_03_shipped_data_loads`).
+- **Keep it out of binaries and packages:**
+  - rAthena-derived data is read from disk at runtime, from a configured directory like `NPC_DATA_DIR`.
+  - Never pull it into `crates/` or `bins/` code through `include_str!`/`include_bytes!`, `build.rs` codegen, or generated `const` tables.
+  - `ro-db` keeps `exclude = ["data/"]`.
+  - Tests may read the committed files from disk. Test fixtures must be our own small hand-written samples.
+- **Code is clean-room:**
+  - Never copy or line-by-line translate code from rAthena (GPL) or rathena-script-lang-interpreter (no license). This covers `crates/`, `bins/` and `tools/` (importers included).
+  - Write from `reference/catalog/` notes. Facts are fine: opcodes, layouts, formulas, constant values. Code structure and comments are not.
+  - rust-ro is MIT: if you copy from it, keep its copyright notice in the file.
+- **Dependencies** in `crates/`, `bins/` and `tools/` must be MIT-compatible (no GPL/AGPL crates).
+- When a new reference repo or data source comes into use, credit it in the README's Acknowledgements.
 
 ## Rules
 

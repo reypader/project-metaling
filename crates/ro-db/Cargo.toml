@@ -2,7 +2,7 @@
 name = "ro-db"
 version.workspace = true
 edition.workspace = true
-# data/ holds GPL-3.0 rAthena-derived files (see data/npc/NOTICE.md); keep them out of
+# data/ holds GPL-3.0 rAthena-derived files (see data/NOTICE.md); keep them out of
 # the MIT crate package. They are read from disk at runtime, never compiled in.
 exclude = ["data/"]
 

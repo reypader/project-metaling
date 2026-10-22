@@ -19,7 +19,7 @@ MODE="run"
 TIMEOUT_SECONDS=15
 LOG_DIR="$WORKSPACE_ROOT/target/logs"
 export RUST_LOG="${RUST_LOG:-info}"
-# Committed NPC spawn lists (GPL-3.0 data, see crates/ro-db/data/npc/NOTICE.md).
+# Committed NPC spawn lists (GPL-3.0 data, see crates/ro-db/data/NOTICE.md).
 export NPC_DATA_DIR="${NPC_DATA_DIR:-$WORKSPACE_ROOT/crates/ro-db/data/npc}"
 
 LOGIN_PORT="${LOGIN_PORT:-6910}"
