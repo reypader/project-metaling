@@ -2,7 +2,7 @@
 //! Read-only at runtime.
 
 mod cell;
-pub mod map;
+mod map;
 
 pub use cell::{CellType, DbLoadError, MapDataError, MapWalkability};
 pub use map::{GatMapGrid, MemoryMapGrid};

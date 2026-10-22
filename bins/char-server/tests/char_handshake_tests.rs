@@ -14,10 +14,7 @@ use tokio::{
 use tokio_util::codec::Decoder;
 
 use char_server::{handle_client_session, CharServiceHandle};
-use ro_core::{
-    ids::{AccountId, Sex},
-    CreateCharacterRequest, TARGET_PACKETVER,
-};
+use ro_core::{AccountId, CreateCharacterRequest, Sex, TARGET_PACKETVER};
 use ro_packets::{PacketDecoder, PacketOpcode, RathenaPacketLengthTable};
 use ro_persistence::{CharacterRepository, PostgresRepo};
 

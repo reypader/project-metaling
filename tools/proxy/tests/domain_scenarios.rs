@@ -1,7 +1,7 @@
 #![allow(clippy::unwrap_used, clippy::expect_used)] // test helpers aren't covered by clippy.toml allow-*-in-tests
 
 use clap::Parser;
-use ro_core::http::ServerType;
+use ro_core::ServerType;
 use ro_proxy::{
     forwarder::run_proxy_server, logger::PacketDirection, PacketSequenceRecorder, ProxyArgs,
 };

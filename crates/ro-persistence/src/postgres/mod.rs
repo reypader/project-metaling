@@ -7,7 +7,7 @@ pub mod pool;
 pub use pool::PostgresRepo;
 
 use crate::RepositoryError;
-use ro_core::{account::AccountState, ids::Sex};
+use ro_core::{AccountState, Sex};
 use sqlx::decode::Decode;
 use sqlx::postgres::{PgRow, Postgres};
 use sqlx::types::Type;

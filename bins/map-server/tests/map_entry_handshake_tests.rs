@@ -32,10 +32,7 @@ async fn test_bin_map_persist_lifecycle_and_coordinates() {
     );
     let _ = repo.seed_test_data().await;
 
-    use ro_core::{
-        character::CreateCharacterRequest,
-        ids::{AccountId, MapPosition, Sex},
-    };
+    use ro_core::{AccountId, CreateCharacterRequest, MapPosition, Sex};
     use ro_persistence::CharacterRepository;
 
     let _ = sqlx::query("DELETE FROM characters WHERE account_id = $1 AND slot = $2")

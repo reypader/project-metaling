@@ -8,10 +8,7 @@ use sqlx::{query, Error as SqlxError, Transaction};
 
 use crate::RepositoryError;
 use crate::{CancelDeleteOutcome, CharacterRepository, CreateCharacterError, DeleteReserveOutcome};
-use ro_core::{
-    character::CreateCharacterRequest,
-    ids::{AccountId, CharId, CharacterSummary, MapPosition, Sex},
-};
+use ro_core::{AccountId, CharId, CharacterSummary, CreateCharacterRequest, MapPosition, Sex};
 
 use super::{get_col, map_sex, map_sqlx_error, sex_to_i16, PostgresRepo};
 

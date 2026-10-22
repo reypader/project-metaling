@@ -2,7 +2,7 @@
 
 use crate::{EventEncoder, PacketCodecError, PacketOpcode};
 use bytes::{BufMut, Bytes, BytesMut};
-use ro_core::message::ServerEvent;
+use ro_core::ServerEvent;
 
 use super::char::{
     encode_hc_accept_enter, encode_hc_accept_enter2, encode_hc_accept_makechar,
@@ -283,8 +283,7 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
 mod tests {
     use super::*;
     use ro_core::{
-        ids::{AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, Sex},
-        TARGET_PACKETVER,
+        AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, Sex, TARGET_PACKETVER,
     };
 
     #[test]

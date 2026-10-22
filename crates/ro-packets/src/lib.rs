@@ -4,12 +4,12 @@
 //! length table lookups, incoming packet decoders, and outgoing packet serializers
 //! for Ragnarok Online protocol version `TARGET_PACKETVER = 20260219`.
 
-pub mod codec;
-pub mod coords;
-pub mod incoming;
+mod codec;
+mod coords;
+mod incoming;
 mod opcode;
-pub mod outgoing;
-pub mod table;
+mod outgoing;
+mod table;
 mod wire;
 
 pub use codec::{PacketDecoder, PacketEncoder};

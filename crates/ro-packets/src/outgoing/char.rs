@@ -4,7 +4,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::{PacketCodecError, PacketOpcode};
 use bytes::{BufMut, Bytes, BytesMut};
-use ro_core::ids::{CharId, CharacterSummary};
+use ro_core::{CharId, CharacterSummary};
 
 use crate::outgoing::helpers::write_fixed_string;
 
@@ -257,10 +257,7 @@ mod tests {
     use super::*;
     use crate::outgoing::encoder::ModernEventEncoder;
     use crate::EventEncoder;
-    use ro_core::{
-        ids::{AccountId, MapPosition, Sex},
-        message::ServerEvent,
-    };
+    use ro_core::{AccountId, MapPosition, ServerEvent, Sex};
 
     #[test]
     fn test_encode_hc_notify_zonesvr() {

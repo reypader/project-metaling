@@ -1,6 +1,6 @@
 //! Coordinate bit-packing helpers for Ragnarok Online protocol.
 
-use ro_core::ids::MapPosition;
+use ro_core::MapPosition;
 
 /// Packs coordinate (x, y) and direction into 3 bytes.
 ///

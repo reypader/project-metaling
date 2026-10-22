@@ -10,10 +10,8 @@ use login_server::{
     validate_session, LoginService,
 };
 use ro_core::{
-    ids::{AccountId, Sex},
-    message::ServerEvent,
-    RegisterCharServerRequest, ServerHeartbeat, ServerStatus, ServerType, ValidateSessionRequest,
-    TARGET_PACKETVER,
+    AccountId, RegisterCharServerRequest, ServerEvent, ServerHeartbeat, ServerStatus, ServerType,
+    Sex, ValidateSessionRequest, TARGET_PACKETVER,
 };
 use ro_persistence::{AccountRepository, PostgresRepo};
 

@@ -6,10 +6,7 @@ use sqlx::query;
 
 use crate::RepositoryError;
 use crate::{AccountRepository, AuthError};
-use ro_core::{
-    account::{Account, AccountState},
-    ids::AccountId,
-};
+use ro_core::{Account, AccountId, AccountState};
 
 use super::{get_col, map_account_state, map_sex, map_sqlx_error, PostgresRepo};
 

@@ -1,7 +1,7 @@
 //! Incoming login client packet decoders supporting CA_LOGIN opcodes.
 
 use crate::{PacketCodecError, PacketOpcode, RawPacket};
-use ro_core::message::ClientIntent;
+use ro_core::ClientIntent;
 
 use crate::incoming::helpers::{read_fixed_string, read_u32_le};
 

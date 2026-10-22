@@ -1,11 +1,11 @@
 //! Vocabulary shared by more than one crate: IDs, domain DTOs, client intents and server events,
 //! and internal HTTP DTOs. Crate-specific errors, traits and wire details live in their own crates.
 
-pub mod account;
-pub mod character;
-pub mod http;
-pub mod ids;
-pub mod message;
+mod account;
+mod character;
+mod http;
+mod ids;
+mod message;
 
 pub use account::*;
 pub use character::*;

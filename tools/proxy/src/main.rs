@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 use clap::Parser;
-use ro_core::{http::ServerType, TARGET_PACKETVER};
+use ro_core::{ServerType, TARGET_PACKETVER};
 use ro_proxy::{
     config::{format_host_port, ProxyArgs},
     forwarder::run_proxy_server,

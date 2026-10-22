@@ -2,7 +2,7 @@
 
 use crate::{PacketCodecError, PacketOpcode};
 use bytes::{BufMut, Bytes, BytesMut};
-use ro_core::ids::{AccountId, CharServerInfo, Sex};
+use ro_core::{AccountId, CharServerInfo, Sex};
 
 use crate::outgoing::helpers::write_fixed_string;
 
@@ -148,7 +148,7 @@ pub use encode_ac_refuse_login as encode_ac_refuse_login_modern;
 mod tests {
     use super::*;
     use crate::EventEncoder;
-    use ro_core::{message::ServerEvent, TARGET_PACKETVER};
+    use ro_core::{ServerEvent, TARGET_PACKETVER};
 
     use crate::outgoing::encoder::ModernEventEncoder;
 

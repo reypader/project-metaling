@@ -3,7 +3,7 @@
 use bytes::Bytes;
 use std::io;
 
-use ro_core::message::{ClientIntent, ServerEvent};
+use ro_core::{ClientIntent, ServerEvent};
 
 use crate::opcode::PacketOpcode;
 

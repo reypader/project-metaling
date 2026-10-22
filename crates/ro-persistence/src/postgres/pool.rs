@@ -3,7 +3,7 @@
 use sqlx::{query, raw_sql, PgPool};
 
 use crate::RepositoryError;
-use ro_core::account::Account;
+use ro_core::Account;
 
 use super::{account_state_to_i16, map_sqlx_error, sex_to_i16};
 

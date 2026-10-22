@@ -1,7 +1,7 @@
 //! High-level client frame decoding and intent parsing.
 
 use crate::{PacketCodecError, PacketIntentParser, PacketLength, PacketOpcode, RawPacket};
-use ro_core::message::ClientIntent;
+use ro_core::ClientIntent;
 
 use crate::table::lookup_packet_length;
 
@@ -133,10 +133,7 @@ pub type RathenaIntentParser = Phase0IntentParser;
 mod tests {
     use super::*;
     use bytes::Bytes;
-    use ro_core::{
-        ids::{AccountId, CharId, Sex},
-        TARGET_PACKETVER,
-    };
+    use ro_core::{AccountId, CharId, Sex, TARGET_PACKETVER};
 
     use crate::coords::pack_pos_dir;
 

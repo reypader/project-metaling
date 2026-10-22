@@ -1,6 +1,6 @@
 //! PostgreSQL persistence: the repository contracts and their `sqlx` implementation.
 
-pub mod postgres;
+mod postgres;
 mod repository;
 
 pub use postgres::PostgresRepo;
