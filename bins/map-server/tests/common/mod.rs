@@ -17,7 +17,7 @@ use map_server::{handle_client_session, MapServiceHandle, WalkabilityLoader};
 use ro_core::{
     AccountId, CharId, CharacterSummary, CreateCharacterRequest, MapPosition, Sex, TARGET_PACKETVER,
 };
-use ro_db::{CellType, MapWalkability, MemoryMapGrid};
+use ro_db::{CellType, MapGrid};
 use ro_packets::{
     pack_pos_dir, unpack_pos2, PacketDecoder, PacketOpcode, RathenaPacketLengthTable, RawPacket,
 };
@@ -157,11 +157,11 @@ impl CharacterRepository for InMemoryRepo {
 
 /// Loader handing every map the same 200x200 grid with `walls`.
 pub fn grid_loader(walls: &[(u16, u16)]) -> WalkabilityLoader {
-    let mut grid = MemoryMapGrid::all_walkable(200, 200).expect("valid dims");
+    let mut grid = MapGrid::all_walkable(200, 200).expect("valid dims");
     for &(x, y) in walls {
         assert!(grid.set(x, y, CellType::Wall));
     }
-    let shared: Arc<dyn MapWalkability> = grid.into();
+    let shared = Arc::new(grid);
     Arc::new(move |_map: &str| Arc::clone(&shared))
 }
 

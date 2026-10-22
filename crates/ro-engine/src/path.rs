@@ -9,7 +9,7 @@
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 
-use ro_db::MapWalkability;
+use ro_db::MapGrid;
 use smallvec::SmallVec;
 
 /// rAthena `MAX_WALKPATH`.
@@ -59,13 +59,14 @@ impl Default for AStarScratchBuffer {
 
 /// Map walkability with rAthena's bounds rule: the last row and column never pass.
 struct Passable<'a> {
-    map: &'a dyn MapWalkability,
+    map: &'a MapGrid,
     /// `width - 1` / `height - 1`: the first blocked column / row.
     limit_x: i32,
     limit_y: i32,
 }
 
 impl Passable<'_> {
+    #[inline]
     fn at(&self, x: i32, y: i32) -> bool {
         x >= 0
             && y >= 0
@@ -110,7 +111,7 @@ impl AStarScratchBuffer {
     /// up (the Manhattan heuristic is inconsistent with 14-cost diagonals).
     pub(crate) fn find_path(
         &mut self,
-        map: &dyn MapWalkability,
+        map: &MapGrid,
         start: (u16, u16),
         dest: (u16, u16),
         max_steps: usize,
@@ -243,17 +244,17 @@ impl AStarScratchBuffer {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ro_db::{CellType, MapWalkability, MemoryMapGrid};
+    use ro_db::CellType;
 
-    fn grid(w: u16, h: u16, walls: &[(u16, u16)]) -> MemoryMapGrid {
-        let mut g = MemoryMapGrid::all_walkable(w, h).expect("valid dims");
+    fn grid(w: u16, h: u16, walls: &[(u16, u16)]) -> MapGrid {
+        let mut g = MapGrid::all_walkable(w, h).expect("valid dims");
         for &(x, y) in walls {
             assert!(g.set(x, y, CellType::Wall), "wall in bounds");
         }
         g
     }
 
-    fn find(g: &dyn MapWalkability, s: (u16, u16), d: (u16, u16)) -> Option<Vec<(u16, u16)>> {
+    fn find(g: &MapGrid, s: (u16, u16), d: (u16, u16)) -> Option<Vec<(u16, u16)>> {
         let mut scratch = AStarScratchBuffer::new();
         scratch
             .find_path(g, s, d, MAX_WALKPATH)
@@ -381,32 +382,22 @@ mod tests {
         assert_eq!(find(&g, (5, 5), (u16::MAX, u16::MAX)), None);
     }
 
-    /// Reports a 65535x65535 all-walkable map without allocating it.
-    struct HugeMap;
-    impl MapWalkability for HugeMap {
-        fn width(&self) -> u16 {
-            u16::MAX
-        }
-        fn height(&self) -> u16 {
-            u16::MAX
-        }
-        fn is_walkable(&self, x: u16, y: u16) -> bool {
-            x < u16::MAX && y < u16::MAX
-        }
-        fn cell_type(&self, x: u16, y: u16) -> Option<CellType> {
-            self.is_walkable(x, y).then_some(CellType::Walkable)
-        }
-    }
-
     #[test]
     fn eng_05_map_edge_arithmetic_does_not_overflow() {
+        // x and y arithmetic are independent, so two thin max-size grids cover what a
+        // 65535x65535 grid would (4 GiB, too big to allocate).
+        let wide = grid(u16::MAX, 70, &[]);
+        let tall = grid(70, u16::MAX, &[]);
         let mut scratch = AStarScratchBuffer::new();
-        let _ = scratch.find_path(&HugeMap, (65534, 65534), (65530, 65530), MAX_WALKPATH);
-        let _ = scratch.find_path(&HugeMap, (65533, 65533), (65534, 65534), MAX_WALKPATH);
-        assert!(scratch
-            .find_path(&HugeMap, (65500, 65500), (65510, 65510), MAX_WALKPATH)
-            .is_some());
-        let _ = scratch.find_path(&HugeMap, (0, 0), (3, 3), MAX_WALKPATH);
+        for (g, flip) in [(&wide, false), (&tall, true)] {
+            let p = |a: u16, b: u16| if flip { (b, a) } else { (a, b) };
+            let _ = scratch.find_path(g, p(65534, 65), p(65530, 61), MAX_WALKPATH);
+            let _ = scratch.find_path(g, p(65533, 65), p(65534, 66), MAX_WALKPATH);
+            assert!(scratch
+                .find_path(g, p(65500, 30), p(65510, 40), MAX_WALKPATH)
+                .is_some());
+            let _ = scratch.find_path(g, p(0, 0), p(3, 3), MAX_WALKPATH);
+        }
     }
 
     #[test]

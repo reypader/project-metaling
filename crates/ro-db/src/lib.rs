@@ -4,5 +4,5 @@
 mod cell;
 mod map;
 
-pub use cell::{CellType, DbLoadError, MapDataError, MapWalkability};
-pub use map::{GatMapGrid, MemoryMapGrid};
+pub use cell::{CellType, DbLoadError, MapDataError};
+pub use map::MapGrid;

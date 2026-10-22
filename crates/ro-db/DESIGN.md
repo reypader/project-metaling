@@ -36,7 +36,7 @@
   * `WALKABLE` (`1 << 0`): Entities can pathfind and step onto this cell.
   * `SHOOTABLE` (`1 << 1`): Ranged attacks and magic Line-of-Sight (LoS) can pass across this cell (e.g., shootable walls/cliffs).
   * `WATER` (`1 << 2`): Water surface cell (required for *Water Ball* / *Aqua Benedicta*).
-* **Contract Implementation:** Defines and implements the walkability trait (today `ro_db::MapWalkability`) so `ro-engine`'s Stage 3 Movement & A* Pathfinding system can query cell walkability in $O(1)$ time with zero lock contention.
+* **Contract Implementation:** Exposes the concrete `ro_db::MapGrid` (no trait, so the pathfinder's per-cell checks inline) so `ro-engine`'s Stage 3 Movement & A* Pathfinding system can query cell walkability in $O(1)$ time with zero lock contention. Each `MapInstance` holds an `Arc<MapGrid>`; runtime cell changes (`setcell`, Ice Wall) copy it on write.
 
 ### 2.2 Pipeline 2: YAML Static Registries (`db/re/` & `db/import/`)
 
@@ -140,14 +140,15 @@ pub struct NpcBlueprint {
     pub script_id: ScriptId,
 }
 
-/// Exists today as `ro_db::MapWalkability`, one instance per map. Methods marked `future` extend
-/// it; don't add a second walkability trait.
-pub trait MapWalkability: Send + Sync {
-    fn width(&self) -> u16;
-    fn height(&self) -> u16;
-    fn is_walkable(&self, x: u16, y: u16) -> bool;
-    fn cell_type(&self, x: u16, y: u16) -> Option<CellType>;
-    fn is_shootable(&self, x: u16, y: u16) -> bool; // future
-    fn random_walkable_cell(&self) -> Option<(u16, u16)>; // future
+/// Exists today as the concrete `ro_db::MapGrid`, one per map (shared via `Arc` across instances).
+/// Methods marked `future` are added as inherent methods; don't introduce a walkability trait.
+impl MapGrid {
+    pub fn width(&self) -> u16;
+    pub fn height(&self) -> u16;
+    pub fn is_walkable(&self, x: u16, y: u16) -> bool;
+    pub fn cell_type(&self, x: u16, y: u16) -> Option<CellType>;
+    pub fn set(&mut self, x: u16, y: u16, cell: CellType) -> bool;
+    pub fn is_shootable(&self, x: u16, y: u16) -> bool; // future
+    pub fn random_walkable_cell(&self) -> Option<(u16, u16)>; // future
 }
 ~~~

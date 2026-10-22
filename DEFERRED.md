@@ -45,4 +45,3 @@ Spec: `specs/engine-foundation/spec.md` (§6 lists the scope cuts below as well)
 - The actor encodes an event before checking that any recipient is still joined.
 - Spatial blocks are `SmallVec<[Entity; 8]>` (~295 KB for a 512x512 map); an intrusive list (`u32` head
   plus a `next` column) would shrink this if many maps run.
-- `EmptyMap` fallback in `load_walkability` covers an unreachable error; build the fallback grid once.

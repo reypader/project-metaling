@@ -1,4 +1,4 @@
-//! `.gat` cell types, the walkability trait the engine reads, and static-data load errors.
+//! `.gat` cell types and static-data load errors.
 
 use serde::{Deserialize, Serialize};
 
@@ -24,6 +24,7 @@ pub enum CellType {
 }
 
 impl CellType {
+    #[inline]
     pub fn from_raw(val: u8) -> Self {
         match val {
             0 => Self::Walkable,
@@ -38,24 +39,13 @@ impl CellType {
     }
 
     /// Walkable: 0, 2, 3, 4, 6. Not walkable: 1, 5, and unknown values.
+    #[inline]
     pub fn is_walkable(self) -> bool {
         matches!(
             self,
             Self::Walkable | Self::Walkable2 | Self::Water | Self::Walkable4 | Self::Walkable6
         )
     }
-}
-
-/// Abstract contract for reading map cell walkability without exposing internal grid storage.
-pub trait MapWalkability: Send + Sync {
-    /// Width of the map in cells.
-    fn width(&self) -> u16;
-    /// Height of the map in cells.
-    fn height(&self) -> u16;
-    /// Returns true if the coordinate is within boundaries and walkable.
-    fn is_walkable(&self, x: u16, y: u16) -> bool;
-    /// Returns the cell type at (x, y) if within bounds.
-    fn cell_type(&self, x: u16, y: u16) -> Option<CellType>;
 }
 
 /// Errors encountered when loading map walkability and cell data.

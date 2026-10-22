@@ -21,6 +21,7 @@ Evidence from the code:
   `MapInstance` directly. `EventEncoder`, `PacketIntentParser` and `PacketLengthTable` are always named by
   their concrete types. The real swap points are only the repository traits (test doubles in bins) and
   `MapWalkability` (test grids in ro-engine).
+  (Later removed: both grids shared one storage type, so ro-db now exposes the concrete `MapGrid`.)
 - **`OutboundPacket`/`OutboundTarget` are dead code** (used only in a contracts test).
 - **Dependency hygiene.** login-server and char-server depend on all 7 crates but use only core, packets
   and persistence. ro-mechanics and ro-scripting are stubs that just `pub use ro_contracts`.

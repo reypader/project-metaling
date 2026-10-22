@@ -1,14 +1,13 @@
 //! `MapInstance` scenarios ENG-04 and ENG-07..ENG-12 (spec §4).
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 
 use ro_core::{
     AccountId, BroadcastScope, CharId, CharacterSpawn, ClientIntent, MapPosition,
     ScopedServerEvent, ServerEvent, SessionId, SessionIntent, Sex,
 };
-use ro_db::{CellType, MapWalkability, MemoryMapGrid};
+use ro_db::{CellType, MapGrid};
 use ro_engine::{EngineError, MapInstance};
 
 const MAP: &str = "prontera.gat";
@@ -39,12 +38,12 @@ fn spawn_data(n: u32, x: u16, y: u16) -> CharacterSpawn {
     }
 }
 
-fn grid(walls: &[(u16, u16)]) -> Arc<dyn MapWalkability> {
-    let mut g = MemoryMapGrid::all_walkable(200, 200).expect("valid dims");
+fn grid(walls: &[(u16, u16)]) -> Arc<MapGrid> {
+    let mut g = MapGrid::all_walkable(200, 200).expect("valid dims");
     for &(x, y) in walls {
         assert!(g.set(x, y, CellType::Wall));
     }
-    g.into()
+    Arc::new(g)
 }
 
 fn intent(n: u32, intent: ClientIntent) -> SessionIntent {
@@ -61,7 +60,7 @@ struct Harness {
 }
 
 impl Harness {
-    fn new(walkability: Arc<dyn MapWalkability>) -> Self {
+    fn new(walkability: Arc<MapGrid>) -> Self {
         Self {
             engine: MapInstance::new(MAP, walkability),
         }
@@ -774,40 +773,9 @@ fn eng_12_invalid_redirect_keeps_old_walk() {
     assert_eq!(h.pos(A), (104, 100));
 }
 
-/// All-walkable 200x200 map with one cell that can be walled off at runtime.
-struct ToggleMap {
-    cell: (u16, u16),
-    blocked: AtomicBool,
-}
-
-impl MapWalkability for ToggleMap {
-    fn width(&self) -> u16 {
-        200
-    }
-    fn height(&self) -> u16 {
-        200
-    }
-    fn is_walkable(&self, x: u16, y: u16) -> bool {
-        x < 200 && y < 200 && !((x, y) == self.cell && self.blocked.load(Ordering::SeqCst))
-    }
-    fn cell_type(&self, x: u16, y: u16) -> Option<CellType> {
-        (x < 200 && y < 200).then(|| {
-            if self.is_walkable(x, y) {
-                CellType::Walkable
-            } else {
-                CellType::Wall
-            }
-        })
-    }
-}
-
 #[test]
 fn eng_12_failed_repath_stops_the_walk() {
-    let map = Arc::new(ToggleMap {
-        cell: (101, 105),
-        blocked: AtomicBool::new(false),
-    });
-    let mut h = Harness::new(map.clone());
+    let mut h = Harness::new(grid(&[]));
     start_walk(&mut h);
     h.push(
         A,
@@ -817,7 +785,7 @@ fn eng_12_failed_repath_stops_the_walk() {
         },
     );
     assert!(h.tick(1_075).is_empty());
-    map.blocked.store(true, Ordering::SeqCst);
+    assert!(h.engine.set_cell(101, 105, CellType::Wall));
     let events = h.tick(1_150);
     assert_eq!(h.pos(A), (101, 100));
     let stopped: Vec<_> = events
@@ -1119,5 +1087,17 @@ fn eng_12_click_after_a_due_step_validates_from_the_reached_cell() {
             }
         )),
         "{events:#?}"
+    );
+}
+
+#[test]
+fn eng_12_set_cell_copies_a_shared_grid() {
+    let shared = grid(&[]);
+    let mut h = Harness::new(Arc::clone(&shared));
+    assert!(h.engine.set_cell(10, 10, CellType::Wall));
+    assert!(!h.engine.set_cell(200, 10, CellType::Wall), "out of bounds");
+    assert!(
+        shared.is_walkable(10, 10),
+        "other holders keep the original grid"
     );
 }

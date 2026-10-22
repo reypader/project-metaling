@@ -11,7 +11,7 @@ use ro_core::{
     BroadcastScope, CharId, CharacterSpawn, ClientIntent, MapPosition, ScopedServerEvent,
     ServerEvent, SessionIntent, UnitAppearance,
 };
-use ro_db::MapWalkability;
+use ro_db::{CellType, MapGrid};
 use smallvec::SmallVec;
 use tracing::debug;
 
@@ -55,7 +55,8 @@ type PathCells = SmallVec<[(u16, u16); MAX_WALKPATH]>;
 pub struct MapInstance {
     map_name: String,
     world: World,
-    walkability: Arc<dyn MapWalkability>,
+    /// Shared with other instances of the same map until `set_cell` copies it.
+    walkability: Arc<MapGrid>,
     intents: Vec<SessionIntent>,
     /// Entities with a `pending_move` set this tick (the column holds the last request).
     moves: Vec<Entity>,
@@ -89,13 +90,13 @@ fn step_dir(from: (u16, u16), to: (u16, u16)) -> u8 {
 }
 
 impl MapInstance {
-    pub fn new(map_name: impl Into<String>, walkability: Arc<dyn MapWalkability>) -> Self {
+    pub fn new(map_name: impl Into<String>, walkability: Arc<MapGrid>) -> Self {
         Self::with_capacity(map_name, walkability, DEFAULT_ENTITY_CAPACITY)
     }
 
     pub fn with_capacity(
         map_name: impl Into<String>,
-        walkability: Arc<dyn MapWalkability>,
+        walkability: Arc<MapGrid>,
         capacity: u32,
     ) -> Self {
         let world = World::new(walkability.width(), walkability.height(), capacity);
@@ -400,7 +401,7 @@ impl MapInstance {
         max_steps: usize,
     ) -> Option<PathCells> {
         self.scratch
-            .find_path(self.walkability.as_ref(), from, to, max_steps)
+            .find_path(&self.walkability, from, to, max_steps)
             .map(PathCells::from_slice)
     }
 
@@ -630,6 +631,13 @@ impl MapInstance {
         }
         self.world.spawn_player(&spawn)?;
         Ok(Vec::new())
+    }
+
+    /// Changes one cell at runtime (rAthena `setcell`; later Ice Wall and similar). Copies the
+    /// grid first if other instances share it. Paths already planned are not re-checked until
+    /// their next repath. Returns `false` when out of bounds.
+    pub fn set_cell(&mut self, x: u16, y: u16, cell: CellType) -> bool {
+        Arc::make_mut(&mut self.walkability).set(x, y, cell)
     }
 
     /// Queues an intent for the next `step_tick`. `EnterMap` is not accepted here.

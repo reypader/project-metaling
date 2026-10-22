@@ -4,7 +4,7 @@ use std::{
     path::{Path, PathBuf},
     sync::{
         atomic::{AtomicU64, Ordering},
-        Arc, Mutex, MutexGuard, RwLock,
+        Arc, Mutex, MutexGuard, OnceLock, RwLock,
     },
     time::{Duration, Instant},
 };
@@ -14,7 +14,7 @@ use ro_core::{
     AccountId, BroadcastScope, CharId, CharacterSpawn, CharacterSummary, ClientIntent, MapPosition,
     ScopedServerEvent, ServerEvent, SessionId, SessionIntent, TARGET_PACKETVER,
 };
-use ro_db::{GatMapGrid, MapWalkability, MemoryMapGrid};
+use ro_db::MapGrid;
 use ro_engine::{EngineError, MapInstance};
 use ro_packets::{EventEncoder, Phase0EventEncoder};
 use ro_persistence::CharacterRepository;
@@ -54,15 +54,15 @@ impl SharedState {
     }
 }
 
-/// Builds a map's walkability from its name.
-pub type WalkabilityLoader = Arc<dyn Fn(&str) -> Arc<dyn MapWalkability> + Send + Sync>;
+/// Builds a map's walkability grid from its name.
+pub type WalkabilityLoader = Arc<dyn Fn(&str) -> Arc<MapGrid> + Send + Sync>;
 
 /// Loads `<dir>/<map_name>` as a `.gat`. A missing directory, missing file, or bad file logs a
 /// warning and falls back to an all-walkable `FALLBACK_MAP_SIZE` square grid.
-pub fn load_walkability(map_data_dir: Option<&Path>, map_name: &str) -> Arc<dyn MapWalkability> {
+pub fn load_walkability(map_data_dir: Option<&Path>, map_name: &str) -> Arc<MapGrid> {
     if let Some(dir) = map_data_dir {
-        match GatMapGrid::load(&dir.join(map_name)) {
-            Ok(grid) => return grid.into(),
+        match MapGrid::load_gat(&dir.join(map_name)) {
+            Ok(grid) => return Arc::new(grid),
             Err(err) => warn!("Map '{}': {}; using fallback grid", map_name, err),
         }
     } else {
@@ -71,37 +71,28 @@ pub fn load_walkability(map_data_dir: Option<&Path>, map_name: &str) -> Arc<dyn 
             map_name
         );
     }
-    match MemoryMapGrid::all_walkable(FALLBACK_MAP_SIZE, FALLBACK_MAP_SIZE) {
-        Ok(grid) => grid.into(),
-        // Unreachable: the fallback dimensions are non-zero constants.
-        Err(err) => {
-            error!("fallback grid: {}", err);
-            Arc::new(EmptyMap)
-        }
-    }
+    fallback_grid()
+}
+
+/// One fallback grid shared by every map without a `.gat`; `MapInstance::set_cell` copies
+/// it before changing a cell, so maps never see each other's changes.
+fn fallback_grid() -> Arc<MapGrid> {
+    static FALLBACK: OnceLock<Arc<MapGrid>> = OnceLock::new();
+    let grid = FALLBACK.get_or_init(|| {
+        let grid =
+            MapGrid::all_walkable(FALLBACK_MAP_SIZE, FALLBACK_MAP_SIZE).unwrap_or_else(|err| {
+                // Unreachable: the fallback dimensions are non-zero constants.
+                error!("fallback grid: {}", err);
+                MapGrid::blocked()
+            });
+        Arc::new(grid)
+    });
+    Arc::clone(grid)
 }
 
 /// Loader reading `.gat` files from `map_data_dir`.
 pub fn map_data_loader(map_data_dir: Option<PathBuf>) -> WalkabilityLoader {
     Arc::new(move |map_name: &str| load_walkability(map_data_dir.as_deref(), map_name))
-}
-
-/// A map with no walkable cells (only if the fallback grid can't be built).
-struct EmptyMap;
-
-impl MapWalkability for EmptyMap {
-    fn width(&self) -> u16 {
-        1
-    }
-    fn height(&self) -> u16 {
-        1
-    }
-    fn is_walkable(&self, _x: u16, _y: u16) -> bool {
-        false
-    }
-    fn cell_type(&self, _x: u16, _y: u16) -> Option<ro_db::CellType> {
-        None
-    }
 }
 
 /// Commands sent to a long-lived `MapWorldActor`.
@@ -450,7 +441,7 @@ impl MapWorldActor {
     fn new(
         map_name: String,
         char_repo: Arc<dyn CharacterRepository>,
-        walkability: Arc<dyn MapWalkability>,
+        walkability: Arc<MapGrid>,
         shared: Arc<SharedState>,
         started: Instant,
     ) -> Self {

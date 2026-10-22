@@ -1,13 +1,11 @@
-//! Map walkability grids: `.gat` files and in-memory fixtures.
+//! `MapGrid`: one map's walkability, parsed from a client `.gat` file or built in memory.
 //!
-//! Both store one raw cell type byte per cell, row-major (`x + y * width`).
-//! The `MapWalkability` view stays raw: the "last row/column is never walkable"
-//! rule belongs to the pathfinder, not here.
+//! Stores one raw cell type byte per cell, row-major (`x + y * width`). The view stays raw:
+//! the "last row/column is never walkable" rule belongs to the pathfinder, not here.
 
 use std::path::Path;
-use std::sync::Arc;
 
-use crate::{CellType, MapDataError, MapWalkability};
+use crate::{CellType, MapDataError};
 
 /// rAthena reads sizes at fixed offsets and never checks the magic; we check the `GRAT` tag
 /// but accept any version bytes (offsets 4..6, `\x01\x02` in shipped maps).
@@ -20,69 +18,18 @@ const GAT_TYPE_OFFSET: usize = 16;
 /// Raw type stored for `.gat` values that don't fit a byte; any unknown value is not walkable.
 const UNKNOWN_RAW: u8 = u8::MAX;
 
-/// Row-major raw cell storage shared by both grid types.
+/// One map's cell grid. A concrete type (not a trait object) so the pathfinder's per-cell
+/// checks inline to a bounds check and a byte load.
 #[derive(Clone, PartialEq, Eq)]
-struct CellGrid {
+pub struct MapGrid {
     width: u16,
     height: u16,
     cells: Vec<u8>,
 }
 
-impl CellGrid {
-    fn index(&self, x: u16, y: u16) -> Option<usize> {
-        (x < self.width && y < self.height)
-            .then(|| usize::from(y) * usize::from(self.width) + usize::from(x))
-    }
-
-    fn cell_type(&self, x: u16, y: u16) -> Option<CellType> {
-        let idx = self.index(x, y)?;
-        self.cells.get(idx).copied().map(CellType::from_raw)
-    }
-
-    fn is_walkable(&self, x: u16, y: u16) -> bool {
-        self.cell_type(x, y).is_some_and(CellType::is_walkable)
-    }
-}
-
-fn checked_dimensions(path: &str, width: u32, height: u32) -> Result<(u16, u16), MapDataError> {
-    let invalid = || MapDataError::InvalidDimensions {
-        path: path.to_string(),
-        width,
-        height,
-    };
-    if width == 0 || height == 0 {
-        return Err(invalid());
-    }
-    let w = u16::try_from(width).map_err(|_| invalid())?;
-    let h = u16::try_from(height).map_err(|_| invalid())?;
-    Ok((w, h))
-}
-
-fn read_u32_le(buf: &[u8], offset: usize) -> Option<u32> {
-    let bytes = buf.get(offset..offset + 4)?;
-    let arr: [u8; 4] = bytes.try_into().ok()?;
-    Some(u32::from_le_bytes(arr))
-}
-
-/// Debug prints only the dimensions; a real map has 100k+ cells.
-impl std::fmt::Debug for CellGrid {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("CellGrid")
-            .field("width", &self.width)
-            .field("height", &self.height)
-            .finish_non_exhaustive()
-    }
-}
-
-/// Walkability grid parsed from a client `.gat` file.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct GatMapGrid {
-    grid: CellGrid,
-}
-
-impl GatMapGrid {
+impl MapGrid {
     /// Parses `.gat` bytes. `path` is only a label for errors.
-    pub fn from_bytes(path: &str, buf: &[u8]) -> Result<Self, MapDataError> {
+    pub fn from_gat_bytes(path: &str, buf: &[u8]) -> Result<Self, MapDataError> {
         let truncated = |expected: usize| MapDataError::Truncated {
             path: path.to_string(),
             expected,
@@ -123,78 +70,111 @@ impl GatMapGrid {
             .collect();
 
         Ok(Self {
-            grid: CellGrid {
-                width,
-                height,
-                cells,
-            },
+            width,
+            height,
+            cells,
         })
     }
 
     /// Reads and parses a `.gat` file. I/O failures become `MapDataError::Io`.
-    pub fn load(path: &Path) -> Result<Self, MapDataError> {
+    pub fn load_gat(path: &Path) -> Result<Self, MapDataError> {
         let label = path.display().to_string();
         let buf = std::fs::read(path).map_err(|err| MapDataError::Io {
             path: label.clone(),
             message: err.to_string(),
         })?;
-        Self::from_bytes(&label, &buf)
+        Self::from_gat_bytes(&label, &buf)
     }
-}
 
-impl MapWalkability for GatMapGrid {
-    fn width(&self) -> u16 {
-        self.grid.width
-    }
-    fn height(&self) -> u16 {
-        self.grid.height
-    }
-    fn is_walkable(&self, x: u16, y: u16) -> bool {
-        self.grid.is_walkable(x, y)
-    }
-    fn cell_type(&self, x: u16, y: u16) -> Option<CellType> {
-        self.grid.cell_type(x, y)
-    }
-}
-
-impl From<GatMapGrid> for Arc<dyn MapWalkability> {
-    fn from(grid: GatMapGrid) -> Self {
-        Arc::new(grid)
-    }
-}
-
-/// In-memory grid for tests and the runtime fallback when a `.gat` file is missing.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct MemoryMapGrid {
-    grid: CellGrid,
-}
-
-impl MemoryMapGrid {
     /// A `width` x `height` grid where every cell is `CellType::Walkable`.
     pub fn all_walkable(width: u16, height: u16) -> Result<Self, MapDataError> {
         let (width, height) = checked_dimensions("<memory>", width.into(), height.into())?;
         Ok(Self {
-            grid: CellGrid {
-                width,
-                height,
-                cells: vec![0; usize::from(width) * usize::from(height)],
-            },
+            width,
+            height,
+            cells: vec![0; usize::from(width) * usize::from(height)],
         })
+    }
+
+    /// A 1x1 grid with no walkable cell: a last-resort fallback that can't fail to build.
+    pub fn blocked() -> Self {
+        Self {
+            width: 1,
+            height: 1,
+            cells: vec![raw_of(CellType::Wall)],
+        }
     }
 
     /// Sets one cell. Returns `false` (and changes nothing) when out of bounds.
     #[must_use]
     pub fn set(&mut self, x: u16, y: u16, cell: CellType) -> bool {
-        let Some(slot) = self
-            .grid
-            .index(x, y)
-            .and_then(|idx| self.grid.cells.get_mut(idx))
-        else {
+        let Some(slot) = self.index(x, y).and_then(|idx| self.cells.get_mut(idx)) else {
             return false;
         };
         *slot = raw_of(cell);
         true
     }
+
+    /// Width of the map in cells.
+    #[inline]
+    pub fn width(&self) -> u16 {
+        self.width
+    }
+
+    /// Height of the map in cells.
+    #[inline]
+    pub fn height(&self) -> u16 {
+        self.height
+    }
+
+    /// Returns the cell type at (x, y) if within bounds.
+    #[inline]
+    pub fn cell_type(&self, x: u16, y: u16) -> Option<CellType> {
+        let idx = self.index(x, y)?;
+        self.cells.get(idx).copied().map(CellType::from_raw)
+    }
+
+    /// Returns true if the coordinate is within bounds and walkable.
+    #[inline]
+    pub fn is_walkable(&self, x: u16, y: u16) -> bool {
+        self.cell_type(x, y).is_some_and(CellType::is_walkable)
+    }
+
+    #[inline]
+    fn index(&self, x: u16, y: u16) -> Option<usize> {
+        (x < self.width && y < self.height)
+            .then(|| usize::from(y) * usize::from(self.width) + usize::from(x))
+    }
+}
+
+/// Debug prints only the dimensions; a real map has 100k+ cells.
+impl std::fmt::Debug for MapGrid {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("MapGrid")
+            .field("width", &self.width)
+            .field("height", &self.height)
+            .finish_non_exhaustive()
+    }
+}
+
+fn checked_dimensions(path: &str, width: u32, height: u32) -> Result<(u16, u16), MapDataError> {
+    let invalid = || MapDataError::InvalidDimensions {
+        path: path.to_string(),
+        width,
+        height,
+    };
+    if width == 0 || height == 0 {
+        return Err(invalid());
+    }
+    let w = u16::try_from(width).map_err(|_| invalid())?;
+    let h = u16::try_from(height).map_err(|_| invalid())?;
+    Ok((w, h))
+}
+
+fn read_u32_le(buf: &[u8], offset: usize) -> Option<u32> {
+    let bytes = buf.get(offset..offset + 4)?;
+    let arr: [u8; 4] = bytes.try_into().ok()?;
+    Some(u32::from_le_bytes(arr))
 }
 
 fn raw_of(cell: CellType) -> u8 {
@@ -209,26 +189,5 @@ fn raw_of(cell: CellType) -> u8 {
         // Unknown(r) with a known r (0..=6) must not read back as a known (maybe walkable) type.
         CellType::Unknown(raw) if raw <= 6 => UNKNOWN_RAW,
         CellType::Unknown(raw) => raw,
-    }
-}
-
-impl MapWalkability for MemoryMapGrid {
-    fn width(&self) -> u16 {
-        self.grid.width
-    }
-    fn height(&self) -> u16 {
-        self.grid.height
-    }
-    fn is_walkable(&self, x: u16, y: u16) -> bool {
-        self.grid.is_walkable(x, y)
-    }
-    fn cell_type(&self, x: u16, y: u16) -> Option<CellType> {
-        self.grid.cell_type(x, y)
-    }
-}
-
-impl From<MemoryMapGrid> for Arc<dyn MapWalkability> {
-    fn from(grid: MemoryMapGrid) -> Self {
-        Arc::new(grid)
     }
 }

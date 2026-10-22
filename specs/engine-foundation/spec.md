@@ -50,7 +50,7 @@ When this spec and the catalog disagree, the catalog wins, and this spec gets fi
 - A diagonal step is legal only if the target cell **and** both adjacent cardinal cells are walkable.
 - The destination must be in bounds and walkable, otherwise the request is silently dropped.
 - The last row and column of every map (`x >= width-1` or `y >= height-1`) are never walkable.
-  The pathfinder enforces this; the `MapWalkability` contract stays raw.
+  The pathfinder enforces this; `MapGrid` stays raw.
 - Step duration: `speed` ms orthogonal, `speed * 14 / 10` ms diagonal (integer math). Default speed is 150.
 - A step's timer starts when the step starts. The unit's cell changes when the step **ends**.
 - **Click on own cell while idle:** send `PlayerMoved` with start == dest (client resync). Nothing goes to others.
@@ -140,7 +140,7 @@ against the session's account and closes the session on mismatch.
 ## 2. Bin-observable scenarios (`bins/map-server`)
 
 All BIN tests use the in-memory repo seeded with characters `150001..150004` (accounts
-`2000001..2000004`) on `prontera.gat`, and a `MemoryMapGrid` injected through the service constructor.
+`2000001..2000004`) on `prontera.gat`, and a `MapGrid` injected through the service constructor.
 
 ### BIN-01: Map entry and scene initialization
 - **Given** A at (100,100), and B already in game at (103,100).
@@ -240,7 +240,7 @@ reservation and enters at the reserved position. Invalid names return false.
 
 ### BIN-CFG-01: Map data loading
 `MAP_DATA_DIR` set and `<dir>/<map>.gat` present: the world uses the parsed grid. File missing: a warning is
-logged and an all-walkable 512x512 `MemoryMapGrid` is used.
+logged and an all-walkable 512x512 `MapGrid` is used (one shared instance).
 
 ---
 
@@ -438,13 +438,13 @@ WBUFPOS (3 bytes) and WBUFPOS2 (6 bytes) round-trip. `(100,140,6)` packs to `[0x
 ## 5. Data scenarios (`ro-db`)
 
 ### DB-01: `.gat` parsing
-- **Valid input:** `GatMapGrid::from_bytes(label, &buf)` with the `"GRAT\x01\x02"` header, width/height
+- **Valid input:** `MapGrid::from_gat_bytes(label, &buf)` with the `"GRAT\x01\x02"` header, width/height
   `u32` LE at offsets 6/10, and `w*h` 20-byte records (type `u32` at record offset 16) gives a row-major grid with width 3, height 2.
 - **Errors**
   - First 4 bytes not `GRAT` → `BadMagic`. The 2 version bytes are not checked (rAthena checks neither).
   - Fewer than 14 bytes, or fewer than `14 + w*h*20` → `Truncated`.
   - Zero width/height, or a dimension > `u16::MAX` → `InvalidDimensions`.
-- **File loading:** `GatMapGrid::load(path)` wraps I/O errors in `Io`.
+- **File loading:** `MapGrid::load_gat(path)` wraps I/O errors in `Io`.
 
 ### DB-02: Cell types
 - Raw 0–6 map to the §1.3 variants, and other values map to `Unknown`.
@@ -454,9 +454,10 @@ WBUFPOS (3 bytes) and WBUFPOS2 (6 bytes) round-trip. `(100,140,6)` packs to `[0x
 - `(0,0)` and `(w-1,h-1)` return the stored value.
 - `x >= w`, `y >= h`, and `u16::MAX` return `false` / `None` without panicking.
 
-### DB-04: `MemoryMapGrid`
+### DB-04: In-memory `MapGrid`
 - A public builder: `all_walkable(w,h)` and `set(x,y,CellType)`.
-- It implements `MapWalkability + Send + Sync` and converts to `Arc<dyn MapWalkability>`.
+- `MapGrid` is a concrete `Send + Sync` type (no walkability trait), shared as `Arc<MapGrid>`.
+- `MapGrid::blocked()` is an infallible 1x1 grid with no walkable cell.
 - Zero dimensions → `InvalidDimensions`.
 - This is also the runtime fallback (BIN-CFG-01).
 
