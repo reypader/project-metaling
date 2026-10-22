@@ -106,7 +106,7 @@ pub fn decode_frame(raw: &RawPacket, packetver: u32) -> Result<DecodedFrame, Pac
     }
 }
 
-/// Domain intent parser implementing contracts trait.
+/// Phase 0 implementation of `PacketIntentParser`.
 #[derive(Debug, Default, Clone, Copy)]
 pub struct Phase0IntentParser;
 
@@ -133,8 +133,10 @@ pub type RathenaIntentParser = Phase0IntentParser;
 mod tests {
     use super::*;
     use bytes::Bytes;
-    use ro_core::ids::{AccountId, CharId, Sex};
-    use ro_core::TARGET_PACKETVER;
+    use ro_core::{
+        ids::{AccountId, CharId, Sex},
+        TARGET_PACKETVER,
+    };
 
     use crate::coords::pack_pos_dir;
 

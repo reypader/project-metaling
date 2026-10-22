@@ -2,8 +2,10 @@
 
 use crate::PacketOpcode;
 use bytes::{BufMut, Bytes, BytesMut};
-use ro_core::ids::{AccountId, MapPosition};
-use ro_core::message::UnitAppearance;
+use ro_core::{
+    ids::{AccountId, MapPosition},
+    message::UnitAppearance,
+};
 
 use crate::coords::{pack_pos2, pack_pos_dir};
 use crate::outgoing::helpers::write_fixed_string;

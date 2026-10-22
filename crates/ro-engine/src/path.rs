@@ -243,8 +243,7 @@ impl AStarScratchBuffer {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ro_db::MemoryMapGrid;
-    use ro_db::{CellType, MapWalkability};
+    use ro_db::{CellType, MapWalkability, MemoryMapGrid};
 
     fn grid(w: u16, h: u16, walls: &[(u16, u16)]) -> MemoryMapGrid {
         let mut g = MemoryMapGrid::all_walkable(w, h).expect("valid dims");

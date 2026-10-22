@@ -6,8 +6,10 @@ use ro_core::{
     message::{ClientIntent, ServerEvent, SessionIntent},
     TARGET_PACKETVER,
 };
-use ro_packets::{EventEncoder, PacketIntentParser};
-use ro_packets::{PacketDecoder, Phase0EventEncoder, Phase0IntentParser, RathenaPacketLengthTable};
+use ro_packets::{
+    EventEncoder, PacketDecoder, PacketIntentParser, Phase0EventEncoder, Phase0IntentParser,
+    RathenaPacketLengthTable,
+};
 use tokio::{
     io::{AsyncReadExt, AsyncWriteExt},
     net::TcpStream,

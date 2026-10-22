@@ -47,14 +47,14 @@ Rule: library crates never depend on bins or tools. A crate may depend on a peer
 direction shown. Future engine↔scripting needs are met by a trait owned by ro-scripting
 (e.g. a world-query trait) that ro-engine implements, so no cycle forms.
 
-**Outcome:** after step 7, ro-db no longer needs ro-core at all, so it's a leaf with no metaling
-dependencies. ro-mechanics and ro-scripting have no dependencies until they get code.
+**Outcome:** after step 7, ro-db no longer needs ro-core at all, so today it has no metaling
+dependencies (it may later use ro-core IDs). ro-mechanics and ro-scripting have no dependencies until they get code.
 
 ## Where each item goes
 
 | Item (current `ro-contracts` file) | New home |
 | :--- | :--- |
-| `ids.rs` (AccountId, CharId, ItemId, SessionId, Sex, SessionTicket, MapPosition, CharacterSummary, CharServerInfo) | `ro-core::ids` |
+| `ids.rs` (AccountId, CharId, SessionId, Sex, MapPosition, CharacterSummary, CharServerInfo; unused ItemId and SessionTicket deleted later) | `ro-core::ids` |
 | `character.rs`: CharacterSpawn, DEFAULT_WALK_SPEED, CreateCharacterRequest | `ro-core::character` |
 | `character.rs`: CharacterRepository, CreateCharacterError, DeleteReserveOutcome, CancelDeleteOutcome | `ro-persistence` (e.g. `src/repository.rs`) |
 | `account.rs`: Account, AccountState | `ro-core::account` (DTO shared with login-server) |

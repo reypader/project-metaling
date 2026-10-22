@@ -80,6 +80,7 @@ In rAthena, warp portals, monster spawns, shops, mapflags, and interactive NPCs 
 `ro-db` exposes its parsed data to `ro-engine` and `bins/map-server` using these types, defined in `ro-db`:
 
 ~~~rust
+// ItemId, MobId and ScriptId don't exist yet; add them to ro-core when first used.
 use ro_core::{ItemId, MapPosition};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -139,10 +140,14 @@ pub struct NpcBlueprint {
     pub script_id: ScriptId,
 }
 
-pub trait MapWalkabilityProvider: Send + Sync {
-    fn dimensions(&self, map_name: &str) -> Option<(u16, u16)>;
-    fn is_walkable(&self, map_name: &str, x: u16, y: u16) -> bool;
-    fn is_shootable(&self, map_name: &str, x: u16, y: u16) -> bool;
-    fn random_walkable_cell(&self, map_name: &str) -> Option<(u16, u16)>;
+/// Exists today as `ro_db::MapWalkability`, one instance per map. Methods marked `future` extend
+/// it; don't add a second walkability trait.
+pub trait MapWalkability: Send + Sync {
+    fn width(&self) -> u16;
+    fn height(&self) -> u16;
+    fn is_walkable(&self, x: u16, y: u16) -> bool;
+    fn cell_type(&self, x: u16, y: u16) -> Option<CellType>;
+    fn is_shootable(&self, x: u16, y: u16) -> bool; // future
+    fn random_walkable_cell(&self) -> Option<(u16, u16)>; // future
 }
 ~~~

@@ -11,8 +11,7 @@ use tokio_util::codec::Decoder;
 
 use map_server::{handle_client_session, map_data_loader, MapServiceHandle};
 use ro_core::TARGET_PACKETVER;
-use ro_packets::PacketOpcode;
-use ro_packets::{PacketDecoder, RathenaPacketLengthTable};
+use ro_packets::{PacketDecoder, PacketOpcode, RathenaPacketLengthTable};
 
 #[tokio::test]
 async fn test_bin_cfg_persist_002_map_startup_failure_on_unreachable_db() {
@@ -33,8 +32,10 @@ async fn test_bin_map_persist_lifecycle_and_coordinates() {
     );
     let _ = repo.seed_test_data().await;
 
-    use ro_core::character::CreateCharacterRequest;
-    use ro_core::ids::{AccountId, MapPosition, Sex};
+    use ro_core::{
+        character::CreateCharacterRequest,
+        ids::{AccountId, MapPosition, Sex},
+    };
     use ro_persistence::CharacterRepository;
 
     let _ = sqlx::query("DELETE FROM characters WHERE account_id = $1 AND slot = $2")

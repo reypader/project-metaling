@@ -3,8 +3,10 @@
 
 use std::sync::Arc;
 
-use ro_db::map::{GatMapGrid, MemoryMapGrid};
-use ro_db::{CellType, MapDataError, MapWalkability};
+use ro_db::{
+    map::{GatMapGrid, MemoryMapGrid},
+    CellType, MapDataError, MapWalkability,
+};
 
 const HEADER: &[u8; 6] = b"GRAT\x01\x02";
 

@@ -29,7 +29,7 @@ In legacy rAthena and Hercules, the custom C-like Athena Script bytecode VM (`sc
 └───────────────┬──────────────────────────────────────────┬───────────────┘
                 │ (Dialog UI Packets)                      │ (World Mutations)
                 ▼                                          ▼
-     OutboundPacket (SelfOnly)                    ScriptWorldCommand
+  ServerEvent (SelfOnly scope)                   ScriptWorldCommand
   • `ZC_SAY_DIALOG`   (`0x00B4`)              • `WarpPlayer { map, x, y }`
   • `ZC_WAIT_DIALOG`  (`0x00B5`)              • `ModifyZeny / GiveItem`
   • `ZC_CLOSE_DIALOG` (`0x00B6`)              • `SetCharVar (sets DIRTY_BLOBS)`
@@ -87,6 +87,12 @@ The Athena scripting language relies on **variable name prefixes** to determine 
 ## 4. World Commands & Event Label Dispatch
 
 Because `ro-scripting` cannot mutate `MapWorld` ECS columns (`Vitals`, `Inventory`, `MapPosition`) directly, all side effects produced by built-in script commands (`warp`, `getitem`, `delitem`, `heal`, `monster`, `sc_start`) are emitted as buffered `ScriptWorldCommand` messages defined in `ro-scripting` (`ro-engine` depends on `ro-scripting` and applies them):
+
+> **Open decision (settle before implementing this section).** The snippet below breaks the crate dependency rule in `CLAUDE.md` as written:
+> - `Entity` is an `ro-engine` type, and `ro-engine` depends on `ro-scripting`, so `ro-scripting` cannot name it. Pick one: (a) `ro-scripting` defines an opaque handle (e.g. `ScriptEntity(u32)`) that the engine maps to and from `Entity`; or (b) move a plain entity-ID newtype into `ro-core`.
+> - `MobId`, `ScriptId` and `ItemId` are shared by `ro-db`, `ro-scripting` and `ro-engine`. None exist yet. Add them to `ro-core` (preferred), or add an `ro-scripting` → `ro-db` edge to the rule.
+>
+> Record the outcome here and in the `CLAUDE.md` rule, then delete this note.
 
 ~~~rust
 use crate::{CharId, Entity, ItemId, MapPosition, MobId, ScriptId};

@@ -148,8 +148,7 @@ pub use encode_ac_refuse_login as encode_ac_refuse_login_modern;
 mod tests {
     use super::*;
     use crate::EventEncoder;
-    use ro_core::message::ServerEvent;
-    use ro_core::TARGET_PACKETVER;
+    use ro_core::{message::ServerEvent, TARGET_PACKETVER};
 
     use crate::outgoing::encoder::ModernEventEncoder;
 

@@ -98,18 +98,6 @@ pub struct RegisterMapServerResponse {
     pub registered_maps_count: usize,
 }
 
-/// Transfer ticket issued when a player selects a character and is routed to a map-server.
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct MapTransferToken {
-    pub token: String,
-    pub account_id: AccountId,
-    pub char_id: CharId,
-    pub login_id1: u32,
-    pub destination_map: String,
-    pub destination_pos: MapPosition,
-    pub created_at_ms: u64,
-}
-
 /// Request sent by char-server to map-server informing it of an incoming client connection.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PrepareMapTransferRequest {

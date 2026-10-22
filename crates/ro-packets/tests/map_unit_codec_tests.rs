@@ -3,15 +3,19 @@
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use bytes::{Bytes, BytesMut};
-use ro_core::ids::{AccountId, CharId, MapPosition, Sex};
-use ro_core::message::{ClientIntent, ServerEvent, UnitAppearance};
-use ro_core::TARGET_PACKETVER;
-use ro_packets::codec::PacketDecoder;
-use ro_packets::coords::{pack_pos2, pack_pos_dir, unpack_pos2, unpack_pos_dir};
-use ro_packets::incoming::Phase0IntentParser;
-use ro_packets::outgoing::{is_implemented_outbound_opcode, ModernEventEncoder};
-use ro_packets::table::RathenaPacketLengthTable;
-use ro_packets::{EventEncoder, PacketCodecError, PacketIntentParser, PacketOpcode, RawPacket};
+use ro_core::{
+    ids::{AccountId, CharId, MapPosition, Sex},
+    message::{ClientIntent, ServerEvent, UnitAppearance},
+    TARGET_PACKETVER,
+};
+use ro_packets::{
+    codec::PacketDecoder,
+    coords::{pack_pos2, pack_pos_dir, unpack_pos2, unpack_pos_dir},
+    incoming::Phase0IntentParser,
+    outgoing::{is_implemented_outbound_opcode, ModernEventEncoder},
+    table::RathenaPacketLengthTable,
+    EventEncoder, PacketCodecError, PacketIntentParser, PacketOpcode, RawPacket,
+};
 use tokio_util::codec::Decoder;
 
 const VER: u32 = TARGET_PACKETVER;

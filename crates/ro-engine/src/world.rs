@@ -1,10 +1,10 @@
 //! Per-map entity storage: dense columns indexed by `Entity::index()` plus sparse components.
 
-use crate::EngineError;
 use ro_core::{AccountId, CharId, CharacterSpawn, MapPosition, Sex};
 use rustc_hash::FxHashMap;
 
 use crate::entity::{Entity, EntityAllocator};
+use crate::error::EngineError;
 use crate::movement::WalkingPath;
 use crate::sparse_set::SparseSet;
 use crate::spatial::SpatialGrid8x8;

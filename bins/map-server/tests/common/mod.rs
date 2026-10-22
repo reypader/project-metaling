@@ -17,10 +17,10 @@ use map_server::{handle_client_session, MapServiceHandle, WalkabilityLoader};
 use ro_core::{
     AccountId, CharId, CharacterSummary, CreateCharacterRequest, MapPosition, Sex, TARGET_PACKETVER,
 };
-use ro_db::MemoryMapGrid;
-use ro_db::{CellType, MapWalkability};
-use ro_packets::{pack_pos_dir, unpack_pos2, PacketDecoder, RathenaPacketLengthTable};
-use ro_packets::{PacketOpcode, RawPacket};
+use ro_db::{CellType, MapWalkability, MemoryMapGrid};
+use ro_packets::{
+    pack_pos_dir, unpack_pos2, PacketDecoder, PacketOpcode, RathenaPacketLengthTable, RawPacket,
+};
 use ro_persistence::{
     CancelDeleteOutcome, CharacterRepository, CreateCharacterError, DeleteReserveOutcome,
     RepositoryError,

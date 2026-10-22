@@ -1,8 +1,10 @@
 //! Incoming character server client packet decoders supporting CH_* opcodes.
 
 use crate::{PacketCodecError, RawPacket};
-use ro_core::ids::{AccountId, CharId, Sex};
-use ro_core::message::ClientIntent;
+use ro_core::{
+    ids::{AccountId, CharId, Sex},
+    message::ClientIntent,
+};
 
 use crate::incoming::helpers::{parse_sex, read_fixed_string, read_u16_le, read_u32_le};
 

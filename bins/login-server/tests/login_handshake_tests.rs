@@ -15,8 +15,7 @@ use ro_core::{
     RegisterCharServerRequest, ServerHeartbeat, ServerStatus, ServerType, ValidateSessionRequest,
     TARGET_PACKETVER,
 };
-use ro_persistence::AccountRepository;
-use ro_persistence::PostgresRepo;
+use ro_persistence::{AccountRepository, PostgresRepo};
 
 fn make_ca_login_frame(username: &str, password: &str) -> [u8; 55] {
     let mut frame = [0u8; 55];

@@ -1,8 +1,10 @@
 //! Incoming map server client packet decoders supporting CZ_* opcodes.
 
 use crate::{PacketCodecError, RawPacket};
-use ro_core::ids::{AccountId, CharId, Sex};
-use ro_core::message::ClientIntent;
+use ro_core::{
+    ids::{AccountId, CharId, Sex},
+    message::ClientIntent,
+};
 
 use crate::coords::unpack_pos_dir;
 use crate::incoming::helpers::{parse_sex, read_u32_le};

@@ -18,10 +18,8 @@ use ro_core::{
     ids::{AccountId, Sex},
     CreateCharacterRequest, TARGET_PACKETVER,
 };
-use ro_packets::PacketOpcode;
-use ro_packets::{PacketDecoder, RathenaPacketLengthTable};
-use ro_persistence::CharacterRepository;
-use ro_persistence::PostgresRepo;
+use ro_packets::{PacketDecoder, PacketOpcode, RathenaPacketLengthTable};
+use ro_persistence::{CharacterRepository, PostgresRepo};
 
 async fn setup_test_repo() -> Arc<dyn CharacterRepository> {
     let test_db_url = std::env::var("DATABASE_URL")

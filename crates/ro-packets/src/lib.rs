@@ -7,10 +7,10 @@
 pub mod codec;
 pub mod coords;
 pub mod incoming;
-pub mod opcode;
+mod opcode;
 pub mod outgoing;
 pub mod table;
-pub mod wire;
+mod wire;
 
 pub use codec::{PacketDecoder, PacketEncoder};
 pub use coords::{

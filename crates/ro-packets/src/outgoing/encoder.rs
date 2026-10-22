@@ -282,8 +282,10 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ro_core::ids::{AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, Sex};
-    use ro_core::TARGET_PACKETVER;
+    use ro_core::{
+        ids::{AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, Sex},
+        TARGET_PACKETVER,
+    };
 
     #[test]
     fn test_phase0_event_encoder_all_variants() {

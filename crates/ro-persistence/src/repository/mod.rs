@@ -2,8 +2,8 @@
 
 use serde::{Deserialize, Serialize};
 
-pub mod account;
-pub mod character;
+mod account;
+mod character;
 
 pub use account::{AccountRepository, AuthError};
 pub use character::{

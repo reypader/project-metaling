@@ -257,8 +257,10 @@ mod tests {
     use super::*;
     use crate::outgoing::encoder::ModernEventEncoder;
     use crate::EventEncoder;
-    use ro_core::ids::{AccountId, MapPosition, Sex};
-    use ro_core::message::ServerEvent;
+    use ro_core::{
+        ids::{AccountId, MapPosition, Sex},
+        message::ServerEvent,
+    };
 
     #[test]
     fn test_encode_hc_notify_zonesvr() {

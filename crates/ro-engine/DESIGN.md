@@ -191,7 +191,7 @@ In *Ragnarok Online*, movement is **hybrid predictive**: the server does *not* b
    * **Mid-Stride Redirection (`sx0, sy0` in `WBUFPOS2`):** If a player is 50% of the way from `(100, 100)` to `(101, 100)` and clicks a new destination `(101, 105)`, (future phase; the foundation always sends (8, 8)) `ro-engine` computes the 4-bit sub-cell fraction (`0..15`, where `8` is the cell center) from the elapsed step time. Passing `(sx0, sy0)` in `ServerEventPayload::PlayerMovementStarted` tells the client to smoothly pivot from its exact sub-tile pixel position without rubber-banding!
 
 ### 6.2 RO-Compliant A* Pathfinding Rules
-When `intent_to_pathfinding_system` queries `MapWalkabilityProvider`:
+When `intent_to_pathfinding_system` queries `MapWalkability`:
 * **Max Path Length:** `MAX_WALKPATH = 32` waypoints.
 * **Step Costs:** Orthogonal neighbor cost = `10`; Diagonal neighbor cost = `14`.
 * **Heuristic:** Manhattan distance x 10 (`10 * (dx + dy)`), as rAthena does (deliberately inadmissible; see `reference/catalog/mechanics/movement_aoi.md`).
@@ -248,7 +248,7 @@ Translates `PrimaryActionIntent::MoveTo` into an A* `WalkingPath` and emits `Eng
 ~~~rust
 pub fn intent_to_pathfinding_system(
     world: &World,
-    walkability: &dyn MapWalkabilityProvider,
+    walkability: &dyn MapWalkability,
     scratch: &mut AStarScratchBuffer,
     out_events: &mut Vec<EngineEvent>,
 ) {

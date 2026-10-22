@@ -1,6 +1,6 @@
 //! Generational entity handles and their allocator.
 
-use crate::EngineError;
+use crate::error::EngineError;
 
 /// A slot index plus the generation it was allocated with. A handle is stale once its slot
 /// is freed, even if the slot is later reused.

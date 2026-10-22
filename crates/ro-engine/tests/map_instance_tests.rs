@@ -8,10 +8,8 @@ use ro_core::{
     AccountId, BroadcastScope, CharId, CharacterSpawn, ClientIntent, MapPosition,
     ScopedServerEvent, ServerEvent, SessionId, SessionIntent, Sex,
 };
-use ro_db::MemoryMapGrid;
-use ro_db::{CellType, MapWalkability};
-use ro_engine::EngineError;
-use ro_engine::MapInstance;
+use ro_db::{CellType, MapWalkability, MemoryMapGrid};
+use ro_engine::{EngineError, MapInstance};
 
 const MAP: &str = "prontera.gat";
 const A: u32 = 1;

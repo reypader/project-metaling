@@ -11,16 +11,22 @@
 //! - `PKT-DEC-001`: Intent parsing for `CZ_NOTIFY_ACTORINIT` and `CZ_REQUEST_TIME`
 
 use bytes::{Bytes, BytesMut};
-use ro_core::ids::{AccountId, MapPosition};
-use ro_core::message::{ClientIntent, ServerEvent};
-use ro_packets::codec::PacketDecoder;
-use ro_packets::coords::pack_pos_dir;
-use ro_packets::incoming::{decode_frame, DecodedFrame};
+use ro_core::{
+    ids::{AccountId, MapPosition},
+    message::{ClientIntent, ServerEvent},
+};
 use ro_packets::outgoing::{
     encode_zc_accept_enter, encode_zc_aid, encode_zc_inventory_expansion_info, ModernEventEncoder,
 };
-use ro_packets::table::RathenaPacketLengthTable;
-use ro_packets::{EventEncoder, PacketLength, PacketLengthTable, PacketOpcode, RawPacket};
+use ro_packets::{
+    codec::PacketDecoder,
+    coords::pack_pos_dir,
+    incoming::{decode_frame, DecodedFrame},
+};
+use ro_packets::{
+    table::RathenaPacketLengthTable, EventEncoder, PacketLength, PacketLengthTable, PacketOpcode,
+    RawPacket,
+};
 use tokio_util::codec::Decoder;
 
 /// Scenario `PKT-LEN-001`: Length Table Mapping for `ZC_INVENTORY_EXPANSION_INFO`

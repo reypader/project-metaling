@@ -1,19 +1,22 @@
 //! Integration tests for packet framing, coordinate packing, and packet codecs.
 
 use bytes::BytesMut;
-use ro_core::ids::{AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, Sex};
-use ro_core::message::{ClientIntent, ServerEvent, UnitAppearance};
-use ro_packets::codec::PacketDecoder;
-use ro_packets::coords::{pack_pos2, pack_pos_dir, unpack_pos2, unpack_pos_dir};
-use ro_packets::incoming::{decode_frame, DecodedFrame};
+use ro_core::{
+    ids::{AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, Sex},
+    message::{ClientIntent, ServerEvent, UnitAppearance},
+};
 use ro_packets::outgoing::{
     encode_ac_accept_login, encode_ac_refuse_login, encode_hc_notify_zonesvr,
     encode_zc_accept_enter, encode_zc_notify_act, encode_zc_notify_act_params,
     encode_zc_notify_playermove, encode_zc_notify_time, encode_zc_par_change, ActParams,
     CharServerEntry, ModernEventEncoder, Phase0EventEncoder,
 };
-use ro_packets::table::RathenaPacketLengthTable;
-use ro_packets::{EventEncoder, PacketOpcode};
+use ro_packets::{
+    codec::PacketDecoder,
+    coords::{pack_pos2, pack_pos_dir, unpack_pos2, unpack_pos_dir},
+    incoming::{decode_frame, DecodedFrame},
+};
+use ro_packets::{table::RathenaPacketLengthTable, EventEncoder, PacketOpcode};
 use tokio_util::codec::Decoder;
 
 #[test]

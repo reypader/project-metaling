@@ -4,12 +4,12 @@
 
 use std::sync::atomic::{AtomicU32, Ordering};
 
-use ro_core::account::{Account, AccountState};
-use ro_core::character::CreateCharacterRequest;
-use ro_core::ids::{AccountId, CharId, MapPosition, Sex};
-use ro_persistence::PostgresRepo;
-use ro_persistence::RepositoryError;
-use ro_persistence::{AccountRepository, AuthError};
+use ro_core::{
+    account::{Account, AccountState},
+    character::CreateCharacterRequest,
+    ids::{AccountId, CharId, MapPosition, Sex},
+};
+use ro_persistence::{AccountRepository, AuthError, PostgresRepo, RepositoryError};
 use ro_persistence::{
     CancelDeleteOutcome, CharacterRepository, CreateCharacterError, DeleteReserveOutcome,
 };
