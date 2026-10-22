@@ -9,7 +9,6 @@ use std::{
 };
 
 use ro_core::{
-    account::AccountRepository,
     http::{
         HealthResponse, RegisterCharServerRequest, ServerHeartbeat, ServerStatus, ServerType,
         ValidateSessionRequest, ValidateSessionResponse,
@@ -18,6 +17,7 @@ use ro_core::{
     message::{ClientIntent, ServerEvent, SessionIntent},
     TARGET_PACKETVER,
 };
+use ro_persistence::AccountRepository;
 use tokio::sync::mpsc;
 use tracing::{info, warn};
 
@@ -430,7 +430,7 @@ mod tests {
     use super::*;
     use ro_persistence::PostgresRepo;
 
-    async fn setup_test_repo() -> Arc<dyn ro_core::account::AccountRepository> {
+    async fn setup_test_repo() -> Arc<dyn ro_persistence::AccountRepository> {
         let test_db_url = std::env::var("DATABASE_URL")
             .unwrap_or_else(|_| "postgres://ragnarok:ragnarok@localhost:5432/ragnarok".to_string());
         let repo = PostgresRepo::connect(&test_db_url).await.unwrap();

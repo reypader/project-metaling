@@ -1,6 +1,14 @@
-//! Shared repository error types and outcomes.
+//! Repository contracts the servers depend on, implemented by `PostgresRepo` and by test doubles.
 
 use serde::{Deserialize, Serialize};
+
+pub mod account;
+pub mod character;
+
+pub use account::{AccountRepository, AuthError};
+pub use character::{
+    CancelDeleteOutcome, CharacterRepository, CreateCharacterError, DeleteReserveOutcome,
+};
 
 /// Standard error variants returned by persistence repositories.
 #[derive(thiserror::Error, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

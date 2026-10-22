@@ -6,13 +6,11 @@ pub mod character;
 pub mod http;
 pub mod ids;
 pub mod message;
-pub mod repository;
 
 pub use account::*;
 pub use character::*;
 pub use http::*;
 pub use ids::*;
 pub use message::*;
-pub use repository::*;
 
 pub const TARGET_PACKETVER: u32 = 20260219;

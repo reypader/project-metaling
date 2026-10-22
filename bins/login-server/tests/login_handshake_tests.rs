@@ -10,12 +10,12 @@ use login_server::{
     validate_session, LoginService,
 };
 use ro_core::{
-    account::AccountRepository,
     ids::{AccountId, Sex},
     message::ServerEvent,
     RegisterCharServerRequest, ServerHeartbeat, ServerStatus, ServerType, ValidateSessionRequest,
     TARGET_PACKETVER,
 };
+use ro_persistence::AccountRepository;
 use ro_persistence::PostgresRepo;
 
 fn make_ca_login_frame(username: &str, password: &str) -> [u8; 55] {

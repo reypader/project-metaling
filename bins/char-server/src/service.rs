@@ -7,12 +7,11 @@ use std::{
 };
 
 use ro_core::{
-    character::{
-        CancelDeleteOutcome, CharacterRepository, CreateCharacterRequest, DeleteReserveOutcome,
-    },
+    character::CreateCharacterRequest,
     ids::{AccountId, SessionId},
     message::{ClientIntent, ServerEvent, SessionIntent},
 };
+use ro_persistence::{CancelDeleteOutcome, CharacterRepository, DeleteReserveOutcome};
 use tokio::sync::mpsc;
 use tracing::{error, info, warn};
 
