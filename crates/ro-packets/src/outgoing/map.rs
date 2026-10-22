@@ -2,7 +2,7 @@
 
 use crate::PacketOpcode;
 use bytes::{BufMut, Bytes, BytesMut};
-use ro_core::{AccountId, MapPosition, UnitAppearance};
+use ro_core::{AccountId, MapPosition, UnitAppearance, UnitObjectType};
 
 use crate::coords::{pack_pos2, pack_pos_dir};
 use crate::outgoing::helpers::write_fixed_string;
@@ -71,23 +71,35 @@ const MOVEENTRY11_LEN: u16 = 114;
 const NEWENTRY11_LEN: u16 = 107;
 const STANDENTRY11_LEN: u16 = 108;
 
-/// `object_type` for a player (`clif_bl_type`, BL_PC).
-const OBJECT_TYPE_PC: u8 = 0;
-/// `x_size`/`y_size` rAthena sends for players.
-const PC_CELL_SIZE: u8 = 5;
+/// `object_type` on the wire (`clif_bl_type`, `PACKETVER >= 20170726`).
+fn object_type(t: UnitObjectType) -> u8 {
+    match t {
+        UnitObjectType::Pc => 0x0,
+        UnitObjectType::Npc => 0x6,
+        UnitObjectType::MobSpriteNpc => 0xC,
+    }
+}
+
+/// `x_size`/`y_size`: rAthena sends 5 for players, 0 for every other unit.
+fn cell_size(t: UnitObjectType) -> u8 {
+    match t {
+        UnitObjectType::Pc => 5,
+        UnitObjectType::Npc | UnitObjectType::MobSpriteNpc => 0,
+    }
+}
 
 /// Writes offsets `0..37`, shared by `0x09fd/0x09fe/0x09ff`: header, ids, speed, status
 /// words, job, hair, gear up to `accessory`.
 fn put_unit_head(buf: &mut BytesMut, opcode: PacketOpcode, len: u16, unit: &UnitAppearance) {
     buf.put_u16_le(opcode.raw());
     buf.put_u16_le(len);
-    buf.put_u8(OBJECT_TYPE_PC);
-    buf.put_u32_le(unit.gid); // AID: account id for players
+    buf.put_u8(object_type(unit.object_type));
+    buf.put_u32_le(unit.gid); // AID: account id for players, NPC id for NPCs
     buf.put_u32_le(unit.char_id.map_or(0, |c| c.0)); // GID: char id, 0 for non-players
     buf.put_u16_le(unit.speed);
     buf.put_i16_le(0); // body_state (sc.opt1); NOT dead_sit
     buf.put_i16_le(0); // health_state (sc.opt2)
-    buf.put_i32_le(0); // effect_state (sc.option)
+    buf.put_i32_le(unit.effect_state); // effect_state (sc.option)
     buf.put_u16_le(unit.job);
     buf.put_u16_le(unit.hair_style); // head
     buf.put_u32_le(0); // weapon
@@ -140,8 +152,8 @@ pub fn encode_zc_notify_moveentry11(
     buf.put_u32_le(move_start_time);
     put_unit_middle(&mut buf, unit);
     buf.put_slice(&pack_pos2(start.0, start.1, dest.0, dest.1, 8, 8));
-    buf.put_u8(PC_CELL_SIZE);
-    buf.put_u8(PC_CELL_SIZE);
+    buf.put_u8(cell_size(unit.object_type));
+    buf.put_u8(cell_size(unit.object_type));
     put_unit_tail(&mut buf, unit);
     buf.freeze()
 }
@@ -157,8 +169,8 @@ pub fn encode_zc_notify_newentry11(unit: &UnitAppearance) -> Bytes {
     );
     put_unit_middle(&mut buf, unit);
     buf.put_slice(&pack_pos_dir(unit.pos.x, unit.pos.y, unit.pos.dir));
-    buf.put_u8(PC_CELL_SIZE);
-    buf.put_u8(PC_CELL_SIZE);
+    buf.put_u8(cell_size(unit.object_type));
+    buf.put_u8(cell_size(unit.object_type));
     put_unit_tail(&mut buf, unit);
     buf.freeze()
 }
@@ -175,8 +187,8 @@ pub fn encode_zc_notify_standentry11(unit: &UnitAppearance) -> Bytes {
     );
     put_unit_middle(&mut buf, unit);
     buf.put_slice(&pack_pos_dir(unit.pos.x, unit.pos.y, unit.pos.dir));
-    buf.put_u8(PC_CELL_SIZE);
-    buf.put_u8(PC_CELL_SIZE);
+    buf.put_u8(cell_size(unit.object_type));
+    buf.put_u8(cell_size(unit.object_type));
     buf.put_u8(unit.dead_sit);
     put_unit_tail(&mut buf, unit);
     buf.freeze()
@@ -219,6 +231,18 @@ pub fn encode_zc_ack_reqnameall(
     buf.put_slice(&write_fixed_string::<24>(guild_name));
     buf.put_slice(&write_fixed_string::<24>(position_name));
     buf.put_i32_le(title_id);
+    buf.freeze()
+}
+
+/// Encodes `ZC_ACK_REQNAMEALL_NPC` (0x0adf), fixed 58 bytes: the `CZ_REQNAME` reply for NPCs.
+/// `group_id` and `title` are always empty for static NPCs.
+pub fn encode_zc_ack_reqnameall_npc(gid: u32, name: &str) -> Bytes {
+    let mut buf = BytesMut::with_capacity(58);
+    buf.put_u16_le(PacketOpcode::ZC_ACK_REQNAMEALL_NPC.raw());
+    buf.put_u32_le(gid);
+    buf.put_i32_le(0); // group_id
+    buf.put_slice(&write_fixed_string::<24>(name));
+    buf.put_slice(&[0u8; 24]); // title
     buf.freeze()
 }
 

@@ -4,7 +4,7 @@
 
 use bytes::{Bytes, BytesMut};
 use ro_core::{
-    AccountId, CharId, ClientIntent, MapPosition, ServerEvent, Sex, UnitAppearance,
+    AccountId, CharId, ClientIntent, MapPosition, ServerEvent, Sex, UnitAppearance, UnitObjectType,
     TARGET_PACKETVER,
 };
 use ro_packets::{
@@ -62,9 +62,10 @@ fn assert_frames_cleanly(bytes: &Bytes, opcode: u16) {
 
 fn alice() -> UnitAppearance {
     UnitAppearance {
+        object_type: UnitObjectType::Pc,
         gid: 2_000_001,
         char_id: Some(CharId(150_001)),
-        name: "Alice".to_string(),
+        name: "Alice".into(),
         job: 4001,
         sex: Sex::Female,
         hair_style: 7,
@@ -78,6 +79,7 @@ fn alice() -> UnitAppearance {
         speed: 112,
         dead_sit: 2,
         clevel: 42,
+        effect_state: 0,
     }
 }
 
@@ -534,4 +536,92 @@ fn pkt_13_new_opcodes_are_reported_implemented() {
     }
     assert!(!is_implemented_outbound_opcode(PacketOpcode(0x0af7), VER));
     assert!(!is_implemented_outbound_opcode(PacketOpcode(0x0086), VER));
+}
+
+// ---------- PKT-NPC (specs/npc-spawning) ----------
+
+fn kafra() -> UnitAppearance {
+    UnitAppearance {
+        object_type: UnitObjectType::Npc,
+        gid: 110_000_005,
+        char_id: None,
+        name: "Kafra Employee#prt1_with_a_long_tail".into(),
+        job: 117,
+        sex: Sex::Female,
+        hair_style: 0,
+        hair_color: 0,
+        head_dir: 0,
+        pos: MapPosition {
+            x: 152,
+            y: 326,
+            dir: 4,
+        },
+        speed: 200,
+        dead_sit: 0,
+        clevel: 0,
+        effect_state: 0x4,
+    }
+}
+
+#[test]
+fn pkt_npc_01_npc_standentry_fields() {
+    let b = encode(&ServerEvent::UnitStanding { unit: kafra() });
+    assert_eq!(b.len(), 108);
+    assert_eq!(b[4], 0x06, "object_type NPC");
+    assert_eq!(u32_at(&b, 5), 110_000_005, "aid = NPC id");
+    assert_eq!(u32_at(&b, 9), 0, "GID 0 for NPCs");
+    assert_eq!(i16_at(&b, 13), 200);
+    assert_eq!(i32_at(&b, 19), 0x4, "effect_state");
+    assert_eq!(i16_at(&b, 23), 117, "job = sprite");
+    assert_eq!(u16_at(&b, 25), 0, "head");
+    assert_eq!(b[62], 0, "sex");
+    let pos: [u8; 3] = b[63..66].try_into().unwrap();
+    assert_eq!(unpack_pos_dir(&pos), (152, 326, 4));
+    assert_eq!((b[66], b[67]), (0, 0), "x_size/y_size 0 for NPCs");
+    assert_eq!(b[68], 0, "state");
+    assert_eq!(i16_at(&b, 69), 0, "clevel");
+    assert_eq!((i32_at(&b, 73), i32_at(&b, 77)), (-1, -1));
+    assert_eq!(
+        str_at(&b, 84, 24),
+        "Kafra Employee#prt1_wit",
+        "23 bytes + NUL"
+    );
+    assert_eq!(b[107], 0);
+    assert_frames_cleanly(&b, 0x09ff);
+}
+
+#[test]
+fn pkt_npc_01_mob_sprite_npc_and_player_sizes() {
+    let mut unit = kafra();
+    unit.object_type = UnitObjectType::MobSpriteNpc;
+    let b = encode(&ServerEvent::UnitStanding { unit });
+    assert_eq!(b[4], 0x0C);
+
+    let p = encode(&ServerEvent::UnitStanding { unit: alice() });
+    assert_eq!((p[4], p[66], p[67]), (0, 5, 5), "players unchanged");
+}
+
+#[test]
+fn pkt_npc_01_raw_dir_is_masked_to_four_bits() {
+    let mut unit = kafra();
+    unit.pos.dir = 55;
+    let b = encode(&ServerEvent::UnitStanding { unit });
+    let pos: [u8; 3] = b[63..66].try_into().unwrap();
+    assert_eq!(unpack_pos_dir(&pos), (152, 326, 7));
+}
+
+#[test]
+fn pkt_npc_02_ack_npc_name_encodes_0adf() {
+    let b = encode(&ServerEvent::AckNpcName {
+        gid: 110_000_005,
+        name: "Kafra Employee#prt1".into(),
+    });
+    assert_eq!(b.len(), 58);
+    assert_eq!(u16_at(&b, 0), 0x0adf);
+    assert_eq!(u32_at(&b, 2), 110_000_005);
+    assert_eq!(i32_at(&b, 6), 0, "group_id");
+    assert_eq!(str_at(&b, 10, 24), "Kafra Employee#prt1");
+    assert!(b[34..58].iter().all(|&x| x == 0), "title empty");
+    assert_frames_cleanly(&b, 0x0adf);
+    assert!(is_implemented_outbound_opcode(PacketOpcode(0x0adf), VER));
 }

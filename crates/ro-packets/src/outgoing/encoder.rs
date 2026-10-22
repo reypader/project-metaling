@@ -12,11 +12,11 @@ use super::char::{
 };
 use super::login::{encode_ac_accept_login, encode_ac_refuse_login, CharServerEntry};
 use super::map::{
-    encode_zc_accept_enter, encode_zc_ack_reqnameall, encode_zc_aid, encode_zc_change_direction,
-    encode_zc_inventory_expansion_info, encode_zc_notify_act, encode_zc_notify_moveentry11,
-    encode_zc_notify_newentry11, encode_zc_notify_playermove, encode_zc_notify_standentry11,
-    encode_zc_notify_time, encode_zc_notify_vanish, encode_zc_npcack_mapmove,
-    encode_zc_par_change_i32, encode_zc_restart_ack, encode_zc_stopmove,
+    encode_zc_accept_enter, encode_zc_ack_reqnameall, encode_zc_ack_reqnameall_npc, encode_zc_aid,
+    encode_zc_change_direction, encode_zc_inventory_expansion_info, encode_zc_notify_act,
+    encode_zc_notify_moveentry11, encode_zc_notify_newentry11, encode_zc_notify_playermove,
+    encode_zc_notify_standentry11, encode_zc_notify_time, encode_zc_notify_vanish,
+    encode_zc_npcack_mapmove, encode_zc_par_change_i32, encode_zc_restart_ack, encode_zc_stopmove,
 };
 
 /// `ZC_NOTIFY_ACT` types for sit down / stand up (`e_damage_type`).
@@ -187,6 +187,7 @@ impl EventEncoder for ModernEventEncoder {
                 position_name,
                 *title_id,
             )),
+            ServerEvent::AckNpcName { gid, name } => Ok(encode_zc_ack_reqnameall_npc(*gid, name)),
             ServerEvent::PlayerMapMove {
                 dest_map,
                 dest_x,
@@ -269,6 +270,7 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
             | PacketOpcode::ZC_STOPMOVE
             | PacketOpcode::ZC_CHANGE_DIRECTION
             | PacketOpcode::ZC_ACK_REQNAMEALL
+            | PacketOpcode::ZC_ACK_REQNAMEALL_NPC
             | PacketOpcode::ZC_NPCACK_MAPMOVE
             | PacketOpcode::ZC_NOTIFY_NEWENTRY11
             | PacketOpcode::ZC_NOTIFY_STANDENTRY11

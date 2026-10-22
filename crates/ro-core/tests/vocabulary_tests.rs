@@ -3,7 +3,7 @@
 
 use ro_core::{
     AccountId, CharId, CharacterSpawn, CharacterSummary, MapPosition, ServerEvent, Sex,
-    UnitAppearance, DEFAULT_WALK_SPEED,
+    UnitAppearance, UnitObjectType, DEFAULT_WALK_SPEED,
 };
 
 fn summary() -> CharacterSummary {
@@ -54,9 +54,10 @@ fn character_spawn_from_summary_copies_appearance_and_defaults_speed() {
 #[test]
 fn unit_appearance_and_new_server_events_construct() {
     let unit = UnitAppearance {
+        object_type: UnitObjectType::Pc,
         gid: 2000001,
         char_id: Some(CharId(150001)),
-        name: "Alice".to_string(),
+        name: "Alice".into(),
         job: 0,
         sex: Sex::Male,
         hair_style: 1,
@@ -66,6 +67,7 @@ fn unit_appearance_and_new_server_events_construct() {
         speed: 150,
         dead_sit: 0,
         clevel: 1,
+        effect_state: 0,
     };
     let events = [
         ServerEvent::PlayerMoved {

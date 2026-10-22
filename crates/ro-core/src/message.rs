@@ -1,6 +1,7 @@
 //! Decoded client intents and server events: the vocabulary between packets, engine and servers.
 
 use std::fmt;
+use std::sync::Arc;
 
 use crate::ids::{
     AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, SessionId, Sex,
@@ -231,14 +232,25 @@ impl SessionIntent {
     }
 }
 
+/// What a unit is to the client: the entry packets' `object_type` (rAthena `clif_bl_type`).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum UnitObjectType {
+    Pc,
+    Npc,
+    /// An NPC whose sprite is a mob id.
+    MobSpriteNpc,
+}
+
 /// Appearance snapshot shared by the unit entry packets (`0x09fd`/`0x09fe`/`0x09ff`).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UnitAppearance {
-    /// Wire id (`bl.id`): the account_id for players.
+    pub object_type: UnitObjectType,
+    /// Wire id (`bl.id`): the account_id for players, the NPC id for NPCs.
     pub gid: u32,
     /// Written to the `GID` field; `None` (non-players) writes 0.
     pub char_id: Option<CharId>,
-    pub name: String,
+    /// Shared, so entry events don't copy the string.
+    pub name: Arc<str>,
     pub job: u16,
     pub sex: Sex,
     pub hair_style: u16,
@@ -252,6 +264,8 @@ pub struct UnitAppearance {
     /// byte (offset 68). It is NOT the wire `body_state` (`sc.opt1`, offset 15), which stays 0.
     pub dead_sit: u8,
     pub clevel: u16,
+    /// rAthena `sc.option` (`effect_state`): `0x2` hidden, `0x4` cloaked NPCs.
+    pub effect_state: i32,
 }
 
 /// High-level domain events emitted by logic modules and engine systems, decoupled from wire serialization.
@@ -360,6 +374,11 @@ pub enum ServerEvent {
         guild_name: String,
         position_name: String,
         title_id: i32,
+    },
+    /// `0x0adf`: reply to `CZ_REQNAME` for an NPC.
+    AckNpcName {
+        gid: u32,
+        name: Arc<str>,
     },
     /// `0x0091`.
     PlayerMapMove {

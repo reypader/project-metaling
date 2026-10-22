@@ -3,7 +3,7 @@
 use bytes::BytesMut;
 use ro_core::{
     AccountId, CharId, CharServerInfo, CharacterSummary, ClientIntent, MapPosition, ServerEvent,
-    Sex, UnitAppearance,
+    Sex, UnitAppearance, UnitObjectType,
 };
 use ro_packets::{
     decode_frame, encode_ac_accept_login, encode_ac_refuse_login, encode_hc_notify_zonesvr,
@@ -198,9 +198,10 @@ fn test_outgoing_serializers_and_redecoding() {
         .encode_event(
             &ServerEvent::UnitSpawned {
                 unit: UnitAppearance {
+                    object_type: UnitObjectType::Pc,
                     gid: 2000001,
                     char_id: Some(CharId(150001)),
-                    name: "Novice".to_string(),
+                    name: "Novice".into(),
                     job: 1,
                     sex: Sex::Female,
                     hair_style: 2,
@@ -214,6 +215,7 @@ fn test_outgoing_serializers_and_redecoding() {
                     speed: 150,
                     dead_sit: 0,
                     clevel: 10,
+                    effect_state: 0,
                 },
             },
             ro_core::TARGET_PACKETVER,

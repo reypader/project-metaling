@@ -50,10 +50,11 @@ pub use login::{
     encode_ac_refuse_login_modern, CharServerEntry,
 };
 pub use map::{
-    encode_zc_accept_enter, encode_zc_accept_enter2, encode_zc_ack_reqnameall, encode_zc_aid,
-    encode_zc_change_direction, encode_zc_inventory_expansion_info, encode_zc_notify_act,
-    encode_zc_notify_act_modern, encode_zc_notify_act_params, encode_zc_notify_moveentry11,
-    encode_zc_notify_newentry11, encode_zc_notify_playermove, encode_zc_notify_standentry11,
-    encode_zc_notify_time, encode_zc_notify_vanish, encode_zc_npcack_mapmove, encode_zc_par_change,
+    encode_zc_accept_enter, encode_zc_accept_enter2, encode_zc_ack_reqnameall,
+    encode_zc_ack_reqnameall_npc, encode_zc_aid, encode_zc_change_direction,
+    encode_zc_inventory_expansion_info, encode_zc_notify_act, encode_zc_notify_act_modern,
+    encode_zc_notify_act_params, encode_zc_notify_moveentry11, encode_zc_notify_newentry11,
+    encode_zc_notify_playermove, encode_zc_notify_standentry11, encode_zc_notify_time,
+    encode_zc_notify_vanish, encode_zc_npcack_mapmove, encode_zc_par_change,
     encode_zc_par_change_i32, encode_zc_restart_ack, encode_zc_stopmove, ActParams,
 };

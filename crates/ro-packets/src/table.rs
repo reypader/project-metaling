@@ -955,6 +955,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0ace => Some(Fixed(4)),
         0x0add => Some(Fixed(22)),
         0x0ade => Some(Fixed(6)),
+        0x0adf => Some(Fixed(58)), // ZC_ACK_REQNAMEALL_NPC (struct size)
         0x0ae6 => Some(Fixed(10)),
         0x0ae8 => Some(Fixed(2)),
         0x0aef => Some(Fixed(2)),
@@ -1178,6 +1179,7 @@ mod tests {
             (0x09ff, Dynamic),
             (0x0080, Fixed(7)),
             (0x0a30, Fixed(106)),
+            (0x0adf, Fixed(58)),
             (0x0af7, Fixed(32)),
             (0x08c8, Fixed(34)),
             (0x00b0, Fixed(8)),

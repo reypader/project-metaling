@@ -939,6 +939,7 @@ impl PacketOpcode {
     pub const CZ_EQUIPSWITCH_REQUEST_SINGLE: Self = Self(0x0ace);
     pub const PACKET_0X0ADD: Self = Self(0x0add);
     pub const ZC_OVERWEIGHT_PERCENT: Self = Self(0x0ade);
+    pub const ZC_ACK_REQNAMEALL_NPC: Self = Self(0x0adf);
     pub const CZ_PARTY_REQ_MASTER_TO_JOIN: Self = Self(0x0ae6);
     pub const CZ_CHANGEDRESS: Self = Self(0x0ae8);
     pub const CZ_ATTENDANCE_REQUEST: Self = Self(0x0aef);
@@ -1937,6 +1938,7 @@ impl PacketOpcode {
             0x0ace => Some("CZ_EQUIPSWITCH_REQUEST_SINGLE"),
             0x0add => Some("PACKET_0X0ADD"),
             0x0ade => Some("ZC_OVERWEIGHT_PERCENT"),
+            0x0adf => Some("ZC_ACK_REQNAMEALL_NPC"),
             0x0ae6 => Some("CZ_PARTY_REQ_MASTER_TO_JOIN"),
             0x0ae8 => Some("CZ_CHANGEDRESS"),
             0x0aef => Some("CZ_ATTENDANCE_REQUEST"),
