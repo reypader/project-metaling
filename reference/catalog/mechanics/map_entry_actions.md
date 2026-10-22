@@ -24,6 +24,19 @@ Target client version: `PACKETVER = 20260219`. Citations are `$RATHENA_PATH/src/
 * `VAR_SPEED` (`SP_SPEED`, id 0) is NOT sent on a normal entry. It is sent only when `battle_status.speed` changes during `status_calc_pc` (`status.cpp:6594-6595`); the baseline is `DEFAULT_WALK_SPEED = 150` (`pc.cpp:1456`) so an unmodified character never triggers it. If the server wants the value, `clif_updatestatus(SP_SPEED)` = `ZC_PAR_CHANGE(var=0, value=speed)` (`clif.cpp:3646-3648`).
 * Minimal subset an implementation needs for walking: `map_addblock`, spawn to others (AREA_WOS), nearby-units to self; everything else is feature content.
 
+### Map change (same map-server)
+
+Source-derived from rAthena; not yet checked against a real-client capture. Warp-side details (same-map, destination cell, guards): [npcs.md#warp-trigger-for-the-warp-portal-feature](./npcs.md#warp-trigger-for-the-warp-portal-feature).
+
+* Sequence (`pc.cpp:6930-7190`, `clif.cpp:2155`): trigger -> `pc_setpos` sets `state.warping = 1`, `state.changemap = true` -> `unit_remove_map_pc` (others: `0x0080` type 0; in-flight walk cancelled silently) -> `0x0091` to self -> sets `mapindex/m/x/y/ud.to_x/to_y` (and pet/homun/merc/elem coords) -> client loads -> `0x007d`. Nothing else is sent. `ZC_ACCEPT_ENTER` and `ZC_AID` are first-login only and are NOT re-sent.
+* Packets between `0x0091` and `0x007d`: dispatcher drops every packet except `clif_parse_LoadEndAck` while `sd->prev == nullptr` (`clif.cpp:25794-25796`). This covers moves, actions and chat.
+* Flags while waiting: `prev == nullptr`, `warping = 1`, `changemap = true`; `rewarp` is 0 unless `pc_setpos` is called again while `prev == nullptr && state.active` (`pc.cpp:7119-7120`). In `LoadEndAck`: `prev != nullptr` -> return (duplicate `0x007d`); `rewarp` set -> clear, re-send `clif_changemap(sd->m, sd->x, sd->y)`, return, still waiting for the next `0x007d` (`clif.cpp:10752-10766`); otherwise `warping = 0` and the full sequence runs.
+* Always runs (map change and first login): look/weapon, costume view, clothcolor, inventory list, equip-switch list, cart (if any), `SP_WEIGHT`/`SP_MAXWEIGHT`, guild member info (if any), `map_addblock` + `clif_spawn` (others only), party hp (if any), `clif_map_property`, `clif_getareachar` over the AoI, pet/homun/merc/elem spawns (if any), the six base stats (plus renewal trait stats) via `clif_updatestatus`, weather, arrival-cell NPC touch.
+* Changemap-only (`state.changemap`, `clif.cpp` ~11000-11110): party-invite state, equipcheck, pet autofeed, `CONFIG_CALL`, `CONFIG_DISABLE_SHOWCOSTUMES`, reputation list, night flag, battleground/KS messages, `status_calc_pc`, map channel join, `clif_pk_mode_message`. Not needed by a minimal server.
+* `connect_new`-only (first login): skill list, hotkeys, base/job exp and next-exp, skill points, `clif_initialstatus`, riding/falcon icons, friend toggles, `NPCE_LOGIN`.
+* Map property note: no code gates the loading screen on stats or inventory; the client finishing is signalled by its own `0x007d`. `clif_map_property` is the packet I would treat as required for the client to leave the loading state, but this is unverified; check a capture.
+* Persistence: `pc_setpos` writes nothing to `status` and does not call `chrif_save` on a same-server change (only in-memory `mapindex/m/x/y`). `last_point` is derived from the current position inside `pc_makesavestatus` (`pc.cpp:1352`, `last_point` at ~1380-1427; falls back to `save_point` when jailed or for some map flags/instances), called by `chrif_save` (`chrif.cpp:282`). `chrif_save` runs from autosave (`pc_autosave`, `pc.cpp:13002`), logout (`chrif.cpp:520,752`), `@save`, trade/buyingstore, and cross-map-server moves (`pc.cpp:7072`). `save_point` changes only via save-point mechanics.
+
 ## Sit / stand: CZ_REQUEST_ACT (action 2 / 3)
 
 * Provenance: `clif.cpp:11697-11830, 5329-5360`, `pc.hpp:1149,1151`, `pc.cpp:13099-13119`, `clif.hpp:691-695`.

@@ -54,6 +54,8 @@ This master index maps extracted protocol opcodes, bit-packing algorithms, Aegis
 | Sit / Stand | `ZC_NOTIFY_ACT` type 2/3 to `AREA` incl. self, stop-walk first, idle-entry state=2 | [mechanics/map_entry_actions.md#sit--stand-cz_request_act-action-2--3](./mechanics/map_entry_actions.md#sit--stand-cz_request_act-action-2--3) |
 | Direction / Name / Time | `ZC_CHANGE_DIRECTION` to `AREA_WOS`, `CZ_REQNAME` range 14 self-only reply, `ZC_NOTIFY_TIME` = server tick | [mechanics/map_entry_actions.md#direction-change-cz_change_direction](./mechanics/map_entry_actions.md#direction-change-cz_change_direction) |
 | NPC Presentation | Never-sent classes (-1, 32767, disabled), hide/cloak, ids from 110000000 shared with mobs, vanish, warp trigger | [mechanics/npcs.md](./mechanics/npcs.md) |
+| Warp map change | `pc_setpos` same-map and cross-map sequence, `0x0080`+`0x0091`, packet drop until `0x007d`, rewarp/warping flags, `LoadEndAck` always vs changemap-only content, persistence | [mechanics/map_entry_actions.md#map-change-same-map-server](./mechanics/map_entry_actions.md#map-change-same-map-server) |
+| Rewarp guard | `count_rewarp > 10` skip, counted at `pc_setpos` tail, arrival-cell chain-warp, destination cell rules | [mechanics/npcs.md#warp-trigger-for-the-warp-portal-feature](./mechanics/npcs.md#warp-trigger-for-the-warp-portal-feature) |
 | Status Effects | Status change lifecycles, timers, and stat modifiers | [mechanics/status.md#status-change-lifecycle](./mechanics/status.md#status-change-lifecycle) |
 
 ## 3. Scripting VM (`./scripting/`)
