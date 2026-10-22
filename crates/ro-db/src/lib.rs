@@ -4,4 +4,4 @@
 pub mod map;
 
 pub use map::{GatMapGrid, MemoryMapGrid};
-pub use ro_contracts;
+pub use ro_core;

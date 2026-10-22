@@ -8,7 +8,7 @@ use std::{
     time::{Duration, Instant, SystemTime, UNIX_EPOCH},
 };
 
-use ro_contracts::{
+use ro_core::{
     account::AccountRepository,
     http::{
         HealthResponse, RegisterCharServerRequest, ServerHeartbeat, ServerStatus, ServerType,
@@ -430,7 +430,7 @@ mod tests {
     use super::*;
     use ro_persistence::PostgresRepo;
 
-    async fn setup_test_repo() -> Arc<dyn ro_contracts::account::AccountRepository> {
+    async fn setup_test_repo() -> Arc<dyn ro_core::account::AccountRepository> {
         let test_db_url = std::env::var("DATABASE_URL")
             .unwrap_or_else(|_| "postgres://ragnarok:ragnarok@localhost:5432/ragnarok".to_string());
         let repo = PostgresRepo::connect(&test_db_url).await.unwrap();

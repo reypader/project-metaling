@@ -1,7 +1,7 @@
 //! Binary reading helpers for incoming packet frames.
 
-use ro_contracts::ids::Sex;
-use ro_contracts::packet::{PacketCodecError, PacketOpcode};
+use ro_core::ids::Sex;
+use ro_core::packet::{PacketCodecError, PacketOpcode};
 
 /// Reads a null-terminated or null-padded ASCII or UTF-8 string from a fixed byte slice.
 pub fn read_fixed_string(bytes: &[u8]) -> String {

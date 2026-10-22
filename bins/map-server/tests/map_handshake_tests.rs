@@ -9,7 +9,7 @@ use std::time::Duration;
 use axum::{extract::State, Json};
 use common::*;
 use map_server::accept_transfer;
-use ro_contracts::{AccountId, CharId, MapPosition, PrepareMapTransferRequest};
+use ro_core::{AccountId, CharId, MapPosition, PrepareMapTransferRequest};
 
 #[tokio::test]
 async fn test_map_restart_to_char_select() {

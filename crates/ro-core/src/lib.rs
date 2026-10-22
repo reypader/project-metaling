@@ -1,5 +1,5 @@
-//! Shared domain contracts, IDs, events, and repository traits.
-//! Owned exclusively by the Main Orchestrator Agent.
+//! Vocabulary shared by more than one crate: IDs, domain DTOs, client intents and server events,
+//! and internal HTTP DTOs. Crate-specific errors, traits and wire details live in their own crates.
 
 pub mod account;
 pub mod character;

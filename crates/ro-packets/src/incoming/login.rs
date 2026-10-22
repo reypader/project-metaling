@@ -1,6 +1,6 @@
 //! Incoming login client packet decoders supporting CA_LOGIN opcodes.
 
-use ro_contracts::packet::{ClientIntent, PacketCodecError, PacketOpcode, RawPacket};
+use ro_core::packet::{ClientIntent, PacketCodecError, PacketOpcode, RawPacket};
 
 use crate::incoming::helpers::{read_fixed_string, read_u32_le};
 
@@ -90,8 +90,8 @@ impl CaLoginPacket {
 mod tests {
     use super::*;
     use bytes::Bytes;
-    use ro_contracts::packet::PacketIntentParser;
-    use ro_contracts::TARGET_PACKETVER;
+    use ro_core::packet::PacketIntentParser;
+    use ro_core::TARGET_PACKETVER;
 
     use crate::incoming::frame::Phase0IntentParser;
 

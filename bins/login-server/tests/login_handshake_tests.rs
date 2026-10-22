@@ -9,7 +9,7 @@ use login_server::{
     handle_heartbeat, handle_in_memory_session, health_check, register_char_server,
     validate_session, LoginService,
 };
-use ro_contracts::{
+use ro_core::{
     account::AccountRepository,
     ids::{AccountId, Sex},
     packet::ServerEvent,

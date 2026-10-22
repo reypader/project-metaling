@@ -14,7 +14,7 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
-use ro_contracts::{
+use ro_core::{
     HealthResponse, PrepareMapTransferRequest, PrepareMapTransferResponse, ServerStatus,
     ServerType, TARGET_PACKETVER,
 };

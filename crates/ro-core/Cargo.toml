@@ -1,5 +1,5 @@
 [package]
-name = "ro-contracts"
+name = "ro-core"
 version.workspace = true
 edition.workspace = true
 

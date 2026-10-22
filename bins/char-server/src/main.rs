@@ -5,7 +5,7 @@ use tokio::net::TcpListener;
 use tracing::{error, info, warn};
 
 use char_server::{create_http_router, handle_client_session, CharConfig, CharServiceHandle};
-use ro_contracts::TARGET_PACKETVER;
+use ro_core::TARGET_PACKETVER;
 use ro_persistence::PostgresRepo;
 
 #[tokio::main]

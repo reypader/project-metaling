@@ -10,7 +10,7 @@ use tokio::{
 use tokio_util::codec::Decoder;
 
 use map_server::{handle_client_session, map_data_loader, MapServiceHandle};
-use ro_contracts::{packet::PacketOpcode, TARGET_PACKETVER};
+use ro_core::{packet::PacketOpcode, TARGET_PACKETVER};
 use ro_packets::{PacketDecoder, RathenaPacketLengthTable};
 
 #[tokio::test]
@@ -32,8 +32,8 @@ async fn test_bin_map_persist_lifecycle_and_coordinates() {
     );
     let _ = repo.seed_test_data().await;
 
-    use ro_contracts::character::{CharacterRepository, CreateCharacterRequest};
-    use ro_contracts::ids::{AccountId, MapPosition, Sex};
+    use ro_core::character::{CharacterRepository, CreateCharacterRequest};
+    use ro_core::ids::{AccountId, MapPosition, Sex};
 
     let _ = sqlx::query("DELETE FROM characters WHERE account_id = $1 AND slot = $2")
         .bind(2000000i32)

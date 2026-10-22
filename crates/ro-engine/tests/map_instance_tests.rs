@@ -4,7 +4,7 @@
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 
-use ro_contracts::{
+use ro_core::{
     AccountId, BroadcastScope, CellType, CharId, CharacterSpawn, ClientIntent, EngineError,
     MapEngine, MapPosition, MapWalkability, ScopedServerEvent, ServerEvent, SessionId,
     SessionIntent, Sex,

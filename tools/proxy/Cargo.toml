@@ -9,7 +9,7 @@ name = "proxy"
 path = "src/main.rs"
 
 [dependencies]
-ro-contracts.workspace = true
+ro-core.workspace = true
 ro-packets.workspace = true
 tokio.workspace = true
 tokio-util = { workspace = true, features = ["codec"] }

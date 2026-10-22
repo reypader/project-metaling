@@ -10,7 +10,7 @@ use std::{
 };
 
 use bytes::{Bytes, BytesMut};
-use ro_contracts::{
+use ro_core::{
     character::{CharacterRepository, CharacterSpawn},
     ids::{AccountId, CharId, CharacterSummary, MapPosition, SessionId},
     packet::{
@@ -102,7 +102,7 @@ impl MapWalkability for EmptyMap {
     fn is_walkable(&self, _x: u16, _y: u16) -> bool {
         false
     }
-    fn cell_type(&self, _x: u16, _y: u16) -> Option<ro_contracts::CellType> {
+    fn cell_type(&self, _x: u16, _y: u16) -> Option<ro_core::CellType> {
         None
     }
 }

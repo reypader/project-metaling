@@ -14,7 +14,7 @@ use tokio::net::{TcpListener, TcpStream};
 use tokio_util::codec::Decoder;
 
 use map_server::{handle_client_session, MapServiceHandle, WalkabilityLoader};
-use ro_contracts::{
+use ro_core::{
     AccountId, CancelDeleteOutcome, CellType, CharId, CharacterRepository, CharacterSummary,
     CreateCharacterError, CreateCharacterRequest, DeleteReserveOutcome, MapPosition,
     MapWalkability, PacketOpcode, RawPacket, RepositoryError, Sex, TARGET_PACKETVER,

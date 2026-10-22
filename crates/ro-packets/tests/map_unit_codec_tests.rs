@@ -3,12 +3,12 @@
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use bytes::{Bytes, BytesMut};
-use ro_contracts::ids::{AccountId, CharId, MapPosition, Sex};
-use ro_contracts::packet::{
+use ro_core::ids::{AccountId, CharId, MapPosition, Sex};
+use ro_core::packet::{
     ClientIntent, EventEncoder, PacketCodecError, PacketIntentParser, PacketOpcode, RawPacket,
     ServerEvent, UnitAppearance,
 };
-use ro_contracts::TARGET_PACKETVER;
+use ro_core::TARGET_PACKETVER;
 use ro_packets::codec::PacketDecoder;
 use ro_packets::coords::{pack_pos2, pack_pos_dir, unpack_pos2, unpack_pos_dir};
 use ro_packets::incoming::Phase0IntentParser;

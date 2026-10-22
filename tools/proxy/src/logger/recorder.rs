@@ -9,7 +9,7 @@ use std::{
     time::{SystemTime, UNIX_EPOCH},
 };
 
-use ro_contracts::{http::ServerType, packet::PacketOpcode, TARGET_PACKETVER};
+use ro_core::{http::ServerType, packet::PacketOpcode, TARGET_PACKETVER};
 
 use crate::logger::session::PacketDirection;
 

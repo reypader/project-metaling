@@ -4,13 +4,13 @@
 
 use std::sync::atomic::{AtomicU32, Ordering};
 
-use ro_contracts::account::{Account, AccountRepository, AccountState, AuthError};
-use ro_contracts::character::{
+use ro_core::account::{Account, AccountRepository, AccountState, AuthError};
+use ro_core::character::{
     CancelDeleteOutcome, CharacterRepository, CreateCharacterError, CreateCharacterRequest,
     DeleteReserveOutcome,
 };
-use ro_contracts::ids::{AccountId, CharId, MapPosition, Sex};
-use ro_contracts::repository::RepositoryError;
+use ro_core::ids::{AccountId, CharId, MapPosition, Sex};
+use ro_core::repository::RepositoryError;
 use ro_persistence::PostgresRepo;
 
 static ACCOUNT_COUNTER: std::sync::OnceLock<AtomicU32> = std::sync::OnceLock::new();

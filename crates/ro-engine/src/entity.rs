@@ -1,6 +1,6 @@
 //! Generational entity handles and their allocator.
 
-use ro_contracts::EngineError;
+use ro_core::EngineError;
 
 /// A slot index plus the generation it was allocated with. A handle is stale once its slot
 /// is freed, even if the slot is later reused.
@@ -102,7 +102,7 @@ impl EntityAllocator {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ro_contracts::EngineError;
+    use ro_core::EngineError;
 
     #[test]
     fn eng_01_first_allocation_is_index_0_generation_1() {

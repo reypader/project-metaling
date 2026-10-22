@@ -1,4 +1,4 @@
-use ro_contracts::http::ServerType;
+use ro_core::http::ServerType;
 use ro_proxy::{forwarder::handle_proxy_connection, PacketSequenceRecorder};
 use std::{sync::Arc, time::Duration};
 use tokio::{

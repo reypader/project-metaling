@@ -1,6 +1,6 @@
 //! 8x8-cell block grid for Area-of-Interest queries.
 
-use ro_contracts::MapPosition;
+use ro_core::MapPosition;
 use smallvec::SmallVec;
 
 use crate::entity::Entity;
@@ -167,7 +167,7 @@ pub(crate) fn step_visibility(
 mod tests {
     use super::*;
     use crate::entity::{Entity, EntityAllocator};
-    use ro_contracts::MapPosition;
+    use ro_core::MapPosition;
 
     struct Fixture {
         grid: SpatialGrid8x8,

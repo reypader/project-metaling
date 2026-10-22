@@ -6,7 +6,7 @@ use std::{
     time::Instant,
 };
 
-use ro_contracts::{
+use ro_core::{
     character::{
         CancelDeleteOutcome, CharacterRepository, CreateCharacterRequest, DeleteReserveOutcome,
     },

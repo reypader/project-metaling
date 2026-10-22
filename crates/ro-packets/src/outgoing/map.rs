@@ -1,8 +1,8 @@
 //! Outgoing map server packet encoders supporting ZC_* opcodes.
 
 use bytes::{BufMut, Bytes, BytesMut};
-use ro_contracts::ids::{AccountId, MapPosition};
-use ro_contracts::packet::{PacketOpcode, UnitAppearance};
+use ro_core::ids::{AccountId, MapPosition};
+use ro_core::packet::{PacketOpcode, UnitAppearance};
 
 use crate::coords::{pack_pos2, pack_pos_dir};
 use crate::outgoing::helpers::write_fixed_string;

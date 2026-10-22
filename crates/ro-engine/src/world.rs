@@ -1,6 +1,6 @@
 //! Per-map entity storage: dense columns indexed by `Entity::index()` plus sparse components.
 
-use ro_contracts::{AccountId, CharId, CharacterSpawn, EngineError, MapPosition, Sex};
+use ro_core::{AccountId, CharId, CharacterSpawn, EngineError, MapPosition, Sex};
 use rustc_hash::FxHashMap;
 
 use crate::entity::{Entity, EntityAllocator};
@@ -164,7 +164,7 @@ impl World {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ro_contracts::{AccountId, CharId, CharacterSpawn, MapPosition, Sex};
+    use ro_core::{AccountId, CharId, CharacterSpawn, MapPosition, Sex};
 
     fn spawn(account: u32, char_id: u32, x: u16, y: u16) -> CharacterSpawn {
         CharacterSpawn {

@@ -1,6 +1,6 @@
 //! Packet length lookup table for `TARGET_PACKETVER = 20260219`.
 
-use ro_contracts::packet::{PacketLength, PacketLengthTable, PacketOpcode};
+use ro_core::packet::{PacketLength, PacketLengthTable, PacketOpcode};
 
 /// Standard packet length table implementation referencing rAthena packet databases.
 #[derive(Debug, Default, Clone, Copy)]
@@ -1023,7 +1023,7 @@ mod tests {
     #[test]
     fn test_20260219_incoming_packet_lengths() {
         let table = RathenaPacketLengthTable;
-        let ver = ro_contracts::TARGET_PACKETVER;
+        let ver = ro_core::TARGET_PACKETVER;
 
         assert_eq!(
             table.packet_length(PacketOpcode(0x0064), ver),
@@ -1074,7 +1074,7 @@ mod tests {
     #[test]
     fn test_20260219_outgoing_packet_lengths() {
         let table = RathenaPacketLengthTable;
-        let ver = ro_contracts::TARGET_PACKETVER;
+        let ver = ro_core::TARGET_PACKETVER;
 
         assert_eq!(
             table.packet_length(PacketOpcode(0x0ac4), ver),
@@ -1159,7 +1159,7 @@ mod tests {
     fn pkt_01_engine_foundation_lengths() {
         use PacketLength::{Dynamic, Fixed};
         let table = RathenaPacketLengthTable;
-        let ver = ro_contracts::TARGET_PACKETVER;
+        let ver = ro_core::TARGET_PACKETVER;
         let expected = [
             (0x035f, Fixed(5)),
             (0x0361, Fixed(5)),
@@ -1197,7 +1197,7 @@ mod tests {
     #[test]
     fn test_legacy_opcodes_are_rejected() {
         let table = RathenaPacketLengthTable;
-        let ver = ro_contracts::TARGET_PACKETVER;
+        let ver = ro_core::TARGET_PACKETVER;
 
         let legacy = [
             0x0067, 0x0068, 0x0069, 0x006a, 0x006d, 0x0071, 0x0072, 0x0073, 0x007e, 0x0085, 0x0086,

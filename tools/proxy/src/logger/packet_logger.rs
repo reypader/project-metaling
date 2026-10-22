@@ -1,7 +1,7 @@
 use std::{cmp::min, sync::Arc};
 
 use bytes::{Buf, BytesMut};
-use ro_contracts::{
+use ro_core::{
     http::ServerType,
     packet::{
         PacketCodecError, PacketIntentParser, PacketLength, PacketLengthTable, PacketOpcode,

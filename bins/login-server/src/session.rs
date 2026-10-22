@@ -1,7 +1,7 @@
 use std::net::SocketAddr;
 
 use bytes::BytesMut;
-use ro_contracts::{
+use ro_core::{
     ids::SessionId,
     packet::{EventEncoder, PacketIntentParser, ServerEvent, SessionIntent},
     TARGET_PACKETVER,

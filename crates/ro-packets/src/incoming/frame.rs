@@ -1,6 +1,6 @@
 //! High-level client frame decoding and intent parsing.
 
-use ro_contracts::packet::{
+use ro_core::packet::{
     ClientIntent, PacketCodecError, PacketIntentParser, PacketLength, PacketOpcode, RawPacket,
 };
 
@@ -134,8 +134,8 @@ pub type RathenaIntentParser = Phase0IntentParser;
 mod tests {
     use super::*;
     use bytes::Bytes;
-    use ro_contracts::ids::{AccountId, CharId, Sex};
-    use ro_contracts::TARGET_PACKETVER;
+    use ro_core::ids::{AccountId, CharId, Sex};
+    use ro_core::TARGET_PACKETVER;
 
     use crate::coords::pack_pos_dir;
 

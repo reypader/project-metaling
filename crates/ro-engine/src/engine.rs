@@ -7,7 +7,7 @@
 use std::mem;
 use std::sync::Arc;
 
-use ro_contracts::{
+use ro_core::{
     BroadcastScope, CharId, CharacterSpawn, ClientIntent, EngineError, MapEngine, MapPosition,
     MapWalkability, ScopedServerEvent, ServerEvent, SessionIntent, UnitAppearance,
 };

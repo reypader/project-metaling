@@ -12,7 +12,7 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
-use ro_contracts::{
+use ro_core::{
     HealthResponse, RegisterCharServerRequest, RegisterCharServerResponse, ServerHeartbeat,
     ServerHeartbeatResponse, ValidateSessionRequest, ValidateSessionResponse,
 };

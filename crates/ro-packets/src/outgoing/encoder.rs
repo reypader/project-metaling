@@ -1,7 +1,7 @@
 //! Event encoder connecting domain ServerEvent variants to outgoing packet encoders.
 
 use bytes::{BufMut, Bytes, BytesMut};
-use ro_contracts::packet::{EventEncoder, PacketCodecError, PacketOpcode, ServerEvent};
+use ro_core::packet::{EventEncoder, PacketCodecError, PacketOpcode, ServerEvent};
 
 use super::char::{
     encode_hc_accept_enter, encode_hc_accept_enter2, encode_hc_accept_makechar,
@@ -281,10 +281,8 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ro_contracts::ids::{
-        AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, Sex,
-    };
-    use ro_contracts::TARGET_PACKETVER;
+    use ro_core::ids::{AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, Sex};
+    use ro_core::TARGET_PACKETVER;
 
     #[test]
     fn test_phase0_event_encoder_all_variants() {

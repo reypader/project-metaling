@@ -4,7 +4,7 @@ version.workspace = true
 edition.workspace = true
 
 [dependencies]
-ro-contracts.workspace = true
+ro-core.workspace = true
 ro-packets.workspace = true
 ro-engine.workspace = true
 ro-db.workspace = true

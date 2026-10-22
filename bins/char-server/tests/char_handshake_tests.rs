@@ -14,7 +14,7 @@ use tokio::{
 use tokio_util::codec::Decoder;
 
 use char_server::{handle_client_session, CharServiceHandle};
-use ro_contracts::{
+use ro_core::{
     character::CharacterRepository,
     ids::{AccountId, Sex},
     packet::PacketOpcode,

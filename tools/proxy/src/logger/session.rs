@@ -7,7 +7,7 @@ use std::{
     },
 };
 
-use ro_contracts::{http::ServerType, packet::PacketOpcode};
+use ro_core::{http::ServerType, packet::PacketOpcode};
 
 use crate::logger::recorder::PacketSequenceRecorder;
 

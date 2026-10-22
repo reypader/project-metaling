@@ -7,7 +7,7 @@ use tracing::{error, info, warn};
 use map_server::{
     create_http_router, handle_client_session, map_data_loader, MapConfig, MapServiceHandle,
 };
-use ro_contracts::TARGET_PACKETVER;
+use ro_core::TARGET_PACKETVER;
 use ro_persistence::PostgresRepo;
 
 #[tokio::main]

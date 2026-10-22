@@ -9,4 +9,4 @@ pub(crate) mod spatial;
 pub(crate) mod world;
 
 pub use engine::{MapInstance, DEFAULT_ENTITY_CAPACITY};
-pub use ro_contracts;
+pub use ro_core;

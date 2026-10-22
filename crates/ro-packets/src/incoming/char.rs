@@ -1,7 +1,7 @@
 //! Incoming character server client packet decoders supporting CH_* opcodes.
 
-use ro_contracts::ids::{AccountId, CharId, Sex};
-use ro_contracts::packet::{ClientIntent, PacketCodecError, RawPacket};
+use ro_core::ids::{AccountId, CharId, Sex};
+use ro_core::packet::{ClientIntent, PacketCodecError, RawPacket};
 
 use crate::incoming::helpers::{parse_sex, read_fixed_string, read_u16_le, read_u32_le};
 
@@ -237,7 +237,7 @@ impl PingPacket {
 mod tests {
     use super::*;
     use bytes::Bytes;
-    use ro_contracts::packet::PacketOpcode;
+    use ro_core::packet::PacketOpcode;
 
     #[test]
     fn test_decode_ch_enter() {

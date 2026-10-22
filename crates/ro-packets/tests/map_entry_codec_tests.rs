@@ -11,8 +11,8 @@
 //! - `PKT-DEC-001`: Intent parsing for `CZ_NOTIFY_ACTORINIT` and `CZ_REQUEST_TIME`
 
 use bytes::{Bytes, BytesMut};
-use ro_contracts::ids::{AccountId, MapPosition};
-use ro_contracts::packet::{
+use ro_core::ids::{AccountId, MapPosition};
+use ro_core::packet::{
     ClientIntent, EventEncoder, PacketLength, PacketLengthTable, PacketOpcode, RawPacket,
     ServerEvent,
 };

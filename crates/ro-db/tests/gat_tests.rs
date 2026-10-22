@@ -3,7 +3,7 @@
 
 use std::sync::Arc;
 
-use ro_contracts::{CellType, MapDataError, MapWalkability};
+use ro_core::{CellType, MapDataError, MapWalkability};
 use ro_db::map::{GatMapGrid, MemoryMapGrid};
 
 const HEADER: &[u8; 6] = b"GRAT\x01\x02";

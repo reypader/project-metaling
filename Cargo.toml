@@ -1,7 +1,7 @@
 [workspace]
 resolver = "2"
 members = [
-    "crates/ro-contracts",
+    "crates/ro-core",
     "crates/ro-packets",
     "crates/ro-engine",
     "crates/ro-db",
@@ -20,7 +20,7 @@ edition = "2021"
 license = "MIT"
 
 [workspace.dependencies]
-ro-contracts = { path = "crates/ro-contracts" }
+ro-core = { path = "crates/ro-core" }
 ro-packets = { path = "crates/ro-packets" }
 ro-engine = { path = "crates/ro-engine" }
 ro-db = { path = "crates/ro-db" }

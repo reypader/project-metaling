@@ -4,9 +4,9 @@ use async_trait::async_trait;
 use sqlx::postgres::PgRow;
 use sqlx::query;
 
-use ro_contracts::account::{Account, AccountRepository, AccountState, AuthError};
-use ro_contracts::ids::AccountId;
-use ro_contracts::repository::RepositoryError;
+use ro_core::account::{Account, AccountRepository, AccountState, AuthError};
+use ro_core::ids::AccountId;
+use ro_core::repository::RepositoryError;
 
 use super::{get_col, map_account_state, map_sex, map_sqlx_error, PostgresRepo};
 

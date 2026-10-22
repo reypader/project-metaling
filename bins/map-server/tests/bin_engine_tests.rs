@@ -8,7 +8,7 @@ use std::time::Duration;
 
 use common::*;
 use map_server::load_walkability;
-use ro_contracts::{CharId, MapPosition, RawPacket};
+use ro_core::{CharId, MapPosition, RawPacket};
 
 const SHORT: Duration = Duration::from_millis(300);
 const LONG: Duration = Duration::from_secs(4);

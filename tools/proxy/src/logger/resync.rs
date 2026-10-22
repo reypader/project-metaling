@@ -1,6 +1,6 @@
 use std::cmp::min;
 
-use ro_contracts::packet::{PacketLength, PacketLengthTable, PacketOpcode};
+use ro_core::packet::{PacketLength, PacketLengthTable, PacketOpcode};
 
 /// Formats a byte slice as a hex dump preview with ASCII representation.
 pub fn format_hex_preview(bytes: &[u8]) -> String {
@@ -122,7 +122,7 @@ pub fn find_resync_offset(buffer: &[u8], table: &impl PacketLengthTable, packetv
 
 #[cfg(test)]
 mod tests {
-    use ro_contracts::TARGET_PACKETVER;
+    use ro_core::TARGET_PACKETVER;
     use ro_packets::RathenaPacketLengthTable;
 
     use super::*;

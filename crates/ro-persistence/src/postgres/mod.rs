@@ -6,9 +6,9 @@ pub mod pool;
 
 pub use pool::PostgresRepo;
 
-use ro_contracts::account::AccountState;
-use ro_contracts::ids::Sex;
-use ro_contracts::repository::RepositoryError;
+use ro_core::account::AccountState;
+use ro_core::ids::Sex;
+use ro_core::repository::RepositoryError;
 use sqlx::decode::Decode;
 use sqlx::postgres::{PgRow, Postgres};
 use sqlx::types::Type;

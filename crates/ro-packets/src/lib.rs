@@ -38,4 +38,4 @@ pub use outgoing::{
 };
 pub use table::{lookup_packet_length, RathenaPacketLengthTable};
 
-pub use ro_contracts;
+pub use ro_core;

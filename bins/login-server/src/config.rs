@@ -107,7 +107,7 @@ impl LoginConfig {
 mod tests {
     use super::*;
     use crate::service::LoginService;
-    use ro_contracts::packet::ServerEvent;
+    use ro_core::packet::ServerEvent;
     use ro_persistence::PostgresRepo;
     use std::collections::HashMap;
     use std::sync::Arc;

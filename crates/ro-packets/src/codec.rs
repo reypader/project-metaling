@@ -6,10 +6,10 @@
 use std::io;
 
 use bytes::{Bytes, BytesMut};
-use ro_contracts::packet::{
+use ro_core::packet::{
     PacketCodecError, PacketLength, PacketLengthTable, PacketOpcode, RawPacket, MAX_PACKET_SIZE,
 };
-use ro_contracts::TARGET_PACKETVER;
+use ro_core::TARGET_PACKETVER;
 use tokio_util::codec::{Decoder, Encoder};
 
 use crate::incoming::{decode_frame, DecodedFrame};

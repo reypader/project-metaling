@@ -4,4 +4,4 @@
 pub mod postgres;
 
 pub use postgres::PostgresRepo;
-pub use ro_contracts;
+pub use ro_core;

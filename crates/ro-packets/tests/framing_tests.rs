@@ -1,8 +1,8 @@
 //! Integration tests for packet framing, coordinate packing, and packet codecs.
 
 use bytes::BytesMut;
-use ro_contracts::ids::{AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, Sex};
-use ro_contracts::packet::{ClientIntent, EventEncoder, PacketOpcode, ServerEvent, UnitAppearance};
+use ro_core::ids::{AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, Sex};
+use ro_core::packet::{ClientIntent, EventEncoder, PacketOpcode, ServerEvent, UnitAppearance};
 use ro_packets::codec::PacketDecoder;
 use ro_packets::coords::{pack_pos2, pack_pos_dir, unpack_pos2, unpack_pos_dir};
 use ro_packets::incoming::{decode_frame, DecodedFrame};
@@ -57,7 +57,7 @@ fn test_stream_fragmentation_and_coalescing() {
 
     // Check packet 1
     assert_eq!(decoded_packets[0].opcode, PacketOpcode(0x0436));
-    let frame1 = decode_frame(&decoded_packets[0], ro_contracts::TARGET_PACKETVER).unwrap();
+    let frame1 = decode_frame(&decoded_packets[0], ro_core::TARGET_PACKETVER).unwrap();
     assert_eq!(
         frame1,
         DecodedFrame::Intent(ClientIntent::EnterMap {
@@ -71,7 +71,7 @@ fn test_stream_fragmentation_and_coalescing() {
 
     // Check packet 2
     assert_eq!(decoded_packets[1].opcode, PacketOpcode(0x0360));
-    let frame2 = decode_frame(&decoded_packets[1], ro_contracts::TARGET_PACKETVER).unwrap();
+    let frame2 = decode_frame(&decoded_packets[1], ro_core::TARGET_PACKETVER).unwrap();
     assert_eq!(
         frame2,
         DecodedFrame::Intent(ClientIntent::RequestTime {
@@ -81,7 +81,7 @@ fn test_stream_fragmentation_and_coalescing() {
 
     // Check packet 3
     assert_eq!(decoded_packets[2].opcode, PacketOpcode(0x007d));
-    let frame3 = decode_frame(&decoded_packets[2], ro_contracts::TARGET_PACKETVER).unwrap();
+    let frame3 = decode_frame(&decoded_packets[2], ro_core::TARGET_PACKETVER).unwrap();
     assert_eq!(frame3, DecodedFrame::Intent(ClientIntent::NotifyActorInit));
 
     assert!(stream_buffer.is_empty());
@@ -103,7 +103,7 @@ fn test_unhandled_packet_consumption() {
     assert_eq!(raw.payload.as_ref(), &[0x07]);
     assert!(stream.is_empty());
 
-    let frame = decode_frame(&raw, ro_contracts::TARGET_PACKETVER).unwrap();
+    let frame = decode_frame(&raw, ro_core::TARGET_PACKETVER).unwrap();
     match frame {
         DecodedFrame::Unhandled { opcode, len } => {
             assert_eq!(opcode, PacketOpcode(0x00bf));
@@ -216,7 +216,7 @@ fn test_outgoing_serializers_and_redecoding() {
                     clevel: 10,
                 },
             },
-            ro_contracts::TARGET_PACKETVER,
+            ro_core::TARGET_PACKETVER,
         )
         .expect("UnitSpawned encodes");
     let mut stream = BytesMut::from(newentry_bytes.as_ref());
@@ -276,7 +276,7 @@ fn test_outgoing_serializers_and_redecoding() {
 #[test]
 fn test_event_encoder_integration() {
     let encoder = Phase0EventEncoder;
-    let ver = ro_contracts::TARGET_PACKETVER;
+    let ver = ro_core::TARGET_PACKETVER;
     let mut decoder = PacketDecoder::default();
 
     // 1. AcceptEnter (23-byte burst: 0x0283, 0x0b18, 0x02eb)
@@ -407,7 +407,7 @@ fn test_event_encoder_integration() {
 
 #[test]
 fn test_login_and_char_intent_decoding() {
-    let ver = ro_contracts::TARGET_PACKETVER;
+    let ver = ro_core::TARGET_PACKETVER;
 
     // 1. CA_LOGIN
     let mut ca_login_raw = vec![0x64, 0x00];
@@ -656,7 +656,7 @@ fn test_modern_event_encoder_roundtrip() {
 
 #[test]
 fn test_login_sequence_trace_exact_byte_layouts() {
-    let ver = ro_contracts::TARGET_PACKETVER;
+    let ver = ro_core::TARGET_PACKETVER;
     let mut decoder = PacketDecoder::new(RathenaPacketLengthTable, ver);
     let encoder = ModernEventEncoder;
 
@@ -792,7 +792,7 @@ fn test_login_sequence_trace_exact_byte_layouts() {
 /// `MAX_PACKET_SIZE`: the field is a u16 and the cap is 65535.)
 #[test]
 fn pkt_02_streaming_framing() {
-    let mut decoder = PacketDecoder::new(RathenaPacketLengthTable, ro_contracts::TARGET_PACKETVER);
+    let mut decoder = PacketDecoder::new(RathenaPacketLengthTable, ro_core::TARGET_PACKETVER);
 
     // Partial fixed frame (CZ_REQUEST_TIME, 6 bytes): bytes stay buffered.
     let mut stream = BytesMut::from(&[0x60u8, 0x03, 1, 2][..]);
@@ -823,6 +823,6 @@ fn pkt_02_streaming_framing() {
     let mut stream = BytesMut::from(&[0xfd_u8, 0x09, 3, 0][..]);
     assert!(matches!(
         decoder.decode(&mut stream),
-        Err(ro_contracts::PacketCodecError::MalformedHeader(_))
+        Err(ro_core::PacketCodecError::MalformedHeader(_))
     ));
 }

@@ -2,7 +2,7 @@
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use bytes::Bytes;
-use ro_contracts::{
+use ro_core::{
     AccountId, BroadcastScope, CellType, CharId, CharacterSpawn, CharacterSummary, ClientIntent,
     EngineError, MapEngine, MapPosition, OutboundPacket, OutboundTarget, PacketOpcode,
     ScopedServerEvent, ServerEvent, SessionIntent, Sex, UnitAppearance, DEFAULT_WALK_SPEED,
@@ -233,7 +233,7 @@ fn map_engine_is_object_safe() {
     let mut engine: Box<dyn MapEngine> = Box::new(NullEngine);
     assert_eq!(engine.map_name(), "null.gat");
     engine.push_intent(SessionIntent::new(
-        ro_contracts::SessionId(1),
+        ro_core::SessionId(1),
         None,
         None,
         ClientIntent::NotifyActorInit,
