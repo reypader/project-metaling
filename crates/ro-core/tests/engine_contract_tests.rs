@@ -2,9 +2,8 @@
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use ro_core::{
-    AccountId, CharId, CharacterSpawn, CharacterSummary, ClientIntent, EngineError, MapEngine,
-    MapPosition, ScopedServerEvent, ServerEvent, SessionIntent, Sex, UnitAppearance,
-    DEFAULT_WALK_SPEED,
+    AccountId, CharId, CharacterSpawn, CharacterSummary, MapPosition, ServerEvent, Sex,
+    UnitAppearance, DEFAULT_WALK_SPEED,
 };
 
 fn summary() -> CharacterSummary {
@@ -50,17 +49,6 @@ fn character_spawn_from_summary_copies_appearance_and_defaults_speed() {
     );
     assert_eq!(spawn.speed, DEFAULT_WALK_SPEED);
     assert_eq!(DEFAULT_WALK_SPEED, 150);
-}
-
-#[test]
-fn engine_error_new_variants_display() {
-    assert!(EngineError::MapNotFound("x.gat".into())
-        .to_string()
-        .contains("x.gat"));
-    assert!(EngineError::CharacterAlreadyEntered(CharId(7))
-        .to_string()
-        .contains('7'));
-    assert!(!EngineError::WorldCapacityExceeded.to_string().is_empty());
 }
 
 #[test]
@@ -122,56 +110,4 @@ fn unit_appearance_and_new_server_events_construct() {
         },
     ];
     assert_eq!(events.len(), 9);
-}
-
-/// Minimal engine proving the trait is object-safe and usable behind `Box<dyn MapEngine>`.
-struct NullEngine;
-
-impl MapEngine for NullEngine {
-    fn map_name(&self) -> &str {
-        "null.gat"
-    }
-    fn spawn_character(
-        &mut self,
-        spawn: CharacterSpawn,
-        _now_ms: u64,
-    ) -> Result<Vec<ScopedServerEvent>, EngineError> {
-        Err(EngineError::CharacterAlreadyEntered(spawn.char_id))
-    }
-    fn push_intent(&mut self, _intent: SessionIntent) {}
-    fn step_tick(
-        &mut self,
-        _now_ms: u64,
-        _out: &mut Vec<ScopedServerEvent>,
-    ) -> Result<(), EngineError> {
-        Ok(())
-    }
-    fn query_aoi_characters(&self, _center: MapPosition, out: &mut Vec<CharId>) {
-        out.clear();
-    }
-    fn character_position(&self, _char_id: CharId) -> Option<MapPosition> {
-        None
-    }
-    fn remove_character(&mut self, char_id: CharId) -> Result<Vec<ScopedServerEvent>, EngineError> {
-        Err(EngineError::UnknownCharacter(char_id))
-    }
-}
-
-#[test]
-fn map_engine_is_object_safe() {
-    let mut engine: Box<dyn MapEngine> = Box::new(NullEngine);
-    assert_eq!(engine.map_name(), "null.gat");
-    engine.push_intent(SessionIntent::new(
-        ro_core::SessionId(1),
-        None,
-        None,
-        ClientIntent::NotifyActorInit,
-    ));
-    let mut out = Vec::new();
-    assert_eq!(engine.step_tick(0, &mut out), Ok(()));
-    assert!(out.is_empty());
-    assert_eq!(
-        engine.remove_character(CharId(1)),
-        Err(EngineError::UnknownCharacter(CharId(1)))
-    );
 }

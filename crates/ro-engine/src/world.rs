@@ -1,6 +1,7 @@
 //! Per-map entity storage: dense columns indexed by `Entity::index()` plus sparse components.
 
-use ro_core::{AccountId, CharId, CharacterSpawn, EngineError, MapPosition, Sex};
+use crate::EngineError;
+use ro_core::{AccountId, CharId, CharacterSpawn, MapPosition, Sex};
 use rustc_hash::FxHashMap;
 
 use crate::entity::{Entity, EntityAllocator};

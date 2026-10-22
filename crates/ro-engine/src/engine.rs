@@ -1,4 +1,4 @@
-//! `MapInstance`: one map's simulation, implementing the `MapEngine` contract.
+//! `MapInstance`: one map's simulation, and its lifecycle/tick API.
 //!
 //! `step_tick` order: drain intents FIFO (the last move per entity per tick wins) -> plan
 //! paths -> advance every due step (AoI diff per step, pending redirect repath at step end)
@@ -8,14 +8,15 @@ use std::mem;
 use std::sync::Arc;
 
 use ro_core::{
-    BroadcastScope, CharId, CharacterSpawn, ClientIntent, EngineError, MapEngine, MapPosition,
-    ScopedServerEvent, ServerEvent, SessionIntent, UnitAppearance,
+    BroadcastScope, CharId, CharacterSpawn, ClientIntent, MapPosition, ScopedServerEvent,
+    ServerEvent, SessionIntent, UnitAppearance,
 };
 use ro_db::MapWalkability;
 use smallvec::SmallVec;
 use tracing::debug;
 
 use crate::entity::Entity;
+use crate::error::EngineError;
 use crate::movement::WalkingPath;
 use crate::path::{AStarScratchBuffer, MAX_WALKPATH, MAX_WALK_PATH_CLICK};
 use crate::spatial::{step_visibility, AREA_SIZE};
@@ -609,12 +610,16 @@ impl MapInstance {
     }
 }
 
-impl MapEngine for MapInstance {
-    fn map_name(&self) -> &str {
+/// Lifecycle and tick API driven by the map-server actor. All times are the actor's monotonic
+/// `now_ms`; wire ticks are `now_ms as u32`.
+impl MapInstance {
+    pub fn map_name(&self) -> &str {
         &self.map_name
     }
 
-    fn spawn_character(
+    /// Creates the entity (not yet visible; it is announced on `NotifyActorInit`).
+    /// A duplicate char_id returns `Err(CharacterAlreadyEntered)`.
+    pub fn spawn_character(
         &mut self,
         spawn: CharacterSpawn,
         _now_ms: u64,
@@ -627,7 +632,8 @@ impl MapEngine for MapInstance {
         Ok(Vec::new())
     }
 
-    fn push_intent(&mut self, intent: SessionIntent) {
+    /// Queues an intent for the next `step_tick`. `EnterMap` is not accepted here.
+    pub fn push_intent(&mut self, intent: SessionIntent) {
         if matches!(intent.intent, ClientIntent::EnterMap { .. }) {
             debug!(map = %self.map_name, "EnterMap is handled by spawn_character, not intents");
             return;
@@ -635,7 +641,9 @@ impl MapEngine for MapInstance {
         self.intents.push(intent);
     }
 
-    fn step_tick(
+    /// Runs one tick and appends its events to `out` (the caller reuses the buffer).
+    /// Bad per-intent input is logged and dropped; `Err` only for engine-wide faults.
+    pub fn step_tick(
         &mut self,
         now_ms: u64,
         out: &mut Vec<ScopedServerEvent>,
@@ -652,7 +660,9 @@ impl MapEngine for MapInstance {
         Ok(())
     }
 
-    fn query_aoi_characters(&self, center: MapPosition, out: &mut Vec<CharId>) {
+    /// Clears `out`, then fills it with the characters visible from `center` (Chebyshev range
+    /// `AREA_SIZE`). The caller reuses `out` across calls so routing doesn't allocate per event.
+    pub fn query_aoi_characters(&self, center: MapPosition, out: &mut Vec<CharId>) {
         out.clear();
         let players = &self.world.players;
         self.world
@@ -664,12 +674,16 @@ impl MapEngine for MapInstance {
             });
     }
 
-    fn character_position(&self, char_id: CharId) -> Option<MapPosition> {
+    pub fn character_position(&self, char_id: CharId) -> Option<MapPosition> {
         let e = self.world.entity_by_char(char_id)?;
         self.world.positions.get(e.index()).copied()
     }
 
-    fn remove_character(&mut self, char_id: CharId) -> Result<Vec<ScopedServerEvent>, EngineError> {
+    /// Removes the entity and emits `UnitVanished{type 2}` to the AoI excluding the leaver.
+    pub fn remove_character(
+        &mut self,
+        char_id: CharId,
+    ) -> Result<Vec<ScopedServerEvent>, EngineError> {
         let e = self
             .world
             .entity_by_char(char_id)

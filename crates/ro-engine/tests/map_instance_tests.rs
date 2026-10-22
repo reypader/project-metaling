@@ -1,15 +1,16 @@
-//! `MapInstance` scenarios ENG-04 and ENG-07..ENG-12 (spec §4), through the `MapEngine` contract.
+//! `MapInstance` scenarios ENG-04 and ENG-07..ENG-12 (spec §4).
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 
 use ro_core::{
-    AccountId, BroadcastScope, CharId, CharacterSpawn, ClientIntent, EngineError, MapEngine,
-    MapPosition, ScopedServerEvent, ServerEvent, SessionId, SessionIntent, Sex,
+    AccountId, BroadcastScope, CharId, CharacterSpawn, ClientIntent, MapPosition,
+    ScopedServerEvent, ServerEvent, SessionId, SessionIntent, Sex,
 };
 use ro_db::MemoryMapGrid;
 use ro_db::{CellType, MapWalkability};
+use ro_engine::EngineError;
 use ro_engine::MapInstance;
 
 const MAP: &str = "prontera.gat";

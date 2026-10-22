@@ -14,10 +14,11 @@ use ro_core::{
     character::{CharacterRepository, CharacterSpawn},
     ids::{AccountId, CharId, CharacterSummary, MapPosition, SessionId},
     message::{BroadcastScope, ClientIntent, ScopedServerEvent, ServerEvent, SessionIntent},
-    EngineError, MapEngine, TARGET_PACKETVER,
+    TARGET_PACKETVER,
 };
 use ro_db::MapWalkability;
 use ro_db::{GatMapGrid, MemoryMapGrid};
+use ro_engine::EngineError;
 use ro_engine::MapInstance;
 use ro_packets::EventEncoder;
 use ro_packets::Phase0EventEncoder;

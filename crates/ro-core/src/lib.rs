@@ -3,7 +3,6 @@
 
 pub mod account;
 pub mod character;
-pub mod engine;
 pub mod http;
 pub mod ids;
 pub mod message;
@@ -11,7 +10,6 @@ pub mod repository;
 
 pub use account::*;
 pub use character::*;
-pub use engine::*;
 pub use http::*;
 pub use ids::*;
 pub use message::*;
