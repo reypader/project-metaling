@@ -11,8 +11,9 @@ use std::{
 
 use bytes::{Bytes, BytesMut};
 use ro_core::{
-    AccountId, BroadcastScope, CharId, CharacterSpawn, CharacterSummary, ClientIntent, MapPosition,
-    ScopedServerEvent, ServerEvent, SessionId, SessionIntent, TARGET_PACKETVER,
+    bare_map_name, AccountId, BroadcastScope, CharId, CharacterSpawn, CharacterSummary,
+    ClientIntent, MapPosition, ScopedServerEvent, ServerEvent, SessionId, SessionIntent,
+    TARGET_PACKETVER,
 };
 use ro_db::{MapGrid, MapNpcs};
 use ro_engine::{EngineError, MapInstance};
@@ -103,7 +104,7 @@ pub fn load_npcs(npc_data_dir: Option<&Path>, map_name: &str) -> Arc<MapNpcs> {
     let Some(dir) = npc_data_dir else {
         return Arc::new(MapNpcs::default());
     };
-    let stem = map_name.strip_suffix(".gat").unwrap_or(map_name);
+    let stem = bare_map_name(map_name);
     match MapNpcs::load_yaml(&dir.join(format!("{stem}.yml"))) {
         Ok(Some(npcs)) => Arc::new(npcs),
         Ok(None) => Arc::new(MapNpcs::default()),

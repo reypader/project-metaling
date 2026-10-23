@@ -5,12 +5,14 @@ mod account;
 mod character;
 mod http;
 mod ids;
+mod map_name;
 mod message;
 
 pub use account::*;
 pub use character::*;
 pub use http::*;
 pub use ids::*;
+pub use map_name::{bare_map_name, gat_map_name};
 pub use message::*;
 
 pub const TARGET_PACKETVER: u32 = 20260219;
