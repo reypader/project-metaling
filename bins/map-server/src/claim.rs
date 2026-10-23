@@ -10,6 +10,7 @@ use std::{
         atomic::{AtomicU64, Ordering},
         Arc, Mutex, MutexGuard,
     },
+    time::Duration,
 };
 
 use ro_core::{CharId, MapPosition};
@@ -102,7 +103,7 @@ impl SharedState {
     }
 
     /// Records the position for a re-entry that races the write, then queues the write.
-    fn persist(&self, char_id: CharId, map: String, pos: MapPosition) {
+    pub(crate) fn persist(&self, char_id: CharId, map: String, pos: MapPosition) {
         let seq = self.next_seq.fetch_add(1, Ordering::Relaxed);
         lock(&self.recent_positions).insert(
             char_id,
@@ -127,31 +128,54 @@ impl SharedState {
     }
 }
 
+/// First and longest wait between retries of a failed write.
+const RETRY_FIRST: Duration = Duration::from_millis(50);
+const RETRY_MAX: Duration = Duration::from_secs(5);
+
 /// Runs writes in queue order. After a write lands, its recent entry is cleared unless a newer
-/// release replaced it.
+/// release replaced it. A failed write is retried with backoff until it lands or a newer write
+/// for the same character supersedes it: the char-server reads the stored map, so a lost write
+/// after a warp would send the client to the wrong map.
 async fn run_position_writer(
     repo: Arc<dyn CharacterRepository>,
     recent: RecentPositions,
     mut rx: mpsc::UnboundedReceiver<PositionWrite>,
 ) {
     while let Some(write) = rx.recv().await {
-        match repo
-            .update_position(write.char_id, &write.map, write.pos)
-            .await
-        {
-            Ok(()) => {
-                let mut recent = lock(&recent);
-                if recent
-                    .get(&write.char_id)
-                    .is_some_and(|r| r.seq == write.seq)
-                {
-                    recent.remove(&write.char_id);
+        let is_newest = || {
+            lock(&recent)
+                .get(&write.char_id)
+                .is_some_and(|r| r.seq == write.seq)
+        };
+        let mut wait = RETRY_FIRST;
+        loop {
+            match repo
+                .update_position(write.char_id, &write.map, write.pos)
+                .await
+            {
+                Ok(()) => {
+                    let mut recent = lock(&recent);
+                    if recent
+                        .get(&write.char_id)
+                        .is_some_and(|r| r.seq == write.seq)
+                    {
+                        recent.remove(&write.char_id);
+                    }
+                    break;
+                }
+                Err(err) => {
+                    error!(
+                        "Failed to persist position of char {} (retrying in {:?}): {}",
+                        write.char_id.0, wait, err
+                    );
+                    tokio::time::sleep(wait).await;
+                    wait = (wait * 2).min(RETRY_MAX);
+                    if !is_newest() {
+                        // A newer write for this character is queued behind this one.
+                        break;
+                    }
                 }
             }
-            Err(err) => error!(
-                "Failed to persist position of char {}: {}",
-                write.char_id.0, err
-            ),
         }
     }
 }
@@ -214,6 +238,8 @@ pub(crate) mod tests {
         pub(crate) writes: Mutex<Vec<(CharId, String, MapPosition)>>,
         pub(crate) finds: AtomicUsize,
         pub(crate) gate: Semaphore,
+        /// Writes that fail before one succeeds.
+        pub(crate) failures: AtomicUsize,
     }
 
     impl FakeRepo {
@@ -239,6 +265,7 @@ pub(crate) mod tests {
                 writes: Mutex::new(Vec::new()),
                 finds: AtomicUsize::new(0),
                 gate: Semaphore::new(permits),
+                failures: AtomicUsize::new(0),
             })
         }
 
@@ -298,6 +325,13 @@ pub(crate) mod tests {
             pos: MapPosition,
         ) -> Result<(), RepositoryError> {
             self.gate.acquire().await.expect("gate open").forget();
+            if self
+                .failures
+                .try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_sub(1))
+                .is_ok()
+            {
+                return Err(RepositoryError::Unavailable("injected failure".into()));
+            }
             lock(&self.writes).push((id, map_name.to_string(), pos));
             if let Some(c) = lock(&self.chars).get_mut(&id) {
                 c.last_map = map_name.to_string();
@@ -387,6 +421,18 @@ pub(crate) mod tests {
         drop(tx);
         assert!(!is_online(&state, CHAR));
         assert!(state.claim(CHAR).is_some(), "no double release");
+    }
+
+    #[tokio::test]
+    async fn bin_warp_07_failed_write_is_retried_until_it_lands() {
+        let repo = FakeRepo::new(true);
+        repo.failures.store(2, Ordering::Relaxed);
+        let state = SharedState::new(repo.clone());
+        let mut claim = state.claim(CHAR).expect("claim");
+        claim.set_last("geffen.gat", at(7, 8));
+        drop(claim);
+        assert!(eventually(|| state.recent_position(CHAR).is_none()).await);
+        assert_eq!(repo.writes(), [(CHAR, "geffen.gat".to_string(), at(7, 8))]);
     }
 
     #[tokio::test]

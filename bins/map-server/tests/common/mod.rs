@@ -76,6 +76,13 @@ impl InMemoryRepo {
         repo
     }
 
+    /// Moves character `n` to another account.
+    pub fn set_account(&self, n: u32, account_id: u32) {
+        if let Some(c) = self.chars.lock().unwrap().get_mut(&CharId(char_id(n))) {
+            c.account_id = AccountId(account_id);
+        }
+    }
+
     pub fn with_persist_delay(self, delay: Duration) -> Self {
         *self.persist_delay.lock().unwrap() = delay;
         self

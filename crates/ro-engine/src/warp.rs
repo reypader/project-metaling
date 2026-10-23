@@ -270,11 +270,13 @@ impl MapInstance {
         if w < 3 || h < 3 {
             return None;
         }
-        let tries = u32::from(w) * u32::from(h) * 3;
+        let tries = u64::from(w) * u64::from(h) * 3;
         let (span_x, span_y) = (u64::from(w - 2), u64::from(h - 2));
         for _ in 0..tries {
             let x = (self.rng.next_u64() % span_x) as u16 + 1;
             let y = (self.rng.next_u64() % span_y) as u16 + 1;
+            // rAthena checks warp areas within range 1, skipping disabled warps; the bitmap
+            // also holds disabled warps' cells and leaves out walls inside areas.
             if self.walkability.is_walkable(x, y) && !self.warp_cells.any_near(x, y) {
                 return Some((x, y));
             }

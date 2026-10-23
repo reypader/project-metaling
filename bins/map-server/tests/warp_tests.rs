@@ -284,6 +284,43 @@ async fn bin_warp_03_disconnect_in_transit_releases_once() {
     assert_eq!(logs.count("not claimed"), 0, "{}", logs.text());
 }
 
+/// The destination rejects the warp join (here: the account is already on map 2 with another
+/// character). The claim releases with the trigger cell and the server closes the socket.
+#[tokio::test]
+async fn bin_warp_03_rejected_warp_join_releases_with_the_trigger_cell() {
+    const ALT: u32 = 4;
+    let repo = InMemoryRepo::seeded_on(&[(A, MAP, 105, 100), (ALT, MAP2, 50, 50)]);
+    repo.set_account(ALT, account(A));
+    let server = TestServer::start_with_loader(repo, cross_map_loader()).await;
+    let mut alt = Client::connect(server.addr).await;
+    alt.send(&cz_enter_raw(account(A), char_id(ALT))).await;
+    alt.read_exact_bytes(23).await;
+    alt.send(&[0x7d, 0x00]).await;
+    alt.collect(SHORT).await;
+
+    let mut a = server.join(A).await;
+    a.send(&cz_request_move(112, 100)).await;
+    let frames = a.collect(Duration::from_secs(2)).await;
+    assert!(frames.iter().any(|f| f.opcode.0 == 0x0087));
+    assert!(frames.iter().all(|f| f.opcode.0 != 0x0091), "no 0x0091");
+    let (_, eof) = a.read_until_eof(LONG).await;
+    assert!(eof, "the server closes the session");
+
+    let mut landed = false;
+    for _ in 0..100 {
+        if server.repo.stored(A).map(|(m, p)| (m, (p.x, p.y)))
+            == Some((MAP.to_string(), (109, 100)))
+        {
+            landed = true;
+            break;
+        }
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    }
+    assert!(landed, "trigger cell stored: {:?}", server.repo.stored(A));
+    let (_a, at) = login_retrying(&server, A).await;
+    assert_eq!(at, (109, 100));
+}
+
 // ---------- BIN-WARP-04 ----------
 
 struct TempDir(PathBuf);
@@ -316,13 +353,14 @@ fn warp_yaml(name: &str, x: u16, y: u16, map: &str) -> String {
 }
 
 /// prontera.yml: warps at (25, 20) to a map without a `.gat`, (30, 20) to an instance map,
-/// and (40, 40) back to prontera.
+/// (40, 40) back to prontera, and (45, 45) to a name too long for `0x0091`.
 fn write_warp_npcs(dir: &Path) {
     let yaml = format!(
-        "Header:\n  Type: NPC_SPAWN_DB\n  Version: 1\nBody:\n{}{}{}",
+        "Header:\n  Type: NPC_SPAWN_DB\n  Version: 1\nBody:\n{}{}{}{}",
         warp_yaml("w_missing", 25, 20, "nowhere"),
         warp_yaml("w_instance", 30, 20, "1@tower"),
         warp_yaml("w_ok", 40, 40, "prontera"),
+        warp_yaml("w_long", 45, 45, "abcdefghijkl"),
     );
     std::fs::write(dir.join("prontera.yml"), yaml).expect("write npcs");
 }
@@ -349,10 +387,11 @@ async fn bin_warp_04_unreachable_destinations_are_inert() {
         [
             ("w_missing", None),
             ("w_instance", None),
-            ("w_ok", Some((1, 1)))
+            ("w_ok", Some((1, 1))),
+            ("w_long", None)
         ]
     );
-    assert_eq!(logs.count("is inert"), 2, "one warning per warp");
+    assert_eq!(logs.count("is inert"), 3, "one warning per warp");
 
     let server = TestServer::start_with_loader(InMemoryRepo::seeded(&[(A, 20, 20)]), loader).await;
     let mut a = server.join(A).await;

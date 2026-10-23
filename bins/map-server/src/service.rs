@@ -120,6 +120,8 @@ fn disable_unreachable_warps(npcs: &mut MapNpcs, map_data_dir: Option<&Path>, ma
         let dest_map = gat_map_name(&dest.map);
         let reason = if !is_valid_map_name(&dest_map) {
             "invalid or instance destination"
+        } else if dest_map.len() > MAX_WIRE_MAP_NAME {
+            "destination name too long for 0x0091"
         } else if map_data_dir.is_some_and(|dir| !dir.join(&dest_map).is_file()) {
             "destination .gat not found"
         } else {
@@ -132,6 +134,9 @@ fn disable_unreachable_warps(npcs: &mut MapNpcs, map_data_dir: Option<&Path>, ma
         npc.trigger = None;
     }
 }
+
+/// Longest map name `0x0091` carries: a 16-byte field with a NUL.
+const MAX_WIRE_MAP_NAME: usize = 15;
 
 /// How a session enters a map.
 pub enum Entry {
@@ -307,16 +312,8 @@ impl MapServiceHandle {
         transfers.insert(char_id, (destination_map.clone(), destination_pos));
 
         if let Some(pos) = destination_pos {
-            let repo = Arc::clone(&self.char_repo);
-            let dest_map = destination_map.clone();
-            tokio::spawn(async move {
-                if let Err(err) = repo.update_position(char_id, &dest_map, pos).await {
-                    error!(
-                        "Failed to update position on transfer for char {}: {}",
-                        char_id.0, err
-                    );
-                }
-            });
+            // Through the ordered writer, so it can't land after a newer write.
+            self.shared.persist(char_id, destination_map, pos);
         }
 
         true
@@ -591,16 +588,13 @@ impl MapWorldActor {
         let Some(session) = self.sessions.remove(&session_id) else {
             return;
         };
+        // `flush` just sent this session's batch (or evicted it), so nothing is pending.
         let Session {
             claim,
             outbound_tx,
             control_tx,
-            mut pending,
             ..
         } = session;
-        if !pending.is_empty() {
-            let _ = outbound_tx.try_send(pending.split().freeze());
-        }
         info!(
             "Map '{}': char {} warps to '{}'",
             self.map_name, char_id.0, transfer.dest_map
@@ -814,18 +808,19 @@ impl MapWorldActor {
         if self.by_char.get(&char_id) == Some(&session_id) {
             self.by_char.remove(&char_id);
         }
-        // A character the engine no longer holds keeps the position already set on the claim.
-        if let Some(pos) = self.engine.character_position(char_id) {
-            claim.set_last(&self.map_name, pos);
-        }
-        let events = match self.engine.remove_character(char_id) {
-            Ok(events) => events,
-            Err(err) => {
-                warn!(
-                    "Map '{}' removing char {}: {}",
-                    self.map_name, char_id.0, err
-                );
-                Vec::new()
+        // A character that warped out this tick is no longer in the engine; its claim already
+        // holds the trigger cell.
+        let events = match self.engine.character_position(char_id) {
+            None => Vec::new(),
+            Some(pos) => {
+                claim.set_last(&self.map_name, pos);
+                self.engine.remove_character(char_id).unwrap_or_else(|err| {
+                    warn!(
+                        "Map '{}' removing char {}: {}",
+                        self.map_name, char_id.0, err
+                    );
+                    Vec::new()
+                })
             }
         };
         drop(claim);
@@ -984,18 +979,7 @@ mod tests {
             let (outbound_tx, mut outbound_rx) = mpsc::channel::<Bytes>(1);
             let handoff = MapHandoff {
                 claim,
-                spawn: CharacterSpawn {
-                    account_id: ACCOUNT,
-                    char_id: CHAR,
-                    name: "Char1".into(),
-                    sex: ro_core::Sex::Female,
-                    job_class: 0,
-                    base_level: 1,
-                    hair_style: 1,
-                    hair_color: 1,
-                    pos: at(110, 100),
-                    speed: 150,
-                },
+                spawn: spawn_at(110, 100),
                 dest_map: Arc::from("geffen.gat"),
                 dest: (100, 100),
                 rewarp_count: 0,
@@ -1025,6 +1009,79 @@ mod tests {
                 again.is_some(),
                 "released (push before drop: {push_before_drop})"
             );
+        }
+    }
+
+    /// Eviction in the transfer tick (the session's queue is full) releases the claim with the
+    /// trigger cell, and no handoff is sent.
+    #[tokio::test]
+    async fn bin_warp_07_eviction_in_the_transfer_tick_keeps_the_trigger_cell() {
+        let shared = SharedState::new(FakeRepo::new(false));
+        let warp = ro_db::NpcSpawn {
+            name: "w".into(),
+            unique_name: "w".into(),
+            x: 50,
+            y: 50,
+            dir: 0,
+            sprite: 45,
+            sprite_is_mob: false,
+            state: ro_db::NpcState::Normal,
+            trigger: Some((1, 1)),
+            duplicate_of: None,
+            kind: NpcKind::Warp(ro_db::WarpDest {
+                map: "geffen".into(),
+                x: 100,
+                y: 100,
+                trigger_while_hidden: false,
+            }),
+            source: "t:1".into(),
+        };
+        let data = MapData {
+            grid: Arc::new(MapGrid::all_walkable(200, 200).expect("valid dims")),
+            npcs: Arc::new(MapNpcs { npcs: vec![warp] }),
+        };
+        let mut actor = MapWorldActor::new("prontera.gat".into(), data, Instant::now());
+        let (outbound_tx, _outbound_rx) = mpsc::channel(1);
+        let (control_tx, mut control_rx) = mpsc::channel(1);
+        let session_id = SessionId(1);
+        actor.join(JoinSession {
+            session_id,
+            account_id: ACCOUNT,
+            spawn: spawn_at(50, 50),
+            claim: shared.claim(CHAR).expect("claim"),
+            outbound_tx,
+            control_tx,
+            entry: Entry::Login,
+        });
+        // ZC_ACCEPT_ENTER filled the one-slot queue, so this tick's batch can't be sent. The
+        // arrival cell is a warp cell, so the same tick transfers the character out.
+        actor.player_intent(SessionIntent::new(
+            session_id,
+            Some(ACCOUNT),
+            Some(CHAR),
+            ClientIntent::NotifyActorInit,
+        ));
+        actor.tick();
+        assert!(control_rx.try_recv().is_err(), "evicted: no handoff");
+        assert_eq!(
+            shared.recent_position(CHAR),
+            Some(("prontera.gat".to_string(), at(50, 50)))
+        );
+        assert!(shared.claim(CHAR).is_some(), "released");
+    }
+
+    fn spawn_at(x: u16, y: u16) -> CharacterSpawn {
+        CharacterSpawn {
+            account_id: ACCOUNT,
+            char_id: CHAR,
+            name: "Char1".into(),
+            sex: ro_core::Sex::Female,
+            job_class: 0,
+            base_level: 1,
+            hair_style: 1,
+            hair_color: 1,
+            pos: at(x, y),
+            speed: 150,
         }
     }
 

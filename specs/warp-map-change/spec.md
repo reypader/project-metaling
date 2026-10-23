@@ -102,6 +102,8 @@ Out of scope, logged in `PACKET_FINDINGS.md`: rAthena also sends `0x0091` on eve
 - **What it replaces:** `persist_position`'s per-write `tokio::spawn`.
 - **Shape:** one writer task per process, fed by an unbounded mpsc in `SharedState`. It runs writes in the order they were queued, which is release order for a given character, so an older write can't land after a newer one.
 - **After a write:** it removes the `recent_positions` entry only if the sequence number still matches.
+- **A failed write** is retried with backoff (50 ms doubling to 5 s) until it lands, or until a newer write for the same character replaces its `recent_positions` entry. The char-server reads the stored map, so a lost write after a cross-map warp would send the client to the wrong map on the next login (final review M1).
+- `accept_transfer`'s reservation write goes through the same writer.
 - **At shutdown:** a send that fails because the writer is gone logs an error.
 - **Inside a session:** an actor still calls `set_last` and lets the drop persist. There are no direct writes.
 
@@ -163,12 +165,15 @@ Both are unrecoverable for that session. With capacity exhausted, a re-login on 
 #### Inert warps
 - `map_data_loader` clears `Trigger` on a warp after `load_npcs` and before `spawn_npcs`, in two cases:
   - the destination is invalid or an `@` map;
+  - the `.gat` name is longer than 15 bytes, which `0x0091`'s 16-byte field can't carry;
   - `MAP_DATA_DIR` is set and `<dest>.gat` is not a file.
 - It warns once per warp.
 - Without `MAP_DATA_DIR`, destinations use the fallback grid.
 - Warps don't check `MAX_HOSTED_WORLDS`, because destinations come from static data.
 
 **Deviation from rAthena:** on a disconnect in transit, we persist `from_pos` (the trigger cell on A). rAthena would save the destination, because `pc_setpos` sets map/x/y before the client loads. We persist `from_pos` because it is a known cell on a hosted map, while a cross-map destination may still be unresolved. On re-login the arrival-cell check fires the same warp. The player ends where rAthena would put them, with the cell rolled again for a random destination. The reviewer judged this sound. The caveats are that `rewarp_count` resets, and that a warp disabled later leaves the player standing on it.
+
+**Deviation: no random cell on the destination.** rAthena resolves the cell before removing the player, and when the tries run out it doesn't warp at all. Our cross-map warp has already despawned the player on A, so `enter_by_warp` falls back to the map centre. The tries only run out on a map with almost no free cell.
 
 **Duplicate `0x007d` and chains:** if a login lands on a cross-map warp cell, the first `0x007d` fires the warp. A second, duplicate `0x007d` can reach B and complete B's entry before the client has loaded map 2. rAthena would do the same: `prev == nullptr`, so `LoadEndAck` runs. We accept this as parity.
 
@@ -301,7 +306,7 @@ After a cross-map warp and `0x007d`, `0x00b2` type 1 gets `0x00b3`. The stored m
 - Writes for one character land in queue order. The writer clears a `recent_positions` entry only when the sequence number matches.
 
 ## 3. Deferred
-- Login-time `0x0091` ([PF-20](../../PACKET_FINDINGS.md#pf-20)), and `0x01d7` and the inventory re-send at entry. They are entry content, not warp behaviour.
+- Login-time `0x0091` ([PF-20](../../PACKET_FINDINGS.md#pf-20)), and `0x01d7` and the inventory re-send at entry. They are entry content, not warp behaviour. PF-20 matters more now: the char-server sends the stored map, and a login-time `0x0091` would resync a client whose stored map lags the map-server's.
 - Hiding and the `warp2` hidden exception: no hiding state yet.
 - `pc_job_can_entermap`.
 - Multi-map-server handoff (char-server reconnect), and instance (`1@...`) destinations.

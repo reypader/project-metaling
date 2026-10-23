@@ -3,22 +3,38 @@
 Items consciously left out of finished work, with enough context to pick them up later.
 Remove an item when it lands. Newest feature first.
 
+## warp-map-change (branch `claude`, commits from `2a7904f`)
+
+Spec: `specs/warp-map-change/spec.md` (§3 lists the scope cuts).
+
+### Out of scope
+- **Script portals stay inert.** About 970 positioned `script` NPCs with warp sprites (45/139) do `warp` from
+  `OnTouch`; only plain `warp`/`warp2` entries carry a `WarpTrigger`. They need scripting. Warp skills
+  (Teleport, Warp Portal) and `@warp`/`@go` too.
+- **Entry content:** rAthena's login-time `0x0091` ([PF-20](PACKET_FINDINGS.md#pf-20)), `0x01d7` to observers
+  at entry ([PF-01](PACKET_FINDINGS.md#pf-01)), and the inventory re-send at entry.
+- **Hiding.** There is no hiding state, so the "hidden players don't warp unless `warp2`" skip is missing;
+  `WarpTrigger.trigger_while_hidden` is stored but unused.
+- `pc_job_can_entermap` (job/group restrictions on the destination).
+- **Multi-map-server handoff** (char-server reconnect) and instance (`1@...`) destinations: instance
+  warps are inert at load.
+
+### Robustness
+- **Blocking map load on the session task.** `get_or_spawn_world` reads the `.gat` and NPC files on the
+  calling task; a warp to a map not yet running now does this on the session task.
+- **Re-login on a warp cell after a disconnect in transit** (spec §1 deviation): `rewarp_count` resets,
+  and a warp disabled later leaves the player standing on it.
+- With `MAP_DATA_DIR` set, a map whose own `.gat` is missing (fallback grid) treats its same-map warps as
+  inert too.
+- **Packets while loading.** rAthena drops everything but `0x007d` while the player is off the map. We
+  still answer `0x0360` (as the spec allows) and act on Restart `0x00b2` on the destination before
+  `0x007d`.
+- **Real-client check of the warp routes** (plan "Finish"): repeat one cross-map and one same-map warp with
+  an observer through `tools/proxy` against metaling and diff with the rAthena captures. Needs the client.
+
 ## npc-spawning (branch `claude`, commits `1111051..a16d629`)
 
 Spec: `specs/npc-spawning/spec.md` (§4 lists these too).
-
-### Warp map change (next feature) prerequisites
-- **Script portals stay inert.** About 970 positioned `script` NPCs with warp sprites (45/139) do `warp` from
-  `OnTouch`; only plain `warp`/`warp2` entries carry a `WarpTrigger`. They need scripting.
-- Same-map warp branch of `pc_setpos` (`pc.cpp:~7040-7080`) is not in the catalog yet.
-- Warp destination `(0,0)` (random cell) is stored as-is; map change must handle it.
-- **No cell->warp index.** Warps live in a `SparseSet<WarpTrigger>`; build a per-instance cell bitmap or
-  cell->entity map of trigger areas in `spawn_npcs` (rAthena marks `CELL_NPC`) instead of scanning every warp
-  per step.
-- **Skip `Disabled` and `Cloaked` warps** at trigger time: `NpcInfo.state` keeps the state (rAthena
-  `npc_touch_areanpc`).
-- **Map name normalisation.** `WarpDest.map` is bare (`geffen`); worlds are keyed `<map>.gat` and
-  `is_valid_map_name` rejects `@`, so `1@...` instance destinations fail. Add one helper for bare <-> `.gat`.
 
 ### Data not converted (tools/npc-import)
 - Script bodies (and where the scripting phase reads them from: `.txt` via `Source:`, or extracted files).
@@ -68,7 +84,7 @@ Spec: `specs/engine-foundation/spec.md` (§6 lists the scope cuts below as well)
 - Sub-cell offsets other than (8, 8) in `0x09fd` (rAthena uses them when a walk is cut short mid-cell).
 - Walk speed clamp: speed 0 from the DB makes every step complete in one tick (rAthena clamps speed).
 - Weight / max weight are placeholders (`0` / `20300`) until inventory and stats exist.
-- Mobs, `ZC_NPCACK_MAPMOVE` on warps, status, combat, and rayon parallelism are future phases (`DESIGN.md`).
+- Mobs, status, combat, and rayon parallelism are future phases (`DESIGN.md`).
 - `.rsw` water-level promotion of type-0 cells (`ro-db`).
 
 ### Performance (hot path; CLAUDE.md map-server rule)
