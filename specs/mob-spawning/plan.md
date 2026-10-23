@@ -74,7 +74,7 @@ Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
     (4096).
 - [x] **M3 ro-core + ro-packets:** add `UnitObjectType::Mob`, mapped to `0x05` in `object_type()`
   (`crates/ro-packets/src/outgoing/map.rs`). PKT-MOB-01 in `tests/map_unit_codec_tests.rs`.
-- [ ] **M4 ro-engine**
+- [x] **M4 ro-engine**
   - Move `SplitMix64` from `warp.rs` into `rng.rs` and add `below(n)` / `range_inclusive(a, b)`.
   - `EntityKind::Mob`, `MobInfo { gid, mob_id, name, level, hp, max_hp, spawn_group }`,
     `World.mobs: SparseSet<MobInfo>`, `World::spawn_mob`. Clean up mobs in `despawn`.

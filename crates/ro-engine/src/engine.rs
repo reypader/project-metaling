@@ -25,7 +25,9 @@ use crate::spatial::{step_visibility, AREA_SIZE};
 /// `clif_parse_ActionRequest_sub`).
 const ACTION_ATTACK: u8 = 0;
 const ACTION_ATTACK_REPEAT: u8 = 7;
-use crate::warp::{CellBits, MapTransfer, SplitMix64};
+use crate::mob::SpawnGroup;
+use crate::rng::SplitMix64;
+use crate::warp::{CellBits, MapTransfer};
 use crate::world::{NpcInfo, WarpTrigger, World};
 
 /// Default entity capacity of one map instance.
@@ -90,8 +92,11 @@ pub struct MapInstance {
     pub(crate) events: Vec<ScopedServerEvent>,
     /// Players that left through a cross-map warp, until `drain_transfers`.
     pub(crate) transfers: Vec<MapTransfer>,
-    /// Next NPC unit id (per instance; a client only sees one map at a time).
-    next_npc_id: u32,
+    /// Next NPC/mob unit id (per instance; a client only sees one map at a time). NPCs and
+    /// mobs share it, like rAthena's single pool.
+    pub(crate) next_npc_id: u32,
+    /// Normalized mob spawn lines; each mob keeps the index of its line.
+    pub(crate) spawn_groups: Vec<SpawnGroup>,
 }
 
 /// rAthena direction of a one-cell step (0 N, 1 NW, 2 W, 3 SW, 4 S, 5 SE, 6 E, 7 NE; y+ is north).
@@ -142,6 +147,7 @@ impl MapInstance {
             events: Vec::new(),
             transfers: Vec::new(),
             next_npc_id: START_NPC_ID,
+            spawn_groups: Vec::new(),
         }
     }
 
@@ -164,7 +170,10 @@ impl MapInstance {
         if let Some(p) = self.world.players.get(e) {
             return p.account_id.0;
         }
-        self.world.npcs.get(e).map_or(0, |n| n.gid)
+        if let Some(n) = self.world.npcs.get(e) {
+            return n.gid;
+        }
+        self.world.mobs.get(e).map_or(0, |m| m.gid)
     }
 
     fn char_of(&self, e: Entity) -> Option<CharId> {
@@ -183,7 +192,26 @@ impl MapInstance {
     fn appearance(&self, e: Entity) -> Option<UnitAppearance> {
         let i = e.index();
         let Some(info) = self.world.players.get(e) else {
-            let npc = self.world.npcs.get(e)?;
+            let Some(npc) = self.world.npcs.get(e) else {
+                let mob = self.world.mobs.get(e)?;
+                return Some(UnitAppearance {
+                    object_type: UnitObjectType::Mob,
+                    gid: mob.gid,
+                    char_id: None,
+                    name: Arc::clone(&mob.name),
+                    // Valid mob ids (<= 31998) fit the wire's u16.
+                    job: u16::try_from(mob.mob_id.0).unwrap_or(0),
+                    sex: Sex::Female,
+                    hair_style: 0,
+                    hair_color: 0,
+                    head_dir: 0,
+                    pos: self.world.positions[i],
+                    speed: self.world.speed[i],
+                    dead_sit: 0,
+                    clevel: mob.level,
+                    effect_state: 0,
+                });
+            };
             return Some(UnitAppearance {
                 object_type: npc.object_type,
                 gid: npc.gid,
@@ -446,8 +474,15 @@ impl MapInstance {
         if me.x.abs_diff(them.x) > AREA_SIZE || me.y.abs_diff(them.y) > AREA_SIZE {
             return;
         }
-        if let Some(npc) = self.world.npcs.get(target) {
-            let name = Arc::clone(&npc.name);
+        // Mobs answer like NPCs; mob_db `GroupId`/`Title` are not loaded yet.
+        let npc_like = self
+            .world
+            .npcs
+            .get(target)
+            .map(|n| &n.name)
+            .or_else(|| self.world.mobs.get(target).map(|m| &m.name));
+        if let Some(name) = npc_like {
+            let name = Arc::clone(name);
             self.emit_self(e, ServerEvent::AckNpcName { gid, name });
             return;
         }

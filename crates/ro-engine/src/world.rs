@@ -3,7 +3,7 @@
 use std::sync::Arc;
 
 use ro_core::{AccountId, CharId, CharacterSpawn, MapPosition, Sex, UnitObjectType};
-use ro_db::NpcState;
+use ro_db::{MobId, NpcState};
 use rustc_hash::FxHashMap;
 
 use crate::entity::{Entity, EntityAllocator};
@@ -18,6 +18,7 @@ pub(crate) enum EntityKind {
     Free,
     Player,
     Npc,
+    Mob,
 }
 
 /// Static appearance and identity of a player entity.
@@ -48,6 +49,20 @@ pub(crate) struct NpcInfo {
     /// Initial state. Warp map change must skip `Disabled` and `Cloaked` warps
     /// (rAthena `npc_touch_areanpc`).
     pub(crate) state: NpcState,
+}
+
+/// Identity and state of a mob entity. Stats are placeholders until mob_db stats exist.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct MobInfo {
+    pub(crate) gid: u32,
+    pub(crate) mob_id: MobId,
+    /// Shared with the spawn group.
+    pub(crate) name: Arc<str>,
+    pub(crate) level: u16,
+    pub(crate) hp: u32,
+    pub(crate) max_hp: u32,
+    /// Index into `MapInstance::spawn_groups`: the line this mob respawns from.
+    pub(crate) spawn_group: u32,
 }
 
 /// A warp's touch area and destination, resolved at spawn.
@@ -84,6 +99,7 @@ pub(crate) struct World {
     // Sparse components.
     pub(crate) players: SparseSet<PlayerInfo>,
     pub(crate) npcs: SparseSet<NpcInfo>,
+    pub(crate) mobs: SparseSet<MobInfo>,
     pub(crate) warps: SparseSet<WarpTrigger>,
     pub(crate) walking_paths: SparseSet<WalkingPath>,
     // Network id lookups.
@@ -105,6 +121,7 @@ impl World {
             pending_move: Vec::new(),
             players: SparseSet::new(),
             npcs: SparseSet::new(),
+            mobs: SparseSet::new(),
             warps: SparseSet::new(),
             walking_paths: SparseSet::new(),
             char_to_entity: FxHashMap::default(),
@@ -167,6 +184,22 @@ impl World {
         if let Some(warp) = warp {
             self.warps.insert(entity, warp);
         }
+        Ok(entity)
+    }
+
+    /// Creates a mob entity (not in the grid; call `show`). The gid must be unused.
+    pub(crate) fn spawn_mob(
+        &mut self,
+        info: MobInfo,
+        pos: MapPosition,
+        speed: u16,
+    ) -> Result<Entity, EngineError> {
+        if self.gid_to_entity.contains_key(&info.gid) {
+            return Err(EngineError::DuplicateGid(info.gid));
+        }
+        let entity = self.allocate(EntityKind::Mob, pos, speed)?;
+        self.gid_to_entity.insert(info.gid, entity);
+        self.mobs.insert(entity, info);
         Ok(entity)
     }
 
@@ -235,6 +268,11 @@ impl World {
             }
         }
         if let Some(info) = self.npcs.remove(entity) {
+            if self.gid_to_entity.get(&info.gid) == Some(&entity) {
+                self.gid_to_entity.remove(&info.gid);
+            }
+        }
+        if let Some(info) = self.mobs.remove(entity) {
             if self.gid_to_entity.get(&info.gid) == Some(&entity) {
                 self.gid_to_entity.remove(&info.gid);
             }

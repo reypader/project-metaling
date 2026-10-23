@@ -77,30 +77,6 @@ impl CellBits {
     }
 }
 
-/// SplitMix64: a small deterministic generator, one per map instance.
-#[derive(Debug)]
-pub(crate) struct SplitMix64(u64);
-
-impl SplitMix64 {
-    /// Seeds from the FNV-1a hash of `name`, so every instance of a map rolls the same sequence.
-    pub(crate) fn from_name(name: &str) -> Self {
-        let mut hash: u64 = 0xcbf2_9ce4_8422_2325;
-        for byte in name.bytes() {
-            hash ^= u64::from(byte);
-            hash = hash.wrapping_mul(0x0000_0100_0000_01b3);
-        }
-        Self(hash)
-    }
-
-    pub(crate) fn next_u64(&mut self) -> u64 {
-        self.0 = self.0.wrapping_add(0x9e37_79b9_7f4a_7c15);
-        let mut z = self.0;
-        z = (z ^ (z >> 30)).wrapping_mul(0xbf58_476d_1ce4_e5b9);
-        z = (z ^ (z >> 27)).wrapping_mul(0x94d0_49bb_1331_11eb);
-        z ^ (z >> 31)
-    }
-}
-
 /// Whether `cell` is inside the warp's square area around `center`.
 fn area_contains(center: (u16, u16), half_extents: (u16, u16), cell: (u16, u16)) -> bool {
     center.0.abs_diff(cell.0) <= half_extents.0 && center.1.abs_diff(cell.1) <= half_extents.1
@@ -273,8 +249,8 @@ impl MapInstance {
         let tries = u64::from(w) * u64::from(h) * 3;
         let (span_x, span_y) = (u64::from(w - 2), u64::from(h - 2));
         for _ in 0..tries {
-            let x = (self.rng.next_u64() % span_x) as u16 + 1;
-            let y = (self.rng.next_u64() % span_y) as u16 + 1;
+            let x = self.rng.below(span_x) as u16 + 1;
+            let y = self.rng.below(span_y) as u16 + 1;
             // rAthena checks warp areas within range 1, skipping disabled warps; the bitmap
             // also holds disabled warps' cells and leaves out walls inside areas.
             if self.walkability.is_walkable(x, y) && !self.warp_cells.any_near(x, y) {
@@ -353,17 +329,6 @@ mod tests {
         assert!(!bits.get(8, 6));
         assert!(bits.any_near(8, 5));
         assert!(!bits.any_near(7, 6));
-    }
-
-    #[test]
-    fn splitmix_is_deterministic_per_name() {
-        let mut a = SplitMix64::from_name("prontera.gat");
-        let mut b = SplitMix64::from_name("prontera.gat");
-        let mut c = SplitMix64::from_name("geffen.gat");
-        let seq_a: Vec<u64> = (0..4).map(|_| a.next_u64()).collect();
-        let seq_b: Vec<u64> = (0..4).map(|_| b.next_u64()).collect();
-        assert_eq!(seq_a, seq_b);
-        assert_ne!(seq_a[0], c.next_u64());
     }
 
     use std::sync::Arc;
