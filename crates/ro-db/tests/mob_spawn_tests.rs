@@ -195,6 +195,9 @@ fn db_mob_02_rejects_bad_entries() {
         ("mob id 20020", entry("20020", "1", "")),
         ("mob id 31999", entry("31999", "1", "")),
         ("negative x", entry("1002", "1", "").replace("X: 1", "X: -1")),
+        ("level 0", entry("1002", "1", "    Level: 0\n")),
+        ("level 276", entry("1002", "1", "    Level: 276\n")),
+        ("span above i16", entry("1002", "1", "    Span: { X: 32768, Y: 1 }\n")),
         ("syntax error", header("  - Name: [unclosed\n")),
     ];
     for (what, text) in cases {
@@ -217,6 +220,21 @@ fn db_mob_02_accepts_range_edges() {
         ));
         MapMobSpawns::from_yaml_str("edge.yml", &text)
             .unwrap_or_else(|e| panic!("MobId {mob_id} Amount {amount} is valid: {e}"));
+    }
+}
+
+#[test]
+fn db_mob_02_accepts_level_and_span_edges() {
+    for extra in [
+        "    Level: 1\n",
+        "    Level: 275\n",
+        "    Span: { X: 32767, Y: 32767 }\n",
+    ] {
+        let text = header(&format!(
+            "  - Name: a\n    MobId: 1002\n    X: 1\n    Y: 2\n    Amount: 1\n    Delay1: 5000\n    Source: s:1\n{extra}"
+        ));
+        MapMobSpawns::from_yaml_str("edge.yml", &text)
+            .unwrap_or_else(|e| panic!("{extra:?} is valid: {e}"));
     }
 }
 

@@ -108,6 +108,10 @@ impl Importer {
             let at = format!("{path}:{}", rec.line);
             match header::parse(rec) {
                 Ok(h) => self.add_header(h, rec, &at),
+                Err(HeaderError(msg)) if header::is_mob_keyword(&rec.w2) => {
+                    Report::count(&mut self.report.mobs.skipped, "bad header");
+                    self.report.mobs.warnings.push(format!("{at}: {msg}"));
+                }
                 Err(HeaderError(msg)) => {
                     Report::count(&mut self.report.skipped, "bad header");
                     self.report.warnings.push(format!("{at}: {msg}"));

@@ -18,6 +18,10 @@ pub const MOB_SPAWN_DB_VERSION: u32 = 1;
 
 /// Largest `Amount` a spawn line may have.
 const MAX_AMOUNT: u16 = 1000;
+/// rAthena `MAX_LEVEL`.
+const MAX_LEVEL: u16 = 275;
+/// rAthena reads spans as `short`.
+const MAX_SPAN: u16 = i16::MAX as u16;
 
 /// A mob_db id. Sent to the client as the unit's `job`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -25,7 +29,7 @@ pub struct MobId(pub u32);
 
 impl MobId {
     /// rAthena's mob id ranges: `1001..=3998` and `20021..=31998`.
-    fn is_valid(self) -> bool {
+    pub fn is_valid(self) -> bool {
         matches!(self.0, 1001..=3998 | 20021..=31998)
     }
 }
@@ -40,7 +44,7 @@ pub struct MobSpawn {
     /// Center. `(0, 0)` means map-wide.
     pub x: u16,
     pub y: u16,
-    /// Raw `(xs, ys)` from the line, before the runtime rectangle rules.
+    /// Raw `(xs, ys)` from the line, before the runtime rectangle rules. Each `<= 32767`.
     pub span: (u16, u16),
     /// `1..=1000`.
     pub amount: u16,
@@ -48,7 +52,7 @@ pub struct MobSpawn {
     pub delay1: u32,
     /// Respawn variance in ms.
     pub delay2: u32,
-    /// Level from the line; `None` means the mob_db level.
+    /// Level from the line (`1..=275`); `None` means the mob_db level.
     pub level: Option<u16>,
     /// The line used `boss_monster` (not mob_db's `Class: Boss`).
     pub boss: bool,
@@ -134,6 +138,18 @@ impl TryFrom<RawMobSpawn> for MobSpawn {
             return Err(format!(
                 "spawn '{}': Amount {} is outside 1..={MAX_AMOUNT}",
                 raw.name, raw.amount
+            ));
+        }
+        if let Some(span) = raw.span.filter(|s| s.x > MAX_SPAN || s.y > MAX_SPAN) {
+            return Err(format!(
+                "spawn '{}': Span ({}, {}) above {MAX_SPAN}",
+                raw.name, span.x, span.y
+            ));
+        }
+        if let Some(level) = raw.level.filter(|l| !(1..=MAX_LEVEL).contains(l)) {
+            return Err(format!(
+                "spawn '{}': Level {level} is outside 1..={MAX_LEVEL}",
+                raw.name
             ));
         }
         Ok(Self {

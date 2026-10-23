@@ -3,6 +3,7 @@
 
 use std::collections::{HashMap, HashSet};
 
+use ro_db::MobId;
 use serde::Deserialize;
 
 /// `JT_INVISIBLE`: what rAthena uses for an unknown sprite. Never sent to clients.
@@ -91,13 +92,14 @@ impl SpriteTable {
     }
 
     /// A spawn line's mob reference: a whole-token C number must be a mob_db id; anything else
-    /// is a case-insensitive AegisName.
+    /// is a case-insensitive AegisName. Ids outside rAthena's mob id ranges never resolve.
     pub fn resolve_mob(&self, token: &str) -> Option<u32> {
         let id = match parse_c_long(token) {
             Some(id) => self.mob_ids.contains(&id).then_some(id)?,
             None => *self.mob_by_name.get(&token.to_ascii_lowercase())?,
         };
-        u32::try_from(id).ok()
+        let id = u32::try_from(id).ok()?;
+        MobId(id).is_valid().then_some(id)
     }
 
     /// mob_db `Name`.

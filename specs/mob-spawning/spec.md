@@ -118,6 +118,7 @@ Each of these gives a `DbLoadError` naming the path:
 - an unknown field;
 - `Amount` outside `1..=1000`;
 - `MobId` outside the valid ranges;
+- `Level` outside `1..=275`, or a `Span` side above 32767 (rAthena reads spans as `short`);
 - a YAML syntax error (the error also gives the line).
 
 A missing file is `Ok(None)`, meaning the map has no mobs.

@@ -3,7 +3,7 @@
 Items consciously left out of finished work, with enough context to pick them up later.
 Remove an item when it lands. Newest feature first.
 
-## mob-spawning (branch `claude`, commits `262f83a..2093eaf`)
+## mob-spawning (branch `claude`, commits from `563e8a7`)
 
 Spec: `specs/mob-spawning/spec.md` (§4 lists these too). Mobs are visible, named, inert units.
 
@@ -37,6 +37,20 @@ Spec: `specs/mob-spawning/spec.md` (§4 lists these too). Mobs are visible, name
   (all at rAthena defaults).
 - Once-spawns: the script `monster` command and `@monster`.
 - Mob gids are per map instance (rAthena: one global pool shared with NPCs).
+
+### Placement fidelity (`crates/ro-engine/src/mob.rs`, from the final review)
+- **Per-axis map-wide search.** When one search radius is negative (a line like `map,50,0` gives span
+  `(1, 0)`), `search` goes map-wide on both axes; rAthena decides per axis. The shipped data has no such
+  line.
+- **Boss 1x1 shortcut on a zero coordinate.** The catalog says "fixed 1x1 spawn on a nonzero cell"; we
+  only check `span == (1, 1)`, so `boss_monster` at `map,0,50,1,1` takes the shortcut. Unclear whether
+  rAthena needs both coordinates nonzero (ask `metaling-explorer`). No data hits it.
+
+### Performance and robustness
+- `MapInstance::gid()` checks three sparse sets (players, NPCs, mobs) on every step. Fine while mobs don't
+  move; consider a dense gid column when mob movement or AI lands.
+- `get_or_spawn_world` loads `.gat`, NPC and mob files and spawns synchronously on a tokio worker (already
+  true for NPCs). Consider `spawn_blocking`.
 
 ### Movement and AI
 - No random walk, chase or AI timers. Catalog `mechanics/mobs.md` §1.7 has the rAthena rules: the

@@ -16,6 +16,7 @@ const MOB_DB: &str = concat!(
     "    RaceGroups:\n      A: true\n      A: true\n",
     "  - Id: 1063\n    AegisName: LUNATIC\n    Name: Lunatic\n    JapaneseName: Lunatic JP\n",
     "  - Id: 20255\n    AegisName: SPIRIT_TEST\n    Name: L Blue Earth Spirit\n",
+    "  - Id: 5000\n    AegisName: OUT_OF_RANGE\n    Name: Custom\n",
 );
 
 fn importer() -> Importer {
@@ -652,9 +653,51 @@ bad,5,5\tmonster\tTooMany\t1002,1001\n",
 }
 
 #[test]
-fn tool_mob_04_bad_lines_are_bad_headers() {
-    let (_, report) = convert(b"m,1,1\tmonster\t\t1002,1\nm,1,1\tmonster\tNoAmount\t1002\n");
-    assert_eq!(report.skipped.get("bad header"), Some(&2), "{report:?}");
+fn tool_mob_04_bad_lines_are_mob_bad_headers() {
+    let out = import_one(b"m,1,1\tmonster\t\t1002,1\nm,1,1\tBOSS_MONSTER\tNoAmount\t1002\n");
+    let mobs = &out.report.mobs;
+    assert_eq!(mobs.skipped.get("bad header"), Some(&2), "{mobs:?}");
+    assert_eq!(mobs.warnings.len(), 2, "{mobs:?}");
+    assert!(
+        out.report.skipped.is_empty() && out.report.warnings.is_empty(),
+        "mob lines stay out of the NPC report: {:?}",
+        out.report
+    );
+}
+
+#[test]
+fn tool_mob_04_out_of_range_ids_never_resolve() {
+    let out = import_one(b"m,1,1\tmonster\tNum\t5000,1\nm,2,2\tmonster\tName\tout_of_range,1\n");
+    assert!(out.mobs.is_empty());
+    assert_eq!(out.report.mobs.skipped.get("unknown mob"), Some(&2));
+}
+
+#[test]
+fn tool_mob_04_scan_stops_like_scanf() {
+    let long = "W".repeat(31);
+    let text = format!(
+        "a,1,1\tmonster\tJunk\t1002,5x,60000,0,\"a::OnX\"\n\
+b,1,1\tmonster\t{long},50\t1002,1\n\
+c,1,1\tmonster\tDelayJunk\t1002,1,6000 ms,7000,\"a::OnX\"\n"
+    );
+    let out = import_one(text.as_bytes());
+    let a = &mobs_of(&out, "a")[0];
+    assert_eq!(
+        (a.amount, a.delay1, a.event.clone()),
+        (5, 5000, None),
+        "text after the amount stops the scan"
+    );
+    let b = &mobs_of(&out, "b")[0];
+    assert_eq!(
+        b.level, None,
+        "a name over 23 bytes leaves the level unread"
+    );
+    let c = &mobs_of(&out, "c")[0];
+    assert_eq!(
+        (c.delay1, c.delay2, c.event.clone()),
+        (6000, 0, None),
+        "text after a delay stops the scan"
+    );
 }
 
 #[test]

@@ -136,7 +136,7 @@ pub fn parse(rec: &Record) -> Result<Header, HeaderError> {
             w4: rec.w4.clone(),
         });
     }
-    if lower == "monster" || lower == "boss_monster" {
+    if is_mob_keyword(w2) {
         return parse_mob(rec, lower == "boss_monster").map(Header::Mob);
     }
     Ok(Header::Skip(match lower.as_str() {
@@ -177,6 +177,11 @@ fn parse_warp(rec: &Record, lower: &str) -> Result<Header, HeaderError> {
     })
 }
 
+/// `monster` or `boss_monster`, any case.
+pub fn is_mob_keyword(w2: &str) -> bool {
+    w2.eq_ignore_ascii_case("monster") || w2.eq_ignore_ascii_case("boss_monster")
+}
+
 /// Reads a spawn line like rAthena's scanf formats: `w1` `map{,x,y{,xs,ys}}`, `w3`
 /// `name{,level}`, `w4` `id,amount{,delay1{,delay2{,event{,size{,ai}}}}}`. Each conversion stops
 /// the rest of its field list when it fails.
@@ -193,8 +198,13 @@ fn parse_mob(rec: &Record, boss: bool) -> Result<MobHeader, HeaderError> {
     }
     let [x, y, xs, ys] = coords;
 
+    // `%23[^,],%11d`: after a name longer than 23 bytes the next input is not the `,`, so the
+    // level is never read.
     let (name, level) = match rec.w3.split_once(',') {
-        Some((name, level)) => (name, scan_int(level).map(|(v, _)| v)),
+        Some((name, level)) if name.len() <= MOB_NAME_MAX => {
+            (name, scan_int(level).map(|(v, _)| v))
+        }
+        Some((name, _)) => (name, None),
         None => (rec.w3.as_str(), None),
     };
     if name.is_empty() {
@@ -206,8 +216,8 @@ fn parse_mob(rec: &Record, boss: bool) -> Result<MobHeader, HeaderError> {
     let w4 = rec.w4.split('\t').next().unwrap_or("");
     let mut w4 = w4.split(',');
     let mob = w4.next().map(str::trim).unwrap_or("");
-    let amount = w4.next().and_then(scan_int).map(|(v, _)| v);
-    let amount = match amount {
+    let amount = w4.next().and_then(scan_int);
+    let (amount, mut clean) = match amount {
         Some(amount) if !mob.is_empty() => amount,
         _ => {
             return Err(HeaderError(format!(
@@ -219,8 +229,8 @@ fn parse_mob(rec: &Record, boss: bool) -> Result<MobHeader, HeaderError> {
     let mut delays = [None; 2];
     let mut event = None;
     let mut extras = [None; 2];
-    // Delays and extras are numbers; the event between them is any non-empty text.
-    let mut clean = true;
+    // Delays and extras are numbers; the event between them is any non-empty text. Text left
+    // after a number (`clean == false`) stops the scan.
     for slot in &mut delays {
         match w4.next().filter(|_| clean).and_then(scan_int) {
             Some((v, rest_empty)) => {

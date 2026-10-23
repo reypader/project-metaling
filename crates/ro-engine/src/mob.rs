@@ -100,7 +100,10 @@ impl SpawnGroup {
             if self.line.boss && self.span == (1, 1) {
                 return walkable_cell(grid, c);
             }
-            let area = u64::try_from(xs * ys).unwrap_or(0).max(1);
+            // In i64: spans are not bounded by the grid, so `xs * ys` could overflow i32.
+            let area = u64::try_from(i64::from(xs) * i64::from(ys))
+                .unwrap_or(0)
+                .max(1);
             if !self.line.boss && xs + ys >= 1 && rng.below(area) == 0 {
                 if let Some(cell) = walkable_cell(grid, c) {
                     return Some(cell);
@@ -241,6 +244,10 @@ impl MapInstance {
         let Some((x, y)) = group.place(&mut self.rng, &self.walkability, center) else {
             return Ok(false);
         };
+        // Never reuse a gid that is still taken (only possible after the counter wraps).
+        while self.world.entity_by_gid(self.next_npc_id).is_some() {
+            self.next_npc_id = self.next_npc_id.wrapping_add(1);
+        }
         let info = MobInfo {
             gid: self.next_npc_id,
             mob_id: group.line.mob_id,
@@ -365,6 +372,53 @@ mod tests {
             let (x, y) = wide.place(&mut rng, &grid, None).expect("free cell");
             assert!((15..=44).contains(&x) && (15..=44).contains(&y), "{x},{y}");
         }
+    }
+
+    /// Walls everywhere in `(cx-r..=cx+r, cy-r..=cy+r)` except the cells in `open`.
+    fn walled_box(c: (u16, u16), r: u16, open: &[(u16, u16)]) -> MapGrid {
+        let walls: Vec<_> = (c.0 - r..=c.0 + r)
+            .flat_map(|x| (c.1 - r..=c.1 + r).map(move |y| (x, y)))
+            .filter(|cell| !open.contains(cell))
+            .collect();
+        grid_with_walls(100, 100, &walls)
+    }
+
+    #[test]
+    fn eng_mob_02_near_tries_fail_on_walkable_center_takes_the_center() {
+        // Only the center is open around it, and the search never picks the center itself.
+        let grid = walled_box((50, 50), 6, &[(50, 50)]);
+        let mut rng = SplitMix64::from_name("t");
+        let g = SpawnGroup::new(&line(50, 50, (3, 3), false), &grid);
+        for _ in 0..200 {
+            assert_eq!(g.place(&mut rng, &grid, Some((50, 50))), Some((50, 50)));
+        }
+    }
+
+    #[test]
+    fn eng_mob_02_unwalkable_center_falls_back_to_map_wide() {
+        let grid = walled_box((50, 50), 6, &[]);
+        let mut rng = SplitMix64::from_name("t");
+        let g = SpawnGroup::new(&line(50, 50, (3, 3), false), &grid);
+        for _ in 0..200 {
+            let (x, y) = g
+                .place(&mut rng, &grid, Some((50, 50)))
+                .expect("a map-wide try succeeds");
+            assert!(grid.is_walkable(x, y));
+            assert!((15..=84).contains(&x) && (15..=84).contains(&y), "{x},{y}");
+            assert!(
+                x.abs_diff(50) > 6 || y.abs_diff(50) > 6,
+                "outside the walls"
+            );
+        }
+    }
+
+    #[test]
+    fn eng_mob_02_huge_span_does_not_overflow() {
+        let grid = grid_with_walls(100, 100, &[]);
+        let mut rng = SplitMix64::from_name("t");
+        let g = SpawnGroup::new(&line(50, 50, (32767, 32767), false), &grid);
+        let c = g.mob_center(&mut rng, &grid);
+        assert!(g.place(&mut rng, &grid, c).is_some());
     }
 
     #[test]

@@ -253,6 +253,10 @@ fn eng_mob_02_rectangles_map_wide_and_single_cells() {
         line("Rect", 100, 100, (5, 3), 80),
         line("Wide", 0, 0, (0, 0), 80),
         line("Cell", 40, 60, (0, 0), 5),
+        MobSpawn {
+            boss: true,
+            ..line("Boss", 40, 60, (0, 0), 2)
+        },
     ]);
     for m in mobs(&engine) {
         let (x, y) = (m.pos.x, m.pos.y);
@@ -263,7 +267,7 @@ fn eng_mob_02_rectangles_map_wide_and_single_cells() {
                 (15..=184).contains(&x) && (15..=184).contains(&y),
                 "{x},{y}"
             ),
-            "Cell" => assert_eq!((x, y), (40, 60)),
+            "Cell" | "Boss" => assert_eq!((x, y), (40, 60)),
             other => panic!("unexpected {other}"),
         }
     }
