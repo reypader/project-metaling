@@ -48,7 +48,7 @@ Order:
 ### 1.5 What the client receives for a mob
 
 * **Appear (new/respawn, observers already in range):** `clif_spawn` (`clif.cpp:1680`) -> `clif_spawn_unit` -> `0x09fe` to `AREA_WOS` (everyone within 14 except the mob), then `clif_name_area` (sends the name packet to `AREA`; see `CZ_REQNAME` note below), and a special-effect packet for big/medium spawn-line sizes (`EF_GIANTBODY2` / `EF_BABYBODY2`, `clif.cpp:1731-1741`).
-* **Already there when a player arrives / walks into range:** `0x09ff` (standing, `state` 0) via `clif_getareachar_unit` (`clif.cpp:5029`); `0x09fd` if `ud.walktimer` is running. Plus a `0x0977` HP bar if that player is in the mob's `dmglog` (`clif.cpp:5118-5124`).
+* **Already there when a player arrives / walks into range:** `0x09ff` (standing, `state` 0) via `clif_getareachar_unit` (`clif.cpp:5029`); `0x09fd` if `ud.walktimer` is running. Plus a `0x0977` HP bar if that player is in the mob's `dmglog` (`clif.cpp:5118-5124`). The big/medium size effect is sent on this path too, to that player only (`clif_specialeffect_single`, `clif.cpp:5100-5106`), and again on the walking-mob refresh path (`clif.cpp:2102-2108`). `clif_name_area` runs on both paths.
 * **Field values vs players/NPCs** (layouts: [0x09ff](../packets/map_units.md#0x09ff-zc_notify_standentry11-idle-unit-comes-into-view), [0x09fe](../packets/map_units.md#0x09fe-zc_notify_newentry11-unit-spawns-in-view); `clif.cpp:1041-1210, 1213-1330`):
 
 | Field | Mob value |
@@ -71,6 +71,69 @@ Order:
 | `name` | `md->name` (spawn-line name; <= 23 + NUL) |
 
 * `CZ_REQNAME` for a mob: `0x0adf` with `md->name` and empty title at default `show_mob_info: 0`; with non-zero `show_mob_info` the old `ZC_ACK_REQNAMEALL` carrying "HP: x/y" text is sent instead (`clif.cpp:10030-10075`). Guardians always use the long form.
+* `clevel` and `is_boss` in the table above hold for both paths: `0x09ff` sets them at `clif.cpp:1161,1175`, `0x09fe` at `clif.cpp:1308,1322`.
+
+### 1.6 Spawn data facts for an importer
+
+Source: `$RATHENA_PATH` at `d4b8e7b8f`, renewal manifest `npc/re/scripts_main.conf`. Counts come from a throwaway scanner that follows `import:`/`npc:` recursively (835 `npc:` files via 14 confs), skips `//` lines and script bodies by brace depth.
+
+**Manifest scope.** The renewal manifest also pulls in `npc/scripts_monsters.conf` (non-RE `npc/mobs/{jail,pvp,towns}.txt`, 25 lines) and quest/job files with top-level spawn lines. 3334 lines are under `npc/re/mobs/**`; 555 are elsewhere (largest: `npc/quests/okolnir.txt` 450, `npc/re/jobs/novice/academy.txt` 21, `npc/re/jobs/3-2/genetic.txt` 18).
+
+**Line recognition** (`npc.cpp:5690-5810`):
+* Fields are tab-split into w1..w4; w4 runs from the third tab to end of line, so a trailing `\t//comment` lands inside w4. Fewer than 4 fields: "Unable to parse".
+* w2 is matched with `strcmpi` against `monster` / `boss_monster` (`npc.cpp:5809`).
+* Before dispatch, w1 is checked with `%15[^,],%6hd,%6hd`: unknown map skips the line, a map not loaded on this server skips it silently, x/y outside the map is an error and skips it (`npc.cpp:5730-5765`).
+
+**Parse formats** (`npc.cpp:5235-5240`):
+* w1: `%15[^,],%6hd,%6hd,%6hd,%6hd` (needs at least 1 field). Missing values stay 0, so a bare map name means `x = y = 0` = map-wide.
+* w3: `%23[^,],%11d` (needs 1). A missing level stays -1 (= db level).
+* w4: `%23[^,],%11d,%11u,%11u,%77[^,],%11d,%11d[^\t\r\n]` into `id, amount, delay1, delay2, event, size, ai`; needs at least 2 (id and amount). The trailing `[^\t\r\n]` is a literal match, not a char class, and has no effect. Defaults: `delay1 = 5000`, `delay2 = 0`, event empty, size -1, ai 0. Delays are bounded `<= 0xfffffff` (`npc.cpp:5361`).
+* A trailing `\t//comment` ends the sscanf cleanly (the next expected `,` doesn't match a tab). Any parse failure skips only that line.
+
+**Name** (`npc.cpp:5218-5232, 5362-5370`; `mob.cpp:439-490`):
+* `%23[^,]` cuts the name silently to 23 characters (`NAME_LENGTH` 24, `mmo.hpp:154`); no trimming. 35 renewal lines are longer (longest 31, e.g. "Elusive Wraith Dead (Nightmare)").
+* `mob_parse_dataset` replaces exactly `--en--` with the db `Name` and `--ja--` with the db `JapaneseName`; the loader sets `JapaneseName = Name` when absent (`mob.cpp:5040-5042`). `override_mob_names` 1/2 writes these same tokens.
+* Renewal data: no `--en--`; 32 `--ja--` lines, all in `npc/re/mobs/dungeons/for_dun.txt` (`SPIRIT_*` mobs without a `JapaneseName`, so they get the db `Name`, e.g. "L Blue Earth Spirit").
+* No spawn name contains `#`; the spawn path does no `#` handling (only mob chat cuts at `#`, `mob.cpp:4211`). All names are ASCII.
+
+**Id field** (`npc.cpp:5260-5275`): `strtol(id, &end, 0)`; if anything is left after the number it is looked up as an AegisName (`mobdb_search_aegisname`, case-insensitive); else the number must be a mob_db id (clones rejected). `strtol` accepts leading spaces: 8 lines in `ein_dun.txt` (57-64) have ` 20255`, so an importer must trim.
+
+**Validation quirks** (`npc.cpp:5277-5305`):
+* `amount` must be 1..1000 (`npc.cpp:5277`).
+* Spawn level (w3 `name{,level}`, `%23[^,],%11d`, `npc.cpp:5234`; `mob_lv` starts at -1, `:5220`): absent or non-numeric level leaves -1. Reject test is `(mob_lv == 0 || mob_lv > MAX_LEVEL) && mob_lv != -1` (`:5301-5305`): 0 and >`MAX_LEVEL` skip the whole line with `ShowError`. -1 and any other negative (e.g. -5) pass without error; `mob.level = mob_lv` only runs for `0 < mob_lv <= MAX_LEVEL` (`:5314-5315`), so negatives are silently ignored (level stays unset = 0). No clamping.
+* `MAX_LEVEL` = 275, unconditional (`src/map/map.hpp:78`, no `RENEWAL` branch, not config-overridable; `conf/battle` has no knob).
+* At spawn: `mob_spawn_dataset` copies `data->level` only if > 0 (`mob.cpp:477-478`). `status_calc_mob_` with `SCO_FIRST` keeps `md->level` only if `0 < level <= MAX_LEVEL && level != md->db->lv`, else uses `md->db->lv` (`status.cpp:2781-2785`). Level above db level only raises stats/exp when `mobs_level_up` is set (`status.cpp:2792`, `mob.cpp:3102`).
+* The size/ai validity checks test fields that are still 0 and can never fail; values are applied only when size is 1..2 and ai is 1..`AI_MAX`, otherwise silently ignored.
+* The `delay1 < mob_respawn_time` replacement (by 5000) only runs when delay1 was given and is not 5000.
+
+**Event field.** `mob_parse_dataset` strips one leading and one trailing `"` (`mob.cpp:446-452`); `mob_spawn_dataset` keeps it as `md->npc_event` only if at least 4 characters remain (`mob.cpp:~480`). So the values `0`/`1` (95 lines) are ignored; 44 lines carry real labels (`"ant_d02_i_boss::OnMobDead"`, `"lhz_dun_n::OnRegularDead3208"`, `"illusion_mob#moonlight::OnKill"`).
+
+**Counts** (3889 spawn lines):
+
+| Metric | Value |
+| :--- | :--- |
+| `monster` / `boss_monster` | 3814 / 75 |
+| Sum of `amount` | 65252 (under `npc/re/mobs/**`: 3260 + 74 lines, 64077 mobs) |
+| `amount` range | 1..216; 1628 lines have 1 |
+| Distinct maps | 411 (379 under `npc/re/mobs/**`); all in `db/map_index.txt` |
+| `level` / `size` / `ai` given | 0 / 0 / 0 lines |
+| `delay1` / `delay2` / `event` given | 3453 / 1127 / 139 lines |
+| `delay2` non-zero | 974 `monster`, 69 `boss_monster` (non-boss values are zeroed at default `mob_spawn_variance: 1`, `npc.cpp:5350-5354`) |
+| Map-wide (`x==0 && y==0`) | 2284 (1995 `map,0,0`, 73 `map,0,0,0,0`, 216 bare map) |
+| Explicit rectangle (not 1x1) / explicit 1x1 / single cell without span | 357 / 6 / 1242 |
+| Mob refs | 3614 numeric lines, 23 AegisName lines (15 distinct); all resolve |
+| Odd formatting | 252 lines with a trailing `\t//comment` (216 `tra_fild_123.txt`, 32 `for_dun.txt`, 4 `championmobs.txt`); 8 leading-space ids; 8 exact duplicate lines (spawn twice); no CRLF, no negative coordinates, no `delay1 < 1000` |
+
+**Dynamic mobs** (`conf/battle/monster.conf:254`, `npc.cpp:5392-5406`, `map.cpp:3004-3098`): `dynamic_mobs: yes` (default) stores a spawn line in the map's `moblist` (cap `MAX_MOB_LIST_PER_MAP` = 128 lines, `map.hpp:72`) and creates the mobs when the first player enters (`map_spawnmobs`). When the last player leaves, `map_removemobs` removes them after `mob_remove_delay` (300000 ms), sparing MVPs (damaged mobs are removed too with `mob_remove_damaged: yes`).
+
+### 1.7 Not used yet: movement and AI notes
+
+* Spawn arms the walk timer: `next_walktime = tick + rnd()%1000 + MIN_RANDOMWALKTIME` (`mob.cpp:1190`); `MIN_RANDOMWALKTIME = 4000` ms (`mob.hpp:39`), `MIN_MOBTHINKTIME = 100`.
+* Two timers: `mob_ai_hard` every 100 ms and `mob_ai_lazy` every 1000 ms (`mob.cpp:7363-7364`). Hard AI runs only for mobs within `AREA_SIZE + ACTIVE_AI_RANGE` = 14 + 4 cells of a player (`mob.cpp:46, 2351`) when `monster_ai & 0x20` is off (default).
+* `mob_ai_sub_lazy` (`mob.cpp:2359-2445`) handles mobs with no player near. A mob a player activated keeps hard AI for `mob_active_time` (5000 ms) / `boss_active_time` after the last contact (`battle.cpp:8622`). In lazy mode a mob random-walks only if `mob_is_spotted`; a never-spotted mob never walks. The lazy walk rolls `mob_nopc_move_rate` / `boss_nopc_move_rate` (both 100).
+* `mob_randomwalk` (`mob.cpp:1673-1770`): needs `next_walktime` reached, `MD_CANMOVE`, no `MD_NORANDOMWALK`, and `unit_can_move`. Picks a random passable, pathable cell within ±7 (15x15 window, random stride direction). Success: `MSS_WALK`, `next_walktime = tick + rnd()%1000 + 4000 + walkpath_time`. Failure retries next interval; after 1000 failures it respawns (only with `mob_stuck_warning`).
+* In hard AI, slaves don't random-walk; a failed walk delays the next try by `rnd()%1000` or until `canmove_tick`. After dropping a target, `next_walktime = rnd()%1000 + 4000` (or `rnd()%1000` with `monster_ai & 0x8`).
+* Walk speed is `WalkSpeed` (§1.5).
 
 ## 2. HP reduction
 
