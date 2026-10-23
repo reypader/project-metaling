@@ -8,7 +8,7 @@ use std::time::Duration;
 
 use common::*;
 use map_server::{load_npcs, MapConfig};
-use ro_db::{MapNpcs, NpcKind, NpcSpawn, NpcState};
+use ro_db::{MapMobSpawns, MapNpcs, NpcKind, NpcSpawn, NpcState};
 
 const LONG: Duration = Duration::from_secs(4);
 const START_NPC_ID: u32 = 110_000_000;
@@ -39,6 +39,7 @@ async fn bin_npc_01_loaded_npcs_are_seen_on_entry() {
         MapNpcs {
             npcs: vec![kafra(103, 104)],
         },
+        MapMobSpawns::default(),
     );
     let server =
         TestServer::start_with_loader(InMemoryRepo::seeded(&[(1, 100, 100)]), loader).await;

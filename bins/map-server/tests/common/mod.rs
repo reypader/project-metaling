@@ -17,7 +17,7 @@ use map_server::{handle_client_session, MapData, MapDataLoader, MapServiceHandle
 use ro_core::{
     AccountId, CharId, CharacterSummary, CreateCharacterRequest, MapPosition, Sex, TARGET_PACKETVER,
 };
-use ro_db::{CellType, MapGrid, MapNpcs};
+use ro_db::{CellType, MapGrid, MapMobSpawns, MapNpcs};
 use ro_packets::{
     pack_pos_dir, unpack_pos2, PacketDecoder, PacketOpcode, RathenaPacketLengthTable, RawPacket,
 };
@@ -168,13 +168,13 @@ impl CharacterRepository for InMemoryRepo {
     }
 }
 
-/// Loader handing every map the same 200x200 grid with `walls` and no NPCs.
+/// Loader handing every map the same 200x200 grid with `walls`, no NPCs and no mobs.
 pub fn grid_loader(walls: &[(u16, u16)]) -> MapDataLoader {
-    data_loader(walls, MapNpcs::default())
+    data_loader(walls, MapNpcs::default(), MapMobSpawns::default())
 }
 
-/// Loader handing every map the same 200x200 grid with `walls` and the same `npcs`.
-pub fn data_loader(walls: &[(u16, u16)], npcs: MapNpcs) -> MapDataLoader {
+/// Loader handing every map the same 200x200 grid with `walls` and the same `npcs` and `mobs`.
+pub fn data_loader(walls: &[(u16, u16)], npcs: MapNpcs, mobs: MapMobSpawns) -> MapDataLoader {
     let mut grid = MapGrid::all_walkable(200, 200).expect("valid dims");
     for &(x, y) in walls {
         assert!(grid.set(x, y, CellType::Wall));
@@ -182,6 +182,7 @@ pub fn data_loader(walls: &[(u16, u16)], npcs: MapNpcs) -> MapDataLoader {
     let data = MapData {
         grid: Arc::new(grid),
         npcs: Arc::new(npcs),
+        mobs: Arc::new(mobs),
     };
     Arc::new(move |_map: &str| data.clone())
 }
@@ -197,6 +198,7 @@ pub fn maps_loader(maps: Vec<(&'static str, MapNpcs)>) -> MapDataLoader {
     Arc::new(move |map: &str| MapData {
         grid: Arc::clone(&grid),
         npcs: maps.get(map).cloned().unwrap_or_default(),
+        mobs: Arc::default(),
     })
 }
 

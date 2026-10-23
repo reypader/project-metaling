@@ -14,7 +14,7 @@ use ro_core::{
     bare_map_name, gat_map_name, AccountId, BroadcastScope, CharId, CharacterSpawn, ClientIntent,
     MapPosition, ScopedServerEvent, ServerEvent, SessionId, SessionIntent, TARGET_PACKETVER,
 };
-use ro_db::{MapGrid, MapNpcs, NpcKind};
+use ro_db::{MapGrid, MapMobSpawns, MapNpcs, NpcKind};
 use ro_engine::{EngineError, MapInstance, MapTransfer};
 use ro_packets::{EventEncoder, Phase0EventEncoder};
 use ro_persistence::CharacterRepository;
@@ -35,6 +35,7 @@ const MAX_COMMANDS_PER_WAKE: usize = 256;
 pub struct MapData {
     pub grid: Arc<MapGrid>,
     pub npcs: Arc<MapNpcs>,
+    pub mobs: Arc<MapMobSpawns>,
 }
 
 /// Builds a map's static data from its name (`prontera.gat`).
@@ -90,11 +91,30 @@ pub fn load_npcs(npc_data_dir: Option<&Path>, map_name: &str) -> Arc<MapNpcs> {
     }
 }
 
-/// Loader reading `.gat` files from `map_data_dir` and NPC lists from `npc_data_dir`. Warps
-/// that can't be taken lose their trigger before the map spawns its NPCs.
+/// Loads `<dir>/<map>.yml` mob spawn lines (map name without `.gat`). No directory or no file
+/// means no mobs; a bad file logs a warning and also means no mobs (BIN-MOB-01).
+pub fn load_mob_spawns(mob_spawn_data_dir: Option<&Path>, map_name: &str) -> Arc<MapMobSpawns> {
+    let Some(dir) = mob_spawn_data_dir else {
+        return Arc::new(MapMobSpawns::default());
+    };
+    let stem = bare_map_name(map_name);
+    match MapMobSpawns::load_yaml(&dir.join(format!("{stem}.yml"))) {
+        Ok(Some(mobs)) => Arc::new(mobs),
+        Ok(None) => Arc::new(MapMobSpawns::default()),
+        Err(err) => {
+            warn!("Map '{}': {}; spawning no mobs", map_name, err);
+            Arc::new(MapMobSpawns::default())
+        }
+    }
+}
+
+/// Loader reading `.gat` files from `map_data_dir`, NPC lists from `npc_data_dir` and mob
+/// spawn lists from `mob_spawn_data_dir`. Warps that can't be taken lose their trigger before
+/// the map spawns its NPCs.
 pub fn map_data_loader(
     map_data_dir: Option<PathBuf>,
     npc_data_dir: Option<PathBuf>,
+    mob_spawn_data_dir: Option<PathBuf>,
 ) -> MapDataLoader {
     Arc::new(move |map_name: &str| {
         let mut npcs = Arc::unwrap_or_clone(load_npcs(npc_data_dir.as_deref(), map_name));
@@ -102,6 +122,7 @@ pub fn map_data_loader(
         MapData {
             grid: load_walkability(map_data_dir.as_deref(), map_name),
             npcs: Arc::new(npcs),
+            mobs: load_mob_spawns(mob_spawn_data_dir.as_deref(), map_name),
         }
     })
 }
@@ -506,8 +527,13 @@ impl MapWorldActor {
     fn new(map_name: String, data: MapData, started: Instant) -> Self {
         let map_size = (data.grid.width(), data.grid.height());
         let mut engine = MapInstance::new(map_name.clone(), data.grid);
-        let spawned = engine.spawn_npcs(&data.npcs);
-        info!("Map '{}': {} NPCs spawned", map_name, spawned);
+        // NPCs first: they take the low unit ids, like rAthena's load order.
+        let npcs = engine.spawn_npcs(&data.npcs);
+        let mobs = engine.spawn_mobs(&data.mobs);
+        info!(
+            "Map '{}': {} NPCs and {} mobs spawned",
+            map_name, npcs, mobs
+        );
         Self {
             map_name,
             engine,
@@ -953,6 +979,7 @@ mod tests {
         let data = MapData {
             grid,
             npcs: Arc::new(MapNpcs::default()),
+            mobs: Arc::new(MapMobSpawns::default()),
         };
         MapServiceHandle::new(repo, Arc::new(move |_: &str| data.clone()))
     }
@@ -1065,6 +1092,7 @@ mod tests {
         let data = MapData {
             grid: Arc::new(MapGrid::all_walkable(200, 200).expect("valid dims")),
             npcs: Arc::new(MapNpcs { npcs: vec![warp] }),
+            mobs: Arc::new(MapMobSpawns::default()),
         };
         let mut actor = MapWorldActor::new("prontera.gat".into(), data, Instant::now());
         let (outbound_tx, _outbound_rx) = mpsc::channel(1);

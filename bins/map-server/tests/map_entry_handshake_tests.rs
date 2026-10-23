@@ -71,7 +71,7 @@ async fn test_bin_map_persist_lifecycle_and_coordinates() {
         .expect("Failed to set position");
 
     let repo_arc = std::sync::Arc::new(repo);
-    let service = MapServiceHandle::new(repo_arc.clone(), map_data_loader(None, None));
+    let service = MapServiceHandle::new(repo_arc.clone(), map_data_loader(None, None, None));
 
     let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let addr = listener.local_addr().unwrap();

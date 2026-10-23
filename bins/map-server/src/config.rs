@@ -15,6 +15,9 @@ pub struct MapConfig {
     /// Directory holding `<map>.yml` NPC spawn lists (`NPC_DATA_DIR`), normally
     /// `crates/ro-db/data/npc`. Unset: no map has NPCs.
     pub npc_data_dir: Option<PathBuf>,
+    /// Directory holding `<map>.yml` mob spawn lists (`MOB_SPAWN_DATA_DIR`), normally
+    /// `crates/ro-db/data/mob_spawn`. Unset: no map has mobs.
+    pub mob_spawn_data_dir: Option<PathBuf>,
 }
 
 impl Default for MapConfig {
@@ -26,6 +29,7 @@ impl Default for MapConfig {
             database_url: "postgres://ragnarok:ragnarok@localhost:5432/ragnarok".to_string(),
             map_data_dir: None,
             npc_data_dir: None,
+            mob_spawn_data_dir: None,
         }
     }
 }
@@ -61,6 +65,10 @@ struct MapCliArgs {
     /// Directory holding `<map>.yml` NPC spawn lists.
     #[arg(long = "npc-data-dir")]
     npc_data_dir: Option<PathBuf>,
+
+    /// Directory holding `<map>.yml` mob spawn lists.
+    #[arg(long = "mob-spawn-data-dir")]
+    mob_spawn_data_dir: Option<PathBuf>,
 }
 
 impl MapConfig {
@@ -112,6 +120,10 @@ impl MapConfig {
             .npc_data_dir
             .or_else(|| env("NPC_DATA_DIR").map(PathBuf::from));
 
+        let mob_spawn_data_dir = parsed
+            .mob_spawn_data_dir
+            .or_else(|| env("MOB_SPAWN_DATA_DIR").map(PathBuf::from));
+
         Self {
             client_port,
             http_port,
@@ -119,6 +131,7 @@ impl MapConfig {
             database_url,
             map_data_dir,
             npc_data_dir,
+            mob_spawn_data_dir,
         }
     }
 

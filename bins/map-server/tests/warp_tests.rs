@@ -374,7 +374,7 @@ async fn bin_warp_04_unreachable_destinations_are_inert() {
     write_warp_npcs(&npc_dir);
 
     let (logs, _guard) = Logs::capture();
-    let loader = map_data_loader(Some(maps), Some(npc_dir));
+    let loader = map_data_loader(Some(maps), Some(npc_dir), None);
     let data = loader("prontera.gat");
     let triggers: Vec<_> = data
         .npcs
@@ -414,7 +414,7 @@ async fn bin_warp_04_without_map_data_dir_uses_the_fallback_grid() {
     let root = TempDir::new("warp04-fallback");
     let npc_dir = root.sub("npc");
     write_warp_npcs(&npc_dir);
-    let loader = map_data_loader(None, Some(npc_dir));
+    let loader = map_data_loader(None, Some(npc_dir), None);
     let server = TestServer::start_with_loader(InMemoryRepo::seeded(&[(A, 20, 20)]), loader).await;
     let mut a = server.join(A).await;
 

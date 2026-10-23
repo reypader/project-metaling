@@ -83,7 +83,7 @@ Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
   - Placeholder constants: `PLACEHOLDER_MOB_HP`, `PLACEHOLDER_MOB_LEVEL`, `DEFAULT_MOB_SPEED`.
   - Tests ENG-MOB-01..05 in `crates/ro-engine/tests/mob_tests.rs`.
   - `DESIGN.md` §1a.
-- [ ] **M5 map-server**
+- [x] **M5 map-server**
   - `MapConfig.mob_spawn_data_dir` (`--mob-spawn-data-dir` / `MOB_SPAWN_DATA_DIR`), `MapData.mobs`,
     `load_mob_spawns`, and the `map_data_loader` argument.
   - `MapWorldActor::new` calls `spawn_mobs` after `spawn_npcs` and logs both counts.

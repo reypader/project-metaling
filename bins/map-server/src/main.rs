@@ -28,9 +28,16 @@ async fn main() -> anyhow::Result<()> {
     if config.npc_data_dir.is_none() {
         warn!("NPC_DATA_DIR not set; maps will have no NPCs");
     }
+    if config.mob_spawn_data_dir.is_none() {
+        warn!("MOB_SPAWN_DATA_DIR not set; maps will have no mobs");
+    }
     let service_handle = MapServiceHandle::new(
         char_repo,
-        map_data_loader(config.map_data_dir.clone(), config.npc_data_dir.clone()),
+        map_data_loader(
+            config.map_data_dir.clone(),
+            config.npc_data_dir.clone(),
+            config.mob_spawn_data_dir.clone(),
+        ),
     );
 
     let http_router = create_http_router(service_handle.clone());
