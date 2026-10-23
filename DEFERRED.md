@@ -3,6 +3,29 @@
 Items consciously left out of finished work, with enough context to pick them up later.
 Remove an item when it lands. Newest feature first.
 
+## exit-game (branch `claude`, commit `d666b53`)
+
+Spec: `specs/exit-game/spec.md` (§3 lists these too).
+
+### Still to verify by hand
+- **Real-client check** (plan M5). "Exit to Windows" through `tools/proxy` should close the client, and
+  the observer should see `0x0080` type 2. The character should then log back in at the cell where it quit.
+
+### Robustness (`bins/map-server/src/{service,session}.rs`)
+- **Exit or restart racing a cross-map handoff.** If map A hands the session off just as `0x018a`/`0x00b2`
+  arrives, the session task can still forward it to A, which drops it. A now logs this at `warn`.
+  - Effect: no ack. The client stays in game, loads the destination map and plays on. Pressing Exit
+    again works. Server state stays consistent: the claim moves to B as in any warp.
+  - The same window applies to every intent. Fix it in the handoff, e.g. A keeps handed-off session ids
+    for one tick and forwards their intents.
+  - Test: warp and quit in the same tick, then assert `0x018b` arrives.
+
+### Needs combat
+- **Refusing the exit (`0x018b` result 1, "wait 10 seconds").** rAthena refuses while the character is
+  hidden or cloaked, or within `prevent_logout` (10 s) of attacking, casting or taking damage. The same
+  check refuses `CZ_RESTART`.
+- **Delayed removal.** A client that closes inside the `prevent_logout` window stays in the world for 10 s.
+
 ## warp-map-change (branch `claude`, commits from `2a7904f`)
 
 Spec: `specs/warp-map-change/spec.md` (§3 lists the scope cuts).
