@@ -1,0 +1,87 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swift Death Word
+  MobId: 2858
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:293
+- Name: Death Word
+  MobId: 1698
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:79
+- Name: Owl Duke
+  MobId: 1320
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:80
+- Name: Owl Baron
+  MobId: 1295
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:81
+- Name: Ancient Mimic
+  MobId: 1699
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:82
+- Name: Elder
+  MobId: 1377
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:83
+- Name: Plasma
+  MobId: 1696
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:84
+- Name: Plasma
+  MobId: 1695
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:85
+- Name: Plasma
+  MobId: 1697
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:86
+- Name: Plasma
+  MobId: 1694
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:87
+- Name: Maero of Thanatos
+  MobId: 1706
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:88

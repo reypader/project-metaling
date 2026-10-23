@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Baby Desert Wolf Ringle
+  MobId: 2855
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:268
+- Name: Desert Wolf
+  MobId: 1106
+  X: 0
+  Y: 0
+  Amount: 145
+  Delay1: 5000
+  Source: npc/re/mobs/fields/rachel.txt:22
+- Name: Roween
+  MobId: 1782
+  X: 0
+  Y: 0
+  Amount: 33
+  Delay1: 5000
+  Source: npc/re/mobs/fields/rachel.txt:23
+- Name: Baby Desert Wolf
+  MobId: 1107
+  X: 0
+  Y: 0
+  Amount: 22
+  Delay1: 5000
+  Source: npc/re/mobs/fields/rachel.txt:24
+- Name: Anopheles
+  MobId: 1627
+  X: 0
+  Y: 0
+  Amount: 11
+  Delay1: 5000
+  Source: npc/re/mobs/fields/rachel.txt:25

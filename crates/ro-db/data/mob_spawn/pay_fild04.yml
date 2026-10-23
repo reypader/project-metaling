@@ -1,0 +1,99 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Poporing
+  MobId: 2703
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:239
+- Name: Poporing
+  MobId: 1031
+  X: 0
+  Y: 0
+  Amount: 141
+  Delay1: 5000
+  Source: npc/re/mobs/fields/payon.txt:48
+- Name: Marin
+  MobId: 1242
+  X: 0
+  Y: 0
+  Amount: 32
+  Delay1: 5000
+  Source: npc/re/mobs/fields/payon.txt:49
+- Name: Drops
+  MobId: 1113
+  X: 0
+  Y: 0
+  Amount: 21
+  Delay1: 5000
+  Source: npc/re/mobs/fields/payon.txt:50
+- Name: Poring
+  MobId: 1002
+  X: 0
+  Y: 0
+  Amount: 16
+  Delay1: 5000
+  Source: npc/re/mobs/fields/payon.txt:51
+- Name: Angeling
+  MobId: 1096
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/fields/payon.txt:52
+- Name: Ghostring
+  MobId: 1120
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/fields/payon.txt:53
+- Name: Mastering
+  MobId: 1090
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/fields/payon.txt:54
+- Name: Deviling
+  MobId: 1582
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 7200000
+  Delay2: 3600000
+  Source: npc/re/mobs/fields/payon.txt:55
+- Name: Shining Plant
+  MobId: 1083
+  X: 346
+  Y: 335
+  Span:
+    X: 5
+    Y: 5
+  Amount: 1
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/fields/payon.txt:56
+- Name: Green Plant
+  MobId: 1080
+  X: 254
+  Y: 193
+  Span:
+    X: 10
+    Y: 10
+  Amount: 5
+  Delay1: 360000
+  Delay2: 180000
+  Source: npc/re/mobs/fields/payon.txt:57

@@ -1,0 +1,50 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Furious Tamruan
+  MobId: 2639
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:33
+- Name: Tamruan
+  MobId: 1584
+  X: 0
+  Y: 0
+  Amount: 116
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ayo_dun.txt:29
+- Name: Whisper
+  MobId: 1179
+  X: 0
+  Y: 0
+  Amount: 23
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ayo_dun.txt:30
+- Name: Kraben
+  MobId: 1587
+  X: 0
+  Y: 0
+  Amount: 23
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ayo_dun.txt:31
+- Name: Lady Tanee
+  MobId: 1688
+  X: 150
+  Y: 90
+  Span:
+    X: 15
+    Y: 30
+  Amount: 1
+  Delay1: 25200000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/dungeons/ayo_dun.txt:32

@@ -1,0 +1,57 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Roda Frog Ringleader
+  MobId: 2678
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:244
+- Name: Roda Frog
+  MobId: 1012
+  X: 0
+  Y: 0
+  Amount: 169
+  Delay1: 5000
+  Source: npc/re/mobs/fields/prontera.txt:20
+- Name: Ambernite
+  MobId: 1094
+  X: 0
+  Y: 0
+  Amount: 65
+  Delay1: 5000
+  Source: npc/re/mobs/fields/prontera.txt:21
+- Name: Savage Babe
+  MobId: 1167
+  X: 0
+  Y: 0
+  Amount: 26
+  Delay1: 5000
+  Source: npc/re/mobs/fields/prontera.txt:22
+- Name: Shining Plant
+  MobId: 1083
+  X: 227
+  Y: 212
+  Amount: 1
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/fields/prontera.txt:23
+- Name: Green Plant
+  MobId: 1080
+  X: 285
+  Y: 138
+  Span:
+    X: 10
+    Y: 10
+  Amount: 5
+  Delay1: 360000
+  Delay2: 180000
+  Source: npc/re/mobs/fields/prontera.txt:24

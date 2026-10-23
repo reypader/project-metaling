@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Drosera
+  MobId: 1781
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/fields/rachel.txt:87
+- Name: Magmaring
+  MobId: 1836
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/fields/rachel.txt:88
+- Name: Grey Baby Wolf
+  MobId: 21324
+  X: 0
+  Y: 0
+  Amount: 50
+  Delay1: 5000
+  Source: npc/re/mobs/fields/rachel.txt:89
+- Name: Grey Goat
+  MobId: 21323
+  X: 0
+  Y: 0
+  Amount: 60
+  Delay1: 5000
+  Source: npc/re/mobs/fields/rachel.txt:90
+- Name: Rake Hand
+  MobId: 21296
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/fields/rachel.txt:91

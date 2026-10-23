@@ -1,0 +1,38 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Bradium Golem
+  MobId: 2882
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:179
+- Name: Bradium Golem
+  MobId: 2024
+  X: 0
+  Y: 0
+  Amount: 75
+  Delay1: 5000
+  Source: npc/re/mobs/fields/manuk.txt:27
+- Name: Centipede
+  MobId: 1987
+  X: 0
+  Y: 0
+  Amount: 52
+  Delay1: 5000
+  Source: npc/re/mobs/fields/manuk.txt:28
+- Name: Tatacho
+  MobId: 1986
+  X: 0
+  Y: 0
+  Amount: 37
+  Delay1: 5000
+  Source: npc/re/mobs/fields/manuk.txt:29

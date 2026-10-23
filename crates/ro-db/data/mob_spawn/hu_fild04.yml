@@ -1,0 +1,74 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swift Novus
+  MobId: 2729
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:135
+- Name: Novus
+  MobId: 1718
+  X: 0
+  Y: 0
+  Amount: 100
+  Delay1: 5000
+  Source: npc/re/mobs/fields/hugel.txt:48
+- Name: Novus
+  MobId: 1715
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/fields/hugel.txt:49
+- Name: Geographer
+  MobId: 1368
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/fields/hugel.txt:50
+- Name: Dragon Egg
+  MobId: 1721
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/fields/hugel.txt:51
+- Name: Yellow Plant
+  MobId: 1081
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/fields/hugel.txt:52
+- Name: Blue Plant
+  MobId: 1079
+  X: 206
+  Y: 210
+  Span:
+    X: 30
+    Y: 18
+  Amount: 4
+  Delay1: 120000
+  Delay2: 600000
+  Source: npc/re/mobs/fields/hugel.txt:53
+- Name: Blue Plant
+  MobId: 1079
+  X: 206
+  Y: 120
+  Span:
+    X: 10
+    Y: 10
+  Amount: 2
+  Delay1: 120000
+  Delay2: 600000
+  Source: npc/re/mobs/fields/hugel.txt:54

@@ -1,0 +1,50 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Furious Roda Frog
+  MobId: 2679
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:83
+- Name: Roda Frog
+  MobId: 1012
+  X: 0
+  Y: 0
+  Amount: 112
+  Delay1: 5000
+  Source: npc/re/mobs/fields/geffen.txt:32
+- Name: Ambernite
+  MobId: 1094
+  X: 0
+  Y: 0
+  Amount: 28
+  Delay1: 5000
+  Source: npc/re/mobs/fields/geffen.txt:33
+- Name: Toad
+  MobId: 1089
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/fields/geffen.txt:34
+- Name: Green Plant
+  MobId: 1080
+  X: 215
+  Y: 225
+  Span:
+    X: 10
+    Y: 10
+  Amount: 5
+  Delay1: 360000
+  Delay2: 180000
+  Source: npc/re/mobs/fields/geffen.txt:35

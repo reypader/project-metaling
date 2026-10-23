@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Solid Nephentes
+  MobId: 2735
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:178
+- Name: Nepenthes
+  MobId: 1988
+  X: 0
+  Y: 0
+  Amount: 148
+  Delay1: 5000
+  Source: npc/re/mobs/fields/manuk.txt:19
+- Name: Centipede Larva
+  MobId: 1999
+  X: 0
+  Y: 0
+  Amount: 42
+  Delay1: 5000
+  Source: npc/re/mobs/fields/manuk.txt:20
+- Name: Hillslion
+  MobId: 1989
+  X: 0
+  Y: 0
+  Amount: 14
+  Delay1: 5000
+  Source: npc/re/mobs/fields/manuk.txt:21
+- Name: Centipede
+  MobId: 1987
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 5000
+  Source: npc/re/mobs/fields/manuk.txt:22

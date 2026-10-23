@@ -1,0 +1,125 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Solid Cecil Damon
+  MobId: 2667
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:160
+- Name: Cecil Damon
+  MobId: 1638
+  X: 0
+  Y: 0
+  Amount: 81
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:60
+- Name: Kathryne Keyron
+  MobId: 1639
+  X: 0
+  Y: 0
+  Amount: 57
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:61
+- Name: Margaretha Sorin
+  MobId: 1637
+  X: 0
+  Y: 0
+  Amount: 42
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:62
+- Name: Howard Alt-Eisen
+  MobId: 1636
+  X: 0
+  Y: 0
+  Amount: 42
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:63
+- Name: Eremes Guile
+  MobId: 1635
+  X: 0
+  Y: 0
+  Amount: 42
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:64
+- Name: Seyren Windsor
+  MobId: 1634
+  X: 0
+  Y: 0
+  Amount: 42
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:65
+- Name: Assassin Cross Eremes
+  MobId: 1641
+  X: 139
+  Y: 158
+  Span:
+    X: 20
+    Y: 11
+  Amount: 1
+  Delay1: 2580000
+  Delay2: 2340000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:66
+- Name: High Wizard Kathryne
+  MobId: 1645
+  X: 138
+  Y: 138
+  Span:
+    X: 36
+    Y: 34
+  Amount: 1
+  Delay1: 2580000
+  Delay2: 2460000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:67
+- Name: Lord Knight Seyren
+  MobId: 1640
+  X: 114
+  Y: 138
+  Span:
+    X: 12
+    Y: 16
+  Amount: 1
+  Delay1: 2700000
+  Delay2: 2400000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:68
+- Name: Sniper Cecil
+  MobId: 1644
+  X: 139
+  Y: 117
+  Span:
+    X: 20
+    Y: 11
+  Amount: 1
+  Delay1: 2700000
+  Delay2: 2500000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:69
+- Name: Whitesmith Howard
+  MobId: 1642
+  X: 163
+  Y: 138
+  Span:
+    X: 12
+    Y: 16
+  Amount: 1
+  Delay1: 3000000
+  Delay2: 2700000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:70
+- Name: High Priest Margaretha
+  MobId: 1643
+  X: 138
+  Y: 138
+  Span:
+    X: 36
+    Y: 34
+  Amount: 1
+  Delay1: 3300000
+  Delay2: 3000000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:71

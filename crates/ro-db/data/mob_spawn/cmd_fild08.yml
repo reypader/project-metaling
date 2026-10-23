@@ -1,0 +1,74 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Deniro
+  MobId: 2857
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:54
+- Name: Deniro
+  MobId: 1105
+  X: 0
+  Y: 0
+  Amount: 62
+  Delay1: 5000
+  Source: npc/re/mobs/fields/comodo.txt:81
+- Name: Piere
+  MobId: 1160
+  X: 0
+  Y: 0
+  Amount: 62
+  Delay1: 5000
+  Source: npc/re/mobs/fields/comodo.txt:82
+- Name: Andre
+  MobId: 1095
+  X: 0
+  Y: 0
+  Amount: 62
+  Delay1: 5000
+  Source: npc/re/mobs/fields/comodo.txt:83
+- Name: Ant Egg
+  MobId: 1097
+  X: 0
+  Y: 0
+  Amount: 37
+  Delay1: 5000
+  Source: npc/re/mobs/fields/comodo.txt:84
+- Name: Golem
+  MobId: 1040
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 5000
+  Source: npc/re/mobs/fields/comodo.txt:85
+- Name: Yellow Plant
+  MobId: 1081
+  X: 60
+  Y: 143
+  Span:
+    X: 10
+    Y: 10
+  Amount: 4
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/fields/comodo.txt:86
+- Name: Yellow Plant
+  MobId: 1081
+  X: 130
+  Y: 201
+  Span:
+    X: 10
+    Y: 10
+  Amount: 4
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/fields/comodo.txt:87

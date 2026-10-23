@@ -1,0 +1,88 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Galion
+  MobId: 2828
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:319
+- Name: Galion
+  MobId: 1783
+  X: 0
+  Y: 0
+  Amount: 60
+  Delay1: 5000
+  Source: npc/re/mobs/fields/veins.txt:26
+- Name: Stapo
+  MobId: 1784
+  X: 0
+  Y: 0
+  Amount: 34
+  Delay1: 5000
+  Source: npc/re/mobs/fields/veins.txt:27
+- Name: Drosera
+  MobId: 1781
+  X: 0
+  Y: 0
+  Amount: 34
+  Delay1: 5000
+  Source: npc/re/mobs/fields/veins.txt:28
+- Name: Muscipular
+  MobId: 1780
+  X: 0
+  Y: 0
+  Amount: 34
+  Delay1: 5000
+  Source: npc/re/mobs/fields/veins.txt:29
+- Name: Atroce
+  MobId: 1785
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 10800000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/fields/veins.txt:30
+- Name: Red Plant
+  MobId: 1078
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/fields/veins.txt:31
+- Name: Yellow Plant
+  MobId: 1081
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/fields/veins.txt:32
+- Name: Blue Plant
+  MobId: 1079
+  X: 270
+  Y: 80
+  Span:
+    X: 20
+    Y: 7
+  Amount: 4
+  Delay1: 840000
+  Source: npc/re/mobs/fields/veins.txt:33
+- Name: Shining Plant
+  MobId: 1083
+  X: 270
+  Y: 80
+  Span:
+    X: 20
+    Y: 7
+  Amount: 1
+  Delay1: 960000
+  Source: npc/re/mobs/fields/veins.txt:34

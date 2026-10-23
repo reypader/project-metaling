@@ -1,0 +1,514 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Dummy (Small)
+  MobId: 22586
+  X: 24
+  Y: 36
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:175
+- Name: Dummy (Small)
+  MobId: 22582
+  X: 24
+  Y: 55
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:176
+- Name: Dummy (Small)
+  MobId: 22578
+  X: 24
+  Y: 74
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:177
+- Name: Dummy (Small)
+  MobId: 22575
+  X: 24
+  Y: 93
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:178
+- Name: Dummy (Medium)
+  MobId: 22587
+  X: 43
+  Y: 36
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:179
+- Name: Dummy (Medium)
+  MobId: 22583
+  X: 43
+  Y: 55
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:180
+- Name: Dummy (Medium)
+  MobId: 22579
+  X: 43
+  Y: 74
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:181
+- Name: Dummy (Medium)
+  MobId: 22576
+  X: 43
+  Y: 93
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:182
+- Name: Dummy (Large)
+  MobId: 22588
+  X: 62
+  Y: 36
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:183
+- Name: Dummy (Large)
+  MobId: 22584
+  X: 62
+  Y: 55
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:184
+- Name: Dummy (Large)
+  MobId: 22580
+  X: 62
+  Y: 74
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:185
+- Name: Dummy (Large)
+  MobId: 22577
+  X: 62
+  Y: 93
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:186
+- Name: Dummy (Extra Large)
+  MobId: 22585
+  X: 81
+  Y: 36
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:187
+- Name: Dummy (Extra Large)
+  MobId: 22581
+  X: 81
+  Y: 55
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:188
+- Name: Dummy (Doram Player)
+  MobId: 21088
+  X: 81
+  Y: 74
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:189
+- Name: Dummy (Human Player)
+  MobId: 21087
+  X: 81
+  Y: 93
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:190
+- Name: Dummy (Small)
+  MobId: 22625
+  X: 195
+  Y: 36
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:192
+- Name: Dummy (Small)
+  MobId: 22621
+  X: 195
+  Y: 55
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:193
+- Name: Dummy (Small)
+  MobId: 22617
+  X: 195
+  Y: 74
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:194
+- Name: Dummy (Small)
+  MobId: 22614
+  X: 195
+  Y: 93
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:195
+- Name: Dummy (Medium)
+  MobId: 22626
+  X: 176
+  Y: 36
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:196
+- Name: Dummy (Medium)
+  MobId: 22622
+  X: 176
+  Y: 55
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:197
+- Name: Dummy (Medium)
+  MobId: 22618
+  X: 176
+  Y: 74
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:198
+- Name: Dummy (Medium)
+  MobId: 22615
+  X: 176
+  Y: 93
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:199
+- Name: Dummy (Large)
+  MobId: 22627
+  X: 157
+  Y: 36
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:200
+- Name: Dummy (Large)
+  MobId: 22623
+  X: 157
+  Y: 55
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:201
+- Name: Dummy (Large)
+  MobId: 22619
+  X: 157
+  Y: 74
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:202
+- Name: Dummy (Large)
+  MobId: 22616
+  X: 157
+  Y: 93
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:203
+- Name: Dummy (Extra Large)
+  MobId: 22620
+  X: 138
+  Y: 55
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:204
+- Name: Dummy (Extra Large)
+  MobId: 22624
+  X: 138
+  Y: 36
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:205
+- Name: Dummy (Doram Player)
+  MobId: 21088
+  X: 138
+  Y: 93
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:206
+- Name: Dummy (Human Player)
+  MobId: 21087
+  X: 138
+  Y: 74
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:207
+- Name: Dummy (Wind Lv 1)
+  MobId: 22662
+  X: 24
+  Y: 132
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:210
+- Name: Dummy (Water Lv 1)
+  MobId: 22659
+  X: 24
+  Y: 151
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:211
+- Name: Dummy (Fire Lv 1)
+  MobId: 22661
+  X: 43
+  Y: 132
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:212
+- Name: Dummy (Earth Lv 1)
+  MobId: 22660
+  X: 43
+  Y: 151
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:213
+- Name: Dummy (Dark Lv 1)
+  MobId: 22665
+  X: 62
+  Y: 132
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:214
+- Name: Dummy (Neutral Lv 1)
+  MobId: 22658
+  X: 62
+  Y: 151
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:215
+- Name: Dummy (Poison Lv 1)
+  MobId: 22663
+  X: 81
+  Y: 132
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:216
+- Name: Dummy (Ghost Lv 1)
+  MobId: 22666
+  X: 81
+  Y: 151
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:217
+- Name: Dummy (Undead Lv 1)
+  MobId: 22667
+  X: 100
+  Y: 132
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:218
+- Name: Dummy (Holy Lv 1)
+  MobId: 22664
+  X: 100
+  Y: 151
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:219
+- Name: Dummy (Wind Lv 1)
+  MobId: 22662
+  X: 195
+  Y: 151
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:221
+- Name: Dummy (Water Lv 1)
+  MobId: 22659
+  X: 195
+  Y: 132
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:222
+- Name: Dummy (Fire Lv 1)
+  MobId: 22661
+  X: 176
+  Y: 151
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:223
+- Name: Dummy (Earth Lv 1)
+  MobId: 22660
+  X: 176
+  Y: 132
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:224
+- Name: Dummy (Dark Lv 1)
+  MobId: 22665
+  X: 157
+  Y: 151
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:225
+- Name: Dummy (Neutral Lv 1)
+  MobId: 22658
+  X: 157
+  Y: 132
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:226
+- Name: Dummy (Poison Lv 1)
+  MobId: 22663
+  X: 138
+  Y: 151
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:227
+- Name: Dummy (Ghost Lv 1)
+  MobId: 22666
+  X: 138
+  Y: 132
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:228
+- Name: Dummy (Undead Lv 1)
+  MobId: 22667
+  X: 119
+  Y: 151
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:229
+- Name: Dummy (Holy Lv 1)
+  MobId: 22664
+  X: 119
+  Y: 132
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:230
+- Name: Dummy (Undead Race)
+  MobId: 22647
+  X: 24
+  Y: 170
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:233
+- Name: Dummy (Formless Race)
+  MobId: 22638
+  X: 24
+  Y: 189
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:234
+- Name: Dummy (Angel Race)
+  MobId: 22646
+  X: 43
+  Y: 170
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:235
+- Name: Dummy (Dragon Race)
+  MobId: 22639
+  X: 43
+  Y: 189
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:236
+- Name: Dummy (Plant Race)
+  MobId: 22645
+  X: 62
+  Y: 170
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:237
+- Name: Dummy (Brute Race)
+  MobId: 22640
+  X: 62
+  Y: 189
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:238
+- Name: Dummy (Demon Race)
+  MobId: 22644
+  X: 81
+  Y: 170
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:239
+- Name: Dummy (Human Race)
+  MobId: 22641
+  X: 81
+  Y: 189
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:240
+- Name: Dummy (Fish Race)
+  MobId: 22643
+  X: 100
+  Y: 170
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:241
+- Name: Dummy (Insect Race)
+  MobId: 22642
+  X: 100
+  Y: 189
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:242
+- Name: Dummy (Undead Race)
+  MobId: 22647
+  X: 195
+  Y: 189
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:244
+- Name: Dummy (Formless Race)
+  MobId: 22638
+  X: 195
+  Y: 170
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:245
+- Name: Dummy (Angel Race)
+  MobId: 22646
+  X: 176
+  Y: 189
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:246
+- Name: Dummy (Dragon Race)
+  MobId: 22639
+  X: 176
+  Y: 170
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:247
+- Name: Dummy (Plant Race)
+  MobId: 22645
+  X: 157
+  Y: 189
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:248
+- Name: Dummy (Brute Race)
+  MobId: 22640
+  X: 157
+  Y: 170
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:249
+- Name: Dummy (Demon Race)
+  MobId: 22644
+  X: 138
+  Y: 189
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:250
+- Name: Dummy (Human Race)
+  MobId: 22641
+  X: 138
+  Y: 170
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:251
+- Name: Dummy (Fish Race)
+  MobId: 22643
+  X: 119
+  Y: 189
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:252
+- Name: Dummy (Insect Race)
+  MobId: 22642
+  X: 119
+  Y: 170
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/tra_fild_123.txt:253

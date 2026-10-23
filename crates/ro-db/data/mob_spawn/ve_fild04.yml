@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Muscipular
+  MobId: 2738
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:322
+- Name: Muscipular
+  MobId: 1780
+  X: 0
+  Y: 0
+  Amount: 110
+  Delay1: 5000
+  Source: npc/re/mobs/fields/veins.txt:58
+- Name: Drosera
+  MobId: 1781
+  X: 0
+  Y: 0
+  Amount: 55
+  Delay1: 5000
+  Source: npc/re/mobs/fields/veins.txt:59
+- Name: Galion
+  MobId: 1783
+  X: 0
+  Y: 0
+  Amount: 22
+  Delay1: 5000
+  Source: npc/re/mobs/fields/veins.txt:60
+- Name: Yellow Plant
+  MobId: 1081
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 10000
+  Source: npc/re/mobs/fields/veins.txt:61
+- Name: Blue Plant
+  MobId: 1079
+  X: 288
+  Y: 273
+  Span:
+    X: 4
+    Y: 4
+  Amount: 3
+  Delay1: 660000
+  Source: npc/re/mobs/fields/veins.txt:62

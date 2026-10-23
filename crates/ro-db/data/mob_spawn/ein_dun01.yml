@@ -1,0 +1,60 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Pitman
+  MobId: 2708
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:68
+- Name: Pitman
+  MobId: 1616
+  X: 0
+  Y: 0
+  Amount: 70
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ein_dun.txt:23
+- Name: Noxious
+  MobId: 1620
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ein_dun.txt:24
+- Name: Porcellio
+  MobId: 1619
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ein_dun.txt:25
+- Name: Venomous
+  MobId: 1621
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ein_dun.txt:26
+- Name: Old Stove
+  MobId: 1617
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ein_dun.txt:27
+- Name: Ungoliant
+  MobId: 1618
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 3000000
+  Source: npc/re/mobs/dungeons/ein_dun.txt:28

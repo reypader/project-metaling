@@ -1,0 +1,94 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Angry Mimic
+  MobId: 3061
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/moro_vol.txt:9
+- Name: Fire Pit
+  MobId: 3026
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/moro_vol.txt:10
+- Name: Sonia
+  MobId: 3028
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/moro_vol.txt:11
+- Name: Incarnation of Morocc
+  MobId: 1918
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/moro_vol.txt:12
+- Name: Incarnation of Morocc
+  MobId: 1919
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/moro_vol.txt:13
+- Name: Incarnation of Morocc
+  MobId: 1920
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/moro_vol.txt:14
+- Name: Incarnation of Morocc
+  MobId: 1921
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/moro_vol.txt:15
+- Name: Fire Condor
+  MobId: 3020
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/moro_vol.txt:16
+- Name: Fire Sandman
+  MobId: 3021
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/moro_vol.txt:17
+- Name: Fire Frilldora
+  MobId: 3022
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/moro_vol.txt:18
+- Name: Fire Golem
+  MobId: 3023
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/moro_vol.txt:19
+- Name: Fire Bug
+  MobId: 3027
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/moro_vol.txt:20

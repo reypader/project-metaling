@@ -1,0 +1,150 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Peco Peco
+  MobId: 2718
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:197
+- Name: Muka
+  MobId: 1055
+  X: 0
+  Y: 0
+  Amount: 58
+  Delay1: 5000
+  Source: npc/re/mobs/fields/morocc.txt:33
+- Name: Peco Peco
+  MobId: 1019
+  X: 0
+  Y: 0
+  Amount: 153
+  Delay1: 5000
+  Source: npc/re/mobs/fields/morocc.txt:34
+- Name: Peco Peco Egg
+  MobId: 1047
+  X: 0
+  Y: 0
+  Amount: 11
+  Delay1: 5000
+  Source: npc/re/mobs/fields/morocc.txt:35
+- Name: Yellow Plant
+  MobId: 1081
+  X: 89
+  Y: 315
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:36
+- Name: Yellow Plant
+  MobId: 1081
+  X: 99
+  Y: 261
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:37
+- Name: Yellow Plant
+  MobId: 1081
+  X: 94
+  Y: 195
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:38
+- Name: Yellow Plant
+  MobId: 1081
+  X: 139
+  Y: 222
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:39
+- Name: Yellow Plant
+  MobId: 1081
+  X: 132
+  Y: 307
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:40
+- Name: Yellow Plant
+  MobId: 1081
+  X: 194
+  Y: 294
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:41
+- Name: Yellow Plant
+  MobId: 1081
+  X: 275
+  Y: 241
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:42
+- Name: Green Plant
+  MobId: 1080
+  X: 342
+  Y: 267
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:43
+- Name: Green Plant
+  MobId: 1080
+  X: 359
+  Y: 215
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:44
+- Name: Green Plant
+  MobId: 1080
+  X: 313
+  Y: 149
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:45
+- Name: Green Plant
+  MobId: 1080
+  X: 230
+  Y: 62
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:46
+- Name: Green Plant
+  MobId: 1080
+  X: 299
+  Y: 61
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:47
+- Name: Green Plant
+  MobId: 1080
+  X: 353
+  Y: 103
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:48
+- Name: Green Plant
+  MobId: 1080
+  X: 337
+  Y: 35
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:49

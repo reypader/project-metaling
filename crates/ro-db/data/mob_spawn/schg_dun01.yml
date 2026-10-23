@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Zakudam
+  MobId: 2607
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:280
+- Name: Hell Apocalypse
+  MobId: 1978
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gld_dunSE.txt:17
+- Name: Zakudam
+  MobId: 1979
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gld_dunSE.txt:18
+- Name: Heavy Metaling
+  MobId: 1977
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gld_dunSE.txt:19
+- Name: Cobalt Mineral
+  MobId: 1976
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gld_dunSE.txt:20

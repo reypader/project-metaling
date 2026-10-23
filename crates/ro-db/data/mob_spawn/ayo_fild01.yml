@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Furious Smokie
+  MobId: 2654
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:34
+- Name: Smokie
+  MobId: 1056
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/fields/ayothaya.txt:22
+- Name: Coco
+  MobId: 1104
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/fields/ayothaya.txt:23
+- Name: Yoyo
+  MobId: 1057
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/fields/ayothaya.txt:24
+- Name: Green Plant
+  MobId: 1080
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 10000
+  Source: npc/re/mobs/fields/ayothaya.txt:25

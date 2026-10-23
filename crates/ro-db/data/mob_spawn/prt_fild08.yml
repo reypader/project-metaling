@@ -1,0 +1,246 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Solid Lunatic
+  MobId: 2770
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:252
+- Name: Poring Ringleader
+  MobId: 2696
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:253
+- Name: Furious Poring
+  MobId: 2697
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:254
+- Name: Elusive Poring
+  MobId: 2698
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:255
+- Name: Swift Poring
+  MobId: 2699
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:256
+- Name: Poring
+  MobId: 1002
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/fields/prontera.txt:94
+- Name: Lunatic
+  MobId: 1063
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/fields/prontera.txt:95
+- Name: Fabre
+  MobId: 1007
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/fields/prontera.txt:96
+- Name: Poring
+  MobId: 1002
+  X: 305
+  Y: 233
+  Span:
+    X: 10
+    Y: 10
+  Amount: 2
+  Delay1: 15000
+  Source: npc/re/mobs/fields/prontera.txt:97
+- Name: Lunatic
+  MobId: 1063
+  X: 305
+  Y: 233
+  Span:
+    X: 10
+    Y: 10
+  Amount: 2
+  Delay1: 15000
+  Source: npc/re/mobs/fields/prontera.txt:98
+- Name: Fabre
+  MobId: 1007
+  X: 305
+  Y: 233
+  Span:
+    X: 10
+    Y: 10
+  Amount: 2
+  Delay1: 15000
+  Source: npc/re/mobs/fields/prontera.txt:99
+- Name: Poring
+  MobId: 1002
+  X: 271
+  Y: 249
+  Span:
+    X: 20
+    Y: 20
+  Amount: 5
+  Delay1: 15000
+  Source: npc/re/mobs/fields/prontera.txt:100
+- Name: Lunatic
+  MobId: 1063
+  X: 271
+  Y: 249
+  Span:
+    X: 20
+    Y: 20
+  Amount: 5
+  Delay1: 15000
+  Source: npc/re/mobs/fields/prontera.txt:101
+- Name: Fabre
+  MobId: 1007
+  X: 271
+  Y: 249
+  Span:
+    X: 20
+    Y: 20
+  Amount: 5
+  Delay1: 15000
+  Source: npc/re/mobs/fields/prontera.txt:102
+- Name: Poring
+  MobId: 1002
+  X: 94
+  Y: 335
+  Span:
+    X: 50
+    Y: 50
+  Amount: 20
+  Delay1: 10000
+  Source: npc/re/mobs/fields/prontera.txt:103
+- Name: Poring
+  MobId: 1002
+  X: 166
+  Y: 334
+  Span:
+    X: 50
+    Y: 50
+  Amount: 20
+  Delay1: 10000
+  Source: npc/re/mobs/fields/prontera.txt:104
+- Name: Poring
+  MobId: 1002
+  X: 253
+  Y: 337
+  Span:
+    X: 50
+    Y: 50
+  Amount: 20
+  Delay1: 10000
+  Source: npc/re/mobs/fields/prontera.txt:105
+- Name: Lunatic
+  MobId: 1063
+  X: 228
+  Y: 230
+  Span:
+    X: 30
+    Y: 30
+  Amount: 10
+  Delay1: 10000
+  Source: npc/re/mobs/fields/prontera.txt:106
+- Name: Lunatic
+  MobId: 1063
+  X: 246
+  Y: 263
+  Span:
+    X: 50
+    Y: 50
+  Amount: 10
+  Delay1: 10000
+  Source: npc/re/mobs/fields/prontera.txt:107
+- Name: Lunatic
+  MobId: 1063
+  X: 190
+  Y: 237
+  Span:
+    X: 50
+    Y: 50
+  Amount: 10
+  Delay1: 10000
+  Source: npc/re/mobs/fields/prontera.txt:108
+- Name: Lunatic
+  MobId: 1063
+  X: 100
+  Y: 256
+  Span:
+    X: 50
+    Y: 50
+  Amount: 10
+  Delay1: 10000
+  Source: npc/re/mobs/fields/prontera.txt:109
+- Name: Fabre
+  MobId: 1007
+  X: 70
+  Y: 164
+  Span:
+    X: 70
+    Y: 70
+  Amount: 20
+  Delay1: 10000
+  Source: npc/re/mobs/fields/prontera.txt:110
+- Name: Fabre
+  MobId: 1007
+  X: 144
+  Y: 147
+  Span:
+    X: 70
+    Y: 70
+  Amount: 20
+  Delay1: 10000
+  Source: npc/re/mobs/fields/prontera.txt:111
+- Name: Fabre
+  MobId: 1007
+  X: 263
+  Y: 79
+  Span:
+    X: 90
+    Y: 90
+  Amount: 20
+  Delay1: 10000
+  Source: npc/re/mobs/fields/prontera.txt:112
+- Name: Pupa
+  MobId: 1008
+  X: 336
+  Y: 113
+  Span:
+    X: 40
+    Y: 40
+  Amount: 20
+  Delay1: 10000
+  Source: npc/re/mobs/fields/prontera.txt:113
+- Name: Little Poring
+  MobId: 2398
+  X: 330
+  Y: 269
+  Span:
+    X: 40
+    Y: 40
+  Amount: 20
+  Delay1: 10000
+  Source: npc/re/mobs/fields/prontera.txt:114

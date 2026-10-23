@@ -1,0 +1,50 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Deep Sea Sropho
+  MobId: 20801
+  X: 0
+  Y: 0
+  Amount: 45
+  Delay1: 5000
+  Event: iz_d04_i_boss::OnMobDead
+  Source: npc/re/mobs/dungeons/iz_dun.txt:127
+- Name: Deep Sea Obeaune
+  MobId: 20802
+  X: 0
+  Y: 0
+  Amount: 45
+  Delay1: 5000
+  Event: iz_d04_i_boss::OnMobDead
+  Source: npc/re/mobs/dungeons/iz_dun.txt:128
+- Name: Deep Sea Merman
+  MobId: 20805
+  X: 0
+  Y: 0
+  Amount: 45
+  Delay1: 5000
+  Event: iz_d04_i_boss::OnMobDead
+  Source: npc/re/mobs/dungeons/iz_dun.txt:129
+- Name: Deep Sea Marse
+  MobId: 20804
+  X: 0
+  Y: 0
+  Amount: 45
+  Delay1: 5000
+  Event: iz_d04_i_boss::OnMobDead
+  Source: npc/re/mobs/dungeons/iz_dun.txt:130
+- Name: Deep Sea Deviace
+  MobId: 20803
+  X: 0
+  Y: 0
+  Amount: 45
+  Delay1: 5000
+  Event: iz_d04_i_boss::OnMobDead
+  Source: npc/re/mobs/dungeons/iz_dun.txt:131

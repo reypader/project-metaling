@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Solid Wind Ghost
+  MobId: 2614
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:81
+- Name: Wraith
+  MobId: 1192
+  X: 0
+  Y: 0
+  Amount: 14
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gef_dun.txt:68
+- Name: Wind Ghost
+  MobId: 1263
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gef_dun.txt:69
+- Name: Hellion Revenant
+  MobId: 1626
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 600000
+  Delay2: 300000
+  Source: npc/re/mobs/dungeons/gef_dun.txt:70
+- Name: Shining Plant
+  MobId: 1083
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/dungeons/gef_dun.txt:71
+- Name: White Plant
+  MobId: 1082
+  X: 0
+  Y: 0
+  Amount: 18
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/dungeons/gef_dun.txt:72

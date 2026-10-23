@@ -1,0 +1,103 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Furious Hode
+  MobId: 2802
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:204
+- Name: Hode
+  MobId: 1127
+  X: 0
+  Y: 0
+  Amount: 170
+  Delay1: 5000
+  Source: npc/re/mobs/fields/morocc.txt:165
+- Name: Sandman
+  MobId: 1165
+  X: 0
+  Y: 0
+  Amount: 39
+  Delay1: 5000
+  Source: npc/re/mobs/fields/morocc.txt:166
+- Name: Frilldora
+  MobId: 1119
+  X: 0
+  Y: 0
+  Amount: 13
+  Delay1: 5000
+  Source: npc/re/mobs/fields/morocc.txt:167
+- Name: Phreeoni
+  MobId: 1159
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 7200000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/fields/morocc.txt:168
+- Name: Yellow Plant
+  MobId: 1081
+  X: 40
+  Y: 258
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:169
+- Name: Yellow Plant
+  MobId: 1081
+  X: 144
+  Y: 151
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:170
+- Name: Yellow Plant
+  MobId: 1081
+  X: 243
+  Y: 138
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:171
+- Name: Blue Plant
+  MobId: 1079
+  X: 270
+  Y: 106
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:172
+- Name: Yellow Plant
+  MobId: 1081
+  X: 335
+  Y: 191
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:173
+- Name: Yellow Plant
+  MobId: 1081
+  X: 347
+  Y: 224
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:174
+- Name: Yellow Plant
+  MobId: 1081
+  X: 359
+  Y: 258
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:175

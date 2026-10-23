@@ -1,0 +1,266 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Weak Skeleton Ringleade
+  MobId: 2619
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:307
+- Name: Red Mushroom
+  MobId: 1085
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:151
+- Name: Black Mushroom
+  MobId: 1084
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:152
+- Name: Weak Soldier Skeleton
+  MobId: 2406
+  X: 150
+  Y: 40
+  Span:
+    X: 13
+    Y: 13
+  Amount: 3
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:153
+- Name: Weak Skeleton
+  MobId: 2405
+  X: 150
+  Y: 40
+  Span:
+    X: 13
+    Y: 13
+  Amount: 5
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:154
+- Name: Red Plant
+  MobId: 1078
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:155
+- Name: Green Plant
+  MobId: 1080
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:156
+- Name: Yellow Plant
+  MobId: 1081
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:157
+- Name: Blue Plant
+  MobId: 1079
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:158
+- Name: White Plant
+  MobId: 1082
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:159
+- Name: Weak Skeleton
+  MobId: 2405
+  X: 100
+  Y: 50
+  Span:
+    X: 13
+    Y: 13
+  Amount: 7
+  Delay1: 30000
+  Source: npc/re/mobs/dungeons/treasure.txt:160
+- Name: Dead Plankton
+  MobId: 2404
+  X: 100
+  Y: 50
+  Span:
+    X: 13
+    Y: 13
+  Amount: 5
+  Delay1: 30000
+  Source: npc/re/mobs/dungeons/treasure.txt:161
+- Name: Weak Soldier Skeleton
+  MobId: 2406
+  X: 50
+  Y: 40
+  Span:
+    X: 13
+    Y: 13
+  Amount: 3
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:162
+- Name: Weak Skeleton
+  MobId: 2405
+  X: 50
+  Y: 40
+  Span:
+    X: 13
+    Y: 13
+  Amount: 5
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:163
+- Name: Zombie
+  MobId: 1015
+  X: 40
+  Y: 75
+  Span:
+    X: 5
+    Y: 3
+  Amount: 2
+  Delay1: 60000
+  Source: npc/re/mobs/dungeons/treasure.txt:164
+- Name: Dead Plankton
+  MobId: 2404
+  X: 40
+  Y: 75
+  Span:
+    X: 5
+    Y: 5
+  Amount: 4
+  Delay1: 60000
+  Source: npc/re/mobs/dungeons/treasure.txt:165
+- Name: Weak Skeleton
+  MobId: 2405
+  X: 50
+  Y: 140
+  Span:
+    X: 5
+    Y: 5
+  Amount: 10
+  Delay1: 60000
+  Source: npc/re/mobs/dungeons/treasure.txt:166
+- Name: Weak Soldier Skeleton
+  MobId: 2406
+  X: 50
+  Y: 140
+  Span:
+    X: 5
+    Y: 5
+  Amount: 5
+  Delay1: 60000
+  Source: npc/re/mobs/dungeons/treasure.txt:167
+- Name: Weak Skeleton
+  MobId: 2405
+  X: 160
+  Y: 140
+  Span:
+    X: 5
+    Y: 5
+  Amount: 5
+  Delay1: 60000
+  Source: npc/re/mobs/dungeons/treasure.txt:168
+- Name: Weak Soldier Skeleton
+  MobId: 2406
+  X: 160
+  Y: 140
+  Span:
+    X: 5
+    Y: 5
+  Amount: 3
+  Delay1: 60000
+  Source: npc/re/mobs/dungeons/treasure.txt:169
+- Name: Zombie
+  MobId: 1015
+  X: 160
+  Y: 140
+  Span:
+    X: 5
+    Y: 2
+  Amount: 3
+  Delay1: 60000
+  Source: npc/re/mobs/dungeons/treasure.txt:170
+- Name: Weak Skeleton
+  MobId: 2405
+  X: 160
+  Y: 70
+  Span:
+    X: 13
+    Y: 13
+  Amount: 5
+  Delay1: 30000
+  Source: npc/re/mobs/dungeons/treasure.txt:171
+- Name: Dead Plankton
+  MobId: 2404
+  X: 160
+  Y: 70
+  Span:
+    X: 13
+    Y: 13
+  Amount: 7
+  Delay1: 30000
+  Source: npc/re/mobs/dungeons/treasure.txt:172
+- Name: Zombie
+  MobId: 1015
+  X: 155
+  Y: 40
+  Span:
+    X: 9
+    Y: 9
+  Amount: 3
+  Delay1: 120000
+  Source: npc/re/mobs/dungeons/treasure.txt:173
+- Name: Weak Soldier Skeleton
+  MobId: 2406
+  X: 100
+  Y: 85
+  Span:
+    X: 13
+    Y: 13
+  Amount: 2
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:174
+- Name: Weak Soldier Skeleton
+  MobId: 2406
+  X: 100
+  Y: 160
+  Span:
+    X: 13
+    Y: 13
+  Amount: 5
+  Delay1: 120000
+  Source: npc/re/mobs/dungeons/treasure.txt:175
+- Name: Weak Skeleton
+  MobId: 2405
+  X: 100
+  Y: 160
+  Span:
+    X: 13
+    Y: 13
+  Amount: 7
+  Delay1: 200000
+  Source: npc/re/mobs/dungeons/treasure.txt:176
+- Name: Dead Plankton
+  MobId: 2404
+  X: 100
+  Y: 160
+  Span:
+    X: 13
+    Y: 13
+  Amount: 4
+  Delay1: 60000
+  Source: npc/re/mobs/dungeons/treasure.txt:177

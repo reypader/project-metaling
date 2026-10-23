@@ -1,0 +1,65 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Phen
+  MobId: 1158
+  X: 207
+  Y: 290
+  Span:
+    X: 10
+    Y: 10
+  Amount: 3
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/mobs/towns.txt:23
+- Name: Aster
+  MobId: 1266
+  X: 221
+  Y: 220
+  Span:
+    X: 30
+    Y: 30
+  Amount: 2
+  Delay1: 3600000
+  Delay2: 2400000
+  Source: npc/mobs/towns.txt:24
+- Name: Aster
+  MobId: 1266
+  X: 276
+  Y: 163
+  Span:
+    X: 20
+    Y: 20
+  Amount: 1
+  Delay1: 7200000
+  Delay2: 3600000
+  Source: npc/mobs/towns.txt:25
+- Name: Shellfish
+  MobId: 1074
+  X: 221
+  Y: 220
+  Span:
+    X: 30
+    Y: 30
+  Amount: 1
+  Delay1: 4800000
+  Delay2: 3000000
+  Source: npc/mobs/towns.txt:26
+- Name: Shellfish
+  MobId: 1074
+  X: 276
+  Y: 163
+  Span:
+    X: 20
+    Y: 30
+  Amount: 2
+  Delay1: 4200000
+  Delay2: 2400000
+  Source: npc/mobs/towns.txt:27

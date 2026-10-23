@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Solid Bungisngis
+  MobId: 2879
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:174
+- Name: Bungisngis
+  MobId: 2309
+  X: 0
+  Y: 0
+  Amount: 54
+  Delay1: 5000
+  Source: npc/re/mobs/fields/malaya.txt:28
+- Name: Engkanto
+  MobId: 2310
+  X: 0
+  Y: 0
+  Amount: 34
+  Delay1: 5000
+  Source: npc/re/mobs/fields/malaya.txt:29
+- Name: Mangkukulam
+  MobId: 2312
+  X: 0
+  Y: 0
+  Amount: 41
+  Delay1: 5000
+  Source: npc/re/mobs/fields/malaya.txt:30
+- Name: Jejeling
+  MobId: 2316
+  X: 0
+  Y: 0
+  Amount: 27
+  Delay1: 5000
+  Source: npc/re/mobs/fields/malaya.txt:31
+- Name: Wakwak
+  MobId: 2315
+  X: 0
+  Y: 0
+  Amount: 34
+  Delay1: 5000
+  Source: npc/re/mobs/fields/malaya.txt:32

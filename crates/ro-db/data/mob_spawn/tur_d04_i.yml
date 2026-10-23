@@ -1,0 +1,50 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Ominous Permeter
+  MobId: 3800
+  X: 0
+  Y: 0
+  Amount: 16
+  Delay1: 5000
+  Event: illusion_turtle_boss::OnEvent
+  Source: npc/re/mobs/dungeons/tur_dun.txt:62
+- Name: Ominous Freezer
+  MobId: 3801
+  X: 0
+  Y: 0
+  Amount: 36
+  Delay1: 5000
+  Event: illusion_turtle_boss::OnEvent
+  Source: npc/re/mobs/dungeons/tur_dun.txt:63
+- Name: Ominous Assulter
+  MobId: 3799
+  X: 0
+  Y: 0
+  Amount: 16
+  Delay1: 5000
+  Event: illusion_turtle_boss::OnEvent
+  Source: npc/re/mobs/dungeons/tur_dun.txt:64
+- Name: Ominous Solider
+  MobId: 3802
+  X: 0
+  Y: 0
+  Amount: 16
+  Delay1: 5000
+  Event: illusion_turtle_boss::OnEvent
+  Source: npc/re/mobs/dungeons/tur_dun.txt:65
+- Name: Ominous Heater
+  MobId: 3803
+  X: 0
+  Y: 0
+  Amount: 36
+  Delay1: 5000
+  Event: illusion_turtle_boss::OnEvent
+  Source: npc/re/mobs/dungeons/tur_dun.txt:66

@@ -1,0 +1,117 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Solid Geographer
+  MobId: 2825
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:327
+- Name: Geographer
+  MobId: 1368
+  X: 0
+  Y: 0
+  Amount: 75
+  Delay1: 5000
+  Source: npc/re/mobs/fields/yuno.txt:31
+- Name: Dustiness
+  MobId: 1114
+  X: 0
+  Y: 0
+  Amount: 52
+  Delay1: 5000
+  Source: npc/re/mobs/fields/yuno.txt:32
+- Name: Mantis
+  MobId: 1139
+  X: 0
+  Y: 0
+  Amount: 52
+  Delay1: 5000
+  Source: npc/re/mobs/fields/yuno.txt:33
+- Name: Red Plant
+  MobId: 1078
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/fields/yuno.txt:34
+- Name: Blue Plant
+  MobId: 1079
+  X: 70
+  Y: 370
+  Span:
+    X: 10
+    Y: 10
+  Amount: 2
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/fields/yuno.txt:35
+- Name: Shining Plant
+  MobId: 1083
+  X: 70
+  Y: 370
+  Span:
+    X: 10
+    Y: 10
+  Amount: 1
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/fields/yuno.txt:36
+- Name: Yellow Plant
+  MobId: 1081
+  X: 66
+  Y: 267
+  Span:
+    X: 10
+    Y: 10
+  Amount: 2
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/fields/yuno.txt:37
+- Name: Yellow Plant
+  MobId: 1081
+  X: 238
+  Y: 326
+  Span:
+    X: 40
+    Y: 40
+  Amount: 6
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/fields/yuno.txt:38
+- Name: Shining Plant
+  MobId: 1083
+  X: 238
+  Y: 326
+  Span:
+    X: 40
+    Y: 40
+  Amount: 2
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/fields/yuno.txt:39
+- Name: Yellow Plant
+  MobId: 1081
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/fields/yuno.txt:40
+- Name: Green Plant
+  MobId: 1080
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/fields/yuno.txt:41

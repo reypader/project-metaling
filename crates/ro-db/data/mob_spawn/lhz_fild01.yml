@@ -1,0 +1,83 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swift Rafflesia
+  MobId: 2695
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:162
+- Name: Poring Ringleader
+  MobId: 2696
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:163
+- Name: Furious Poring
+  MobId: 2697
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:164
+- Name: Elusive Poring
+  MobId: 2698
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:165
+- Name: Rafflesia
+  MobId: 1162
+  X: 0
+  Y: 0
+  Amount: 170
+  Delay1: 5000
+  Source: npc/re/mobs/fields/lighthalzen.txt:24
+- Name: Stem Worm
+  MobId: 1215
+  X: 0
+  Y: 0
+  Amount: 45
+  Delay1: 5000
+  Source: npc/re/mobs/fields/lighthalzen.txt:25
+- Name: Metaling
+  MobId: 1613
+  X: 0
+  Y: 0
+  Amount: 45
+  Delay1: 5000
+  Source: npc/re/mobs/fields/lighthalzen.txt:26
+- Name: Red Plant
+  MobId: 1078
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/fields/lighthalzen.txt:27
+- Name: Yellow Plant
+  MobId: 1081
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/fields/lighthalzen.txt:28
+- Name: Green Plant
+  MobId: 1080
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/fields/lighthalzen.txt:29

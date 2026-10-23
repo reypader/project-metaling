@@ -1,0 +1,59 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Solid Side Winder
+  MobId: 2662
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:219
+- Name: Side Winder
+  MobId: 1037
+  X: 0
+  Y: 0
+  Amount: 56
+  Delay1: 5000
+  Source: npc/re/mobs/fields/moscovia.txt:19
+- Name: Argiope
+  MobId: 1099
+  X: 0
+  Y: 0
+  Amount: 42
+  Delay1: 5000
+  Source: npc/re/mobs/fields/moscovia.txt:20
+- Name: Mantis
+  MobId: 1139
+  X: 0
+  Y: 0
+  Amount: 14
+  Delay1: 5000
+  Source: npc/re/mobs/fields/moscovia.txt:21
+- Name: Geographer
+  MobId: 1368
+  X: 0
+  Y: 0
+  Amount: 7
+  Delay1: 5000
+  Source: npc/re/mobs/fields/moscovia.txt:22
+- Name: Yellow Plant
+  MobId: 1081
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 10000
+  Source: npc/re/mobs/fields/moscovia.txt:23
+- Name: White Plant
+  MobId: 1082
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 10000
+  Source: npc/re/mobs/fields/moscovia.txt:24

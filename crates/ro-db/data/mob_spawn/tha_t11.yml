@@ -1,0 +1,66 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Mistress of She
+  MobId: 2665
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:301
+- Name: Mistress of Shelter
+  MobId: 1701
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:137
+- Name: Dame of Sentinel
+  MobId: 1700
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:138
+- Name: Baroness of Retribution
+  MobId: 1702
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:139
+- Name: Lady Solace
+  MobId: 1703
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:140
+- Name: Plasma
+  MobId: 1695
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:141
+- Name: Despero of Thanatos
+  MobId: 1710
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:142
+- Name: Despero of Thanatos
+  MobId: 1705
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:143

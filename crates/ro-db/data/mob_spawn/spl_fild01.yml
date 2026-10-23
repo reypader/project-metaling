@@ -1,0 +1,38 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Solid Dark Pinguicula
+  MobId: 2710
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:281
+- Name: Dark Pinguicula
+  MobId: 2015
+  X: 0
+  Y: 0
+  Amount: 98
+  Delay1: 5000
+  Source: npc/re/mobs/fields/splendide.txt:18
+- Name: Naga
+  MobId: 1993
+  X: 0
+  Y: 0
+  Amount: 68
+  Delay1: 5000
+  Source: npc/re/mobs/fields/splendide.txt:19
+- Name: Cornus
+  MobId: 1992
+  X: 0
+  Y: 0
+  Amount: 49
+  Delay1: 5000
+  Source: npc/re/mobs/fields/splendide.txt:20

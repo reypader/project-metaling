@@ -1,0 +1,136 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Poison Spore
+  MobId: 1428
+  X: 26
+  Y: 34
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1037
+- Name: Poison Spore
+  MobId: 1428
+  X: 23
+  Y: 33
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1038
+- Name: Poison Spore
+  MobId: 1428
+  X: 21
+  Y: 30
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1039
+- Name: Poison Spore
+  MobId: 1428
+  X: 26
+  Y: 34
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1040
+- Name: Poison Spore
+  MobId: 1428
+  X: 23
+  Y: 33
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1041
+- Name: Poison Spore
+  MobId: 1428
+  X: 21
+  Y: 30
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1042
+- Name: Poison Spore
+  MobId: 1428
+  X: 26
+  Y: 34
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1043
+- Name: Poison Spore
+  MobId: 1428
+  X: 23
+  Y: 33
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1044
+- Name: Poison Spore
+  MobId: 1428
+  X: 21
+  Y: 30
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1045
+- Name: Poison Spore
+  MobId: 1428
+  X: 26
+  Y: 34
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1046
+- Name: Poison Spore
+  MobId: 1428
+  X: 23
+  Y: 33
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1047
+- Name: Poison Spore
+  MobId: 1428
+  X: 21
+  Y: 30
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1048
+- Name: Poison Spore
+  MobId: 1428
+  X: 26
+  Y: 34
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1049
+- Name: Poison Spore
+  MobId: 1428
+  X: 23
+  Y: 33
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1050
+- Name: Poison Spore
+  MobId: 1428
+  X: 21
+  Y: 30
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1051
+- Name: Poison Spore
+  MobId: 1428
+  X: 26
+  Y: 34
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1052
+- Name: Poison Spore
+  MobId: 1428
+  X: 23
+  Y: 33
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1053
+- Name: Poison Spore
+  MobId: 1428
+  X: 21
+  Y: 30
+  Amount: 1
+  Delay1: 7000
+  Source: npc/re/jobs/3-2/genetic.txt:1054

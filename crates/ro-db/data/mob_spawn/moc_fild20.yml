@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swift Incarnation of Mo
+  MobId: 2744
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:206
+- Name: Incarnation of Morocc
+  MobId: 1918
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 30000
+  Source: npc/re/mobs/fields/morocc.txt:200
+- Name: Incarnation of Morocc
+  MobId: 1919
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 30000
+  Source: npc/re/mobs/fields/morocc.txt:201
+- Name: Incarnation of Morocc
+  MobId: 1920
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 30000
+  Source: npc/re/mobs/fields/morocc.txt:202
+- Name: Incarnation of Morocc
+  MobId: 1921
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 30000
+  Source: npc/re/mobs/fields/morocc.txt:203

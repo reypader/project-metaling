@@ -1,0 +1,56 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Bigfoot Ringleader
+  MobId: 2884
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:241
+- Name: Bigfoot
+  MobId: 1060
+  X: 0
+  Y: 0
+  Amount: 174
+  Delay1: 5000
+  Source: npc/re/mobs/fields/payon.txt:76
+- Name: Caramel
+  MobId: 1103
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/fields/payon.txt:77
+- Name: Stainer
+  MobId: 1174
+  X: 0
+  Y: 0
+  Amount: 26
+  Delay1: 5000
+  Source: npc/re/mobs/fields/payon.txt:78
+- Name: Creamy
+  MobId: 1018
+  X: 0
+  Y: 0
+  Amount: 26
+  Delay1: 5000
+  Source: npc/re/mobs/fields/payon.txt:79
+- Name: Green Plant
+  MobId: 1080
+  X: 171
+  Y: 331
+  Span:
+    X: 20
+    Y: 20
+  Amount: 8
+  Delay1: 900000
+  Delay2: 450000
+  Source: npc/re/mobs/fields/payon.txt:80

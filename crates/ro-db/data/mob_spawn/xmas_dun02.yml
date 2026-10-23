@@ -1,0 +1,54 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Furious Myst Case
+  MobId: 2737
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:325
+- Name: Myst Case
+  MobId: 1249
+  X: 0
+  Y: 0
+  Amount: 70
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/xmas_dun.txt:34
+- Name: Cruiser
+  MobId: 1248
+  X: 0
+  Y: 0
+  Amount: 49
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/xmas_dun.txt:35
+- Name: Cookie
+  MobId: 1265
+  X: 0
+  Y: 0
+  Amount: 28
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/xmas_dun.txt:36
+- Name: Christmas Cookie
+  MobId: 1246
+  X: 0
+  Y: 0
+  Amount: 28
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/xmas_dun.txt:37
+- Name: Stormy Knight
+  MobId: 1251
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/dungeons/xmas_dun.txt:38

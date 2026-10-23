@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swift Rideword
+  MobId: 2681
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:286
+- Name: Rideword
+  MobId: 1195
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:20
+- Name: Mimic
+  MobId: 1191
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:21
+- Name: Plasma
+  MobId: 1695
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:22
+- Name: Alice
+  MobId: 1275
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:23
+- Name: Lady Solace
+  MobId: 1703
+  X: 0
+  Y: 0
+  Amount: 4
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:24

@@ -1,0 +1,73 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Ancient Mummy
+  MobId: 1522
+  X: 0
+  Y: 0
+  Amount: 8
+  Delay1: 5000
+  Source: npc/quests/the_sign_quest.txt:12437
+- Name: Evil Druid
+  MobId: 1435
+  X: 0
+  Y: 0
+  Amount: 8
+  Delay1: 5000
+  Source: npc/quests/the_sign_quest.txt:12438
+- Name: Ghoul
+  MobId: 1423
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/quests/the_sign_quest.txt:12439
+- Name: Incubus
+  MobId: 1580
+  X: 0
+  Y: 0
+  Amount: 8
+  Delay1: 5000
+  Source: npc/quests/the_sign_quest.txt:12440
+- Name: Injustice
+  MobId: 1446
+  X: 0
+  Y: 0
+  Amount: 8
+  Delay1: 5000
+  Source: npc/quests/the_sign_quest.txt:12441
+- Name: Skeleton Prisoner
+  MobId: 1479
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/quests/the_sign_quest.txt:12442
+- Name: Zombie Prisoner
+  MobId: 1480
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/quests/the_sign_quest.txt:12443
+- Name: Wraith
+  MobId: 1475
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/quests/the_sign_quest.txt:12444
+- Name: Wraith Dead
+  MobId: 1566
+  X: 0
+  Y: 0
+  Amount: 8
+  Delay1: 5000
+  Source: npc/quests/the_sign_quest.txt:12445

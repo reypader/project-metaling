@@ -1,0 +1,59 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Furious Ghoul
+  MobId: 2822
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:220
+- Name: Ghoul
+  MobId: 1036
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/abbey.txt:19
+- Name: Hellhound
+  MobId: 1866
+  X: 0
+  Y: 0
+  Amount: 17
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/abbey.txt:20
+- Name: Banshee
+  MobId: 1867
+  X: 0
+  Y: 0
+  Amount: 16
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/abbey.txt:21
+- Name: Ragged Zombie
+  MobId: 1865
+  X: 0
+  Y: 0
+  Amount: 12
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/abbey.txt:22
+- Name: Zombie Slaughter
+  MobId: 1864
+  X: 0
+  Y: 0
+  Amount: 12
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/abbey.txt:23
+- Name: Flame Skull
+  MobId: 1869
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/abbey.txt:24

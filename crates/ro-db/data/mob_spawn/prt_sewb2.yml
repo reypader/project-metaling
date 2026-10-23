@@ -1,0 +1,66 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Furious Thief Bug
+  MobId: 2634
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:265
+- Name: Thief Bug
+  MobId: 1051
+  X: 0
+  Y: 0
+  Amount: 70
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/prt_sew.txt:26
+- Name: Tarou
+  MobId: 1175
+  X: 0
+  Y: 0
+  Amount: 60
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/prt_sew.txt:27
+- Name: Plankton
+  MobId: 1161
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/prt_sew.txt:28
+- Name: Thief Bug Egg
+  MobId: 1048
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/prt_sew.txt:29
+- Name: Spore
+  MobId: 1014
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/prt_sew.txt:30
+- Name: Thief Bug Female
+  MobId: 1053
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/prt_sew.txt:31
+- Name: Familiar
+  MobId: 1005
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/prt_sew.txt:32

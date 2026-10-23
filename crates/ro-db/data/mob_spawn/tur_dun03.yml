@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Shadow of Deception
+  MobId: 2076
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 1000
+  Source: npc/re/jobs/3-2/shadow_chaser.txt:2509
+- Name: Freezer Ringleader
+  MobId: 2831
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:312
+- Name: Freezer
+  MobId: 1319
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tur_dun.txt:35
+- Name: Assaulter
+  MobId: 1315
+  X: 0
+  Y: 0
+  Amount: 35
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tur_dun.txt:36
+- Name: Permeter
+  MobId: 1314
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tur_dun.txt:37
+- Name: Heater
+  MobId: 1318
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tur_dun.txt:38

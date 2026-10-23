@@ -53,7 +53,7 @@ Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
   - Tests DB-MOB-01/02 in `crates/ro-db/tests/mob_spawn_tests.rs`.
   - `DESIGN.md` §2.4 and §3: the mob spawn pipeline; replace the "Future: MobSpawnBlueprint" comment and
     the "MobId goes in ro-core" note.
-- [ ] **M2 tools/npc-import**
+- [x] **M2 tools/npc-import**
   - `header.rs`: `Header::Mob(MobHeader)` replaces `SkipReason::Monster` / `BossMonster`, and parses
     w1, w3 and w4 (TOOL-MOB-01..04).
   - `sprite.rs`:

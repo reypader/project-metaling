@@ -1,0 +1,73 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Carat
+  MobId: 2877
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:98
+- Name: Carat
+  MobId: 1267
+  X: 0
+  Y: 0
+  Amount: 50
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:33
+- Name: Dark Frame
+  MobId: 1260
+  X: 0
+  Y: 0
+  Amount: 35
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:34
+- Name: Owl Duke
+  MobId: 1320
+  X: 0
+  Y: 0
+  Amount: 35
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:35
+- Name: Rideword
+  MobId: 1195
+  X: 0
+  Y: 0
+  Amount: 26
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:36
+- Name: Sage Worm
+  MobId: 1281
+  X: 0
+  Y: 0
+  Amount: 17
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:37
+- Name: Whisper
+  MobId: 1179
+  X: 0
+  Y: 0
+  Amount: 17
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:38
+- Name: Owl Baron
+  MobId: 1295
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:39
+- Name: Alice
+  MobId: 1275
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:40

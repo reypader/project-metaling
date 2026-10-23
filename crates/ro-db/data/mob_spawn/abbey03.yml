@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Necromancer Ringleader
+  MobId: 2736
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:17
+- Name: Necromancer
+  MobId: 1870
+  X: 0
+  Y: 0
+  Amount: 60
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/abbey.txt:48
+- Name: Banshee
+  MobId: 1867
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/abbey.txt:49
+- Name: Flame Skull
+  MobId: 1869
+  X: 0
+  Y: 0
+  Amount: 25
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/abbey.txt:50
+- Name: Beelzebub
+  MobId: 1873
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 43200000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/dungeons/abbey.txt:51

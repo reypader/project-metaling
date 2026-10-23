@@ -1,0 +1,66 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swift Baroness of Retri
+  MobId: 2686
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:295
+- Name: Baroness of Retribution
+  MobId: 1702
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:93
+- Name: Death Word
+  MobId: 1698
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:94
+- Name: Ancient Mimic
+  MobId: 1699
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:95
+- Name: Dame of Sentinel
+  MobId: 1700
+  X: 0
+  Y: 0
+  Amount: 7
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:96
+- Name: Mistress of Shelter
+  MobId: 1701
+  X: 0
+  Y: 0
+  Amount: 7
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:97
+- Name: Lady Solace
+  MobId: 1703
+  X: 0
+  Y: 0
+  Amount: 7
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:98
+- Name: Despero of Thanatos
+  MobId: 1705
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:99

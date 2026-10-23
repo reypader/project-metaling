@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Banshee Master
+  MobId: 2886
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:31
+- Name: Banshee Master
+  MobId: 1974
+  X: 0
+  Y: 0
+  Amount: 22
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gld_dunSE.txt:25
+- Name: Beholder master
+  MobId: 1975
+  X: 0
+  Y: 0
+  Amount: 22
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gld_dunSE.txt:26
+- Name: Aunoe
+  MobId: 1796
+  X: 0
+  Y: 0
+  Amount: 22
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gld_dunSE.txt:27
+- Name: Necromancer
+  MobId: 1870
+  X: 0
+  Y: 0
+  Amount: 18
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gld_dunSE.txt:28
+- Name: Fanat
+  MobId: 1797
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gld_dunSE.txt:29

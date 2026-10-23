@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swift Centipede
+  MobId: 2873
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:62
+- Name: Centipede
+  MobId: 1987
+  X: 0
+  Y: 0
+  Amount: 60
+  Delay1: 5000
+  Source: npc/re/mobs/fields/dicastes.txt:17
+- Name: Centipede Larva
+  MobId: 1999
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/fields/dicastes.txt:18
+- Name: Tatacho
+  MobId: 1986
+  X: 0
+  Y: 0
+  Amount: 25
+  Delay1: 5000
+  Source: npc/re/mobs/fields/dicastes.txt:19
+- Name: Dolomedes
+  MobId: 2092
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/fields/dicastes.txt:20

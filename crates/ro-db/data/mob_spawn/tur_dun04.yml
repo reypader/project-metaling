@@ -1,0 +1,57 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Assaulter Ringleader
+  MobId: 2889
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:313
+- Name: Assaulter
+  MobId: 1315
+  X: 0
+  Y: 0
+  Amount: 42
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tur_dun.txt:43
+- Name: Heater
+  MobId: 1318
+  X: 0
+  Y: 0
+  Amount: 33
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tur_dun.txt:44
+- Name: Freezer
+  MobId: 1319
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tur_dun.txt:45
+- Name: Permeter
+  MobId: 1314
+  X: 0
+  Y: 0
+  Amount: 4
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tur_dun.txt:46
+- Name: Turtle General
+  MobId: 1312
+  X: 99
+  Y: 93
+  Span:
+    X: 20
+    Y: 20
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/dungeons/tur_dun.txt:47

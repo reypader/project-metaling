@@ -1,0 +1,99 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Plasma Ringleader
+  MobId: 2706
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:228
+- Name: Plasma
+  MobId: 1693
+  X: 0
+  Y: 0
+  Amount: 24
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:46
+- Name: Skeggiold
+  MobId: 1754
+  X: 0
+  Y: 0
+  Amount: 19
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:47
+- Name: Skeggiold
+  MobId: 1755
+  X: 0
+  Y: 0
+  Amount: 19
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:48
+- Name: Skogul
+  MobId: 1761
+  X: 0
+  Y: 0
+  Amount: 6
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:49
+- Name: Frus
+  MobId: 1762
+  X: 0
+  Y: 0
+  Amount: 6
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:50
+- Name: Skogul
+  MobId: 1752
+  X: 0
+  Y: 0
+  Amount: 4
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:51
+- Name: Frus
+  MobId: 1753
+  X: 0
+  Y: 0
+  Amount: 4
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:52
+- Name: Valkyrie
+  MobId: 1765
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 5400000
+  Delay2: 1800000
+  Source: npc/re/mobs/dungeons/odin.txt:53
+- Name: Valkyrie Randgris
+  MobId: 1751
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 28800000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/dungeons/odin.txt:54
+- Name: Blue Plant
+  MobId: 1079
+  X: 0
+  Y: 0
+  Amount: 18
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/dungeons/odin.txt:55
+- Name: Shining Plant
+  MobId: 1083
+  X: 0
+  Y: 0
+  Amount: 18
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/dungeons/odin.txt:56

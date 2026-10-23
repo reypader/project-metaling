@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Freezer
+  MobId: 1887
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 20000
+  Source: npc/quests/quests_moscovia.txt:9053
+- Name: Hatii Baby
+  MobId: 1888
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 300000
+  Source: npc/quests/quests_moscovia.txt:9054
+- Name: Sasquatch
+  MobId: 1243
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 10000
+  Source: npc/quests/quests_moscovia.txt:9055

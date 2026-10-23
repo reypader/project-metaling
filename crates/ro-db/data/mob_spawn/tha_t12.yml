@@ -1,0 +1,59 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Dame of Sentinel Ringle
+  MobId: 2726
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:302
+- Name: Dame of Sentinel
+  MobId: 1700
+  X: 0
+  Y: 0
+  Amount: 13
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:148
+- Name: Baroness of Retribution
+  MobId: 1702
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:149
+- Name: Mistress of Shelter
+  MobId: 1701
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:150
+- Name: Lady Solace
+  MobId: 1703
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:151
+- Name: Plasma
+  MobId: 1693
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:152
+- Name: Odium of Thanatos
+  MobId: 1709
+  X: 0
+  Y: 0
+  Amount: 4
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/tha_t.txt:153

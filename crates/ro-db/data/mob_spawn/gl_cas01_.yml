@@ -1,0 +1,84 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Contaminated Raydric
+  MobId: 20367
+  X: 0
+  Y: 0
+  Amount: 49
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:210
+- Name: Contaminated Raydric Ar
+  MobId: 20368
+  X: 0
+  Y: 0
+  Amount: 77
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:211
+- Name: Frozen Gargoyle
+  MobId: 20369
+  X: 0
+  Y: 0
+  Amount: 27
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:212
+- Name: Contaminated Sting
+  MobId: 20370
+  X: 0
+  Y: 0
+  Amount: 26
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:213
+- Name: Prison Breaker
+  MobId: 20371
+  X: 0
+  Y: 0
+  Amount: 32
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:214
+- Name: Ice Ghost
+  MobId: 20379
+  X: 0
+  Y: 0
+  Amount: 42
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:215
+- Name: Flame Ghost
+  MobId: 20380
+  X: 0
+  Y: 0
+  Amount: 41
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:216
+- Name: Corrupted Wanderer
+  MobId: 20420
+  X: 0
+  Y: 0
+  Amount: 33
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:217
+- Name: Corrupted Spider Queen
+  MobId: 20421
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 7200000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/dungeons/glastheim.txt:218
+- Name: Corrupted Dark Lord
+  MobId: 20422
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/dungeons/glastheim.txt:219

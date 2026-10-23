@@ -1,0 +1,68 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swift Raydric
+  MobId: 2690
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:108
+- Name: Raydric
+  MobId: 1163
+  X: 0
+  Y: 0
+  Amount: 101
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:125
+- Name: Khalitzburg
+  MobId: 1132
+  X: 0
+  Y: 0
+  Amount: 50
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:126
+- Name: Raydric Archer
+  MobId: 1276
+  X: 0
+  Y: 0
+  Amount: 38
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:127
+- Name: Abysmal Knight
+  MobId: 1219
+  X: 0
+  Y: 0
+  Amount: 7
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:128
+- Name: Alice
+  MobId: 1275
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:129
+- Name: Mysteltainn
+  MobId: 1203
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 1800000
+  Delay2: 1200000
+  Source: npc/re/mobs/dungeons/glastheim.txt:130
+- Name: Bloody Knight
+  MobId: 1268
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/dungeons/glastheim.txt:131

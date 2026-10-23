@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Sea Otter Ringleader
+  MobId: 2668
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:51
+- Name: Sea Otter
+  MobId: 1323
+  X: 0
+  Y: 0
+  Amount: 149
+  Delay1: 5000
+  Source: npc/re/mobs/fields/comodo.txt:52
+- Name: Galapago
+  MobId: 1391
+  X: 0
+  Y: 0
+  Amount: 37
+  Delay1: 5000
+  Source: npc/re/mobs/fields/comodo.txt:53
+- Name: Shellfish
+  MobId: 1074
+  X: 0
+  Y: 0
+  Amount: 24
+  Delay1: 5000
+  Source: npc/re/mobs/fields/comodo.txt:54
+- Name: Crab
+  MobId: 1073
+  X: 0
+  Y: 0
+  Amount: 24
+  Delay1: 5000
+  Source: npc/re/mobs/fields/comodo.txt:55
+- Name: Aster
+  MobId: 1266
+  X: 0
+  Y: 0
+  Amount: 12
+  Delay1: 5000
+  Source: npc/re/mobs/fields/comodo.txt:56

@@ -1,0 +1,247 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swift Spore
+  MobId: 2646
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:306
+- Name: Red Mushroom
+  MobId: 1085
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:121
+- Name: Black Mushroom
+  MobId: 1084
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:122
+- Name: Red Mushroom
+  MobId: 1085
+  X: 160
+  Y: 54
+  Span:
+    X: 13
+    Y: 13
+  Amount: 10
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:123
+- Name: Black Mushroom
+  MobId: 1084
+  X: 160
+  Y: 54
+  Span:
+    X: 13
+    Y: 13
+  Amount: 10
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:124
+- Name: Dead Plankton
+  MobId: 2404
+  X: 160
+  Y: 54
+  Span:
+    X: 13
+    Y: 13
+  Amount: 10
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:125
+- Name: Red Plant
+  MobId: 1078
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:126
+- Name: Green Plant
+  MobId: 1080
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:127
+- Name: Yellow Plant
+  MobId: 1081
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:128
+- Name: Blue Plant
+  MobId: 1079
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:129
+- Name: White Plant
+  MobId: 1082
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 50000
+  Source: npc/re/mobs/dungeons/treasure.txt:130
+- Name: Zombie
+  MobId: 1015
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 100000
+  Source: npc/re/mobs/dungeons/treasure.txt:131
+- Name: Zombie
+  MobId: 1015
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 100000
+  Source: npc/re/mobs/dungeons/treasure.txt:132
+- Name: Weak Skeleton
+  MobId: 2405
+  X: 68
+  Y: 47
+  Span:
+    X: 9
+    Y: 9
+  Amount: 4
+  Delay1: 8000
+  Source: npc/re/mobs/dungeons/treasure.txt:133
+- Name: Roda Frog
+  MobId: 1012
+  X: 106
+  Y: 42
+  Span:
+    X: 9
+    Y: 9
+  Amount: 3
+  Delay1: 60000
+  Source: npc/re/mobs/dungeons/treasure.txt:134
+- Name: Roda Frog
+  MobId: 1012
+  X: 32
+  Y: 37
+  Span:
+    X: 9
+    Y: 9
+  Amount: 6
+  Delay1: 60000
+  Source: npc/re/mobs/dungeons/treasure.txt:135
+- Name: Spore
+  MobId: 1014
+  X: 69
+  Y: 112
+  Span:
+    X: 9
+    Y: 9
+  Amount: 3
+  Delay1: 20000
+  Source: npc/re/mobs/dungeons/treasure.txt:136
+- Name: Spore
+  MobId: 1014
+  X: 35
+  Y: 112
+  Span:
+    X: 9
+    Y: 9
+  Amount: 3
+  Delay1: 20000
+  Source: npc/re/mobs/dungeons/treasure.txt:137
+- Name: Roda Frog
+  MobId: 1012
+  X: 35
+  Y: 112
+  Span:
+    X: 9
+    Y: 9
+  Amount: 3
+  Delay1: 20000
+  Source: npc/re/mobs/dungeons/treasure.txt:138
+- Name: Roda Frog
+  MobId: 1012
+  X: 111
+  Y: 111
+  Span:
+    X: 9
+    Y: 9
+  Amount: 3
+  Delay1: 60000
+  Source: npc/re/mobs/dungeons/treasure.txt:139
+- Name: Dead Plankton
+  MobId: 2404
+  X: 111
+  Y: 111
+  Span:
+    X: 9
+    Y: 9
+  Amount: 5
+  Delay1: 60000
+  Source: npc/re/mobs/dungeons/treasure.txt:140
+- Name: Dead Plankton
+  MobId: 2404
+  X: 69
+  Y: 174
+  Span:
+    X: 9
+    Y: 9
+  Amount: 7
+  Delay1: 120000
+  Source: npc/re/mobs/dungeons/treasure.txt:141
+- Name: Spore
+  MobId: 1014
+  X: 82
+  Y: 155
+  Span:
+    X: 9
+    Y: 9
+  Amount: 4
+  Delay1: 60000
+  Source: npc/re/mobs/dungeons/treasure.txt:142
+- Name: Spore
+  MobId: 1014
+  X: 55
+  Y: 155
+  Span:
+    X: 9
+    Y: 9
+  Amount: 2
+  Delay1: 60000
+  Source: npc/re/mobs/dungeons/treasure.txt:143
+- Name: Weak Skeleton
+  MobId: 2405
+  X: 22
+  Y: 160
+  Amount: 3
+  Delay1: 8000
+  Source: npc/re/mobs/dungeons/treasure.txt:144
+- Name: Weak Skeleton
+  MobId: 2405
+  X: 163
+  Y: 155
+  Span:
+    X: 13
+    Y: 13
+  Amount: 5
+  Delay1: 8000
+  Source: npc/re/mobs/dungeons/treasure.txt:145
+- Name: Zombie
+  MobId: 1015
+  X: 163
+  Y: 155
+  Span:
+    X: 13
+    Y: 13
+  Amount: 1
+  Delay1: 8000
+  Source: npc/re/mobs/dungeons/treasure.txt:146

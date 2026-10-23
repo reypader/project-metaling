@@ -1,4 +1,4 @@
-//! Mob spawn YAML (`MOB_SPAWN_DB`) loading (spec DB-MOB-01..02).
+//! Mob spawn YAML (`MOB_SPAWN_DB`) loading (spec DB-MOB-01..03).
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use ro_db::{DbLoadError, MapMobSpawns, MobId, MobSpawn};
@@ -252,4 +252,42 @@ fn db_mob_02_missing_file_is_none() {
         "error names the path: {err}"
     );
     std::fs::remove_dir_all(&dir).ok();
+}
+
+/// DB-MOB-03: every committed file loads and carries the license header.
+#[test]
+fn db_mob_03_shipped_data_loads() {
+    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("data/mob_spawn");
+    let entries = std::fs::read_dir(&dir).expect("crates/ro-db/data/mob_spawn is committed");
+    let mut files = 0;
+    for entry in entries {
+        let path = entry.expect("dir entry").path();
+        if path.extension().and_then(|e| e.to_str()) != Some("yml") {
+            continue;
+        }
+        files += 1;
+        let text = std::fs::read_to_string(&path).expect("readable");
+        assert!(
+            text.starts_with("# SPDX-License-Identifier: GPL-3.0-only\n"),
+            "{} lacks the SPDX header",
+            path.display()
+        );
+        assert!(
+            text.contains("rAthena") && text.contains("crates/ro-db/data/NOTICE.md"),
+            "{} lacks attribution",
+            path.display()
+        );
+        MapMobSpawns::from_yaml_str(&path.display().to_string(), &text)
+            .unwrap_or_else(|e| panic!("{e}"));
+    }
+    assert!(
+        files > 400,
+        "expected the full rAthena import, found {files} files"
+    );
+    let data = dir.parent().expect("data dir");
+    let notice = std::fs::read_to_string(data.join("NOTICE.md")).expect("data/NOTICE.md");
+    assert!(
+        notice.contains("## Mob spawn lists"),
+        "NOTICE.md lacks the mob spawn dataset section"
+    );
 }

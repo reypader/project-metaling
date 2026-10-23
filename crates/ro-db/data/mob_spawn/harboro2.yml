@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swamp Arclouze
+  MobId: 3787
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/rockridge.txt:24
+- Name: Brown Rat
+  MobId: 3788
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/rockridge.txt:25
+- Name: Anopheles
+  MobId: 1627
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/rockridge.txt:26
+- Name: Black Mushroom
+  MobId: 1084
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/rockridge.txt:27
+- Name: Thief Bug
+  MobId: 1051
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/rockridge.txt:28
+- Name: Sea Anemone
+  MobId: 3743
+  X: 50
+  Y: 259
+  Span:
+    X: 10
+    Y: 6
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/rockridge.txt:29

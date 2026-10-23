@@ -1,0 +1,57 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Mimic
+  MobId: 2753
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:213
+- Name: Mimic
+  MobId: 1191
+  X: 0
+  Y: 0
+  Amount: 35
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/moc_pryd.txt:62
+- Name: Verit
+  MobId: 1032
+  X: 0
+  Y: 0
+  Amount: 35
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/moc_pryd.txt:63
+- Name: Arclouze
+  MobId: 1194
+  X: 0
+  Y: 0
+  Amount: 23
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/moc_pryd.txt:64
+- Name: Ancient Mummy
+  MobId: 1297
+  X: 0
+  Y: 0
+  Amount: 23
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/moc_pryd.txt:65
+- Name: Amon Ra
+  MobId: 1511
+  X: 102
+  Y: 85
+  Span:
+    X: 1
+    Y: 1
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/dungeons/moc_pryd.txt:66

@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Drainliar
+  MobId: 2847
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:141
+- Name: Drainliar
+  MobId: 1111
+  X: 0
+  Y: 0
+  Amount: 76
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/in_sphinx.txt:20
+- Name: Requiem
+  MobId: 1164
+  X: 0
+  Y: 0
+  Amount: 38
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/in_sphinx.txt:21
+- Name: Zerom
+  MobId: 1178
+  X: 0
+  Y: 0
+  Amount: 38
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/in_sphinx.txt:22
+- Name: Matyr
+  MobId: 1146
+  X: 0
+  Y: 0
+  Amount: 19
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/in_sphinx.txt:23

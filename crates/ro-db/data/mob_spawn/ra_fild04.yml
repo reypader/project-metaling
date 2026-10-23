@@ -1,0 +1,54 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Hill Wind
+  MobId: 2803
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:270
+- Name: Hill Wind
+  MobId: 1680
+  X: 0
+  Y: 0
+  Amount: 155
+  Delay1: 5000
+  Source: npc/re/mobs/fields/rachel.txt:43
+- Name: Roween
+  MobId: 1782
+  X: 0
+  Y: 0
+  Amount: 35
+  Delay1: 5000
+  Source: npc/re/mobs/fields/rachel.txt:44
+- Name: Desert Wolf
+  MobId: 1106
+  X: 0
+  Y: 0
+  Amount: 23
+  Delay1: 5000
+  Source: npc/re/mobs/fields/rachel.txt:45
+- Name: Anopheles
+  MobId: 1627
+  X: 0
+  Y: 0
+  Amount: 23
+  Delay1: 5000
+  Source: npc/re/mobs/fields/rachel.txt:46
+- Name: Atroce
+  MobId: 1785
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 18000000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/fields/rachel.txt:47

@@ -1,0 +1,38 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swift Rafflesia Arnoldi
+  MobId: 2906
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:58
+- Name: Alnoldi
+  MobId: 2151
+  X: 0
+  Y: 0
+  Amount: 100
+  Delay1: 5000
+  Source: npc/re/mobs/fields/dewata.txt:20
+- Name: Argiope
+  MobId: 1099
+  X: 0
+  Y: 0
+  Amount: 75
+  Delay1: 5000
+  Source: npc/re/mobs/fields/dewata.txt:21
+- Name: Cendrawasih
+  MobId: 2153
+  X: 0
+  Y: 0
+  Amount: 16
+  Delay1: 5000
+  Source: npc/re/mobs/fields/dewata.txt:22

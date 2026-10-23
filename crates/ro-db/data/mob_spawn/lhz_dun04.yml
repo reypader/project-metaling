@@ -1,0 +1,122 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Celia Ringleader
+  MobId: 2875
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:161
+- Name: Randel
+  MobId: 2221
+  X: 0
+  Y: 0
+  Amount: 42
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:113
+- Name: Flamel
+  MobId: 2222
+  X: 0
+  Y: 0
+  Amount: 42
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:114
+- Name: Celia
+  MobId: 2223
+  X: 0
+  Y: 0
+  Amount: 81
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:115
+- Name: Chen
+  MobId: 2224
+  X: 0
+  Y: 0
+  Amount: 42
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:116
+- Name: Gertie
+  MobId: 2225
+  X: 0
+  Y: 0
+  Amount: 57
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:117
+- Name: Alphoccio
+  MobId: 2226
+  X: 0
+  Y: 0
+  Amount: 42
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:118
+- Name: Trentini
+  MobId: 2227
+  X: 0
+  Y: 0
+  Amount: 42
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:119
+- Name: Paladin Randel
+  MobId: 2228
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 3300000
+  Delay2: 3000000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:120
+- Name: Creator Flamel
+  MobId: 2229
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 3300000
+  Delay2: 3000000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:121
+- Name: Professor Celia
+  MobId: 2230
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 3300000
+  Delay2: 3000000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:122
+- Name: Champion Chen
+  MobId: 2231
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 3300000
+  Delay2: 3000000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:123
+- Name: Stalker Gertie
+  MobId: 2232
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 3300000
+  Delay2: 3000000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:124
+- Name: Clown Alphoccio
+  MobId: 2233
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 3300000
+  Delay2: 3000000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:125
+- Name: Gypsy Trentini
+  MobId: 2234
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 3300000
+  Delay2: 3000000
+  Source: npc/re/mobs/dungeons/lhz_dun.txt:126

@@ -1,0 +1,59 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swift Seal
+  MobId: 2829
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:49
+- Name: Seal
+  MobId: 1317
+  X: 0
+  Y: 0
+  Amount: 162
+  Delay1: 5000
+  Source: npc/re/mobs/fields/comodo.txt:31
+- Name: Galapago
+  MobId: 1391
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/fields/comodo.txt:32
+- Name: Shellfish
+  MobId: 1074
+  X: 0
+  Y: 0
+  Amount: 27
+  Delay1: 5000
+  Source: npc/re/mobs/fields/comodo.txt:33
+- Name: Crab
+  MobId: 1073
+  X: 0
+  Y: 0
+  Amount: 27
+  Delay1: 5000
+  Source: npc/re/mobs/fields/comodo.txt:34
+- Name: Aster
+  MobId: 1266
+  X: 0
+  Y: 0
+  Amount: 13
+  Delay1: 5000
+  Source: npc/re/mobs/fields/comodo.txt:35
+- Name: Mobster
+  MobId: 1313
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/fields/comodo.txt:36

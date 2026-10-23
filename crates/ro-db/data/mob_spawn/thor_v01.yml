@@ -1,0 +1,80 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Kasa
+  MobId: 2788
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:303
+- Name: Kasa
+  MobId: 1833
+  X: 0
+  Y: 0
+  Amount: 49
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/thor_v.txt:23
+- Name: Imp
+  MobId: 1837
+  X: 0
+  Y: 0
+  Amount: 27
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/thor_v.txt:24
+- Name: Magmaring
+  MobId: 1836
+  X: 0
+  Y: 0
+  Amount: 11
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/thor_v.txt:25
+- Name: Salamander
+  MobId: 1831
+  X: 0
+  Y: 0
+  Amount: 7
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/thor_v.txt:26
+- Name: Bow Guardian
+  MobId: 1830
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/thor_v.txt:27
+- Name: Sword Guardian
+  MobId: 1829
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/thor_v.txt:28
+- Name: Bow Guardian
+  MobId: 1830
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 420000
+  Source: npc/re/mobs/dungeons/thor_v.txt:29
+- Name: Sword Guardian
+  MobId: 1829
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 420000
+  Source: npc/re/mobs/dungeons/thor_v.txt:30
+- Name: Byrogue
+  MobId: 1839
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/thor_v.txt:31

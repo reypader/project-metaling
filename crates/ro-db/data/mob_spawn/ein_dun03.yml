@@ -1,0 +1,89 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Poisonous
+  MobId: 20592
+  X: 0
+  Y: 0
+  Amount: 35
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ein_dun.txt:42
+- Name: Toxious
+  MobId: 20593
+  X: 0
+  Y: 0
+  Amount: 35
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ein_dun.txt:43
+- Name: Green Mineral
+  MobId: 20594
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ein_dun.txt:44
+- Name: Red Mineral
+  MobId: 20595
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ein_dun.txt:45
+- Name: White Mineral
+  MobId: 20596
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ein_dun.txt:46
+- Name: Purple Mineral
+  MobId: 20597
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ein_dun.txt:47
+- Name: Abyssman
+  MobId: 20603
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ein_dun.txt:48
+- Name: White Porcellio
+  MobId: 20602
+  X: 0
+  Y: 0
+  Amount: 22
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ein_dun.txt:49
+- Name: Jeweliant
+  MobId: 20598
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ein_dun.txt:50
+- Name: Jewel
+  MobId: 20600
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ein_dun.txt:51
+- Name: Jungoliant
+  MobId: 20601
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 7200000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/dungeons/ein_dun.txt:52

@@ -1,0 +1,210 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Blue Plant
+  MobId: 1079
+  X: 234
+  Y: 256
+  Span:
+    X: 10
+    Y: 10
+  Amount: 5
+  Delay1: 1800000
+  Delay2: 600000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:17
+- Name: Shining Plant
+  MobId: 1083
+  X: 273
+  Y: 234
+  Span:
+    X: 3
+    Y: 3
+  Amount: 1
+  Delay1: 1800000
+  Delay2: 600000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:18
+- Name: Shining Plant
+  MobId: 1083
+  X: 143
+  Y: 257
+  Span:
+    X: 20
+    Y: 10
+  Amount: 5
+  Delay1: 1200000
+  Delay2: 600000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:19
+- Name: Yellow Plant
+  MobId: 1081
+  X: 98
+  Y: 238
+  Span:
+    X: 20
+    Y: 15
+  Amount: 5
+  Delay1: 1200000
+  Delay2: 600000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:20
+- Name: White Plant
+  MobId: 1082
+  X: 98
+  Y: 238
+  Span:
+    X: 20
+    Y: 15
+  Amount: 5
+  Delay1: 1200000
+  Delay2: 600000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:21
+- Name: Blue Plant
+  MobId: 1079
+  X: 47
+  Y: 207
+  Span:
+    X: 20
+    Y: 20
+  Amount: 5
+  Delay1: 1200000
+  Delay2: 600000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:22
+- Name: Shining Plant
+  MobId: 1083
+  X: 61
+  Y: 258
+  Span:
+    X: 3
+    Y: 3
+  Amount: 1
+  Delay1: 1800000
+  Delay2: 600000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:23
+- Name: Blue Plant
+  MobId: 1079
+  X: 132
+  Y: 199
+  Span:
+    X: 20
+    Y: 5
+  Amount: 5
+  Delay1: 1200000
+  Delay2: 600000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:24
+- Name: Shining Plant
+  MobId: 1083
+  X: 209
+  Y: 218
+  Span:
+    X: 2
+    Y: 2
+  Amount: 1
+  Delay1: 1200000
+  Delay2: 600000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:25
+- Name: Shining Plant
+  MobId: 1083
+  X: 192
+  Y: 186
+  Span:
+    X: 2
+    Y: 2
+  Amount: 1
+  Delay1: 1800000
+  Delay2: 1200000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:26
+- Name: Shining Plant
+  MobId: 1083
+  X: 169
+  Y: 176
+  Span:
+    X: 3
+    Y: 3
+  Amount: 1
+  Delay1: 1200000
+  Delay2: 600000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:27
+- Name: Green Plant
+  MobId: 1080
+  X: 169
+  Y: 176
+  Span:
+    X: 3
+    Y: 3
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:28
+- Name: Shining Plant
+  MobId: 1083
+  X: 94
+  Y: 111
+  Span:
+    X: 5
+    Y: 2
+  Amount: 1
+  Delay1: 1200000
+  Delay2: 600000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:29
+- Name: Shining Plant
+  MobId: 1083
+  X: 51
+  Y: 118
+  Span:
+    X: 10
+    Y: 3
+  Amount: 1
+  Delay1: 1200000
+  Delay2: 600000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:30
+- Name: Shining Plant
+  MobId: 1083
+  X: 133
+  Y: 54
+  Span:
+    X: 3
+    Y: 3
+  Amount: 1
+  Delay1: 1200000
+  Delay2: 600000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:31
+- Name: Shining Plant
+  MobId: 1083
+  X: 257
+  Y: 63
+  Span:
+    X: 10
+    Y: 10
+  Amount: 3
+  Delay1: 1800000
+  Delay2: 1200000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:32
+- Name: Shining Plant
+  MobId: 1083
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 3600000
+  Delay2: 2300000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:33
+- Name: Green Plant
+  MobId: 1080
+  X: 0
+  Y: 0
+  Amount: 25
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:34
+- Name: Red Plant
+  MobId: 1078
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/yggdrasil.txt:35

@@ -1,0 +1,132 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Solid Draco
+  MobId: 2849
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:225
+- Name: Draco
+  MobId: 2013
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/nyd_dun.txt:16
+- Name: Aqua Elemental
+  MobId: 2016
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/nyd_dun.txt:17
+- Name: Dark Pinguicula
+  MobId: 2015
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/nyd_dun.txt:18
+- Name: Rata
+  MobId: 2017
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 900000
+  Source: npc/re/mobs/dungeons/nyd_dun.txt:19
+- Name: Duneyrr
+  MobId: 2018
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 900000
+  Source: npc/re/mobs/dungeons/nyd_dun.txt:20
+- Name: Draco Egg
+  MobId: 2014
+  X: 47
+  Y: 219
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/nyd_dun.txt:21
+- Name: Draco Egg
+  MobId: 2014
+  X: 57
+  Y: 220
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/nyd_dun.txt:22
+- Name: Draco Egg
+  MobId: 2014
+  X: 57
+  Y: 226
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/nyd_dun.txt:23
+- Name: Draco Egg
+  MobId: 2014
+  X: 56
+  Y: 226
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/nyd_dun.txt:24
+- Name: Draco Egg
+  MobId: 2014
+  X: 64
+  Y: 219
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/nyd_dun.txt:25
+- Name: Draco Egg
+  MobId: 2014
+  X: 53
+  Y: 221
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/nyd_dun.txt:26
+- Name: Draco Egg
+  MobId: 2014
+  X: 58
+  Y: 216
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/nyd_dun.txt:27
+- Name: Draco Egg
+  MobId: 2014
+  X: 60
+  Y: 226
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/nyd_dun.txt:28
+- Name: Draco Egg
+  MobId: 2014
+  X: 53
+  Y: 228
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/nyd_dun.txt:29
+- Name: Draco Egg
+  MobId: 2014
+  X: 47
+  Y: 218
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/nyd_dun.txt:30

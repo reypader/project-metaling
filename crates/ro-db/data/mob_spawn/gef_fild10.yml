@@ -1,0 +1,80 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Furious Orc Warrior
+  MobId: 2722
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:92
+- Name: Orc Warrior
+  MobId: 1023
+  X: 0
+  Y: 0
+  Amount: 179
+  Delay1: 5000
+  Source: npc/re/mobs/fields/geffen.txt:169
+- Name: Orc Lady
+  MobId: 1273
+  X: 0
+  Y: 0
+  Amount: 55
+  Delay1: 5000
+  Source: npc/re/mobs/fields/geffen.txt:170
+- Name: Orc Baby
+  MobId: 1686
+  X: 0
+  Y: 0
+  Amount: 27
+  Delay1: 5000
+  Source: npc/re/mobs/fields/geffen.txt:171
+- Name: Orc Lord
+  MobId: 1190
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 7200000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/fields/geffen.txt:172
+- Name: Blue Plant
+  MobId: 1079
+  X: 46
+  Y: 350
+  Span:
+    X: 5
+    Y: 5
+  Amount: 3
+  Delay1: 900000
+  Delay2: 450000
+  Source: npc/re/mobs/fields/geffen.txt:173
+- Name: Blue Plant
+  MobId: 1079
+  X: 287
+  Y: 61
+  Span:
+    X: 5
+    Y: 5
+  Amount: 3
+  Delay1: 900000
+  Delay2: 450000
+  Source: npc/re/mobs/fields/geffen.txt:174
+- Name: Green Plant
+  MobId: 1080
+  X: 300
+  Y: 253
+  Span:
+    X: 5
+    Y: 5
+  Amount: 3
+  Delay1: 360000
+  Delay2: 180000
+  Source: npc/re/mobs/fields/geffen.txt:175

@@ -1,0 +1,117 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Blue Plant
+  MobId: 1079
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/pay_dun.txt:158
+- Name: Green Plant
+  MobId: 1080
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/pay_dun.txt:159
+- Name: Yellow Plant
+  MobId: 1081
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/pay_dun.txt:160
+- Name: White Plant
+  MobId: 1082
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/pay_dun.txt:161
+- Name: Whisper
+  MobId: 1185
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/pay_dun.txt:162
+- Name: Whisper
+  MobId: 1185
+  X: 154
+  Y: 112
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/pay_dun.txt:163
+- Name: Whisper
+  MobId: 1185
+  X: 161
+  Y: 117
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/pay_dun.txt:164
+- Name: Whisper
+  MobId: 1185
+  X: 84
+  Y: 63
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/pay_dun.txt:165
+- Name: Whisper
+  MobId: 1185
+  X: 81
+  Y: 61
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/pay_dun.txt:166
+- Name: Resentful Munak
+  MobId: 3760
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/pay_dun.txt:168
+- Name: Resentful Bongun
+  MobId: 3761
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/pay_dun.txt:169
+- Name: Resentful Sohee
+  MobId: 3762
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/pay_dun.txt:170
+- Name: Resentful Soldier
+  MobId: 3763
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/pay_dun.txt:171
+- Name: Deranged Adventurer
+  MobId: 3765
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 15000
+  Event: ill_moonlight_wizard::OnMobDead
+  Source: npc/re/mobs/dungeons/pay_dun.txt:172
+- Name: Angry Nine Tail
+  MobId: 3759
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Event: illusion_mob#moonlight::OnKill
+  Source: npc/re/mobs/dungeons/pay_dun.txt:173

@@ -1,0 +1,118 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Savage Ringleader
+  MobId: 2673
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:190
+- Name: Savage
+  MobId: 1166
+  X: 0
+  Y: 0
+  Amount: 161
+  Delay1: 5000
+  Source: npc/re/mobs/fields/mjolnir.txt:150
+- Name: Beetle King
+  MobId: 1494
+  X: 0
+  Y: 0
+  Amount: 34
+  Delay1: 5000
+  Source: npc/re/mobs/fields/mjolnir.txt:151
+- Name: Flora
+  MobId: 1118
+  X: 0
+  Y: 0
+  Amount: 34
+  Delay1: 5000
+  Source: npc/re/mobs/fields/mjolnir.txt:152
+- Name: Green Plant
+  MobId: 1080
+  X: 314
+  Y: 133
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:153
+- Name: Green Plant
+  MobId: 1080
+  X: 299
+  Y: 145
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:154
+- Name: Green Plant
+  MobId: 1080
+  X: 272
+  Y: 152
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:155
+- Name: Green Plant
+  MobId: 1080
+  X: 273
+  Y: 181
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:156
+- Name: Red Mushroom
+  MobId: 1085
+  X: 245
+  Y: 168
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:157
+- Name: Red Mushroom
+  MobId: 1085
+  X: 217
+  Y: 185
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:158
+- Name: Green Plant
+  MobId: 1080
+  X: 181
+  Y: 173
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:159
+- Name: Green Plant
+  MobId: 1080
+  X: 140
+  Y: 179
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:160
+- Name: Green Plant
+  MobId: 1080
+  X: 97
+  Y: 210
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:161
+- Name: Blue Plant
+  MobId: 1079
+  X: 249
+  Y: 214
+  Amount: 2
+  Delay1: 360000
+  Delay2: 180000
+  Source: npc/re/mobs/fields/mjolnir.txt:162

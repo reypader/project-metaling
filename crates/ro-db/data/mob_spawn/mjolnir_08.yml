@@ -1,0 +1,97 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Furious Beetle King
+  MobId: 2787
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:191
+- Name: Beetle King
+  MobId: 1494
+  X: 0
+  Y: 0
+  Amount: 169
+  Delay1: 5000
+  Source: npc/re/mobs/fields/mjolnir.txt:167
+- Name: Savage
+  MobId: 1166
+  X: 0
+  Y: 0
+  Amount: 36
+  Delay1: 5000
+  Source: npc/re/mobs/fields/mjolnir.txt:168
+- Name: Flora
+  MobId: 1118
+  X: 0
+  Y: 0
+  Amount: 36
+  Delay1: 5000
+  Source: npc/re/mobs/fields/mjolnir.txt:169
+- Name: Blue Plant
+  MobId: 1079
+  X: 280
+  Y: 280
+  Span:
+    X: 20
+    Y: 40
+  Amount: 2
+  Delay1: 360000
+  Delay2: 180000
+  Source: npc/re/mobs/fields/mjolnir.txt:170
+- Name: Green Plant
+  MobId: 1080
+  X: 207
+  Y: 83
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:171
+- Name: Green Plant
+  MobId: 1080
+  X: 176
+  Y: 153
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:172
+- Name: Green Plant
+  MobId: 1080
+  X: 169
+  Y: 204
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:173
+- Name: Green Plant
+  MobId: 1080
+  X: 207
+  Y: 232
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:174
+- Name: Green Plant
+  MobId: 1080
+  X: 180
+  Y: 282
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:175
+- Name: Green Plant
+  MobId: 1080
+  X: 149
+  Y: 328
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:176

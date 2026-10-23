@@ -1,0 +1,82 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Solid Iara
+  MobId: 2795
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:42
+- Name: Piranha
+  MobId: 2070
+  X: 0
+  Y: 0
+  Amount: 60
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/bra_dun.txt:21
+- Name: Iara
+  MobId: 2069
+  X: 0
+  Y: 0
+  Amount: 110
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/bra_dun.txt:22
+- Name: Marina
+  MobId: 1141
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/bra_dun.txt:23
+- Name: Kukre
+  MobId: 1070
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/bra_dun.txt:24
+- Name: Plankton
+  MobId: 1161
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/bra_dun.txt:25
+- Name: Hydra
+  MobId: 1068
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/bra_dun.txt:26
+- Name: Shining Plant
+  MobId: 1083
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/bra_dun.txt:27
+- Name: Black Mushroom
+  MobId: 1084
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/bra_dun.txt:28
+- Name: Boitata
+  MobId: 2068
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 7200000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/dungeons/bra_dun.txt:29

@@ -1,0 +1,194 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Furious Driller
+  MobId: 2846
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:187
+- Name: Driller
+  MobId: 1380
+  X: 0
+  Y: 0
+  Amount: 162
+  Delay1: 5000
+  Source: npc/re/mobs/fields/mjolnir.txt:95
+- Name: Mantis
+  MobId: 1139
+  X: 0
+  Y: 0
+  Amount: 43
+  Delay1: 5000
+  Source: npc/re/mobs/fields/mjolnir.txt:96
+- Name: Side Winder
+  MobId: 1037
+  X: 0
+  Y: 0
+  Amount: 43
+  Delay1: 5000
+  Source: npc/re/mobs/fields/mjolnir.txt:97
+- Name: Mistress
+  MobId: 1059
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 7200000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/fields/mjolnir.txt:98
+- Name: Shining Plant
+  MobId: 1083
+  X: 200
+  Y: 200
+  Span:
+    X: 30
+    Y: 30
+  Amount: 3
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/fields/mjolnir.txt:99
+- Name: Green Plant
+  MobId: 1080
+  X: 177
+  Y: 34
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:100
+- Name: Green Plant
+  MobId: 1080
+  X: 122
+  Y: 28
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:101
+- Name: Green Plant
+  MobId: 1080
+  X: 76
+  Y: 53
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:102
+- Name: Green Plant
+  MobId: 1080
+  X: 72
+  Y: 99
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:103
+- Name: Green Plant
+  MobId: 1080
+  X: 177
+  Y: 34
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:104
+- Name: Green Plant
+  MobId: 1080
+  X: 43
+  Y: 143
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:105
+- Name: Green Plant
+  MobId: 1080
+  X: 31
+  Y: 194
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:106
+- Name: Green Plant
+  MobId: 1080
+  X: 42
+  Y: 252
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:107
+- Name: Green Plant
+  MobId: 1080
+  X: 64
+  Y: 323
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:108
+- Name: Green Plant
+  MobId: 1080
+  X: 107
+  Y: 357
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:109
+- Name: Green Plant
+  MobId: 1080
+  X: 173
+  Y: 369
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:110
+- Name: Green Plant
+  MobId: 1080
+  X: 286
+  Y: 357
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:111
+- Name: Green Plant
+  MobId: 1080
+  X: 356
+  Y: 292
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:112
+- Name: Green Plant
+  MobId: 1080
+  X: 362
+  Y: 201
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:113
+- Name: Green Plant
+  MobId: 1080
+  X: 332
+  Y: 122
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:114
+- Name: Green Plant
+  MobId: 1080
+  X: 269
+  Y: 39
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:115
+- Name: Green Plant
+  MobId: 1080
+  X: 205
+  Y: 33
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:116

@@ -1,0 +1,71 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Vavayaga
+  MobId: 2626
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:218
+- Name: Baba Yaga
+  MobId: 1882
+  X: 0
+  Y: 0
+  Amount: 68
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/mosk_dun.txt:36
+- Name: Uzhas
+  MobId: 1883
+  X: 0
+  Y: 0
+  Amount: 39
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/mosk_dun.txt:37
+- Name: Mavka
+  MobId: 1884
+  X: 0
+  Y: 0
+  Amount: 17
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/mosk_dun.txt:38
+- Name: Gopinich
+  MobId: 1885
+  X: 207
+  Y: 221
+  Span:
+    X: 5
+    Y: 5
+  Amount: 1
+  Delay1: 7200000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/dungeons/mosk_dun.txt:39
+- Name: Yellow Plant
+  MobId: 1081
+  X: 0
+  Y: 0
+  Amount: 11
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/mosk_dun.txt:40
+- Name: White Plant
+  MobId: 1082
+  X: 0
+  Y: 0
+  Amount: 11
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/mosk_dun.txt:41
+- Name: Shining Plant
+  MobId: 1083
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 10000
+  Source: npc/re/mobs/dungeons/mosk_dun.txt:42

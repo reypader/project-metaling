@@ -1,0 +1,122 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: L Blue Earth Spirit
+  MobId: 22192
+  X: 0
+  Y: 0
+  Amount: 12
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:9
+- Name: Blue Earth Spirit
+  MobId: 22193
+  X: 0
+  Y: 0
+  Amount: 16
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:10
+- Name: G Blue Earth Spirit
+  MobId: 22194
+  X: 0
+  Y: 0
+  Amount: 18
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:11
+- Name: L Blue Flame Spirit
+  MobId: 22196
+  X: 0
+  Y: 0
+  Amount: 12
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:12
+- Name: Blue Flame Spirit
+  MobId: 22197
+  X: 0
+  Y: 0
+  Amount: 16
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:13
+- Name: G Blue Flame Spirit
+  MobId: 22198
+  X: 0
+  Y: 0
+  Amount: 18
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:14
+- Name: L Strong Wind Spirit
+  MobId: 22200
+  X: 0
+  Y: 0
+  Amount: 12
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:15
+- Name: Strong Wind Spirit
+  MobId: 22201
+  X: 0
+  Y: 0
+  Amount: 16
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:16
+- Name: G Strong Wind Spirit
+  MobId: 22202
+  X: 0
+  Y: 0
+  Amount: 18
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:17
+- Name: L Cold Water Spirit
+  MobId: 22204
+  X: 0
+  Y: 0
+  Amount: 12
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:18
+- Name: Cold Water Spirit
+  MobId: 22205
+  X: 0
+  Y: 0
+  Amount: 16
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:19
+- Name: G Cold Water Spirit
+  MobId: 22206
+  X: 0
+  Y: 0
+  Amount: 18
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:20
+- Name: M Blue Earth Spirit
+  MobId: 22195
+  X: 0
+  Y: 0
+  Amount: 4
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:21
+- Name: Blue Flame Mutant Spiri
+  MobId: 22199
+  X: 0
+  Y: 0
+  Amount: 4
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:22
+- Name: M Strong Wind Spirit
+  MobId: 22203
+  X: 0
+  Y: 0
+  Amount: 4
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:23
+- Name: M Cold Water Spirit
+  MobId: 22207
+  X: 0
+  Y: 0
+  Amount: 4
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:24

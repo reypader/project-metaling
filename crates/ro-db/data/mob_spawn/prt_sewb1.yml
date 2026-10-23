@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Familiar
+  MobId: 2833
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:264
+- Name: Thief Bug
+  MobId: 1051
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/prt_sew.txt:18
+- Name: Thief Bug Egg
+  MobId: 1048
+  X: 0
+  Y: 0
+  Amount: 106
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/prt_sew.txt:19
+- Name: Tarou
+  MobId: 1175
+  X: 0
+  Y: 0
+  Amount: 13
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/prt_sew.txt:20
+- Name: Familiar
+  MobId: 1005
+  X: 0
+  Y: 0
+  Amount: 66
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/prt_sew.txt:21

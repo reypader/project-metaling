@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Dolomedes Ringleader
+  MobId: 2850
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:63
+- Name: Bradium Golem
+  MobId: 2024
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 5000
+  Source: npc/re/mobs/fields/dicastes.txt:25
+- Name: Centipede
+  MobId: 1987
+  X: 0
+  Y: 0
+  Amount: 38
+  Delay1: 5000
+  Source: npc/re/mobs/fields/dicastes.txt:26
+- Name: Centipede Larva
+  MobId: 1999
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/fields/dicastes.txt:27
+- Name: Tatacho
+  MobId: 1986
+  X: 0
+  Y: 0
+  Amount: 27
+  Delay1: 5000
+  Source: npc/re/mobs/fields/dicastes.txt:28
+- Name: Dolomedes
+  MobId: 2092
+  X: 0
+  Y: 0
+  Amount: 87
+  Delay1: 5000
+  Source: npc/re/mobs/fields/dicastes.txt:29

@@ -1,0 +1,69 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Furious Dark Hammer Kob
+  MobId: 2817
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:128
+- Name: Dark Axe Kobold
+  MobId: 2284
+  X: 0
+  Y: 0
+  Amount: 25
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gld_re.txt:65
+- Name: Dark Hammer Kobold
+  MobId: 2285
+  X: 0
+  Y: 0
+  Amount: 35
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gld_re.txt:66
+- Name: Dark Mace Kobold
+  MobId: 2286
+  X: 0
+  Y: 0
+  Amount: 35
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gld_re.txt:67
+- Name: Dark Kobold Archer
+  MobId: 2287
+  X: 0
+  Y: 0
+  Amount: 35
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gld_re.txt:68
+- Name: Angry Student Pyuriel
+  MobId: 2249
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 28800000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/dungeons/gld_re.txt:69
+- Name: Warrior Laura
+  MobId: 2250
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 1800000
+  Delay2: 600000
+  Source: npc/re/mobs/dungeons/gld_re.txt:70
+- Name: Treasure Chest
+  MobId: 2288
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gld_re.txt:99

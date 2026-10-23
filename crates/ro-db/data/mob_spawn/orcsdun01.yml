@@ -1,0 +1,96 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Orc Zombie
+  MobId: 2723
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:229
+- Name: Orc Zombie
+  MobId: 1153
+  X: 0
+  Y: 0
+  Amount: 80
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/orcsdun.txt:16
+- Name: Familiar
+  MobId: 1005
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/orcsdun.txt:17
+- Name: Steel Chonchon
+  MobId: 1042
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/orcsdun.txt:18
+- Name: Orc Skeleton
+  MobId: 1152
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/orcsdun.txt:19
+- Name: Drainliar
+  MobId: 1111
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/orcsdun.txt:20
+- Name: Black Mushroom
+  MobId: 1084
+  X: 167
+  Y: 133
+  Span:
+    X: 5
+    Y: 5
+  Amount: 5
+  Delay1: 900000
+  Delay2: 450000
+  Source: npc/re/mobs/dungeons/orcsdun.txt:21
+- Name: Black Mushroom
+  MobId: 1084
+  X: 67
+  Y: 34
+  Span:
+    X: 5
+    Y: 5
+  Amount: 5
+  Delay1: 900000
+  Delay2: 450000
+  Source: npc/re/mobs/dungeons/orcsdun.txt:22
+- Name: White Plant
+  MobId: 1082
+  X: 83
+  Y: 50
+  Span:
+    X: 5
+    Y: 5
+  Amount: 2
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/dungeons/orcsdun.txt:23
+- Name: White Plant
+  MobId: 1082
+  X: 58
+  Y: 67
+  Span:
+    X: 10
+    Y: 10
+  Amount: 3
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/dungeons/orcsdun.txt:24

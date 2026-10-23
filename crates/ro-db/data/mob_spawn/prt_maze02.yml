@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Furious Poporing
+  MobId: 2702
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:261
+- Name: Poporing
+  MobId: 1031
+  X: 0
+  Y: 0
+  Amount: 32
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/prt_maze.txt:67
+- Name: Bigfoot
+  MobId: 1060
+  X: 0
+  Y: 0
+  Amount: 6
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/prt_maze.txt:68
+- Name: Sasquatch
+  MobId: 1243
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 900000
+  Delay2: 40000
+  Source: npc/re/mobs/dungeons/prt_maze.txt:69
+- Name: Leib Olmai
+  MobId: 1306
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/dungeons/prt_maze.txt:70

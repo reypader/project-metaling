@@ -1,0 +1,61 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swift Pasana
+  MobId: 2719
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:145
+- Name: Pasana
+  MobId: 1154
+  X: 0
+  Y: 0
+  Amount: 79
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/in_sphinx.txt:52
+- Name: Side Winder
+  MobId: 1037
+  X: 0
+  Y: 0
+  Amount: 22
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/in_sphinx.txt:53
+- Name: Matyr
+  MobId: 1146
+  X: 0
+  Y: 0
+  Amount: 11
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/in_sphinx.txt:54
+- Name: Anubis
+  MobId: 1098
+  X: 0
+  Y: 0
+  Amount: 11
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/in_sphinx.txt:55
+- Name: Mimic
+  MobId: 1191
+  X: 0
+  Y: 0
+  Amount: 7
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/in_sphinx.txt:56
+- Name: Pharaoh
+  MobId: 1157
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/dungeons/in_sphinx.txt:57

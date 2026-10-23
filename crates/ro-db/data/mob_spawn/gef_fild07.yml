@@ -1,0 +1,80 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swift Poring
+  MobId: 2699
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:89
+- Name: Pupa
+  MobId: 1008
+  X: 0
+  Y: 0
+  Amount: 134
+  Delay1: 5000
+  Source: npc/re/mobs/fields/geffen.txt:125
+- Name: Poring
+  MobId: 1002
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/fields/geffen.txt:126
+- Name: Fabre
+  MobId: 1007
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/fields/geffen.txt:127
+- Name: Chonchon
+  MobId: 1011
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/fields/geffen.txt:128
+- Name: Green Plant
+  MobId: 1080
+  X: 122
+  Y: 221
+  Amount: 3
+  Delay1: 360000
+  Delay2: 180000
+  Source: npc/re/mobs/fields/geffen.txt:129
+- Name: Shining Plant
+  MobId: 1083
+  X: 185
+  Y: 247
+  Amount: 1
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/fields/geffen.txt:130
+- Name: Blue Plant
+  MobId: 1079
+  X: 269
+  Y: 289
+  Amount: 1
+  Delay1: 900000
+  Delay2: 450000
+  Source: npc/re/mobs/fields/geffen.txt:131
+- Name: Green Plant
+  MobId: 1080
+  X: 269
+  Y: 289
+  Span:
+    X: 3
+    Y: 3
+  Amount: 3
+  Delay1: 360000
+  Delay2: 180000
+  Source: npc/re/mobs/fields/geffen.txt:132

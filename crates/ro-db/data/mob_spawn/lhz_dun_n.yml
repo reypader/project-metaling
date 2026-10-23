@@ -1,0 +1,114 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Eremes Guille
+  MobId: 3208
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Event: lhz_dun_n::OnRegularDead3208
+  Source: npc/re/mobs/dungeons/lhz_dun_n.txt:12
+- Name: Magaleta Sorin
+  MobId: 3209
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Event: lhz_dun_n::OnRegularDead3209
+  Source: npc/re/mobs/dungeons/lhz_dun_n.txt:13
+- Name: Catherine Cheiron
+  MobId: 3210
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Event: lhz_dun_n::OnRegularDead3210
+  Source: npc/re/mobs/dungeons/lhz_dun_n.txt:14
+- Name: Shecil Damon
+  MobId: 3211
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Event: lhz_dun_n::OnRegularDead3211
+  Source: npc/re/mobs/dungeons/lhz_dun_n.txt:15
+- Name: Harword Alt-Eisen
+  MobId: 3212
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Event: lhz_dun_n::OnRegularDead3212
+  Source: npc/re/mobs/dungeons/lhz_dun_n.txt:16
+- Name: Seyren Windsor
+  MobId: 3213
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Event: lhz_dun_n::OnRegularDead3213
+  Source: npc/re/mobs/dungeons/lhz_dun_n.txt:17
+- Name: Randel Lawrence
+  MobId: 3226
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Event: lhz_dun_n::OnRegularDead3226
+  Source: npc/re/mobs/dungeons/lhz_dun_n.txt:19
+- Name: Flamel Emule
+  MobId: 3227
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Event: lhz_dun_n::OnRegularDead3227
+  Source: npc/re/mobs/dungeons/lhz_dun_n.txt:20
+- Name: Celia Alde
+  MobId: 3228
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Event: lhz_dun_n::OnRegularDead3228
+  Source: npc/re/mobs/dungeons/lhz_dun_n.txt:21
+- Name: Chen Liu
+  MobId: 3229
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Event: lhz_dun_n::OnRegularDead3229
+  Source: npc/re/mobs/dungeons/lhz_dun_n.txt:22
+- Name: Gertie Wie
+  MobId: 3230
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Event: lhz_dun_n::OnRegularDead3230
+  Source: npc/re/mobs/dungeons/lhz_dun_n.txt:23
+- Name: Alphoccio Basil
+  MobId: 3231
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Event: lhz_dun_n::OnRegularDead3231
+  Source: npc/re/mobs/dungeons/lhz_dun_n.txt:24
+- Name: Trentini
+  MobId: 3232
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Event: lhz_dun_n::OnRegularDead3232
+  Source: npc/re/mobs/dungeons/lhz_dun_n.txt:25

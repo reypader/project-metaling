@@ -1,0 +1,100 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swift Yoyo
+  MobId: 2608
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:247
+- Name: Yoyo
+  MobId: 1057
+  X: 0
+  Y: 0
+  Amount: 127
+  Delay1: 5000
+  Source: npc/re/mobs/fields/prontera.txt:48
+- Name: Poporing
+  MobId: 1031
+  X: 0
+  Y: 0
+  Amount: 38
+  Delay1: 5000
+  Source: npc/re/mobs/fields/prontera.txt:49
+- Name: Horn
+  MobId: 1128
+  X: 0
+  Y: 0
+  Amount: 38
+  Delay1: 5000
+  Source: npc/re/mobs/fields/prontera.txt:50
+- Name: Choco
+  MobId: 1214
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/fields/prontera.txt:51
+- Name: Green Plant
+  MobId: 1080
+  X: 296
+  Y: 58
+  Span:
+    X: 15
+    Y: 15
+  Amount: 5
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/prontera.txt:52
+- Name: Blue Plant
+  MobId: 1079
+  X: 296
+  Y: 58
+  Span:
+    X: 15
+    Y: 15
+  Amount: 2
+  Delay1: 900000
+  Delay2: 450000
+  Source: npc/re/mobs/fields/prontera.txt:53
+- Name: Green Plant
+  MobId: 1080
+  X: 307
+  Y: 75
+  Span:
+    X: 5
+    Y: 5
+  Amount: 5
+  Delay1: 360000
+  Delay2: 180000
+  Source: npc/re/mobs/fields/prontera.txt:54
+- Name: Green Plant
+  MobId: 1080
+  X: 147
+  Y: 219
+  Span:
+    X: 5
+    Y: 5
+  Amount: 5
+  Delay1: 360000
+  Delay2: 180000
+  Source: npc/re/mobs/fields/prontera.txt:55
+- Name: Green Plant
+  MobId: 1080
+  X: 148
+  Y: 107
+  Span:
+    X: 5
+    Y: 5
+  Amount: 5
+  Delay1: 360000
+  Delay2: 180000
+  Source: npc/re/mobs/fields/prontera.txt:56

@@ -1,0 +1,70 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Poring
+  MobId: 1002
+  X: 139
+  Y: 80
+  Span:
+    X: 20
+    Y: 10
+  Amount: 5
+  Delay1: 5000
+  Source: npc/mobs/jail.txt:13
+- Name: Marin
+  MobId: 1242
+  X: 138
+  Y: 54
+  Span:
+    X: 20
+    Y: 20
+  Amount: 5
+  Delay1: 5000
+  Source: npc/mobs/jail.txt:14
+- Name: Poporing
+  MobId: 1031
+  X: 161
+  Y: 46
+  Span:
+    X: 15
+    Y: 15
+  Amount: 5
+  Delay1: 5000
+  Source: npc/mobs/jail.txt:15
+- Name: Drops
+  MobId: 1113
+  X: 114
+  Y: 47
+  Span:
+    X: 10
+    Y: 10
+  Amount: 5
+  Delay1: 5000
+  Source: npc/mobs/jail.txt:16
+- Name: Bigfoot
+  MobId: 1060
+  X: 114
+  Y: 47
+  Span:
+    X: 10
+    Y: 10
+  Amount: 10
+  Delay1: 5000
+  Source: npc/mobs/jail.txt:17
+- Name: Flora
+  MobId: 1118
+  X: 139
+  Y: 80
+  Span:
+    X: 30
+    Y: 30
+  Amount: 10
+  Delay1: 5000
+  Source: npc/mobs/jail.txt:18

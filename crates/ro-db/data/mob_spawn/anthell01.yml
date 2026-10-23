@@ -1,0 +1,755 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Deniro
+  MobId: 2857
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:29
+- Name: Piere
+  MobId: 1160
+  X: 0
+  Y: 0
+  Amount: 50
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/anthell.txt:18
+- Name: Deniro
+  MobId: 1105
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/anthell.txt:19
+- Name: Familiar
+  MobId: 1005
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/anthell.txt:20
+- Name: Andre
+  MobId: 1095
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/anthell.txt:21
+- Name: Vitata
+  MobId: 1176
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/anthell.txt:22
+- Name: Giearth
+  MobId: 1121
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/anthell.txt:23
+- Name: Ant Egg
+  MobId: 1097
+  X: 43
+  Y: 166
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:24
+- Name: Ant Egg
+  MobId: 1097
+  X: 30
+  Y: 187
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:25
+- Name: Ant Egg
+  MobId: 1097
+  X: 29
+  Y: 186
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:26
+- Name: Ant Egg
+  MobId: 1097
+  X: 38
+  Y: 186
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:27
+- Name: Ant Egg
+  MobId: 1097
+  X: 37
+  Y: 186
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:28
+- Name: Ant Egg
+  MobId: 1097
+  X: 36
+  Y: 186
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:29
+- Name: Ant Egg
+  MobId: 1097
+  X: 35
+  Y: 186
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:30
+- Name: Ant Egg
+  MobId: 1097
+  X: 36
+  Y: 187
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:31
+- Name: Ant Egg
+  MobId: 1097
+  X: 44
+  Y: 166
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:32
+- Name: Ant Egg
+  MobId: 1097
+  X: 45
+  Y: 165
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:33
+- Name: Ant Egg
+  MobId: 1097
+  X: 40
+  Y: 168
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:34
+- Name: Ant Egg
+  MobId: 1097
+  X: 41
+  Y: 168
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:35
+- Name: Ant Egg
+  MobId: 1097
+  X: 42
+  Y: 168
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:36
+- Name: Ant Egg
+  MobId: 1097
+  X: 42
+  Y: 167
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:37
+- Name: Ant Egg
+  MobId: 1097
+  X: 42
+  Y: 166
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:38
+- Name: Ant Egg
+  MobId: 1097
+  X: 42
+  Y: 165
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:39
+- Name: Ant Egg
+  MobId: 1097
+  X: 41
+  Y: 165
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:40
+- Name: Ant Egg
+  MobId: 1097
+  X: 43
+  Y: 165
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:41
+- Name: Ant Egg
+  MobId: 1097
+  X: 44
+  Y: 165
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:42
+- Name: Ant Egg
+  MobId: 1097
+  X: 38
+  Y: 184
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:43
+- Name: Ant Egg
+  MobId: 1097
+  X: 38
+  Y: 183
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:44
+- Name: Ant Egg
+  MobId: 1097
+  X: 37
+  Y: 183
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:45
+- Name: Ant Egg
+  MobId: 1097
+  X: 102
+  Y: 121
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:46
+- Name: Ant Egg
+  MobId: 1097
+  X: 104
+  Y: 123
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:47
+- Name: Ant Egg
+  MobId: 1097
+  X: 104
+  Y: 122
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:48
+- Name: Ant Egg
+  MobId: 1097
+  X: 104
+  Y: 120
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:49
+- Name: Ant Egg
+  MobId: 1097
+  X: 103
+  Y: 120
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:50
+- Name: Ant Egg
+  MobId: 1097
+  X: 103
+  Y: 121
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:51
+- Name: Ant Egg
+  MobId: 1097
+  X: 102
+  Y: 121
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:52
+- Name: Ant Egg
+  MobId: 1097
+  X: 105
+  Y: 124
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:53
+- Name: Ant Egg
+  MobId: 1097
+  X: 101
+  Y: 121
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:54
+- Name: Ant Egg
+  MobId: 1097
+  X: 100
+  Y: 121
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:55
+- Name: Ant Egg
+  MobId: 1097
+  X: 99
+  Y: 127
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:56
+- Name: Ant Egg
+  MobId: 1097
+  X: 97
+  Y: 123
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:57
+- Name: Ant Egg
+  MobId: 1097
+  X: 97
+  Y: 127
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:58
+- Name: Ant Egg
+  MobId: 1097
+  X: 97
+  Y: 126
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:59
+- Name: Ant Egg
+  MobId: 1097
+  X: 97
+  Y: 125
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:60
+- Name: Ant Egg
+  MobId: 1097
+  X: 97
+  Y: 124
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:61
+- Name: Ant Egg
+  MobId: 1097
+  X: 98
+  Y: 121
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:62
+- Name: Ant Egg
+  MobId: 1097
+  X: 99
+  Y: 121
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:63
+- Name: Ant Egg
+  MobId: 1097
+  X: 98
+  Y: 127
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:64
+- Name: Ant Egg
+  MobId: 1097
+  X: 28
+  Y: 266
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:65
+- Name: Ant Egg
+  MobId: 1097
+  X: 30
+  Y: 262
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:66
+- Name: Ant Egg
+  MobId: 1097
+  X: 30
+  Y: 261
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:67
+- Name: Ant Egg
+  MobId: 1097
+  X: 31
+  Y: 264
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:68
+- Name: Ant Egg
+  MobId: 1097
+  X: 31
+  Y: 263
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:69
+- Name: Ant Egg
+  MobId: 1097
+  X: 31
+  Y: 262
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:70
+- Name: Ant Egg
+  MobId: 1097
+  X: 32
+  Y: 263
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:71
+- Name: Ant Egg
+  MobId: 1097
+  X: 40
+  Y: 270
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:72
+- Name: Ant Egg
+  MobId: 1097
+  X: 40
+  Y: 269
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:73
+- Name: Ant Egg
+  MobId: 1097
+  X: 40
+  Y: 268
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:74
+- Name: Ant Egg
+  MobId: 1097
+  X: 30
+  Y: 263
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:75
+- Name: Ant Egg
+  MobId: 1097
+  X: 30
+  Y: 264
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:76
+- Name: Ant Egg
+  MobId: 1097
+  X: 30
+  Y: 265
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:77
+- Name: Ant Egg
+  MobId: 1097
+  X: 29
+  Y: 266
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:78
+- Name: Ant Egg
+  MobId: 1097
+  X: 28
+  Y: 265
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:79
+- Name: Ant Egg
+  MobId: 1097
+  X: 28
+  Y: 264
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:80
+- Name: Ant Egg
+  MobId: 1097
+  X: 28
+  Y: 263
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:81
+- Name: Ant Egg
+  MobId: 1097
+  X: 28
+  Y: 262
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:82
+- Name: Ant Egg
+  MobId: 1097
+  X: 29
+  Y: 265
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:83
+- Name: Ant Egg
+  MobId: 1097
+  X: 29
+  Y: 264
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:84
+- Name: Ant Egg
+  MobId: 1097
+  X: 29
+  Y: 263
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:85
+- Name: Ant Egg
+  MobId: 1097
+  X: 29
+  Y: 262
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:86
+- Name: Ant Egg
+  MobId: 1097
+  X: 40
+  Y: 267
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:87
+- Name: Ant Egg
+  MobId: 1097
+  X: 40
+  Y: 266
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:88
+- Name: Ant Egg
+  MobId: 1097
+  X: 31
+  Y: 194
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:89
+- Name: Ant Egg
+  MobId: 1097
+  X: 33
+  Y: 195
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:90
+- Name: Ant Egg
+  MobId: 1097
+  X: 33
+  Y: 196
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:91
+- Name: Ant Egg
+  MobId: 1097
+  X: 30
+  Y: 190
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:92
+- Name: Ant Egg
+  MobId: 1097
+  X: 31
+  Y: 190
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:93
+- Name: Ant Egg
+  MobId: 1097
+  X: 32
+  Y: 189
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:94
+- Name: Ant Egg
+  MobId: 1097
+  X: 32
+  Y: 198
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:95
+- Name: Ant Egg
+  MobId: 1097
+  X: 32
+  Y: 187
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:96
+- Name: Ant Egg
+  MobId: 1097
+  X: 32
+  Y: 186
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:97
+- Name: Ant Egg
+  MobId: 1097
+  X: 30
+  Y: 195
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:98
+- Name: Ant Egg
+  MobId: 1097
+  X: 31
+  Y: 195
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:99
+- Name: Ant Egg
+  MobId: 1097
+  X: 32
+  Y: 196
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:100
+- Name: Ant Egg
+  MobId: 1097
+  X: 40
+  Y: 265
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:101
+- Name: Ant Egg
+  MobId: 1097
+  X: 41
+  Y: 269
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:102
+- Name: Ant Egg
+  MobId: 1097
+  X: 41
+  Y: 268
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:103
+- Name: Ant Egg
+  MobId: 1097
+  X: 41
+  Y: 267
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:104
+- Name: Ant Egg
+  MobId: 1097
+  X: 41
+  Y: 266
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:105
+- Name: Ant Egg
+  MobId: 1097
+  X: 41
+  Y: 265
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:106
+- Name: Ant Egg
+  MobId: 1097
+  X: 30
+  Y: 198
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:107
+- Name: Ant Egg
+  MobId: 1097
+  X: 31
+  Y: 198
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:108
+- Name: Ant Egg
+  MobId: 1097
+  X: 32
+  Y: 197
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:109
+- Name: Ant Egg
+  MobId: 1097
+  X: 31
+  Y: 186
+  Amount: 1
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/anthell.txt:110

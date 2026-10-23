@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Solid Enchanted Peach T
+  MobId: 2775
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:130
+- Name: Enchanted Peach Tree
+  MobId: 1410
+  X: 0
+  Y: 0
+  Amount: 27
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gon_dun.txt:28
+- Name: Taoist Hermit
+  MobId: 1412
+  X: 0
+  Y: 0
+  Amount: 26
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gon_dun.txt:29
+- Name: Bloody Butterfly
+  MobId: 1408
+  X: 0
+  Y: 0
+  Amount: 26
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gon_dun.txt:30
+- Name: Baby Leopard
+  MobId: 1415
+  X: 0
+  Y: 0
+  Amount: 7
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gon_dun.txt:31
+- Name: Yellow Plant
+  MobId: 1081
+  X: 0
+  Y: 0
+  Amount: 13
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gon_dun.txt:32

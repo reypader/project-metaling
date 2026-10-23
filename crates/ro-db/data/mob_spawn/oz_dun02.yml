@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Spark
+  MobId: 21297
+  X: 0
+  Y: 0
+  Amount: 25
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/oz_dun.txt:13
+- Name: Volcaring
+  MobId: 21299
+  X: 0
+  Y: 0
+  Amount: 35
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/oz_dun.txt:14
+- Name: Lava Toad
+  MobId: 21300
+  X: 0
+  Y: 0
+  Amount: 25
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/oz_dun.txt:15
+- Name: Hot Molar
+  MobId: 21298
+  X: 0
+  Y: 0
+  Amount: 60
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/oz_dun.txt:16
+- Name: Burning Fang
+  MobId: 21301
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 21600000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/dungeons/oz_dun.txt:17

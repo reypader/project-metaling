@@ -1,0 +1,73 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Clock Ringleader
+  MobId: 2870
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:47
+- Name: Clock
+  MobId: 1269
+  X: 0
+  Y: 0
+  Amount: 35
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/c_tower.txt:44
+- Name: Owl Duke
+  MobId: 1320
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/c_tower.txt:45
+- Name: Alarm
+  MobId: 1193
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/c_tower.txt:46
+- Name: Rideword
+  MobId: 1195
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/c_tower.txt:47
+- Name: Mimic
+  MobId: 1191
+  X: 0
+  Y: 0
+  Amount: 12
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/c_tower.txt:48
+- Name: Whisper
+  MobId: 1179
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/c_tower.txt:49
+- Name: Clock Tower Manager
+  MobId: 1270
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/c_tower.txt:50
+- Name: Elder
+  MobId: 1377
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/c_tower.txt:51

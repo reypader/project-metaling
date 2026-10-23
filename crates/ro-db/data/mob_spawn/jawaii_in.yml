@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Red Mushroom
+  MobId: 1085
+  X: 128
+  Y: 121
+  Span:
+    X: 1
+    Y: 4
+  Amount: 1
+  Delay1: 3000000
+  Delay2: 1200000
+  Source: npc/mobs/towns.txt:32
+- Name: Black Mushroom
+  MobId: 1084
+  X: 124
+  Y: 76
+  Span:
+    X: 1
+    Y: 1
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1200000
+  Source: npc/mobs/towns.txt:33
+- Name: Black Mushroom
+  MobId: 1084
+  X: 72
+  Y: 74
+  Span:
+    X: 5
+    Y: 1
+  Amount: 2
+  Delay1: 3000000
+  Delay2: 1200000
+  Source: npc/mobs/towns.txt:34

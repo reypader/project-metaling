@@ -1,0 +1,50 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Strange Hydra
+  MobId: 2081
+  X: 283
+  Y: 88
+  Span:
+    X: 6
+    Y: 6
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/towns.txt:19
+- Name: Strange Hydra
+  MobId: 2081
+  X: 284
+  Y: 104
+  Span:
+    X: 6
+    Y: 6
+  Amount: 4
+  Delay1: 5000
+  Source: npc/re/mobs/towns.txt:20
+- Name: Strange Hydra
+  MobId: 2081
+  X: 215
+  Y: 80
+  Span:
+    X: 6
+    Y: 6
+  Amount: 4
+  Delay1: 5000
+  Source: npc/re/mobs/towns.txt:21
+- Name: Strange Hydra
+  MobId: 2081
+  X: 96
+  Y: 50
+  Span:
+    X: 8
+    Y: 8
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/towns.txt:22

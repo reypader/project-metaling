@@ -1,0 +1,53 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Antler Scaraba
+  MobId: 2896
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:60
+- Name: Antler Scaraba
+  MobId: 2085
+  X: 0
+  Y: 0
+  Amount: 50
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/dic_dun.txt:28
+- Name: Rake Scaraba
+  MobId: 2086
+  X: 0
+  Y: 0
+  Amount: 45
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/dic_dun.txt:29
+- Name: Antler Scaraba Egg
+  MobId: 2090
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/dic_dun.txt:30
+- Name: Rake Scaraba Egg
+  MobId: 2091
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/dic_dun.txt:31
+- Name: Scaraba Queen
+  MobId: 2087
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 7200000
+  Boss: true
+  Source: npc/re/mobs/dungeons/dic_dun.txt:32

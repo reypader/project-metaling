@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Wood Goblin
+  MobId: 2612
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:216
+- Name: Wood Goblin
+  MobId: 1880
+  X: 0
+  Y: 0
+  Amount: 74
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/mosk_dun.txt:20
+- Name: Les
+  MobId: 1881
+  X: 0
+  Y: 0
+  Amount: 37
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/mosk_dun.txt:21
+- Name: Poporing
+  MobId: 1031
+  X: 0
+  Y: 0
+  Amount: 22
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/mosk_dun.txt:22
+- Name: Mantis
+  MobId: 1139
+  X: 0
+  Y: 0
+  Amount: 11
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/mosk_dun.txt:23

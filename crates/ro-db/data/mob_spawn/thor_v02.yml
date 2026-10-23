@@ -1,0 +1,66 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Knocker Ringleader
+  MobId: 2786
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:304
+- Name: Knocker
+  MobId: 1838
+  X: 0
+  Y: 0
+  Amount: 55
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/thor_v.txt:36
+- Name: Magmaring
+  MobId: 1836
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/thor_v.txt:37
+- Name: Imp
+  MobId: 1837
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/thor_v.txt:38
+- Name: Kaho
+  MobId: 1072
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/thor_v.txt:39
+- Name: Salamander
+  MobId: 1831
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/thor_v.txt:40
+- Name: Bow Guardian
+  MobId: 1830
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 7200000
+  Source: npc/re/mobs/dungeons/thor_v.txt:41
+- Name: Sword Guardian
+  MobId: 1829
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 7200000
+  Source: npc/re/mobs/dungeons/thor_v.txt:42

@@ -1,0 +1,77 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Jing Guai
+  MobId: 2778
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:168
+- Name: Jing Guai
+  MobId: 1517
+  X: 0
+  Y: 0
+  Amount: 52
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lou_dun.txt:19
+- Name: Grizzly
+  MobId: 1381
+  X: 0
+  Y: 0
+  Amount: 17
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lou_dun.txt:20
+- Name: Mi Gao
+  MobId: 1516
+  X: 0
+  Y: 0
+  Amount: 17
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lou_dun.txt:21
+- Name: Horong
+  MobId: 1129
+  X: 0
+  Y: 0
+  Amount: 17
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lou_dun.txt:22
+- Name: Side Winder
+  MobId: 1037
+  X: 0
+  Y: 0
+  Amount: 11
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lou_dun.txt:23
+- Name: Leib Olmai
+  MobId: 1306
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 300000
+  Delay2: 120000
+  Source: npc/re/mobs/dungeons/lou_dun.txt:24
+- Name: Black Mushroom
+  MobId: 1084
+  X: 197
+  Y: 77
+  Span:
+    X: 10
+    Y: 10
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lou_dun.txt:25
+- Name: Shining Plant
+  MobId: 1083
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/lou_dun.txt:26

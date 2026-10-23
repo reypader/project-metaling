@@ -1,0 +1,237 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Solid Steel Chonchon
+  MobId: 2642
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:202
+- Name: Steel Chonchon
+  MobId: 1042
+  X: 0
+  Y: 0
+  Amount: 140
+  Delay1: 5000
+  Source: npc/re/mobs/fields/morocc.txt:119
+- Name: Wolf
+  MobId: 1013
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/fields/morocc.txt:120
+- Name: Argos
+  MobId: 1100
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/fields/morocc.txt:121
+- Name: Metaller
+  MobId: 1058
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/fields/morocc.txt:122
+- Name: Magnolia
+  MobId: 1138
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/fields/morocc.txt:123
+- Name: Red Mushroom
+  MobId: 1085
+  X: 280
+  Y: 99
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:124
+- Name: Red Mushroom
+  MobId: 1085
+  X: 264
+  Y: 64
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:125
+- Name: Red Mushroom
+  MobId: 1085
+  X: 305
+  Y: 91
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:126
+- Name: Red Mushroom
+  MobId: 1085
+  X: 264
+  Y: 136
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:127
+- Name: Red Mushroom
+  MobId: 1085
+  X: 282
+  Y: 155
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:128
+- Name: Red Mushroom
+  MobId: 1085
+  X: 265
+  Y: 197
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:129
+- Name: Red Mushroom
+  MobId: 1085
+  X: 284
+  Y: 227
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:130
+- Name: Red Mushroom
+  MobId: 1085
+  X: 304
+  Y: 244
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:131
+- Name: Red Mushroom
+  MobId: 1085
+  X: 266
+  Y: 289
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:132
+- Name: Red Mushroom
+  MobId: 1085
+  X: 307
+  Y: 307
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:133
+- Name: Red Mushroom
+  MobId: 1085
+  X: 281
+  Y: 333
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:134
+- Name: Red Mushroom
+  MobId: 1085
+  X: 304
+  Y: 333
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:135
+- Name: Red Mushroom
+  MobId: 1085
+  X: 295
+  Y: 358
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:136
+- Name: Yellow Plant
+  MobId: 1081
+  X: 84
+  Y: 329
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:137
+- Name: Yellow Plant
+  MobId: 1081
+  X: 93
+  Y: 301
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:138
+- Name: Yellow Plant
+  MobId: 1081
+  X: 101
+  Y: 297
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:139
+- Name: Yellow Plant
+  MobId: 1081
+  X: 89
+  Y: 92
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:140
+- Name: Yellow Plant
+  MobId: 1081
+  X: 108
+  Y: 150
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:141
+- Name: Yellow Plant
+  MobId: 1081
+  X: 109
+  Y: 168
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:142
+- Name: Yellow Plant
+  MobId: 1081
+  X: 101
+  Y: 185
+  Span:
+    X: 5
+    Y: 5
+  Amount: 3
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:143
+- Name: Yellow Plant
+  MobId: 1081
+  X: 106
+  Y: 258
+  Span:
+    X: 5
+    Y: 5
+  Amount: 3
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:144
+- Name: Yellow Plant
+  MobId: 1081
+  X: 161
+  Y: 273
+  Span:
+    X: 5
+    Y: 5
+  Amount: 3
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/morocc.txt:145

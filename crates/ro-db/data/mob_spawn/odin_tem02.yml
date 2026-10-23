@@ -1,0 +1,74 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Solid Skogul
+  MobId: 2657
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:227
+- Name: Skogul
+  MobId: 1752
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:34
+- Name: Frus
+  MobId: 1753
+  X: 0
+  Y: 0
+  Amount: 40
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:35
+- Name: Plasma
+  MobId: 1693
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:36
+- Name: Frus
+  MobId: 1762
+  X: 0
+  Y: 0
+  Amount: 4
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:37
+- Name: Skogul
+  MobId: 1761
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:38
+- Name: Skeggiold
+  MobId: 1754
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:39
+- Name: Skeggiold
+  MobId: 1755
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:40
+- Name: Blue Plant
+  MobId: 1079
+  X: 0
+  Y: 0
+  Amount: 13
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/dungeons/odin.txt:41

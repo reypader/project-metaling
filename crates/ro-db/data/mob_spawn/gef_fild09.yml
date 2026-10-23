@@ -1,0 +1,122 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swift Coco
+  MobId: 2868
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:91
+- Name: Roda Frog
+  MobId: 1012
+  X: 0
+  Y: 0
+  Amount: 24
+  Delay1: 5000
+  Source: npc/re/mobs/fields/geffen.txt:152
+- Name: Coco
+  MobId: 1104
+  X: 0
+  Y: 0
+  Amount: 98
+  Delay1: 5000
+  Source: npc/re/mobs/fields/geffen.txt:153
+- Name: Red Mushroom
+  MobId: 1085
+  X: 51
+  Y: 43
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/geffen.txt:154
+- Name: Red Mushroom
+  MobId: 1085
+  X: 125
+  Y: 53
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/geffen.txt:155
+- Name: Red Mushroom
+  MobId: 1085
+  X: 148
+  Y: 74
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/geffen.txt:156
+- Name: Red Mushroom
+  MobId: 1085
+  X: 184
+  Y: 66
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/geffen.txt:157
+- Name: Red Mushroom
+  MobId: 1085
+  X: 207
+  Y: 54
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/geffen.txt:158
+- Name: Red Mushroom
+  MobId: 1085
+  X: 245
+  Y: 62
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/geffen.txt:159
+- Name: Red Mushroom
+  MobId: 1085
+  X: 268
+  Y: 45
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/geffen.txt:160
+- Name: Red Mushroom
+  MobId: 1085
+  X: 258
+  Y: 24
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/geffen.txt:161
+- Name: Red Mushroom
+  MobId: 1085
+  X: 325
+  Y: 36
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/geffen.txt:162
+- Name: Red Mushroom
+  MobId: 1085
+  X: 344
+  Y: 51
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/geffen.txt:163
+- Name: Blue Plant
+  MobId: 1079
+  X: 277
+  Y: 201
+  Span:
+    X: 5
+    Y: 5
+  Amount: 3
+  Delay1: 900000
+  Delay2: 450000
+  Source: npc/re/mobs/fields/geffen.txt:164

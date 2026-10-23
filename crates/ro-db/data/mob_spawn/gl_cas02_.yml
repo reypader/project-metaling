@@ -1,0 +1,82 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Furious Wanderer (Night
+  MobId: 2734
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:99
+- Name: Evil Druid (Nightmare)
+  MobId: 2480
+  X: 0
+  Y: 0
+  Amount: 4
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:188
+- Name: Chimera (Nightmare)
+  MobId: 2485
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:189
+- Name: Mimic (Nightmare)
+  MobId: 2479
+  X: 0
+  Y: 0
+  Amount: 19
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:190
+- Name: Rideword (Nightmare)
+  MobId: 2478
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:191
+- Name: Wanderer (Nightmare)
+  MobId: 2477
+  X: 0
+  Y: 0
+  Amount: 60
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:192
+- Name: Mysteltainn
+  MobId: 1203
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 7200000
+  Delay2: 3600000
+  Source: npc/re/mobs/dungeons/glastheim.txt:193
+- Name: Alice
+  MobId: 1275
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:194
+- Name: Whisper
+  MobId: 1185
+  X: 102
+  Y: 180
+  Amount: 1
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/dungeons/glastheim.txt:195
+- Name: Baphomet (Nightmare)
+  MobId: 2483
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 7200000
+  Source: npc/re/mobs/dungeons/glastheim.txt:196

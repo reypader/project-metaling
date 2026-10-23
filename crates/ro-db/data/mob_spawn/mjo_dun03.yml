@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Elusive Skeleton Worker
+  MobId: 2660
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:183
+- Name: Skeleton Worker
+  MobId: 1169
+  X: 0
+  Y: 0
+  Amount: 78
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/mjo_dun.txt:32
+- Name: Myst
+  MobId: 1151
+  X: 0
+  Y: 0
+  Amount: 39
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/mjo_dun.txt:33
+- Name: Giearth
+  MobId: 1121
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/mjo_dun.txt:34
+- Name: Martin
+  MobId: 1145
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/mjo_dun.txt:35
+- Name: Cramp
+  MobId: 1209
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/mjo_dun.txt:36

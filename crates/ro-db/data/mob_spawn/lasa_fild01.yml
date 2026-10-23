@@ -1,0 +1,71 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Eggring
+  MobId: 3495
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/custom/lasagna/lasa_fild.txt:11
+- Name: Leaf Lunatic
+  MobId: 3496
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/custom/lasagna/lasa_fild.txt:12
+- Name: Grass Fabre
+  MobId: 3497
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/custom/lasagna/lasa_fild.txt:13
+- Name: Eggring
+  MobId: 3495
+  X: 100
+  Y: 330
+  Span:
+    X: 75
+    Y: 50
+  Amount: 50
+  Delay1: 5000
+  Source: npc/re/custom/lasagna/lasa_fild.txt:14
+- Name: Leaf Lunatic
+  MobId: 3496
+  X: 100
+  Y: 330
+  Span:
+    X: 75
+    Y: 50
+  Amount: 50
+  Delay1: 5000
+  Source: npc/re/custom/lasagna/lasa_fild.txt:15
+- Name: Grass Fabre
+  MobId: 3497
+  X: 100
+  Y: 330
+  Span:
+    X: 75
+    Y: 50
+  Amount: 50
+  Delay1: 5000
+  Source: npc/re/custom/lasagna/lasa_fild.txt:16
+- Name: Red Plant
+  MobId: 1078
+  X: 140
+  Y: 365
+  Span:
+    X: 15
+    Y: 15
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/custom/lasagna/lasa_fild.txt:17

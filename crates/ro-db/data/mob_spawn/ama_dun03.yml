@@ -1,0 +1,68 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Furious Shinobi
+  MobId: 2664
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:27
+- Name: Shinobi
+  MobId: 1401
+  X: 0
+  Y: 0
+  Amount: 65
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ama_dun.txt:35
+- Name: Tengu
+  MobId: 1405
+  X: 0
+  Y: 0
+  Amount: 65
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ama_dun.txt:36
+- Name: Firelock Soldier
+  MobId: 1403
+  X: 0
+  Y: 0
+  Amount: 29
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ama_dun.txt:37
+- Name: The Paper
+  MobId: 1375
+  X: 0
+  Y: 0
+  Amount: 23
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ama_dun.txt:38
+- Name: Mimic
+  MobId: 1191
+  X: 0
+  Y: 0
+  Amount: 5
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ama_dun.txt:39
+- Name: Miyabi Doll
+  MobId: 1404
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/ama_dun.txt:40
+- Name: Samurai Specter
+  MobId: 1492
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5460000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/dungeons/ama_dun.txt:41

@@ -1,0 +1,163 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Solid Raydric
+  MobId: 2691
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:107
+- Name: Raydric
+  MobId: 1163
+  X: 0
+  Y: 0
+  Amount: 126
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:102
+- Name: Rideword
+  MobId: 1195
+  X: 0
+  Y: 0
+  Amount: 29
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:103
+- Name: Raydric Archer
+  MobId: 1276
+  X: 0
+  Y: 0
+  Amount: 14
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:104
+- Name: Abysmal Knight
+  MobId: 1219
+  X: 0
+  Y: 0
+  Amount: 14
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:105
+- Name: Khalitzburg
+  MobId: 1132
+  X: 0
+  Y: 0
+  Amount: 14
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:106
+- Name: Alice
+  MobId: 1275
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:107
+- Name: Giant Whisper
+  MobId: 1186
+  X: 21
+  Y: 278
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/dungeons/glastheim.txt:108
+- Name: Black Mushroom
+  MobId: 1084
+  X: 9
+  Y: 184
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/dungeons/glastheim.txt:109
+- Name: Black Mushroom
+  MobId: 1084
+  X: 8
+  Y: 184
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/dungeons/glastheim.txt:110
+- Name: Black Mushroom
+  MobId: 1084
+  X: 7
+  Y: 184
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/dungeons/glastheim.txt:111
+- Name: Black Mushroom
+  MobId: 1084
+  X: 6
+  Y: 184
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/dungeons/glastheim.txt:112
+- Name: Black Mushroom
+  MobId: 1084
+  X: 5
+  Y: 184
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/dungeons/glastheim.txt:113
+- Name: Black Mushroom
+  MobId: 1084
+  X: 4
+  Y: 184
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/dungeons/glastheim.txt:114
+- Name: Black Mushroom
+  MobId: 1084
+  X: 9
+  Y: 185
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/dungeons/glastheim.txt:115
+- Name: Black Mushroom
+  MobId: 1084
+  X: 8
+  Y: 185
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/dungeons/glastheim.txt:116
+- Name: Black Mushroom
+  MobId: 1084
+  X: 7
+  Y: 185
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/dungeons/glastheim.txt:117
+- Name: Black Mushroom
+  MobId: 1084
+  X: 6
+  Y: 185
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/dungeons/glastheim.txt:118
+- Name: Black Mushroom
+  MobId: 1084
+  X: 5
+  Y: 185
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/dungeons/glastheim.txt:119
+- Name: Black Mushroom
+  MobId: 1084
+  X: 4
+  Y: 185
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/dungeons/glastheim.txt:120

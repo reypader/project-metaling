@@ -1,0 +1,118 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Solid Poison Spore
+  MobId: 2705
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:189
+- Name: Poison Spore
+  MobId: 1077
+  X: 0
+  Y: 0
+  Amount: 100
+  Delay1: 5000
+  Source: npc/re/mobs/fields/mjolnir.txt:133
+- Name: Creamy
+  MobId: 1018
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/fields/mjolnir.txt:134
+- Name: Smokie
+  MobId: 1056
+  X: 0
+  Y: 0
+  Amount: 70
+  Delay1: 5000
+  Source: npc/re/mobs/fields/mjolnir.txt:135
+- Name: Blue Plant
+  MobId: 1079
+  X: 162
+  Y: 285
+  Amount: 1
+  Delay1: 360000
+  Delay2: 180000
+  Source: npc/re/mobs/fields/mjolnir.txt:136
+- Name: Blue Plant
+  MobId: 1079
+  X: 162
+  Y: 255
+  Amount: 1
+  Delay1: 360000
+  Delay2: 180000
+  Source: npc/re/mobs/fields/mjolnir.txt:137
+- Name: Red Mushroom
+  MobId: 1085
+  X: 304
+  Y: 98
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:138
+- Name: Red Mushroom
+  MobId: 1085
+  X: 279
+  Y: 174
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:139
+- Name: Red Mushroom
+  MobId: 1085
+  X: 339
+  Y: 168
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:140
+- Name: Red Mushroom
+  MobId: 1085
+  X: 296
+  Y: 317
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:141
+- Name: Red Mushroom
+  MobId: 1085
+  X: 45
+  Y: 345
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:142
+- Name: Red Mushroom
+  MobId: 1085
+  X: 73
+  Y: 339
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:143
+- Name: Red Mushroom
+  MobId: 1085
+  X: 69
+  Y: 225
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:144
+- Name: Red Mushroom
+  MobId: 1085
+  X: 55
+  Y: 276
+  Amount: 1
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:145

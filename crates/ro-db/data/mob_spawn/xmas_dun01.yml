@@ -1,0 +1,90 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Cookie Ringleader
+  MobId: 2865
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:324
+- Name: Cookie
+  MobId: 1265
+  X: 0
+  Y: 0
+  Amount: 49
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/xmas_dun.txt:20
+- Name: Christmas Cookie
+  MobId: 1246
+  X: 0
+  Y: 0
+  Amount: 49
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/xmas_dun.txt:21
+- Name: Marin
+  MobId: 1242
+  X: 0
+  Y: 0
+  Amount: 24
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/xmas_dun.txt:22
+- Name: Poporing
+  MobId: 1031
+  X: 0
+  Y: 0
+  Amount: 24
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/xmas_dun.txt:23
+- Name: Drops
+  MobId: 1113
+  X: 0
+  Y: 0
+  Amount: 12
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/xmas_dun.txt:24
+- Name: Poring
+  MobId: 1002
+  X: 0
+  Y: 0
+  Amount: 12
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/xmas_dun.txt:25
+- Name: Myst Case
+  MobId: 1249
+  X: 0
+  Y: 0
+  Amount: 6
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/xmas_dun.txt:26
+- Name: Chepet
+  MobId: 1250
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 1200000
+  Delay2: 900000
+  Source: npc/re/mobs/dungeons/xmas_dun.txt:27
+- Name: Mastering
+  MobId: 1090
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/dungeons/xmas_dun.txt:28
+- Name: Angeling
+  MobId: 1096
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 3600000
+  Delay2: 1800000
+  Source: npc/re/mobs/dungeons/xmas_dun.txt:29

@@ -23,14 +23,34 @@ dataset is regenerated from a different commit, update its section.
   from tab-delimited `.txt` to per-map YAML (`NPC_SPAWN_DB` version 1). The conversion:
   - keeps only the headers of NPCs placed on a map (`warp`, `warp2`, `script`, `duplicate(...)`,
     and the shop keywords);
-  - drops script bodies, shop item lists, floating NPCs, functions, monster spawns and mapflags;
+  - drops script bodies, shop item lists, floating NPCs, functions and mapflags (monster spawn
+    lines go to the mob spawn lists below);
   - resolves sprite names (e.g. `4_F_KAFRA1`) to numeric class ids;
   - resolves each `duplicate(...)`'s source (kind, state, warp destination);
   - splits `display::unique` names into two fields;
   - groups entries by map in rAthena load order. Each entry records its original
     `<file>:<line>` in `Source`.
-- **Regenerate:**
+- **Regenerate** (writes this dataset and the mob spawn lists in one run; pass an expanded path,
+  not one starting with `~`):
 
   ```bash
-  cargo run -p npc-import -- --rathena "$RATHENA_PATH" --out crates/ro-db/data/npc
+  cargo run -p npc-import -- --rathena "$RATHENA_PATH" \
+    --out crates/ro-db/data/npc --mob-out crates/ro-db/data/mob_spawn
   ```
+
+## Mob spawn lists (`mob_spawn/<map>.yml`)
+
+- **Source:** rAthena commit `d4b8e7b8f16061cc2496d377ac8f777ce72a4f39`. The permanent spawn lines
+  (`monster` / `boss_monster`) in the NPC source files that the renewal manifest
+  `npc/re/scripts_main.conf` loads, plus the mob names in `db/re/mob_db.yml`.
+- **Modified on 2026-10-23 by `tools/npc-import`:** converted from tab-delimited `.txt` to per-map
+  YAML (`MOB_SPAWN_DB` version 1). The conversion:
+  - resolves mob `AegisName` references to numeric mob ids;
+  - replaces the `--en--` / `--ja--` name tokens with the mob_db `Name` / `JapaneseName`;
+  - cuts names to 23 characters, and sets a negative spawn span to 0;
+  - strips the quotes around event labels, and drops event values shorter than 4 characters
+    (`0`, `1`);
+  - writes the default `Delay1` (5000) where a line has none, and omits the other defaults;
+  - groups entries by map in rAthena load order. Each entry records its original
+    `<file>:<line>` in `Source`.
+- **Regenerate:** the same command as the NPC spawn lists above.

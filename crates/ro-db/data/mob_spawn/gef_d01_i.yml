@@ -1,0 +1,66 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: White Plant
+  MobId: 1082
+  X: 0
+  Y: 0
+  Amount: 12
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gef_dun.txt:77
+- Name: Blue Plant
+  MobId: 1079
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gef_dun.txt:78
+- Name: Matt Drainliar
+  MobId: 3750
+  X: 0
+  Y: 0
+  Amount: 25
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gef_dun.txt:79
+- Name: Living Dead
+  MobId: 3751
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gef_dun.txt:80
+- Name: Starving Living Dead
+  MobId: 3752
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gef_dun.txt:81
+- Name: Living Dead
+  MobId: 3753
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gef_dun.txt:82
+- Name: Sweet Nightmare
+  MobId: 3754
+  X: 0
+  Y: 0
+  Amount: 25
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gef_dun.txt:83
+- Name: Black Mushroom
+  MobId: 3755
+  X: 0
+  Y: 0
+  Amount: 15
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/gef_dun.txt:84

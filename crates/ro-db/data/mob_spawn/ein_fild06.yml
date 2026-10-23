@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Solid Holden
+  MobId: 2745
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:74
+- Name: Holden
+  MobId: 1628
+  X: 0
+  Y: 0
+  Amount: 100
+  Delay1: 5000
+  Source: npc/re/mobs/fields/einbroch.txt:69
+- Name: Metaling
+  MobId: 1613
+  X: 0
+  Y: 0
+  Amount: 30
+  Delay1: 5000
+  Source: npc/re/mobs/fields/einbroch.txt:70
+- Name: Red Plant
+  MobId: 1078
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 120000
+  Delay2: 60000
+  Source: npc/re/mobs/fields/einbroch.txt:71
+- Name: Yellow Plant
+  MobId: 1081
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 120000
+  Delay2: 60000
+  Source: npc/re/mobs/fields/einbroch.txt:72

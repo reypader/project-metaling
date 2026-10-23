@@ -1,0 +1,90 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swift Argiope
+  MobId: 2892
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:188
+- Name: Argiope
+  MobId: 1099
+  X: 0
+  Y: 0
+  Amount: 166
+  Delay1: 5000
+  Source: npc/re/mobs/fields/mjolnir.txt:121
+- Name: Mantis
+  MobId: 1139
+  X: 0
+  Y: 0
+  Amount: 44
+  Delay1: 5000
+  Source: npc/re/mobs/fields/mjolnir.txt:122
+- Name: Driller
+  MobId: 1380
+  X: 0
+  Y: 0
+  Amount: 44
+  Delay1: 5000
+  Source: npc/re/mobs/fields/mjolnir.txt:123
+- Name: Blue Plant
+  MobId: 1079
+  X: 200
+  Y: 240
+  Span:
+    X: 40
+    Y: 40
+  Amount: 3
+  Delay1: 360000
+  Delay2: 180000
+  Source: npc/re/mobs/fields/mjolnir.txt:124
+- Name: Shining Plant
+  MobId: 1083
+  X: 200
+  Y: 240
+  Span:
+    X: 40
+    Y: 40
+  Amount: 1
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/fields/mjolnir.txt:125
+- Name: Blue Plant
+  MobId: 1079
+  X: 134
+  Y: 103
+  Span:
+    X: 20
+    Y: 20
+  Amount: 3
+  Delay1: 360000
+  Delay2: 180000
+  Source: npc/re/mobs/fields/mjolnir.txt:126
+- Name: Blue Plant
+  MobId: 1079
+  X: 261
+  Y: 100
+  Span:
+    X: 20
+    Y: 10
+  Amount: 3
+  Delay1: 360000
+  Delay2: 180000
+  Source: npc/re/mobs/fields/mjolnir.txt:127
+- Name: Red Plant
+  MobId: 1078
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 180000
+  Delay2: 90000
+  Source: npc/re/mobs/fields/mjolnir.txt:128

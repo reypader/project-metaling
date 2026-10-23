@@ -1,0 +1,97 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Breeze Ringleader
+  MobId: 2880
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:226
+- Name: Plasma
+  MobId: 1693
+  X: 0
+  Y: 0
+  Amount: 14
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:19
+- Name: Breeze
+  MobId: 1692
+  X: 0
+  Y: 0
+  Amount: 14
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:20
+- Name: Frus
+  MobId: 1753
+  X: 0
+  Y: 0
+  Amount: 7
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:21
+- Name: Skogul
+  MobId: 1752
+  X: 0
+  Y: 0
+  Amount: 7
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:22
+- Name: Plasma
+  MobId: 1697
+  X: 0
+  Y: 0
+  Amount: 4
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:23
+- Name: Plasma
+  MobId: 1695
+  X: 0
+  Y: 0
+  Amount: 4
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:24
+- Name: Plasma
+  MobId: 1696
+  X: 0
+  Y: 0
+  Amount: 4
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:25
+- Name: Plasma
+  MobId: 1694
+  X: 0
+  Y: 0
+  Amount: 4
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/odin.txt:26
+- Name: Green Plant
+  MobId: 1080
+  X: 0
+  Y: 0
+  Amount: 7
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/odin.txt:27
+- Name: Yellow Plant
+  MobId: 1081
+  X: 0
+  Y: 0
+  Amount: 7
+  Delay1: 60000
+  Delay2: 30000
+  Source: npc/re/mobs/dungeons/odin.txt:28
+- Name: Blue Plant
+  MobId: 1079
+  X: 0
+  Y: 0
+  Amount: 7
+  Delay1: 600000
+  Delay2: 300000
+  Source: npc/re/mobs/dungeons/odin.txt:29

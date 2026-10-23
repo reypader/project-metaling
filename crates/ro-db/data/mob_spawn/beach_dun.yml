@@ -1,0 +1,54 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Swift Medusa
+  MobId: 2759
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:36
+- Name: Medusa
+  MobId: 1148
+  X: 0
+  Y: 0
+  Amount: 60
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/beach_dun.txt:20
+- Name: Nereid
+  MobId: 1255
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/beach_dun.txt:21
+- Name: Pest
+  MobId: 1256
+  X: 0
+  Y: 0
+  Amount: 20
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/beach_dun.txt:22
+- Name: Merman
+  MobId: 1264
+  X: 0
+  Y: 0
+  Amount: 3
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/beach_dun.txt:23
+- Name: Tao Gunka
+  MobId: 1583
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 18000000
+  Delay2: 600000
+  Boss: true
+  Source: npc/re/mobs/dungeons/beach_dun.txt:24

@@ -1,0 +1,122 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: L Hot Water Spirit
+  MobId: 22216
+  X: 0
+  Y: 0
+  Amount: 24
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:26
+- Name: Hot Water Spirit
+  MobId: 22217
+  X: 0
+  Y: 0
+  Amount: 28
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:27
+- Name: G Hot Water Spirit
+  MobId: 22218
+  X: 0
+  Y: 0
+  Amount: 32
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:28
+- Name: L Dry Wind Spirit
+  MobId: 22220
+  X: 0
+  Y: 0
+  Amount: 24
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:29
+- Name: Dry Wind Spirit
+  MobId: 22221
+  X: 0
+  Y: 0
+  Amount: 28
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:30
+- Name: G Dry Wind Spirit
+  MobId: 22222
+  X: 0
+  Y: 0
+  Amount: 32
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:31
+- Name: L Red Flame Spirit
+  MobId: 22224
+  X: 0
+  Y: 0
+  Amount: 24
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:32
+- Name: Red Flame Spirit
+  MobId: 22225
+  X: 0
+  Y: 0
+  Amount: 28
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:33
+- Name: G Red Flame Spirit
+  MobId: 22226
+  X: 0
+  Y: 0
+  Amount: 32
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:34
+- Name: L Solid Earth Spirit
+  MobId: 22228
+  X: 0
+  Y: 0
+  Amount: 24
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:35
+- Name: Solid Earth Spirit
+  MobId: 22229
+  X: 0
+  Y: 0
+  Amount: 28
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:36
+- Name: G Solid Earth Spirit
+  MobId: 22230
+  X: 0
+  Y: 0
+  Amount: 32
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:37
+- Name: M Hot Water Spirit
+  MobId: 22219
+  X: 0
+  Y: 0
+  Amount: 7
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:38
+- Name: M Dry Wind Spirit
+  MobId: 22223
+  X: 0
+  Y: 0
+  Amount: 7
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:39
+- Name: M Red Flame Spirit
+  MobId: 22227
+  X: 0
+  Y: 0
+  Amount: 7
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:40
+- Name: M Solid Earth Spirit
+  MobId: 22231
+  X: 0
+  Y: 0
+  Amount: 7
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/for_dun.txt:41

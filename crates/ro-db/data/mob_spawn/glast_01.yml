@@ -1,0 +1,71 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Gargoyle Ringleader
+  MobId: 2826
+  X: 0
+  Y: 0
+  Amount: 1
+  Delay1: 180000
+  Source: npc/re/mobs/championmobs.txt:116
+- Name: Gargoyle
+  MobId: 1253
+  X: 0
+  Y: 0
+  Amount: 10
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:23
+- Name: Green Plant
+  MobId: 1080
+  X: 0
+  Y: 0
+  Amount: 8
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:24
+- Name: Abysmal Knight
+  MobId: 1219
+  X: 0
+  Y: 0
+  Amount: 2
+  Delay1: 5000
+  Source: npc/re/mobs/dungeons/glastheim.txt:25
+- Name: Shining Plant
+  MobId: 1083
+  X: 233
+  Y: 209
+  Span:
+    X: 15
+    Y: 15
+  Amount: 1
+  Delay1: 1800000
+  Delay2: 900000
+  Source: npc/re/mobs/dungeons/glastheim.txt:26
+- Name: Green Plant
+  MobId: 1080
+  X: 233
+  Y: 209
+  Span:
+    X: 15
+    Y: 15
+  Amount: 8
+  Delay1: 360000
+  Delay2: 180000
+  Source: npc/re/mobs/dungeons/glastheim.txt:27
+- Name: Blue Plant
+  MobId: 1079
+  X: 233
+  Y: 209
+  Span:
+    X: 15
+    Y: 15
+  Amount: 2
+  Delay1: 900000
+  Delay2: 450000
+  Source: npc/re/mobs/dungeons/glastheim.txt:28

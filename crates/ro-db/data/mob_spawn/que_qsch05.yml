@@ -1,0 +1,325 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, files under npc/.
+# Modified: converted from tab-delimited .txt to YAML by tools/npc-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: MOB_SPAWN_DB
+  Version: 1
+Body:
+- Name: Garden Keeper
+  MobId: 1932
+  X: 116
+  Y: 313
+  Amount: 1
+  Delay1: 180000
+  Source: npc/quests/okolnir.txt:2766
+- Name: Garden Keeper
+  MobId: 1932
+  X: 120
+  Y: 285
+  Amount: 1
+  Delay1: 180000
+  Source: npc/quests/okolnir.txt:2767
+- Name: Garden Keeper
+  MobId: 1932
+  X: 117
+  Y: 236
+  Amount: 1
+  Delay1: 180000
+  Source: npc/quests/okolnir.txt:2768
+- Name: Garden Keeper
+  MobId: 1932
+  X: 103
+  Y: 223
+  Amount: 1
+  Delay1: 180000
+  Source: npc/quests/okolnir.txt:2769
+- Name: Garden Keeper
+  MobId: 1932
+  X: 85
+  Y: 204
+  Amount: 1
+  Delay1: 180000
+  Source: npc/quests/okolnir.txt:2770
+- Name: Garden Keeper
+  MobId: 1932
+  X: 79
+  Y: 186
+  Amount: 1
+  Delay1: 180000
+  Source: npc/quests/okolnir.txt:2771
+- Name: Garden Keeper
+  MobId: 1932
+  X: 73
+  Y: 167
+  Amount: 1
+  Delay1: 180000
+  Source: npc/quests/okolnir.txt:2772
+- Name: Garden Keeper
+  MobId: 1932
+  X: 68
+  Y: 150
+  Amount: 1
+  Delay1: 180000
+  Source: npc/quests/okolnir.txt:2773
+- Name: Garden Keeper
+  MobId: 1932
+  X: 71
+  Y: 128
+  Amount: 1
+  Delay1: 180000
+  Source: npc/quests/okolnir.txt:2774
+- Name: Garden Keeper
+  MobId: 1932
+  X: 69
+  Y: 118
+  Amount: 1
+  Delay1: 180000
+  Source: npc/quests/okolnir.txt:2775
+- Name: Garden Keeper
+  MobId: 1932
+  X: 117
+  Y: 78
+  Amount: 1
+  Delay1: 180000
+  Source: npc/quests/okolnir.txt:2776
+- Name: Garden Keeper
+  MobId: 1932
+  X: 110
+  Y: 79
+  Amount: 1
+  Delay1: 180000
+  Source: npc/quests/okolnir.txt:2777
+- Name: Garden Keeper
+  MobId: 1932
+  X: 141
+  Y: 80
+  Amount: 1
+  Delay1: 180000
+  Source: npc/quests/okolnir.txt:2778
+- Name: Garden Keeper
+  MobId: 1932
+  X: 158
+  Y: 84
+  Amount: 1
+  Delay1: 180000
+  Source: npc/quests/okolnir.txt:2779
+- Name: Garden Keeper
+  MobId: 1932
+  X: 193
+  Y: 104
+  Amount: 1
+  Delay1: 180000
+  Source: npc/quests/okolnir.txt:2780
+- Name: Garden Keeper
+  MobId: 1932
+  X: 119
+  Y: 269
+  Amount: 1
+  Delay1: 180000
+  Source: npc/quests/okolnir.txt:2781
+- Name: Garden Keeper
+  MobId: 1932
+  X: 155
+  Y: 77
+  Amount: 1
+  Delay1: 180000
+  Source: npc/quests/okolnir.txt:2782
+- Name: Garden Watcher
+  MobId: 1933
+  X: 110
+  Y: 317
+  Amount: 1
+  Delay1: 600000
+  Source: npc/quests/okolnir.txt:2783
+- Name: Garden Watcher
+  MobId: 1933
+  X: 115
+  Y: 295
+  Amount: 1
+  Delay1: 1200000
+  Source: npc/quests/okolnir.txt:2784
+- Name: Garden Watcher
+  MobId: 1933
+  X: 116
+  Y: 256
+  Amount: 1
+  Delay1: 600000
+  Source: npc/quests/okolnir.txt:2785
+- Name: Garden Watcher
+  MobId: 1933
+  X: 113
+  Y: 242
+  Amount: 1
+  Delay1: 1200000
+  Source: npc/quests/okolnir.txt:2786
+- Name: Garden Watcher
+  MobId: 1933
+  X: 99
+  Y: 223
+  Amount: 1
+  Delay1: 600000
+  Source: npc/quests/okolnir.txt:2787
+- Name: Garden Watcher
+  MobId: 1933
+  X: 94
+  Y: 216
+  Amount: 1
+  Delay1: 1200000
+  Source: npc/quests/okolnir.txt:2788
+- Name: Garden Watcher
+  MobId: 1933
+  X: 77
+  Y: 198
+  Amount: 1
+  Delay1: 600000
+  Source: npc/quests/okolnir.txt:2789
+- Name: Garden Watcher
+  MobId: 1933
+  X: 70
+  Y: 174
+  Amount: 1
+  Delay1: 1200000
+  Source: npc/quests/okolnir.txt:2790
+- Name: Garden Watcher
+  MobId: 1933
+  X: 72
+  Y: 147
+  Amount: 1
+  Delay1: 600000
+  Source: npc/quests/okolnir.txt:2791
+- Name: Garden Watcher
+  MobId: 1933
+  X: 64
+  Y: 134
+  Amount: 1
+  Delay1: 1200000
+  Source: npc/quests/okolnir.txt:2792
+- Name: Garden Watcher
+  MobId: 1933
+  X: 77
+  Y: 107
+  Amount: 1
+  Delay1: 600000
+  Source: npc/quests/okolnir.txt:2793
+- Name: Garden Watcher
+  MobId: 1933
+  X: 84
+  Y: 88
+  Amount: 1
+  Delay1: 1200000
+  Source: npc/quests/okolnir.txt:2794
+- Name: Garden Watcher
+  MobId: 1933
+  X: 98
+  Y: 82
+  Amount: 1
+  Delay1: 600000
+  Source: npc/quests/okolnir.txt:2795
+- Name: Garden Watcher
+  MobId: 1933
+  X: 129
+  Y: 79
+  Amount: 1
+  Delay1: 1200000
+  Source: npc/quests/okolnir.txt:2796
+- Name: Garden Watcher
+  MobId: 1933
+  X: 91
+  Y: 124
+  Amount: 1
+  Delay1: 600000
+  Source: npc/quests/okolnir.txt:2797
+- Name: Garden Watcher
+  MobId: 1933
+  X: 173
+  Y: 95
+  Amount: 1
+  Delay1: 1200000
+  Source: npc/quests/okolnir.txt:2798
+- Name: Garden Watcher
+  MobId: 1933
+  X: 179
+  Y: 127
+  Amount: 1
+  Delay1: 600000
+  Source: npc/quests/okolnir.txt:2799
+- Name: Garden Watcher
+  MobId: 1933
+  X: 195
+  Y: 120
+  Amount: 1
+  Delay1: 1200000
+  Source: npc/quests/okolnir.txt:2800
+- Name: Garden Watcher
+  MobId: 1933
+  X: 178
+  Y: 159
+  Amount: 1
+  Delay1: 600000
+  Source: npc/quests/okolnir.txt:2801
+- Name: Garden Watcher
+  MobId: 1933
+  X: 88
+  Y: 145
+  Amount: 1
+  Delay1: 1200000
+  Source: npc/quests/okolnir.txt:2802
+- Name: Garden Watcher
+  MobId: 1933
+  X: 94
+  Y: 157
+  Amount: 1
+  Delay1: 600000
+  Source: npc/quests/okolnir.txt:2803
+- Name: Garden Watcher
+  MobId: 1933
+  X: 95
+  Y: 177
+  Amount: 1
+  Delay1: 1200000
+  Source: npc/quests/okolnir.txt:2804
+- Name: Garden Watcher
+  MobId: 1933
+  X: 129
+  Y: 196
+  Amount: 1
+  Delay1: 600000
+  Source: npc/quests/okolnir.txt:2805
+- Name: Garden Watcher
+  MobId: 1933
+  X: 154
+  Y: 196
+  Amount: 1
+  Delay1: 1200000
+  Source: npc/quests/okolnir.txt:2806
+- Name: Garden Watcher
+  MobId: 1933
+  X: 170
+  Y: 187
+  Amount: 1
+  Delay1: 600000
+  Source: npc/quests/okolnir.txt:2807
+- Name: Garden Watcher
+  MobId: 1933
+  X: 194
+  Y: 180
+  Amount: 1
+  Delay1: 1200000
+  Source: npc/quests/okolnir.txt:2808
+- Name: Garden Watcher
+  MobId: 1933
+  X: 214
+  Y: 181
+  Amount: 1
+  Delay1: 600000
+  Source: npc/quests/okolnir.txt:2809
+- Name: Garden Watcher
+  MobId: 1933
+  X: 243
+  Y: 199
+  Amount: 1
+  Delay1: 1200000
+  Source: npc/quests/okolnir.txt:2810
