@@ -1,5 +1,7 @@
 # Brief: warp map change (next feature)
 
+> **Superseded (2026-10-23):** M0 is done. Implement from `spec.md` and `plan.md`. They replace this brief's map-server handoff with the `Claim` design from the early review. Keep this file as history only.
+
 This is a starting point for the next session, not the spec. The design below was planned and
 approved on 2026-10-23. M0 (capture, catalog, spec, early review) comes before any code.
 
