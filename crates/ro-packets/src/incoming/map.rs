@@ -4,7 +4,7 @@ use crate::{PacketCodecError, RawPacket};
 use ro_core::{AccountId, CharId, ClientIntent, Sex};
 
 use crate::coords::unpack_pos_dir;
-use crate::incoming::helpers::{parse_sex, read_u32_le};
+use crate::incoming::helpers::{parse_sex, read_u16_le, read_u32_le};
 
 /// Decoded representation of `CZ_ENTER` (0x0436).
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -266,12 +266,52 @@ impl CzRestartPacket {
     }
 }
 
+/// Decoded representation of `CZ_REQ_DISCONNECT` (0x018a), sent by "Exit to Windows".
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct CzReqDisconnectPacket {
+    pub disconnect_type: u16,
+}
+
+impl CzReqDisconnectPacket {
+    pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
+        Ok(Self {
+            disconnect_type: read_u16_le(&raw.payload, 0, raw.opcode)?,
+        })
+    }
+
+    pub fn to_intent(&self) -> ClientIntent {
+        ClientIntent::RequestDisconnect {
+            disconnect_type: self.disconnect_type,
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::coords::pack_pos_dir;
     use crate::PacketOpcode;
     use bytes::Bytes;
+
+    #[test]
+    fn pkt_quit_01_decode_cz_req_disconnect() {
+        let raw = RawPacket::new(PacketOpcode(0x018a), Bytes::from_static(&[0x00, 0x00]));
+        let decoded = CzReqDisconnectPacket::decode(&raw).expect("2-byte payload decodes");
+        assert_eq!(
+            decoded.to_intent(),
+            ClientIntent::RequestDisconnect { disconnect_type: 0 }
+        );
+
+        let short = RawPacket::new(PacketOpcode(0x018a), Bytes::from_static(&[0x00]));
+        assert!(matches!(
+            CzReqDisconnectPacket::decode(&short),
+            Err(PacketCodecError::TruncatedPayload {
+                expected: 2,
+                actual: 1,
+                ..
+            })
+        ));
+    }
 
     #[test]
     fn test_decode_cz_enter() {

@@ -482,7 +482,7 @@ struct MapWorldActor {
     sessions: HashMap<SessionId, Session>,
     by_char: HashMap<CharId, SessionId>,
     /// Senders of sessions that left the map but whose client hasn't closed yet (restart to
-    /// char select): kept so the server doesn't close the socket first.
+    /// char select, or exit): kept so the server doesn't close the socket first.
     detached: HashMap<SessionId, mpsc::Sender<Bytes>>,
     encoder: Phase0EventEncoder,
     /// Reused per-tick buffers.
@@ -497,8 +497,9 @@ struct MapWorldActor {
 enum Departure {
     /// The client went away (or its queue failed): drop the sender.
     Gone,
-    /// Back to character select: keep the socket open until the client closes it.
-    Restart,
+    /// Back to character select, or exit to Windows: keep the socket open until the client
+    /// closes it.
+    ClientCloses,
 }
 
 impl MapWorldActor {
@@ -741,10 +742,22 @@ impl MapWorldActor {
 
     fn player_intent(&mut self, intent: SessionIntent) {
         let Some(session) = self.sessions.get(&intent.session_id) else {
-            debug!(
-                "Map '{}' dropping intent from unjoined {:?}",
-                self.map_name, intent.session_id
-            );
+            // A restart/exit lost here (e.g. racing a cross-map handoff) leaves the client
+            // waiting for its ack, so make it visible (specs/exit-game/spec.md §3).
+            if matches!(
+                intent.intent,
+                ClientIntent::Restart { .. } | ClientIntent::RequestDisconnect { .. }
+            ) {
+                warn!(
+                    "Map '{}' dropping {:?} from unjoined {:?}",
+                    self.map_name, intent.intent, intent.session_id
+                );
+            } else {
+                debug!(
+                    "Map '{}' dropping intent from unjoined {:?}",
+                    self.map_name, intent.session_id
+                );
+            }
             return;
         };
         let (account_id, char_id) = (session.account_id, session.char_id);
@@ -758,12 +771,24 @@ impl MapWorldActor {
                 if let Some(bytes) = self.encode(&ServerEvent::RestartAck { result: 1 }) {
                     self.send_to_session(intent.session_id, &bytes);
                 }
-                self.leave(intent.session_id, Departure::Restart);
+                self.leave(intent.session_id, Departure::ClientCloses);
             }
             ClientIntent::Restart { restart_type } => warn!(
                 "Map '{}' received unsupported restart_type {} from {:?}",
                 self.map_name, restart_type, intent.session_id
             ),
+            // The type isn't checked (only 0 is known). Always allowed until combat adds the
+            // logout delay (specs/exit-game/spec.md).
+            ClientIntent::RequestDisconnect { disconnect_type } => {
+                info!(
+                    "Map '{}' {:?} exits the game (type {})",
+                    self.map_name, intent.session_id, disconnect_type
+                );
+                if let Some(bytes) = self.encode(&ServerEvent::DisconnectAck { result: 0 }) {
+                    self.send_to_session(intent.session_id, &bytes);
+                }
+                self.leave(intent.session_id, Departure::ClientCloses);
+            }
             other => {
                 // Identity comes from the joined session, never from the packet stream.
                 self.engine.push_intent(SessionIntent::new(
@@ -799,10 +824,11 @@ impl MapWorldActor {
             mut pending,
             ..
         } = session;
-        if !pending.is_empty() {
-            let _ = outbound_tx.try_send(pending.split().freeze());
-        }
-        if departure == Departure::Restart {
+        let delivered =
+            pending.is_empty() || outbound_tx.try_send(pending.split().freeze()).is_ok();
+        // If the last batch (e.g. the restart/exit ack) can't be queued, the client would wait
+        // forever, so drop the sender and let the session close.
+        if departure == Departure::ClientCloses && delivered {
             self.detached.insert(session_id, outbound_tx);
         }
         if self.by_char.get(&char_id) == Some(&session_id) {

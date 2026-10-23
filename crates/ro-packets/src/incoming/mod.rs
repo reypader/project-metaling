@@ -17,6 +17,7 @@
 //! - `CZ_REQUEST_ACT` (0x0437)
 //! - `CZ_REQNAME` (0x0368)
 //! - `CZ_RESTART` (0x00b2)
+//! - `CZ_REQ_DISCONNECT` (0x018a)
 
 pub mod char;
 pub mod frame;
@@ -34,6 +35,6 @@ pub use frame::{
 pub use helpers::{parse_sex, read_fixed_string};
 pub use login::CaLoginPacket;
 pub use map::{
-    CzChangeDirectionPacket, CzEnterPacket, CzNotifyActorInitPacket, CzReqNamePacket,
-    CzRequestActPacket, CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket,
+    CzChangeDirectionPacket, CzEnterPacket, CzNotifyActorInitPacket, CzReqDisconnectPacket,
+    CzReqNamePacket, CzRequestActPacket, CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket,
 };

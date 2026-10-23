@@ -98,6 +98,40 @@ Target client version: `PACKETVER = 20260219`. Packet entries are sorted by asce
 | `0` | `2` | `u16` | `packet_id` | Always `0x0360` |
 | `2` | `4` | `u32` | `client_tick` | Client millisecond tick counter |
 
+### `0x018a` `CZ_REQ_DISCONNECT`
+
+* **Opcode:** `0x018a` ("Exit to Windows")
+* **Canonical Name:** `CZ_REQ_DISCONNECT` (`clif_parse_QuitGame`)
+* **Direction:** Client to Server (Map Server)
+* **Frame Length:** Fixed `4` bytes
+* **Provenance:** `rathena` `src/map/clif_packetdb.hpp:177` (`parseable_packet(0x018a,4,clif_parse_QuitGame,2)`, not overridden in `clif_shuffle.hpp`), `src/map/clif.cpp:11446-11465`. Captures: [`packet_sequence-20261023_031902.txt`](../captures/packet_sequence-20261023_031902.txt) L883-887, [`packet_sequence-20261023_030246.txt`](../captures/packet_sequence-20261023_030246.txt) L894-895, [`login_sequence-rathena.txt`](../captures/login_sequence-rathena.txt) L215-216. Applies to `PACKETVER = 20260219`.
+
+| Offset | Size | Type | Field | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| `0` | `2` | `u16` | `packet_id` | Always `0x018a` |
+| `2` | `2` | `u16` | `type` | `0` = quit. rAthena never reads it (the parse offset `2` is declared but unused); real client sends `00 00` |
+
+* **Refusal conditions (rAthena):** refuse (ack result `1`) if the char has any of `SC_CLOAKING`, `SC_HIDING`, `SC_CHASEWALK`, `SC_CLOAKINGEXCEED`, `SC_SUHIDE`, `SC_NEWMOON`, OR `prevent_logout != 0` and `canlog_tick != 0` and `now - canlog_tick <= prevent_logout`. Dead state is NOT checked.
+* **`prevent_logout`** (`conf/battle/player.conf:143`, `battle.cpp:8522`): default `10000` ms (range 0..60000, 0 disables). `canlog_tick` is set to now by: login (`PLT_LOGIN`=1, `pc.cpp:1453`), attacking (`PLT_ATTACK`=2, `unit.cpp:3341`), skill cast start/end (`PLT_SKILL`=4, `unit.cpp:2571,2771`), taking damage (`PLT_DAMAGE`=8, `pc.cpp:9706`). `prevent_logout_trigger` default `14` (`player.conf:152`, = attack|skill|damage; login NOT included). On map entry `canlog_tick = now - prevent_logout` (`pc.cpp:10144`), i.e. logout allowed immediately.
+* **Success path:** server sends `0x018b` result `0`, flushes the fifo, and closes the socket only if `drop_connection_on_quit` is set (`conf/battle/client.conf:148`, default `no`, "official: no"). Default: the server does NOT close; it waits for the client to close the TCP connection.
+* **On socket close** (`clif.cpp:25695` `clif_quitsave`): if the logout is still prevented (`prevent_logout` window) the session is detached and `map_quit` runs 10 s later (`clif_delayquit`, `clif.cpp:2147-2149`); otherwise `map_quit` runs immediately. `map_quit` (`map.cpp:2221`): `chrif_save(sd, CSAVE_QUIT|CSAVE_INVENTORY|CSAVE_CART)` (char-server `0x2b01` with quitting flag byte at offset 12 = 1; `chrif.cpp:319-323`), then `unit_free_pc` (pet/homun/merc/elemental freed, `unit_free(sd, CLR_TELEPORT)`). `chrif_char_offline` (`0x2b17`, `chrif.cpp:1431`) is used for failed auth/map-change paths, not the normal quit path.
+* **Observed (capture 031902):** `0x018a` at T, `0x018b` +24 ms, observer receives `0x0080 ZC_NOTIFY_VANISH` type `2` (wire value 2 = logged out) +13 ms later; rAthena emits it via `unit_free(sd, CLR_TELEPORT)`.
+
+### `0x018b` `ZC_ACK_REQ_DISCONNECT`
+
+* **Opcode:** `0x018b`
+* **Canonical Name:** `ZC_ACK_REQ_DISCONNECT` (`clif_disconnect_ack`)
+* **Direction:** Server (Map Server) to Client
+* **Frame Length:** Fixed `4` bytes
+* **Provenance:** `rathena` `src/map/clif_packetdb.hpp:178`, `src/map/clif.cpp:11430-11443`; captures as for `0x018a`. Applies to `PACKETVER = 20260219`.
+
+| Offset | Size | Type | Field | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| `0` | `2` | `u16` | `packet_id` | Always `0x018b` |
+| `2` | `2` | `u16` | `result` | `0` = disconnect (client quits), `1` = cannot disconnect (client shows "wait 10 seconds" message, stays in game); other values ignored by client (per rAthena comment) |
+
+* Also sent with result `1` when `0x00b2` `CZ_RESTART` type 1 (char select) is refused by the same conditions (`clif.cpp:11848-11852`).
+
 ### `0x0361` `CZ_CHANGE_DIRECTION`
 
 * **Opcode:** `0x0361`

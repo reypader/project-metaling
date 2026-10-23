@@ -94,6 +94,10 @@ pub enum ClientIntent {
     Restart {
         restart_type: u8,
     },
+    /// "Exit to Windows" (`CZ_REQ_DISCONNECT`).
+    RequestDisconnect {
+        disconnect_type: u16,
+    },
 }
 
 impl fmt::Debug for ClientIntent {
@@ -202,6 +206,10 @@ impl fmt::Debug for ClientIntent {
             Self::Restart { restart_type } => f
                 .debug_struct("Restart")
                 .field("restart_type", restart_type)
+                .finish(),
+            Self::RequestDisconnect { disconnect_type } => f
+                .debug_struct("RequestDisconnect")
+                .field("disconnect_type", disconnect_type)
                 .finish(),
         }
     }
@@ -398,6 +406,10 @@ pub enum ServerEvent {
     },
     RestartAck {
         result: u8,
+    },
+    /// Reply to `RequestDisconnect`: 0 lets the client exit.
+    DisconnectAck {
+        result: u16,
     },
 }
 

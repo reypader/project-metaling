@@ -12,11 +12,12 @@ use super::char::{
 };
 use super::login::{encode_ac_accept_login, encode_ac_refuse_login, CharServerEntry};
 use super::map::{
-    encode_zc_accept_enter, encode_zc_ack_reqnameall, encode_zc_ack_reqnameall_npc, encode_zc_aid,
-    encode_zc_change_direction, encode_zc_inventory_expansion_info, encode_zc_notify_act,
-    encode_zc_notify_moveentry11, encode_zc_notify_newentry11, encode_zc_notify_playermove,
-    encode_zc_notify_standentry11, encode_zc_notify_time, encode_zc_notify_vanish,
-    encode_zc_npcack_mapmove, encode_zc_par_change_i32, encode_zc_restart_ack, encode_zc_stopmove,
+    encode_zc_accept_enter, encode_zc_ack_req_disconnect, encode_zc_ack_reqnameall,
+    encode_zc_ack_reqnameall_npc, encode_zc_aid, encode_zc_change_direction,
+    encode_zc_inventory_expansion_info, encode_zc_notify_act, encode_zc_notify_moveentry11,
+    encode_zc_notify_newentry11, encode_zc_notify_playermove, encode_zc_notify_standentry11,
+    encode_zc_notify_time, encode_zc_notify_vanish, encode_zc_npcack_mapmove,
+    encode_zc_par_change_i32, encode_zc_restart_ack, encode_zc_stopmove,
 };
 
 /// `ZC_NOTIFY_ACT` types for sit down / stand up (`e_damage_type`).
@@ -236,6 +237,7 @@ impl EventEncoder for ModernEventEncoder {
                 }
             }
             ServerEvent::RestartAck { result } => Ok(encode_zc_restart_ack(*result)),
+            ServerEvent::DisconnectAck { result } => Ok(encode_zc_ack_req_disconnect(*result)),
         }
     }
 }
@@ -263,6 +265,7 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
             | PacketOpcode::HC_DELETE_CHAR3_RESERVED
             | PacketOpcode::HC_DELETE_CHAR3_CANCEL
             | PacketOpcode::ZC_RESTART_ACK
+            | PacketOpcode::ZC_ACK_REQ_DISCONNECT
             | PacketOpcode::HC_CHARLIST_NOTIFY
             | PacketOpcode::HC_BLOCK_CHARACTER
             | PacketOpcode::HC_SECOND_PASSWD_LOGIN
@@ -527,6 +530,15 @@ mod tests {
         let event = ServerEvent::RestartAck { result: 1 };
         let bytes = encoder.encode_event(&event, ver).unwrap();
         assert_eq!(bytes.as_ref(), &[0xb3, 0x00, 0x01]);
+
+        // 19. DisconnectAck (PKT-QUIT-02)
+        let event = ServerEvent::DisconnectAck { result: 0 };
+        let bytes = encoder.encode_event(&event, ver).unwrap();
+        assert_eq!(bytes.as_ref(), &[0x8b, 0x01, 0x00, 0x00]);
+        assert!(is_implemented_outbound_opcode(
+            PacketOpcode::ZC_ACK_REQ_DISCONNECT,
+            ver
+        ));
     }
 
     #[test]

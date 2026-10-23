@@ -11,8 +11,8 @@ use super::char::{
 };
 use super::login::CaLoginPacket;
 use super::map::{
-    CzChangeDirectionPacket, CzEnterPacket, CzNotifyActorInitPacket, CzReqNamePacket,
-    CzRequestActPacket, CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket,
+    CzChangeDirectionPacket, CzEnterPacket, CzNotifyActorInitPacket, CzReqDisconnectPacket,
+    CzReqNamePacket, CzRequestActPacket, CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket,
 };
 
 /// Enumeration of all recognized decoded client frames across login, char, and map servers.
@@ -62,6 +62,10 @@ pub fn decode_frame(raw: &RawPacket, packetver: u32) -> Result<DecodedFrame, Pac
         }
         0x00b2 => {
             let p = CzRestartPacket::decode(raw)?;
+            Ok(DecodedFrame::Intent(p.to_intent()))
+        }
+        0x018a => {
+            let p = CzReqDisconnectPacket::decode(raw)?;
             Ok(DecodedFrame::Intent(p.to_intent()))
         }
         0x0436 => {
@@ -382,5 +386,14 @@ mod tests {
         assert_eq!(intent_restart, ClientIntent::Restart { restart_type: 1 });
         let frame_restart = decode_frame(&raw_restart, ver).unwrap();
         assert_eq!(frame_restart, DecodedFrame::Intent(intent_restart));
+
+        let raw_quit = RawPacket::new(PacketOpcode(0x018a), Bytes::from_static(&[0x00, 0x00]));
+        let intent_quit = parser.parse_intent(&raw_quit, ver).unwrap().unwrap();
+        assert_eq!(
+            intent_quit,
+            ClientIntent::RequestDisconnect { disconnect_type: 0 }
+        );
+        let frame_quit = decode_frame(&raw_quit, ver).unwrap();
+        assert_eq!(frame_quit, DecodedFrame::Intent(intent_quit));
     }
 }

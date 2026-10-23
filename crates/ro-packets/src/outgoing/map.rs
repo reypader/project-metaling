@@ -402,6 +402,14 @@ pub fn encode_zc_restart_ack(result: u8) -> Bytes {
     buf.freeze()
 }
 
+/// Encodes `ZC_ACK_REQ_DISCONNECT` (0x018b), fixed 4 bytes. Result 0 lets the client exit.
+pub fn encode_zc_ack_req_disconnect(result: u16) -> Bytes {
+    let mut buf = BytesMut::with_capacity(4);
+    buf.put_u16_le(PacketOpcode::ZC_ACK_REQ_DISCONNECT.raw());
+    buf.put_u16_le(result);
+    buf.freeze()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
