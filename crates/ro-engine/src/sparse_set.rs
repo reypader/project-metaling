@@ -110,7 +110,7 @@ impl<T> SparseSet<T> {
         &self.dense_entities
     }
 
-    #[cfg(test)]
+    /// Values in the same order as `entities()`.
     pub(crate) fn values(&self) -> &[T] {
         &self.dense_data
     }

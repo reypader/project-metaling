@@ -7,7 +7,9 @@ pub(crate) mod movement;
 pub(crate) mod path;
 pub(crate) mod sparse_set;
 pub(crate) mod spatial;
+mod warp;
 pub(crate) mod world;
 
 pub use engine::{MapInstance, DEFAULT_ENTITY_CAPACITY, START_NPC_ID};
 pub use error::EngineError;
+pub use warp::MapTransfer;

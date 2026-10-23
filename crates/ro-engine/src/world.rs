@@ -3,7 +3,7 @@
 use std::sync::Arc;
 
 use ro_core::{AccountId, CharId, CharacterSpawn, MapPosition, Sex, UnitObjectType};
-use ro_db::{NpcState, WarpDest};
+use ro_db::NpcState;
 use rustc_hash::FxHashMap;
 
 use crate::entity::{Entity, EntityAllocator};
@@ -31,6 +31,8 @@ pub(crate) struct PlayerInfo {
     pub(crate) hair_style: u16,
     pub(crate) hair_color: u16,
     pub(crate) clevel: u16,
+    /// Consecutive warps that landed inside a warp area (rAthena `count_rewarp`).
+    pub(crate) rewarp_count: u8,
 }
 
 /// Static appearance and identity of an NPC entity (warps included).
@@ -48,12 +50,19 @@ pub(crate) struct NpcInfo {
     pub(crate) state: NpcState,
 }
 
-/// A warp's touch area and destination (used by warp map change).
+/// A warp's touch area and destination, resolved at spawn.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) struct WarpTrigger {
     /// `(xs, ys)`: the area is `(2xs+1) x (2ys+1)` around the warp's cell.
     pub(crate) half_extents: (u16, u16),
-    pub(crate) dest: WarpDest,
+    /// Destination map as a `.gat` name.
+    pub(crate) dest_map: Arc<str>,
+    /// Raw destination cell; `(0, 0)` or out of bounds means a random cell.
+    pub(crate) dest: (u16, u16),
+    /// `warp2`: fires for hidden players too (no hiding state yet).
+    pub(crate) trigger_while_hidden: bool,
+    /// `dest_map` is this instance's map.
+    pub(crate) same_map: bool,
 }
 
 const ORIGIN: MapPosition = MapPosition { x: 0, y: 0, dir: 0 };
@@ -132,6 +141,7 @@ impl World {
                 hair_style: spawn.hair_style,
                 hair_color: spawn.hair_color,
                 clevel: spawn.base_level,
+                rewarp_count: 0,
             },
         );
         self.char_to_entity.insert(spawn.char_id, entity);
@@ -199,17 +209,23 @@ impl World {
         }
     }
 
+    /// Takes the entity out of the spatial grid (the inverse of `show`).
+    pub(crate) fn hide(&mut self, entity: Entity) {
+        let i = entity.index();
+        if self.entities.is_alive(entity) && self.in_grid[i] {
+            let pos = self.positions[i];
+            self.grid.remove(entity, pos.x, pos.y);
+            self.in_grid[i] = false;
+        }
+    }
+
     /// Removes the entity everywhere and frees its slot.
     pub(crate) fn despawn(&mut self, entity: Entity) -> Result<(), EngineError> {
         if !self.entities.is_alive(entity) {
             return Err(EngineError::EntityNotFound(entity.index() as u32));
         }
         let i = entity.index();
-        if self.in_grid[i] {
-            let pos = self.positions[i];
-            self.grid.remove(entity, pos.x, pos.y);
-            self.in_grid[i] = false;
-        }
+        self.hide(entity);
         if let Some(info) = self.players.remove(entity) {
             if self.char_to_entity.get(&info.char_id) == Some(&entity) {
                 self.char_to_entity.remove(&info.char_id);

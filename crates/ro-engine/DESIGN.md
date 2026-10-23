@@ -14,13 +14,16 @@ Spec: `specs/engine-foundation/spec.md`. Everything else in this document is a *
 
 * **Single-threaded.** No `rayon` yet; one `MapInstance` per map, driven by the map-server actor's `step_tick(now_ms)`.
 * **Entities:** `Entity` (u32 index + u32 generation) and `EntityAllocator` with a fixed capacity; a slot whose generation reaches `u32::MAX` is retired (`src/entity.rs`).
-* **Storage (`src/world.rs`):** dense columns `positions`, `kinds`, `dead_sit`, `head_dir`, `speed`, `in_grid`; sparse `players: SparseSet<PlayerInfo>` (name, job, sex, hair, ids) and `walking_paths: SparseSet<WalkingPath>`; `char_to_entity` / `gid_to_entity` (`FxHashMap`). Only players exist (`EntityKind::{Free, Player}`).
+* **Storage (`src/world.rs`):** dense columns `positions`, `kinds`, `dead_sit`, `head_dir`, `speed`, `in_grid`, `pending_move`; sparse `players: SparseSet<PlayerInfo>` (name, job, sex, hair, ids, `rewarp_count`), `npcs: SparseSet<NpcInfo>`, `warps: SparseSet<WarpTrigger>` and `walking_paths: SparseSet<WalkingPath>`; `char_to_entity` / `gid_to_entity` (`FxHashMap`). `EntityKind::{Free, Player, Npc}`.
 * **Spatial grid (`src/spatial.rs`):** `SpatialGrid8x8` buckets entities per 8x8 block (`SmallVec<[Entity; 8]>`); `query_radius` filters by exact Chebyshev distance (`AREA_SIZE = 14`). Visibility on each step: one query of radius 15 around the old cell (a step moves at most one cell), then each candidate is classified by whether it was / is within 14 of the old / new cell.
 * **Pathfinding (`src/path.rs`):** rAthena rules — cost 10/14, **Manhattan x 10** heuristic (not octile), no corner cutting, last row/column blocked, start cell unchecked, paths over `MAX_WALKPATH = 32` steps rejected; clicks additionally capped at `max_walk_path = 17` (a destination farther than the cap in either axis is rejected before searching). Closed nodes are reopened when a cheaper route appears, as rAthena's `add_path` does. The search runs in a fixed 65x65 window around the start with stamped scratch arrays, reused across searches.
 * **Movement (`src/movement.rs`):** step duration `speed` / `speed * 14 / 10`; the cell changes at the END of a step; the next step starts when the previous one ended. Sub-cell is always (8, 8).
 * **Tick order (`MapInstance::step_tick(now, out)`):** advance due steps (AoI diff per step, pending-redirect repath) -> drain intents FIFO (last move per entity per tick wins, via a `pending_move` column) -> validate and plan paths -> append events to the caller's buffer. Steps run before intents so a click at `now` sees steps that ended before it.
+* **Warps (`src/warp.rs`, spec `specs/warp-map-change/spec.md`):** each plain warp NPC keeps a `WarpTrigger` (half-extents, `.gat` destination, raw cell, `same_map`). `warp_cells` is a bitmap of the walkable cells inside any trigger area; a hit scans `warps` for the first enabled (not `Disabled`/`Cloaked`) area in spawn order. The check runs after every completed player step and at the end of `actor_init` (arrival cell, so warps chain). `PlayerInfo.rewarp_count` stops loops after 11 chained warps. Random destinations use a SplitMix64 per instance, seeded from the map name.
+  * **Same map:** vanish (type 0) to the AoI, `World::hide`, clear the walk silently, move, and send `PlayerMapMove` to self. The next `NotifyActorInit` shows the player again.
+  * **Cross map:** vanish (type 0), despawn (shared with `remove_character`), and queue a `MapTransfer` that the actor takes with `drain_transfers`. The destination instance's `enter_by_warp` resolves the cell and spawns the player out of the grid without emitting anything; the caller sends the `0x0091`.
 * **Event routing:** AoI events are resolved to recipients **at emission** (`BroadcastScope::Characters`, sorted), like rAthena's `clif_send(AREA)`; per-observer visibility events are `SelfOnly`. Resolving after the tick would double-send entries to units that come into view later in the same tick.
-* **Not implemented yet:** Stage 1 (status), Stage 2b (mob AI), Stage 3c (combat/portals), Tier 2 combat columns, `rayon` parallelism, sub-cell redirect offsets, `OFFICIAL_WALKPATH`.
+* **Not implemented yet:** Stage 1 (status), Stage 2b (mob AI), Stage 3c (combat, script portals, warp skills), Tier 2 combat columns, `rayon` parallelism, sub-cell redirect offsets, `OFFICIAL_WALKPATH`.
 
 ---
 
@@ -502,7 +505,9 @@ pub enum ServerEventPayload {
     },
 
     // --- 4. Map Transfers & Portal Collision ---
-    /// Sent to `SelfOnly(char_id)` when stepping onto an `EntityKind::Portal` in Stage 3/4.
+    /// Sent to `SelfOnly(char_id)` by a same-map warp. A cross-map warp emits nothing to self:
+    /// it queues a `MapTransfer`, and the map-server sends this packet from the destination
+    /// map after `enter_by_warp` resolves the cell.
     /// Wire Packet: `ZC_NPCACK_MAPMOVE` (`0x0091`).
     PlayerMapMove {
         dest_map: String, // e.g., "prt_fild08.gat"

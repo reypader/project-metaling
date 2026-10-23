@@ -8,8 +8,8 @@ use std::mem;
 use std::sync::Arc;
 
 use ro_core::{
-    BroadcastScope, CharId, CharacterSpawn, ClientIntent, MapPosition, ScopedServerEvent,
-    ServerEvent, SessionIntent, Sex, UnitAppearance, UnitObjectType,
+    gat_map_name, BroadcastScope, CharId, CharacterSpawn, ClientIntent, MapPosition,
+    ScopedServerEvent, ServerEvent, SessionIntent, Sex, UnitAppearance, UnitObjectType,
 };
 use ro_db::{CellType, MapGrid, MapNpcs, NpcKind, NpcSpawn, NpcState};
 use smallvec::SmallVec;
@@ -25,6 +25,7 @@ use crate::spatial::{step_visibility, AREA_SIZE};
 /// `clif_parse_ActionRequest_sub`).
 const ACTION_ATTACK: u8 = 0;
 const ACTION_ATTACK_REPEAT: u8 = 7;
+use crate::warp::{CellBits, MapTransfer, SplitMix64};
 use crate::world::{NpcInfo, WarpTrigger, World};
 
 /// Default entity capacity of one map instance.
@@ -57,17 +58,23 @@ const OPTION_HIDE: i32 = 0x2;
 const OPTION_CLOAK: i32 = 0x4;
 
 /// `ZC_NOTIFY_VANISH` types.
-const VANISH_OUT_OF_SIGHT: u8 = 0;
+pub(crate) const VANISH_OUT_OF_SIGHT: u8 = 0;
 const VANISH_LOGGED_OUT: u8 = 2;
 
 type PathCells = SmallVec<[(u16, u16); MAX_WALKPATH]>;
 
 /// One map's world plus the reusable buffers its tick needs.
 pub struct MapInstance {
-    map_name: String,
-    world: World,
+    pub(crate) map_name: String,
+    /// `map_name` as a `.gat` name, sent in `0x0091`.
+    pub(crate) gat_name: Arc<str>,
+    pub(crate) world: World,
     /// Shared with other instances of the same map until `set_cell` copies it.
-    walkability: Arc<MapGrid>,
+    pub(crate) walkability: Arc<MapGrid>,
+    /// Walkable cells inside any warp's trigger area.
+    pub(crate) warp_cells: CellBits,
+    /// Random warp destinations; seeded from the map name.
+    pub(crate) rng: SplitMix64,
     intents: Vec<SessionIntent>,
     /// Entities with a `pending_move` set this tick (the column holds the last request).
     moves: Vec<Entity>,
@@ -80,7 +87,9 @@ pub struct MapInstance {
     left: Vec<Entity>,
     entered: Vec<Entity>,
     scratch: AStarScratchBuffer,
-    events: Vec<ScopedServerEvent>,
+    pub(crate) events: Vec<ScopedServerEvent>,
+    /// Players that left through a cross-map warp, until `drain_transfers`.
+    pub(crate) transfers: Vec<MapTransfer>,
     /// Next NPC unit id (per instance; a client only sees one map at a time).
     next_npc_id: u32,
 }
@@ -112,9 +121,13 @@ impl MapInstance {
         walkability: Arc<MapGrid>,
         capacity: u32,
     ) -> Self {
+        let map_name = map_name.into();
         let world = World::new(walkability.width(), walkability.height(), capacity);
         Self {
-            map_name: map_name.into(),
+            gat_name: Arc::from(gat_map_name(&map_name)),
+            warp_cells: CellBits::new(walkability.width(), walkability.height()),
+            rng: SplitMix64::from_name(&map_name),
+            map_name,
             world,
             walkability,
             intents: Vec::new(),
@@ -127,6 +140,7 @@ impl MapInstance {
             entered: Vec::new(),
             scratch: AStarScratchBuffer::new(),
             events: Vec::new(),
+            transfers: Vec::new(),
             next_npc_id: START_NPC_ID,
         }
     }
@@ -146,7 +160,7 @@ impl MapInstance {
 
     // ---------- helpers ----------
 
-    fn gid(&self, e: Entity) -> u32 {
+    pub(crate) fn gid(&self, e: Entity) -> u32 {
         if let Some(p) = self.world.players.get(e) {
             return p.account_id.0;
         }
@@ -157,11 +171,11 @@ impl MapInstance {
         self.world.players.get(e).map(|p| p.char_id)
     }
 
-    fn pos(&self, e: Entity) -> MapPosition {
+    pub(crate) fn pos(&self, e: Entity) -> MapPosition {
         self.world.positions[e.index()]
     }
 
-    fn cell(&self, e: Entity) -> (u16, u16) {
+    pub(crate) fn cell(&self, e: Entity) -> (u16, u16) {
         let p = self.pos(e);
         (p.x, p.y)
     }
@@ -225,7 +239,7 @@ impl MapInstance {
         chars
     }
 
-    fn emit_self(&mut self, e: Entity, event: ServerEvent) {
+    pub(crate) fn emit_self(&mut self, e: Entity, event: ServerEvent) {
         if let Some(char_id) = self.char_of(e) {
             self.events.push(ScopedServerEvent::new(
                 BroadcastScope::SelfOnly(char_id),
@@ -234,7 +248,7 @@ impl MapInstance {
         }
     }
 
-    fn emit_aoi(&mut self, e: Entity, exclude_self: bool, event: ServerEvent) {
+    pub(crate) fn emit_aoi(&mut self, e: Entity, exclude_self: bool, event: ServerEvent) {
         let chars = self.aoi_recipients(e, exclude_self);
         if !chars.is_empty() {
             self.events.push(ScopedServerEvent::new(
@@ -367,6 +381,25 @@ impl MapInstance {
                 self.emit_self(e, event);
             }
         }
+        // Arrival cell: warps chain from here (ENG-WARP-05).
+        self.touch_warps(e);
+    }
+
+    /// Vanishes player `e` to its AoI (excluding itself), drops its queued intents and frees
+    /// the entity. Shared by logout (type 2) and cross-map warps (type 0).
+    pub(crate) fn despawn_player(
+        &mut self,
+        e: Entity,
+        char_id: CharId,
+        vanish_type: u8,
+    ) -> Result<(), EngineError> {
+        if self.world.in_grid[e.index()] {
+            let gid = self.gid(e);
+            self.emit_aoi(e, true, ServerEvent::UnitVanished { gid, vanish_type });
+        }
+        // Intents queued by the old session must not reach a later spawn of this character.
+        self.intents.retain(|i| i.char_id != Some(char_id));
+        self.world.despawn(e)
     }
 
     /// Stops a walk in place: `ZC_STOPMOVE` to the AoI including the unit.
@@ -529,6 +562,10 @@ impl MapInstance {
                     break;
                 };
                 self.step(e, next, step_end);
+                if self.world.players.contains(e) {
+                    // A warp clears the walk (or despawns `e`), which ends this loop.
+                    self.touch_warps(e);
+                }
                 let Some(path) = self.world.walking_paths.get_mut(e) else {
                     break;
                 };
@@ -718,10 +755,16 @@ impl MapInstance {
         };
         // A warp without a (non-negative) span has no touch area, like rAthena's `npc_setcells`.
         let warp = match (&npc.kind, npc.trigger) {
-            (NpcKind::Warp(dest), Some(half_extents)) => Some(WarpTrigger {
-                half_extents,
-                dest: dest.clone(),
-            }),
+            (NpcKind::Warp(dest), Some(half_extents)) => {
+                let dest_map = gat_map_name(&dest.map);
+                Some(WarpTrigger {
+                    half_extents,
+                    same_map: *dest_map == *self.gat_name,
+                    dest_map: Arc::from(dest_map),
+                    dest: (dest.x, dest.y),
+                    trigger_while_hidden: dest.trigger_while_hidden,
+                })
+            }
             _ => None,
         };
         let info = NpcInfo {
@@ -738,7 +781,11 @@ impl MapInstance {
             y: npc.y,
             dir: npc.dir,
         };
+        let area = warp.as_ref().map(|w| w.half_extents);
         let e = self.world.spawn_npc(info, pos, NPC_SPEED, warp)?;
+        if let Some(half_extents) = area {
+            self.mark_warp_cells((npc.x, npc.y), half_extents);
+        }
         self.next_npc_id = self.next_npc_id.wrapping_add(1);
         let never_sent = npc.sprite == FAKE_NPC_SPRITE
             || npc.sprite == INVISIBLE_SPRITE
@@ -812,23 +859,10 @@ impl MapInstance {
             .world
             .entity_by_char(char_id)
             .ok_or(EngineError::UnknownCharacter(char_id))?;
-        let mut events = Vec::new();
-        if self.world.in_grid[e.index()] {
-            let chars = self.aoi_recipients(e, true);
-            if !chars.is_empty() {
-                events.push(ScopedServerEvent::new(
-                    BroadcastScope::Characters(chars),
-                    ServerEvent::UnitVanished {
-                        gid: self.gid(e),
-                        vanish_type: VANISH_LOGGED_OUT,
-                    },
-                ));
-            }
-        }
-        // Intents queued by the old session must not reach a later spawn of this character.
-        self.intents.retain(|i| i.char_id != Some(char_id));
-        self.world.despawn(e)?;
-        Ok(events)
+        let start = self.events.len();
+        let result = self.despawn_player(e, char_id, VANISH_LOGGED_OUT);
+        let events = self.events.split_off(start);
+        result.map(|()| events)
     }
 }
 
@@ -871,7 +905,10 @@ mod npc_tests {
             engine.world.warps.get(e),
             Some(&WarpTrigger {
                 half_extents: (2, 3),
-                dest
+                dest_map: Arc::from("geffen.gat"),
+                dest: (dest.x, dest.y),
+                trigger_while_hidden: true,
+                same_map: false,
             })
         );
         assert_eq!(engine.world.kinds[e.index()], crate::world::EntityKind::Npc);

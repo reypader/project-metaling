@@ -23,13 +23,13 @@ Write tests first and name them with spec IDs. Iterate with `./verify.sh -p <cra
   - Spec and plan written.
   - Captures cited by the catalog are committed in `reference/catalog/captures/` as `.txt`, with redactions.
   - Early `reviewer` pass on the handoff is done, and all its findings are applied (spec §1 "Early review").
-- [ ] **M1 ro-core:** `gat_map_name`, `bare_map_name`, re-exported at the root. CORE-MAP-01. Switch `load_npcs` to them.
-- [ ] **M2 ro-engine, trigger and same map**
+- [x] **M1 ro-core:** `gat_map_name`, `bare_map_name`, re-exported at the root. CORE-MAP-01. Switch `load_npcs` to them.
+- [x] **M2 ro-engine, trigger and same map**
   - Reshape `WarpTrigger` (resolved `.gat`, `same_map`).
   - Add `warp_cells`, `World::hide`, `PlayerInfo.rewarp_count`, the SplitMix64 RNG and cell resolution.
   - Add `warp_player` (same-map branch), the step hook in `advance_walkers` and the `actor_init` tail hook.
   - Tests in `crates/ro-engine/tests/warp_tests.rs`: ENG-WARP-01, 02, 04, 05, 06, 07.
-- [ ] **M3 ro-engine, cross map**
+- [x] **M3 ro-engine, cross map**
   - `MapTransfer`, the outbox, `drain_transfers`, and the cross-map branch of `warp_player`, sharing despawn code with `remove_character`.
   - `enter_by_warp`.
   - ENG-WARP-03, ENG-WARP-08. ENG-WARP-06 across a transfer.
