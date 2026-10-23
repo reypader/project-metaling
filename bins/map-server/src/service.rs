@@ -1,19 +1,18 @@
 use std::{
-    collections::{HashMap, HashSet},
+    collections::HashMap,
     mem,
     path::{Path, PathBuf},
     sync::{
         atomic::{AtomicU64, Ordering},
-        Arc, Mutex, MutexGuard, OnceLock, RwLock,
+        Arc, OnceLock, RwLock,
     },
     time::{Duration, Instant},
 };
 
 use bytes::{Bytes, BytesMut};
 use ro_core::{
-    bare_map_name, AccountId, BroadcastScope, CharId, CharacterSpawn, CharacterSummary,
-    ClientIntent, MapPosition, ScopedServerEvent, ServerEvent, SessionId, SessionIntent,
-    TARGET_PACKETVER,
+    bare_map_name, AccountId, BroadcastScope, CharId, CharacterSpawn, ClientIntent, MapPosition,
+    ScopedServerEvent, ServerEvent, SessionId, SessionIntent, TARGET_PACKETVER,
 };
 use ro_db::{MapGrid, MapNpcs};
 use ro_engine::{EngineError, MapInstance};
@@ -22,38 +21,14 @@ use ro_persistence::CharacterRepository;
 use tokio::sync::{mpsc, oneshot};
 use tracing::{debug, error, info, warn};
 
+use crate::claim::{Claim, SharedState};
+
 /// Engine tick period (BIN-SRV-01).
 pub const TICK_INTERVAL: Duration = Duration::from_millis(20);
 /// Side of the all-walkable grid used when a map's `.gat` is unavailable (BIN-CFG-01).
 pub const FALLBACK_MAP_SIZE: u16 = 512;
 /// Most commands an actor handles before it lets a tick run.
 const MAX_COMMANDS_PER_WAKE: usize = 256;
-
-/// State shared by the service handle and every map actor.
-#[derive(Default)]
-struct SharedState {
-    /// Characters claimed by an entering or joined session, on any map.
-    online: Mutex<HashSet<CharId>>,
-    /// Last map/position of characters whose leave is still being persisted.
-    recent_positions: Mutex<HashMap<CharId, (String, MapPosition)>>,
-}
-
-fn lock<T>(mutex: &Mutex<T>) -> MutexGuard<'_, T> {
-    mutex
-        .lock()
-        .unwrap_or_else(|poisoned| poisoned.into_inner())
-}
-
-impl SharedState {
-    /// Claims `char_id` for one session; false if it is already online somewhere.
-    fn claim(&self, char_id: CharId) -> bool {
-        lock(&self.online).insert(char_id)
-    }
-
-    fn release(&self, char_id: CharId) {
-        lock(&self.online).remove(&char_id);
-    }
-}
 
 /// Static data a map world starts with.
 #[derive(Clone)]
@@ -128,11 +103,12 @@ pub fn map_data_loader(
 
 /// Commands sent to a long-lived `MapWorldActor`.
 pub enum WorldCommand {
+    /// Dropping this command (a failed send, a rejected join) releases `claim`.
     JoinSession {
         session_id: SessionId,
         account_id: AccountId,
-        character: CharacterSummary,
-        spawn_pos: MapPosition,
+        spawn: CharacterSpawn,
+        claim: Claim,
         outbound_tx: mpsc::Sender<Bytes>,
     },
     PlayerIntent(SessionIntent),
@@ -183,14 +159,15 @@ pub fn is_valid_map_name(map_name: &str) -> bool {
 }
 
 impl MapServiceHandle {
+    /// Starts the position writer and the default map; needs a Tokio runtime.
     pub fn new(char_repo: Arc<dyn CharacterRepository>, loader: MapDataLoader) -> Self {
         let handle = Self {
             next_session_id: Arc::new(AtomicU64::new(1)),
-            char_repo,
+            char_repo: Arc::clone(&char_repo),
             worlds: Arc::new(RwLock::new(HashMap::new())),
             pending_transfers: Arc::new(RwLock::new(HashMap::new())),
             loader,
-            shared: Arc::new(SharedState::default()),
+            shared: SharedState::new(Arc::clone(&char_repo)),
             start_time: Instant::now(),
         };
         let _ = handle.get_or_spawn_world("prontera.gat");
@@ -282,17 +259,28 @@ impl MapServiceHandle {
         true
     }
 
-    /// Resolves where an entering character goes: a pending transfer reservation wins over the
-    /// stored map/position (or a just-left position still being persisted). `None` (unknown
-    /// character, character of another account, character already online, or a bad stored map
-    /// name) means the session must close without sending anything. On success the character is
-    /// claimed; the map actor releases it when the session leaves or the join is rejected, and
-    /// the caller must call `release_character` if it can't hand the join to the actor.
+    /// Resolves where an entering character goes: a pending transfer reservation wins over a
+    /// just-left position still being written, which wins over the stored map/position.
+    /// `None` (character already online, unknown character, character of another account, or a
+    /// bad map name) means the session must close without sending anything.
+    ///
+    /// The character is claimed before any position is read, so a release that races this
+    /// entry has already recorded its position. Dropping the returned `Claim` releases it.
     pub async fn resolve_entry(
         &self,
         account_id: AccountId,
         char_id: CharId,
-    ) -> Option<(mpsc::Sender<WorldCommand>, CharacterSummary, MapPosition)> {
+    ) -> Option<(mpsc::Sender<WorldCommand>, CharacterSpawn, Claim)> {
+        let Some(claim) = self.shared.claim(char_id) else {
+            warn!(
+                "Map entry rejected: character {} is already online",
+                char_id.0
+            );
+            return None;
+        };
+        // Read the recent position before the database: once it is gone, its write has landed.
+        let recent = self.shared.recent_position(char_id);
+        let pending = self.read_transfers().get(&char_id).cloned();
         let character = match self.char_repo.find_by_id(char_id).await {
             Ok(Some(character)) => character,
             Ok(None) => {
@@ -314,9 +302,6 @@ impl MapServiceHandle {
             );
             return None;
         }
-
-        let pending = self.read_transfers().get(&char_id).cloned();
-        let recent = lock(&self.shared.recent_positions).get(&char_id).cloned();
         let (map_name, pos) = match (pending, recent) {
             (Some((map, Some(pos))), _) => (map, pos),
             (Some((map, None)), _) => (map, character.last_pos),
@@ -330,21 +315,11 @@ impl MapServiceHandle {
             );
             return None;
         }
-        if !self.shared.claim(char_id) {
-            warn!(
-                "Map entry rejected: character {} is already online",
-                char_id.0
-            );
-            return None;
-        }
         // Only a successful entry uses up the reservation.
         self.write_transfers().remove(&char_id);
-        Some((self.get_or_spawn_world(&map_name), character, pos))
-    }
-
-    /// Releases a claim made by `resolve_entry` that never reached a map actor.
-    pub fn release_character(&self, char_id: CharId) {
-        self.shared.release(char_id);
+        let mut spawn = CharacterSpawn::from_summary(&character);
+        spawn.pos = pos;
+        Some((self.get_or_spawn_world(&map_name), spawn, claim))
     }
 
     fn read_transfers(&self) -> std::sync::RwLockReadGuard<'_, PendingTransfers> {
@@ -402,13 +377,7 @@ impl MapServiceHandle {
         // lock so other sessions aren't blocked on it. A racing spawn of the same map wins and
         // this one is dropped.
         let data = (self.loader)(map_name);
-        let world_actor = MapWorldActor::new(
-            map_name.to_string(),
-            Arc::clone(&self.char_repo),
-            data,
-            Arc::clone(&self.shared),
-            self.start_time,
-        );
+        let world_actor = MapWorldActor::new(map_name.to_string(), data, self.start_time);
 
         let mut worlds = match self.worlds.write() {
             Ok(guard) => guard,
@@ -434,6 +403,8 @@ impl MapServiceHandle {
 struct Session {
     account_id: AccountId,
     char_id: CharId,
+    /// Released (with the last position set on it) when the session is dropped.
+    claim: Claim,
     outbound_tx: mpsc::Sender<Bytes>,
     /// Frames routed to this session during the current flush; sent as one `Bytes` at its end
     /// so a busy tick costs one queue slot, not one per packet.
@@ -443,10 +414,8 @@ struct Session {
 /// Long-lived actor owning one map's `MapInstance`, its sessions, and its 20 ms tick loop.
 struct MapWorldActor {
     map_name: String,
-    char_repo: Arc<dyn CharacterRepository>,
     engine: MapInstance,
     map_size: (u16, u16),
-    shared: Arc<SharedState>,
     /// Process clock origin shared by every map.
     started: Instant,
     sessions: HashMap<SessionId, Session>,
@@ -471,23 +440,15 @@ enum Departure {
 }
 
 impl MapWorldActor {
-    fn new(
-        map_name: String,
-        char_repo: Arc<dyn CharacterRepository>,
-        data: MapData,
-        shared: Arc<SharedState>,
-        started: Instant,
-    ) -> Self {
+    fn new(map_name: String, data: MapData, started: Instant) -> Self {
         let map_size = (data.grid.width(), data.grid.height());
         let mut engine = MapInstance::new(map_name.clone(), data.grid);
         let spawned = engine.spawn_npcs(&data.npcs);
         info!("Map '{}': {} NPCs spawned", map_name, spawned);
         Self {
             map_name,
-            char_repo,
             engine,
             map_size,
-            shared,
             started,
             sessions: HashMap::new(),
             by_char: HashMap::new(),
@@ -540,10 +501,10 @@ impl MapWorldActor {
             WorldCommand::JoinSession {
                 session_id,
                 account_id,
-                character,
-                spawn_pos,
+                spawn,
+                claim,
                 outbound_tx,
-            } => self.join(session_id, account_id, &character, spawn_pos, outbound_tx),
+            } => self.join(session_id, account_id, spawn, claim, outbound_tx),
             WorldCommand::PlayerIntent(intent) => self.player_intent(intent),
             WorldCommand::LeaveSession { session_id } => {
                 self.detached.remove(&session_id);
@@ -561,16 +522,16 @@ impl MapWorldActor {
     }
 
     /// Spawns the character and sends the entry burst. On failure the sender is dropped,
-    /// which ends the session without sending anything, and the character's claim is released.
+    /// which ends the session without sending anything, and dropping `claim` releases it.
     fn join(
         &mut self,
         session_id: SessionId,
         account_id: AccountId,
-        character: &CharacterSummary,
-        spawn_pos: MapPosition,
+        mut spawn: CharacterSpawn,
+        claim: Claim,
         outbound_tx: mpsc::Sender<Bytes>,
     ) {
-        let char_id = character.char_id;
+        let char_id = spawn.char_id;
         if self.sessions.contains_key(&session_id) {
             warn!(
                 "Map '{}' ignoring duplicate join for {:?}",
@@ -579,8 +540,7 @@ impl MapWorldActor {
             return;
         }
         let now = self.now_ms();
-        let mut spawn = CharacterSpawn::from_summary(character);
-        spawn.pos = spawn_pos;
+        let spawn_pos = spawn.pos;
         let mut result = self.engine.spawn_character(spawn.clone(), now);
         if let Err(EngineError::InvalidCell { x, y }) = result {
             // A stored position off this map (e.g. saved on a fallback grid) must not lock the
@@ -603,7 +563,6 @@ impl MapWorldActor {
                     "Map '{}' rejected entry of char {} for {:?}: {}",
                     self.map_name, char_id.0, session_id, err
                 );
-                self.shared.release(char_id);
                 return;
             }
         };
@@ -616,6 +575,7 @@ impl MapWorldActor {
             Session {
                 account_id,
                 char_id,
+                claim,
                 outbound_tx,
                 pending: BytesMut::new(),
             },
@@ -674,30 +634,37 @@ impl MapWorldActor {
         self.flush(&mut events);
     }
 
-    /// Removes the session and its character, sends what was queued for it, persists the last
-    /// position asynchronously and releases the character's claim. Returns the engine's vanish
-    /// events for routing.
+    /// Removes the session and its character and sends what was queued for it. Dropping the
+    /// session's claim then persists the last position and releases the character. Returns the
+    /// engine's vanish events for routing.
     fn remove_session(
         &mut self,
         session_id: SessionId,
         departure: Departure,
     ) -> Vec<ScopedServerEvent> {
-        let Some(mut session) = self.sessions.remove(&session_id) else {
+        let Some(session) = self.sessions.remove(&session_id) else {
             return Vec::new();
         };
-        if !session.pending.is_empty() {
-            let _ = session
-                .outbound_tx
-                .try_send(session.pending.split().freeze());
+        let Session {
+            char_id,
+            mut claim,
+            outbound_tx,
+            mut pending,
+            ..
+        } = session;
+        if !pending.is_empty() {
+            let _ = outbound_tx.try_send(pending.split().freeze());
         }
         if departure == Departure::Restart {
-            self.detached.insert(session_id, session.outbound_tx);
+            self.detached.insert(session_id, outbound_tx);
         }
-        let char_id = session.char_id;
         if self.by_char.get(&char_id) == Some(&session_id) {
             self.by_char.remove(&char_id);
         }
-        let pos = self.engine.character_position(char_id);
+        // A character the engine no longer holds keeps the position already set on the claim.
+        if let Some(pos) = self.engine.character_position(char_id) {
+            claim.set_last(&self.map_name, pos);
+        }
         let events = match self.engine.remove_character(char_id) {
             Ok(events) => events,
             Err(err) => {
@@ -708,33 +675,8 @@ impl MapWorldActor {
                 Vec::new()
             }
         };
-        if let Some(pos) = pos {
-            self.persist_position(char_id, pos);
-        }
-        self.shared.release(char_id);
+        drop(claim);
         events
-    }
-
-    /// Records the position for a fast re-entry, then writes it to the repository.
-    fn persist_position(&self, char_id: CharId, pos: MapPosition) {
-        let entry = (self.map_name.clone(), pos);
-        lock(&self.shared.recent_positions).insert(char_id, entry.clone());
-        let repo = Arc::clone(&self.char_repo);
-        let shared = Arc::clone(&self.shared);
-        tokio::spawn(async move {
-            match repo.update_position(char_id, &entry.0, entry.1).await {
-                Ok(()) => {
-                    let mut recent = lock(&shared.recent_positions);
-                    if recent.get(&char_id) == Some(&entry) {
-                        recent.remove(&char_id);
-                    }
-                }
-                Err(err) => error!(
-                    "Failed to persist position on leave for char {}: {}",
-                    char_id.0, err
-                ),
-            }
-        });
     }
 
     /// Routes `events` (draining it), sends each session its batch, then removes sessions whose
@@ -820,5 +762,72 @@ impl MapWorldActor {
         if let Some(session) = self.sessions.get_mut(&session_id) {
             session.pending.extend_from_slice(bytes);
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    //! `resolve_entry` claiming (spec BIN-WARP-07).
+
+    use std::sync::atomic::Ordering;
+
+    use super::*;
+    use crate::claim::tests::{at, eventually, FakeRepo, ACCOUNT, CHAR};
+
+    fn service(repo: Arc<FakeRepo>) -> MapServiceHandle {
+        let grid = Arc::new(MapGrid::all_walkable(200, 200).expect("valid dims"));
+        let data = MapData {
+            grid,
+            npcs: Arc::new(MapNpcs::default()),
+        };
+        MapServiceHandle::new(repo, Arc::new(move |_: &str| data.clone()))
+    }
+
+    #[tokio::test]
+    async fn bin_warp_07_resolve_entry_claims_before_reading() {
+        let repo = FakeRepo::new(true);
+        let service = service(repo.clone());
+        let held = service.shared.claim(CHAR).expect("claim");
+        assert!(service.resolve_entry(ACCOUNT, CHAR).await.is_none());
+        assert_eq!(
+            repo.finds.load(Ordering::Relaxed),
+            0,
+            "rejected before any read"
+        );
+        drop(held);
+        let (_, spawn, _claim) = service.resolve_entry(ACCOUNT, CHAR).await.expect("enters");
+        assert_eq!(spawn.pos, at(100, 100));
+    }
+
+    #[tokio::test]
+    async fn bin_warp_07_resolve_entry_uses_a_racing_release() {
+        let repo = FakeRepo::new(false);
+        let service = service(repo.clone());
+        let mut claim = service.shared.claim(CHAR).expect("claim");
+        claim.set_last("prontera.gat", at(120, 130));
+        drop(claim);
+
+        // The write is still blocked: the recorded position wins over the database.
+        let (_, spawn, claim) = service.resolve_entry(ACCOUNT, CHAR).await.expect("enters");
+        assert_eq!(spawn.pos, at(120, 130));
+        drop(claim);
+
+        // Once the write lands, the database has it.
+        repo.gate.add_permits(1);
+        assert!(eventually(|| service.shared.recent_position(CHAR).is_none()).await);
+        let (_, spawn, _claim) = service.resolve_entry(ACCOUNT, CHAR).await.expect("enters");
+        assert_eq!(spawn.pos, at(120, 130));
+    }
+
+    #[tokio::test]
+    async fn bin_warp_07_rejection_after_claim_releases() {
+        let repo = FakeRepo::new(true);
+        let service = service(repo);
+        let foreign = AccountId(ACCOUNT.0 + 1);
+        assert!(service.resolve_entry(foreign, CHAR).await.is_none());
+        assert!(
+            service.resolve_entry(ACCOUNT, CHAR).await.is_some(),
+            "the rejected entry released its claim"
+        );
     }
 }

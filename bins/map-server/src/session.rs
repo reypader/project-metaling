@@ -131,7 +131,7 @@ pub async fn handle_client_session(
 
                             let entered_account_id = *account_id;
                             let entered_char_id = *char_id;
-                            let Some((target_world_tx, character, spawn_pos)) = service
+                            let Some((target_world_tx, spawn, claim)) = service
                                 .resolve_entry(entered_account_id, entered_char_id)
                                 .await
                             else {
@@ -142,19 +142,20 @@ pub async fn handle_client_session(
                             authenticated_char = Some(entered_char_id);
 
                             // The actor answers with the entry burst, or drops `tx` (which ends
-                            // this session) if the character can't enter.
-                            if let Err(err) = target_world_tx
+                            // this session) and the claim if the character can't enter. A failed
+                            // send drops the command, which releases the claim.
+                            if target_world_tx
                                 .send(WorldCommand::JoinSession {
                                     session_id,
                                     account_id: entered_account_id,
-                                    character,
-                                    spawn_pos,
+                                    spawn,
+                                    claim,
                                     outbound_tx: tx,
                                 })
                                 .await
+                                .is_err()
                             {
-                                error!("Failed to join MapWorldActor: {}", err);
-                                service.release_character(entered_char_id);
+                                error!("Failed to join MapWorldActor: actor gone");
                                 break 'session_loop;
                             }
                             world_tx = Some(target_world_tx);

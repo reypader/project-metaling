@@ -1,6 +1,9 @@
+mod claim;
 pub mod config;
 pub mod service;
 pub mod session;
+
+pub use claim::Claim;
 
 pub use config::MapConfig;
 pub use service::{
