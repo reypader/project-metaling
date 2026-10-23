@@ -11,11 +11,11 @@ use std::{
 
 use bytes::{Bytes, BytesMut};
 use ro_core::{
-    bare_map_name, AccountId, BroadcastScope, CharId, CharacterSpawn, ClientIntent, MapPosition,
-    ScopedServerEvent, ServerEvent, SessionId, SessionIntent, TARGET_PACKETVER,
+    bare_map_name, gat_map_name, AccountId, BroadcastScope, CharId, CharacterSpawn, ClientIntent,
+    MapPosition, ScopedServerEvent, ServerEvent, SessionId, SessionIntent, TARGET_PACKETVER,
 };
-use ro_db::{MapGrid, MapNpcs};
-use ro_engine::{EngineError, MapInstance};
+use ro_db::{MapGrid, MapNpcs, NpcKind};
+use ro_engine::{EngineError, MapInstance, MapTransfer};
 use ro_packets::{EventEncoder, Phase0EventEncoder};
 use ro_persistence::CharacterRepository;
 use tokio::sync::{mpsc, oneshot};
@@ -90,27 +90,90 @@ pub fn load_npcs(npc_data_dir: Option<&Path>, map_name: &str) -> Arc<MapNpcs> {
     }
 }
 
-/// Loader reading `.gat` files from `map_data_dir` and NPC lists from `npc_data_dir`.
+/// Loader reading `.gat` files from `map_data_dir` and NPC lists from `npc_data_dir`. Warps
+/// that can't be taken lose their trigger before the map spawns its NPCs.
 pub fn map_data_loader(
     map_data_dir: Option<PathBuf>,
     npc_data_dir: Option<PathBuf>,
 ) -> MapDataLoader {
-    Arc::new(move |map_name: &str| MapData {
-        grid: load_walkability(map_data_dir.as_deref(), map_name),
-        npcs: load_npcs(npc_data_dir.as_deref(), map_name),
+    Arc::new(move |map_name: &str| {
+        let mut npcs = Arc::unwrap_or_clone(load_npcs(npc_data_dir.as_deref(), map_name));
+        disable_unreachable_warps(&mut npcs, map_data_dir.as_deref(), map_name);
+        MapData {
+            grid: load_walkability(map_data_dir.as_deref(), map_name),
+            npcs: Arc::new(npcs),
+        }
     })
+}
+
+/// Clears the trigger of each warp whose destination is invalid or an instance (`@`) map, or,
+/// with `map_data_dir` set, has no `.gat` file there (BIN-WARP-04). Warns once per warp.
+/// Without `map_data_dir` every map uses the fallback grid, so such warps stay.
+fn disable_unreachable_warps(npcs: &mut MapNpcs, map_data_dir: Option<&Path>, map_name: &str) {
+    for npc in &mut npcs.npcs {
+        let NpcKind::Warp(dest) = &npc.kind else {
+            continue;
+        };
+        if npc.trigger.is_none() {
+            continue;
+        }
+        let dest_map = gat_map_name(&dest.map);
+        let reason = if !is_valid_map_name(&dest_map) {
+            "invalid or instance destination"
+        } else if map_data_dir.is_some_and(|dir| !dir.join(&dest_map).is_file()) {
+            "destination .gat not found"
+        } else {
+            continue;
+        };
+        warn!(
+            "Map '{}': warp '{}' ({}) to '{}' is inert: {}",
+            map_name, npc.name, npc.source, dest.map, reason
+        );
+        npc.trigger = None;
+    }
+}
+
+/// How a session enters a map.
+pub enum Entry {
+    /// After `CZ_ENTER`: `ZC_ACCEPT_ENTER` now, the entry burst on `NotifyActorInit`.
+    Login,
+    /// By a cross-map warp: `0x0091` with the resolved cell, no `ZC_ACCEPT_ENTER`.
+    Warp { dest: (u16, u16), rewarp_count: u8 },
+}
+
+/// A session joining a map. Dropping it (a failed send, a rejected join) releases `claim` and
+/// drops `outbound_tx`, which ends the session.
+pub struct JoinSession {
+    pub(crate) session_id: SessionId,
+    pub(crate) account_id: AccountId,
+    pub(crate) spawn: CharacterSpawn,
+    pub(crate) claim: Claim,
+    pub(crate) outbound_tx: mpsc::Sender<Bytes>,
+    /// The session task's control channel; the actor's `Session` keeps this clone.
+    pub(crate) control_tx: mpsc::Sender<SessionControl>,
+    pub(crate) entry: Entry,
+}
+
+/// Messages from a map actor to a session task.
+pub enum SessionControl {
+    /// The character left this map through a warp: join `dest_map`.
+    ChangeMap(MapHandoff),
+}
+
+/// What a session needs to join the warp's destination map. Dropping it releases the claim
+/// (persisting the trigger cell set on it) and drops `outbound_tx`.
+pub struct MapHandoff {
+    pub(crate) claim: Claim,
+    pub(crate) spawn: CharacterSpawn,
+    pub(crate) dest_map: Arc<str>,
+    pub(crate) dest: (u16, u16),
+    pub(crate) rewarp_count: u8,
+    pub(crate) outbound_tx: mpsc::Sender<Bytes>,
 }
 
 /// Commands sent to a long-lived `MapWorldActor`.
 pub enum WorldCommand {
-    /// Dropping this command (a failed send, a rejected join) releases `claim`.
-    JoinSession {
-        session_id: SessionId,
-        account_id: AccountId,
-        spawn: CharacterSpawn,
-        claim: Claim,
-        outbound_tx: mpsc::Sender<Bytes>,
-    },
+    JoinSession(JoinSession),
     PlayerIntent(SessionIntent),
     LeaveSession {
         session_id: SessionId,
@@ -406,6 +469,7 @@ struct Session {
     /// Released (with the last position set on it) when the session is dropped.
     claim: Claim,
     outbound_tx: mpsc::Sender<Bytes>,
+    control_tx: mpsc::Sender<SessionControl>,
     /// Frames routed to this session during the current flush; sent as one `Bytes` at its end
     /// so a busy tick costs one queue slot, not one per packet.
     pending: BytesMut,
@@ -428,6 +492,7 @@ struct MapWorldActor {
     events: Vec<ScopedServerEvent>,
     aoi: Vec<CharId>,
     evict: Vec<SessionId>,
+    transfers: Vec<MapTransfer>,
 }
 
 /// Why a session leaves the map.
@@ -457,6 +522,7 @@ impl MapWorldActor {
             events: Vec::new(),
             aoi: Vec::new(),
             evict: Vec::new(),
+            transfers: Vec::new(),
         }
     }
 
@@ -492,19 +558,75 @@ impl MapWorldActor {
         if let Err(err) = self.engine.step_tick(now, &mut events) {
             error!("Map '{}' tick failed: {}", self.map_name, err);
         }
+        let mut transfers = mem::take(&mut self.transfers);
+        self.engine.drain_transfers(&mut transfers);
+        // The entity is gone, so the claim is the only record of where the character was. A
+        // session evicted by this flush releases with this position.
+        for transfer in &transfers {
+            let char_id = transfer.spawn.char_id;
+            if let Some(session) = self
+                .by_char
+                .get(&char_id)
+                .and_then(|id| self.sessions.get_mut(id))
+            {
+                session.claim.set_last(&self.map_name, transfer.from_pos);
+            }
+        }
+        // The warping session's last batch from this map goes out before the handoff.
         self.flush(&mut events);
+        for transfer in transfers.drain(..) {
+            self.hand_off(transfer);
+        }
+        self.transfers = transfers;
         self.events = events;
+    }
+
+    /// Moves a warped character's session out of this map and asks its session task to join
+    /// the destination. If the task is gone, the dropped handoff releases the claim.
+    fn hand_off(&mut self, transfer: MapTransfer) {
+        let char_id = transfer.spawn.char_id;
+        let Some(session_id) = self.by_char.remove(&char_id) else {
+            return;
+        };
+        let Some(session) = self.sessions.remove(&session_id) else {
+            return;
+        };
+        let Session {
+            claim,
+            outbound_tx,
+            control_tx,
+            mut pending,
+            ..
+        } = session;
+        if !pending.is_empty() {
+            let _ = outbound_tx.try_send(pending.split().freeze());
+        }
+        info!(
+            "Map '{}': char {} warps to '{}'",
+            self.map_name, char_id.0, transfer.dest_map
+        );
+        let handoff = MapHandoff {
+            claim,
+            spawn: transfer.spawn,
+            dest_map: transfer.dest_map,
+            dest: transfer.dest,
+            rewarp_count: transfer.rewarp_count,
+            outbound_tx,
+        };
+        if control_tx
+            .try_send(SessionControl::ChangeMap(handoff))
+            .is_err()
+        {
+            warn!(
+                "Map '{}': session {:?} gone before its map change",
+                self.map_name, session_id
+            );
+        }
     }
 
     fn handle_command(&mut self, cmd: WorldCommand) {
         match cmd {
-            WorldCommand::JoinSession {
-                session_id,
-                account_id,
-                spawn,
-                claim,
-                outbound_tx,
-            } => self.join(session_id, account_id, spawn, claim, outbound_tx),
+            WorldCommand::JoinSession(join) => self.join(join),
             WorldCommand::PlayerIntent(intent) => self.player_intent(intent),
             WorldCommand::LeaveSession { session_id } => {
                 self.detached.remove(&session_id);
@@ -521,16 +643,19 @@ impl MapWorldActor {
         }
     }
 
-    /// Spawns the character and sends the entry burst. On failure the sender is dropped,
-    /// which ends the session without sending anything, and dropping `claim` releases it.
-    fn join(
-        &mut self,
-        session_id: SessionId,
-        account_id: AccountId,
-        mut spawn: CharacterSpawn,
-        claim: Claim,
-        outbound_tx: mpsc::Sender<Bytes>,
-    ) {
+    /// Spawns the character and sends its first packet: `ZC_ACCEPT_ENTER` on login, `0x0091`
+    /// on a warp. On failure the join is dropped: that releases the claim (with the position
+    /// set on it) and drops the sender, which ends the session.
+    fn join(&mut self, join: JoinSession) {
+        let JoinSession {
+            session_id,
+            account_id,
+            spawn,
+            claim,
+            outbound_tx,
+            control_tx,
+            entry,
+        } = join;
         let char_id = spawn.char_id;
         if self.sessions.contains_key(&session_id) {
             warn!(
@@ -540,30 +665,36 @@ impl MapWorldActor {
             return;
         }
         let now = self.now_ms();
-        let spawn_pos = spawn.pos;
-        let mut result = self.engine.spawn_character(spawn.clone(), now);
-        if let Err(EngineError::InvalidCell { x, y }) = result {
-            // A stored position off this map (e.g. saved on a fallback grid) must not lock the
-            // character out: enter at the map centre instead.
-            spawn.pos = MapPosition {
-                x: self.map_size.0 / 2,
-                y: self.map_size.1 / 2,
-                dir: spawn_pos.dir,
-            };
-            warn!(
-                "Map '{}': char {} stored at ({}, {}) is off the map; entering at ({}, {})",
-                self.map_name, char_id.0, x, y, spawn.pos.x, spawn.pos.y
-            );
-            result = self.engine.spawn_character(spawn.clone(), now);
-        }
-        let mut events = match result {
-            Ok(events) => events,
-            Err(err) => {
-                warn!(
-                    "Map '{}' rejected entry of char {} for {:?}: {}",
-                    self.map_name, char_id.0, session_id, err
-                );
-                return;
+        let first = match entry {
+            Entry::Login => match self.spawn_login(spawn, now) {
+                Ok(pos) => ServerEvent::AcceptEnter {
+                    account_id,
+                    server_tick: now as u32,
+                    pos,
+                },
+                Err(err) => {
+                    warn!(
+                        "Map '{}' rejected entry of char {} for {:?}: {}",
+                        self.map_name, char_id.0, session_id, err
+                    );
+                    return;
+                }
+            },
+            Entry::Warp { dest, rewarp_count } => {
+                match self.engine.enter_by_warp(spawn, dest, rewarp_count, now) {
+                    Ok(pos) => ServerEvent::PlayerMapMove {
+                        dest_map: gat_map_name(&self.map_name),
+                        dest_x: pos.x,
+                        dest_y: pos.y,
+                    },
+                    Err(err) => {
+                        warn!(
+                            "Map '{}' rejected warp arrival of char {} for {:?}: {}",
+                            self.map_name, char_id.0, session_id, err
+                        );
+                        return;
+                    }
+                }
             }
         };
         info!(
@@ -577,19 +708,41 @@ impl MapWorldActor {
                 char_id,
                 claim,
                 outbound_tx,
+                control_tx,
                 pending: BytesMut::new(),
             },
         );
         self.by_char.insert(char_id, session_id);
-        let accept = ServerEvent::AcceptEnter {
-            account_id,
-            server_tick: now as u32,
-            pos: spawn.pos,
-        };
-        if let Some(bytes) = self.encode(&accept) {
+        if let Some(bytes) = self.encode(&first) {
             self.send_to_session(session_id, &bytes);
         }
-        self.flush(&mut events);
+        self.flush(&mut Vec::new());
+    }
+
+    /// Spawns a logging-in character at its stored cell, or at the map centre if that cell is
+    /// off this map (e.g. saved on a fallback grid), so it is never locked out.
+    fn spawn_login(
+        &mut self,
+        mut spawn: CharacterSpawn,
+        now: u64,
+    ) -> Result<MapPosition, EngineError> {
+        let stored = spawn.pos;
+        match self.engine.spawn_character(spawn.clone(), now) {
+            Err(EngineError::InvalidCell { x, y }) => {
+                spawn.pos = MapPosition {
+                    x: self.map_size.0 / 2,
+                    y: self.map_size.1 / 2,
+                    dir: stored.dir,
+                };
+                warn!(
+                    "Map '{}': char {} stored at ({}, {}) is off the map; entering at ({}, {})",
+                    self.map_name, spawn.char_id.0, x, y, spawn.pos.x, spawn.pos.y
+                );
+                let pos = spawn.pos;
+                self.engine.spawn_character(spawn, now).map(|_| pos)
+            }
+            result => result.map(|_| stored),
+        }
     }
 
     fn player_intent(&mut self, intent: SessionIntent) {
@@ -817,6 +970,62 @@ mod tests {
         assert!(eventually(|| service.shared.recent_position(CHAR).is_none()).await);
         let (_, spawn, _claim) = service.resolve_entry(ACCOUNT, CHAR).await.expect("enters");
         assert_eq!(spawn.pos, at(120, 130));
+    }
+
+    /// A handoff whose session task is gone releases its claim (with the trigger cell) and
+    /// closes the outbound queue, whether it was queued before or after the receiver dropped.
+    #[tokio::test]
+    async fn bin_warp_07_handoff_in_a_dropped_channel_releases() {
+        let repo = FakeRepo::new(true);
+        let service = service(repo.clone());
+        for push_before_drop in [true, false] {
+            let mut claim = service.shared.claim(CHAR).expect("claim");
+            claim.set_last("prontera.gat", at(110, 100));
+            let (outbound_tx, mut outbound_rx) = mpsc::channel::<Bytes>(1);
+            let handoff = MapHandoff {
+                claim,
+                spawn: CharacterSpawn {
+                    account_id: ACCOUNT,
+                    char_id: CHAR,
+                    name: "Char1".into(),
+                    sex: ro_core::Sex::Female,
+                    job_class: 0,
+                    base_level: 1,
+                    hair_style: 1,
+                    hair_color: 1,
+                    pos: at(110, 100),
+                    speed: 150,
+                },
+                dest_map: Arc::from("geffen.gat"),
+                dest: (100, 100),
+                rewarp_count: 0,
+                outbound_tx,
+            };
+            let (control_tx, control_rx) = mpsc::channel::<SessionControl>(1);
+            if push_before_drop {
+                assert!(control_tx
+                    .try_send(SessionControl::ChangeMap(handoff))
+                    .is_ok());
+                drop(control_rx);
+            } else {
+                drop(control_rx);
+                assert!(control_tx
+                    .try_send(SessionControl::ChangeMap(handoff))
+                    .is_err());
+            }
+            drop(control_tx);
+            assert_eq!(
+                service.shared.recent_position(CHAR),
+                Some(("prontera.gat".to_string(), at(110, 100))),
+                "trigger cell recorded"
+            );
+            assert!(outbound_rx.recv().await.is_none(), "outbound queue closed");
+            let again = service.shared.claim(CHAR);
+            assert!(
+                again.is_some(),
+                "released (push before drop: {push_before_drop})"
+            );
+        }
     }
 
     #[tokio::test]

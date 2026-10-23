@@ -46,8 +46,14 @@ pub struct InMemoryRepo {
 impl InMemoryRepo {
     /// Characters `n` (char 15000n, account 200000n) named `Char<n>` at the given cells.
     pub fn seeded(chars: &[(u32, u16, u16)]) -> Self {
+        let on_map: Vec<_> = chars.iter().map(|&(n, x, y)| (n, MAP, x, y)).collect();
+        Self::seeded_on(&on_map)
+    }
+
+    /// Like `seeded`, with each character's stored map.
+    pub fn seeded_on(chars: &[(u32, &str, u16, u16)]) -> Self {
         let repo = Self::default();
-        for &(n, x, y) in chars {
+        for &(n, map, x, y) in chars {
             repo.chars.lock().unwrap().insert(
                 CharId(char_id(n)),
                 CharacterSummary {
@@ -61,7 +67,7 @@ impl InMemoryRepo {
                     job_level: 1,
                     hair_style: 2,
                     hair_color: 3,
-                    last_map: MAP.to_string(),
+                    last_map: map.to_string(),
                     last_pos: MapPosition { x, y, dir: 0 },
                     delete_date: None,
                 },
@@ -173,6 +179,32 @@ pub fn data_loader(walls: &[(u16, u16)], npcs: MapNpcs) -> MapDataLoader {
     Arc::new(move |_map: &str| data.clone())
 }
 
+/// Loader handing every map a 200x200 all-walkable grid, with the NPCs listed for it (none for
+/// maps not listed).
+pub fn maps_loader(maps: Vec<(&'static str, MapNpcs)>) -> MapDataLoader {
+    let grid = Arc::new(MapGrid::all_walkable(200, 200).expect("valid dims"));
+    let maps: HashMap<&'static str, Arc<MapNpcs>> = maps
+        .into_iter()
+        .map(|(map, npcs)| (map, Arc::new(npcs)))
+        .collect();
+    Arc::new(move |map: &str| MapData {
+        grid: Arc::clone(&grid),
+        npcs: maps.get(map).cloned().unwrap_or_default(),
+    })
+}
+
+/// A `.gat` file of `width` x `height` walkable cells.
+pub fn gat_file(width: u32, height: u32) -> Vec<u8> {
+    let mut b = b"GRAT".to_vec();
+    b.extend_from_slice(&[1, 2]);
+    b.extend_from_slice(&width.to_le_bytes());
+    b.extend_from_slice(&height.to_le_bytes());
+    for _ in 0..width * height {
+        b.extend_from_slice(&[0u8; 20]);
+    }
+    b
+}
+
 pub struct TestServer {
     pub addr: SocketAddr,
     pub service: MapServiceHandle,
@@ -219,8 +251,12 @@ impl TestServer {
     }
 
     pub async fn position(&self, n: u32) -> Option<MapPosition> {
+        self.position_on(MAP, n).await
+    }
+
+    pub async fn position_on(&self, map: &str, n: u32) -> Option<MapPosition> {
         self.service
-            .character_position(MAP, CharId(char_id(n)))
+            .character_position(map, CharId(char_id(n)))
             .await
     }
 
@@ -397,6 +433,17 @@ pub fn entry_gid(frame: &RawPacket) -> u32 {
 pub fn playermove(frame: &RawPacket) -> (u16, u16, u16, u16, u8, u8) {
     let mv: [u8; 6] = frame.payload[4..10].try_into().unwrap();
     unpack_pos2(&mv)
+}
+
+/// (map name, x, y) of a `0x0091` frame.
+pub fn mapmove(frame: &RawPacket) -> (String, u16, u16) {
+    let name = &frame.payload[0..16];
+    let end = name.iter().position(|&b| b == 0).unwrap_or(16);
+    (
+        String::from_utf8_lossy(&name[..end]).into_owned(),
+        frame_u16(frame, 18),
+        frame_u16(frame, 20),
+    )
 }
 
 pub fn is_entry(frame: &RawPacket) -> bool {

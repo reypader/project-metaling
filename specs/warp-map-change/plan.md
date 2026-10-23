@@ -34,7 +34,7 @@ Write tests first and name them with spec IDs. Iterate with `./verify.sh -p <cra
   - `enter_by_warp`.
   - ENG-WARP-03, ENG-WARP-08. ENG-WARP-06 across a transfer.
   - Update `DESIGN.md` §1a and §7.
-- [ ] **M4 map-server**
+- [x] **M4 map-server**
   - Do this first, in its own commit, with no warp code:
     - `Claim` (RAII);
     - `SharedState::release` returning `bool` with an error for an unheld release;

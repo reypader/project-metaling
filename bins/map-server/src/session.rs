@@ -11,7 +11,9 @@ use tokio::{
 use tokio_util::{codec::Decoder, sync::CancellationToken};
 use tracing::{debug, error, info, warn};
 
-use crate::service::{MapServiceHandle, WorldCommand};
+use crate::service::{
+    Entry, JoinSession, MapHandoff, MapServiceHandle, SessionControl, WorldCommand,
+};
 
 pub async fn handle_client_session(
     socket: TcpStream,
@@ -27,6 +29,9 @@ pub async fn handle_client_session(
     let (mut reader, mut writer) = socket.into_split();
     let (outbound_tx, mut outbound_rx) = mpsc::channel::<Bytes>(64);
     let mut outbound_tx = Some(outbound_tx);
+    // Map actors send `ChangeMap` here when the character warps to another map. This task owns
+    // `control_tx`; each joined map keeps a clone until the session leaves it.
+    let (control_tx, mut control_rx) = mpsc::channel::<SessionControl>(1);
 
     let cancel_token = CancellationToken::new();
     let cancel_token_writer = cancel_token.clone();
@@ -69,6 +74,42 @@ pub async fn handle_client_session(
                     session_id, peer_addr
                 );
                 break 'session_loop;
+            }
+            Some(SessionControl::ChangeMap(handoff)) = control_rx.recv() => {
+                // The client's next `0x007d` follows the `0x0091` that the destination sends
+                // after this join, so it always reaches the new map.
+                let MapHandoff {
+                    claim,
+                    spawn,
+                    dest_map,
+                    dest,
+                    rewarp_count,
+                    outbound_tx: tx,
+                } = handoff;
+                let target_world_tx = service.get_or_spawn_world(&dest_map);
+                let join = JoinSession {
+                    session_id,
+                    account_id: spawn.account_id,
+                    spawn,
+                    claim,
+                    outbound_tx: tx,
+                    control_tx: control_tx.clone(),
+                    entry: Entry::Warp { dest, rewarp_count },
+                };
+                // A failed send drops the join: the claim releases and the sender closes.
+                if target_world_tx
+                    .send(WorldCommand::JoinSession(join))
+                    .await
+                    .is_err()
+                {
+                    error!(
+                        "Session {:?}: map actor for '{}' gone; ending session",
+                        session_id, dest_map
+                    );
+                    break 'session_loop;
+                }
+                world_tx = Some(target_world_tx);
+                continue 'session_loop;
             }
             read_result = reader.read_buf(&mut buffer) => {
                 match read_result {
@@ -144,14 +185,17 @@ pub async fn handle_client_session(
                             // The actor answers with the entry burst, or drops `tx` (which ends
                             // this session) and the claim if the character can't enter. A failed
                             // send drops the command, which releases the claim.
+                            let join = JoinSession {
+                                session_id,
+                                account_id: entered_account_id,
+                                spawn,
+                                claim,
+                                outbound_tx: tx,
+                                control_tx: control_tx.clone(),
+                                entry: Entry::Login,
+                            };
                             if target_world_tx
-                                .send(WorldCommand::JoinSession {
-                                    session_id,
-                                    account_id: entered_account_id,
-                                    spawn,
-                                    claim,
-                                    outbound_tx: tx,
-                                })
+                                .send(WorldCommand::JoinSession(join))
                                 .await
                                 .is_err()
                             {
@@ -219,6 +263,11 @@ pub async fn handle_client_session(
             );
         }
     }
+    // Drop every sender this task still holds so the writer can finish. Dropping `control_rx`
+    // also drops a queued handoff, which releases its claim and its outbound sender; a handoff
+    // pushed after this fails to send and is dropped by the map actor.
+    drop(control_tx);
+    drop(control_rx);
     drop(outbound_tx);
 
     if tokio::time::timeout(std::time::Duration::from_millis(1000), &mut writer_task)

@@ -6,7 +6,7 @@ Keep binaries thin: config, wiring, TCP session supervision, internal HTTP (DTOs
 
 - Clients open every connection. Servers only listen.
 - After a successful handoff (`AC_ACCEPT_LOGIN` 0x0ac4 from login, `HC_NOTIFY_ZONESVR` 0x0ac5 from char), the server **must keep the socket open** and keep its reader loop running until the client sends EOF (`read_buf` → `Ok(0)`) or an I/O error happens. If the server closes first (`shutdown()`, dropping the session task), the client reports a disconnect and aborts the handoff.
-- The server may close a connection only for: framing corruption, unrecoverable parse errors, admin kick/ban, process shutdown, or idle timeout.
+- The server may close a connection only for: framing corruption, unrecoverable parse errors, admin kick/ban, process shutdown, or idle timeout. The map-server also closes when a cross-map warp can't complete: the destination map rejects the join, or its actor is gone (`specs/warp-map-change/spec.md` §1).
 
 ## Raw AccountId echo
 

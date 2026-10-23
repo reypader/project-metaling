@@ -7,8 +7,9 @@ pub use claim::Claim;
 
 pub use config::MapConfig;
 pub use service::{
-    is_valid_map_name, load_npcs, load_walkability, map_data_loader, MapData, MapDataLoader,
-    MapServiceHandle, WorldCommand, FALLBACK_MAP_SIZE, TICK_INTERVAL,
+    is_valid_map_name, load_npcs, load_walkability, map_data_loader, Entry, JoinSession, MapData,
+    MapDataLoader, MapHandoff, MapServiceHandle, SessionControl, WorldCommand, FALLBACK_MAP_SIZE,
+    TICK_INTERVAL,
 };
 pub use session::handle_client_session;
 
