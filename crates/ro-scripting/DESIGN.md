@@ -90,7 +90,7 @@ Because `ro-scripting` cannot mutate `MapWorld` ECS columns (`Vitals`, `Inventor
 
 > **Open decision (settle before implementing this section).** The snippet below breaks the crate dependency rule in `CLAUDE.md` as written:
 > - `Entity` is an `ro-engine` type, and `ro-engine` depends on `ro-scripting`, so `ro-scripting` cannot name it. Pick one: (a) `ro-scripting` defines an opaque handle (e.g. `ScriptEntity(u32)`) that the engine maps to and from `Entity`; or (b) move a plain entity-ID newtype into `ro-core`.
-> - `MobId`, `ScriptId` and `ItemId` are shared by `ro-db`, `ro-scripting` and `ro-engine`. None exist yet. Add them to `ro-core` (preferred), or add an `ro-scripting` → `ro-db` edge to the rule.
+> - `MobId`, `ScriptId` and `ItemId` are shared by `ro-db`, `ro-scripting` and `ro-engine`. `MobId` lives in `ro-db` today (mob spawning); the other two don't exist yet. Move them to `ro-core` (preferred), or add an `ro-scripting` → `ro-db` edge to the rule.
 >
 > Record the outcome here and in the `CLAUDE.md` rule, then delete this note.
 

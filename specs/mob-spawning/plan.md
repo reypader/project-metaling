@@ -42,7 +42,7 @@ Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
 
 - [x] **M0 research, spec, plan:** catalog `mechanics/mobs.md` §1.5 fix, §1.6 and §1.7, plus an `INDEX.md`
   row. This spec and plan.
-- [ ] **M1 ro-db**
+- [x] **M1 ro-db**
   - New `mob_spawn.rs`:
     - `MobId(pub u32)`, `MobSpawn`, `MapMobSpawns { spawns }`;
     - `from_yaml_str`, `load_yaml`, `to_yaml_string`;

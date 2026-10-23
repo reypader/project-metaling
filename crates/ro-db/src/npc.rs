@@ -7,6 +7,7 @@ use std::path::Path;
 
 use serde::{Deserialize, Serialize};
 
+use crate::yaml::{is_false, Schema};
 use crate::DbLoadError;
 
 /// `Header.Type` of an NPC spawn file.
@@ -76,82 +77,26 @@ pub struct MapNpcs {
     pub npcs: Vec<NpcSpawn>,
 }
 
+const SCHEMA: Schema = Schema {
+    db_type: NPC_SPAWN_DB_TYPE,
+    version: NPC_SPAWN_DB_VERSION,
+};
+
 impl MapNpcs {
     /// Parses an `NPC_SPAWN_DB` file. `path` is only a label for errors.
     pub fn from_yaml_str(path: &str, text: &str) -> Result<Self, DbLoadError> {
-        let file: NpcSpawnFile = serde_saphyr::from_str(text).map_err(|e| DbLoadError::Parse {
-            path: path.to_string(),
-            line: e.location().and_then(|l| usize::try_from(l.line()).ok()),
-            message: e.to_string(),
-        })?;
-        let header = &file.header;
-        if header.r#type != NPC_SPAWN_DB_TYPE || header.version != NPC_SPAWN_DB_VERSION {
-            return Err(DbLoadError::Schema {
-                path: path.to_string(),
-                message: format!(
-                    "expected header {NPC_SPAWN_DB_TYPE} version {NPC_SPAWN_DB_VERSION}, got {} version {}",
-                    header.r#type, header.version
-                ),
-            });
-        }
-        Ok(Self { npcs: file.body })
+        SCHEMA.parse(path, text).map(|npcs| Self { npcs })
     }
 
     /// Reads and parses one map's file. A missing file is `Ok(None)` (the map has no NPCs).
     pub fn load_yaml(path: &Path) -> Result<Option<Self>, DbLoadError> {
-        let label = path.display().to_string();
-        let text = match std::fs::read_to_string(path) {
-            Ok(text) => text,
-            Err(err) if err.kind() == std::io::ErrorKind::NotFound => return Ok(None),
-            Err(err) => {
-                return Err(DbLoadError::Io {
-                    path: label,
-                    message: err.to_string(),
-                })
-            }
-        };
-        Self::from_yaml_str(&label, &text).map(Some)
+        Ok(SCHEMA.load(path)?.map(|npcs| Self { npcs }))
     }
 
     /// Serializes with the current header (no leading comments; the importer adds those).
     pub fn to_yaml_string(&self) -> Result<String, DbLoadError> {
-        let file = NpcSpawnFileRef {
-            header: Header {
-                r#type: NPC_SPAWN_DB_TYPE.to_string(),
-                version: NPC_SPAWN_DB_VERSION,
-            },
-            body: &self.npcs,
-        };
-        // YAML 1.2 rules: the loader is YAML 1.2, so keys like `Y` need no 1.1-boolean quoting.
-        let mut options = serde_saphyr::SerializerOptions::default();
-        options.yaml_12 = true;
-        serde_saphyr::to_string_with_options(&file, options).map_err(|e| DbLoadError::Schema {
-            path: String::new(),
-            message: e.to_string(),
-        })
+        SCHEMA.to_yaml(&self.npcs)
     }
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "PascalCase", deny_unknown_fields)]
-struct Header {
-    r#type: String,
-    version: u32,
-}
-
-#[derive(Debug, Deserialize)]
-#[serde(rename_all = "PascalCase", deny_unknown_fields)]
-struct NpcSpawnFile {
-    header: Header,
-    #[serde(default)]
-    body: Vec<NpcSpawn>,
-}
-
-#[derive(Serialize)]
-#[serde(rename_all = "PascalCase")]
-struct NpcSpawnFileRef<'a> {
-    header: Header,
-    body: &'a [NpcSpawn],
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -175,10 +120,6 @@ struct RawWarp {
     x: u16,
     y: u16,
     trigger_while_hidden: bool,
-}
-
-fn is_false(b: &bool) -> bool {
-    !*b
 }
 
 fn is_normal(s: &NpcState) -> bool {

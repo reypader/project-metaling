@@ -15,9 +15,9 @@
 │  1. MapCacheLoader      -> Flat 1D CellFlags grid (width * height)           │
 │  2. YamlRegistryLoader  -> MobBlueprint, ItemBlueprint, SkillBlueprint       │
 │  3. ItemBonusCompiler   -> AOT-compiled `EquipmentModifiers` structs         │
-│  4. MapNpcs (YAML)      -> Per-map `NpcSpawn` lists (tools/npc-import)       │
+│  4. MapNpcs / MapMobSpawns (YAML) -> Per-map spawn lists (tools/npc-import)  │
 └────────────────┬─────────────────────────────────────────────┬───────────────┘
-                 │ (MapNpcs, Registries)                       │ (Uncompiled `{...}` blocks)
+                 │ (MapNpcs, MapMobSpawns, Registries)         │ (Uncompiled `{...}` blocks)
                  ▼                                             ▼
       crates/ro-engine                            crates/ro-scripting
   Spawns Portals, Mobs, & NPCs into               Compiles into Athena VM or Lua
@@ -55,15 +55,17 @@ To keep `ro-engine`'s **Stage 1 (Present Status Establishment)** 100% pure and p
 2. **Fast-Path Compilation (`EquipmentModifiers`):** Standard declarative stat statements (`bonus bStr, N;`, `bonus bAtkEle, Ele_Fire;`, `bonus2 bSubEle, Ele, Rate;`, `bonus2 bAddRace, Race, Rate;`) are compiled directly into the item's static `EquipmentModifiers` struct. When a player equips the item in `ro-engine`, Stage 1 folds `EquipmentModifiers` via pure SIMD-friendly addition without touching `ro-scripting`.
 3. **Dynamic Fallback (`Option<ScriptId>`):** Only items containing imperative control flow (`if`, `callfunc`) or reactive combat procs (`autobonus`, `skill`) emit an uncompiled script snippet to `ro-scripting` and store a fallback `ScriptId` hook (`OnEquip`, `OnUnequip`, `OnAttack`, `OnWhenHit`).
 
-### 2.4 Pipeline 4: NPC Spawn Lists (offline import -> per-map YAML)
+### 2.4 Pipeline 4: NPC and Mob Spawn Lists (offline import -> per-map YAML)
 
 rAthena defines warps, NPCs, shops, mob spawns and mapflags in tab-delimited `.txt` files reached from `npc/re/scripts_main.conf`. `ro-db` never parses that format at runtime:
 
-1. **Offline import (`tools/npc-import`, dev-only, MIT, clean-room):** resolves the manifest, skips `{...}` script bodies, parses the positioned `warp`/`warp2`/`script`/`duplicate(...)`/shop-family headers, resolves sprite names and duplicates, and writes one `NPC_SPAWN_DB` YAML file per map. Grammar: `reference/catalog/db/npc_files.md`; spec: `specs/npc-spawning/spec.md`.
-2. **Committed data (`crates/ro-db/data/npc/<map>.yml`):** GPL-3.0, a modified copy of rAthena data. `crates/ro-db/data/LICENSE` and `NOTICE.md` cover every dataset under `data/` (one section each). Excluded from crate packaging.
-3. **Runtime (`MapNpcs::load_yaml`):** serde (`serde-saphyr`) into `NpcSpawn`s when a map world starts. A missing file means the map has no NPCs.
+1. **Offline import (`tools/npc-import`, dev-only, MIT, clean-room):** resolves the manifest, skips `{...}` script bodies, and parses top-level records in one pass:
+   * positioned `warp`/`warp2`/`script`/`duplicate(...)`/shop-family headers, with sprite names and duplicates resolved, into one `NPC_SPAWN_DB` file per map. Grammar: `reference/catalog/db/npc_files.md`; spec: `specs/npc-spawning/spec.md`.
+   * `monster`/`boss_monster` spawn lines, with `AegisName` refs and `--en--`/`--ja--` names resolved against mob_db, into one `MOB_SPAWN_DB` file per map. Line format: `reference/catalog/mechanics/mobs.md` §1.1, §1.6; spec: `specs/mob-spawning/spec.md`.
+2. **Committed data (`crates/ro-db/data/{npc,mob_spawn}/<map>.yml`):** GPL-3.0, a modified copy of rAthena data. `crates/ro-db/data/LICENSE` and `NOTICE.md` cover every dataset under `data/` (one section each). Excluded from crate packaging.
+3. **Runtime (`MapNpcs::load_yaml`, `MapMobSpawns::load_yaml`):** serde (`serde-saphyr`) into `NpcSpawn`s / `MobSpawn`s when a map world starts. A missing file means the map has none. Both datasets share one private header-check / file-reading helper (`yaml.rs`).
 
-Script bodies are not imported; each entry records `Source: <file>:<line>` for the scripting phase. Mob spawns, mapflags, floating NPCs and shop catalogs are future work (same importer, new YAML types).
+Script bodies are not imported; each entry records `Source: <file>:<line>` for the scripting phase. A mob spawn keeps the line's own values (center, raw span, amount, delays, level, boss keyword, event label); the rules that need map cells or battle config (spawn rectangle, map-wide forcing, respawn delay adjustments) run in `ro-engine`. Mapflags, floating NPCs and shop catalogs are future work (same importer, new YAML types).
 
 ---
 
@@ -72,10 +74,12 @@ Script bodies are not imported; each entry records `Source: <file>:<line>` for t
 `ro-db` exposes its parsed data to `ro-engine` and `bins/map-server` using these types, defined in `ro-db`:
 
 ~~~rust
-// ItemId, MobId and ScriptId don't exist yet; add them to ro-core when first used.
+// ItemId and ScriptId don't exist yet. Like MobId, an id lives here while only ro-db and its
+// dependents use it; it moves to ro-core only when a crate that can't depend on ro-db needs it.
 use ro_core::{ItemId, MapPosition};
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+/// mob_db id; valid ranges 1001..=3998 and 20021..=31998. Sent as the unit's `job`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct MobId(pub u32);
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -98,8 +102,23 @@ pub struct NpcSpawn {
     pub source: String,               // "<rAthena path>:<line>"
 }
 
-// Future (mob spawns): MobSpawnBlueprint { mob_id: MobId, spawn_pos, spawn_rect, count,
-// respawn_delay_ms, variance_delay_ms, is_boss, on_death_event }, from the same importer.
+/// One map's permanent spawn lines, in rAthena load order
+/// (`MapMobSpawns::load_yaml`, `from_yaml_str`, `to_yaml_string`).
+pub struct MapMobSpawns { pub spawns: Vec<MobSpawn> }
+
+pub struct MobSpawn {
+    pub name: String,                 // <= 23 chars; --en--/--ja-- resolved
+    pub mob_id: MobId,
+    pub x: u16, pub y: u16,           // (0, 0) = map-wide
+    pub span: (u16, u16),             // raw (xs, ys), before the runtime rectangle rules
+    pub amount: u16,                  // 1..=1000
+    pub delay1: u32,                  // ms
+    pub delay2: u32,                  // ms
+    pub level: Option<u16>,           // None = mob_db level
+    pub boss: bool,                   // boss_monster keyword, not mob_db Class: Boss
+    pub event: Option<String>,        // "npc::OnLabel" run on death
+    pub source: String,               // "<rAthena path>:<line>"
+}
 
 /// Exists today as the concrete `ro_db::MapGrid`, one per map (shared via `Arc` across instances).
 /// Methods marked `future` are added as inherent methods; don't introduce a walkability trait.
