@@ -1,4 +1,5 @@
-//! Sprite token resolution (spec TOOL-NPC-05; `reference/catalog/db/npc_files.md` §5).
+//! Sprite token resolution (spec TOOL-NPC-05; `reference/catalog/db/npc_files.md` §5), and mob
+//! references and names for spawn lines (spec TOOL-MOB-03/04).
 
 use std::collections::{HashMap, HashSet};
 
@@ -17,6 +18,10 @@ pub struct SpriteTable {
     /// Mob AegisName (lowercase) -> id.
     mob_by_name: HashMap<String, i64>,
     mob_ids: HashSet<i64>,
+    /// Mob id -> mob_db `Name`.
+    mob_names: HashMap<i64, String>,
+    /// Mob id -> mob_db `JapaneseName`, when given.
+    mob_japanese_names: HashMap<i64, String>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -37,6 +42,8 @@ struct MobDb {
 struct MobEntry {
     id: i64,
     aegis_name: String,
+    name: Option<String>,
+    japanese_name: Option<String>,
 }
 
 impl SpriteTable {
@@ -57,6 +64,13 @@ impl SpriteTable {
                     .mob_by_name
                     .insert(mob.aegis_name.to_ascii_lowercase(), mob.id);
                 table.mob_ids.insert(mob.id);
+                // An import entry may leave a name out; it keeps the earlier one.
+                if let Some(name) = mob.name {
+                    table.mob_names.insert(mob.id, name);
+                }
+                if let Some(name) = mob.japanese_name {
+                    table.mob_japanese_names.insert(mob.id, name);
+                }
             }
         }
         Ok(table)
@@ -74,6 +88,29 @@ impl SpriteTable {
             id: i16::try_from(id).ok()?,
             is_mob: self.mob_ids.contains(&id),
         })
+    }
+
+    /// A spawn line's mob reference: a whole-token C number must be a mob_db id; anything else
+    /// is a case-insensitive AegisName.
+    pub fn resolve_mob(&self, token: &str) -> Option<u32> {
+        let id = match parse_c_long(token) {
+            Some(id) => self.mob_ids.contains(&id).then_some(id)?,
+            None => *self.mob_by_name.get(&token.to_ascii_lowercase())?,
+        };
+        u32::try_from(id).ok()
+    }
+
+    /// mob_db `Name`.
+    pub fn mob_name(&self, id: u32) -> Option<&str> {
+        self.mob_names.get(&i64::from(id)).map(String::as_str)
+    }
+
+    /// mob_db `JapaneseName`, or `Name` when the mob has none (as rAthena's loader fills it).
+    pub fn mob_japanese_name(&self, id: u32) -> Option<&str> {
+        self.mob_japanese_names
+            .get(&i64::from(id))
+            .map(String::as_str)
+            .or_else(|| self.mob_name(id))
     }
 }
 

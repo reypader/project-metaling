@@ -9,10 +9,10 @@ client version, `PACKETVER = 20260219`.
 | `crates/ro-core` | Shared IDs, DTOs, client intents and server events |
 | `crates/ro-packets` | Wire framing, packet parsing and serialization |
 | `crates/ro-engine` | Per-map ECS runtime: ticks, movement, area of interest |
-| `crates/ro-db` | Static data: `.gat` walkability, NPC spawn lists, registries |
+| `crates/ro-db` | Static data: `.gat` walkability, NPC and mob spawn lists, registries |
 | `crates/ro-persistence` | PostgreSQL storage |
 | `tools/proxy` | Packet-logging proxy (dev only) |
-| `tools/npc-import` | Converts rAthena NPC files to the YAML in `crates/ro-db/data/npc` (dev only) |
+| `tools/npc-import` | Converts rAthena NPC files to the YAML in `crates/ro-db/data/npc` and `crates/ro-db/data/mob_spawn` (dev only) |
 
 `./verify.sh` runs fmt, clippy and the tests. `CLAUDE.md` has the full set of commands.
 

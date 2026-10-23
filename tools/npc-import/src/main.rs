@@ -1,20 +1,23 @@
-//! `npc-import --rathena $RATHENA_PATH --out crates/ro-db/data/npc`
+//! `npc-import --rathena $RATHENA_PATH --out crates/ro-db/data/npc --mob-out crates/ro-db/data/mob_spawn`
 
 use std::path::PathBuf;
 use std::process::Command;
 
 use clap::Parser;
 
-/// Converts rAthena's renewal NPC files into per-map NPC_SPAWN_DB YAML.
+/// Converts rAthena's renewal NPC files into per-map NPC_SPAWN_DB and MOB_SPAWN_DB YAML.
 #[derive(Parser, Debug)]
 #[command(name = "npc-import")]
 struct Args {
     /// rAthena checkout (defaults to $RATHENA_PATH).
     #[arg(long, env = "RATHENA_PATH")]
     rathena: PathBuf,
-    /// Output directory for `<map>.yml` files.
+    /// Output directory for NPC `<map>.yml` files.
     #[arg(long, default_value = "crates/ro-db/data/npc")]
     out: PathBuf,
+    /// Output directory for mob spawn `<map>.yml` files.
+    #[arg(long, default_value = "crates/ro-db/data/mob_spawn")]
+    mob_out: PathBuf,
     /// Print every warning instead of the first 20.
     #[arg(long)]
     all_warnings: bool,
@@ -25,8 +28,10 @@ const SHOWN_WARNINGS: usize = 20;
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
     let commit = rathena_commit(&args.rathena);
-    let (maps, report) = npc_import::import(&args.rathena)?;
-    let written = npc_import::write_output(&args.out, &maps, &commit)?;
+    let imported = npc_import::import(&args.rathena)?;
+    let report = &imported.report;
+    let written = npc_import::write_output(&args.out, &imported.npcs, &commit)?;
+    let mob_written = npc_import::write_output(&args.mob_out, &imported.mobs, &commit)?;
 
     println!("rAthena commit {commit}: {} files read", report.files);
     println!("converted:");
@@ -55,6 +60,38 @@ fn main() -> anyhow::Result<()> {
         println!("  {w}");
     }
     println!("wrote {written} map files to {}", args.out.display());
+
+    let mobs = &report.mobs;
+    println!("mob spawn lines converted:");
+    for (keyword, n) in &mobs.converted {
+        println!("  {keyword:<12} {n:>6}");
+    }
+    println!(
+        "  {:<12} {:>6} lines, {} mobs",
+        "total",
+        mobs.converted.values().sum::<usize>(),
+        mobs.total_amount
+    );
+    if let Some((map, n)) = &mobs.largest_map {
+        println!("  largest map  {map} ({n} mobs)");
+    }
+    println!("mob spawn lines skipped:");
+    for (reason, n) in &mobs.skipped {
+        println!("  {reason:<28} {n:>6}");
+    }
+    let shown = if args.all_warnings {
+        mobs.warnings.len()
+    } else {
+        SHOWN_WARNINGS
+    };
+    println!("mob warnings: {}", mobs.warnings.len());
+    for w in mobs.warnings.iter().take(shown) {
+        println!("  {w}");
+    }
+    println!(
+        "wrote {mob_written} map files to {}",
+        args.mob_out.display()
+    );
     Ok(())
 }
 

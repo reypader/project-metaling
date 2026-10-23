@@ -1,11 +1,11 @@
 //! Turns header records into per-map `NpcSpawn` lists: names, sprites, duplicates, warps
-//! (spec TOOL-NPC-03..07).
+//! (spec TOOL-NPC-03..07), and spawn lines into per-map `MobSpawn` lists (spec TOOL-MOB-01..05).
 
 use std::collections::{BTreeMap, HashMap};
 
-use ro_db::{MapNpcs, NpcKind, NpcSpawn, NpcState, WarpDest};
+use ro_db::{MapMobSpawns, MapNpcs, MobId, MobSpawn, NpcKind, NpcSpawn, NpcState, WarpDest};
 
-use crate::header::{self, Header, HeaderError, Location, Place, SkipReason};
+use crate::header::{self, Header, HeaderError, Location, MobHeader, Place, SkipReason};
 use crate::lex;
 use crate::sprite::{SpriteTable, INVISIBLE, WARPNPC};
 
@@ -21,7 +21,43 @@ pub struct Report {
     pub warnings: Vec<String>,
     /// Files rAthena would stop reading early, with the reason.
     pub file_errors: Vec<String>,
+    /// Spawn lines (`monster` / `boss_monster`).
+    pub mobs: MobReport,
 }
+
+/// What happened to the spawn lines.
+#[derive(Debug, Default, Clone, PartialEq, Eq)]
+pub struct MobReport {
+    /// Converted lines by keyword (`monster`, `boss_monster`).
+    pub converted: BTreeMap<String, usize>,
+    /// Lines not converted, by reason.
+    pub skipped: BTreeMap<String, usize>,
+    /// Sum of `Amount` over converted lines.
+    pub total_amount: u64,
+    /// The map with the most mobs, and its total.
+    pub largest_map: Option<(String, u64)>,
+    /// Lines converted with a change (cut name, dropped size/ai, ...) or skipped.
+    pub warnings: Vec<String>,
+}
+
+/// Everything one import produced, keyed by map name.
+#[derive(Debug, Default)]
+pub struct Imported {
+    pub npcs: BTreeMap<String, MapNpcs>,
+    pub mobs: BTreeMap<String, MapMobSpawns>,
+    pub report: Report,
+}
+
+/// rAthena `MAX_LEVEL`.
+const MAX_LEVEL: i64 = 275;
+/// Largest spawn amount rAthena accepts.
+const MAX_AMOUNT: i64 = 1000;
+/// Delay used when the line gives none.
+const DEFAULT_DELAY1: u32 = 5000;
+/// rAthena rejects delays above this.
+const MAX_DELAY: i64 = 0x0fff_ffff;
+/// An event label shorter than this is ignored (the data uses `0` / `1` as "none").
+const MIN_EVENT_LEN: usize = 4;
 
 impl Report {
     fn count(map: &mut BTreeMap<String, usize>, key: &str) {
@@ -49,6 +85,7 @@ pub struct Importer {
     /// Every NPC's unique name (floating ones too), for duplicates and collisions.
     by_unique: HashMap<String, Source>,
     maps: BTreeMap<String, Vec<NpcSpawn>>,
+    mobs: BTreeMap<String, Vec<MobSpawn>>,
     report: Report,
 }
 
@@ -58,6 +95,7 @@ impl Importer {
             sprites,
             by_unique: HashMap::new(),
             maps: BTreeMap::new(),
+            mobs: BTreeMap::new(),
             report: Report::default(),
         }
     }
@@ -81,19 +119,120 @@ impl Importer {
         }
     }
 
-    pub fn finish(self) -> (BTreeMap<String, MapNpcs>, Report) {
-        let maps = self
+    pub fn finish(self) -> Imported {
+        let npcs = self
             .maps
             .into_iter()
             .map(|(map, npcs)| (map, MapNpcs { npcs }))
             .collect();
-        (maps, self.report)
+        let mut report = self.report;
+        let mut mobs = BTreeMap::new();
+        for (map, spawns) in self.mobs {
+            let total: u64 = spawns.iter().map(|s| u64::from(s.amount)).sum();
+            report.mobs.total_amount += total;
+            if report
+                .mobs
+                .largest_map
+                .as_ref()
+                .is_none_or(|(_, n)| total > *n)
+            {
+                report.mobs.largest_map = Some((map.clone(), total));
+            }
+            mobs.insert(map, MapMobSpawns { spawns });
+        }
+        Imported { npcs, mobs, report }
+    }
+
+    /// Validates a spawn line and resolves its mob and name (spec TOOL-MOB-01..04).
+    fn add_mob(&mut self, h: MobHeader, at: &str) {
+        let keyword = if h.boss { "boss_monster" } else { "monster" };
+        let mobs = &mut self.report.mobs;
+        let mut skip = |reason: &str, detail: String| {
+            Report::count(&mut mobs.skipped, reason);
+            mobs.warnings.push(format!("{at}: {detail}"));
+        };
+        let (Ok(x), Ok(y)) = (u16::try_from(h.x), u16::try_from(h.y)) else {
+            return skip("negative coordinates", "negative coordinates".to_string());
+        };
+        let level = match h.level {
+            None => None,
+            Some(lv) if lv < 0 => None,
+            Some(lv @ 1..=MAX_LEVEL) => u16::try_from(lv).ok(),
+            Some(lv) => return skip("bad level", format!("level {lv} outside 1..={MAX_LEVEL}")),
+        };
+        let amount = match u16::try_from(h.amount) {
+            Ok(n) if (1..=MAX_AMOUNT).contains(&h.amount) => n,
+            _ => {
+                return skip(
+                    "bad amount",
+                    format!("amount {} outside 1..={MAX_AMOUNT}", h.amount),
+                )
+            }
+        };
+        let Some(mob_id) = self.sprites.resolve_mob(&h.mob) else {
+            return skip("unknown mob", format!("unknown mob '{}'", h.mob));
+        };
+        let delay = |d: Option<i64>, default: u32| match d {
+            None => Some(default),
+            Some(d) if (0..=MAX_DELAY).contains(&d) => u32::try_from(d).ok(),
+            Some(_) => None,
+        };
+        let (Some(delay1), Some(delay2)) = (delay(h.delay1, DEFAULT_DELAY1), delay(h.delay2, 0))
+        else {
+            return skip(
+                "bad delay",
+                format!("delay above {MAX_DELAY:#x} or negative"),
+            );
+        };
+
+        let mut warn = |msg: String| mobs.warnings.push(format!("{at}: {msg}"));
+        if h.span.0 < 0 || h.span.1 < 0 {
+            warn(format!("negative span {:?} set to 0", h.span));
+        }
+        let span = (clamp_u16(h.span.0), clamp_u16(h.span.1));
+        let name = match h.name.as_str() {
+            "--en--" => self.sprites.mob_name(mob_id),
+            "--ja--" => self.sprites.mob_japanese_name(mob_id),
+            _ => None,
+        };
+        let name = header::cut_name(name.unwrap_or(&h.name), header::MOB_NAME_MAX);
+        if h.name_truncated || name.truncated {
+            warn(format!("name cut to {} bytes", header::MOB_NAME_MAX));
+        }
+        if matches!(h.size, Some(1..=2)) || h.ai.is_some_and(|ai| ai > 0) {
+            warn(format!(
+                "size {:?} / ai {:?} not supported, dropped",
+                h.size, h.ai
+            ));
+        }
+        let event = h.event.and_then(|e| {
+            let e = e.strip_prefix('"').unwrap_or(&e);
+            let e = e.strip_suffix('"').unwrap_or(e);
+            (e.len() >= MIN_EVENT_LEN).then(|| e.to_string())
+        });
+
+        Report::count(&mut mobs.converted, keyword);
+        self.mobs.entry(h.map).or_default().push(MobSpawn {
+            name: name.text,
+            mob_id: MobId(mob_id),
+            x,
+            y,
+            span,
+            amount,
+            delay1,
+            delay2,
+            level,
+            boss: h.boss,
+            event,
+            source: at.to_string(),
+        });
     }
 
     fn add_header(&mut self, h: Header, rec: &lex::Record, at: &str) {
         let keyword = rec.w2.to_ascii_lowercase();
         match h {
             Header::Skip(reason) => Report::count(&mut self.report.skipped, skip_label(reason)),
+            Header::Mob(mob) => self.add_mob(mob, at),
             Header::Warp {
                 loc,
                 warp2,
@@ -333,8 +472,6 @@ fn clamp_u16(v: i16) -> u16 {
 fn skip_label(reason: SkipReason) -> &'static str {
     match reason {
         SkipReason::Function => "function",
-        SkipReason::Monster => "monster",
-        SkipReason::BossMonster => "boss_monster",
         SkipReason::Mapflag => "mapflag",
         SkipReason::UnknownKeyword => "unknown keyword",
     }

@@ -77,7 +77,7 @@ Order:
 
 Source: `$RATHENA_PATH` at `d4b8e7b8f`, renewal manifest `npc/re/scripts_main.conf`. Counts come from a throwaway scanner that follows `import:`/`npc:` recursively (835 `npc:` files via 14 confs), skips `//` lines and script bodies by brace depth.
 
-**Manifest scope.** The renewal manifest also pulls in `npc/scripts_monsters.conf` (non-RE `npc/mobs/{jail,pvp,towns}.txt`, 25 lines) and quest/job files with top-level spawn lines. 3334 lines are under `npc/re/mobs/**`; 555 are elsewhere (largest: `npc/quests/okolnir.txt` 450, `npc/re/jobs/novice/academy.txt` 21, `npc/re/jobs/3-2/genetic.txt` 18).
+**Manifest scope.** The renewal manifest also pulls in `npc/scripts_monsters.conf` (non-RE `npc/mobs/{jail,pvp,towns}.txt`, 25 lines) and quest/job files with top-level spawn lines. 3334 lines are under `npc/re/mobs/**`; 555 are elsewhere (largest: `npc/quests/okolnir.txt` 450, `npc/re/jobs/novice/academy.txt` 21, `npc/re/jobs/3-2/genetic.txt` 18; the Doram `npc/re/custom/lasagna/lasa_fild.txt` 11 lines / 545 mobs and `lasa_dun.txt` 9 / 451 are listed in `npc/re/scripts_athena.conf:276-277` and their maps are enabled in `conf/maps_athena.conf:1225-1229,1232`, so they are active by default).
 
 **Line recognition** (`npc.cpp:5690-5810`):
 * Fields are tab-split into w1..w4; w4 runs from the third tab to end of line, so a trailing `\t//comment` lands inside w4. Fewer than 4 fields: "Unable to parse".
@@ -113,9 +113,9 @@ Source: `$RATHENA_PATH` at `d4b8e7b8f`, renewal manifest `npc/re/scripts_main.co
 | Metric | Value |
 | :--- | :--- |
 | `monster` / `boss_monster` | 3814 / 75 |
-| Sum of `amount` | 65252 (under `npc/re/mobs/**`: 3260 + 74 lines, 64077 mobs) |
+| Sum of `amount` | 66040 (under `npc/re/mobs/**`: 3334 lines, 64077 mobs; the other 555 lines add 1963) |
 | `amount` range | 1..216; 1628 lines have 1 |
-| Distinct maps | 411 (379 under `npc/re/mobs/**`); all in `db/map_index.txt` |
+| Distinct maps | 416 (379 under `npc/re/mobs/**`, 37 only elsewhere); all in `db/map_index.txt` and `conf/maps_athena.conf` |
 | `level` / `size` / `ai` given | 0 / 0 / 0 lines |
 | `delay1` / `delay2` / `event` given | 3453 / 1127 / 139 lines |
 | `delay2` non-zero | 974 `monster`, 69 `boss_monster` (non-boss values are zeroed at default `mob_spawn_variance: 1`, `npc.cpp:5350-5354`) |

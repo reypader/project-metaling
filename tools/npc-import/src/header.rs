@@ -1,5 +1,6 @@
 //! Classifies a header record and reads its location, name, sprite token and spans
-//! (spec TOOL-NPC-03/04; `reference/catalog/db/npc_files.md` §3-4).
+//! (spec TOOL-NPC-03/04; `reference/catalog/db/npc_files.md` §3-4), or the fields of a mob spawn
+//! line (spec TOOL-MOB-01..04; `reference/catalog/mechanics/mobs.md` §1.1, §1.6).
 
 use ro_db::NpcState;
 
@@ -52,17 +53,47 @@ pub enum Header {
         /// Raw `w4`: its meaning depends on the source's kind.
         w4: String,
     },
-    /// Not an NPC this tool converts (`function`, `monster`, `mapflag`, ...).
+    /// A `monster` / `boss_monster` spawn line.
+    Mob(MobHeader),
+    /// Not something this tool converts (`function`, `mapflag`, ...).
     Skip(SkipReason),
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum SkipReason {
     Function,
-    Monster,
-    BossMonster,
     Mapflag,
     UnknownKeyword,
+}
+
+/// rAthena `NAME_LENGTH - 1`: a mob name is read with `%23[^,]`.
+pub const MOB_NAME_MAX: usize = 23;
+
+/// A spawn line's fields as written, before validation and name/id resolution. Absent numbers
+/// in `w1` are 0.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct MobHeader {
+    pub map: String,
+    pub x: i16,
+    pub y: i16,
+    /// Raw `(xs, ys)`.
+    pub span: (i16, i16),
+    /// The keyword was `boss_monster`.
+    pub boss: bool,
+    /// The name part of `w3`, cut to `MOB_NAME_MAX` bytes.
+    pub name: String,
+    pub name_truncated: bool,
+    /// The level part of `w3`; `None` when absent or not a number.
+    pub level: Option<i64>,
+    /// Mob id or AegisName token, trimmed.
+    pub mob: String,
+    pub amount: i64,
+    pub delay1: Option<i64>,
+    pub delay2: Option<i64>,
+    /// Raw event field, quotes not yet stripped.
+    pub event: Option<String>,
+    pub size: Option<i64>,
+    pub ai: Option<i64>,
 }
 
 /// Why a header that looked like an NPC could not be read.
@@ -105,9 +136,10 @@ pub fn parse(rec: &Record) -> Result<Header, HeaderError> {
             w4: rec.w4.clone(),
         });
     }
+    if lower == "monster" || lower == "boss_monster" {
+        return parse_mob(rec, lower == "boss_monster").map(Header::Mob);
+    }
     Ok(Header::Skip(match lower.as_str() {
-        "monster" => SkipReason::Monster,
-        "boss_monster" => SkipReason::BossMonster,
         "mapflag" => SkipReason::Mapflag,
         _ => SkipReason::UnknownKeyword,
     }))
@@ -143,6 +175,120 @@ fn parse_warp(rec: &Record, lower: &str) -> Result<Header, HeaderError> {
         dest_map,
         dest,
     })
+}
+
+/// Reads a spawn line like rAthena's scanf formats: `w1` `map{,x,y{,xs,ys}}`, `w3`
+/// `name{,level}`, `w4` `id,amount{,delay1{,delay2{,event{,size{,ai}}}}}`. Each conversion stops
+/// the rest of its field list when it fails.
+fn parse_mob(rec: &Record, boss: bool) -> Result<MobHeader, HeaderError> {
+    let mut w1 = rec.w1.split(',');
+    let map = w1
+        .next()
+        .filter(|m| !m.is_empty() && m.len() <= MAP_NAME_MAX)
+        .ok_or_else(|| HeaderError(format!("bad location '{}'", rec.w1)))?;
+    let mut coords = [0i16; 4];
+    for (slot, value) in coords.iter_mut().zip(scan_ints(w1)) {
+        *slot =
+            i16::try_from(value).map_err(|_| HeaderError(format!("bad location '{}'", rec.w1)))?;
+    }
+    let [x, y, xs, ys] = coords;
+
+    let (name, level) = match rec.w3.split_once(',') {
+        Some((name, level)) => (name, scan_int(level).map(|(v, _)| v)),
+        None => (rec.w3.as_str(), None),
+    };
+    if name.is_empty() {
+        return Err(HeaderError("mob spawn without a name".to_string()));
+    }
+    let cut = cut_name(name, MOB_NAME_MAX);
+
+    // A trailing `\t//comment` is still in w4; the scan stops at the tab.
+    let w4 = rec.w4.split('\t').next().unwrap_or("");
+    let mut w4 = w4.split(',');
+    let mob = w4.next().map(str::trim).unwrap_or("");
+    let amount = w4.next().and_then(scan_int).map(|(v, _)| v);
+    let amount = match amount {
+        Some(amount) if !mob.is_empty() => amount,
+        _ => {
+            return Err(HeaderError(format!(
+                "mob spawn '{name}': needs 'id,amount', got '{}'",
+                rec.w4
+            )))
+        }
+    };
+    let mut delays = [None; 2];
+    let mut event = None;
+    let mut extras = [None; 2];
+    // Delays and extras are numbers; the event between them is any non-empty text.
+    let mut clean = true;
+    for slot in &mut delays {
+        match w4.next().filter(|_| clean).and_then(scan_int) {
+            Some((v, rest_empty)) => {
+                *slot = Some(v);
+                clean = rest_empty;
+            }
+            None => clean = false,
+        }
+    }
+    if clean {
+        event = w4.next().filter(|e| !e.is_empty()).map(str::to_string);
+        if event.is_some() {
+            for (slot, value) in extras.iter_mut().zip(scan_ints(w4)) {
+                *slot = Some(value);
+            }
+        }
+    }
+    let [delay1, delay2] = delays;
+    let [size, ai] = extras;
+    Ok(MobHeader {
+        map: map.to_string(),
+        x,
+        y,
+        span: (xs, ys),
+        boss,
+        name: cut.text,
+        name_truncated: cut.truncated,
+        level,
+        mob: mob.to_string(),
+        amount,
+        delay1,
+        delay2,
+        event,
+        size,
+        ai,
+    })
+}
+
+/// `%d` conversions over comma-separated fields: yields values until a field doesn't start
+/// with a number, stopping after a field with text left over (the next `,` wouldn't match).
+fn scan_ints<'a>(fields: impl Iterator<Item = &'a str>) -> Vec<i64> {
+    let mut clean = true;
+    fields
+        .map_while(|f| {
+            if !clean {
+                return None;
+            }
+            let (v, rest_empty) = scan_int(f)?;
+            clean = rest_empty;
+            Some(v)
+        })
+        .collect()
+}
+
+/// One `%d`: optional leading whitespace and sign, then digits. Returns the value and whether
+/// nothing follows it in the field.
+fn scan_int(field: &str) -> Option<(i64, bool)> {
+    let s = field.trim_start();
+    let digits_start = usize::from(s.starts_with(['-', '+']));
+    let len = s[digits_start..]
+        .bytes()
+        .take_while(u8::is_ascii_digit)
+        .count();
+    if len == 0 {
+        return None;
+    }
+    let end = digits_start + len;
+    Some((s[..end].parse().ok()?, s.len() == end))
 }
 
 /// `(CLOAKED)`, `(HIDDEN)`, `(DISABLED)` after the keyword; anything else is visible.
@@ -248,22 +394,35 @@ pub fn parse_name(w3: &str) -> ParsedName {
         Some((d, u)) => (d, u),
         None => (w3, w3),
     };
-    let truncated = display.len() > NPC_NAME_LENGTH || unique.len() > NPC_NAME_LENGTH;
-    let unique = truncate(unique);
+    let display = cut_name(display, NPC_NAME_LENGTH);
+    let unique = cut_name(unique, NPC_NAME_LENGTH);
     ParsedName {
-        display: truncate(display),
-        unique: (!unique.is_empty() && !unique.contains("::")).then_some(unique),
-        truncated,
+        display: display.text,
+        truncated: display.truncated || unique.truncated,
+        unique: (!unique.text.is_empty() && !unique.text.contains("::")).then_some(unique.text),
     }
 }
 
-fn truncate(s: &str) -> String {
-    if s.len() <= NPC_NAME_LENGTH {
-        return s.to_string();
+/// A name cut to a byte limit.
+pub struct CutName {
+    pub text: String,
+    pub truncated: bool,
+}
+
+/// Cuts `s` to at most `max` bytes, on a char boundary.
+pub fn cut_name(s: &str, max: usize) -> CutName {
+    if s.len() <= max {
+        return CutName {
+            text: s.to_string(),
+            truncated: false,
+        };
     }
-    let mut end = NPC_NAME_LENGTH;
+    let mut end = max;
     while !s.is_char_boundary(end) {
         end -= 1;
     }
-    s[..end].to_string()
+    CutName {
+        text: s[..end].to_string(),
+        truncated: true,
+    }
 }

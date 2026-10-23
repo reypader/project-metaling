@@ -104,7 +104,7 @@ Body:
   `*.yml` files are removed, like the NPC output.
 - The report prints converted counts per keyword, the skip reasons, and the largest per-map mob total.
 - Against `d4b8e7b`, the counts must match catalog §1.6: 3814 `monster`, 75 `boss_monster`, total
-  `Amount` 65252, 411 maps. The test runs only when `RATHENA_PATH` is set.
+  `Amount` 66040, 416 maps. The test runs only when `RATHENA_PATH` is set.
 - The NPC counts are unchanged. `monster` / `boss_monster` no longer appear in the skip report.
 
 ### DB-MOB-01: Load a map file
