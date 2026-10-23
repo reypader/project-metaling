@@ -6,6 +6,7 @@ set +m
 # Usage:
 #   ./run_metaling_servers.sh          Build, start all three servers and proxy, stream logs until interrupted.
 #   ./run_metaling_servers.sh test     Build, start servers and proxy, verify endpoints, and cleanly exit.
+#   ./run_metaling_servers.sh --no-proxy   Skip the proxy; servers bind the standard client ports directly.
 #   ./run_metaling_servers.sh --help   Display usage information.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -16,15 +17,12 @@ BUILD_BINARIES=1
 BUILD_PROFILE="debug"
 CARGO_PROFILE_FLAG=""
 MODE="run"
+USE_PROXY=1
 TIMEOUT_SECONDS=15
 LOG_DIR="$WORKSPACE_ROOT/target/logs"
 export RUST_LOG="${RUST_LOG:-info}"
 # Committed NPC spawn lists (GPL-3.0 data, see crates/ro-db/data/NOTICE.md).
 export NPC_DATA_DIR="${NPC_DATA_DIR:-$WORKSPACE_ROOT/crates/ro-db/data/npc}"
-
-LOGIN_PORT="${LOGIN_PORT:-6910}"
-CHAR_PORT="${CHAR_PORT:-6131}"
-MAP_PORT="${MAP_PORT:-5131}"
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -40,6 +38,10 @@ while [[ $# -gt 0 ]]; do
             BUILD_BINARIES=0
             shift
             ;;
+        --no-proxy)
+            USE_PROXY=0
+            shift
+            ;;
         --release)
             BUILD_PROFILE="release"
             CARGO_PROFILE_FLAG="--release"
@@ -50,18 +52,19 @@ while [[ $# -gt 0 ]]; do
             echo ""
             echo "Modes:"
             echo "  run             Start servers and stream logs until interrupted (default)."
-            echo "  test            Start servers and proxy, verify endpoints, and exit."
+            echo "  test            Start servers (and proxy), verify endpoints, and exit."
             echo ""
             echo "Options:"
+            echo "  --no-proxy      Don't start the proxy; servers bind the client ports 6900/6121/5121."
             echo "  --no-build      Skip compiling the server and proxy binaries."
             echo "  --release       Use release binaries in target/release/ directory."
             echo "  -h, --help      Show this help message."
             echo ""
             echo "Environment variables:"
             echo "  RUST_LOG        Log level filter (defaults to 'info')."
-            echo "  LOGIN_PORT      Login server bind port (defaults to 6910)."
-            echo "  CHAR_PORT       Char server bind port (defaults to 6131)."
-            echo "  MAP_PORT        Map server bind port (defaults to 5131)."
+            echo "  LOGIN_PORT      Login server bind port (6910 with proxy, 6900 with --no-proxy)."
+            echo "  CHAR_PORT       Char server bind port (6131 with proxy, 6121 with --no-proxy)."
+            echo "  MAP_PORT        Map server bind port (5131 with proxy, 5121 with --no-proxy)."
             exit 0
             ;;
         *)
@@ -71,6 +74,21 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+if [[ "$USE_PROXY" -eq 1 ]]; then
+    # The proxy owns the client ports, so the servers sit 10 above them.
+    # Servers keep advertising 6121/5121 (their defaults), which routes the client back through the proxy.
+    LOGIN_PORT="${LOGIN_PORT:-6910}"
+    CHAR_PORT="${CHAR_PORT:-6131}"
+    MAP_PORT="${MAP_PORT:-5131}"
+else
+    LOGIN_PORT="${LOGIN_PORT:-6900}"
+    CHAR_PORT="${CHAR_PORT:-6121}"
+    MAP_PORT="${MAP_PORT:-5121}"
+    # The client connects straight to the servers, so advertise the ports they actually bind.
+    export CHAR_ADVERTISED_PORT="$CHAR_PORT"
+    export MAP_ADVERTISED_PORT="$MAP_PORT"
+fi
 
 BIN_DIR="$WORKSPACE_ROOT/target/$BUILD_PROFILE"
 LOGIN_BIN="$BIN_DIR/login-server"
@@ -129,9 +147,11 @@ check_port() {
 }
 
 echo "[*] Checking port availability..."
-check_port 6900 "proxy login listener TCP"
-check_port 6121 "proxy char listener TCP"
-check_port 5121 "proxy map listener TCP"
+if [[ "$USE_PROXY" -eq 1 ]]; then
+    check_port 6900 "proxy login listener TCP"
+    check_port 6121 "proxy char listener TCP"
+    check_port 5121 "proxy map listener TCP"
+fi
 check_port "$LOGIN_PORT" "login server bind TCP"
 check_port "$CHAR_PORT" "char server bind TCP"
 check_port "$MAP_PORT" "map server bind TCP"
@@ -140,17 +160,27 @@ check_port 6122 "char server HTTP"
 check_port 5122 "map server HTTP"
 
 if [[ "$BUILD_BINARIES" -eq 1 ]]; then
-    echo "[*] Building server binaries and proxy ($BUILD_PROFILE profile)..."
+    echo "[*] Building server binaries ($BUILD_PROFILE profile)..."
     if [[ -n "$CARGO_PROFILE_FLAG" ]]; then
         cargo build --bins "$CARGO_PROFILE_FLAG"
-        cargo build -p ro-proxy "$CARGO_PROFILE_FLAG"
     else
         cargo build --bins
-        cargo build -p ro-proxy
+    fi
+    if [[ "$USE_PROXY" -eq 1 ]]; then
+        echo "[*] Building proxy ($BUILD_PROFILE profile)..."
+        if [[ -n "$CARGO_PROFILE_FLAG" ]]; then
+            cargo build -p ro-proxy "$CARGO_PROFILE_FLAG"
+        else
+            cargo build -p ro-proxy
+        fi
     fi
 fi
 
-for bin in "$LOGIN_BIN" "$CHAR_BIN" "$MAP_BIN" "$PROXY_BIN"; do
+REQUIRED_BINS=("$LOGIN_BIN" "$CHAR_BIN" "$MAP_BIN")
+if [[ "$USE_PROXY" -eq 1 ]]; then
+    REQUIRED_BINS+=("$PROXY_BIN")
+fi
+for bin in "${REQUIRED_BINS[@]}"; do
     if [[ ! -x "$bin" ]]; then
         echo "Error: Binary not found or not executable: $bin" >&2
         exit 1
@@ -251,21 +281,23 @@ fi
 
 echo "[*] All three servers are healthy and accepting connections."
 
-echo "[*] Starting proxy..."
-"$PROXY_BIN" \
-    --target-ip 127.0.0.1 \
-    --login "127.0.0.1:$LOGIN_PORT" \
-    --char "127.0.0.1:$CHAR_PORT" \
-    --map "127.0.0.1:$MAP_PORT" \
-    --listen-login-port 6900 \
-    --listen-char-port 6121 \
-    --listen-map-port 5121 \
-    --log-file "$LOG_DIR/packet_sequence.log" \
-    > >(tee "$PROXY_LOG" | awk -v p="$PREFIX_PROXY" '{print p " " $0; fflush()}') 2>&1 &
-PROXY_PID=$!
-disown "$PROXY_PID" 2>/dev/null || true
+start_proxy() {
+    echo "[*] Starting proxy..."
+    "$PROXY_BIN" \
+        --target-ip 127.0.0.1 \
+        --login "127.0.0.1:$LOGIN_PORT" \
+        --char "127.0.0.1:$CHAR_PORT" \
+        --map "127.0.0.1:$MAP_PORT" \
+        --listen-login-port 6900 \
+        --listen-char-port 6121 \
+        --listen-map-port 5121 \
+        --log-file "$LOG_DIR/packet_sequence.log" \
+        > >(tee "$PROXY_LOG" | awk -v p="$PREFIX_PROXY" '{print p " " $0; fflush()}') 2>&1 &
+    PROXY_PID=$!
+    disown "$PROXY_PID" 2>/dev/null || true
 
-echo "[*] Launched proxy (PID: $PROXY_PID)"
+    echo "[*] Launched proxy (PID: $PROXY_PID)"
+}
 
 verify_proxy_healthy() {
     local start_time
@@ -295,12 +327,16 @@ verify_proxy_healthy() {
     done
 }
 
-echo "[*] Waiting for proxy listener ports..."
-if ! verify_proxy_healthy; then
-    exit 1
+if [[ "$USE_PROXY" -eq 1 ]]; then
+    start_proxy
+    echo "[*] Waiting for proxy listener ports..."
+    if ! verify_proxy_healthy; then
+        exit 1
+    fi
+    echo "[*] Proxy is active and accepting connections."
+else
+    echo "[*] Proxy disabled (--no-proxy); clients connect directly to login on port $LOGIN_PORT."
 fi
-
-echo "[*] Proxy is active and accepting connections."
 
 if [[ "$MODE" == "test" ]]; then
     echo ""
@@ -313,18 +349,26 @@ if [[ "$MODE" == "test" ]]; then
     nc -z 127.0.0.1 "$LOGIN_PORT" && echo "Login server TCP port $LOGIN_PORT reachable."
     nc -z 127.0.0.1 "$CHAR_PORT" && echo "Char server TCP port $CHAR_PORT reachable."
     nc -z 127.0.0.1 "$MAP_PORT" && echo "Map server TCP port $MAP_PORT reachable."
-    echo ""
-    echo "=== Proxy Client TCP Ports ==="
-    nc -z 127.0.0.1 6900 && echo "Proxy login client TCP port 6900 reachable."
-    nc -z 127.0.0.1 6121 && echo "Proxy char client TCP port 6121 reachable."
-    nc -z 127.0.0.1 5121 && echo "Proxy map client TCP port 5121 reachable."
+    if [[ "$USE_PROXY" -eq 1 ]]; then
+        echo ""
+        echo "=== Proxy Client TCP Ports ==="
+        nc -z 127.0.0.1 6900 && echo "Proxy login client TCP port 6900 reachable."
+        nc -z 127.0.0.1 6121 && echo "Proxy char client TCP port 6121 reachable."
+        nc -z 127.0.0.1 5121 && echo "Proxy map client TCP port 5121 reachable."
+    fi
     echo ""
     echo "[*] Test verification completed successfully."
     exit 0
 fi
 
-echo "[*] Streaming server and proxy logs. Press Ctrl+C to terminate."
-while kill -0 "$LOGIN_PID" 2>/dev/null && kill -0 "$CHAR_PID" 2>/dev/null && kill -0 "$MAP_PID" 2>/dev/null && kill -0 "$PROXY_PID" 2>/dev/null; do
+all_running() {
+    for pid in $LOGIN_PID $CHAR_PID $MAP_PID $PROXY_PID; do
+        kill -0 "$pid" 2>/dev/null || return 1
+    done
+}
+
+echo "[*] Streaming logs. Press Ctrl+C to terminate."
+while all_running; do
     sleep 1
 done
 echo "A server or proxy process terminated unexpectedly. Initiating shutdown." >&2
