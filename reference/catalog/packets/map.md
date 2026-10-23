@@ -39,6 +39,9 @@ Target client version: `PACKETVER = 20260219`. Packet entries are sorted by asce
 | `18` | `2` | `u16` | `x` | Destination X coordinate |
 | `20` | `2` | `u16` | `y` | Destination Y coordinate |
 
+* **Capture-confirmed** (rAthena, 2026-10-23): `70 72 74 5f 66 69 6c 64 30 38 2e 67 61 74 00 00 aa 00 77 01` is `prt_fild08.gat` (NUL-padded to 16) at (170,375). Same-map warps send the same map's name.
+* **When rAthena sends it:** on every warp (same map or not; see [mechanics/map_entry_actions.md#map-change-same-map-server](../mechanics/map_entry_actions.md#map-change-same-map-server)), and once on every fresh login with the character's own map and cell, after `0x02eb` and before the client's first `0x007d` (see [mechanics/map_entry_actions.md#map-entry-cz_enter-clif_parse_wanttoconnection](../mechanics/map_entry_actions.md#map-entry-cz_enter-clif_parse_wanttoconnection) and [PF-20](../../../PACKET_FINDINGS.md#pf-20)). `@goto`/`@warp` use it too.
+
 ### `0x0283` `ZC_AID`
 
 * **Opcode:** `0x0283`
@@ -169,7 +172,7 @@ Target client version: `PACKETVER = 20260219`. Packet entries are sorted by asce
 
 ## Player Wire Identifiers (Policy)
 
-* **Provenance:** `rathena` `src/map/pc.cpp:1444` (`sd->id = account_id`), `src/map/clif.cpp` (`clif_set_unit_idle` ~L1129, `clif_spawn_unit`, `clif_set_unit_walking` L1369-1380, `clif_clearunit_area` L970, `clif_name` L9927, `clif_sitting` L5329, `clif_parse_GetCharNameRequest` L11471), capture `tools/proxy/packet_captures/login_sequence-rathena.log` lines 28, 110. Applies to `PACKETVER = 20260219`.
+* **Provenance:** `rathena` `src/map/pc.cpp:1444` (`sd->id = account_id`), `src/map/clif.cpp` (`clif_set_unit_idle` ~L1129, `clif_spawn_unit`, `clif_set_unit_walking` L1369-1380, `clif_clearunit_area` L970, `clif_name` L9927, `clif_sitting` L5329, `clif_parse_GetCharNameRequest` L11471), capture [`login_sequence-rathena.txt`](../captures/login_sequence-rathena.txt) lines 28, 110. Applies to `PACKETVER = 20260219`.
 * **Rule:** For a player (`BL_PC`), the in-map object id `bl.id` is the **account_id**. Every map-wire "unit id" field for a player carries `account_id`: `ZC_NOTIFY_VANISH.gid`, `ZC_NOTIFY_ACT.srcID`/`targetID`, `ZC_CHANGE_DIRECTION.srcId`, `ZC_ACK_REQNAMEALL.gid`, `CZ_REQNAME` target, `CZ_REQUEST_ACT` target, and the `AID` field of `0x09fd`/`0x09fe`/`0x09ff`.
 * **`char_id` appears only in** the `GID` field of `0x09fd`/`0x09fe`/`0x09ff` (players only; `0` for mobs/NPCs/pets) and in `ZC_ACK_REQNAME_BYGID` (`0x0af7`, answer to a char-id lookup, not to `CZ_REQNAME`).
 * **Capture proof:** `CZ_ENTER` carried `account_id = 2000000`, `char_id = 150000`; the later `CZ_REQNAME` for the player's own entity carried `entity_id = 2000000` (account_id).

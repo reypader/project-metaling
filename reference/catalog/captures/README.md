@@ -1,0 +1,15 @@
+# Appendix: real-client captures
+
+Packet logs recorded through `tools/proxy` against real rAthena (`./run_rathena_servers.sh`). Catalog entries and `PACKET_FINDINGS.md` cite them as ground truth. A capture beats rAthena source when they disagree.
+
+- **Recording:** `tools/proxy` writes logs as `*.log`, which `.gitignore` excludes. A capture is committed only when the catalog cites it: copy it here as `.txt` and add a row below.
+- **Payloads:** the proxy prints each payload as hex, cut after 32 bytes (`... (+N bytes)`).
+- **Framing:** the proxy frames packets with `crates/ro-packets/src/table.rs`. A packet missing from that table, or listed with the wrong length, shows up as `UNKNOWN / UNMAPPED` or as bogus `0x0000`-style frames until the stream re-syncs. See [PF-21](../../../PACKET_FINDINGS.md#pf-21).
+- **Redaction:** server `0x008e` text (MOTD, version line, command replies) is rAthena message text. It is replaced with `[redacted: rAthena message text ...]` so no rAthena-derived content lives outside `crates/ro-db/data/`. The opcode and frame length are kept. Account and character names are throwaway test accounts. The proxy already redacts passwords. The PIN in `0x08b8` (`CH_SECOND_PASSWD_ACK`) is redacted by hand. The proxy frames that packet 2 bytes short, so its last two PIN bytes show up as a bogus `0x????` client frame, also redacted (see PF-21).
+
+| File | Recorded | Server | What it shows | Cited by |
+| :--- | :--- | :--- | :--- | :--- |
+| [login_sequence-rathena.txt](./login_sequence-rathena.txt) | 2026-10-18 | rAthena, `PACKETVER 20260219` | One client: a failed login, then login → char select → PIN → map entry, a little walking and name requests. It was committed under `tools/proxy/packet_captures/`, removed in `bba802d`, and restored here with passwords, PIN and MOTD redacted. Line numbers are unchanged. | [packets/map_units.md](../packets/map_units.md), [packets/map.md](../packets/map.md#player-wire-identifiers-policy), [map_entry_actions.md](../mechanics/map_entry_actions.md) |
+| [packet_sequence-20261023_030246.txt](./packet_sequence-20261023_030246.txt) | 2026-10-23 | rAthena `d4b8e7b`, `PACKETVER 20260219` | Two clients in a party. Login on `prt_fild08`. Cross-map warps `prt_fild08` → `prontera` → `prt_fild08`, with an observer on `prt_fild08`. The observer restarts to char select. | [map_entry_actions.md#map-change-same-map-server](../mechanics/map_entry_actions.md#map-change-same-map-server), [npcs.md](../mechanics/npcs.md#warp-trigger-for-the-warp-portal-feature), PF-01, PF-20 |
+| [packet_sequence-20261023_031902.txt](./packet_sequence-20261023_031902.txt) | 2026-10-23 | same | `prt_fild08` → `prontera` warp, an `@goto` jump, then both clients take the `prontera` → `prt_in` (68,134) warp, one observing the other. | same |
+| [packet_sequence-20261023_032015.txt](./packet_sequence-20261023_032015.txt) | 2026-10-23 | same | Same-map warps in `prt_in` (`prt20`/`prt20-1`), each client observing the other. Restart to char select. | same |

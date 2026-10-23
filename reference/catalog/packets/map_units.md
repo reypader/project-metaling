@@ -46,7 +46,7 @@ Target client version: `PACKETVER = 20260219`. All integers little-endian, struc
 
 ## `0x0088` `ZC_STOPMOVE`
 
-* **Direction:** Map to Client. **Frame:** Fixed `10` = `sizeof(PACKET_ZC_STOPMOVE)` (`int16 + uint32 + uint16 + uint16`, packed). **Packet DB:** NOT in `clif_packetdb.hpp`/`clif_shuffle.hpp` (no `0x0088` entry; length is the struct size). Project `table.rs` has `Fixed(10)` (since engine-foundation M3). No capture shows it (`login_sequence-*.log` have no walk/sit). Applies to 20260219 (no `#if PACKETVER` branch).
+* **Direction:** Map to Client. **Frame:** Fixed `10` = `sizeof(PACKET_ZC_STOPMOVE)` (`int16 + uint32 + uint16 + uint16`, packed). **Packet DB:** NOT in `clif_packetdb.hpp`/`clif_shuffle.hpp` (no `0x0088` entry; length is the struct size). Project `table.rs` has `Fixed(10)` (since engine-foundation M3). No capture shows it ([`login_sequence-rathena.txt`](../captures/login_sequence-rathena.txt) has no walk/sit). Applies to 20260219 (no `#if PACKETVER` branch).
 * **Provenance:** `rathena` `src/map/packets.hpp:728-734` (struct + `DEFINE_PACKET_HEADER(ZC_STOPMOVE, 0x88)`), sender `clif.cpp:2204-2219` (`clif_fixpos(const block_list& bl)`).
 
 | Offset | Size | Type | Field | Notes |
@@ -89,7 +89,7 @@ Target client version: `PACKETVER = 20260219`. All integers little-endian, struc
 | `4` | `4` | `i32` | `count` | New value |
 
 * **Weight vars (`enum _sp`, `map.hpp:498-505`, positional):** `SP_WEIGHT = 24` (`0x18`), `SP_MAXWEIGHT = 25` (`0x19`). (Neighbours: `SP_NEXTJOBEXP = 23`, `SP_1a = 26`.) Sent via `clif_par_change` (`clif.cpp:3550-3558`) from `clif_updatestatus` (`:3637-3646`): `SP_WEIGHT` -> `sd.weight`, `SP_MAXWEIGHT` -> `sd.max_weight`, both plain `i32` in `0x00b0` (NOT `0x00b1 ZC_LONGPAR_CHANGE`, `packets_struct.hpp:361-366`, which rAthena does not use for weight). `SP_WEIGHT` also calls `pc_updateweightstatus` (SC_WEIGHT50/90 icons) first.
-* **Units: 0.1 weight per unit** (item db weight 10 = 1.0). `max_weight = job_db max_weight_base + STR * 300 (+ bonuses)` (`status.cpp:3663`; base 20000 = 2000.0). Capture `login_sequence-rathena.log` (STR 1 novice): `SP_MAXWEIGHT` payload `19 00 4c 4f 00 00` = 20300 (20000 + 300) and `SP_WEIGHT` payload `18 00 f4 01 00 00` = 500 (50.0). Overweight thresholds use `weight * 100 / max_weight` (`pc.cpp:3016`).
+* **Units: 0.1 weight per unit** (item db weight 10 = 1.0). `max_weight = job_db max_weight_base + STR * 300 (+ bonuses)` (`status.cpp:3663`; base 20000 = 2000.0). Capture [`login_sequence-rathena.txt`](../captures/login_sequence-rathena.txt) (STR 1 novice): `SP_MAXWEIGHT` payload `19 00 4c 4f 00 00` = 20300 (20000 + 300) and `SP_WEIGHT` payload `18 00 f4 01 00 00` = 500 (50.0). Overweight thresholds use `weight * 100 / max_weight` (`pc.cpp:3016`).
 * **Order on map entry:** `clif_parse_LoadEndAck` sends `SP_WEIGHT` then `SP_MAXWEIGHT` (`clif.cpp:10793-10794`); capture frames 72-73 confirm (after `CZ_NOTIFY_ACTORINIT`, before `0x099b` map property and the `0x09ff` nearby units). The same pair is also sent by `clif_refresh` (`:9851-9852`), and individually on change (`pc_additem` `pc.cpp:6070`, `status_calc_pc` `status.cpp:3693-3697`).
 
 ## `0x08c8` `ZC_NOTIFY_ACT` (a.k.a. ZC_NOTIFY_ACT3)
@@ -116,7 +116,7 @@ Target client version: `PACKETVER = 20260219`. All integers little-endian, struc
 
 ## `0x0a30` `ZC_ACK_REQNAMEALL` (reply to `CZ_REQNAME` for a player)
 
-* **Direction:** Map to Client. **Frame:** Fixed `106`. **Provenance:** `rathena` `packets_struct.hpp:3562-3573` (branch `PACKETVER_MAIN_NUM >= 20150225`), `clif.cpp:9927-9985` (`clif_name`, BL_PC case; called from `clif_parse_GetCharNameRequest` L11471). Capture `login_sequence-rathena.log` line 111 shows `0x0a30` as reply to `CZ_REQNAME` (the proxy's table lacked it, so the frame was mis-split; ignore those garbage rows). Not in rAthena packet DB (struct size).
+* **Direction:** Map to Client. **Frame:** Fixed `106`. **Provenance:** `rathena` `packets_struct.hpp:3562-3573` (branch `PACKETVER_MAIN_NUM >= 20150225`), `clif.cpp:9927-9985` (`clif_name`, BL_PC case; called from `clif_parse_GetCharNameRequest` L11471). Capture [`login_sequence-rathena.txt`](../captures/login_sequence-rathena.txt) line 111 shows `0x0a30` as reply to `CZ_REQNAME` (the proxy's table lacked it, so the frame was mis-split; ignore those garbage rows). Not in rAthena packet DB (struct size).
 * Players always get `0x0a30`. Non-PC units (NPC/pet/hom/merc/elem) get `0x0adf` `ZC_ACK_REQNAMEALL_NPC` (see [below](#0x0adf-zc_ack_reqnameall_npc-reply-to-cz_reqname-for-an-npc)); mobs get `0x0195`-family layouts (guardian) or the NPC form.
 
 | Offset | Size | Type | Field | Notes |
@@ -281,7 +281,7 @@ Full lifecycle, hide/disable rules and ids: [mechanics/npcs.md](../mechanics/npc
 
 ## `0x0091` `ZC_NPCACK_MAPMOVE` (length confirmation)
 
-* Confirmed **22 bytes**: `packets.hpp:696-701` (`2 + 16 + 2 + 2`). Capture `login_sequence-rathena.log:35-36` proves it: the proxy table framed it as 18 bytes, and the leftover 4 bytes (`9b 00 b5 00` = x 155, y 181) were mis-parsed as bogus opcode `0x009b`. Project `table.rs` had `Fixed(18)`; fixed to `Fixed(22)` in engine-foundation M3. Section: [map.md#0x0091-zc_npcack_mapmove](./map.md#0x0091-zc_npcack_mapmove).
+* Confirmed **22 bytes**: `packets.hpp:696-701` (`2 + 16 + 2 + 2`). Capture [`login_sequence-rathena.txt`](../captures/login_sequence-rathena.txt) lines 35-36 proves it: the proxy table framed it as 18 bytes, and the leftover 4 bytes (`9b 00 b5 00` = x 155, y 181) were mis-parsed as bogus opcode `0x009b`. Project `table.rs` had `Fixed(18)`; fixed to `Fixed(22)` in engine-foundation M3. Section: [map.md#0x0091-zc_npcack_mapmove](./map.md#0x0091-zc_npcack_mapmove).
 
 ## Project length table status
 

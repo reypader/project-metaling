@@ -4,6 +4,8 @@ This master index maps extracted protocol opcodes, bit-packing algorithms, Aegis
 
 **Open packet questions and code disagreements** live in [PACKET_FINDINGS.md](../../PACKET_FINDINGS.md), one entry per finding with a stable anchor (`#pf-01`, `#pf-02`, ...). Read the relevant entry before re-checking rAthena source on any of them; it records what was already checked and what is left to do. Catalog sections that are affected carry an "Open findings" line.
 
+**Real-client captures** that catalog entries cite are in the [captures appendix](./captures/README.md), one row per capture with what it shows.
+
 ## 1. Packets & Framing (`./packets/`)
 
 | Identifier / Opcode | Canonical Name | Direction | Frame Length | Target File & Section |

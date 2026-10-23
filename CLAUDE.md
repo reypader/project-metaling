@@ -31,7 +31,7 @@ docker compose -f tools/docker/docker-compose.yml up -d db   # PostgreSQL; bins/
 
 Use `./verify.sh` instead of raw `cargo test`/`clippy`/`fmt`, which produce much longer output. When it reports a failure, read the specific lines in `target/verify/<step>.log` rather than re-running cargo. Without the db running, DB-backed tests fail with "pool timed out" after about 30s each.
 
-`./run_rathena_servers.sh` runs real rAthena (from `$RATHENA_PATH`). Connect a client through `tools/proxy` to record ground-truth traces into `tools/proxy/packet_captures/`. When rAthena source and a capture disagree, trust the capture.
+`./run_rathena_servers.sh` runs real rAthena (from `$RATHENA_PATH`). Connect a client through `tools/proxy` to record ground-truth traces into `tools/proxy/packet_captures/`. When rAthena source and a capture disagree, trust the capture. `*.log` is gitignored. A capture the catalog cites goes into `reference/catalog/captures/` as `.txt`, gets a row in its `README.md`, and has rAthena message text and PINs redacted.
 
 ## Reference repos
 

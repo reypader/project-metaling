@@ -1,0 +1,913 @@
+================================================================================
+Ragnarok Online Packet Proxy - Global Sequence Log
+Target PACKETVER: 20260219
+Generated: 2026-10-23 03:02:46.236 UTC
+Total Packets Recorded: 895
+================================================================================
+
+Chronological Packet Sequence:
+#      Timestamp (UTC)         Server  Session  Direction          Opcode                   Len    Details
+--------------------------------------------------------------------------------------------------------------
+1      2026-10-23 03:01:15.467 Login   #1       CLIENT -> SERVER   0x0064 (CA_LOGIN)        55     [IMPLEMENTED] Decoded: Intent(Login { username: "test", password: "[REDACTED]", client_version: 2147483648, client_type: 1 })
+2      2026-10-23 03:01:15.480 Login   #1       SERVER -> CLIENT   0x0ac4 (AC_ACCEPT_LOGIN) 224    [IMPLEMENTED] payload: [44 ec 3e ca 80 84 1e 00 24 e1 36 28 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+188 bytes)] |D.>.....$.6(....................|
+3      2026-10-23 03:01:15.943 Char    #2       CLIENT -> SERVER   0x0065 (CH_ENTER)        17     [IMPLEMENTED] Decoded: Intent(EnterCharServer { account_id: AccountId(2000000), login_id1: 3393121348, login_id2: 674685220, client_version: 0, sex: Male })
+4      2026-10-23 03:01:15.948 Char    #2       SERVER -> CLIENT   0x8480                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [1e 00] |..|
+5      2026-10-23 03:01:15.951 Char    #2       SERVER -> CLIENT   0x082d (HC_ACCEPT_ENTER2) 29     [IMPLEMENTED] payload: [1d 00 0f 00 00 0f 0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00] |...........................|
+6      2026-10-23 03:01:15.951 Char    #2       SERVER -> CLIENT   0x006b (HC_ACCEPT_ENTER) 1077   [IMPLEMENTED] payload: [0f 0f 0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f0 49 02 00 38 04 00 00 00 ... (+1041 bytes)] |........................I..8....|
+7      2026-10-23 03:01:15.951 Char    #2       SERVER -> CLIENT   0x09a0 (HC_CHARLIST_NOTIFY) 6      [IMPLEMENTED] payload: [05 00 00 00] |....|
+8      2026-10-23 03:01:15.951 Char    #2       SERVER -> CLIENT   0x020d (HC_BLOCK_CHARACTER) 4      [IMPLEMENTED] payload: []
+9      2026-10-23 03:01:15.951 Char    #2       SERVER -> CLIENT   0x08b9 (HC_SECOND_PASSWD_LOGIN) 12     [IMPLEMENTED] payload: [d5 e4 00 00 80 84 1e 00 01 00] |..........|
+10     2026-10-23 03:01:15.961 Char    #2       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+11     2026-10-23 03:01:15.961 Char    #2       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+12     2026-10-23 03:01:15.961 Char    #2       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+13     2026-10-23 03:01:15.961 Char    #2       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+14     2026-10-23 03:01:15.961 Char    #2       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+15     2026-10-23 03:01:15.965 Char    #2       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 1054   [IMPLEMENTED] payload: [f0 49 02 00 38 04 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 0a 00 00 00 00 00 00 00 ... (+1018 bytes)] |.I..8...........................|
+16     2026-10-23 03:01:15.970 Char    #2       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 1054   [IMPLEMENTED] payload: [f0 49 02 00 38 04 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 0a 00 00 00 00 00 00 00 ... (+1018 bytes)] |.I..8...........................|
+17     2026-10-23 03:01:15.970 Char    #2       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 1054   [IMPLEMENTED] payload: [f0 49 02 00 38 04 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 0a 00 00 00 00 00 00 00 ... (+1018 bytes)] |.I..8...........................|
+18     2026-10-23 03:01:15.970 Char    #2       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 1054   [IMPLEMENTED] payload: [f0 49 02 00 38 04 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 0a 00 00 00 00 00 00 00 ... (+1018 bytes)] |.I..8...........................|
+19     2026-10-23 03:01:15.970 Char    #2       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 1054   [IMPLEMENTED] payload: [f0 49 02 00 38 04 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 0a 00 00 00 00 00 00 00 ... (+1018 bytes)] |.I..8...........................|
+20     2026-10-23 03:01:16.023 Char    #2       CLIENT -> SERVER   0x0187 (PING)            6      [IMPLEMENTED] Decoded: Intent(CharPing { account_id: AccountId(2000000) })
+21     2026-10-23 03:01:19.908 Char    #2       CLIENT -> SERVER   0x08b8 (CH_SECOND_PASSWD_ACK) 8      [KNOWN / UNIMPLEMENTED] payload: [redacted: PIN code]
+22     2026-10-23 03:01:19.908 Char    #2       CLIENT -> SERVER   0x????                   2      [UNKNOWN / UNMAPPED in table.rs, 2 bytes] payload: [] (last 2 PIN bytes of the 0x08b8 above; redacted)
+23     2026-10-23 03:01:19.912 Char    #2       SERVER -> CLIENT   0x08b9 (HC_SECOND_PASSWD_LOGIN) 12     [IMPLEMENTED] payload: [38 f0 00 00 80 84 1e 00 00 00] |8.........|
+24     2026-10-23 03:01:20.501 Char    #2       CLIENT -> SERVER   0x0066 (CH_SELECT_CHAR)  3      [IMPLEMENTED] Decoded: Intent(SelectCharacter { slot: 0 })
+25     2026-10-23 03:01:20.512 Char    #2       SERVER -> CLIENT   0x0ac5 (HC_NOTIFY_ZONESVR) 156    [IMPLEMENTED] payload: [f0 49 02 00 70 72 74 5f 66 69 6c 64 30 38 2e 67 61 74 00 00 7f 00 00 01 01 14 00 00 00 00 00 00 ... (+122 bytes)] |.I..prt_fild08.gat..............|
+26     2026-10-23 03:01:20.532 Map     #3       CLIENT -> SERVER   0x0436 (CZ_ENTER)        23     [IMPLEMENTED] Decoded: Intent(EnterMap { account_id: AccountId(2000000), char_id: CharId(150000), login_id1: 3393121348, client_tick: 4028630224, sex: Male })
+27     2026-10-23 03:01:20.537 Map     #3       SERVER -> CLIENT   0x0283 (ZC_AID)          6      [IMPLEMENTED] payload: [80 84 1e 00] |....|
+28     2026-10-23 03:01:20.538 Map     #3       SERVER -> CLIENT   0x0b18 (ZC_INVENTORY_EXPANSION_INFO) 4      [IMPLEMENTED] payload: [00 00] |..|
+29     2026-10-23 03:01:20.538 Map     #3       SERVER -> CLIENT   0x02eb (ZC_ACCEPT_ENTER) 13     [IMPLEMENTED] payload: [bc 2f 11 00 2b 15 c0 05 05 00 00] |./..+......|
+30     2026-10-23 03:01:20.538 Map     #3       SERVER -> CLIENT   0x0201 (ZC_FRIENDS_LIST) 4      [KNOWN / UNIMPLEMENTED] payload: []
+31     2026-10-23 03:01:20.538 Map     #3       SERVER -> CLIENT   0x008e (ZC_NOTIFY_PLAYERCHAT) 72     [KNOWN / UNIMPLEMENTED] payload: [redacted: rAthena message text, see captures/README.md]
+32     2026-10-23 03:01:20.538 Map     #3       SERVER -> CLIENT   0x008e (ZC_NOTIFY_PLAYERCHAT) 64     [KNOWN / UNIMPLEMENTED] payload: [redacted: rAthena message text, see captures/README.md]
+33     2026-10-23 03:01:20.538 Map     #3       SERVER -> CLIENT   0x0091 (ZC_NPCACK_MAPMOVE) 22     [IMPLEMENTED] payload: [70 72 74 5f 66 69 6c 64 30 38 2e 67 61 74 00 00 ac 00 5c 01] |prt_fild08.gat....\.|
+34     2026-10-23 03:01:21.085 Map     #3       CLIENT -> SERVER   0x007d (CZ_NOTIFY_ACTORINIT) 2      [IMPLEMENTED] Decoded: Intent(NotifyActorInit)
+35     2026-10-23 03:01:21.085 Map     #3       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 987327 })
+36     2026-10-23 03:01:21.094 Map     #3       CLIENT -> SERVER   0x08c9 (CZ_CASHSHOP_LIST_REQUEST) 2      [KNOWN / UNIMPLEMENTED] payload: []
+37     2026-10-23 03:01:21.115 Map     #3       CLIENT -> SERVER   0x007d (CZ_NOTIFY_ACTORINIT) 2      [IMPLEMENTED] Decoded: Intent(NotifyActorInit)
+38     2026-10-23 03:01:21.115 Map     #3       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 987357 })
+39     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [19 00 04 5b 00 00] |...[..|
+40     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x0141                   84     [UNKNOWN / UNMAPPED in table.rs, 84 bytes] payload: [0d 00 00 00 0b 00 00 00 01 00 00 00 41 01 0e 00 00 00 0a 00 00 00 01 00 00 00 41 01 0f 00 00 00 ... (+50 bytes)] |............A.............A.....|
+41     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [31 00 be 00 00 00] |1.....|
+42     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [32 00 73 00 00 00] |2.s...|
+43     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [35 00 3a 02 00 00] |5.:...|
+44     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [29 00 0f 00 00 00] |).....|
+45     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2d 00 05 00 00 00] |-.....|
+46     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2e 00 0a 00 00 00] |......|
+47     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2a 00 11 00 00 00] |*.....|
+48     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2e 00 0a 00 00 00] |......|
+49     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2d 00 05 00 00 00] |-.....|
+50     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [33 00 01 00 00 00] |3.....|
+51     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [34 00 01 00 00 00] |4.....|
+52     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2c 00 06 00 00 00] |,.....|
+53     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2b 00 00 00 00 00] |+.....|
+54     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [30 00 00 00 00 00] |0.....|
+55     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2f 00 05 00 00 00] |/.....|
+56     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x013a                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [01 00] |..|
+57     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [06 00 38 00 00 00] |..8...|
+58     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [08 00 0e 00 00 00] |......|
+59     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [05 00 38 00 00 00] |..8...|
+60     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [07 00 0e 00 00 00] |......|
+61     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [18 00 46 05 00 00] |..F...|
+62     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x09e7 (ZC_NOTIFY_UNREADMAIL) 3      [KNOWN / UNIMPLEMENTED] payload: [00] |.|
+63     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x0a24 (ZC_ACH_UPDATE)   66     [KNOWN / UNIMPLEMENTED] payload: [28 00 00 00 01 00 16 00 00 00 1f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+32 bytes)] |(...............................|
+64     2026-10-23 03:01:21.553 Map     #3       SERVER -> CLIENT   0x0a23 (ZC_ALL_ACH_LIST) 272    [KNOWN / UNIMPLEMENTED] payload: [05 00 00 00 28 00 00 00 01 00 16 00 00 00 1f 00 00 00 39 83 03 00 00 0a 00 00 00 00 00 00 00 00 ... (+236 bytes)] |....(.............9.............|
+65     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x0ade (ZC_OVERWEIGHT_PERCENT) 6      [KNOWN / UNIMPLEMENTED] payload: [46 00 00 00] |F...|
+66     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x01d7 (ZC_SPRITE_CHANGE2) 11     [KNOWN / UNIMPLEMENTED] payload: [80 84 1e 00 02 b1 04 00 00] |.........|
+67     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x0000                   10     [UNKNOWN / UNMAPPED in table.rs, 10 bytes] payload: [00 00 08 0b 06 00 00 00] |........|
+68     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x0b09 (PACKET_0X0B09)   311    [KNOWN / UNIMPLEMENTED] payload: [00 04 00 bc 5b 00 00 02 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+275 bytes)] |....[...........................|
+69     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x0b39 (PACKET_0X0B39)   209    [KNOWN / UNIMPLEMENTED] payload: [00 02 00 b1 04 00 00 05 02 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+173 bytes)] |................................|
+70     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x0b0b                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+71     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x0a9b (PACKET_0X0A9B)   4      [KNOWN / UNIMPLEMENTED] payload: []
+72     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [18 00 46 05 00 00] |..F...|
+73     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [19 00 04 5b 00 00] |...[..|
+74     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x099b (ZC_NOTIFY_MAPPROPERTY2) 8      [KNOWN / UNIMPLEMENTED] payload: [00 00 00 06 00 00] |......|
+75     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [05 1b e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+76     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [1b e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+77     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [05 32 e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |.2..............................|
+78     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [32 e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |2.......Poring..................|
+79     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [05 b5 e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+80     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [b5 e4 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+81     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x010f                   644    [UNKNOWN / UNMAPPED in table.rs, 644 bytes] payload: [29 00 01 00 00 00 00 00 00 00 00 00 00 00 4e 56 5f 42 41 53 49 43 00 00 00 00 00 00 00 00 00 00 ... (+610 bytes)] |).............NV_BASIC..........|
+82     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x0a03 (CZ_REQ_CANCEL_WRITE_MAIL) 2      [KNOWN / UNIMPLEMENTED] payload: []
+83     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x0102 (CZ_CHANGE_GROUPEXPOPTION) 6      [KNOWN / UNIMPLEMENTED] payload: [02 01 02 0a] |....|
+84     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x0102 (CZ_CHANGE_GROUPEXPOPTION) 6      [KNOWN / UNIMPLEMENTED] payload: [02 0f 00 11] |....|
+85     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x0000                   13     [UNKNOWN / UNMAPPED in table.rs, 13 bytes] payload: [00 06 00 05 00 0a 00 05 00 00 00] |...........|
+86     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x00be (ZC_STATUS_CHANGE) 5      [KNOWN / UNIMPLEMENTED] payload: [73 00 01] |s..|
+87     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+88     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x3a00                   24     [UNKNOWN / UNMAPPED in table.rs, 24 bytes] payload: [02 00 00 41 01 0d 00 00 00 0b 00 00 00 01 00 00 00 41 01 0e 00 00] |...A.............A....|
+89     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x0a00 (ZC_SHORTCUT_KEY_LIST_0X0A00) 269    [KNOWN / UNIMPLEMENTED] payload: [00 00 00 01 00 00 00 41 01 0f 00 00 00 01 00 00 00 01 00 00 00 41 01 10 00 00 00 01 00 00 00 01 ... (+235 bytes)] |.......A.............A..........|
+90     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [02 00 00 00 00 00 00 00] |........|
+91     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [01 00 00 00 00 00 00 00] |........|
+92     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [03 00 00 00 00 00 00 00] |........|
+93     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [05 00 00 00 00 00 00 00] |........|
+94     2026-10-23 03:01:21.554 Map     #3       SERVER -> CLIENT   0x0b8d                   69     [UNKNOWN / UNMAPPED in table.rs, 69 bytes] payload: [45 00 01 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 ... (+35 bytes)] |E...............................|
+95     2026-10-23 03:01:21.558 Map     #3       CLIENT -> SERVER   0x0447 (CZ_BLOCKING_PLAY_CANCEL) 2      [KNOWN / UNIMPLEMENTED] payload: []
+96     2026-10-23 03:01:21.561 Map     #3       SERVER -> CLIENT   0x0b1b                   2      [UNKNOWN / UNMAPPED in table.rs, 2 bytes] payload: []
+97     2026-10-23 03:01:22.017 Map     #3       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 171, dest_y: 365 })
+98     2026-10-23 03:01:22.020 Map     #3       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [85 35 11 00 2b 15 c2 ad 6d 88] |.5..+...m.|
+99     2026-10-23 03:01:22.535 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [1b e5 8e 06 00] |.....|
+100    2026-10-23 03:01:22.831 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [32 e5 8e 06 00] |2....|
+101    2026-10-23 03:01:23.135 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [05 bd e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+102    2026-10-23 03:01:23.135 Map     #3       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [bd e4 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+103    2026-10-23 03:01:23.450 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 d7 81 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 8d 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+104    2026-10-23 03:01:23.518 Map     #3       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 169, dest_y: 371 })
+105    2026-10-23 03:01:23.594 Map     #3       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [ac 3b 11 00 2a d6 62 a5 73 88] |.;..*.b.s.|
+106    2026-10-23 03:01:24.018 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 31 8d 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 33 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |.1.................3............|
+107    2026-10-23 03:01:24.622 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 5c d3 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 2d 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |.\.................-............|
+108    2026-10-23 03:01:24.880 Map     #3       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 170, dest_y: 372 })
+109    2026-10-23 03:01:24.927 Map     #3       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [e0 40 11 00 2a 56 e2 a9 74 88] |.@..*V..t.|
+110    2026-10-23 03:01:25.868 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 b5 e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+111    2026-10-23 03:01:25.879 Map     #3       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 171, dest_y: 377 })
+112    2026-10-23 03:01:25.902 Map     #3       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [b0 44 11 00 2a 97 42 ad 79 88] |.D..*.B.y.|
+113    2026-10-23 03:01:26.096 Map     #3       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+114    2026-10-23 03:01:26.198 Map     #3       CLIENT -> SERVER   0x0368 (CZ_REQNAME)      6      [IMPLEMENTED] Decoded: Intent(RequestEntityName { entity_id: 2000000 })
+115    2026-10-23 03:01:26.201 Map     #3       SERVER -> CLIENT   0x0a30 (ZC_ACK_REQNAMEALL) 106    [IMPLEMENTED] payload: [80 84 1e 00 74 65 73 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |....test........................|
+116    2026-10-23 03:01:26.270 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [b5 e4 8e 06 00] |.....|
+117    2026-10-23 03:01:26.270 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 bd e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+118    2026-10-23 03:01:26.566 Map     #3       SERVER -> CLIENT   0x0091 (ZC_NPCACK_MAPMOVE) 22     [IMPLEMENTED] payload: [70 72 6f 6e 74 65 72 61 2e 67 61 74 00 00 00 00 9c 00 1a 00] |prontera.gat........|
+119    2026-10-23 03:01:27.198 Map     #3       CLIENT -> SERVER   0x007d (CZ_NOTIFY_ACTORINIT) 2      [IMPLEMENTED] Decoded: Intent(NotifyActorInit)
+120    2026-10-23 03:01:27.198 Map     #3       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 993440 })
+121    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x01d7 (ZC_SPRITE_CHANGE2) 11     [KNOWN / UNIMPLEMENTED] payload: [80 84 1e 00 02 b1 04 00 00] |.........|
+122    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x0000                   10     [UNKNOWN / UNMAPPED in table.rs, 10 bytes] payload: [00 00 08 0b 06 00 00 00] |........|
+123    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x0b09 (PACKET_0X0B09)   311    [KNOWN / UNIMPLEMENTED] payload: [00 04 00 bc 5b 00 00 02 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+275 bytes)] |....[...........................|
+124    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x0b39 (PACKET_0X0B39)   209    [KNOWN / UNIMPLEMENTED] payload: [00 02 00 b1 04 00 00 05 02 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+173 bytes)] |................................|
+125    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x0b0b                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+126    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x0a9b (PACKET_0X0A9B)   4      [KNOWN / UNIMPLEMENTED] payload: []
+127    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [18 00 46 05 00 00] |..F...|
+128    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [19 00 04 5b 00 00] |...[..|
+129    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x099b (ZC_NOTIFY_MAPPROPERTY2) 8      [KNOWN / UNIMPLEMENTED] payload: [00 00 00 06 00 00] |......|
+130    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 c4 9f 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 2d 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |...................-............|
+131    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 82 7d 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 73 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |..}................s............|
+132    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 2f a8 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 69 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |./.................i............|
+133    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 8e cd 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 8b 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+134    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x0141                   174    [UNKNOWN / UNMAPPED in table.rs, 174 bytes] payload: [0d 00 00 00 0b 00 00 00 01 00 00 00 41 01 0e 00 00 00 0a 00 00 00 01 00 00 00 41 01 0f 00 00 00 ... (+140 bytes)] |............A.............A.....|
+135    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [02 00 00 00 00 00 00 00] |........|
+136    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [01 00 00 00 00 00 00 00] |........|
+137    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [03 00 00 00 00 00 00 00] |........|
+138    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [05 00 00 00 00 00 00 00] |........|
+139    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x0b8d                   69     [UNKNOWN / UNMAPPED in table.rs, 69 bytes] payload: [45 00 01 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 ... (+35 bytes)] |E...............................|
+140    2026-10-23 03:01:27.203 Map     #3       SERVER -> CLIENT   0x007f (ZC_NOTIFY_TIME)  6      [IMPLEMENTED] payload: [c4 49 11 00] |.I..|
+141    2026-10-23 03:01:27.234 Map     #3       CLIENT -> SERVER   0x08c9 (CZ_CASHSHOP_LIST_REQUEST) 2      [KNOWN / UNIMPLEMENTED] payload: []
+142    2026-10-23 03:01:27.235 Map     #3       CLIENT -> SERVER   0x0447 (CZ_BLOCKING_PLAY_CANCEL) 2      [KNOWN / UNIMPLEMENTED] payload: []
+143    2026-10-23 03:01:27.240 Map     #3       SERVER -> CLIENT   0x0b1b                   2      [UNKNOWN / UNMAPPED in table.rs, 2 bytes] payload: []
+144    2026-10-23 03:01:27.904 Map     #3       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 156, dest_y: 23 })
+145    2026-10-23 03:01:27.908 Map     #3       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [86 4c 11 00 27 01 a2 70 17 88] |.L..'..p..|
+146    2026-10-23 03:01:28.067 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [8e cd 8e 06 00] |.....|
+147    2026-10-23 03:01:28.215 Map     #3       SERVER -> CLIENT   0x0091 (ZC_NPCACK_MAPMOVE) 22     [IMPLEMENTED] payload: [70 72 74 5f 66 69 6c 64 30 38 2e 67 61 74 00 00 aa 00 77 01] |prt_fild08.gat....w.|
+148    2026-10-23 03:01:28.622 Map     #3       CLIENT -> SERVER   0x007d (CZ_NOTIFY_ACTORINIT) 2      [IMPLEMENTED] Decoded: Intent(NotifyActorInit)
+149    2026-10-23 03:01:28.622 Map     #3       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 994863 })
+150    2026-10-23 03:01:28.625 Map     #3       CLIENT -> SERVER   0x08c9 (CZ_CASHSHOP_LIST_REQUEST) 2      [KNOWN / UNIMPLEMENTED] payload: []
+151    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x01d7 (ZC_SPRITE_CHANGE2) 11     [KNOWN / UNIMPLEMENTED] payload: [80 84 1e 00 02 b1 04 00 00] |.........|
+152    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x0000                   10     [UNKNOWN / UNMAPPED in table.rs, 10 bytes] payload: [00 00 08 0b 06 00 00 00] |........|
+153    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x0b09 (PACKET_0X0B09)   311    [KNOWN / UNIMPLEMENTED] payload: [00 04 00 bc 5b 00 00 02 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+275 bytes)] |....[...........................|
+154    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x0b39 (PACKET_0X0B39)   209    [KNOWN / UNIMPLEMENTED] payload: [00 02 00 b1 04 00 00 05 02 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+173 bytes)] |................................|
+155    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x0b0b                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+156    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x0a9b (PACKET_0X0A9B)   4      [KNOWN / UNIMPLEMENTED] payload: []
+157    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [18 00 46 05 00 00] |..F...|
+158    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [19 00 04 5b 00 00] |...[..|
+159    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x099b (ZC_NOTIFY_MAPPROPERTY2) 8      [KNOWN / UNIMPLEMENTED] payload: [00 00 00 06 00 00] |......|
+160    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 d7 81 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 8d 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+161    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 31 8d 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 33 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |.1.................3............|
+162    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 5c d3 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 2d 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |.\.................-............|
+163    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [05 bd e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+164    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [bd e4 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+165    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x0141                   174    [UNKNOWN / UNMAPPED in table.rs, 174 bytes] payload: [0d 00 00 00 0b 00 00 00 01 00 00 00 41 01 0e 00 00 00 0a 00 00 00 01 00 00 00 41 01 0f 00 00 00 ... (+140 bytes)] |............A.............A.....|
+166    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [02 00 00 00 00 00 00 00] |........|
+167    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [01 00 00 00 00 00 00 00] |........|
+168    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [03 00 00 00 00 00 00 00] |........|
+169    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [05 00 00 00 00 00 00 00] |........|
+170    2026-10-23 03:01:28.626 Map     #3       SERVER -> CLIENT   0x0b8d                   69     [UNKNOWN / UNMAPPED in table.rs, 69 bytes] payload: [45 00 01 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 ... (+35 bytes)] |E...............................|
+171    2026-10-23 03:01:28.627 Map     #3       SERVER -> CLIENT   0x007f (ZC_NOTIFY_TIME)  6      [IMPLEMENTED] payload: [55 4f 11 00] |UO..|
+172    2026-10-23 03:01:28.641 Map     #3       CLIENT -> SERVER   0x0447 (CZ_BLOCKING_PLAY_CANCEL) 2      [KNOWN / UNIMPLEMENTED] payload: []
+173    2026-10-23 03:01:28.645 Map     #3       SERVER -> CLIENT   0x0b1b                   2      [UNKNOWN / UNMAPPED in table.rs, 2 bytes] payload: []
+174    2026-10-23 03:01:29.588 Map     #3       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 171, dest_y: 369 })
+175    2026-10-23 03:01:29.592 Map     #3       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [19 53 11 00 2a 97 72 ad 71 88] |.S..*.r.q.|
+176    2026-10-23 03:01:30.253 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+177    2026-10-23 03:01:30.253 Map     #3       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [0e e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+178    2026-10-23 03:01:30.556 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [05 ca e4 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 27 04 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |...................'............|
+179    2026-10-23 03:01:30.556 Map     #3       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [ca e4 8e 06 00 00 00 00 4c 75 6e 61 74 69 63 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Lunatic.................|
+180    2026-10-23 03:01:30.864 Map     #3       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 177, dest_y: 365 })
+181    2026-10-23 03:01:30.868 Map     #3       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [15 58 11 00 2a d7 12 c5 6d 88] |.X..*...m.|
+182    2026-10-23 03:01:31.499 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [ca e4 8e 06 00] |.....|
+183    2026-10-23 03:01:31.499 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [d7 81 8e 06 00] |.....|
+184    2026-10-23 03:01:31.499 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [05 b5 e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+185    2026-10-23 03:01:31.499 Map     #3       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [b5 e4 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+186    2026-10-23 03:01:31.979 Map     #3       CLIENT -> SERVER   0x0437 (CZ_REQUEST_ACT)  7      [IMPLEMENTED] Decoded: Intent(RequestAction { target_id: 110027965, action_type: 7 })
+187    2026-10-23 03:01:32.098 Map     #3       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [80 84 1e 00 b1 00 6d 01] |......m.|
+188    2026-10-23 03:01:32.098 Map     #3       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [80 84 1e 00 b1 00 6d 01] |......m.|
+189    2026-10-23 03:01:32.098 Map     #3       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [80 84 1e 00 bd e4 8e 06 e3 5c 11 00 3a 02 00 00 e0 01 00 00 28 00 00 00 00 01 00 00 00 00 00 00] |.........\..:.......(...........|
+190    2026-10-23 03:01:32.669 Map     #3       SERVER -> CLIENT   0x0977 (PACKET_0X0977)   14     [KNOWN / UNIMPLEMENTED] payload: [bd e4 8e 06 0f 00 00 00 37 00 00 00] |........7...|
+191    2026-10-23 03:01:32.687 Map     #3       CLIENT -> SERVER   0x0368 (CZ_REQNAME)      6      [IMPLEMENTED] Decoded: Intent(RequestEntityName { entity_id: 2000000 })
+192    2026-10-23 03:01:32.691 Map     #3       SERVER -> CLIENT   0x0a30 (ZC_ACK_REQNAMEALL) 106    [IMPLEMENTED] payload: [80 84 1e 00 74 65 73 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |....test........................|
+193    2026-10-23 03:01:32.890 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 1c e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+194    2026-10-23 03:01:32.890 Map     #3       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [1c e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+195    2026-10-23 03:01:33.068 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 bd e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+196    2026-10-23 03:01:33.163 Map     #3       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [bd e4 8e 06 b2 00 6c 01] |......l.|
+197    2026-10-23 03:01:33.163 Map     #3       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [bd e4 8e 06 b2 00 6c 01] |......l.|
+198    2026-10-23 03:01:33.163 Map     #3       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [bd e4 8e 06 80 84 1e 00 0c 61 11 00 a0 02 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00] |.........a......................|
+199    2026-10-23 03:01:33.239 Map     #3       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [80 84 1e 00 bd e4 8e 06 57 61 11 00 3a 02 00 00 e0 01 00 00 28 00 00 00 00 01 00 00 00 00 00 00] |........Wa..:.......(...........|
+200    2026-10-23 03:01:33.283 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+201    2026-10-23 03:01:33.631 Map     #3       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+202    2026-10-23 03:01:33.813 Map     #3       SERVER -> CLIENT   0x0977 (PACKET_0X0977)   14     [KNOWN / UNIMPLEMENTED] payload: [bd e4 8e 06 00 00 00 00 37 00 00 00] |........7...|
+203    2026-10-23 03:01:33.813 Map     #3       SERVER -> CLIENT   0x0acb                   24     [UNKNOWN / UNMAPPED in table.rs, 24 bytes] payload: [01 00 ce 04 00 00 00 00 00 00 cb 0a 02 00 39 00 00 00 00 00 00 00] |..............9.......|
+204    2026-10-23 03:01:33.813 Map     #3       SERVER -> CLIENT   0x0acc (PACKET_0X0ACC)   18     [KNOWN / UNIMPLEMENTED] payload: [80 84 1e 00 96 00 00 00 00 00 00 00 01 00 00 00] |................|
+205    2026-10-23 03:01:33.813 Map     #3       SERVER -> CLIENT   0x0acc (PACKET_0X0ACC)   18     [KNOWN / UNIMPLEMENTED] payload: [80 84 1e 00 00 00 00 00 00 00 00 00 02 00 00 00] |................|
+206    2026-10-23 03:01:33.813 Map     #3       SERVER -> CLIENT   0x0add (PACKET_0X0ADD)   22     [KNOWN / UNIMPLEMENTED] payload: [35 00 00 00 8d 03 00 00 03 00 01 b2 00 6c 01 03 0c 01 00 00] |5............l......|
+207    2026-10-23 03:01:33.813 Map     #3       SERVER -> CLIENT   0x0000                   2      [UNKNOWN / UNMAPPED in table.rs, 2 bytes] payload: []
+208    2026-10-23 03:01:33.883 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 b5 e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+209    2026-10-23 03:01:34.062 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [bd e4 8e 06 01] |.....|
+210    2026-10-23 03:01:34.412 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+211    2026-10-23 03:01:36.191 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+212    2026-10-23 03:01:36.472 Map     #3       SERVER -> CLIENT   0x00a1                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+213    2026-10-23 03:01:36.472 Map     #3       SERVER -> CLIENT   0x3500                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+214    2026-10-23 03:01:36.472 Map     #3       SERVER -> CLIENT   0x0035                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+215    2026-10-23 03:01:36.577 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 b5 e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+216    2026-10-23 03:01:38.639 Map     #3       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+217    2026-10-23 03:01:39.890 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 1c e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+218    2026-10-23 03:01:40.623 Map     #3       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 1006864 })
+219    2026-10-23 03:01:40.627 Map     #3       SERVER -> CLIENT   0x007f (ZC_NOTIFY_TIME)  6      [IMPLEMENTED] payload: [35 7e 11 00] |5~..|
+220    2026-10-23 03:01:41.083 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 b5 e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+221    2026-10-23 03:01:41.473 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+222    2026-10-23 03:01:43.653 Map     #3       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+223    2026-10-23 03:01:45.769 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 1c e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+224    2026-10-23 03:01:48.655 Map     #3       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+225    2026-10-23 03:01:49.473 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+226    2026-10-23 03:01:49.671 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 b5 e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+227    2026-10-23 03:01:51.783 Login   #4       CLIENT -> SERVER   0x0064 (CA_LOGIN)        55     [IMPLEMENTED] Decoded: Intent(Login { username: "test2", password: "[REDACTED]", client_version: 2147483648, client_type: 1 })
+228    2026-10-23 03:01:51.793 Login   #4       SERVER -> CLIENT   0x0ac4 (AC_ACCEPT_LOGIN) 224    [IMPLEMENTED] payload: [4a 19 2b 7d 81 84 1e 00 ac ec e8 37 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+188 bytes)] |J.+}.......7....................|
+229    2026-10-23 03:01:52.198 Char    #5       CLIENT -> SERVER   0x0065 (CH_ENTER)        17     [IMPLEMENTED] Decoded: Intent(EnterCharServer { account_id: AccountId(2000001), login_id1: 2099976522, login_id2: 938011820, client_version: 0, sex: Female })
+230    2026-10-23 03:01:52.204 Char    #5       SERVER -> CLIENT   0x8481                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [1e 00] |..|
+231    2026-10-23 03:01:52.207 Char    #5       SERVER -> CLIENT   0x082d (HC_ACCEPT_ENTER2) 29     [IMPLEMENTED] payload: [1d 00 0f 00 00 0f 0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00] |...........................|
+232    2026-10-23 03:01:52.207 Char    #5       SERVER -> CLIENT   0x006b (HC_ACCEPT_ENTER) 202    [IMPLEMENTED] payload: [0f 0f 0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f6 49 02 00 66 00 00 00 00 ... (+166 bytes)] |........................I..f....|
+233    2026-10-23 03:01:52.207 Char    #5       SERVER -> CLIENT   0x09a0 (HC_CHARLIST_NOTIFY) 6      [IMPLEMENTED] payload: [05 00 00 00] |....|
+234    2026-10-23 03:01:52.207 Char    #5       SERVER -> CLIENT   0x020d (HC_BLOCK_CHARACTER) 4      [IMPLEMENTED] payload: []
+235    2026-10-23 03:01:52.207 Char    #5       SERVER -> CLIENT   0x08b9 (HC_SECOND_PASSWD_LOGIN) 12     [IMPLEMENTED] payload: [e7 d6 00 00 81 84 1e 00 01 00] |..........|
+236    2026-10-23 03:01:52.215 Char    #5       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+237    2026-10-23 03:01:52.215 Char    #5       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+238    2026-10-23 03:01:52.215 Char    #5       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+239    2026-10-23 03:01:52.215 Char    #5       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+240    2026-10-23 03:01:52.215 Char    #5       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+241    2026-10-23 03:01:52.220 Char    #5       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f6 49 02 00 66 00 00 00 00 00 00 00 00 00 00 00 09 00 00 00 00 00 00 00 02 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..f...........................|
+242    2026-10-23 03:01:52.220 Char    #5       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f6 49 02 00 66 00 00 00 00 00 00 00 00 00 00 00 09 00 00 00 00 00 00 00 02 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..f...........................|
+243    2026-10-23 03:01:52.223 Char    #5       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f6 49 02 00 66 00 00 00 00 00 00 00 00 00 00 00 09 00 00 00 00 00 00 00 02 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..f...........................|
+244    2026-10-23 03:01:52.223 Char    #5       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f6 49 02 00 66 00 00 00 00 00 00 00 00 00 00 00 09 00 00 00 00 00 00 00 02 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..f...........................|
+245    2026-10-23 03:01:52.223 Char    #5       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f6 49 02 00 66 00 00 00 00 00 00 00 00 00 00 00 09 00 00 00 00 00 00 00 02 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..f...........................|
+246    2026-10-23 03:01:52.277 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 1c e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+247    2026-10-23 03:01:52.632 Map     #3       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 1018873 })
+248    2026-10-23 03:01:52.636 Map     #3       SERVER -> CLIENT   0x007f (ZC_NOTIFY_TIME)  6      [IMPLEMENTED] payload: [1d ad 11 00] |....|
+249    2026-10-23 03:01:53.657 Map     #3       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+250    2026-10-23 03:01:55.373 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 b5 e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+251    2026-10-23 03:01:55.483 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [1c e5 8e 06 00] |.....|
+252    2026-10-23 03:01:56.007 Char    #5       CLIENT -> SERVER   0x08b8 (CH_SECOND_PASSWD_ACK) 8      [KNOWN / UNIMPLEMENTED] payload: [redacted: PIN code]
+253    2026-10-23 03:01:56.007 Char    #5       CLIENT -> SERVER   0x????                   2      [UNKNOWN / UNMAPPED in table.rs, 2 bytes] payload: [] (last 2 PIN bytes of the 0x08b8 above; redacted)
+254    2026-10-23 03:01:56.011 Char    #5       SERVER -> CLIENT   0x08b9 (HC_SECOND_PASSWD_LOGIN) 12     [IMPLEMENTED] payload: [93 cf 00 00 81 84 1e 00 00 00] |..........|
+255    2026-10-23 03:01:56.468 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+256    2026-10-23 03:01:56.657 Char    #5       CLIENT -> SERVER   0x0187 (PING)            6      [IMPLEMENTED] Decoded: Intent(CharPing { account_id: AccountId(2000001) })
+257    2026-10-23 03:01:56.751 Char    #5       CLIENT -> SERVER   0x0066 (CH_SELECT_CHAR)  3      [IMPLEMENTED] Decoded: Intent(SelectCharacter { slot: 0 })
+258    2026-10-23 03:01:56.757 Char    #5       SERVER -> CLIENT   0x0ac5 (HC_NOTIFY_ZONESVR) 156    [IMPLEMENTED] payload: [f6 49 02 00 70 72 74 5f 66 69 6c 64 30 38 2e 67 61 74 00 00 7f 00 00 01 01 14 00 00 00 00 00 00 ... (+122 bytes)] |.I..prt_fild08.gat..............|
+259    2026-10-23 03:01:56.773 Map     #6       CLIENT -> SERVER   0x0436 (CZ_ENTER)        23     [IMPLEMENTED] Decoded: Intent(EnterMap { account_id: AccountId(2000001), char_id: CharId(150006), login_id1: 2099976522, client_tick: 6564, sex: Female })
+260    2026-10-23 03:01:56.775 Map     #6       SERVER -> CLIENT   0x0283 (ZC_AID)          6      [IMPLEMENTED] payload: [81 84 1e 00] |....|
+261    2026-10-23 03:01:56.779 Map     #6       SERVER -> CLIENT   0x0b18 (ZC_INVENTORY_EXPANSION_INFO) 4      [IMPLEMENTED] payload: [00 00] |..|
+262    2026-10-23 03:01:56.779 Map     #6       SERVER -> CLIENT   0x02eb (ZC_ACCEPT_ENTER) 13     [IMPLEMENTED] payload: [49 bd 11 00 29 55 e0 05 05 00 00] |I...)U.....|
+263    2026-10-23 03:01:56.779 Map     #6       SERVER -> CLIENT   0x0201 (ZC_FRIENDS_LIST) 4      [KNOWN / UNIMPLEMENTED] payload: []
+264    2026-10-23 03:01:56.779 Map     #6       SERVER -> CLIENT   0x008e (ZC_NOTIFY_PLAYERCHAT) 72     [KNOWN / UNIMPLEMENTED] payload: [redacted: rAthena message text, see captures/README.md]
+265    2026-10-23 03:01:56.779 Map     #6       SERVER -> CLIENT   0x008e (ZC_NOTIFY_PLAYERCHAT) 64     [KNOWN / UNIMPLEMENTED] payload: [redacted: rAthena message text, see captures/README.md]
+266    2026-10-23 03:01:56.779 Map     #6       SERVER -> CLIENT   0x0091 (ZC_NPCACK_MAPMOVE) 22     [IMPLEMENTED] payload: [70 72 74 5f 66 69 6c 64 30 38 2e 67 61 74 00 00 a5 00 5e 01] |prt_fild08.gat....^.|
+267    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [19 00 4c 4f 00 00] |..LO..|
+268    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x0141                   84     [UNKNOWN / UNMAPPED in table.rs, 84 bytes] payload: [0d 00 00 00 01 00 00 00 00 00 00 00 41 01 0e 00 00 00 01 00 00 00 00 00 00 00 41 01 0f 00 00 00 ... (+50 bytes)] |............A.............A.....|
+269    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [31 00 b1 00 00 00] |1.....|
+270    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [32 00 66 00 00 00] |2.f...|
+271    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [35 00 4e 02 00 00] |5.N...|
+272    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [29 00 02 00 00 00] |).....|
+273    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2d 00 01 00 00 00] |-.....|
+274    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2e 00 0a 00 00 00] |......|
+275    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2a 00 11 00 00 00] |*.....|
+276    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2e 00 0a 00 00 00] |......|
+277    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2d 00 01 00 00 00] |-.....|
+278    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [33 00 01 00 00 00] |3.....|
+279    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [34 00 01 00 00 00] |4.....|
+280    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2c 00 01 00 00 00] |,.....|
+281    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2b 00 00 00 00 00] |+.....|
+282    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [30 00 00 00 00 00] |0.....|
+283    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2f 00 01 00 00 00] |/.....|
+284    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x013a                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [01 00] |..|
+285    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [06 00 28 00 00 00] |..(...|
+286    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [08 00 0b 00 00 00] |......|
+287    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [05 00 21 00 00 00] |..!...|
+288    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [07 00 0b 00 00 00] |......|
+289    2026-10-23 03:01:56.780 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [18 00 84 03 00 00] |......|
+290    2026-10-23 03:01:56.781 Map     #6       SERVER -> CLIENT   0x09e7 (ZC_NOTIFY_UNREADMAIL) 3      [KNOWN / UNIMPLEMENTED] payload: [00] |.|
+291    2026-10-23 03:01:56.781 Map     #6       SERVER -> CLIENT   0x0a24 (ZC_ACH_UPDATE)   66     [KNOWN / UNIMPLEMENTED] payload: [0a 00 00 00 00 00 0a 00 00 00 12 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+32 bytes)] |................................|
+292    2026-10-23 03:01:56.781 Map     #6       SERVER -> CLIENT   0x0a23 (ZC_ALL_ACH_LIST) 72     [KNOWN / UNIMPLEMENTED] payload: [01 00 00 00 0a 00 00 00 00 00 0a 00 00 00 12 00 00 00 80 a9 03 00 01 00 00 00 00 00 00 00 00 00 ... (+36 bytes)] |................................|
+293    2026-10-23 03:01:56.781 Map     #6       SERVER -> CLIENT   0x0ade (ZC_OVERWEIGHT_PERCENT) 6      [KNOWN / UNIMPLEMENTED] payload: [46 00 00 00] |F...|
+294    2026-10-23 03:01:57.289 Map     #6       CLIENT -> SERVER   0x007d (CZ_NOTIFY_ACTORINIT) 2      [IMPLEMENTED] Decoded: Intent(NotifyActorInit)
+295    2026-10-23 03:01:57.289 Map     #6       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 1023530 })
+296    2026-10-23 03:01:57.295 Map     #6       SERVER -> CLIENT   0x01d7 (ZC_SPRITE_CHANGE2) 11     [KNOWN / UNIMPLEMENTED] payload: [81 84 1e 00 02 b1 04 00 00] |.........|
+297    2026-10-23 03:01:57.295 Map     #6       SERVER -> CLIENT   0x0000                   10     [UNKNOWN / UNMAPPED in table.rs, 10 bytes] payload: [00 00 08 0b 06 00 00 00] |........|
+298    2026-10-23 03:01:57.295 Map     #6       SERVER -> CLIENT   0x0b09 (PACKET_0X0B09)   39     [KNOWN / UNIMPLEMENTED] payload: [00 04 00 bc 5b 00 00 02 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+3 bytes)] |....[...........................|
+299    2026-10-23 03:01:57.295 Map     #6       SERVER -> CLIENT   0x0b39 (PACKET_0X0B39)   209    [KNOWN / UNIMPLEMENTED] payload: [00 02 00 b1 04 00 00 05 02 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+173 bytes)] |................................|
+300    2026-10-23 03:01:57.295 Map     #6       SERVER -> CLIENT   0x0b0b                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+301    2026-10-23 03:01:57.295 Map     #6       SERVER -> CLIENT   0x0a9b (PACKET_0X0A9B)   4      [KNOWN / UNIMPLEMENTED] payload: []
+302    2026-10-23 03:01:57.295 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [18 00 84 03 00 00] |......|
+303    2026-10-23 03:01:57.295 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [19 00 4c 4f 00 00] |..LO..|
+304    2026-10-23 03:01:57.295 Map     #3       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [0e e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+305    2026-10-23 03:01:57.295 Map     #6       SERVER -> CLIENT   0x099b (ZC_NOTIFY_MAPPROPERTY2) 8      [KNOWN / UNIMPLEMENTED] payload: [00 00 00 06 00 00] |......|
+306    2026-10-23 03:01:57.295 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 1b e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+307    2026-10-23 03:01:57.295 Map     #6       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [1b e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+308    2026-10-23 03:01:57.295 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+309    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [0e e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+310    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x010f                   642    [UNKNOWN / UNMAPPED in table.rs, 642 bytes] payload: [29 00 01 00 00 00 00 00 00 00 00 00 00 00 4e 56 5f 42 41 53 49 43 00 00 00 00 00 00 00 00 00 00 ... (+608 bytes)] |).............NV_BASIC..........|
+311    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+312    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x0102 (CZ_CHANGE_GROUPEXPOPTION) 6      [KNOWN / UNIMPLEMENTED] payload: [02 01 02 01] |....|
+313    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x0102 (CZ_CHANGE_GROUPEXPOPTION) 6      [KNOWN / UNIMPLEMENTED] payload: [02 01 02 02] |....|
+314    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x1100                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+315    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+316    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+317    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x0a00 (ZC_SHORTCUT_KEY_LIST_0X0A00) 269    [KNOWN / UNIMPLEMENTED] payload: [00 01 00 00 00 b1 00 66 00 01 00 01 00 4e 02 00 00 41 01 0d 00 00 00 01 00 00 00 00 00 00 00 41 ... (+235 bytes)] |.......f.....N...A.............A|
+318    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x0000                   2      [UNKNOWN / UNMAPPED in table.rs, 2 bytes] payload: []
+319    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x00be (ZC_STATUS_CHANGE) 5      [KNOWN / UNIMPLEMENTED] payload: [f7 00 00] |...|
+320    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x00be (ZC_STATUS_CHANGE) 5      [KNOWN / UNIMPLEMENTED] payload: [f8 00 00] |...|
+321    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x00be (ZC_STATUS_CHANGE) 5      [KNOWN / UNIMPLEMENTED] payload: [f9 00 00] |...|
+322    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x00be (ZC_STATUS_CHANGE) 5      [KNOWN / UNIMPLEMENTED] payload: [fa 00 00] |...|
+323    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x00be (ZC_STATUS_CHANGE) 5      [KNOWN / UNIMPLEMENTED] payload: [fb 00 00] |...|
+324    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x00be (ZC_STATUS_CHANGE) 5      [KNOWN / UNIMPLEMENTED] payload: [fc 00 00] |...|
+325    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x02c9                   6      [UNKNOWN / UNMAPPED in table.rs, 6 bytes] payload: [00 da 02 00] |....|
+326    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [02 00 00 00 00 00 00 00] |........|
+327    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [01 00 00 00 00 00 00 00] |........|
+328    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [03 00 00 00 00 00 00 00] |........|
+329    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [05 00 00 00 00 00 00 00] |........|
+330    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x0b8d                   69     [UNKNOWN / UNMAPPED in table.rs, 69 bytes] payload: [45 00 01 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 ... (+35 bytes)] |E...............................|
+331    2026-10-23 03:01:57.296 Map     #6       SERVER -> CLIENT   0x007f (ZC_NOTIFY_TIME)  6      [IMPLEMENTED] payload: [50 bf 11 00] |P...|
+332    2026-10-23 03:01:57.297 Map     #6       CLIENT -> SERVER   0x08c9 (CZ_CASHSHOP_LIST_REQUEST) 2      [KNOWN / UNIMPLEMENTED] payload: []
+333    2026-10-23 03:01:57.319 Map     #6       CLIENT -> SERVER   0x007d (CZ_NOTIFY_ACTORINIT) 2      [IMPLEMENTED] Decoded: Intent(NotifyActorInit)
+334    2026-10-23 03:01:57.319 Map     #6       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 1023559 })
+335    2026-10-23 03:01:57.324 Map     #6       SERVER -> CLIENT   0x007f (ZC_NOTIFY_TIME)  6      [IMPLEMENTED] payload: [6d bf 11 00] |m...|
+336    2026-10-23 03:01:57.589 Map     #6       CLIENT -> SERVER   0x0447 (CZ_BLOCKING_PLAY_CANCEL) 2      [KNOWN / UNIMPLEMENTED] payload: []
+337    2026-10-23 03:01:57.593 Map     #6       SERVER -> CLIENT   0x0b1b                   2      [UNKNOWN / UNMAPPED in table.rs, 2 bytes] payload: []
+338    2026-10-23 03:01:57.993 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 14 e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+339    2026-10-23 03:01:57.993 Map     #6       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [14 e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+340    2026-10-23 03:01:58.124 Map     #6       CLIENT -> SERVER   0x0368 (CZ_REQNAME)      6      [IMPLEMENTED] Decoded: Intent(RequestEntityName { entity_id: 2000001 })
+341    2026-10-23 03:01:58.127 Map     #6       SERVER -> CLIENT   0x0a30 (ZC_ACK_REQNAMEALL) 106    [IMPLEMENTED] payload: [81 84 1e 00 74 65 73 74 74 65 73 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |....testtest....................|
+342    2026-10-23 03:01:58.645 Map     #6       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 168, dest_y: 357 })
+343    2026-10-23 03:01:58.650 Map     #6       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [9b c4 11 00 29 55 e2 a1 65 88] |....)U..e.|
+344    2026-10-23 03:01:58.657 Map     #3       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+345    2026-10-23 03:01:58.862 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [00 81 84 1e 00 f6 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+78 bytes)] |......I.........................|
+346    2026-10-23 03:01:58.862 Map     #3       SERVER -> CLIENT   0x080e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+347    2026-10-23 03:01:58.862 Map     #3       SERVER -> CLIENT   0x8108                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+348    2026-10-23 03:01:58.862 Map     #3       SERVER -> CLIENT   0x8481                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+349    2026-10-23 03:01:58.862 Map     #3       SERVER -> CLIENT   0x1e84                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+350    2026-10-23 03:01:58.862 Map     #3       SERVER -> CLIENT   0x001e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+351    2026-10-23 03:01:58.862 Map     #3       SERVER -> CLIENT   0x2100                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+352    2026-10-23 03:01:58.862 Map     #3       SERVER -> CLIENT   0x0021                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+353    2026-10-23 03:01:58.862 Map     #3       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+354    2026-10-23 03:01:58.862 Map     #3       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+355    2026-10-23 03:01:58.862 Map     #3       SERVER -> CLIENT   0x2800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+356    2026-10-23 03:01:58.862 Map     #3       SERVER -> CLIENT   0x0028                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+357    2026-10-23 03:01:58.862 Map     #6       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [00 80 84 1e 00 f0 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+72 bytes)] |......I.........................|
+358    2026-10-23 03:01:58.862 Map     #6       SERVER -> CLIENT   0x080e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+359    2026-10-23 03:01:58.862 Map     #6       SERVER -> CLIENT   0x8008                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+360    2026-10-23 03:01:58.862 Map     #6       SERVER -> CLIENT   0x8480                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+361    2026-10-23 03:01:58.862 Map     #6       SERVER -> CLIENT   0x1e84                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+362    2026-10-23 03:01:58.862 Map     #6       SERVER -> CLIENT   0x001e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+363    2026-10-23 03:01:58.862 Map     #6       SERVER -> CLIENT   0x3800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+364    2026-10-23 03:01:58.862 Map     #6       SERVER -> CLIENT   0x0038                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+365    2026-10-23 03:01:58.862 Map     #6       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+366    2026-10-23 03:01:58.862 Map     #6       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+367    2026-10-23 03:01:58.862 Map     #6       SERVER -> CLIENT   0x3800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+368    2026-10-23 03:01:58.862 Map     #6       SERVER -> CLIENT   0x0038                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+369    2026-10-23 03:01:59.092 Map     #6       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [14 e5 8e 06 00] |.....|
+370    2026-10-23 03:01:59.092 Map     #6       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [05 b5 e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+371    2026-10-23 03:01:59.092 Map     #6       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [b5 e4 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+372    2026-10-23 03:01:59.092 Map     #3       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [b5 e4 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+373    2026-10-23 03:01:59.113 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 14 e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+374    2026-10-23 03:01:59.113 Map     #6       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [14 e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+375    2026-10-23 03:01:59.216 Map     #6       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 174, dest_y: 357 })
+376    2026-10-23 03:01:59.294 Map     #6       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [14 e5 8e 06 00] |.....|
+377    2026-10-23 03:01:59.294 Map     #6       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [1f c7 11 00 2a 16 12 b9 65 88] |....*...e.|
+378    2026-10-23 03:01:59.295 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [00 81 84 1e 00 f6 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+78 bytes)] |......I.........................|
+379    2026-10-23 03:01:59.723 Map     #6       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [1b e5 8e 06 00] |.....|
+380    2026-10-23 03:01:59.768 Map     #6       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 177, dest_y: 353 })
+381    2026-10-23 03:01:59.927 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [00 81 84 1e 00 f6 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+78 bytes)] |......I.........................|
+382    2026-10-23 03:01:59.927 Map     #6       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [98 c9 11 00 2a d6 42 c5 61 88] |....*.B.a.|
+383    2026-10-23 03:02:00.138 Map     #6       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [05 1c e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+384    2026-10-23 03:02:00.138 Map     #6       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [1c e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+385    2026-10-23 03:02:00.352 Map     #6       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [05 1b e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+386    2026-10-23 03:02:00.352 Map     #6       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [1b e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+387    2026-10-23 03:02:00.882 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 1c e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+388    2026-10-23 03:02:00.925 Map     #6       CLIENT -> SERVER   0x0437 (CZ_REQUEST_ACT)  7      [IMPLEMENTED] Decoded: Intent(RequestAction { target_id: 110028046, action_type: 7 })
+389    2026-10-23 03:02:01.011 Map     #6       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [1b e5 8e 06 00] |.....|
+390    2026-10-23 03:02:01.083 Map     #6       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [81 84 1e 00 b1 00 61 01] |......a.|
+391    2026-10-23 03:02:01.083 Map     #6       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [81 84 1e 00 b1 00 61 01] |......a.|
+392    2026-10-23 03:02:01.083 Map     #6       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [81 84 1e 00 0e e5 8e 06 1c ce 11 00 4e 02 00 00 e0 01 00 00 0e 00 00 00 00 01 00 00 00 00 00 00] |............N...................|
+393    2026-10-23 03:02:01.083 Map     #3       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [81 84 1e 00 b1 00 61 01] |......a.|
+394    2026-10-23 03:02:01.083 Map     #3       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [81 84 1e 00 b1 00 61 01] |......a.|
+395    2026-10-23 03:02:01.083 Map     #3       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [81 84 1e 00 0e e5 8e 06 1c ce 11 00 4e 02 00 00 e0 01 00 00 0e 00 00 00 00 01 00 00 00 00 00 00] |............N...................|
+396    2026-10-23 03:02:01.691 Map     #6       SERVER -> CLIENT   0x0977 (PACKET_0X0977)   14     [KNOWN / UNIMPLEMENTED] payload: [0e e5 8e 06 29 00 00 00 37 00 00 00] |....)...7...|
+397    2026-10-23 03:02:02.069 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+398    2026-10-23 03:02:02.069 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+399    2026-10-23 03:02:02.133 Map     #6       CLIENT -> SERVER   0x0437 (CZ_REQUEST_ACT)  7      [IMPLEMENTED] Decoded: Intent(RequestAction { target_id: 110028046, action_type: 7 })
+400    2026-10-23 03:02:02.158 Map     #6       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [0e e5 8e 06 b2 00 61 01] |......a.|
+401    2026-10-23 03:02:02.158 Map     #6       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [0e e5 8e 06 b2 00 61 01] |......a.|
+402    2026-10-23 03:02:02.158 Map     #6       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [0e e5 8e 06 81 84 1e 00 4f d2 11 00 a0 02 00 00 1c 03 00 00 05 00 00 00 00 01 00 00 00 00 00 00] |........O.......................|
+403    2026-10-23 03:02:02.158 Map     #3       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [0e e5 8e 06 b2 00 61 01] |......a.|
+404    2026-10-23 03:02:02.158 Map     #3       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [0e e5 8e 06 b2 00 61 01] |......a.|
+405    2026-10-23 03:02:02.158 Map     #3       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [0e e5 8e 06 81 84 1e 00 4f d2 11 00 a0 02 00 00 1c 03 00 00 05 00 00 00 00 01 00 00 00 00 00 00] |........O.......................|
+406    2026-10-23 03:02:02.265 Map     #3       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [81 84 1e 00 0e e5 8e 06 b8 d2 11 00 4e 02 00 00 e0 01 00 00 0e 00 00 00 00 01 00 00 00 00 00 00] |............N...................|
+407    2026-10-23 03:02:02.265 Map     #6       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [81 84 1e 00 0e e5 8e 06 b8 d2 11 00 4e 02 00 00 e0 01 00 00 0e 00 00 00 00 01 00 00 00 00 00 00] |............N...................|
+408    2026-10-23 03:02:02.299 Map     #6       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+409    2026-10-23 03:02:02.832 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [05 00 1c 00 00 00] |......|
+410    2026-10-23 03:02:02.832 Map     #6       SERVER -> CLIENT   0x080e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+411    2026-10-23 03:02:02.832 Map     #6       SERVER -> CLIENT   0x8108                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+412    2026-10-23 03:02:02.832 Map     #6       SERVER -> CLIENT   0x8481                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+413    2026-10-23 03:02:02.832 Map     #6       SERVER -> CLIENT   0x1e84                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+414    2026-10-23 03:02:02.832 Map     #6       SERVER -> CLIENT   0x001e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+415    2026-10-23 03:02:02.832 Map     #6       SERVER -> CLIENT   0x1c00                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+416    2026-10-23 03:02:02.832 Map     #6       SERVER -> CLIENT   0x001c                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+417    2026-10-23 03:02:02.832 Map     #6       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+418    2026-10-23 03:02:02.832 Map     #6       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+419    2026-10-23 03:02:02.832 Map     #6       SERVER -> CLIENT   0x2800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+420    2026-10-23 03:02:02.832 Map     #6       SERVER -> CLIENT   0x0028                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+421    2026-10-23 03:02:02.832 Map     #3       SERVER -> CLIENT   0x080e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+422    2026-10-23 03:02:02.832 Map     #3       SERVER -> CLIENT   0x8108                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+423    2026-10-23 03:02:02.832 Map     #3       SERVER -> CLIENT   0x8481                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+424    2026-10-23 03:02:02.832 Map     #3       SERVER -> CLIENT   0x1e84                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+425    2026-10-23 03:02:02.832 Map     #3       SERVER -> CLIENT   0x001e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+426    2026-10-23 03:02:02.832 Map     #3       SERVER -> CLIENT   0x1c00                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+427    2026-10-23 03:02:02.832 Map     #3       SERVER -> CLIENT   0x001c                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+428    2026-10-23 03:02:02.832 Map     #3       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+429    2026-10-23 03:02:02.832 Map     #3       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+430    2026-10-23 03:02:02.832 Map     #3       SERVER -> CLIENT   0x2800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+431    2026-10-23 03:02:02.832 Map     #3       SERVER -> CLIENT   0x0028                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+432    2026-10-23 03:02:02.856 Map     #6       SERVER -> CLIENT   0x0977 (PACKET_0X0977)   14     [KNOWN / UNIMPLEMENTED] payload: [0e e5 8e 06 1b 00 00 00 37 00 00 00] |........7...|
+433    2026-10-23 03:02:03.342 Map     #6       CLIENT -> SERVER   0x0437 (CZ_REQUEST_ACT)  7      [IMPLEMENTED] Decoded: Intent(RequestAction { target_id: 110028046, action_type: 7 })
+434    2026-10-23 03:02:03.446 Map     #3       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [81 84 1e 00 0e e5 8e 06 54 d7 11 00 4e 02 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00] |........T...N...................|
+435    2026-10-23 03:02:03.446 Map     #6       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [81 84 1e 00 0e e5 8e 06 54 d7 11 00 4e 02 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00] |........T...N...................|
+436    2026-10-23 03:02:03.478 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 b5 e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+437    2026-10-23 03:02:03.478 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 b5 e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+438    2026-10-23 03:02:03.662 Map     #3       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+439    2026-10-23 03:02:04.049 Map     #6       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [0e e5 8e 06 b2 00 61 01] |......a.|
+440    2026-10-23 03:02:04.049 Map     #3       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [0e e5 8e 06 b2 00 61 01] |......a.|
+441    2026-10-23 03:02:04.049 Map     #3       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [0e e5 8e 06 81 84 1e 00 b0 d9 11 00 a0 02 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00] |................................|
+442    2026-10-23 03:02:04.049 Map     #6       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [0e e5 8e 06 81 84 1e 00 b0 d9 11 00 a0 02 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00] |................................|
+443    2026-10-23 03:02:04.631 Map     #3       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [81 84 1e 00 0e e5 8e 06 f0 db 11 00 4e 02 00 00 e0 01 00 00 0e 00 00 00 00 01 00 00 00 00 00 00] |............N...................|
+444    2026-10-23 03:02:04.631 Map     #6       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [81 84 1e 00 0e e5 8e 06 f0 db 11 00 4e 02 00 00 e0 01 00 00 0e 00 00 00 00 01 00 00 00 00 00 00] |............N...................|
+445    2026-10-23 03:02:04.634 Map     #3       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 1030874 })
+446    2026-10-23 03:02:04.637 Map     #3       SERVER -> CLIENT   0x007f (ZC_NOTIFY_TIME)  6      [IMPLEMENTED] payload: [ff db 11 00] |....|
+447    2026-10-23 03:02:05.214 Map     #6       SERVER -> CLIENT   0x0977 (PACKET_0X0977)   14     [KNOWN / UNIMPLEMENTED] payload: [0e e5 8e 06 0d 00 00 00 37 00 00 00] |........7...|
+448    2026-10-23 03:02:05.604 Map     #3       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 164, dest_y: 363 })
+449    2026-10-23 03:02:05.608 Map     #3       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [c9 df 11 00 2c 56 d2 91 6b 88] |....,V..k.|
+450    2026-10-23 03:02:05.608 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [00 80 84 1e 00 f0 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+78 bytes)] |......I.........................|
+451    2026-10-23 03:02:05.810 Map     #3       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [81 84 1e 00 0e e5 8e 06 8c e0 11 00 4e 02 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00] |............N...................|
+452    2026-10-23 03:02:05.810 Map     #6       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [81 84 1e 00 0e e5 8e 06 8c e0 11 00 4e 02 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00] |............N...................|
+453    2026-10-23 03:02:05.932 Map     #6       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [0e e5 8e 06 b2 00 61 01] |......a.|
+454    2026-10-23 03:02:05.932 Map     #6       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [0e e5 8e 06 81 84 1e 00 0d e1 11 00 a0 02 00 00 1c 03 00 00 05 00 00 00 00 01 00 00 00 00 00 00] |................................|
+455    2026-10-23 03:02:05.932 Map     #3       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [0e e5 8e 06 b2 00 61 01] |......a.|
+456    2026-10-23 03:02:05.932 Map     #3       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [0e e5 8e 06 81 84 1e 00 0d e1 11 00 a0 02 00 00 1c 03 00 00 05 00 00 00 00 01 00 00 00 00 00 00] |................................|
+457    2026-10-23 03:02:06.030 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [5c d3 8e 06 00] |\....|
+458    2026-10-23 03:02:06.329 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 d7 81 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 8d 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+459    2026-10-23 03:02:06.586 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [05 00 1d 00 00 00] |......|
+460    2026-10-23 03:02:06.586 Map     #6       SERVER -> CLIENT   0x080e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+461    2026-10-23 03:02:06.586 Map     #6       SERVER -> CLIENT   0x8108                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+462    2026-10-23 03:02:06.586 Map     #6       SERVER -> CLIENT   0x8481                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+463    2026-10-23 03:02:06.586 Map     #6       SERVER -> CLIENT   0x1e84                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+464    2026-10-23 03:02:06.586 Map     #6       SERVER -> CLIENT   0x001e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+465    2026-10-23 03:02:06.586 Map     #6       SERVER -> CLIENT   0x1d00                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+466    2026-10-23 03:02:06.586 Map     #6       SERVER -> CLIENT   0x001d                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+467    2026-10-23 03:02:06.586 Map     #6       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+468    2026-10-23 03:02:06.586 Map     #6       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+469    2026-10-23 03:02:06.586 Map     #6       SERVER -> CLIENT   0x2800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+470    2026-10-23 03:02:06.586 Map     #6       SERVER -> CLIENT   0x0028                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+471    2026-10-23 03:02:06.586 Map     #3       SERVER -> CLIENT   0x080e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+472    2026-10-23 03:02:06.586 Map     #3       SERVER -> CLIENT   0x8108                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+473    2026-10-23 03:02:06.586 Map     #3       SERVER -> CLIENT   0x8481                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+474    2026-10-23 03:02:06.586 Map     #3       SERVER -> CLIENT   0x1e84                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+475    2026-10-23 03:02:06.586 Map     #3       SERVER -> CLIENT   0x001e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+476    2026-10-23 03:02:06.586 Map     #3       SERVER -> CLIENT   0x1d00                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+477    2026-10-23 03:02:06.586 Map     #3       SERVER -> CLIENT   0x001d                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+478    2026-10-23 03:02:06.586 Map     #3       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+479    2026-10-23 03:02:06.586 Map     #3       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+480    2026-10-23 03:02:06.586 Map     #3       SERVER -> CLIENT   0x2800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+481    2026-10-23 03:02:06.586 Map     #3       SERVER -> CLIENT   0x0028                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+482    2026-10-23 03:02:06.619 Map     #3       SERVER -> CLIENT   0x080e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+483    2026-10-23 03:02:06.619 Map     #3       SERVER -> CLIENT   0x8108                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+484    2026-10-23 03:02:06.619 Map     #3       SERVER -> CLIENT   0x8481                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+485    2026-10-23 03:02:06.619 Map     #3       SERVER -> CLIENT   0x1e84                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+486    2026-10-23 03:02:06.619 Map     #3       SERVER -> CLIENT   0x001e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+487    2026-10-23 03:02:06.619 Map     #3       SERVER -> CLIENT   0x1800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+488    2026-10-23 03:02:06.619 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [05 00 18 00 00 00] |......|
+489    2026-10-23 03:02:06.619 Map     #3       SERVER -> CLIENT   0x0018                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+490    2026-10-23 03:02:06.619 Map     #3       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+491    2026-10-23 03:02:06.619 Map     #3       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+492    2026-10-23 03:02:06.619 Map     #3       SERVER -> CLIENT   0x2800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+493    2026-10-23 03:02:06.619 Map     #6       SERVER -> CLIENT   0x080e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+494    2026-10-23 03:02:06.619 Map     #6       SERVER -> CLIENT   0x8108                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+495    2026-10-23 03:02:06.619 Map     #6       SERVER -> CLIENT   0x8481                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+496    2026-10-23 03:02:06.619 Map     #6       SERVER -> CLIENT   0x1e84                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+497    2026-10-23 03:02:06.619 Map     #6       SERVER -> CLIENT   0x001e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+498    2026-10-23 03:02:06.619 Map     #3       SERVER -> CLIENT   0x0028                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+499    2026-10-23 03:02:06.619 Map     #6       SERVER -> CLIENT   0x1800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+500    2026-10-23 03:02:06.619 Map     #6       SERVER -> CLIENT   0x0018                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+501    2026-10-23 03:02:06.619 Map     #6       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+502    2026-10-23 03:02:06.619 Map     #6       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+503    2026-10-23 03:02:06.619 Map     #6       SERVER -> CLIENT   0x2800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+504    2026-10-23 03:02:06.619 Map     #6       SERVER -> CLIENT   0x0028                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+505    2026-10-23 03:02:06.907 Map     #6       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 180, dest_y: 358 })
+506    2026-10-23 03:02:06.911 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [00 81 84 1e 00 f6 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+78 bytes)] |......I.........................|
+507    2026-10-23 03:02:06.911 Map     #6       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [e0 e4 11 00 2c 56 12 d1 66 88] |....,V..f.|
+508    2026-10-23 03:02:07.124 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [00 81 84 1e 00 f6 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+78 bytes)] |......I.........................|
+509    2026-10-23 03:02:07.124 Map     #6       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [b5 e5 11 00 2c 96 22 d1 66 88] |....,.".f.|
+510    2026-10-23 03:02:07.232 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [b5 e4 8e 06 00] |.....|
+511    2026-10-23 03:02:07.299 Map     #6       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+512    2026-10-23 03:02:07.346 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [00 81 84 1e 00 f6 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+78 bytes)] |......I.........................|
+513    2026-10-23 03:02:07.346 Map     #6       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [93 e6 11 00 2c d6 32 d1 66 88] |....,.2.f.|
+514    2026-10-23 03:02:07.368 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+515    2026-10-23 03:02:07.368 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+516    2026-10-23 03:02:07.551 Map     #6       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [80 84 1e 00 00] |.....|
+517    2026-10-23 03:02:07.551 Map     #6       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [5f e7 11 00 2d 16 42 d1 66 88] |_...-.B.f.|
+518    2026-10-23 03:02:07.551 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [81 84 1e 00 00] |.....|
+519    2026-10-23 03:02:07.710 Map     #6       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [1c e5 8e 06 00] |.....|
+520    2026-10-23 03:02:07.710 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 ca e4 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 27 04 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |...................'............|
+521    2026-10-23 03:02:07.710 Map     #3       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [ca e4 8e 06 00 00 00 00 4c 75 6e 61 74 69 63 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Lunatic.................|
+522    2026-10-23 03:02:07.768 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+523    2026-10-23 03:02:07.768 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+524    2026-10-23 03:02:07.950 Map     #6       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 179, dest_y: 355 })
+525    2026-10-23 03:02:07.954 Map     #6       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [f3 e8 11 00 2d 16 62 cd 63 88] |....-.b.c.|
+526    2026-10-23 03:02:08.274 Map     #6       CLIENT -> SERVER   0x0437 (CZ_REQUEST_ACT)  7      [IMPLEMENTED] Decoded: Intent(RequestAction { target_id: 110028046, action_type: 7 })
+527    2026-10-23 03:02:08.321 Map     #6       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [05 1c e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+528    2026-10-23 03:02:08.321 Map     #6       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [1c e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+529    2026-10-23 03:02:08.342 Map     #6       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [0e e5 8e 06 b3 00 63 01] |......c.|
+530    2026-10-23 03:02:08.342 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [0e e5 8e 06 00] |.....|
+531    2026-10-23 03:02:08.342 Map     #6       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [0e e5 8e 06 81 84 1e 00 77 ea 11 00 a0 02 00 00 1c 03 00 00 05 00 00 00 00 01 00 00 00 00 00 00] |........w.......................|
+532    2026-10-23 03:02:08.368 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 1c e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+533    2026-10-23 03:02:08.390 Map     #6       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [81 84 1e 00 b3 00 64 01] |......d.|
+534    2026-10-23 03:02:08.390 Map     #6       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [81 84 1e 00 b3 00 64 01] |......d.|
+535    2026-10-23 03:02:08.390 Map     #6       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [81 84 1e 00 b3 00 64 01] |......d.|
+536    2026-10-23 03:02:08.390 Map     #6       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [81 84 1e 00 0e e5 8e 06 a7 ea 11 00 4e 02 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00] |............N...................|
+537    2026-10-23 03:02:08.666 Map     #3       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+538    2026-10-23 03:02:08.923 Map     #3       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 155, dest_y: 361 })
+539    2026-10-23 03:02:08.928 Map     #3       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [c0 ec 11 00 29 16 b2 6d 69 88] |....)..mi.|
+540    2026-10-23 03:02:09.017 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [05 00 13 00 00 00] |......|
+541    2026-10-23 03:02:09.017 Map     #6       SERVER -> CLIENT   0x080e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+542    2026-10-23 03:02:09.017 Map     #6       SERVER -> CLIENT   0x8108                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+543    2026-10-23 03:02:09.017 Map     #6       SERVER -> CLIENT   0x8481                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+544    2026-10-23 03:02:09.017 Map     #6       SERVER -> CLIENT   0x1e84                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+545    2026-10-23 03:02:09.017 Map     #6       SERVER -> CLIENT   0x001e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+546    2026-10-23 03:02:09.017 Map     #6       SERVER -> CLIENT   0x1300                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+547    2026-10-23 03:02:09.017 Map     #6       SERVER -> CLIENT   0x0013                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+548    2026-10-23 03:02:09.017 Map     #6       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+549    2026-10-23 03:02:09.017 Map     #6       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+550    2026-10-23 03:02:09.017 Map     #6       SERVER -> CLIENT   0x2800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+551    2026-10-23 03:02:09.017 Map     #6       SERVER -> CLIENT   0x0028                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+552    2026-10-23 03:02:09.292 Map     #3       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 169, dest_y: 359 })
+553    2026-10-23 03:02:09.334 Map     #6       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 1035574 })
+554    2026-10-23 03:02:09.338 Map     #6       SERVER -> CLIENT   0x007f (ZC_NOTIFY_TIME)  6      [IMPLEMENTED] payload: [5b ee 11 00] |[...|
+555    2026-10-23 03:02:09.359 Map     #3       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [70 ee 11 00 28 96 92 a5 67 88] |p...(...g.|
+556    2026-10-23 03:02:09.590 Map     #6       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [81 84 1e 00 0e e5 8e 06 43 ef 11 00 4e 02 00 00 e0 01 00 00 0e 00 00 00 00 01 00 00 00 00 00 00] |........C...N...................|
+557    2026-10-23 03:02:09.790 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [31 8d 8e 06 00] |1....|
+558    2026-10-23 03:02:09.930 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [00 80 84 1e 00 f0 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+78 bytes)] |......I.........................|
+559    2026-10-23 03:02:09.930 Map     #6       SERVER -> CLIENT   0x080e                   14     [UNKNOWN / UNMAPPED in table.rs, 14 bytes] payload: [80 84 1e 00 38 00 00 00 38 00 00 00] |....8...8...|
+560    2026-10-23 03:02:09.930 Map     #6       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [0e e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+561    2026-10-23 03:02:09.930 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [ca e4 8e 06 00] |.....|
+562    2026-10-23 03:02:09.930 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [00 81 84 1e 00 f6 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+72 bytes)] |......I.........................|
+563    2026-10-23 03:02:09.930 Map     #3       SERVER -> CLIENT   0x080e                   14     [UNKNOWN / UNMAPPED in table.rs, 14 bytes] payload: [81 84 1e 00 13 00 00 00 28 00 00 00] |........(...|
+564    2026-10-23 03:02:09.930 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+565    2026-10-23 03:02:09.930 Map     #3       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [0e e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+566    2026-10-23 03:02:09.951 Map     #3       CLIENT -> SERVER   0x0368 (CZ_REQNAME)      6      [IMPLEMENTED] Decoded: Intent(RequestEntityName { entity_id: 2000001 })
+567    2026-10-23 03:02:09.955 Map     #3       SERVER -> CLIENT   0x0a30 (ZC_ACK_REQNAMEALL) 106    [IMPLEMENTED] payload: [81 84 1e 00 74 65 73 74 74 65 73 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |....testtest....................|
+568    2026-10-23 03:02:10.164 Map     #3       SERVER -> CLIENT   0x019b                   21     [UNKNOWN / UNMAPPED in table.rs, 21 bytes] payload: [81 84 1e 00 01 00 00 00 dd 0a 39 00 00 00 8d 03 00 00 03] |..........9........|
+569    2026-10-23 03:02:10.164 Map     #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+570    2026-10-23 03:02:10.164 Map     #3       SERVER -> CLIENT   0x00b2 (CZ_RESTART)      3      [KNOWN / UNIMPLEMENTED] payload: [65] |e|
+571    2026-10-23 03:02:10.164 Map     #6       SERVER -> CLIENT   0x0977 (PACKET_0X0977)   14     [KNOWN / UNIMPLEMENTED] payload: [0e e5 8e 06 00 00 00 00 37 00 00 00] |........7...|
+572    2026-10-23 03:02:10.164 Map     #6       SERVER -> CLIENT   0x0acb                   84     [UNKNOWN / UNMAPPED in table.rs, 84 bytes] payload: [01 00 fc 00 00 00 00 00 00 00 b0 00 37 00 03 00 00 00 cb 0a 02 00 11 00 00 00 00 00 00 00 cb 0a ... (+50 bytes)] |............7...................|
+573    2026-10-23 03:02:10.164 Map     #6       SERVER -> CLIENT   0x0acc (PACKET_0X0ACC)   18     [KNOWN / UNIMPLEMENTED] payload: [81 84 1e 00 96 00 00 00 00 00 00 00 01 00 00 00] |................|
+574    2026-10-23 03:02:10.164 Map     #6       SERVER -> CLIENT   0x0acc (PACKET_0X0ACC)   18     [KNOWN / UNIMPLEMENTED] payload: [81 84 1e 00 28 00 00 00 00 00 00 00 02 00 00 00] |....(...........|
+575    2026-10-23 03:02:10.164 Map     #6       SERVER -> CLIENT   0x0a24 (ZC_ACH_UPDATE)   66     [KNOWN / UNIMPLEMENTED] payload: [0a 00 00 00 00 00 0a 00 00 00 12 00 00 00 39 83 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+32 bytes)] |..............9.................|
+576    2026-10-23 03:02:10.164 Map     #6       SERVER -> CLIENT   0x0a24 (ZC_ACH_UPDATE)   66     [KNOWN / UNIMPLEMENTED] payload: [0a 00 00 00 00 00 0a 00 00 00 12 00 00 00 39 83 03 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 ... (+32 bytes)] |..............9.................|
+577    2026-10-23 03:02:10.164 Map     #6       SERVER -> CLIENT   0x0add (PACKET_0X0ADD)   22     [KNOWN / UNIMPLEMENTED] payload: [39 00 00 00 8d 03 00 00 03 00 01 b2 00 65 01 03 0c 01 00 00] |9............e......|
+578    2026-10-23 03:02:10.164 Map     #6       SERVER -> CLIENT   0x0000                   2      [UNKNOWN / UNMAPPED in table.rs, 2 bytes] payload: []
+579    2026-10-23 03:02:10.185 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 b5 e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+580    2026-10-23 03:02:10.391 Map     #6       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [b5 e4 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+581    2026-10-23 03:02:10.391 Map     #3       SERVER -> CLIENT   0x0301 (PACKET_0X0301)   268    [KNOWN / UNIMPLEMENTED] payload: [00 00 00 00 fd 09 72 00 05 1b e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 ... (+232 bytes)] |......r.........................|
+582    2026-10-23 03:02:10.391 Map     #3       SERVER -> CLIENT   0x0000                   26     [UNKNOWN / UNMAPPED in table.rs, 26 bytes] payload: [50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00] |Poring..................|
+583    2026-10-23 03:02:10.391 Map     #3       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [b5 e4 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+584    2026-10-23 03:02:10.412 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [0e e5 8e 06 01] |.....|
+585    2026-10-23 03:02:10.412 Map     #6       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [0e e5 8e 06 01] |.....|
+586    2026-10-23 03:02:10.425 Map     #3       CLIENT -> SERVER   0x0368 (CZ_REQNAME)      6      [IMPLEMENTED] Decoded: Intent(RequestEntityName { entity_id: 110028046 })
+587    2026-10-23 03:02:10.429 Map     #3       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [0e e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+588    2026-10-23 03:02:10.968 Map     #3       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 180, dest_y: 356 })
+589    2026-10-23 03:02:10.972 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [00 80 84 1e 00 f0 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+78 bytes)] |......I.........................|
+590    2026-10-23 03:02:10.972 Map     #3       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [bd f4 11 00 2a 56 72 d1 64 88] |....*Vr.d.|
+591    2026-10-23 03:02:11.097 Map     #6       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [1c e5 8e 06 00] |.....|
+592    2026-10-23 03:02:11.398 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [1b e5 8e 06 00] |.....|
+593    2026-10-23 03:02:11.611 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [d7 81 8e 06 00] |.....|
+594    2026-10-23 03:02:11.708 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 b5 e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+595    2026-10-23 03:02:11.708 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 b5 e4 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+596    2026-10-23 03:02:11.985 Map     #3       SERVER -> CLIENT   0x00a1                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+597    2026-10-23 03:02:11.985 Map     #3       SERVER -> CLIENT   0x3900                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+598    2026-10-23 03:02:11.985 Map     #3       SERVER -> CLIENT   0x0039                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+599    2026-10-23 03:02:11.986 Map     #6       SERVER -> CLIENT   0x00a1                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+600    2026-10-23 03:02:11.986 Map     #6       SERVER -> CLIENT   0x3900                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+601    2026-10-23 03:02:11.986 Map     #6       SERVER -> CLIENT   0x0039                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+602    2026-10-23 03:02:12.176 Map     #3       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 177, dest_y: 357 })
+603    2026-10-23 03:02:12.205 Map     #3       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [8d f9 11 00 2c 16 42 c5 65 88] |....,.B.e.|
+604    2026-10-23 03:02:12.205 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [00 80 84 1e 00 f0 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+78 bytes)] |......I.........................|
+605    2026-10-23 03:02:12.301 Map     #6       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+606    2026-10-23 03:02:12.319 Map     #3       CLIENT -> SERVER   0x0437 (CZ_REQUEST_ACT)  7      [IMPLEMENTED] Decoded: Intent(RequestAction { target_id: 110027957, action_type: 7 })
+607    2026-10-23 03:02:12.521 Map     #3       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [80 84 1e 00 b1 00 65 01] |......e.|
+608    2026-10-23 03:02:12.521 Map     #3       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [80 84 1e 00 b1 00 65 01] |......e.|
+609    2026-10-23 03:02:12.521 Map     #3       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [80 84 1e 00 b5 e4 8e 06 ca fa 11 00 3a 02 00 00 e0 01 00 00 29 00 00 00 00 01 00 00 00 00 00 00] |............:.......)...........|
+610    2026-10-23 03:02:12.521 Map     #6       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [80 84 1e 00 b1 00 65 01] |......e.|
+611    2026-10-23 03:02:12.521 Map     #6       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [80 84 1e 00 b1 00 65 01] |......e.|
+612    2026-10-23 03:02:12.521 Map     #6       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [80 84 1e 00 b5 e4 8e 06 ca fa 11 00 3a 02 00 00 e0 01 00 00 29 00 00 00 00 01 00 00 00 00 00 00] |............:.......)...........|
+613    2026-10-23 03:02:13.095 Map     #3       SERVER -> CLIENT   0x0977 (PACKET_0X0977)   14     [KNOWN / UNIMPLEMENTED] payload: [b5 e4 8e 06 0e 00 00 00 37 00 00 00] |........7...|
+614    2026-10-23 03:02:13.600 Map     #3       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [b5 e4 8e 06 b2 00 65 01] |......e.|
+615    2026-10-23 03:02:13.600 Map     #3       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [b5 e4 8e 06 80 84 1e 00 01 ff 11 00 a0 02 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00] |................................|
+616    2026-10-23 03:02:13.600 Map     #6       SERVER -> CLIENT   0x0088 (ZC_STOPMOVE)     10     [IMPLEMENTED] payload: [b5 e4 8e 06 b2 00 65 01] |......e.|
+617    2026-10-23 03:02:13.600 Map     #6       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [b5 e4 8e 06 80 84 1e 00 01 ff 11 00 a0 02 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00] |................................|
+618    2026-10-23 03:02:13.664 Map     #6       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [80 84 1e 00 b5 e4 8e 06 3e ff 11 00 3a 02 00 00 e0 01 00 00 28 00 00 00 00 01 00 00 00 00 00 00] |........>...:.......(...........|
+619    2026-10-23 03:02:13.664 Map     #3       SERVER -> CLIENT   0x08c8 (ZC_NOTIFY_ACT)   34     [IMPLEMENTED] payload: [80 84 1e 00 b5 e4 8e 06 3e ff 11 00 3a 02 00 00 e0 01 00 00 28 00 00 00 00 01 00 00 00 00 00 00] |........>...:.......(...........|
+620    2026-10-23 03:02:13.668 Map     #3       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+621    2026-10-23 03:02:14.073 Map     #3       SERVER -> CLIENT   0x080e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+622    2026-10-23 03:02:14.073 Map     #3       SERVER -> CLIENT   0x8108                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+623    2026-10-23 03:02:14.073 Map     #3       SERVER -> CLIENT   0x8481                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+624    2026-10-23 03:02:14.073 Map     #3       SERVER -> CLIENT   0x1e84                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+625    2026-10-23 03:02:14.073 Map     #3       SERVER -> CLIENT   0x001e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+626    2026-10-23 03:02:14.073 Map     #3       SERVER -> CLIENT   0x1400                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+627    2026-10-23 03:02:14.073 Map     #3       SERVER -> CLIENT   0x0014                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+628    2026-10-23 03:02:14.073 Map     #3       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+629    2026-10-23 03:02:14.073 Map     #3       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+630    2026-10-23 03:02:14.073 Map     #3       SERVER -> CLIENT   0x2800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+631    2026-10-23 03:02:14.073 Map     #3       SERVER -> CLIENT   0x0028                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+632    2026-10-23 03:02:14.073 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [05 00 14 00 00 00] |......|
+633    2026-10-23 03:02:14.073 Map     #6       SERVER -> CLIENT   0x080e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+634    2026-10-23 03:02:14.073 Map     #6       SERVER -> CLIENT   0x8108                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+635    2026-10-23 03:02:14.073 Map     #6       SERVER -> CLIENT   0x8481                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+636    2026-10-23 03:02:14.073 Map     #6       SERVER -> CLIENT   0x1e84                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+637    2026-10-23 03:02:14.073 Map     #6       SERVER -> CLIENT   0x001e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+638    2026-10-23 03:02:14.073 Map     #6       SERVER -> CLIENT   0x1400                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+639    2026-10-23 03:02:14.073 Map     #6       SERVER -> CLIENT   0x0014                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+640    2026-10-23 03:02:14.073 Map     #6       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+641    2026-10-23 03:02:14.073 Map     #6       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+642    2026-10-23 03:02:14.073 Map     #6       SERVER -> CLIENT   0x2800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+643    2026-10-23 03:02:14.073 Map     #6       SERVER -> CLIENT   0x0028                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+644    2026-10-23 03:02:14.235 Map     #3       SERVER -> CLIENT   0x0977 (PACKET_0X0977)   14     [KNOWN / UNIMPLEMENTED] payload: [b5 e4 8e 06 00 00 00 00 37 00 00 00] |........7...|
+645    2026-10-23 03:02:14.235 Map     #3       SERVER -> CLIENT   0x0acb                   24     [UNKNOWN / UNMAPPED in table.rs, 24 bytes] payload: [01 00 64 05 00 00 00 00 00 00 cb 0a 02 00 61 00 00 00 00 00 00 00] |..d...........a.......|
+646    2026-10-23 03:02:14.235 Map     #3       SERVER -> CLIENT   0x0acc (PACKET_0X0ACC)   18     [KNOWN / UNIMPLEMENTED] payload: [80 84 1e 00 96 00 00 00 00 00 00 00 01 00 00 00] |................|
+647    2026-10-23 03:02:14.235 Map     #3       SERVER -> CLIENT   0x0acc (PACKET_0X0ACC)   18     [KNOWN / UNIMPLEMENTED] payload: [80 84 1e 00 00 00 00 00 00 00 00 00 02 00 00 00] |................|
+648    2026-10-23 03:02:14.235 Map     #3       SERVER -> CLIENT   0x0add (PACKET_0X0ADD)   22     [KNOWN / UNIMPLEMENTED] payload: [3d 00 00 00 8d 03 00 00 03 00 01 b2 00 65 01 06 0c 01 00 00] |=............e......|
+649    2026-10-23 03:02:14.235 Map     #3       SERVER -> CLIENT   0x0000                   37     [UNKNOWN / UNMAPPED in table.rs, 37 bytes] payload: [dd 0a 3e 00 00 00 aa 03 00 00 03 00 01 b4 00 63 01 09 06 01 00 00 00 00 dd 0a 3f 00 00 00 8d 03 ... (+3 bytes)] |..>............c..........?.....|
+650    2026-10-23 03:02:14.235 Map     #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+651    2026-10-23 03:02:14.235 Map     #3       SERVER -> CLIENT   0x00b2 (CZ_RESTART)      3      [KNOWN / UNIMPLEMENTED] payload: [66] |f|
+652    2026-10-23 03:02:14.235 Map     #3       SERVER -> CLIENT   0x0601                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+653    2026-10-23 03:02:14.235 Map     #3       SERVER -> CLIENT   0x0606                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+654    2026-10-23 03:02:14.235 Map     #3       SERVER -> CLIENT   0x0106                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+655    2026-10-23 03:02:14.235 Map     #3       SERVER -> CLIENT   0x0001                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+656    2026-10-23 03:02:14.235 Map     #3       SERVER -> CLIENT   0x0000                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+657    2026-10-23 03:02:14.235 Map     #6       SERVER -> CLIENT   0x0add (PACKET_0X0ADD)   22     [KNOWN / UNIMPLEMENTED] payload: [3d 00 00 00 8d 03 00 00 03 00 01 b2 00 65 01 06 0c 01 00 00] |=............e......|
+658    2026-10-23 03:02:14.235 Map     #6       SERVER -> CLIENT   0x0000                   37     [UNKNOWN / UNMAPPED in table.rs, 37 bytes] payload: [dd 0a 3e 00 00 00 aa 03 00 00 03 00 01 b4 00 63 01 09 06 01 00 00 00 00 dd 0a 3f 00 00 00 8d 03 ... (+3 bytes)] |..>............c..........?.....|
+659    2026-10-23 03:02:14.235 Map     #6       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+660    2026-10-23 03:02:14.235 Map     #6       SERVER -> CLIENT   0x00b2 (CZ_RESTART)      3      [KNOWN / UNIMPLEMENTED] payload: [66] |f|
+661    2026-10-23 03:02:14.235 Map     #6       SERVER -> CLIENT   0x0601                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+662    2026-10-23 03:02:14.235 Map     #6       SERVER -> CLIENT   0x0606                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+663    2026-10-23 03:02:14.235 Map     #6       SERVER -> CLIENT   0x0106                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+664    2026-10-23 03:02:14.235 Map     #6       SERVER -> CLIENT   0x0001                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+665    2026-10-23 03:02:14.235 Map     #6       SERVER -> CLIENT   0x0000                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+666    2026-10-23 03:02:14.490 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [b5 e4 8e 06 01] |.....|
+667    2026-10-23 03:02:14.490 Map     #6       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [b5 e4 8e 06 01] |.....|
+668    2026-10-23 03:02:14.733 Map     #3       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 173, dest_y: 368 })
+669    2026-10-23 03:02:14.738 Map     #3       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [73 03 12 00 2c 56 52 b5 70 88] |s...,VR.p.|
+670    2026-10-23 03:02:14.738 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [00 80 84 1e 00 f0 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+78 bytes)] |......I.........................|
+671    2026-10-23 03:02:15.370 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 31 8d 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 33 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |.1.................3............|
+672    2026-10-23 03:02:15.596 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 d7 81 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 8d 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+673    2026-10-23 03:02:15.960 Map     #3       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 171, dest_y: 377 })
+674    2026-10-23 03:02:16.032 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 5c d3 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 2d 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |.\.................-............|
+675    2026-10-23 03:02:16.032 Map     #3       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [7f 08 12 00 2b 56 c2 ad 79 88] |....+V..y.|
+676    2026-10-23 03:02:16.032 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [00 80 84 1e 00 f0 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+78 bytes)] |......I.........................|
+677    2026-10-23 03:02:16.643 Map     #3       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 1042882 })
+678    2026-10-23 03:02:16.648 Map     #3       SERVER -> CLIENT   0x007f (ZC_NOTIFY_TIME)  6      [IMPLEMENTED] payload: [e9 0a 12 00] |....|
+679    2026-10-23 03:02:16.661 Map     #6       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 180, dest_y: 363 })
+680    2026-10-23 03:02:16.664 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [00 81 84 1e 00 f6 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+78 bytes)] |......I.........................|
+681    2026-10-23 03:02:16.664 Map     #6       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [fa 0a 12 00 2c d6 42 d1 6b 88] |....,.B.k.|
+682    2026-10-23 03:02:17.071 Map     #3       SERVER -> CLIENT   0x00a1                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+683    2026-10-23 03:02:17.071 Map     #3       SERVER -> CLIENT   0x3e00                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+684    2026-10-23 03:02:17.071 Map     #3       SERVER -> CLIENT   0x003e                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+685    2026-10-23 03:02:17.093 Map     #6       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 175, dest_y: 367 })
+686    2026-10-23 03:02:17.191 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [00 81 84 1e 00 f6 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+78 bytes)] |......I.........................|
+687    2026-10-23 03:02:17.191 Map     #6       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [08 0d 12 00 2d 16 72 bd 6f 88] |....-.r.o.|
+688    2026-10-23 03:02:17.309 Map     #6       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+689    2026-10-23 03:02:17.367 Map     #3       SERVER -> CLIENT   0x00a1                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+690    2026-10-23 03:02:17.367 Map     #3       SERVER -> CLIENT   0x3d00                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+691    2026-10-23 03:02:17.367 Map     #3       SERVER -> CLIENT   0x003d                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+692    2026-10-23 03:02:17.403 Map     #6       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 31 8d 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 33 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |.1.................3............|
+693    2026-10-23 03:02:17.511 Map     #3       SERVER -> CLIENT   0x00a1                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+694    2026-10-23 03:02:17.511 Map     #3       SERVER -> CLIENT   0x3f00                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+695    2026-10-23 03:02:17.511 Map     #3       SERVER -> CLIENT   0x003f                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+696    2026-10-23 03:02:17.951 Map     #3       SERVER -> CLIENT   0x0091 (ZC_NPCACK_MAPMOVE) 22     [IMPLEMENTED] payload: [70 72 6f 6e 74 65 72 61 2e 67 61 74 00 00 00 00 9c 00 1a 00] |prontera.gat........|
+697    2026-10-23 03:02:17.951 Map     #6       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [80 84 1e 00 00] |.....|
+698    2026-10-23 03:02:18.250 Map     #6       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 5c d3 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 2d 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |.\.................-............|
+699    2026-10-23 03:02:18.562 Map     #3       CLIENT -> SERVER   0x007d (CZ_NOTIFY_ACTORINIT) 2      [IMPLEMENTED] Decoded: Intent(NotifyActorInit)
+700    2026-10-23 03:02:18.562 Map     #3       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 1044801 })
+701    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x01d7 (ZC_SPRITE_CHANGE2) 11     [KNOWN / UNIMPLEMENTED] payload: [80 84 1e 00 02 b1 04 00 00] |.........|
+702    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x0000                   10     [UNKNOWN / UNMAPPED in table.rs, 10 bytes] payload: [00 00 08 0b 06 00 00 00] |........|
+703    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x0b09 (PACKET_0X0B09)   311    [KNOWN / UNIMPLEMENTED] payload: [00 04 00 bc 5b 00 00 02 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+275 bytes)] |....[...........................|
+704    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x0b39 (PACKET_0X0B39)   209    [KNOWN / UNIMPLEMENTED] payload: [00 02 00 b1 04 00 00 05 02 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+173 bytes)] |................................|
+705    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x0b0b                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+706    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x0a9b (PACKET_0X0A9B)   4      [KNOWN / UNIMPLEMENTED] payload: []
+707    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [18 00 46 05 00 00] |..F...|
+708    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [19 00 04 5b 00 00] |...[..|
+709    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x099b (ZC_NOTIFY_MAPPROPERTY2) 8      [KNOWN / UNIMPLEMENTED] payload: [00 00 00 06 00 00] |......|
+710    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 c4 9f 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 2d 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |...................-............|
+711    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 82 7d 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 73 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |..}................s............|
+712    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 2f a8 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 69 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |./.................i............|
+713    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 8e cd 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 8b 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+714    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x0141                   174    [UNKNOWN / UNMAPPED in table.rs, 174 bytes] payload: [0d 00 00 00 0b 00 00 00 01 00 00 00 41 01 0e 00 00 00 0a 00 00 00 01 00 00 00 41 01 0f 00 00 00 ... (+140 bytes)] |............A.............A.....|
+715    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [02 00 00 00 00 00 00 00] |........|
+716    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [01 00 00 00 00 00 00 00] |........|
+717    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [03 00 00 00 00 00 00 00] |........|
+718    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [05 00 00 00 00 00 00 00] |........|
+719    2026-10-23 03:02:18.566 Map     #3       SERVER -> CLIENT   0x0b8d                   69     [UNKNOWN / UNMAPPED in table.rs, 69 bytes] payload: [45 00 01 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 ... (+35 bytes)] |E...............................|
+720    2026-10-23 03:02:18.572 Map     #3       SERVER -> CLIENT   0x007f (ZC_NOTIFY_TIME)  6      [IMPLEMENTED] payload: [69 12 12 00] |i...|
+721    2026-10-23 03:02:18.584 Map     #3       CLIENT -> SERVER   0x08c9 (CZ_CASHSHOP_LIST_REQUEST) 2      [KNOWN / UNIMPLEMENTED] payload: []
+722    2026-10-23 03:02:18.593 Map     #3       CLIENT -> SERVER   0x0447 (CZ_BLOCKING_PLAY_CANCEL) 2      [KNOWN / UNIMPLEMENTED] payload: []
+723    2026-10-23 03:02:18.597 Map     #3       SERVER -> CLIENT   0x0b1b                   2      [UNKNOWN / UNMAPPED in table.rs, 2 bytes] payload: []
+724    2026-10-23 03:02:20.178 Map     #6       SERVER -> CLIENT   0x09fe (ZC_NOTIFY_NEWENTRY11) 107    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+71 bytes)] |................................|
+725    2026-10-23 03:02:20.178 Map     #6       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [0e e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+726    2026-10-23 03:02:20.669 Map     #3       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 156, dest_y: 22 })
+727    2026-10-23 03:02:20.673 Map     #3       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [a2 1a 12 00 27 01 a2 70 16 88] |....'..p..|
+728    2026-10-23 03:02:20.840 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [8e cd 8e 06 00] |.....|
+729    2026-10-23 03:02:20.977 Map     #3       SERVER -> CLIENT   0x0091 (ZC_NPCACK_MAPMOVE) 22     [IMPLEMENTED] payload: [70 72 74 5f 66 69 6c 64 30 38 2e 67 61 74 00 00 aa 00 77 01] |prt_fild08.gat....w.|
+730    2026-10-23 03:02:21.352 Map     #6       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 1047591 })
+731    2026-10-23 03:02:21.355 Map     #6       SERVER -> CLIENT   0x007f (ZC_NOTIFY_TIME)  6      [IMPLEMENTED] payload: [4d 1d 12 00] |M...|
+732    2026-10-23 03:02:21.407 Map     #3       CLIENT -> SERVER   0x007d (CZ_NOTIFY_ACTORINIT) 2      [IMPLEMENTED] Decoded: Intent(NotifyActorInit)
+733    2026-10-23 03:02:21.407 Map     #3       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 1047646 })
+734    2026-10-23 03:02:21.412 Map     #6       SERVER -> CLIENT   0x01d7 (ZC_SPRITE_CHANGE2) 11     [KNOWN / UNIMPLEMENTED] payload: [80 84 1e 00 02 b1 04 00 00] |.........|
+735    2026-10-23 03:02:21.412 Map     #6       SERVER -> CLIENT   0x0000                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+736    2026-10-23 03:02:21.412 Map     #6       SERVER -> CLIENT   0x09fe (ZC_NOTIFY_NEWENTRY11) 107    [IMPLEMENTED] payload: [00 80 84 1e 00 f0 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+71 bytes)] |......I.........................|
+737    2026-10-23 03:02:21.412 Map     #6       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [0e e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+738    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x01d7 (ZC_SPRITE_CHANGE2) 11     [KNOWN / UNIMPLEMENTED] payload: [80 84 1e 00 02 b1 04 00 00] |.........|
+739    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x0000                   10     [UNKNOWN / UNMAPPED in table.rs, 10 bytes] payload: [00 00 08 0b 06 00 00 00] |........|
+740    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x0b09 (PACKET_0X0B09)   311    [KNOWN / UNIMPLEMENTED] payload: [00 04 00 bc 5b 00 00 02 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+275 bytes)] |....[...........................|
+741    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x0b39 (PACKET_0X0B39)   209    [KNOWN / UNIMPLEMENTED] payload: [00 02 00 b1 04 00 00 05 02 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+173 bytes)] |................................|
+742    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x0b0b                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+743    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x0a9b (PACKET_0X0A9B)   4      [KNOWN / UNIMPLEMENTED] payload: []
+744    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [18 00 46 05 00 00] |..F...|
+745    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [19 00 04 5b 00 00] |...[..|
+746    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x099b (ZC_NOTIFY_MAPPROPERTY2) 8      [KNOWN / UNIMPLEMENTED] payload: [00 00 00 06 00 00] |......|
+747    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [00 81 84 1e 00 f6 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+72 bytes)] |......I.........................|
+748    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x080e                   14     [UNKNOWN / UNMAPPED in table.rs, 14 bytes] payload: [81 84 1e 00 14 00 00 00 28 00 00 00] |........(...|
+749    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 d7 81 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 8d 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+750    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 31 8d 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 33 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |.1.................3............|
+751    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [06 5c d3 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 2d 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |.\.................-............|
+752    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [05 ca e4 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 27 04 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |...................'............|
+753    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [ca e4 8e 06 00 00 00 00 4c 75 6e 61 74 69 63 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Lunatic.................|
+754    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x09ff (ZC_NOTIFY_STANDENTRY11) 108    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |................................|
+755    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x0adf (ZC_ACK_REQNAMEALL_NPC) 58     [IMPLEMENTED] payload: [0e e5 8e 06 00 00 00 00 50 6f 72 69 6e 67 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+24 bytes)] |........Poring..................|
+756    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x0141                   174    [UNKNOWN / UNMAPPED in table.rs, 174 bytes] payload: [0d 00 00 00 0b 00 00 00 01 00 00 00 41 01 0e 00 00 00 0a 00 00 00 01 00 00 00 41 01 0f 00 00 00 ... (+140 bytes)] |............A.............A.....|
+757    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [02 00 00 00 00 00 00 00] |........|
+758    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [01 00 00 00 00 00 00 00] |........|
+759    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [03 00 00 00 00 00 00 00] |........|
+760    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x02d9 (ZC_CONFIG)       10     [KNOWN / UNIMPLEMENTED] payload: [05 00 00 00 00 00 00 00] |........|
+761    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x0b8d                   69     [UNKNOWN / UNMAPPED in table.rs, 69 bytes] payload: [45 00 01 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 ... (+35 bytes)] |E...............................|
+762    2026-10-23 03:02:21.412 Map     #3       SERVER -> CLIENT   0x007f (ZC_NOTIFY_TIME)  6      [IMPLEMENTED] payload: [84 1d 12 00] |....|
+763    2026-10-23 03:02:21.413 Map     #3       CLIENT -> SERVER   0x08c9 (CZ_CASHSHOP_LIST_REQUEST) 2      [KNOWN / UNIMPLEMENTED] payload: []
+764    2026-10-23 03:02:21.414 Map     #3       CLIENT -> SERVER   0x0447 (CZ_BLOCKING_PLAY_CANCEL) 2      [KNOWN / UNIMPLEMENTED] payload: []
+765    2026-10-23 03:02:21.418 Map     #3       SERVER -> CLIENT   0x0b1b                   2      [UNKNOWN / UNMAPPED in table.rs, 2 bytes] payload: []
+766    2026-10-23 03:02:21.794 Map     #3       CLIENT -> SERVER   0x0368 (CZ_REQNAME)      6      [IMPLEMENTED] Decoded: Intent(RequestEntityName { entity_id: 2000001 })
+767    2026-10-23 03:02:21.797 Map     #3       SERVER -> CLIENT   0x0a30 (ZC_ACK_REQNAMEALL) 106    [IMPLEMENTED] payload: [81 84 1e 00 74 65 73 74 74 65 73 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ... (+72 bytes)] |....testtest....................|
+768    2026-10-23 03:02:22.310 Map     #6       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+769    2026-10-23 03:02:22.463 Map     #3       CLIENT -> SERVER   0x035f (CZ_REQUEST_MOVE) 5      [IMPLEMENTED] Decoded: Intent(RequestMove { dest_x: 172, dest_y: 365 })
+770    2026-10-23 03:02:22.467 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [00 80 84 1e 00 f0 49 02 00 96 00 00 00 00 00 00 00 00 00 00 00 01 00 b1 04 00 00 00 00 00 00 00 ... (+78 bytes)] |......I.........................|
+771    2026-10-23 03:02:22.467 Map     #3       SERVER -> CLIENT   0x0087 (ZC_NOTIFY_PLAYERMOVE) 12     [IMPLEMENTED] payload: [a4 21 12 00 2a 97 72 b1 6d 88] |.!..*.r.m.|
+772    2026-10-23 03:02:23.044 Map     #3       SERVER -> CLIENT   0x009d                   9      [UNKNOWN / UNMAPPED in table.rs, 9 bytes] payload: [3f 00 00 00 8d 03 00] |?......|
+773    2026-10-23 03:02:23.044 Map     #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+774    2026-10-23 03:02:23.044 Map     #3       SERVER -> CLIENT   0x00b2 (CZ_RESTART)      3      [KNOWN / UNIMPLEMENTED] payload: [66] |f|
+775    2026-10-23 03:02:23.190 Map     #3       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [00 06 06 9d] |....|
+776    2026-10-23 03:02:23.190 Map     #3       SERVER -> CLIENT   0x3d00                   8      [UNKNOWN / UNMAPPED in table.rs, 8 bytes] payload: [00 00 00 8d 03 00] |......|
+777    2026-10-23 03:02:23.190 Map     #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+778    2026-10-23 03:02:23.190 Map     #3       SERVER -> CLIENT   0x00b2 (CZ_RESTART)      3      [KNOWN / UNIMPLEMENTED] payload: [65] |e|
+779    2026-10-23 03:02:23.498 Map     #3       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [00 06 0c 9d] |....|
+780    2026-10-23 03:02:23.498 Map     #3       SERVER -> CLIENT   0x3e00                   8      [UNKNOWN / UNMAPPED in table.rs, 8 bytes] payload: [00 00 00 aa 03 00] |......|
+781    2026-10-23 03:02:23.498 Map     #3       SERVER -> CLIENT   0x0100 (CZ_REQ_LEAVE_GROUP) 2      [KNOWN / UNIMPLEMENTED] payload: []
+782    2026-10-23 03:02:23.498 Map     #3       SERVER -> CLIENT   0x00b4                   3      [UNKNOWN / UNMAPPED in table.rs, 3 bytes] payload: [63] |c|
+783    2026-10-23 03:02:24.586 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [05 00 15 00 00 00] |......|
+784    2026-10-23 03:02:24.586 Map     #6       SERVER -> CLIENT   0x080e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+785    2026-10-23 03:02:24.586 Map     #6       SERVER -> CLIENT   0x8108                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+786    2026-10-23 03:02:24.586 Map     #6       SERVER -> CLIENT   0x8481                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+787    2026-10-23 03:02:24.586 Map     #6       SERVER -> CLIENT   0x1e84                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+788    2026-10-23 03:02:24.586 Map     #6       SERVER -> CLIENT   0x001e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+789    2026-10-23 03:02:24.586 Map     #6       SERVER -> CLIENT   0x1500                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+790    2026-10-23 03:02:24.586 Map     #6       SERVER -> CLIENT   0x0015                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+791    2026-10-23 03:02:24.586 Map     #6       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+792    2026-10-23 03:02:24.586 Map     #6       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+793    2026-10-23 03:02:24.586 Map     #6       SERVER -> CLIENT   0x2800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+794    2026-10-23 03:02:24.586 Map     #6       SERVER -> CLIENT   0x0028                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+795    2026-10-23 03:02:24.586 Map     #3       SERVER -> CLIENT   0x0101 (ZC_GROUPINFO_CHANGE) 6      [KNOWN / UNIMPLEMENTED] payload: [00 09 06 0e] |....|
+796    2026-10-23 03:02:24.586 Map     #3       SERVER -> CLIENT   0x8108                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+797    2026-10-23 03:02:24.586 Map     #3       SERVER -> CLIENT   0x8481                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+798    2026-10-23 03:02:24.586 Map     #3       SERVER -> CLIENT   0x1e84                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+799    2026-10-23 03:02:24.586 Map     #3       SERVER -> CLIENT   0x001e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+800    2026-10-23 03:02:24.586 Map     #3       SERVER -> CLIENT   0x1500                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+801    2026-10-23 03:02:24.586 Map     #3       SERVER -> CLIENT   0x0015                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+802    2026-10-23 03:02:24.586 Map     #3       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+803    2026-10-23 03:02:24.586 Map     #3       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+804    2026-10-23 03:02:24.586 Map     #3       SERVER -> CLIENT   0x2800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+805    2026-10-23 03:02:24.586 Map     #3       SERVER -> CLIENT   0x0028                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+806    2026-10-23 03:02:24.989 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 ca e4 8e 06 00 00 00 00 c8 00 00 00 00 00 00 00 00 00 27 04 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |...................'............|
+807    2026-10-23 03:02:25.073 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+808    2026-10-23 03:02:25.073 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+809    2026-10-23 03:02:25.283 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [ca e4 8e 06 00] |.....|
+810    2026-10-23 03:02:26.416 Map     #3       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+811    2026-10-23 03:02:27.310 Map     #6       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+812    2026-10-23 03:02:28.352 Map     #6       CLIENT -> SERVER   0x00f3 (CZ_GLOBAL_MESSAGE) 26     [KNOWN / UNIMPLEMENTED] payload: [74 65 73 74 74 65 73 74 20 3a 20 40 69 74 65 6d 20 6b 6e 69 66 65] |testtest : @item knife|
+813    2026-10-23 03:02:28.362 Map     #6       SERVER -> CLIENT   0x0b41                   70     [UNKNOWN / UNMAPPED in table.rs, 70 bytes] payload: [06 00 01 00 b1 04 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02 00 00 00 05 00 ... (+36 bytes)] |................................|
+814    2026-10-23 03:02:28.362 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [18 00 14 05 00 00] |......|
+815    2026-10-23 03:02:28.362 Map     #6       SERVER -> CLIENT   0x008e (ZC_NOTIFY_PLAYERCHAT) 18     [KNOWN / UNIMPLEMENTED] payload: [redacted: rAthena message text, see captures/README.md]
+816    2026-10-23 03:02:29.679 Map     #6       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+817    2026-10-23 03:02:29.679 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+818    2026-10-23 03:02:30.589 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [05 00 16 00 00 00] |......|
+819    2026-10-23 03:02:30.589 Map     #6       SERVER -> CLIENT   0x080e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+820    2026-10-23 03:02:30.589 Map     #6       SERVER -> CLIENT   0x8108                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+821    2026-10-23 03:02:30.589 Map     #6       SERVER -> CLIENT   0x8481                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+822    2026-10-23 03:02:30.589 Map     #6       SERVER -> CLIENT   0x1e84                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+823    2026-10-23 03:02:30.589 Map     #6       SERVER -> CLIENT   0x001e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+824    2026-10-23 03:02:30.589 Map     #6       SERVER -> CLIENT   0x1600                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+825    2026-10-23 03:02:30.589 Map     #6       SERVER -> CLIENT   0x0016                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+826    2026-10-23 03:02:30.589 Map     #6       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+827    2026-10-23 03:02:30.589 Map     #6       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+828    2026-10-23 03:02:30.589 Map     #6       SERVER -> CLIENT   0x2800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+829    2026-10-23 03:02:30.589 Map     #6       SERVER -> CLIENT   0x0028                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+830    2026-10-23 03:02:30.589 Map     #3       SERVER -> CLIENT   0x080e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+831    2026-10-23 03:02:30.589 Map     #3       SERVER -> CLIENT   0x8108                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+832    2026-10-23 03:02:30.589 Map     #3       SERVER -> CLIENT   0x8481                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+833    2026-10-23 03:02:30.589 Map     #3       SERVER -> CLIENT   0x1e84                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+834    2026-10-23 03:02:30.589 Map     #3       SERVER -> CLIENT   0x001e                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+835    2026-10-23 03:02:30.589 Map     #3       SERVER -> CLIENT   0x1600                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+836    2026-10-23 03:02:30.589 Map     #3       SERVER -> CLIENT   0x0016                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+837    2026-10-23 03:02:30.589 Map     #3       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+838    2026-10-23 03:02:30.589 Map     #3       SERVER -> CLIENT   0x0000                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+839    2026-10-23 03:02:30.589 Map     #3       SERVER -> CLIENT   0x2800                   1      [UNKNOWN / UNMAPPED in table.rs, 1 bytes] payload: []
+840    2026-10-23 03:02:30.589 Map     #3       SERVER -> CLIENT   0x0028                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+841    2026-10-23 03:02:30.793 Map     #6       CLIENT -> SERVER   0x0998 (CZ_REQ_WEAR_EQUIP) 8      [KNOWN / UNIMPLEMENTED] payload: [06 00 02 00 00 00] |......|
+842    2026-10-23 03:02:30.798 Map     #3       SERVER -> CLIENT   0x01d7 (ZC_SPRITE_CHANGE2) 11     [KNOWN / UNIMPLEMENTED] payload: [81 84 1e 00 02 00 00 00 00] |.........|
+843    2026-10-23 03:02:30.798 Map     #6       SERVER -> CLIENT   0x01d7 (ZC_SPRITE_CHANGE2) 11     [KNOWN / UNIMPLEMENTED] payload: [81 84 1e 00 02 00 00 00 00] |.........|
+844    2026-10-23 03:02:30.798 Map     #3       SERVER -> CLIENT   0x0000                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+845    2026-10-23 03:02:30.798 Map     #6       SERVER -> CLIENT   0x0000                   13     [UNKNOWN / UNMAPPED in table.rs, 13 bytes] payload: [00 00 9a 09 02 00 02 00 00 00 00] |...........|
+846    2026-10-23 03:02:30.798 Map     #3       SERVER -> CLIENT   0x01d7 (ZC_SPRITE_CHANGE2) 11     [KNOWN / UNIMPLEMENTED] payload: [81 84 1e 00 02 b1 04 00 00] |.........|
+847    2026-10-23 03:02:30.798 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [35 00 b8 01 00 00] |5.....|
+848    2026-10-23 03:02:30.798 Map     #3       SERVER -> CLIENT   0x0000                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+849    2026-10-23 03:02:30.798 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2a 00 00 00 00 00] |*.....|
+850    2026-10-23 03:02:30.798 Map     #6       SERVER -> CLIENT   0x0999                   16     [UNKNOWN / UNMAPPED in table.rs, 16 bytes] payload: [06 00 02 00 00 00 00 00 00 d7 01 81 84 1e] |..............|
+851    2026-10-23 03:02:30.798 Map     #6       SERVER -> CLIENT   0x0200 (CA_CONNECT_INFO_CHANGED) 18     [KNOWN / UNIMPLEMENTED] payload: [b1 04 00 00 00 00 00 00 b0 00 35 00 4e 02 00 00] |..........5.N...|
+852    2026-10-23 03:02:30.798 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2a 00 11 00 00 00] |*.....|
+853    2026-10-23 03:02:31.418 Map     #3       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+854    2026-10-23 03:02:31.769 Map     #6       CLIENT -> SERVER   0x0998 (CZ_REQ_WEAR_EQUIP) 8      [KNOWN / UNIMPLEMENTED] payload: [02 00 02 00 00 00] |......|
+855    2026-10-23 03:02:31.774 Map     #3       SERVER -> CLIENT   0x01d7 (ZC_SPRITE_CHANGE2) 11     [KNOWN / UNIMPLEMENTED] payload: [81 84 1e 00 02 00 00 00 00] |.........|
+856    2026-10-23 03:02:31.774 Map     #3       SERVER -> CLIENT   0x0000                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+857    2026-10-23 03:02:31.774 Map     #3       SERVER -> CLIENT   0x01d7 (ZC_SPRITE_CHANGE2) 11     [KNOWN / UNIMPLEMENTED] payload: [81 84 1e 00 02 b1 04 00 00] |.........|
+858    2026-10-23 03:02:31.774 Map     #3       SERVER -> CLIENT   0x0000                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [00 00] |..|
+859    2026-10-23 03:02:31.774 Map     #6       SERVER -> CLIENT   0x01d7 (ZC_SPRITE_CHANGE2) 11     [KNOWN / UNIMPLEMENTED] payload: [81 84 1e 00 02 00 00 00 00] |.........|
+860    2026-10-23 03:02:31.774 Map     #6       SERVER -> CLIENT   0x0000                   13     [UNKNOWN / UNMAPPED in table.rs, 13 bytes] payload: [00 00 9a 09 06 00 02 00 00 00 00] |...........|
+861    2026-10-23 03:02:31.774 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [35 00 b8 01 00 00] |5.....|
+862    2026-10-23 03:02:31.774 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2a 00 00 00 00 00] |*.....|
+863    2026-10-23 03:02:31.774 Map     #6       SERVER -> CLIENT   0x0999                   16     [UNKNOWN / UNMAPPED in table.rs, 16 bytes] payload: [02 00 02 00 00 00 00 00 00 d7 01 81 84 1e] |..............|
+864    2026-10-23 03:02:31.774 Map     #6       SERVER -> CLIENT   0x0200 (CA_CONNECT_INFO_CHANGED) 18     [KNOWN / UNIMPLEMENTED] payload: [b1 04 00 00 00 00 00 00 b0 00 35 00 4e 02 00 00] |..........5.N...|
+865    2026-10-23 03:02:31.774 Map     #6       SERVER -> CLIENT   0x00b0 (ZC_PAR_CHANGE)   8      [IMPLEMENTED] payload: [2a 00 11 00 00 00] |*.....|
+866    2026-10-23 03:02:32.318 Map     #6       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+867    2026-10-23 03:02:33.369 Map     #6       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 1059608 })
+868    2026-10-23 03:02:33.374 Map     #6       SERVER -> CLIENT   0x007f (ZC_NOTIFY_TIME)  6      [IMPLEMENTED] payload: [3f 4c 12 00] |?L..|
+869    2026-10-23 03:02:33.411 Map     #3       CLIENT -> SERVER   0x0360 (CZ_REQUEST_TIME) 6      [IMPLEMENTED] Decoded: Intent(RequestTime { client_tick: 1059650 })
+870    2026-10-23 03:02:33.415 Map     #3       SERVER -> CLIENT   0x007f (ZC_NOTIFY_TIME)  6      [IMPLEMENTED] payload: [68 4c 12 00] |hL..|
+871    2026-10-23 03:02:35.534 Map     #6       CLIENT -> SERVER   0x00b2 (CZ_RESTART)      3      [IMPLEMENTED] Decoded: Intent(Restart { restart_type: 1 })
+872    2026-10-23 03:02:35.538 Map     #6       SERVER -> CLIENT   0x00b3 (ZC_RESTART_ACK)  3      [IMPLEMENTED] payload: [01] |.|
+873    2026-10-23 03:02:35.545 Map     #3       SERVER -> CLIENT   0x0080 (ZC_NOTIFY_VANISH) 7      [IMPLEMENTED] payload: [81 84 1e 00 02] |.....|
+874    2026-10-23 03:02:35.825 Char    #7       CLIENT -> SERVER   0x0065 (CH_ENTER)        17     [IMPLEMENTED] Decoded: Intent(EnterCharServer { account_id: AccountId(2000001), login_id1: 2099976522, login_id2: 938011820, client_version: 0, sex: Female })
+875    2026-10-23 03:02:35.831 Char    #7       SERVER -> CLIENT   0x8481                   4      [UNKNOWN / UNMAPPED in table.rs, 4 bytes] payload: [1e 00] |..|
+876    2026-10-23 03:02:35.833 Char    #7       SERVER -> CLIENT   0x082d (HC_ACCEPT_ENTER2) 29     [IMPLEMENTED] payload: [1d 00 0f 00 00 0f 0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00] |...........................|
+877    2026-10-23 03:02:35.833 Char    #7       SERVER -> CLIENT   0x006b (HC_ACCEPT_ENTER) 202    [IMPLEMENTED] payload: [0f 0f 0f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f6 49 02 00 fc 00 00 00 00 ... (+166 bytes)] |........................I.......|
+878    2026-10-23 03:02:35.833 Char    #7       SERVER -> CLIENT   0x09a0 (HC_CHARLIST_NOTIFY) 6      [IMPLEMENTED] payload: [05 00 00 00] |....|
+879    2026-10-23 03:02:35.833 Char    #7       SERVER -> CLIENT   0x020d (HC_BLOCK_CHARACTER) 4      [IMPLEMENTED] payload: []
+880    2026-10-23 03:02:35.833 Char    #7       SERVER -> CLIENT   0x08b9 (HC_SECOND_PASSWD_LOGIN) 12     [IMPLEMENTED] payload: [e8 17 00 00 81 84 1e 00 00 00] |..........|
+881    2026-10-23 03:02:35.876 Char    #7       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+882    2026-10-23 03:02:35.876 Char    #7       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+883    2026-10-23 03:02:35.876 Char    #7       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+884    2026-10-23 03:02:35.876 Char    #7       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+885    2026-10-23 03:02:35.876 Char    #7       CLIENT -> SERVER   0x09a1 (CH_CHARLIST_REQ) 2      [IMPLEMENTED] Decoded: Intent(RequestCharacterList)
+886    2026-10-23 03:02:35.882 Char    #7       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f6 49 02 00 fc 00 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
+887    2026-10-23 03:02:35.886 Char    #7       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f6 49 02 00 fc 00 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
+888    2026-10-23 03:02:35.886 Char    #7       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f6 49 02 00 fc 00 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
+889    2026-10-23 03:02:35.886 Char    #7       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f6 49 02 00 fc 00 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
+890    2026-10-23 03:02:35.886 Char    #7       SERVER -> CLIENT   0x0b72 (HC_ACK_CHARINFO_PER_PAGE) 179    [IMPLEMENTED] payload: [f6 49 02 00 fc 00 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 ... (+143 bytes)] |.I..............................|
+891    2026-10-23 03:02:36.424 Map     #3       CLIENT -> SERVER   0x0b1c (CZ_PING_LIVE)    2      [KNOWN / UNIMPLEMENTED] payload: []
+892    2026-10-23 03:02:36.478 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+893    2026-10-23 03:02:37.859 Map     #3       SERVER -> CLIENT   0x09fd (ZC_NOTIFY_MOVEENTRY11) 114    [IMPLEMENTED] payload: [05 0e e5 8e 06 00 00 00 00 90 01 00 00 00 00 00 00 00 00 ea 03 00 00 00 00 00 00 00 00 00 00 00 ... (+78 bytes)] |................................|
+894    2026-10-23 03:02:40.489 Map     #3       CLIENT -> SERVER   0x018a (CZ_REQ_DISCONNECT) 4      [KNOWN / UNIMPLEMENTED] payload: [00 00] |..|
+895    2026-10-23 03:02:40.493 Map     #3       SERVER -> CLIENT   0x018b (ZC_ACK_REQ_DISCONNECT) 4      [KNOWN / UNIMPLEMENTED] payload: [00 00] |..|
+
+================================================================================
+Summary by Server:
+  Login Server: 4 packets
+  Char Server:  63 packets
+  Map Server:   828 packets
+  Total:        895 packets
+================================================================================

@@ -1,6 +1,6 @@
 # Packet Findings
 
-Open questions and disagreements about wire packets for `PACKETVER = 20260219`. Each one comes from reading rAthena source, our catalog (`reference/catalog/`) and our code side by side. None has been checked against a real client yet: `tools/proxy/packet_captures/` did not exist when these were written (2026-10-23).
+Open questions and disagreements about wire packets for `PACKETVER = 20260219`. Each one comes from reading rAthena source, our catalog (`reference/catalog/`) and our code side by side. Most were written from source before any capture existed (2026-10-23). The first real-client captures (the warp captures, 2026-10-23) add evidence where they touch an entry.
 
 ### How to use this file
 
@@ -14,7 +14,7 @@ Open questions and disagreements about wire packets for `PACKETVER = 20260219`. 
 
 | Id | Topic | Kind | Status |
 | :--- | :--- | :--- | :--- |
-| [PF-01](#pf-01) | `0x01d7` ZC_SPRITE_CHANGE2: table says 11, source sends 15 | Code disagrees | Open |
+| [PF-01](#pf-01) | `0x01d7` ZC_SPRITE_CHANGE2: table says 11, source sends 15 | Code disagrees | Open (capture confirms 15) |
 | [PF-02](#pf-02) | `0x0add` ZC_ITEM_FALL_ENTRY: table says 22, source sends 24 | Code disagrees | Open |
 | [PF-03](#pf-03) | `0x009d` ZC_ITEM_ENTRY rejected as legacy, but needed (19) | Code disagrees | Open |
 | [PF-04](#pf-04) | `0x00a1` ZC_ITEM_DISAPPEAR missing from table (6) | Code gap | Open |
@@ -33,6 +33,8 @@ Open questions and disagreements about wire packets for `PACKETVER = 20260219`. 
 | [PF-17](#pf-17) | `0x02c1` coloured message layout | Minor | Open |
 | [PF-18](#pf-18) | `MSI_WRONG_BULLET` is 2493 or 2494 | Minor | Open |
 | [PF-19](#pf-19) | Server rules not settled by source (overweight attack, DEF clamps, regen weight rate) | Server rule | Open |
+| [PF-20](#pf-20) | Login-time `0x0091` that metaling doesn't send | Behaviour | Open |
+| [PF-21](#pf-21) | Packets the proxy can't frame (backlog: missing/wrong `table.rs` lengths) | Code gap | Open, low priority |
 
 ### Resolved
 
@@ -48,7 +50,8 @@ These are places where `crates/ro-packets/src/table.rs` disagrees with what rAth
 
 **`0x01d7` ZC_SPRITE_CHANGE2 length**
 
-- **Status:** Open.
+- **Status:** Open. Capture-confirmed 15 on 2026-10-23; `table.rs` still says 11.
+- **Capture:** the warp captures ([`reference/catalog/captures/`](reference/catalog/captures/README.md) `packet_sequence-20261023_030246.txt`, `_031902.txt`, `_032015.txt`) send `0x01d7` at every `LoadEndAck`. The proxy framed it at 11 and then logged the remaining 4 bytes as a bogus `0x0000` frame, alone or with the following `0x0b08`. That gives `81 84 1e 00 | 02 | b1 04 00 00 | 00 00 00 00` = AID, LOOK_WEAPON, 1201, 0: 15 bytes. Observers in view receive it as well as self.
 - **Ours:** `crates/ro-packets/src/table.rs:235` has `0x01d7 => Fixed(11)`.
 - **Source:** 15 bytes: `u16 op, u32 AID, u8 type, u32 val, u32 val2`. The layout is `packets_struct.hpp:2591-2603` for `PACKETVER_MAIN_NUM >= 20181121`, which applies here. It is sent from `clif_sprite_change` (`clif.cpp:3935-3960`). The 11 comes from the stale `packet(0x01d7,11)` at `clif_packetdb.hpp:226`, the old u16/u16 layout.
 - **Resolve by:** a capture of equipping a weapon or headgear. Check the frame length of `0x01d7`.
@@ -274,6 +277,29 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 - **Hard DEF/MDEF clamps:** the renewal `DEFTYPE_MIN/MAX` clamps were not located. See [mechanics/stats.md#derived-stat-formulas](reference/catalog/mechanics/stats.md#derived-stat-formulas).
 - **`natural_heal_weight_rate`:** 70 for renewal comes from the `#ifdef RENEWAL` default in `battle.cpp`; the line in `conf/battle/player.conf` is commented out.
 - **Resolve by:** a test on real rAthena (`./run_rathena_servers.sh`): attack at 90% weight; regen at 70-89% weight.
+
+### PF-20
+
+**Login-time `0x0091` that metaling doesn't send**
+
+- **Status:** Open.
+- **Capture:** every fresh login in the 2026-10-23 warp captures ([`reference/catalog/captures/`](reference/catalog/captures/README.md) `packet_sequence-20261023_030246.txt`, `_031902.txt`, `_032015.txt`) has `0x0091` with the character's own map and cell after `0x02eb`, `0x0201` and the `0x008e` MOTD lines, before the client's first `0x007d`. In one login the client then sent `0x007d` twice.
+- **Source:** `pc_authok` calls `clif_changemap` explicitly on a fresh login, but not on arrival from another map-server. The source comment calls it a fix for a "login-without-aura glitch". rAthena neither waits for it nor tracks it. Details: [mechanics/map_entry_actions.md#map-entry-cz_enter-clif_parse_wanttoconnection](reference/catalog/mechanics/map_entry_actions.md#map-entry-cz_enter-clif_parse_wanttoconnection).
+- **Ours:** `bins/map-server/src/service.rs` `join` sends only `0x0283`, `0x0b18` and `0x02eb` before `0x007d`.
+- **Resolve by:** deciding whether to send it. Compare a metaling login capture with a real client against these captures: does the character show its aura, and does the client behave the same without it? Not needed for warps: the warp feature sends `0x0091` on a map change only.
+
+### PF-21
+
+**Packets the proxy can't frame (backlog)**
+
+- **Status:** Open, low priority. Revisit when nothing else is queued, or when a capture or a client bug looks odd: a misframed packet hides the packets after it.
+- **Why it matters:** `tools/proxy` frames with `crates/ro-packets/src/table.rs`. A missing or wrong length makes the proxy log `UNKNOWN / UNMAPPED` frames and then garbage 1-byte frames (`0x0000`, `0x1e84`, `0x2800`, ...) until the stream re-syncs. The map-server never sends these packets today, so only captures and client-side tests are affected.
+- **Seen in the 2026-10-23 warp captures** ([`reference/catalog/captures/`](reference/catalog/captures/README.md)):
+  - Server to client, missing from the table: `0x0141` (stat lines), `0x013a` (attack range), `0x0b0b` (inventory end), `0x0b08` (inventory start, hidden behind the `0x01d7` misframe), `0x0b1b`, `0x0b8d`, `0x080e` (party member HP), `0x010f` (skill list), `0x02c9`, `0x0acb`, `0x0999`, `0x0b41`, `0x019b`, `0x00b4`, `0x009d` ([PF-03](#pf-03)), `0x00a1` ([PF-04](#pf-04)).
+  - Wrong length: `0x01d7` ([PF-01](#pf-01)).
+  - Client to char-server, wrong length: `0x08b8` `CH_SECOND_PASSWD_ACK` is framed at 8, but the client sends 2 more bytes. The leftover bytes appear as a bogus client frame after every PIN entry.
+  - Expected and not a bug: `0x8480`/`0x8481` are the raw 4-byte AccountId echo after `CH_ENTER`/`CZ_ENTER` (`bins/CLAUDE.md`), which the proxy doesn't skip.
+- **Resolve by:** for each opcode, take the length from the capture (the gap to the next real opcode) and check it against the catalog and source. Then add it to `table.rs` with a test. Re-run the proxy over a capture and expect no `UNKNOWN` frames apart from the AccountId echo.
 
 ## Capture plan
 
