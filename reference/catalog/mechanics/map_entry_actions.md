@@ -10,6 +10,8 @@ Target client version: `PACKETVER = 20260219`. Citations are `$RATHENA_PATH/src/
 
 ## Map entry: CZ_NOTIFY_ACTORINIT (`clif_parse_LoadEndAck`)
 
+> Open findings: [PF-12](../../../PACKET_FINDINGS.md#pf-12).
+
 * Provenance: `clif.cpp:10748-11184`. Order of operations for the first login (`state.connect_new`) vs. map change:
   1. Guards: ignore if `sd->prev != nullptr` (already on the grid); if char not fully loaded, defer; `state.rewarp` -> re-send `clif_changemap` and return (`10752-10766`). `warping = 0`.
   2. Self-only look/inventory: `clif_changelook(LOOK_WEAPON,0)`, costume view, clothcolor, `clif_inventorylist`, equip switch list, cart list if any, `clif_updatestatus(SP_WEIGHT)` and `SP_MAXWEIGHT` (these are `ZC_PAR_CHANGE` `0x00b0 <var>.W <value>.L`; `clif.cpp:3550-3558, 3639-3645`) (`10770-10794`). Var ids `SP_WEIGHT = 24`, `SP_MAXWEIGHT = 25`; values in 0.1 weight units (e.g. 20300 = 2030.0 max, 500 = 50.0), always `ZC_PAR_CHANGE` (never `ZC_LONGPAR_CHANGE`), weight first then max weight (capture frames 72-73). Details: [map_units.md#0x00b0-zc_par_change](../packets/map_units.md#0x00b0-zc_par_change).

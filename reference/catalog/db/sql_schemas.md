@@ -109,3 +109,38 @@ The `char` table stores persistent character state including slot indexing, appe
 * **Primary Key:** `PRIMARY KEY (char_id)`
 * **Unique Constraints:** `UNIQUE KEY name_key (name)`
 * **Lookup Indexes:** `KEY account_id (account_id)`, `KEY (account_id, char_num)`
+
+## inventory Table Schema
+
+* **Provenance:** `rathena` @ `d4b8e7b8f`, `sql-files/main.sql:716-752`; loader/saver `src/char/char.cpp:533-850` (`char_memitemdata_to_sql` / `char_memitemdata_from_sql`). Applies to `PACKETVER = 20260219` (`MAX_SLOTS = 4`, `MAX_ITEM_RDM_OPT = 5`). Engine is MyISAM upstream (no FKs, no transactions); Metaling uses PostgreSQL, so add a real FK to `char(char_id)` and use `ON DELETE CASCADE`.
+* **Row meaning:** one row per occupied inventory slot (equipment, stackables, rentals). Order of slots is NOT stored: rows are loaded `ORDER BY id` and packed into slots `0..n-1`. Semantics: [mechanics/inventory.md](../mechanics/inventory.md#11-persistence). Similar tables with the same columns minus `favorite`/`equip_switch`: `cart_inventory` (`char_id`), `storage` (`account_id`), `guild_storage` (`guild_id`).
+
+### inventory Table Columns
+
+| Field | Upstream Type | Default / Constraints | Rust Contract Type | Purpose |
+| :--- | :--- | :--- | :--- | :--- |
+| `id` | `INT(11) UNSIGNED` | `NOT NULL AUTO_INCREMENT`, PRIMARY KEY | `u32` (row id) | Row id; defines load order. |
+| `char_id` | `INT(11) UNSIGNED` | `NOT NULL DEFAULT 0` | `CharId` | Owner. |
+| `nameid` | `INT(10) UNSIGNED` | `NOT NULL DEFAULT 0` | `u32` (`ItemId`) | Item id. |
+| `amount` | `INT(11) UNSIGNED` | `NOT NULL DEFAULT 0` | `u16`/`i16` in memory (max 30000) | Stack size. |
+| `equip` | `INT(11) UNSIGNED` | `NOT NULL DEFAULT 0` | `u32` bitmask | Worn positions (`equip_pos`). |
+| `identify` | `SMALLINT(6)` | `NOT NULL DEFAULT 0` | `bool` | Identified flag. |
+| `refine` | `TINYINT(3) UNSIGNED` | `NOT NULL DEFAULT 0` | `u8` | Refine level. |
+| `attribute` | `TINYINT(4) UNSIGNED` | `NOT NULL DEFAULT 0` | `u8` | Non-zero = broken. |
+| `card0`..`card3` | `INT(10) UNSIGNED` x4 | `NOT NULL DEFAULT 0` | `[u32; 4]` | Card / enchant ids; special markers `0x00FF` forged, `0x00FE` created, `0x0100` pet. |
+| `option_id0`..`option_id4` | `SMALLINT(5)` x5 | `NOT NULL DEFAULT 0` | `i16` | Random option id. |
+| `option_val0`..`option_val4` | `SMALLINT(5)` x5 | `NOT NULL DEFAULT 0` | `i16` | Random option value. |
+| `option_parm0`..`option_parm4` | `TINYINT(3)` x5 | `NOT NULL DEFAULT 0` | `i8` | Random option parameter. |
+| `expire_time` | `INT(11) UNSIGNED` | `NOT NULL DEFAULT 0` | `u32` unix time | Rental expiry; 0 = none. |
+| `favorite` | `TINYINT(3) UNSIGNED` | `NOT NULL DEFAULT 0` | `bool` | Favorite tab flag. |
+| `bound` | `TINYINT(3) UNSIGNED` | `NOT NULL DEFAULT 0` | `u8` (`bound_type` 0-4) | Account/guild/party/character bound. |
+| `unique_id` | `BIGINT(20) UNSIGNED` | `NOT NULL DEFAULT 0` | `u64` | `(char_id << 32) | counter`; 0 for stackables without the UniqueId flag. |
+| `equip_switch` | `INT(11) UNSIGNED` | `NOT NULL DEFAULT 0` | `u32` bitmask | Equip-switch window positions. |
+| `enchantgrade` | `TINYINT UNSIGNED` | `NOT NULL DEFAULT 0` | `u8` | Item grade. |
+
+### Indexes and Key Constraints
+
+* **Primary Key:** `PRIMARY KEY (id)`.
+* **Lookup Index:** `KEY char_id (char_id)`. The load query is `WHERE char_id = ? ORDER BY id`; save matches rows by `(nameid, card0..3, unique_id)`.
+* **Insert path for new characters:** `INSERT (char_id, nameid, amount, equip, identify) ... identify=1` for each `start_items` entry (`char.cpp:1519`); all other columns take defaults.
+* **Related columns elsewhere:** `char.inventory_slots` (capacity, default 100, max 200), `char.uniqueitem_counter` (`INT UNSIGNED`, next `unique_id` low word), `char.zeny` (money is not in this table).

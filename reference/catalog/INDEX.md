@@ -2,13 +2,15 @@
 
 This master index maps extracted protocol opcodes, bit-packing algorithms, Aegis mechanics, script commands, and database schemas to their curated specification files under `./reference/catalog/`. All packet specifications target `PACKETVER = 20260219`.
 
+**Open packet questions and code disagreements** live in [PACKET_FINDINGS.md](../../PACKET_FINDINGS.md), one entry per finding with a stable anchor (`#pf-01`, `#pf-02`, ...). Read the relevant entry before re-checking rAthena source on any of them; it records what was already checked and what is left to do. Catalog sections that are affected carry an "Open findings" line.
+
 ## 1. Packets & Framing (`./packets/`)
 
 | Identifier / Opcode | Canonical Name | Direction | Frame Length | Target File & Section |
 | :--- | :--- | :--- | :--- | :--- |
 | Policy | Client-Initiated TCP Socket Lifecycle | Bidirectional | N/A | [packets/login.md#tcp-socket-lifecycle-and-handoff-policy](./packets/login.md#tcp-socket-lifecycle-and-handoff-policy) |
 | Policy | Raw 4-Byte AccountId Echo | Server to Client | Fixed 4 bytes | [packets/char.md#raw-4-byte-accountid-echo-policy](./packets/char.md#raw-4-byte-accountid-echo-policy) |
-| Policy | `clif_shuffle.hpp` Precedence Rules | Client to Server | N/A | [packets/map.md#packet-shuffling-precedence-and-macro-offset-rules](./packets/map.md#packet-shuffling-precedence-and-macro-offset-rules) |
+| Policy | `clif_shuffle.hpp` Precedence Rules (branch `PACKETVER > 20180307` applies; [PF-05](../../PACKET_FINDINGS.md#pf-05)) | Client to Server | N/A | [packets/map.md#packet-shuffling-precedence-and-macro-offset-rules](./packets/map.md#packet-shuffling-precedence-and-macro-offset-rules) |
 | `0x007d` | `CZ_NOTIFY_ACTORINIT` | Client to Map | Fixed 2 bytes | [packets/map.md#0x007d-cz_notify_actorinit](./packets/map.md#0x007d-cz_notify_actorinit) |
 | `0x0091` | `ZC_NPCACK_MAPMOVE` | Map to Client | Fixed 22 bytes | [packets/map.md#0x0091-zc_npcack_mapmove](./packets/map.md#0x0091-zc_npcack_mapmove) |
 | `0x0283` | `ZC_AID` | Map to Client | Fixed 6 bytes | [packets/map.md#0x0283-zc_aid](./packets/map.md#0x0283-zc_aid) |
@@ -26,7 +28,7 @@ This master index maps extracted protocol opcodes, bit-packing algorithms, Aegis
 | `0x0088` | `ZC_STOPMOVE` (`clif_fixpos`, `AREA` incl. self) | Map to Client | Fixed 10 bytes | [packets/map_units.md#0x0088-zc_stopmove](./packets/map_units.md#0x0088-zc_stopmove) |
 | `0x009c` | `ZC_CHANGE_DIRECTION` | Map to Client | Fixed 9 bytes | [packets/map_units.md#0x009c-zc_change_direction](./packets/map_units.md#0x009c-zc_change_direction) |
 | `0x00b0` | `ZC_PAR_CHANGE` (incl. `SP_WEIGHT`=24, `SP_MAXWEIGHT`=25, 0.1 units) | Map to Client | Fixed 8 bytes | [packets/map_units.md#0x00b0-zc_par_change](./packets/map_units.md#0x00b0-zc_par_change) |
-| `0x08c8` | `ZC_NOTIFY_ACT` (sit/stand/damage) | Map to Client | Fixed 34 bytes | [packets/map_units.md#0x08c8-zc_notify_act-aka-zc_notify_act3](./packets/map_units.md#0x08c8-zc_notify_act-aka-zc_notify_act3) |
+| `0x08c8` | `ZC_NOTIFY_ACT` (sit/stand/damage; normal-attack fields, miss/crit/double types) | Map to Client | Fixed 34 bytes | [packets/map_units.md#0x08c8-zc_notify_act-aka-zc_notify_act3](./packets/map_units.md#0x08c8-zc_notify_act-aka-zc_notify_act3) |
 | `0x09fd` | `ZC_NOTIFY_MOVEENTRY11` (walking unit) | Map to Client | Dynamic (114) | [packets/map_units.md#0x09fd-zc_notify_moveentry11-walking-unit-new-or-changed-walk](./packets/map_units.md#0x09fd-zc_notify_moveentry11-walking-unit-new-or-changed-walk) |
 | `0x09fe` | `ZC_NOTIFY_NEWENTRY11` (spawn) | Map to Client | Dynamic (107) | [packets/map_units.md#0x09fe-zc_notify_newentry11-unit-spawns-in-view](./packets/map_units.md#0x09fe-zc_notify_newentry11-unit-spawns-in-view) |
 | `0x09ff` | `ZC_NOTIFY_STANDENTRY11` (idle unit) | Map to Client | Dynamic (108) | [packets/map_units.md#0x09ff-zc_notify_standentry11-idle-unit-comes-into-view](./packets/map_units.md#0x09ff-zc_notify_standentry11-idle-unit-comes-into-view) |
@@ -37,6 +39,43 @@ This master index maps extracted protocol opcodes, bit-packing algorithms, Aegis
 | `0x0ac4` | `AC_ACCEPT_LOGIN` | Login to Client | Dynamic | [packets/login.md#0x0ac4-ac_accept_login](./packets/login.md#0x0ac4-ac_accept_login) |
 | `0x0ac5` | `HC_NOTIFY_ZONESVR` | Char to Client | Fixed 156 bytes | [packets/char.md#0x0ac5-hc_notify_zonesvr](./packets/char.md#0x0ac5-hc_notify_zonesvr) |
 | `0x0b18` | `ZC_INVENTORY_EXPANSION_INFO` | Map to Client | Fixed 4 bytes | [packets/map.md#0x0b18-zc_inventory_expansion_info](./packets/map.md#0x0b18-zc_inventory_expansion_info) |
+| `0x00f3` | `CZ_REQUEST_CHAT` ("Name : msg"; `@`/`#` commands intercepted; [PF-06](../../PACKET_FINDINGS.md#pf-06)) | Client to Map | Dynamic | [packets/chat.md#0x00f3-cz_request_chat-client-to-map-public-chat--command-carrier](./packets/chat.md#0x00f3-cz_request_chat-client-to-map-public-chat--command-carrier) |
+| `0x008d` | `ZC_NOTIFY_CHAT` (public chat to area, excl. speaker) | Map to Client | Dynamic | [packets/chat.md#0x008d-zc_notify_chat-map-to-client-to-others-in-area](./packets/chat.md#0x008d-zc_notify_chat-map-to-client-to-others-in-area) |
+| `0x008e` | `ZC_NOTIFY_PLAYERCHAT` (self echo + `clif_displaymessage` system line) | Map to Client | Dynamic | [packets/chat.md#0x008e-zc_notify_playerchat-map-to-client-to-self-also-the-generic-system-message-line](./packets/chat.md#0x008e-zc_notify_playerchat-map-to-client-to-self-also-the-generic-system-message-line) |
+| `0x0b08` | `ZC_INVENTORY_START` (inv_type 0/1/2/3, name) | Map to Client | Dynamic (6 for inventory) | [packets/inventory.md#0x0b08-zc_inventory_start](./packets/inventory.md#0x0b08-zc_inventory_start) |
+| `0x0b09` | `ZC_NORMAL_ITEMLIST` (stackables, 34-byte entries) | Map to Client | Dynamic (5+34n) | [packets/inventory.md#0x0b09-zc_normal_itemlist-stackable-items](./packets/inventory.md#0x0b09-zc_normal_itemlist-stackable-items) |
+| `0x0b39` | `ZC_EQUIPMENT_ITEMLIST` (non-stackables, 68-byte entries) | Map to Client | Dynamic (5+68n) | [packets/inventory.md#0x0b39-zc_equipment_itemlist-non-stackable-items](./packets/inventory.md#0x0b39-zc_equipment_itemlist-non-stackable-items) |
+| `0x0b0b` | `ZC_INVENTORY_END` | Map to Client | Fixed 4 bytes | [packets/inventory.md#0x0b0b-zc_inventory_end](./packets/inventory.md#0x0b0b-zc_inventory_end) |
+| `0x0b41` | `ZC_ITEM_PICKUP_ACK` (add item / failure result 0-7) | Map to Client | Fixed 70 bytes | [packets/inventory.md#0x0b41-zc_item_pickup_ack-add-item--pickup-result](./packets/inventory.md#0x0b41-zc_item_pickup_ack-add-item--pickup-result) |
+| `0x00af` | `ZC_ITEM_THROW_ACK` (drop ack, count 0 = refused) | Map to Client | Fixed 6 bytes | [packets/inventory.md#0x00af-zc_item_throw_ack-item-left-inventory-by-drop](./packets/inventory.md#0x00af-zc_item_throw_ack-item-left-inventory-by-drop) |
+| `0x07fa` | `ZC_DELETE_ITEM_FROM_BODY` (reason 0-7) | Map to Client | Fixed 8 bytes | [packets/inventory.md#0x07fa-zc_delete_item_from_body](./packets/inventory.md#0x07fa-zc_delete_item_from_body) |
+| `0x01c8` | `ZC_USE_ITEM_ACK` (remaining amount, ok flag; `AREA` on success) | Map to Client | Fixed 15 bytes | [packets/inventory.md#0x01c8-zc_use_item_ack-ack-of-using-a-consumable](./packets/inventory.md#0x01c8-zc_use_item_ack-ack-of-using-a-consumable) |
+| `0x0362` / `0x0363` / `0x0439` | `CZ_ITEM_PICKUP` / `CZ_ITEM_THROW` / `CZ_USE_ITEM` (settled from source, capture pending; [PF-05](../../PACKET_FINDINGS.md#pf-05)) | Client to Map | Fixed 6 / 6 / 8 bytes | [packets/inventory.md#client-to-server-opcodes](./packets/inventory.md#client-to-server-opcodes) |
+| `0x0add` | `ZC_ITEM_FALL_ENTRY` (item dropped in view; struct says 24, rAthena packetdb and `ro-packets` say 22; [PF-02](../../PACKET_FINDINGS.md#pf-02)) | Map to Client | Fixed 24 (verify) | [packets/ground_items.md#0x0add-zc_item_fall_entry](./packets/ground_items.md#0x0add-zc_item_fall_entry) |
+| `0x009d` | `ZC_ITEM_ENTRY` (floor item already present, self; `ro-packets` rejects it; [PF-03](../../PACKET_FINDINGS.md#pf-03)) | Map to Client | Fixed 19 bytes | [packets/ground_items.md#0x009d-zc_item_entry-already-on-the-ground](./packets/ground_items.md#0x009d-zc_item_entry-already-on-the-ground) |
+| `0x00a1` | `ZC_ITEM_DISAPPEAR` (missing from `ro-packets`; [PF-04](../../PACKET_FINDINGS.md#pf-04)) | Map to Client | Fixed 6 bytes | [packets/ground_items.md#0x00a1-zc_item_disappear](./packets/ground_items.md#0x00a1-zc_item_disappear) |
+| `0x0362` (pickup) | `CZ_ITEM_PICKUP` (Chebyshev range 2, loot priority; refusal = `0x0b41` result 6) | Client to Map | Fixed 6 bytes | [packets/ground_items.md#pickup-0x0362-cz_item_pickup](./packets/ground_items.md#pickup-0x0362-cz_item_pickup) |
+| Policy | Floor item object, loot-priority ticks (0 / 3000 / 5000 / 7000 ms), 60 s expiry | Map to Client | N/A | [packets/ground_items.md#floor-item-object-and-creation](./packets/ground_items.md#floor-item-object-and-creation) |
+| `0x0977` | `ZC_HP_INFO` (mob HP bar, to damage-log members in range, every hit) | Map to Client | Fixed 14 bytes | [mechanics/mobs.md#2-hp-reduction](./mechanics/mobs.md#2-hp-reduction) |
+| Policy | Mob fields inside `0x09fe`/`0x09ff` (object_type 0x05, speed = WalkSpeed, hp -1 until damaged) | Map to Client | 107 / 108 | [mechanics/mobs.md#15-what-the-client-receives-for-a-mob](./mechanics/mobs.md#15-what-the-client-receives-for-a-mob) |
+| `0x0118` | `CZ_CANCEL_LOCKON` (stop attack/chase, no payload) | Client to Map | Fixed 2 bytes | [packets/combat.md#0x0118-cz_cancel_lockon-stop-chasing--attacking](./packets/combat.md#0x0118-cz_cancel_lockon-stop-chasing--attacking) |
+| `0x0139` | `ZC_ATTACK_FAILURE_FOR_DISTANCE` (target too far; client must walk) | Map to Client | Fixed 16 bytes | [packets/combat.md#0x0139-zc_attack_failure_for_distance](./packets/combat.md#0x0139-zc_attack_failure_for_distance) |
+| `0x013a` | `ZC_ATTACK_RANGE` (weapon range) | Map to Client | Fixed 4 bytes | [packets/combat.md#0x013a-zc_attack_range](./packets/combat.md#0x013a-zc_attack_range) |
+| `0x0998` | `CZ_REQ_WEAR_EQUIP` (wire index = slot + 2, u32 location mask) | Client to Map | Fixed 8 bytes | [packets/equipment.md#0x0998-cz_req_wear_equip](./packets/equipment.md#0x0998-cz_req_wear_equip) |
+| `0x00ab` | `CZ_REQ_TAKEOFF_EQUIP` | Client to Map | Fixed 4 bytes | [packets/equipment.md#0x00ab-cz_req_takeoff_equip](./packets/equipment.md#0x00ab-cz_req_takeoff_equip) |
+| `0x0bf5` / `0x0bae` | `CZ_REQ_TAKEOFF_EQUIP_ALL` (u32 mask) / ack | Client to Map / Map to Client | Fixed 6 / 3 bytes | [packets/equipment.md#0x0bf5--0x0bae-unequip-all](./packets/equipment.md#0x0bf5--0x0bae-unequip-all) |
+| `0x0999` | `ZC_REQ_WEAR_EQUIP_ACK` (result 0 ok, 1 level, 2 fail) | Map to Client | Fixed 11 bytes | [packets/equipment.md#0x0999-zc_req_wear_equip_ack-v5](./packets/equipment.md#0x0999-zc_req_wear_equip_ack-v5) |
+| `0x099a` | `ZC_REQ_TAKEOFF_EQUIP_ACK` (flag 0 ok, 1 fail) | Map to Client | Fixed 9 bytes | [packets/equipment.md#0x099a-zc_req_takeoff_equip_ack-v5](./packets/equipment.md#0x099a-zc_req_takeoff_equip_ack-v5) |
+| `0x01d7` | `ZC_SPRITE_CHANGE2` (`LOOK_*` table, `AREA`; source says 15, `ro-packets` table says 11; [PF-01](../../PACKET_FINDINGS.md#pf-01)) | Map to Client | Fixed 15 bytes | [packets/equipment.md#0x01d7-zc_sprite_change2-look-change](./packets/equipment.md#0x01d7-zc_sprite_change2-look-change) |
+| `0x013c` / `0x013b` | `ZC_EQUIP_ARROW` / `ZC_ACTION_FAILURE` (ammo type 0..3) | Map to Client | Fixed 4 bytes | [packets/equipment.md#0x013c-zc_equip_arrow-and-0x013b-zc_action_failure](./packets/equipment.md#0x013c-zc_equip_arrow-and-0x013b-zc_action_failure) |
+| `0x00bd` | `ZC_STATUS` (allocated stats + next-point cost, ATK/MATK/DEF/MDEF/HIT/FLEE/CRIT/ASPD; `clif_initialstatus` only) | Map to Client | Fixed 44 bytes | [packets/status.md#0x00bd-zc_status](./packets/status.md#0x00bd-zc_status) |
+| `0x00b1` / `0x0141` / `0x00be` | `ZC_LONGPAR_CHANGE` (zeny) / `ZC_COUPLESTATUS` (STR..LUK, POW..CRT base+bonus) / `ZC_STATUS_CHANGE` (stat cost) + `SP_*` var-id table | Map to Client | 8 / 14 / 5 bytes | [packets/status.md#sp_-var-ids](./packets/status.md#sp_-var-ids) |
+| `0x00bb` / `0x00bc` | `CZ_STATUS_CHANGE` (raise stat) / `ZC_STATUS_CHANGE_ACK` | Client to Map / Map to Client | 5 / 6 bytes | [packets/status.md#stat-up-request-and-acknowledgement](./packets/status.md#stat-up-request-and-acknowledgement) |
+| `0x0b24` | `CZ_ADVANCED_STATUS_CHANGE` (trait stat raise) | Client to Map | Fixed 6 bytes | [packets/status.md#stat-up-request-and-acknowledgement](./packets/status.md#stat-up-request-and-acknowledgement) |
+| Policy | `status_calc_pc` diff push: which status packets go out after a recalc, and their order | Map to Client | N/A | [packets/status.md#recalculation-pushes](./packets/status.md#recalculation-pushes) |
+| `0x0acc` | `ZC_NOTIFY_EXP2` (base/job exp gain or loss, quest flag, self only) | Map to Client | Fixed 18 bytes | [mechanics/experience.md#0x0acc-zc_notify_exp2-clif_displayexp](./mechanics/experience.md#0x0acc-zc_notify_exp2-clif_displayexp) |
+| `0x0acb` | `ZC_LONGLONGPAR_CHANGE` (BASEEXP=1, JOBEXP=2, NEXTBASEEXP=22, NEXTJOBEXP=23) | Map to Client | Fixed 12 bytes | [mechanics/experience.md#0x0acb-zc_longlongpar_change-exp-vars](./mechanics/experience.md#0x0acb-zc_longlongpar_change-exp-vars) |
+| `0x019b` | `ZC_NOTIFY_EFFECT` (0 = base level up, 1 = job level up, `AREA` incl. self) | Map to Client | Fixed 10 bytes | [mechanics/experience.md#0x019b-zc_notify_effect-level-up-visual](./mechanics/experience.md#0x019b-zc_notify_effect-level-up-visual) |
 | `WBUFPOS` | 3-Byte Coordinate & Direction Packing | Bidirectional | Fixed 3 bytes | [packets/bitpacking.md#wbufpos-3-byte-coordinate-and-direction-packing](./packets/bitpacking.md#wbufpos-3-byte-coordinate-and-direction-packing) |
 | `WBUFPOS2` | 6-Byte Movement Pair Packing | Server to Client | Fixed 6 bytes | [packets/bitpacking.md#wbufpos2-6-byte-movement-pair-packing](./packets/bitpacking.md#wbufpos2-6-byte-movement-pair-packing) |
 
@@ -44,8 +83,19 @@ This master index maps extracted protocol opcodes, bit-packing algorithms, Aegis
 
 | Topic / Identifier | Summary | Target File & Section |
 | :--- | :--- | :--- |
-| Derived Stats | Renewal base and derived stat formulas (`ATK`, `DEF`, `ASPD`, `HIT`, `FLEE`) | [mechanics/stats.md#derived-stat-formulas](./mechanics/stats.md#derived-stat-formulas) |
-| Combat Formulas | Physical and magical damage calculation and modifier tables | [mechanics/combat.md#combat-damage-pipeline](./mechanics/combat.md#combat-damage-pipeline) |
+| Derived Stats | Renewal status ATK/MATK, soft/hard DEF/MDEF, HIT, FLEE, CRIT, perfect dodge | [mechanics/stats.md#derived-stat-formulas](./mechanics/stats.md#derived-stat-formulas) |
+| ASPD (renewal) | Job base per weapon + shield, sqrt(DEX, AGI) term, `amotion = 2000 - P*10`, 190/193 caps | [mechanics/stats.md#aspd-renewal](./mechanics/stats.md#aspd-renewal) |
+| Max HP/SP | Base table x (1 + VIT/INT %), x1.25 upper, fallback formula, new-char values | [mechanics/stats.md#maxhp--maxsp](./mechanics/stats.md#maxhp--maxsp) |
+| Max weight / regen | `MaxWeight + STR*300` (0.1 units), 70%/90% overweight, natural HP/SP regen amounts, 500 ms tick, sitting/walking | [mechanics/stats.md#max-weight-and-overweight](./mechanics/stats.md#max-weight-and-overweight) |
+| Stat point costs and limits | Cost `2+(low-1)/10` below 100, `16+4*((low-100)/5)` above; max 99/80/130/117; trait max 110 | [mechanics/stats.md#stat-point-costs-and-limits](./mechanics/stats.md#stat-point-costs-and-limits) |
+| Combat Formulas | Renewal player-vs-mob normal attack pipeline overview; deferrable list (elements, cards, skills) | [mechanics/combat.md#combat-damage-pipeline](./mechanics/combat.md#combat-damage-pipeline) |
+| Hit / crit chance | `hit - flee` clamp 5..100, crit `cri - 2*luk` per mille, lucky dodge, mobs don't crit by default | [mechanics/combat.md#1-hit-chance](./mechanics/combat.md#1-hit-chance) |
+| Normal-attack damage | Status/weapon/equip ATK parts, variance, size, DEF `(4000+d)/(4000+10d) - sDEF`, crit x1.4 (no DEF bypass) | [mechanics/combat.md#3-base-damage-of-a-player-normal-attack-renewal](./mechanics/combat.md#3-base-damage-of-a-player-normal-attack-renewal) |
+| Damage skeleton | Worked first-implementation formula, result to `ZC_NOTIFY_ACT` type mapping | [mechanics/combat.md#5-worked-skeleton-for-a-first-implementation](./mechanics/combat.md#5-worked-skeleton-for-a-first-implementation) |
+| Auto-attack request | `0x0437` action 0/7, target validation, silent failure, client-driven chase (server sends `0x0139`), stepaction | [mechanics/auto_attack.md#1-request-cz_request_act-0x0437-action-0--7](./mechanics/auto_attack.md#1-request-cz_request_act-0x0437-action-0--7) |
+| Attack range check | Weapon range, `range+1` vs walking target, circular `floor(sqrt - 0.1)` distance, line of sight | [mechanics/auto_attack.md#2-range-check-semantics](./mechanics/auto_attack.md#2-range-check-semantics) |
+| Attack timer loop | Single vs continuous, `attackabletime`/`canact_tick`, ASPD to amotion/adelay/dmotion, stop conditions | [mechanics/auto_attack.md#3-the-attack-timer-loop](./mechanics/auto_attack.md#3-the-attack-timer-loop) |
+| Swing and damage delay | `0x08c8` at swing to `AREA`, HP change after amotion, mob flinch, aggro at +dmotion, death `0x0080` +250 ms | [mechanics/auto_attack.md#5-one-swing-battle_weapon_attack](./mechanics/auto_attack.md#5-one-swing-battle_weapon_attack) |
 | Pathfinding (A*) | `MAX_WALKPATH` 32, `max_walk_path` 17 reject rule, 10/14 costs, Manhattan heuristic, no corner cutting, last row/col blocked | [mechanics/movement_aoi.md#1-pathfinding-a](./mechanics/movement_aoi.md#1-pathfinding-a) |
 | Step Timing | Walk speed 150 ms, diagonal x14/10, position updates at step end, start packets | [mechanics/movement_aoi.md#2-step-timing](./mechanics/movement_aoi.md#2-step-timing) |
 | Mid-walk Redirect | `change_walk_target`, repath at end of in-flight step, click on own cell | [mechanics/movement_aoi.md#3-mid-walk-redirect-new-cz_request_move-while-walking](./mechanics/movement_aoi.md#3-mid-walk-redirect-new-cz_request_move-while-walking) |
@@ -57,6 +107,30 @@ This master index maps extracted protocol opcodes, bit-packing algorithms, Aegis
 | Warp map change | `pc_setpos` same-map and cross-map sequence, `0x0080`+`0x0091`, packet drop until `0x007d`, rewarp/warping flags, `LoadEndAck` always vs changemap-only content, persistence | [mechanics/map_entry_actions.md#map-change-same-map-server](./mechanics/map_entry_actions.md#map-change-same-map-server) |
 | Rewarp guard | `count_rewarp > 10` skip, counted at `pc_setpos` tail, arrival-cell chain-warp, destination cell rules | [mechanics/npcs.md#warp-trigger-for-the-warp-portal-feature](./mechanics/npcs.md#warp-trigger-for-the-warp-portal-feature) |
 | Status Effects | Status change lifecycles, timers, and stat modifiers | [mechanics/status.md#status-change-lifecycle](./mechanics/status.md#status-change-lifecycle) |
+| Mob spawn | Spawn line grammar, once-spawn vs permanent, id pool shared with NPCs, placement, initial HP | [mechanics/mobs.md#1-spawn](./mechanics/mobs.md#1-spawn) |
+| Mob damage log | `status_damage` path, `dmglog` (cap 20, evict oldest, per-char accumulation, overkill counts), `0x0977` | [mechanics/mobs.md#2-hp-reduction](./mechanics/mobs.md#2-hp-reduction) |
+| Mob death | `mob_dead` order, loot priority, exp share and attacker bonus, `pc_gainexp`/`party_exp_share` calls, vanish +250 ms | [mechanics/mobs.md#3-mob-death-sequence](./mechanics/mobs.md#3-mob-death-sequence) |
+| Mob kill packet order | Single-player kill, default config, packet-by-packet | [mechanics/mobs.md#31-packet-order-for-one-normal-kill-single-player-loot-no-party-at-default-conf](./mechanics/mobs.md#31-packet-order-for-one-normal-kill-single-player-loot-no-party-at-default-conf) |
+| Mob drops | Drop rate formula, caps, level penalty, drop-cell pattern, drop timer, MVP rewards | [mechanics/mobs.md#4-item-drops](./mechanics/mobs.md#4-item-drops) |
+| Mob respawn | delay1/delay2, rate scaling, 1000 ms floor, same id, random cell | [mechanics/mobs.md#5-respawn](./mechanics/mobs.md#5-respawn) |
+| Inventory data model | `struct item` fields, 200 slots / `inventory_slots`, wire index = slot + 2, stacking rules, `unique_id` | [mechanics/inventory.md#1-data-model-struct-item](./mechanics/inventory.md#1-data-model-struct-item) |
+| `pc_additem` | Check order, merge key, new-slot path, `ADDITEM_*` result codes 0-7, add packet before weight packet | [mechanics/inventory.md#3-pc_additem](./mechanics/inventory.md#3-pc_additem) |
+| `pc_delitem` | Fail conditions, `type` flag bits, delete reason codes | [mechanics/inventory.md#4-pc_delitem](./mechanics/inventory.md#4-pc_delitem) |
+| Drop / Use / Pickup | `pc_dropitem` gates and failure ack, `pc_useitem` gates and consume order, `pc_takeitem` | [mechanics/inventory.md#6-drop-cz_item_throw---pc_dropitem](./mechanics/inventory.md#6-drop-cz_item_throw---pc_dropitem) |
+| Weight | 0.1 units, max weight formula, 70% / 90% thresholds (SC_WEIGHT50/90), regen and skill effects | [mechanics/inventory.md#8-weight](./mechanics/inventory.md#8-weight) |
+| Inventory persistence | Load `ORDER BY id` (holes don't survive relog), diff save, autosave and `save_settings` triggers | [mechanics/inventory.md#11-persistence](./mechanics/inventory.md#11-persistence) |
+| Equip slot model | `EQP_*` bitmask, `EQI_*` indices, `equip_index`, 2H and dual wield, accessory auto-slot, ammo | [mechanics/equipment.md#1-slot-model](./mechanics/equipment.md#1-slot-model) |
+| Equip flow | `pc_equipitem` / `pc_isequip` check order; displaced items unequipped (own ack) before the new ack; scripts | [mechanics/equipment.md#3-pc_equipitem-flow](./mechanics/equipment.md#3-pc_equipitem-flow) |
+| Unequip flow | `pc_unequipitem` flag bits, side effects, unequip-all | [mechanics/equipment.md#4-pc_unequipitem-flow](./mechanics/equipment.md#4-pc_unequipitem-flow) |
+| Equipment views | Weapon/shield look from alias or item id, head/robe look from `View`, costume override | [mechanics/equipment.md#5-view-handling](./mechanics/equipment.md#5-view-handling) |
+| Equipment stats | `W_*` weapon type, attack range, renewal ASPD base per weapon, equipment pass of `status_calc_pc` | [mechanics/equipment.md#6-effect-on-status-and-combat](./mechanics/equipment.md#6-effect-on-status-and-combat) |
+| Equip persistence | `inventory.equip` mask, login rebuild of `equip_index` | [mechanics/equipment.md#7-persistence-and-login](./mechanics/equipment.md#7-persistence-and-login) |
+| Exp gain (`pc_gainexp`) | Order of checks, rates baked into mob DB at load, renewal level-diff penalty after party split, per-kill cap | [mechanics/experience.md#pc_gainexp-flow](./mechanics/experience.md#pc_gainexp-flow) |
+| Level-up | `multi_level_up` off = one level per gain, max-level exp caps, packet order, unconditional full heal, +1 skill point per job level | [mechanics/experience.md#level-up](./mechanics/experience.md#level-up) |
+| Death exp penalty | Type, base/job rates, novice exempt, insurance | [mechanics/experience.md#death-exp-penalty](./mechanics/experience.md#death-exp-penalty) |
+| Atcommand dispatch | `is_atcommand` flow, groups.yml permission gate (no permission = normal chat) | [mechanics/atcommands.md#is_atcommand-flow](./mechanics/atcommands.md#is_atcommand-flow) |
+| `@item` / `@itembound` | Lookup order (Aegis, name, id), amount, non-stackable loop, failure codes, msgs 18/19 | [mechanics/atcommands.md#item](./mechanics/atcommands.md#item) |
+| `@item2` + test commands | `@item2` params; `@monster`, `@blvl`, `@zeny`, `@heal`, `@go`, ... syntax and aliases | [mechanics/atcommands.md#item2](./mechanics/atcommands.md#item2) |
 
 ## 3. Scripting VM (`./scripting/`)
 
@@ -75,4 +149,12 @@ This master index maps extracted protocol opcodes, bit-packing algorithms, Aegis
 | Relational SQL: `char` | Character slots, base and trait attributes, vitals, appearance, and coordinates | [db/sql_schemas.md#char-table-schema](./db/sql_schemas.md#char-table-schema) |
 | `.gat` / `.rsw` & Spawns | Map cell walkability grid binary layout and mob/warp script definitions | [db/map_gat.md#map-walkability-and-spawn-formats](./db/map_gat.md#map-walkability-and-spawn-formats) |
 | `.gat` Cell Types | Raw type 0-6 to walkable/shootable/water, unknown = wall, water promotion, last row/col quirk | [db/map_gat.md#gat-cell-type-mapping](./db/map_gat.md#gat-cell-type-mapping) |
+| `mob_db.yml` fields | Fields used by spawn/damage/death (Hp, exp, Drops/MvpDrops, speeds, Ai/Class/Modes, id ranges), gotchas | [db/mob_db.md#fields](./db/mob_db.md#fields) |
+| Item DB fields | `item_db*.yml` keys, defaults, load-time rules (missing `Locations` demotes to Etc), flags, stack/trade | [db/item_db.md#field-reference](./db/item_db.md#field-reference) |
+| Item type enum | `IT_*` values, stackable/equipable matrix, wire `type` mapping (PetEgg sent as 4) | [db/item_db.md#type-enum](./db/item_db.md#type-enum) |
+| Relational SQL: `inventory` | Per-slot item rows (cards, options, `unique_id`, `equip`, grade), `char_id` index | [db/sql_schemas.md#inventory-table-schema](./db/sql_schemas.md#inventory-table-schema) |
+| `job_stats.yml` (+ aspd, basepoints) | Load/merge order of renewal job files, MaxWeight, HP/SP fallback params, BaseHp/BaseSp tables, BaseASPD per weapon | [db/job_stats.md#load-order-and-merge-semantics](./db/job_stats.md#load-order-and-merge-semantics) |
+| `job_exp.yml` | Base-exp (5) and job-exp (14) groups, max levels, per-level exp | [db/exp_tables.md#job_expyml](./db/exp_tables.md#job_expyml) |
+| `statpoint.yml` | Status points per level (`Points[L+1] - Points[L]`), trait points from 201, skill points per job level | [db/exp_tables.md#statpointyml](./db/exp_tables.md#statpointyml) |
+| `level_penalty.yml` | Renewal level-difference exp penalty, worked out per difference | [db/exp_tables.md#renewal-level-difference-exp-penalty](./db/exp_tables.md#renewal-level-difference-exp-penalty) |
 | NPC source files | Manifest (`npc/re/scripts_main.conf`, `npc:`/`import:`/`delnpc:`), lexing, header grammar (warp/warp2/script/duplicate/shops), names, sprite constants (`JT_` enum), counts | [db/npc_files.md#rathena-npc-source-files-npctxt-conf](./db/npc_files.md#rathena-npc-source-files-npctxt-conf) |
