@@ -3,6 +3,46 @@
 Items consciously left out of finished work, with enough context to pick them up later.
 Remove an item when it lands. Newest feature first.
 
+## mob-spawning (branch `claude`, commits `262f83a..2093eaf`)
+
+Spec: `specs/mob-spawning/spec.md` (§4 lists these too). Mobs are visible, named, inert units.
+
+### Still to verify by hand
+- **Real-client check** (plan Finish, optional): walk `prt_fild08` against metaling and rAthena through
+  `tools/proxy`. Compare the `0x09ff` fields and the `0x0adf` reply. The wire values come from source only
+  (catalog `mechanics/mobs.md` §1.5).
+
+### mob_db stats
+- Real `Hp`, `Level`, `WalkSpeed` and `is_boss` (1 for `Class: Boss`, 2 for `Mvp`). Today every mob has
+  1 HP, level 1 (or the line's level) and speed 150, and `is_boss` is always 0.
+- `GroupId` / `Title` in `0x0adf`. Today both are empty.
+
+### Death and respawn (need combat)
+- **Respawn delays:** `delay2` counts only for `boss_monster` lines (`mob_spawn_variance: 1`); a given
+  `delay1 < 1000` becomes 5000; rate scaling; a 1000 ms floor. `SpawnGroup.line` keeps the raw values.
+- **On (re)spawn while players are present:** `0x09fe` to `AREA_WOS`, then the name to `AREA`.
+- **Event labels** are stored in the YAML (`Event`) but nothing runs them. 139 lines have an event field,
+  and 44 of those carry a real label such as `"ant_d02_i_boss::OnMobDead"` or
+  `"illusion_mob#moonlight::OnKill"`. When the mob dies, rAthena runs that NPC label with the killer
+  attached (catalog `mechanics/mobs.md` §3 step 9). This needs mob death (combat) and the scripting VM.
+  Quest and instance scripts that count kills this way won't progress until then.
+
+### Spawning gaps
+- The 1000 ms retry after a failed placement (ENG-MOB-03): the mob is simply not created.
+- `dynamic_mobs` removal 300 s after the last player leaves, and `MAX_MOB_LIST_PER_MAP` (128 lines). Map
+  worlds start on first entry, so spawning at world start already matches rAthena's first-entry spawn.
+- The spawn line's `size`/`ai`, and the `EF_GIANTBODY2` / `EF_BABYBODY2` effects (to the area on spawn,
+  to that player only on view-enter). No current data sets them; the importer warns and drops them.
+- The config knobs `mob_count_rate`, `force_random_spawn`, `no_spawn_on_player` and `override_mob_names`
+  (all at rAthena defaults).
+- Once-spawns: the script `monster` command and `@monster`.
+- Mob gids are per map instance (rAthena: one global pool shared with NPCs).
+
+### Movement and AI
+- No random walk, chase or AI timers. Catalog `mechanics/mobs.md` §1.7 has the rAthena rules: the
+  4000 ms + `rnd()%1000` walk timer, hard AI (100 ms) only within 18 cells of a player, lazy AI (1000 ms)
+  otherwise, and `mob_randomwalk`'s ±7 window.
+
 ## exit-game (branch `claude`, commit `d666b53`)
 
 Spec: `specs/exit-game/spec.md` (§3 lists these too).
@@ -59,7 +99,7 @@ Spec: `specs/npc-spawning/spec.md` (§4 lists these too).
 
 ### Data not converted (tools/npc-import)
 - Script bodies (and where the scripting phase reads them from: `.txt` via `Source:`, or extracted files).
-- Floating (`-`) NPCs and `function`s, mob spawns (`monster`/`boss_monster`), mapflags, shop catalogs.
+- Floating (`-`) NPCs and `function`s, mapflags, shop catalogs.
 - Barter NPCs defined in `npc/**/barters.yml`.
 - rAthena drops shops with zero valid items; we keep every shop (no item_db yet).
 
