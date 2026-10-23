@@ -75,6 +75,7 @@ const STANDENTRY11_LEN: u16 = 108;
 fn object_type(t: UnitObjectType) -> u8 {
     match t {
         UnitObjectType::Pc => 0x0,
+        UnitObjectType::Mob => 0x5,
         UnitObjectType::Npc => 0x6,
         UnitObjectType::MobSpriteNpc => 0xC,
     }
@@ -84,7 +85,7 @@ fn object_type(t: UnitObjectType) -> u8 {
 fn cell_size(t: UnitObjectType) -> u8 {
     match t {
         UnitObjectType::Pc => 5,
-        UnitObjectType::Npc | UnitObjectType::MobSpriteNpc => 0,
+        UnitObjectType::Npc | UnitObjectType::MobSpriteNpc | UnitObjectType::Mob => 0,
     }
 }
 
@@ -94,7 +95,7 @@ fn put_unit_head(buf: &mut BytesMut, opcode: PacketOpcode, len: u16, unit: &Unit
     buf.put_u16_le(opcode.raw());
     buf.put_u16_le(len);
     buf.put_u8(object_type(unit.object_type));
-    buf.put_u32_le(unit.gid); // AID: account id for players, NPC id for NPCs
+    buf.put_u32_le(unit.gid); // AID: account id for players, unit id for NPCs and mobs
     buf.put_u32_le(unit.char_id.map_or(0, |c| c.0)); // GID: char id, 0 for non-players
     buf.put_u16_le(unit.speed);
     buf.put_i16_le(0); // body_state (sc.opt1); NOT dead_sit

@@ -72,7 +72,7 @@ Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
   - Add the DB-MOB-03 test.
   - Check that the largest map total plus that map's NPCs stays well under `DEFAULT_ENTITY_CAPACITY`
     (4096).
-- [ ] **M3 ro-core + ro-packets:** add `UnitObjectType::Mob`, mapped to `0x05` in `object_type()`
+- [x] **M3 ro-core + ro-packets:** add `UnitObjectType::Mob`, mapped to `0x05` in `object_type()`
   (`crates/ro-packets/src/outgoing/map.rs`). PKT-MOB-01 in `tests/map_unit_codec_tests.rs`.
 - [ ] **M4 ro-engine**
   - Move `SplitMix64` from `warp.rs` into `rng.rs` and add `below(n)` / `range_inclusive(a, b)`.

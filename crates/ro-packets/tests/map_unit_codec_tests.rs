@@ -625,3 +625,93 @@ fn pkt_npc_02_ack_npc_name_encodes_0adf() {
     assert_frames_cleanly(&b, 0x0adf);
     assert!(is_implemented_outbound_opcode(PacketOpcode(0x0adf), VER));
 }
+
+// ---------- PKT-MOB (specs/mob-spawning) ----------
+
+fn poring() -> UnitAppearance {
+    UnitAppearance {
+        object_type: UnitObjectType::Mob,
+        gid: 110_000_042,
+        char_id: None,
+        name: "Elusive Wraith Dead (Nightmare)".into(),
+        job: 1002,
+        sex: Sex::Female,
+        hair_style: 0,
+        hair_color: 0,
+        head_dir: 0,
+        pos: MapPosition {
+            x: 100,
+            y: 200,
+            dir: 0,
+        },
+        speed: 150,
+        dead_sit: 0,
+        clevel: 5,
+        effect_state: 0,
+    }
+}
+
+/// PKT-MOB-01: catalog `mechanics/mobs.md` §1.5 values in all three entry packets.
+#[test]
+fn pkt_mob_01_mob_entry_fields() {
+    let unit = poring();
+    let cases = [
+        (
+            encode(&ServerEvent::UnitStanding { unit: unit.clone() }),
+            0x09ff,
+            0,
+        ),
+        (
+            encode(&ServerEvent::UnitSpawned { unit: unit.clone() }),
+            0x09fe,
+            -1,
+        ),
+    ];
+    for (b, opcode, shift) in cases {
+        // 0x09fe lacks the 0x09ff `state` byte, so its tail sits one byte earlier.
+        let tail = |off: usize| off.wrapping_add_signed(shift);
+        assert_eq!(b[4], 0x05, "{opcode:#06x}: object_type mob");
+        assert_eq!(u32_at(&b, 5), 110_000_042, "aid = mob gid");
+        assert_eq!(u32_at(&b, 9), 0, "GID 0 for mobs");
+        assert_eq!(i16_at(&b, 13), 150, "speed");
+        assert_eq!(u16_at(&b, 23), 1002, "job = mob id");
+        assert_eq!(u16_at(&b, 25), 0, "head");
+        assert_eq!(
+            (i16_at(&b, 41), i16_at(&b, 43)),
+            (0, 0),
+            "head/body palette"
+        );
+        assert_eq!(b[62], 0, "sex");
+        assert_eq!((b[66], b[67]), (0, 0), "x_size/y_size 0");
+        assert_eq!(i16_at(&b, tail(69)), 5, "clevel");
+        assert_eq!(
+            (i32_at(&b, tail(73)), i32_at(&b, tail(77))),
+            (-1, -1),
+            "full HP"
+        );
+        assert_eq!(b[tail(81)], 0, "is_boss");
+        assert_eq!(
+            str_at(&b, tail(84), 24),
+            "Elusive Wraith Dead (Ni",
+            "23 bytes + NUL"
+        );
+        assert_frames_cleanly(&b, opcode);
+    }
+
+    let walking = encode(&ServerEvent::UnitWalking {
+        unit,
+        start: (100, 200),
+        dest: (101, 201),
+        move_start_tick: 0,
+    });
+    assert_eq!(walking[4], 0x05);
+    assert_frames_cleanly(&walking, 0x09fd);
+}
+
+#[test]
+fn pkt_mob_01_npc_and_player_bytes_unchanged() {
+    let n = encode(&ServerEvent::UnitStanding { unit: kafra() });
+    assert_eq!((n[4], n[66], n[67]), (0x06, 0, 0));
+    let p = encode(&ServerEvent::UnitStanding { unit: alice() });
+    assert_eq!((p[4], p[66], p[67]), (0, 5, 5));
+}

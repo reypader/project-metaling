@@ -247,13 +247,14 @@ pub enum UnitObjectType {
     Npc,
     /// An NPC whose sprite is a mob id.
     MobSpriteNpc,
+    Mob,
 }
 
 /// Appearance snapshot shared by the unit entry packets (`0x09fd`/`0x09fe`/`0x09ff`).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UnitAppearance {
     pub object_type: UnitObjectType,
-    /// Wire id (`bl.id`): the account_id for players, the NPC id for NPCs.
+    /// Wire id (`bl.id`): the account_id for players, the NPC/mob id for NPCs and mobs.
     pub gid: u32,
     /// Written to the `GID` field; `None` (non-players) writes 0.
     pub char_id: Option<CharId>,
