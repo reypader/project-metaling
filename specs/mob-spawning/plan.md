@@ -89,7 +89,7 @@ Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
   - `MapWorldActor::new` calls `spawn_mobs` after `spawn_npcs` and logs both counts.
   - `main.rs` warns when the directory is unset. Export it in `run_metaling_servers.sh`.
   - `tests/common` `data_loader` takes mobs. BIN-MOB-01 in `bins/map-server/tests/mob_tests.rs`.
-- [ ] **Finish**
+- [x] **Finish**
   - Run the `reviewer` over the full diff.
   - `DEFERRED.md`: add a mob-spawning section (spec §4 and catalog §1.7), and remove "mob spawns" from the
     npc-spawning list. The section must include the event labels: they are stored but never run, and
