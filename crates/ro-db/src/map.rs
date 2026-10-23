@@ -61,7 +61,9 @@ impl MapGrid {
             .ok_or_else(|| truncated(expected))?;
 
         let cells = body
-            .chunks_exact(GAT_RECORD_LEN)
+            .as_chunks::<GAT_RECORD_LEN>()
+            .0
+            .iter()
             .map(|record| {
                 read_u32_le(record, GAT_TYPE_OFFSET)
                     .and_then(|raw| u8::try_from(raw).ok())
