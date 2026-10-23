@@ -48,8 +48,8 @@ Write tests first and name them with spec IDs. Iterate with `./verify.sh -p <cra
   - The session: `control_rx` in `select!`, applying `ChangeMap`, and dropping `control_tx`/`control_rx`/`outbound_tx` before awaiting the writer on exit.
   - Inert-warp filtering in `map_data_loader`.
   - Tests in `bins/map-server/tests/warp_tests.rs` (`tests/common` `data_loader` with two maps; needs the db): BIN-WARP-01..06.
-- [ ] **Finish**
+- [x] **Finish**
   - [x] Run the `reviewer` over the full diff. No high findings. Applied: write retry (M1), 15-byte name check (L3), reservation write on the writer (L4), no warning on evicting a warping session (L5), tests for a rejected warp join and eviction in the transfer tick. Recorded: the cross-map random-cell deviation (L1, spec §1), packets while loading (L2, `DEFERRED.md`).
   - [x] `DEFERRED.md`: remove the landed warp prerequisites, and add spec §3.
   - [x] `./verify.sh --smoke`.
-  - [ ] Repeat a capture route against metaling (one cross-map and one same-map warp with an observer) and diff it with the rAthena captures.
+  - [x] Repeat a capture route against metaling (one cross-map and one same-map warp with an observer) and diff it with the rAthena captures. Done by the user with a real client (2026-10-23): cross-map and same-map warps work, with and without observers.

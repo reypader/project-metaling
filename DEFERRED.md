@@ -29,8 +29,6 @@ Spec: `specs/warp-map-change/spec.md` (§3 lists the scope cuts).
 - **Packets while loading.** rAthena drops everything but `0x007d` while the player is off the map. We
   still answer `0x0360` (as the spec allows) and act on Restart `0x00b2` on the destination before
   `0x007d`.
-- **Real-client check of the warp routes** (plan "Finish"): repeat one cross-map and one same-map warp with
-  an observer through `tools/proxy` against metaling and diff with the rAthena captures. Needs the client.
 
 ## npc-spawning (branch `claude`, commits `1111051..a16d629`)
 
