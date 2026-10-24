@@ -2,7 +2,7 @@
 
 Wire formats are in [../packets/equipment.md](../packets/equipment.md). Inventory item storage and list packets: [inventory.md](./inventory.md), [../packets/inventory.md](../packets/inventory.md). Derived stats: [stats.md](./stats.md). Combat: [combat.md](./combat.md).
 
-**Provenance:** repo `rathena` (`$RATHENA_PATH`), `src/map/pc.cpp`, `pc.hpp`, `clif.cpp`, `status.cpp`, `itemdb.cpp`, `src/common/mmo.hpp`, `db/re/item_db_equip.yml`, `db/re/job_aspd.yml`. **Applies to `20260219` renewal: yes** (`RENEWAL` and `RENEWAL_ASPD` branches taken). No packet captures exist in this checkout.
+**Provenance:** repo `rathena` (`$RATHENA_PATH`), `src/map/pc.cpp`, `pc.hpp`, `clif.cpp`, `status.cpp`, `itemdb.cpp`, `src/common/mmo.hpp`, `db/re/item_db_equip.yml`, `db/re/job_aspd.yml`. **Applies to `20260219` renewal: yes** (`RENEWAL` and `RENEWAL_ASPD` branches taken). A weapon swap is capture-verified ([packets/equipment.md#captured-weapon-swap](../packets/equipment.md#captured-weapon-swap)); the rest is source reading.
 
 ## 1. Slot model
 
@@ -142,6 +142,125 @@ Inputs: inventory slot `n`, requested mask `req_pos`.
 
 On failure after step 4 nothing is mutated.
 
+### 3a. Job, class and gender checks
+
+Source: rAthena `d4b8e7b8f16061cc2496d377ac8f777ce72a4f39` (checked-out HEAD, 2026-10-06). Applies to `20260219` renewal (`RENEWAL` branch). Files: `src/map/pc.cpp` (`pc_job_can_use_item` 1771-1792, `pc_isItemClass` 1804-1842, `pc_isequip` 1850-1968, `pc_jobid2mapid` 7519), `src/map/map.hpp:86-262` (mapid enum), `src/map/itemdb.cpp` (`Jobs` 330-374, `Classes` 376-421, `Gender` 423-445, `defaultGender` 1227, `itemdb_jobid2mapid` 3201), `src/map/itemdb.hpp:211-231`, `src/common/mmo.hpp` (`e_job`, `e_sex`), `src/map/script_constants.hpp:276-420`.
+
+**Check order inside `pc_isequip`** (each line returns at the first hit):
+
+| # | Check | Result |
+| :-- | :-- | :-- |
+| 1 | `PC_PERM_USE_ALL_EQUIPMENT` | OK, skips everything (even before the null-item check) |
+| 2 | no item data | FAIL |
+| 3 | Soul Linked Super Novice shortcut (see §3 step 4) | OK |
+| 4 | `elv != 0 && base_level < elv` | FAILLEVEL |
+| 5 | `elvmax != 0 && base_level > elvmax` | FAILLEVEL |
+| 6 | `item.sex != BOTH && char.sex != item.sex` | FAIL |
+| 7 | broken, map NoEquip, ammo pairing, strip statuses (see §3 step 4) | FAIL |
+| 8 | `pc_job_can_use_item` false | FAIL |
+| 9 | `pc_isItemClass` false | FAIL |
+
+So level failures take priority over gender, job and class failures; gender is checked before job and class. Wire codes: FAILLEVEL = 1, FAIL = 2 (`clif.hpp:525-527`, ack `0x0999`).
+
+#### Gender
+- `e_sex` (`mmo.hpp:1116`): `FEMALE 0, MALE 1, BOTH 2, SERVER 3`. The character's `status.sex` is 0 or 1 (account sex; `SERVER` is for accounts that are the server).
+- Check is plain inequality (step 6 above). Item `Gender` YAML: `Female | Male | Both`; unknown value defaults to `Both`; omitted on a new item defaults to `Both`.
+- Forced by `defaultGender` (applied after parsing, overrides any YAML value): item `WEDDING_RING_M` (Groom's Ring) = Male, `WEDDING_RING_F` (Bride's Ring) = Female, weapon subtype `W_MUSICAL` = Male, `W_WHIP` = Female.
+
+#### Job id -> mapid (`sd->class_`)
+`sd->class_ = pc_jobid2mapid(status.class_)`; an id with no mapping (or not in `job_db`) is reset to Novice at login (`pc.cpp:2099-2104`). The client-visible mounted/alternate ids (`KNIGHT2`=13, `CRUSADER2`=21, `LORD_KNIGHT2`, `PALADIN2`, `BABY_KNIGHT2`, `*_2ND`, `RUNE_KNIGHT2`, `RANGER2`, `STAR_EMPEROR2`, `SKY_EMPEROR2`, ...) have no mapping, so they are invalid as stored class ids. Male/female pairs map to one mapid: Bard/Dancer -> `BARDDANCER`, Clown/Gypsy -> `CLOWNGYPSY`, Minstrel/Wanderer(+`_T`, baby) -> `MINSTRELWANDERER`, Troubadour/Trouvere -> `TROUBADOURTROUVERE`, Kagerou/Oboro (+baby) -> `KAGEROUOBORO`, Shinkiro/Shiranui -> `SHINKIROSHIRANUI`.
+
+Bit layout (`map.hpp:86-102`):
+
+| Bits | Mask | Meaning |
+| :-- | :-- | :-- |
+| 0-7 | `0xff` (`MAPID_FIRSTMASK`) | base-class number (table below) |
+| 8 | `0x100` `JOBL_2_1` | 2-1 branch |
+| 9 | `0x200` `JOBL_2_2` | 2-2 branch |
+| 12 | `0x1000` `JOBL_THIRD` | third (also set on 4th) |
+| 16 | `0x10000` `JOBL_FOURTH` | fourth |
+| 20 | `0x100000` `JOBL_UPPER` | transcendent |
+| 21 | `0x200000` `JOBL_BABY` | baby |
+
+Other masks: `SECONDMASK 0xfff`, `THIRDMASK 0xffff`, `FOURTHMASK 0xfffff`. Super Novice is the 2-1 of Novice (`0x100`), not a first class.
+
+Base-class number (`mapid & 0xff`) by branch (same number reused across branches):
+
+| n | 1st (no branch) | 2-1 (`0x100`) | 2-2 (`0x200`) |
+| :-- | :-- | :-- | :-- |
+| 0 | Novice | Super Novice | - |
+| 1 | Swordman | Knight | Crusader |
+| 2 | Mage | Wizard | Sage |
+| 3 | Archer | Hunter | BardDancer |
+| 4 | Acolyte | Priest | Monk |
+| 5 | Merchant | Blacksmith | Alchemist |
+| 6 | Thief | Assassin | Rogue |
+| 7 | Taekwon | Star Gladiator | Soul Linker |
+| 8 | Gunslinger | Rebellion | - |
+| 9 | Ninja | KagerouOboro | - |
+| 10 | Summoner | Spirit Handler | - |
+| 11 | Gangsi | Death Knight | Dark Collector |
+| 12-17 | Wedding, Xmas, Summer, Hanbok, Oktoberfest, Summer2 (costume jobs) | - | - |
+
+Composition: transcendent = `UPPER | 2nd-class mapid` (Lord Knight = `UPPER|KNIGHT`, Paladin = `UPPER|CRUSADER`; Novice High/1st-class highs = `UPPER|n`); baby = `BABY | mapid` (Super Baby = `BABY|SUPER_NOVICE`); third = `THIRD | 2nd-class mapid` (Rune Knight = `THIRD|KNIGHT`, Royal Guard = `THIRD|CRUSADER`, Super Novice E = `THIRD|SUPER_NOVICE`, Star Emperor = `THIRD|STAR_GLADIATOR`, Soul Reaper = `THIRD|SOUL_LINKER`, Night Watch = `THIRD|REBELLION`, Shinkiro/Shiranui = `THIRD|KAGEROUOBORO`); trans-third (`*_T`) = `THIRD|UPPER|2nd`; baby-third = `THIRD|BABY|2nd`; fourth = `FOURTH|THIRD|2nd-class mapid` (Hyper Novice = `FOURTH|SUPER_NOVICE_E`, Dragon Knight = `FOURTH|RUNE_KNIGHT`, Imperial Guard = `FOURTH|ROYAL_GUARD`, Sky Emperor = `FOURTH|STAR_EMPEROR`, Soul Ascetic = `FOURTH|SOUL_REAPER`). Fourth classes carry no UPPER/BABY bit. There are no baby fourth classes and no baby Death Knight/Spirit Handler/Gangsi.
+
+Selected numeric job ids (`mmo.hpp` `e_job`, client ids): Novice 0, Swordman 1, Mage 2, Archer 3, Acolyte 4, Merchant 5, Thief 6, Knight 7, Priest 8, Wizard 9, Blacksmith 10, Hunter 11, Assassin 12, Crusader 14, Monk 15, Sage 16, Rogue 17, Alchemist 18, Bard 19, Dancer 20, Wedding 22, Super Novice 23, Gunslinger 24, Ninja 25, Xmas 26, Summer 27, Hanbok 28, Oktoberfest 29, Summer2 30; Novice High 4001 .. Thief High 4007, Lord Knight 4008, High Priest 4009, High Wizard 4010, Whitesmith 4011, Sniper 4012, Assassin Cross 4013, Paladin 4015, Champion 4016, Professor 4017, Stalker 4018, Creator 4019, Clown 4020, Gypsy 4021; Baby 4023 ..; Super Baby 4045; Taekwon 4046, Star Gladiator 4047, Soul Linker 4049, Gangsi 4050, Death Knight 4051, Dark Collector 4052; Rune Knight 4054, Warlock 4055, Ranger 4056, Arch Bishop 4057, Mechanic 4058, Guillotine Cross 4059, `*_T` 4060-4065, Royal Guard 4066, Sorcerer 4067, Minstrel 4068, Wanderer 4069, Sura 4070, Genetic 4071, Shadow Chaser 4072, `*_T` 4073-4079; baby thirds 4096-4108; Super Novice E 4190, Super Baby E 4191; Kagerou 4211, Oboro 4212; Rebellion 4215; Summoner 4218; Baby Ninja 4222; Baby Taekwon 4225 ..; Star Emperor 4239, Soul Reaper 4240; Dragon Knight 4252 .. Trouvere 4264 (4th jobs 4252-4264); Sky Emperor 4302, Soul Ascetic 4303, Shinkiro 4304, Shiranui 4305, Night Watch 4306, Hyper Novice 4307, Spirit Handler 4308. (Enum is sequential from the anchors shown in `e_job`; verify any id not listed by counting from the nearest explicit `= N`.)
+
+#### `Jobs` -> `class_base[3]`
+- `class_base` is three `u64` bitsets: index 0 = first class and Novice branch (no 2-x bit), index 1 = 2-1 branch, index 2 = 2-2 branch. Bit position = base-class number `n` from the table above.
+- A `Jobs` name resolves to the constant `EAJ_<Name>` (case-insensitive lookup), whose value is the mapid. It sets/clears bit `(mapid & 0xff)` in index 1 if `mapid & 0x100`, else index 2 if `mapid & 0x200`, else index 0. The `UPPER/BABY/THIRD/FOURTH` bits of the constant are discarded, so `Knight` is one bit shared by Knight, Lord Knight, Rune Knight, Dragon Knight, Baby Knight and Baby Rune Knight.
+- The `Jobs` map value is a bool: `true` sets the bit, `false` clears it. Entries apply in file order after `All`.
+- `All: true` sets all three bitsets to all ones (`UINT64_MAX`); `All: false` is a no-op clear.
+- `Jobs` present: the three sets are reset to 0 first (so an overriding entry replaces the old list, not merges), then `All`, then each named entry.
+- `Jobs` absent: new item -> all ones in all three sets (any job); an existing item being overridden keeps its previous value.
+- Unknown job name: warning and the item becomes usable by all jobs (all ones, parsing of the rest of the map stops).
+
+Name -> (index, bit) for the names used by `db/re/item_db_equip.yml` (plus the other `EAJ_` names that resolve to first-class/2-x bits):
+
+| `Jobs` name | index | bit | `Jobs` name | index | bit |
+| :-- | :-- | :-- | :-- | :-- | :-- |
+| Novice | 0 | 0 | SuperNovice (`Super_Novice`) | 1 | 0 |
+| Swordman | 0 | 1 | Knight | 1 | 1 |
+| Mage | 0 | 2 | Wizard | 1 | 2 |
+| Archer | 0 | 3 | Hunter | 1 | 3 |
+| Acolyte | 0 | 4 | Priest | 1 | 4 |
+| Merchant | 0 | 5 | Blacksmith | 1 | 5 |
+| Thief | 0 | 6 | Assassin | 1 | 6 |
+| Taekwon | 0 | 7 | StarGladiator (`Star_Gladiator`) | 1 | 7 |
+| Gunslinger | 0 | 8 | Rebellion | 1 | 8 |
+| Ninja | 0 | 9 | KagerouOboro | 1 | 9 |
+| Summoner | 0 | 10 | Spirit_Handler | 1 | 10 |
+| Gangsi | 0 | 11 | Death_Knight / DeathKnight | 1 | 11 |
+| Crusader | 2 | 1 | Sage | 2 | 2 |
+| BardDancer | 2 | 3 | Monk | 2 | 4 |
+| Alchemist | 2 | 5 | Rogue | 2 | 6 |
+| SoulLinker (`Soul_Linker`) | 2 | 7 | Dark_Collector / DarkCollector | 2 | 11 |
+
+Other accepted names that collapse onto these bits: every `EAJ_*` constant listed in `script_constants.hpp:281-420` (`*_HIGH`, `BABY_*`, `*_T`, 3rd-job names such as `RUNE_KNIGHT`, `STAR_EMPEROR`, `SOUL_REAPER`, `HYPER_NOVICE`...) resolves by the same rule, but the shipped item DB only uses the names above (`Novice, Swordman, Mage, Archer, Acolyte, Merchant, Thief, Knight, Priest, Wizard, Blacksmith, Hunter, Assassin, Crusader, Monk, Sage, Rogue, Alchemist, BardDancer, StarGladiator, SoulLinker, Gunslinger, Ninja, KagerouOboro, Rebellion, SuperNovice, Spirit_Handler` plus `Taekwon` and `Summoner`). Consequences: Star Emperor tests (1,7) like Star Gladiator, Soul Reaper tests (2,7) like Soul Linker, Night Watch tests (1,8) like Rebellion, Shinkiro/Shiranui test (1,9) like Kagerou/Oboro, Hyper Novice and Super Novice E test (1,0) like Super Novice, Sky Emperor tests (1,7), Soul Ascetic (2,7), Imperial Guard (2,1), Dragon Knight (1,1).
+
+#### Job test (`pc_job_can_use_item`)
+Compute `bit = 1 << (class_ & 0xff)`; index = 1 if `class_ & 0x100`, else 2 if `class_ & 0x200`, else 0; pass iff `class_base[index] & bit != 0`. Novice High / Baby Novice use index 0 bit 0 like Novice; Super Baby, Super Novice E, Hyper Novice use index 1 bit 0 like Super Novice.
+
+#### `Classes` -> `class_upper` and the class test (`pc_isItemClass`, RENEWAL branch)
+- `ITEMJ_*`: `NORMAL 0x01, UPPER 0x02, BABY 0x04, THIRD 0x08, THIRD_UPPER 0x10, THIRD_BABY 0x20, FOURTH 0x40`. Groups: `All_Upper = UPPER|THIRD_UPPER|FOURTH`, `All_Baby = BABY|THIRD_BABY`, `All_Third = THIRD|THIRD_UPPER|THIRD_BABY` (so `All_Third` does not include `FOURTH`). `ITEMJ_ALL` in renewal = all seven bits (`0x7f`).
+- `Classes` parsing: `All: true` ORs in `ITEMJ_ALL`, `All: false` clears it; each named entry (resolved as `ITEMJ_<Name>`) sets or clears its bits; an unknown name sets `ITEMJ_ALL` and stops. Unlike `Jobs`, `class_upper` is not reset when `Classes` is present, so an override edits the previous value. `Classes` absent on a new item = `ITEMJ_ALL`.
+- The test passes at the first matching rule, tested against the character's flag bits (`UPPER 0x100000`, `BABY 0x200000`, `THIRD 0x1000`, `FOURTH 0x10000` of `class_`):
+
+| Character flags | Item must have |
+| :-- | :-- |
+| none of UPPER/BABY/THIRD/FOURTH | `NORMAL` |
+| UPPER, not THIRD | `UPPER` |
+| BABY, not THIRD | `BABY` |
+| THIRD only (no UPPER, BABY, FOURTH) | `THIRD` |
+| THIRD + UPPER (no FOURTH) | `THIRD_UPPER` |
+| THIRD + BABY (no FOURTH) | `THIRD_BABY` |
+| FOURTH (any other flags) | `FOURTH` |
+
+No fall-through: a transcendent char needs `UPPER`, not `NORMAL`; a third class does not accept `UPPER` or `NORMAL` items in renewal. (The non-renewal branch, which lets thirds use trans items, is not compiled.) Special cases follow from the flags and need no code: Super Novice, Taekwon, Star Gladiator, Soul Linker, Gunslinger, Ninja, Summoner, Rebellion, Kagerou/Oboro, Spirit Handler, Death Knight have no flags -> `NORMAL`; Baby Taekwon/Ninja/Gunslinger/Rebellion/Kagerou/Summoner/etc. -> `BABY`; Super Novice E, Star Emperor, Soul Reaper, Night Watch, Shinkiro/Shiranui -> `THIRD`; Super Baby E, Baby Star Emperor, Baby Soul Reaper -> `THIRD_BABY`; Hyper Novice, Sky Emperor, Soul Ascetic and all 4th jobs -> `FOURTH`. An item must pass both the job test and the class test; the 4th-class `Jobs` bits come from the 2nd-class base (Dragon Knight uses Knight's bit).
+
+#### GM bypass
+`PC_PERM_USE_ALL_EQUIPMENT` (group permission `all_equipment`, `pc_groups.hpp:26,65`; read by `pc_has_permission` = bit test of `sd->permissions`, `pc.cpp:13170`; documented `doc/permissions.txt:61-66`: "equip any item regardless of requirements (class, level, etc.)", client errors possible if the sprite is missing). The bypass is the first line of `pc_isequip`, so it also skips the level, gender, broken, NoEquip, ammo and strip-status checks and the Soul Linker shortcut. It additionally lets equip scripts and card bonuses run on NoEquip maps (`status.cpp:3920-4172`). Shipped `conf/groups.yml`: `all_equipment` is not enabled for any group (Admin group lists it as `false`), so it is off by default.
+
 ## 4. `pc_unequipitem` flow
 
 Source: `pc.cpp:12398-12503`.
@@ -196,6 +315,7 @@ Server state: `sd->status.{weapon,shield,head_top,head_mid,head_bottom,robe}` (a
 * `inventory.equip` (`sql-files/main.sql:721`) is `int unsigned`, the **currently worn `EQP_*` mask** for that row (0 = not worn). A worn two-handed weapon stores `0x22`, a right-hand weapon `0x02`, a left-hand weapon `0x20`, an accessory `0x08` or `0x80`, ammo `0x8000`. Also stored per row: `identify`, `refine`, `attribute` (1 = broken), `card0-card3`, option columns, `favorite`, `bound`, `equip_switch`, enchant grade, expire time. The cross-table state `char.weapon/shield/head_*/robe` is derived and rewritten on save.
 * At login the map server loads the inventory, calls `pc_setinventorydata` (item data pointers) and `pc_setequipindex` (rebuilds `equip_index[]`, `weapontype1/2`, `status.weapon`) (`intif.cpp:3485-3486`), then `status_calc_pc(SCO_FIRST)`, which also runs the `EquipScript` of worn items and cards.
 * The client learns the worn set from the inventory equip list (`WearState` = `equip` mask per entry) and `0x013c` for ammo (packets/equipment.md), and sees others via entry packets.
+* Equip changes are not saved immediately: no `chrif_save` in `pc_equipitem`/`pc_unequipitem`; the `inventory.equip` mask and the `char.weapon/shield/head_*/robe` columns persist on autosave or logout. At login the map server re-derives `status.weapon` from the equipped rows; the six `char` columns only feed the character-select entry. Details and sources: [../packets/char.md](../packets/char.md#per-character-look-fields-character_info-0x006b--0x0b72--0x0b6f).
 * For `ro-persistence`: an `equip` integer column (u32 range needed, values up to `0x3FFFFF` today) on the inventory/item row is sufficient; no separate equipment table exists in rAthena.
 
 ## 8. Refine and cards (field presence only)
@@ -205,5 +325,5 @@ Per-item instance fields that affect equipment: `refine` (0..`MAX_REFINE`, clamp
 ## Open points
 
 * The `MSI_WRONG_BULLET` value is 2493 or 2494 depending on a packetver branch not resolved here.
-* Unverified against live captures (none available).
+* Only the one-hand weapon swap is captured. Take-off, unequip-all, shields and two-handers, headgear looks, failure acks and ammo are source reading only.
 * `clif_msg` and status-change (`EFST_CLIENT_ONLY_EQUIP_ARROW`) packet layouts are not yet in the catalog.

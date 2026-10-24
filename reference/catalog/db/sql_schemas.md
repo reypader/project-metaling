@@ -89,7 +89,7 @@ The `char` table stores persistent character state including slot indexing, appe
 | `hair_color` | `SMALLINT(5) UNSIGNED` | `NOT NULL DEFAULT 0` | `u16` | Hair color palette index. |
 | `clothes_color` | `SMALLINT(5) UNSIGNED` | `NOT NULL DEFAULT 0` | `u16` | Clothes dye palette index. |
 | `body` | `SMALLINT(5) UNSIGNED` | `NOT NULL DEFAULT 0` | `u16` | Body outfit variant index. |
-| `weapon` | `SMALLINT(6) UNSIGNED` | `NOT NULL DEFAULT 0` | `u16` | Equipped weapon view ID. |
+| `weapon` | `SMALLINT(6) UNSIGNED` | `NOT NULL DEFAULT 0` | `u16` | Weapon type (`W_*`), not a view id; see packets/char.md per-char look fields. |
 | `shield` | `SMALLINT(6) UNSIGNED` | `NOT NULL DEFAULT 0` | `u16` | Equipped shield view ID. |
 | `head_top` | `SMALLINT(6) UNSIGNED` | `NOT NULL DEFAULT 0` | `u16` | Top headgear view ID. |
 | `head_mid` | `SMALLINT(6) UNSIGNED` | `NOT NULL DEFAULT 0` | `u16` | Middle headgear view ID. |

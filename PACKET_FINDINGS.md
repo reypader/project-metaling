@@ -20,14 +20,13 @@ Open questions and disagreements about wire packets for `PACKETVER = 20260219`. 
 | [PF-08](#pf-08) | Inventory list and item ack layouts | Struct only | Open |
 | [PF-09](#pf-09) | Exp and level-up packets and their order | Struct only | Open |
 | [PF-10](#pf-10) | Status window packets (`0x00bd`, `0x0141`, `0x00be`, `0x00bc`) | Struct only | Open |
-| [PF-11](#pf-11) | Equip packets (`0x0998`, `0x0999`, `0x099a`) | Struct only | Open |
+| [PF-11](#pf-11) | Equip packets (`0x0998`, `0x0999`, `0x099a`) | Struct only | Open; weapon swap captured, take-off/ammo/failures still wanted |
 | [PF-12](#pf-12) | Where HP, SP, zeny and levels come from at login | Behaviour | Open |
 | [PF-13](#pf-13) | Attack request and swing packet order | Behaviour | Open |
 | [PF-14](#pf-14) | Attack range: straight line reaches one cell further | Behaviour | Open |
 | [PF-15](#pf-15) | Mob kill timing: drops at +0 ms, vanish at +250 ms | Behaviour | Open |
 | [PF-16](#pf-16) | ASPD value on the wire is amotion | Behaviour | Open |
 | [PF-17](#pf-17) | `0x02c1` coloured message layout | Minor | Open |
-| [PF-18](#pf-18) | `MSI_WRONG_BULLET` is 2493 or 2494 | Minor | Open |
 | [PF-19](#pf-19) | Server rules not settled by source (overweight attack, DEF clamps, regen weight rate) | Server rule | Open |
 | [PF-21](#pf-21) | Packets the proxy can't frame (backlog: missing/wrong `table.rs` lengths; a misframe can stall the proxy log) | Code gap | Open; item rows fixed |
 
@@ -35,6 +34,7 @@ Open questions and disagreements about wire packets for `PACKETVER = 20260219`. 
 
 | Id | Topic | Resolved | By |
 | :--- | :--- | :--- | :--- |
+| [PF-18](#pf-18) | `MSI_WRONG_BULLET` is 2493 or 2494 | 2026-10-24 | `clif.hpp:599` branch read: 2493 at 20260219; `table.rs` rows for `0x0291`/`0x07e6`/`0x09cd` still to add |
 | [PF-01](#pf-01) | `0x01d7` ZC_SPRITE_CHANGE2: table says 11, source sends 15 | 2026-10-23 | `item_drop_pickup_sequence.txt`; `table.rs` fixed, test `pkt_item_01_table_lengths` |
 | [PF-02](#pf-02) | `0x0add` ZC_ITEM_FALL_ENTRY: table says 22, source sends 24 | 2026-10-23 | `item_drop_pickup_sequence.txt`; `table.rs` fixed, test `pkt_item_01_table_lengths` |
 | [PF-04](#pf-04) | `0x00a1` ZC_ITEM_DISAPPEAR missing from table (6) | 2026-10-23 | `item_drop_pickup_sequence.txt`; `table.rs` fixed, test `pkt_item_01_table_lengths` |
@@ -195,7 +195,8 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
   - `0x00ab` take off (4) and `0x099a` ack (9, flag 0 ok, 1 fail).
   - A displaced item gets its own unequip ack before the new item's equip ack.
   - Ammo gets `0x013c` then `0x013b` type 3, and no `0x0999`.
-- **Resolve by:** a capture of equipping a weapon, swapping it for another, and equipping arrows.
+- **Evidence (2026-10-24):** [`packet_sequence-20261023_030246.txt`](reference/catalog/captures/packet_sequence-20261023_030246.txt) lines 841–865 hold two Knife-for-Knife swaps, re-framed by hand in [packets/equipment.md#captured-weapon-swap](reference/catalog/packets/equipment.md#captured-weapon-swap). Confirmed: `0x0998` 8, `0x0999` 11 (result 0 = ok, view 0 for a weapon), `0x099a` 9 (flag 0 = ok), and the displaced item's look + `0x099a` + status push come before the new item's `0x0999`.
+- **Resolve by:** a capture (after `table.rs` has `0x0999`/`0x099a`/`0x0bae`/`0x013c`/`0x013b`, `specs/equipment` M1) of `0x00ab` take-off, unequip-all, a level-too-low equip, a shield then a two-hander, a headgear, and arrows (`0x0983` EFST 695, `0x013c`, `0x013b` type 3).
 - **Catalog:** [packets/equipment.md](reference/catalog/packets/equipment.md), [mechanics/equipment.md#3-pc_equipitem-flow](reference/catalog/mechanics/equipment.md#3-pc_equipitem-flow).
 
 ## Behaviour and order
@@ -261,6 +262,7 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 
 - **Status:** Open.
 - **Source:** the ASPD field in `0x00bd` and `0x00b0` carries raw `amotion` in ms. The client turning that into `200 - amotion/10` for display is general client knowledge, not something rAthena source states.
+- **Evidence (2026-10-24):** in [`packet_sequence-20261023_030246.txt`](reference/catalog/captures/packet_sequence-20261023_030246.txt) lines 847 and 851, a novice (`test2`, base stats) gets `SP_ASPD` 440 bare-handed and 590 with a Knife. That fits amotion for ASPD about 156 and 141 (Novice BaseASPD Fist 40, Dagger 55). Supports the reading; the exact stats of that character weren't logged.
 - **Resolve by:** a capture of login with a known AGI/DEX. Compare the value with the status window.
 - **Catalog:** [mechanics/stats.md#aspd-renewal](reference/catalog/mechanics/stats.md#aspd-renewal).
 
@@ -277,9 +279,9 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 
 **`MSI_WRONG_BULLET` value**
 
-- **Status:** Open. Low priority.
-- **Source:** 2493 or 2494 depending on a packetver branch (`clif.hpp:616` and `:634`). The branch was not resolved. The `clif_msg` packet and the `EFST_CLIENT_ONLY_EQUIP_ARROW` status packet are not in the catalog yet.
-- **Resolve by:** a capture of equipping the wrong ammo type for the weapon.
+- **Status:** Resolved from source 2026-10-24 (value 2493); a capture of wrong ammo would still confirm the client string.
+- **Source:** 2493 or 2494 depending on a packetver branch (`clif.hpp:616` and `:634`). The branch is `#if (PACKETVER >= 20130807 && PACKETVER <= 20130814) && !defined(PACKETVER_ZERO)` at `clif.hpp:599`; 20260219 takes the `#else`, so `MSI_WRONG_BULLET` = 2493. `clif_msg` is `0x0291` ZC_MSG, `msgId.W`, 4 bytes, now in the catalog. Other values: `MSI_FAIL_NEED_EQUIPPED_BOW` 1691, `MSI_CAN_NOT_EQUIP_ITEM` 372, `MSI_USESKILL_FAIL_MADOGEAR` 1435, `MSI_USESKILL_FAIL_CART` 1519. Code gap: `crates/ro-packets/src/table.rs` has no rows for `0x0291` (4), `0x07e6` (8) or `0x09cd` (8). The `EFST_CLIENT_ONLY_EQUIP_ARROW` status packet is still not covered.
+- **Resolve by (optional):** a capture of equipping the wrong ammo type for the weapon.
 - **Catalog:** [mechanics/equipment.md](reference/catalog/mechanics/equipment.md).
 
 ### PF-19
@@ -310,7 +312,7 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 - **Status:** Open, low priority. Revisit when nothing else is queued, or when a capture or a client bug looks odd: a misframed packet hides the packets after it.
 - **Why it matters:** `tools/proxy` frames with `crates/ro-packets/src/table.rs`. A missing or wrong length makes the proxy log `UNKNOWN / UNMAPPED` frames and then garbage 1-byte frames (`0x0000`, `0x1e84`, `0x2800`, ...) until the stream re-syncs. The map-server never sends these packets today, so only captures and client-side tests are affected.
 - **Seen in the 2026-10-23 warp captures** ([`reference/catalog/captures/`](reference/catalog/captures/README.md)):
-  - Server to client, missing from the table: `0x0141` (stat lines), `0x013a` (attack range), `0x0b1b`, `0x0b8d`, `0x080e` (party member HP), `0x010f` (skill list), `0x02c9`, `0x0acb`, `0x0999`, `0x019b`, `0x00b4`.
+  - Server to client, missing from the table: `0x0141` (stat lines), `0x013a` (attack range), `0x0b1b`, `0x0b8d`, `0x080e` (party member HP), `0x010f` (skill list), `0x02c9`, `0x0acb`, `0x0999`, `0x099a` (hidden inside a misframed `0x0000` frame), `0x019b`, `0x00b4`.
   - Client to char-server, wrong length: `0x08b8` `CH_SECOND_PASSWD_ACK` is framed at 8, but the client sends 2 more bytes. The leftover bytes appear as a bogus client frame after every PIN entry.
   - Expected and not a bug: `0x8480`/`0x8481` are the raw 4-byte AccountId echo after `CH_ENTER`/`CZ_ENTER` (`bins/CLAUDE.md`), which the proxy doesn't skip.
 - **The proxy log can stall** (seen in [`item_drop_pickup_sequence.txt`](reference/catalog/captures/item_drop_pickup_sequence.txt), 2026-10-23):
@@ -331,7 +333,7 @@ One session through `tools/proxy` against `./run_rathena_servers.sh`, using a `g
 | Log in from char select to standing on the map, with a stackable, an equipment piece and worn arrows in the inventory | PF-05, PF-08, PF-10, PF-12, PF-16 |
 | Say a normal line, then `@item 501 5`, then `@item 1201` | PF-06, PF-07 |
 | Raise STR once | PF-10 |
-| Equip a dagger, swap to another dagger, equip arrows, equip the wrong ammo | PF-01, PF-11, PF-18 |
+| Equip a dagger, swap to another dagger, take it off, equip arrows, equip the wrong ammo (see `specs/equipment/plan.md` capture checkpoint) | PF-11, PF-18 |
 | Click a Poring once, hold attack on another, click one out of range, attack from 2 cells in a straight line | PF-13, PF-14 |
 | Kill until a drop, pick it up; walk away and back to a dropped item; drop an item; use a potion | PF-02, PF-03, PF-04, PF-08, PF-15 |
 | Kill until a level-up (or `@blvl 1`) | PF-09 |
