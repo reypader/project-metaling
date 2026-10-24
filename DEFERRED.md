@@ -5,19 +5,26 @@ Remove an item when it lands. Newest feature first.
 
 ## map-entry-settings (branch `main`, plan `specs/map-entry-settings/plan.md`)
 
-Spec §3. The settings group is sent with defaults and `0x0447` gets its `0x0b1b`.
+Spec §1–§3. The settings group is sent with defaults, `0x0447` gets its `0x0b1b`, and (Fix 1) the login also
+sends NV_BASIC level 0 and the exp/status block.
 - **Manual client check:** log in as `test`. Expect no "account settings" error, a usable chat box, and
-  `0x0447` → `0x0b1b` in the proxy log (rebuild the proxy first). If the error remains, try in order: the
-  NV_BASIC level-0 entry in `0x010f` (rAthena never sends an empty skill list), login-time `0x0091` (PF-20),
-  then the status block below.
+  `0x0447` → `0x0b1b` in the proxy log (rebuild the proxy first). The settings group alone failed
+  (`metaling-20261024-2.txt`). If Fix 1 fails too, try login-time `0x0091` (PF-20) next, then the pre-`0x007d`
+  status push (HP/SP and derived values, PF-12) and the other login-only packets listed in
+  `map_entry_actions.md#client-input-unblock--account-settings-0x0447---0x0b1b`.
 - Also check logging in on a same-map warp cell: the arrival warp hides the player in the same tick, so the
   client's first `0x0447` is ignored (as in rAthena, which drops packets until `0x007d`). Input then depends on
   the client sending `0x0447` again after the `0x0091` reload.
 - Save and load hotkeys (`CZ_SHORTCUT_KEY_CHANGE*`, row shift) and the config toggles (`CZ_CONFIG`,
   `CZ_PARTY_CONFIG`, equipment window).
-- A real skill list (NV_BASIC and job skills) with the skill tree.
-- The first-login exp/status block: `0x0acb` ×4, SP_SKILLPOINT, `0x00bd`, `0x0141`, `0x013a`, ASPD, trait
-  stats and `0x00be` f7..fc (PF-12).
+- A real skill list (NV_BASIC's real level and job skills) with the skill tree. Today every character gets
+  NV_BASIC level 0, upgradable.
+- Status block placeholders (`crates/ro-engine/src/status.rs`):
+  - NEXTBASEEXP/NEXTJOBEXP are the max-level constants until exp tables are imported.
+  - Derived stats (ATK, MATK, DEF, MDEF, HIT, FLEE, CRIT, ASPD) are 0 until `ro-mechanics` has the formulas.
+  - The stat cap is 99 for every job (3rd/4th classes allow 130, babies 80).
+  - Trait stats, their costs and AP are 0.
+  - Stat-up (`0x00bb`), level-up and the `0x0141` re-send on a map change are not wired.
 - Reputation points (always 0) and the reputation types list (fixed 1–4 in `ro-packets`).
 
 ## items (branch `main`, plan `specs/items/plan.md`)

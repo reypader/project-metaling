@@ -35,7 +35,7 @@ fn spawn_data(n: u32, x: u16, y: u16) -> CharacterSpawn {
         hair_color: 3,
         pos: MapPosition { x, y, dir: 0 },
         speed: 150,
-        str: 1,
+        status: Default::default(),
         group_id: 0,
         inventory: Default::default(),
     }
@@ -364,8 +364,9 @@ fn eng_09_lifecycle() {
     let events = h.tick(20);
     let kinds: Vec<(BroadcastScope, &ServerEvent)> =
         events.iter().map(|e| (e.scope.clone(), &e.event)).collect();
-    // 7 entry events, then the 10 login settings events (specs/map-entry-settings ENG-SET-01).
-    assert_eq!(kinds.len(), 17, "{events:#?}");
+    // 7 entry events, then the 10 login settings events and the 35-event status block
+    // (specs/map-entry-settings ENG-SET-01, ENG-SET-06).
+    assert_eq!(kinds.len(), 52, "{events:#?}");
     // The (empty) inventory lists and weights come first (specs/items ENG-INV-04).
     for (scope, _) in &kinds[..5] {
         assert_eq!(*scope, self_only(A));

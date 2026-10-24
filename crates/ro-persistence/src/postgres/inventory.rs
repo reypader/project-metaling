@@ -5,8 +5,8 @@ use sqlx::postgres::PgRow;
 use sqlx::query;
 
 use ro_core::{
-    CharId, CharacterInventory, InventoryItem, ItemId, ItemOption, INVENTORY_SLOTS,
-    ITEM_CARD_SLOTS, ITEM_OPTION_SLOTS,
+    CharId, CharacterInventory, CharacterStatus, InventoryItem, ItemId, ItemOption,
+    INVENTORY_SLOTS, ITEM_CARD_SLOTS, ITEM_OPTION_SLOTS,
 };
 
 use super::{get_col, map_sqlx_error};
@@ -167,7 +167,8 @@ impl InventoryRepository for PostgresRepo {
             .await
             .map_err(map_sqlx_error)?;
         let Some(row) = query(
-            "SELECT c.str, c.unique_item_counter, a.group_id \
+            "SELECT c.str, c.agi, c.vit, c.int_stat, c.dex, c.luk, c.status_point, \
+             c.skill_point, c.base_exp, c.job_exp, c.unique_item_counter, a.group_id \
              FROM characters c JOIN accounts a ON a.account_id = c.account_id \
              WHERE c.char_id = $1",
         )
@@ -178,7 +179,18 @@ impl InventoryRepository for PostgresRepo {
         else {
             return Ok(None);
         };
-        let str = small(&row, "str")?;
+        let status = CharacterStatus {
+            str: small(&row, "str")?,
+            agi: small(&row, "agi")?,
+            vit: small(&row, "vit")?,
+            int: small(&row, "int_stat")?,
+            dex: small(&row, "dex")?,
+            luk: small(&row, "luk")?,
+            status_point: small(&row, "status_point")?,
+            skill_point: small(&row, "skill_point")?,
+            base_exp: big(&row, "base_exp")?,
+            job_exp: big(&row, "job_exp")?,
+        };
         let unique_item_counter = big(&row, "unique_item_counter")?;
         let group_id: i32 = get_col(&row, "group_id")?;
 
@@ -201,7 +213,7 @@ impl InventoryRepository for PostgresRepo {
             .map(|row| row_to_item(row).map(Some))
             .collect::<Result<Vec<_>, _>>()?;
         Ok(Some(PlayState {
-            str,
+            status,
             group_id,
             inventory: CharacterInventory {
                 slots,

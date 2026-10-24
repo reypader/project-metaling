@@ -1,7 +1,9 @@
 //! Map-entry settings and the load confirm (spec `specs/map-entry-settings/spec.md`; catalog
 //! `packets/settings.md`). Defaults only: nothing is saved yet.
 
-use ro_core::ServerEvent;
+use std::sync::Arc;
+
+use ro_core::{ServerEvent, SkillInfo};
 
 use crate::engine::MapInstance;
 use crate::entity::Entity;
@@ -29,10 +31,24 @@ const ENTRY_CONFIGS: [u32; 4] = [
     CONFIG_DISABLE_SHOWCOSTUMES,
 ];
 
+/// NV_BASIC (Basic Skill) at level 0, the one skill rAthena always lists for a fresh novice. Sent
+/// to everyone until characters have a skill tree.
+fn nv_basic() -> SkillInfo {
+    SkillInfo {
+        id: 1,
+        inf: 0,
+        level: 0,
+        sp: 0,
+        range: 0,
+        name: Arc::from("NV_BASIC"),
+        upgradable: true,
+    }
+}
+
 impl MapInstance {
     /// Sends the settings group once per entry, after the unit entries: on a login the skill
-    /// list and both hotkey banks, then on a login or cross-map arrival the party, equipment
-    /// window and config flags and the reputation list. A same-map warp sends nothing.
+    /// list, both hotkey banks and the status block, then on a login or cross-map arrival the
+    /// party, equipment window and config flags and the reputation list. A same-map warp sends nothing.
     pub(crate) fn send_entry_settings(&mut self, e: Entity) {
         let Some(info) = self.world.players.get_mut(e) else {
             return;
@@ -40,9 +56,15 @@ impl MapInstance {
         let connect_new = std::mem::take(&mut info.connect_new);
         let changemap = std::mem::take(&mut info.changemap);
         if connect_new {
-            self.emit_self(e, ServerEvent::SkillList);
+            self.emit_self(
+                e,
+                ServerEvent::SkillList {
+                    skills: vec![nv_basic()],
+                },
+            );
             self.emit_self(e, ServerEvent::ShortcutKeyList { tab: 0 });
             self.emit_self(e, ServerEvent::ShortcutKeyList { tab: 1 });
+            self.send_initial_status(e);
         }
         if changemap {
             self.emit_self(

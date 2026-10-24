@@ -489,7 +489,7 @@ impl MapServiceHandle {
         self.write_transfers().remove(&char_id);
         let mut spawn = CharacterSpawn::from_summary(&character);
         spawn.pos = pos;
-        spawn.str = play.str;
+        spawn.status = play.status;
         spawn.group_id = play.group_id;
         spawn.inventory = recent_inventory.unwrap_or(play.inventory);
         Some((self.get_or_spawn_world(&map_name), spawn, claim))
@@ -1326,7 +1326,7 @@ mod tests {
             hair_color: 1,
             pos: at(x, y),
             speed: 150,
-            str: 1,
+            status: Default::default(),
             group_id: 0,
             inventory: Default::default(),
         }

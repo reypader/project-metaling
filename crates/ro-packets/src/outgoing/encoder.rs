@@ -28,7 +28,11 @@ use super::map::{
 use super::settings::{
     encode_zc_config, encode_zc_config_notify, encode_zc_friends_list_empty,
     encode_zc_load_confirm, encode_zc_party_config, encode_zc_repute_info_default,
-    encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_list_empty,
+    encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_list,
+};
+use super::status::{
+    encode_zc_attack_range, encode_zc_couplestatus, encode_zc_longlongpar_change, encode_zc_status,
+    encode_zc_status_change,
 };
 
 /// `ZC_NOTIFY_ACT` types for sit down / stand up (`e_damage_type`).
@@ -280,7 +284,20 @@ impl EventEncoder for ModernEventEncoder {
             ServerEvent::PublicChat { gid, text } => Ok(encode_zc_notify_chat(*gid, text)),
             ServerEvent::SelfChat { text } => Ok(encode_zc_notify_playerchat(text)),
             ServerEvent::FriendsList => Ok(encode_zc_friends_list_empty()),
-            ServerEvent::SkillList => Ok(encode_zc_skillinfo_list_empty()),
+            ServerEvent::SkillList { skills } => Ok(encode_zc_skillinfo_list(skills)),
+            ServerEvent::LongLongParameterChanged { var_id, value } => {
+                Ok(encode_zc_longlongpar_change(*var_id, *value))
+            }
+            ServerEvent::StatusWindow { status } => Ok(encode_zc_status(status)),
+            ServerEvent::CoupleStatus {
+                var_id,
+                base,
+                bonus,
+            } => Ok(encode_zc_couplestatus(*var_id, *base, *bonus)),
+            ServerEvent::AttackRange { range } => Ok(encode_zc_attack_range(*range)),
+            ServerEvent::StatusCost { var_id, value } => {
+                Ok(encode_zc_status_change(*var_id, *value))
+            }
             ServerEvent::ShortcutKeyList { tab } => Ok(encode_zc_shortcut_key_list_empty(*tab)),
             ServerEvent::PartyConfig { deny_invites } => Ok(encode_zc_party_config(*deny_invites)),
             ServerEvent::EquipWindowConfig { show_equip } => {
@@ -354,6 +371,11 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
             | PacketOpcode::ZC_CONFIG
             | PacketOpcode::ZC_REPUTE_INFO
             | PacketOpcode::ZC_LOAD_CONFIRM
+            | PacketOpcode::ZC_LONGLONGPAR_CHANGE
+            | PacketOpcode::ZC_STATUS
+            | PacketOpcode::ZC_COUPLESTATUS
+            | PacketOpcode::ZC_ATTACK_RANGE
+            | PacketOpcode::ZC_STATUS_CHANGE
     )
 }
 

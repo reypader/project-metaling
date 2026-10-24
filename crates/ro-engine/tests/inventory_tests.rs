@@ -4,9 +4,9 @@
 use std::sync::Arc;
 
 use ro_core::{
-    AccountId, BroadcastScope, CharId, CharacterInventory, CharacterSpawn, ClientIntent,
-    InventoryItem, ItemId, MapPosition, ScopedServerEvent, ServerEvent, SessionId, SessionIntent,
-    Sex,
+    AccountId, BroadcastScope, CharId, CharacterInventory, CharacterSpawn, CharacterStatus,
+    ClientIntent, InventoryItem, ItemId, MapPosition, ScopedServerEvent, ServerEvent, SessionId,
+    SessionIntent, Sex,
 };
 use ro_db::{
     ItemData, ItemDb, ItemType, MapGrid, MapNpcs, MobDb, NpcKind, NpcSpawn, NpcState, WarpDest,
@@ -70,7 +70,10 @@ fn spawn_data(n: u32, x: u16, y: u16, inventory: CharacterInventory) -> Characte
         hair_color: 3,
         pos: MapPosition { x, y, dir: 0 },
         speed: 150,
-        str: 11,
+        status: CharacterStatus {
+            str: 11,
+            ..CharacterStatus::default()
+        },
         group_id: 0,
         inventory,
     }

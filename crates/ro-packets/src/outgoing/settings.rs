@@ -3,6 +3,9 @@
 
 use bytes::{BufMut, Bytes, BytesMut};
 
+use ro_core::SkillInfo;
+
+use super::helpers::write_fixed_string;
 use crate::PacketOpcode;
 
 /// Hotkey slots per `0x0b20` bank (`MAX_HOTKEYS`).
@@ -11,6 +14,10 @@ const HOTKEYS_PER_TAB: usize = 38;
 const HOTKEY_SIZE: usize = 7;
 /// `0x0b20` frame size: opcode, rotate, tab, 38 slots.
 const SHORTCUT_KEY_LIST_SIZE: usize = 2 + 1 + 2 + HOTKEYS_PER_TAB * HOTKEY_SIZE;
+/// One `0x010f` entry: `id:u16, inf:i32, level:u16, sp:u16, range:u16, name:char[24], upFlag:u8`.
+const SKILLINFO_ENTRY_SIZE: usize = 37;
+/// Entries that fit rAthena's 8192-byte `0x010f` cap.
+const MAX_SKILLINFO_ENTRIES: usize = (8192 - 4) / SKILLINFO_ENTRY_SIZE;
 /// Reputation types a fresh character is sent (all at 0 points).
 const REPUTATION_TYPES: [u64; 4] = [1, 2, 3, 4];
 /// `0x0b8d` entry: `type:u64, points:i64`.
@@ -24,11 +31,23 @@ pub fn encode_zc_friends_list_empty() -> Bytes {
     buf.freeze()
 }
 
-/// Encodes `ZC_SKILLINFO_LIST` (0x010f) with no skills: a 4-byte dynamic frame.
-pub fn encode_zc_skillinfo_list_empty() -> Bytes {
-    let mut buf = BytesMut::with_capacity(4);
+/// Encodes `ZC_SKILLINFO_LIST` (0x010f): `len:u16`, then 37 bytes per skill. rAthena caps the
+/// frame at 8192 bytes; skills past that are dropped here.
+pub fn encode_zc_skillinfo_list(skills: &[SkillInfo]) -> Bytes {
+    let count = skills.len().min(MAX_SKILLINFO_ENTRIES);
+    let len = 4 + count * SKILLINFO_ENTRY_SIZE;
+    let mut buf = BytesMut::with_capacity(len);
     buf.put_u16_le(PacketOpcode::ZC_SKILLINFO_LIST.raw());
-    buf.put_u16_le(4);
+    buf.put_u16_le(u16::try_from(len).unwrap_or(u16::MAX));
+    for skill in &skills[..count] {
+        buf.put_u16_le(skill.id);
+        buf.put_i32_le(skill.inf);
+        buf.put_u16_le(skill.level);
+        buf.put_u16_le(skill.sp);
+        buf.put_u16_le(skill.range);
+        buf.put_slice(&write_fixed_string::<24>(&skill.name));
+        buf.put_u8(u8::from(skill.upgradable));
+    }
     buf.freeze()
 }
 

@@ -107,7 +107,46 @@ Logging in on a same-map warp cell sends the settings group before the `PlayerMa
 A client that logs in and sends `0x007d` then `0x0447` receives `0x0201` after `0x02eb`, the settings frames, and
 then `0x0b1b`.
 
-## 3. Deferred
+## 3. Fix 1 (2026-10-24): NV_BASIC entry and the first-login status block
+The settings group alone did not unblock input: in
+[`metaling-20261024-2.txt`](../../reference/catalog/captures/metaling-20261024-2.txt) the client gets every
+settings packet and still never sends `0x0447`. Next try, chosen with the user: the two remaining first-login
+(`connect_new`) differences after `0x007d`.
+
+### Design
+- `ro-core`:
+  - `CharacterStatus` (allocated STR..LUK, status and skill points, base and job exp). Default is a fresh
+    character: stats 1, 48 status points, 0 skill points, 0 exp. It replaces the lone `str` on `CharacterSpawn`
+    and `PlayState`. Persistence loads it from `characters`.
+  - `SkillInfo` and `SkillList { skills }`.
+  - `StatusWindow` (the `0x00bd` fields) and the events `LongLongParameterChanged` (`0x0acb`), `StatusWindow`
+    (`0x00bd`), `CoupleStatus` (`0x0141`), `AttackRange` (`0x013a`), `StatusCost` (`0x00be`).
+- `ro-engine`, the `connect_new` part of the entry settings, in rAthena order:
+  1. `SkillList` with one entry: NV_BASIC (id 1), inf 0, level 0, sp 0, range 0, upgradable.
+  2. `0x0b20` tab 0 and tab 1.
+  3. `0x0acb` BASEEXP (1), NEXTBASEEXP (22), JOBEXP (2), NEXTJOBEXP (23); then `0x00b0` SKILLPOINT (12).
+  4. `0x00bd`; `0x0141` STR..LUK (13..18, bonus 0); `0x013a` 1; `0x00b0` ASPD (53); `0x0141` POW..CRT
+     (219..224); `0x00b0` PATK..CRATE (225..230), TRAITPOINT (231), AP (232), MAXAP (233); `0x00be` UPOW..UCRT
+     (247..252).
+- Values:
+  - Allocated stats, status and skill points and exp come from `CharacterStatus`.
+  - Stat-raise costs (renewal): `2 + (s-1)/10` below 100, `16 + 4*((s-100)/5)` from 100, 0 at the cap. The cap
+    is 99 for every job until job classes are modelled.
+  - There are no exp tables yet, so NEXT*EXP is rAthena's max-level value (99999999 base, 999999999 job). The
+    client never divides by 0.
+  - Derived stats (ATK, MATK, DEF, MDEF, HIT, FLEE, CRIT, ASPD) are 0 until `ro-mechanics` exists. Attack range
+    is 1 (bare hands). Trait stats, their costs and AP are 0.
+
+### Scenarios
+- **PKT-SET-04:** the new events encode to their layouts: `0x010f` with NV_BASIC is 41 bytes and starts
+  `0f 01 29 00 01 00`; `0x0acb` 12, `0x00bd` 44, `0x0141` 14, `0x013a` 4, `0x00be` 5 bytes. Every new opcode is
+  marked implemented.
+- **ENG-SET-06:** after a login and `NotifyActorInit`, the `connect_new` events arrive in the order above, with the
+  loaded stats and their costs. A cross-map arrival sends none of them.
+- **BIN-SET-01** (updated): `0x010f` is 41 bytes, and `0x00bd` (44) arrives before `0x02c9`.
+- **DB-PERS** (`load_play_state`): the stored stats, points and exp load into `CharacterStatus`.
+
+## 4. Deferred
 - Saving hotkeys (`CZ_SHORTCUT_KEY_CHANGE*`, row shift) and config toggles; loading them at entry.
 - A real skill list (NV_BASIC and job skills) with the skill tree.
 - The exp/status block (`0x0acb`, `0x00bd`, `0x0141`, `0x013a`, trait `0x00be`); see PF-12.

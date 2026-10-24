@@ -77,7 +77,7 @@ fn engine() -> MapInstance {
             hair_color: 1,
             pos: MapPosition { x, y: 50, dir: 0 },
             speed: 150,
-            str: 1,
+            status: Default::default(),
             group_id: group,
             inventory: Default::default(),
         };

@@ -2,7 +2,10 @@
 
 use std::sync::Arc;
 
-use ro_core::{AccountId, CharId, CharacterSpawn, InventoryItem, MapPosition, Sex, UnitObjectType};
+use ro_core::{
+    AccountId, CharId, CharacterSpawn, CharacterStatus, InventoryItem, MapPosition, Sex,
+    UnitObjectType,
+};
 use ro_db::{MobId, NpcState};
 use rustc_hash::FxHashMap;
 
@@ -34,8 +37,8 @@ pub(crate) struct PlayerInfo {
     pub(crate) hair_style: u16,
     pub(crate) hair_color: u16,
     pub(crate) clevel: u16,
-    /// Base STR (max weight).
-    pub(crate) str: u16,
+    /// Allocated stats, points and exp, as loaded; STR also sets max weight.
+    pub(crate) status: CharacterStatus,
     /// Account permission group; 99 may use every GM command.
     pub(crate) group_id: i32,
     /// Consecutive warps that landed inside a warp area (rAthena `count_rewarp`).
@@ -202,7 +205,7 @@ impl World {
                 hair_style: spawn.hair_style,
                 hair_color: spawn.hair_color,
                 clevel: spawn.base_level,
-                str: spawn.str,
+                status: spawn.status,
                 group_id: spawn.group_id,
                 rewarp_count: 0,
                 connect_new: false,
@@ -380,7 +383,7 @@ mod tests {
             hair_color: 1,
             pos: MapPosition { x, y, dir: 4 },
             speed: 150,
-            str: 1,
+            status: Default::default(),
             group_id: 0,
             inventory: Default::default(),
         }

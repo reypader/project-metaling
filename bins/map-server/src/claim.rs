@@ -456,7 +456,7 @@ pub(crate) mod tests {
                 return Ok(None);
             }
             Ok(Some(PlayState {
-                str: 1,
+                status: Default::default(),
                 group_id: 0,
                 inventory: lock(&self.inventories)
                     .get(&char_id)

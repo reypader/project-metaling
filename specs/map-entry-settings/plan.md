@@ -26,6 +26,12 @@ persistence).
   - User: manual client check (no settings error, chat works, `0x0447` → `0x0b1b` in the proxy log), then resume
     the items check.
 
+- [x] **Fix 1: NV_BASIC + status block** (2026-10-24; manual client check pending) (spec §3; `metaling-20261024-2.txt` showed the group alone isn't enough)
+  - ro-core `CharacterStatus`, `SkillInfo`, `StatusWindow`, new events; persistence loads the status.
+  - ro-packets encoders + tests (PKT-SET-04); engine block (ENG-SET-06); BIN-SET-01 update.
+  - `./verify.sh`, self-review (small fix: no reviewer run), commit.
+  - User: manual client check again.
+
 ## Implementation notes
 - Research changed two things from the planning session: hotkeys are `0x0b20` (271 bytes), not `0x0a00`, at
   20260219; and `0x0b8d` is not a per-load trigger (same-map warps send no settings and the client still sends
@@ -46,3 +52,11 @@ persistence).
   - The test helper `is_dynamic` knows `0x0201`/`0x010f`/`0x0b8d`; `is_entry` no longer reuses it.
   - DEFERRED gained the same-map-warp-cell `0x0447` case and the NV_BASIC fallback.
   - Docs: capture line-number convention, the `0x0b1b` name alias, the README's `0x0a00` misframe.
+- Fix 1 (2026-10-24):
+  - `CharacterStatus` replaced the lone `str` on `CharacterSpawn`, `PlayState` and `PlayerInfo`. A cross-map
+    warp carries it in the hand-off spawn; nothing writes it back yet, since nothing changes it.
+  - The status block lives in `ro-engine/src/status.rs` (stat cost formula included), next to
+    `inventory::max_weight`, rather than starting `ro-mechanics` for one function.
+  - NEXT*EXP uses the max-level constants, not 0, so the client can't divide by 0.
+  - `ServerEvent::SkillList` now carries its entries; the engine builds NV_BASIC.
+  - Small fix inside a reviewed feature: `./verify.sh` + self-review, no reviewer run.

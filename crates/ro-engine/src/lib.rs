@@ -14,6 +14,7 @@ mod rng;
 mod settings;
 pub(crate) mod sparse_set;
 pub(crate) mod spatial;
+mod status;
 mod warp;
 pub(crate) mod world;
 

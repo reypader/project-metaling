@@ -44,7 +44,7 @@ fn spawn_data(n: u32, x: u16, y: u16) -> CharacterSpawn {
         hair_color: 3,
         pos: MapPosition { x, y, dir: 0 },
         speed: 150,
-        str: 1,
+        status: Default::default(),
         group_id: 0,
         inventory: Default::default(),
     }

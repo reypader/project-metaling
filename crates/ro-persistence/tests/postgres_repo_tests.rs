@@ -827,7 +827,7 @@ async fn test_persist_schema_002_connection_error_handling() {
 
 // ---- Inventory (spec PER-INV-01..04) ----
 
-use ro_core::{CharacterInventory, InventoryItem, ItemId, ItemOption};
+use ro_core::{CharacterInventory, CharacterStatus, InventoryItem, ItemId, ItemOption};
 use ro_persistence::InventoryRepository;
 
 /// A schema-initialized repo (the inventory table and counter column may be new) and a fresh
@@ -979,15 +979,20 @@ async fn per_inv_03_save_replaces_rows() {
     );
 }
 
-/// PER-INV-04: the play state carries STR and the account group; deleting a character cascades.
+/// PER-INV-04: the play state carries the stats, points, exp and the account group (and DB-PERS of
+/// `specs/map-entry-settings` §3); deleting a character cascades.
 #[tokio::test]
 async fn per_inv_04_play_state_and_cascade() {
     let (repo, _acc, char_id) = inventory_fixture(99).await;
-    sqlx::query("UPDATE characters SET str = 11 WHERE char_id = $1")
-        .bind(char_id.0 as i32)
-        .execute(repo.pool())
-        .await
-        .expect("str update");
+    sqlx::query(
+        "UPDATE characters SET str = 11, agi = 12, vit = 13, int_stat = 14, dex = 15, luk = 16, \
+         status_point = 7, skill_point = 3, base_exp = 5000000000, job_exp = 42 \
+         WHERE char_id = $1",
+    )
+    .bind(char_id.0 as i32)
+    .execute(repo.pool())
+    .await
+    .expect("status update");
     let inventory = CharacterInventory {
         slots: vec![Some(InventoryItem::new(ItemId(909), 1))],
         unique_item_counter: 1,
@@ -1000,7 +1005,22 @@ async fn per_inv_04_play_state_and_cascade() {
         .await
         .expect("loads")
         .expect("exists");
-    assert_eq!((state.str, state.group_id), (11, 99));
+    assert_eq!(
+        state.status,
+        CharacterStatus {
+            str: 11,
+            agi: 12,
+            vit: 13,
+            int: 14,
+            dex: 15,
+            luk: 16,
+            status_point: 7,
+            skill_point: 3,
+            base_exp: 5_000_000_000,
+            job_exp: 42,
+        }
+    );
+    assert_eq!(state.group_id, 99);
 
     sqlx::query("DELETE FROM characters WHERE char_id = $1")
         .bind(char_id.0 as i32)

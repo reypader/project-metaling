@@ -5,9 +5,9 @@
 use std::sync::Arc;
 
 use ro_core::{
-    AccountId, BroadcastScope, CharId, CharacterInventory, CharacterSpawn, ClientIntent,
-    FloorItemAppearance, InventoryItem, ItemId, MapPosition, ScopedServerEvent, ServerEvent,
-    SessionId, SessionIntent, Sex,
+    AccountId, BroadcastScope, CharId, CharacterInventory, CharacterSpawn, CharacterStatus,
+    ClientIntent, FloorItemAppearance, InventoryItem, ItemId, MapPosition, ScopedServerEvent,
+    ServerEvent, SessionId, SessionIntent, Sex,
 };
 use ro_db::{CellType, ItemData, ItemDb, ItemType, MapGrid, MobDb};
 use ro_engine::MapInstance;
@@ -89,7 +89,10 @@ fn spawn_data(
         hair_color: 3,
         pos: MapPosition { x, y, dir: 0 },
         speed: 150,
-        str,
+        status: CharacterStatus {
+            str,
+            ..CharacterStatus::default()
+        },
         group_id: 0,
         inventory: CharacterInventory {
             slots,

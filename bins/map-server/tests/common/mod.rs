@@ -212,7 +212,7 @@ impl InventoryRepository for InMemoryRepo {
             return Ok(None);
         }
         Ok(Some(PlayState {
-            str: 1,
+            status: Default::default(),
             group_id: self.groups.lock().unwrap().get(&id).copied().unwrap_or(0),
             inventory: self
                 .inventories

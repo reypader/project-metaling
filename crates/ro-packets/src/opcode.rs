@@ -58,6 +58,7 @@ impl PacketOpcode {
     pub const CZ_REQ_NEXT_SCRIPT: Self = Self(0x00b9);
     pub const CZ_REQ_STATUS: Self = Self(0x00ba);
     pub const CZ_STATUS_CHANGE: Self = Self(0x00bb);
+    pub const ZC_STATUS: Self = Self(0x00bd);
     pub const ZC_STATUS_CHANGE: Self = Self(0x00be);
     pub const CZ_REQ_EMOTION: Self = Self(0x00bf);
     pub const CZ_REQ_USER_COUNT: Self = Self(0x00c1);
@@ -123,9 +124,11 @@ impl PacketOpcode {
     pub const CZ_REQ_OPENSTORE: Self = Self(0x012f);
     pub const CZ_REQ_BUY_FROMMC: Self = Self(0x0130);
     pub const CZ_PC_PURCHASE_ITEMLIST_FROMMC: Self = Self(0x0134);
+    pub const ZC_ATTACK_RANGE: Self = Self(0x013a);
     pub const CZ_PKMODE_CHANGE: Self = Self(0x0138);
     pub const CZ_ITEM_CREATE: Self = Self(0x013f);
     pub const CZ_MOVETO_MAP: Self = Self(0x0140);
+    pub const ZC_COUPLESTATUS: Self = Self(0x0141);
     pub const CZ_INPUT_EDITDLG: Self = Self(0x0143);
     pub const ZC_SHOW_IMAGE: Self = Self(0x0145);
     pub const CZ_CLOSE_DIALOG: Self = Self(0x0146);
@@ -941,6 +944,7 @@ impl PacketOpcode {
     pub const CZ_MAIL_REFRESHINBOX_0X0AC1: Self = Self(0x0ac1);
     pub const AC_ACCEPT_LOGIN: Self = Self(0x0ac4);
     pub const HC_NOTIFY_ZONESVR: Self = Self(0x0ac5);
+    pub const ZC_LONGLONGPAR_CHANGE: Self = Self(0x0acb);
     pub const PACKET_0X0ACC: Self = Self(0x0acc);
     pub const CZ_EQUIPSWITCH_REQUEST_SINGLE: Self = Self(0x0ace);
     pub const ZC_ITEM_FALL_ENTRY5: Self = Self(0x0add);
@@ -1069,6 +1073,7 @@ impl PacketOpcode {
             0x00b9 => Some("CZ_REQ_NEXT_SCRIPT"),
             0x00ba => Some("CZ_REQ_STATUS"),
             0x00bb => Some("CZ_STATUS_CHANGE"),
+            0x00bd => Some("ZC_STATUS"),
             0x00be => Some("ZC_STATUS_CHANGE"),
             0x00bf => Some("CZ_REQ_EMOTION"),
             0x00c1 => Some("CZ_REQ_USER_COUNT"),
@@ -1135,8 +1140,10 @@ impl PacketOpcode {
             0x0130 => Some("CZ_REQ_BUY_FROMMC"),
             0x0134 => Some("CZ_PC_PURCHASE_ITEMLIST_FROMMC"),
             0x0138 => Some("CZ_PKMODE_CHANGE"),
+            0x013a => Some("ZC_ATTACK_RANGE"),
             0x013f => Some("CZ_ITEM_CREATE"),
             0x0140 => Some("CZ_MOVETO_MAP"),
+            0x0141 => Some("ZC_COUPLESTATUS"),
             0x0143 => Some("CZ_INPUT_EDITDLG"),
             0x0145 => Some("ZC_SHOW_IMAGE"),
             0x0146 => Some("CZ_CLOSE_DIALOG"),
@@ -1952,6 +1959,7 @@ impl PacketOpcode {
             0x0ac1 => Some("CZ_MAIL_REFRESHINBOX_0X0AC1"),
             0x0ac4 => Some("AC_ACCEPT_LOGIN"),
             0x0ac5 => Some("HC_NOTIFY_ZONESVR"),
+            0x0acb => Some("ZC_LONGLONGPAR_CHANGE"),
             0x0acc => Some("PACKET_0X0ACC"),
             0x0ace => Some("CZ_EQUIPSWITCH_REQUEST_SINGLE"),
             0x0add => Some("ZC_ITEM_FALL_ENTRY5"),

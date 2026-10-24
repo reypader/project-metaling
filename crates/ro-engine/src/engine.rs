@@ -473,7 +473,8 @@ impl MapInstance {
             info.changemap = true;
         }
         let inventory = mem::take(&mut spawn.inventory);
-        let inventory = PlayerInventory::new(inventory, spawn.char_id, spawn.str, &self.items);
+        let inventory =
+            PlayerInventory::new(inventory, spawn.char_id, spawn.status.str, &self.items);
         self.world.inventories.insert(e, inventory);
         Ok(e)
     }

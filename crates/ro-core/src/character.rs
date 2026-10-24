@@ -8,6 +8,39 @@ use crate::item::CharacterInventory;
 /// Default walk speed in ms per orthogonal cell (rAthena `DEFAULT_WALK_SPEED`).
 pub const DEFAULT_WALK_SPEED: u16 = 150;
 
+/// Allocated stats, unspent points and exp of a character (the `characters` row).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct CharacterStatus {
+    pub str: u16,
+    pub agi: u16,
+    pub vit: u16,
+    pub int: u16,
+    pub dex: u16,
+    pub luk: u16,
+    pub status_point: u16,
+    pub skill_point: u16,
+    pub base_exp: u64,
+    pub job_exp: u64,
+}
+
+impl Default for CharacterStatus {
+    /// A fresh character: every stat 1 and 48 status points (rAthena `start_status_points`).
+    fn default() -> Self {
+        Self {
+            str: 1,
+            agi: 1,
+            vit: 1,
+            int: 1,
+            dex: 1,
+            luk: 1,
+            status_point: 48,
+            skill_point: 0,
+            base_exp: 0,
+            job_exp: 0,
+        }
+    }
+}
+
 /// Snapshot the map-server builds from a `CharacterSummary` plus the session to spawn a character.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CharacterSpawn {
@@ -22,16 +55,17 @@ pub struct CharacterSpawn {
     pub pos: MapPosition,
     /// Walk speed in ms per orthogonal cell.
     pub speed: u16,
-    /// Base STR (max weight).
-    pub str: u16,
+    /// Allocated stats, points and exp; STR also sets max weight.
+    pub status: CharacterStatus,
     /// Account permission group; 99 may use every GM command.
     pub group_id: i32,
     pub inventory: CharacterInventory,
 }
 
 impl CharacterSpawn {
-    /// Builds a spawn at the summary's last position with the default walk speed, STR 1, group 0
-    /// and an empty inventory; the map-server fills those from its play-state load.
+    /// Builds a spawn at the summary's last position with the default walk speed, a fresh
+    /// character's status, group 0 and an empty inventory; the map-server fills those from its
+    /// play-state load.
     /// The caller must check `summary.account_id` against the session's account first.
     pub fn from_summary(summary: &CharacterSummary) -> Self {
         Self {
@@ -45,7 +79,7 @@ impl CharacterSpawn {
             hair_color: summary.hair_color,
             pos: summary.last_pos,
             speed: DEFAULT_WALK_SPEED,
-            str: 1,
+            status: CharacterStatus::default(),
             group_id: 0,
             inventory: CharacterInventory::default(),
         }

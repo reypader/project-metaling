@@ -27,7 +27,7 @@ async fn bin_set_01_login_gets_settings_and_load_confirm() {
 
     client.send(&[0x7d, 0x00]).await;
     let mut seen = Vec::new();
-    for opcode in [0x010f, 0x0b20, 0x02c9, 0x02da, 0x02d9, 0x0b8d] {
+    for opcode in [0x010f, 0x0b20, 0x00bd, 0x02c9, 0x02da, 0x02d9, 0x0b8d] {
         let frame = client
             .wait_opcode(opcode, LONG)
             .await
@@ -37,8 +37,9 @@ async fn bin_set_01_login_gets_settings_and_load_confirm() {
     assert_eq!(
         seen,
         [
-            (0x010f, 4),
+            (0x010f, 41),
             (0x0b20, 271),
+            (0x00bd, 44),
             (0x02c9, 3),
             (0x02da, 3),
             (0x02d9, 10),

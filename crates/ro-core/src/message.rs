@@ -281,6 +281,50 @@ pub enum UnitObjectType {
     Mob,
 }
 
+/// One `0x010f` skill-list entry.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SkillInfo {
+    pub id: u16,
+    /// Target type (rAthena `skill_get_inf`); 0 for a passive.
+    pub inf: i32,
+    pub level: u16,
+    pub sp: u16,
+    pub range: u16,
+    /// Aegis name, e.g. `NV_BASIC`; at most 23 bytes go on the wire.
+    pub name: Arc<str>,
+    /// The client shows the level-up button.
+    pub upgradable: bool,
+}
+
+/// The `0x00bd` status window: allocated stats with the cost of raising each by one, and the
+/// derived values. Stats above 255 are saturated on the wire.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub struct StatusWindow {
+    pub status_point: u16,
+    /// STR, AGI, VIT, INT, DEX, LUK.
+    pub stats: [u16; 6],
+    /// Points to raise each stat by one; 0 at the cap.
+    pub costs: [u8; 6],
+    /// Status ATK (left side of ATK).
+    pub atk: i16,
+    /// Weapon and equipment ATK (right side).
+    pub atk_bonus: i16,
+    /// Weapon and equipment MATK (right side).
+    pub matk_bonus: i16,
+    /// Status MATK (left side).
+    pub matk: i16,
+    pub soft_def: i16,
+    pub hard_def: i16,
+    pub soft_mdef: i16,
+    pub hard_mdef: i16,
+    pub hit: i16,
+    pub flee: i16,
+    pub perfect_dodge: i16,
+    pub critical: i16,
+    /// rAthena `amotion`.
+    pub aspd: i16,
+}
+
 /// Appearance snapshot shared by the unit entry packets (`0x09fd`/`0x09fe`/`0x09ff`).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UnitAppearance {
@@ -493,8 +537,34 @@ pub enum ServerEvent {
     },
     /// `0x0201`: the friends list. Always empty until friends exist.
     FriendsList,
-    /// `0x010f`: the skill list. Always empty until skills exist.
-    SkillList,
+    /// `0x010f`: the skill list.
+    SkillList {
+        skills: Vec<SkillInfo>,
+    },
+    /// `0x0acb`: a 64-bit status var (exp and next exp).
+    LongLongParameterChanged {
+        var_id: u16,
+        value: i64,
+    },
+    /// `0x00bd`: the whole status window, sent once at login.
+    StatusWindow {
+        status: StatusWindow,
+    },
+    /// `0x0141`: a stat's base value and its bonus (STR..LUK, POW..CRT).
+    CoupleStatus {
+        var_id: u32,
+        base: i32,
+        bonus: i32,
+    },
+    /// `0x013a`: attack range in cells.
+    AttackRange {
+        range: u16,
+    },
+    /// `0x00be`: the cost of raising one stat by one point.
+    StatusCost {
+        var_id: u16,
+        value: u8,
+    },
     /// `0x0b20`: one hotkey bank (`tab` 0 or 1). Always an empty bar until hotkeys are saved.
     ShortcutKeyList {
         tab: u8,

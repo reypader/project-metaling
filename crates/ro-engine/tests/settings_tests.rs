@@ -1,12 +1,12 @@
 //! Map-entry settings and the load confirm (spec `specs/map-entry-settings/spec.md`
-//! ENG-SET-01..04).
+//! ENG-SET-01..06).
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use std::sync::Arc;
 
 use ro_core::{
-    AccountId, BroadcastScope, CharId, CharacterSpawn, ClientIntent, MapPosition,
-    ScopedServerEvent, ServerEvent, SessionId, SessionIntent, Sex,
+    AccountId, BroadcastScope, CharId, CharacterSpawn, CharacterStatus, ClientIntent, MapPosition,
+    ScopedServerEvent, ServerEvent, SessionId, SessionIntent, Sex, SkillInfo, StatusWindow,
 };
 use ro_db::{MapGrid, MapNpcs, NpcKind, NpcSpawn, NpcState, WarpDest};
 use ro_engine::MapInstance;
@@ -40,7 +40,7 @@ fn spawn_data(n: u32, x: u16, y: u16) -> CharacterSpawn {
         hair_color: 3,
         pos: MapPosition { x, y, dir: 0 },
         speed: 150,
-        str: 1,
+        status: Default::default(),
         group_id: 0,
         inventory: Default::default(),
     }
@@ -92,7 +92,10 @@ fn push_tick(
     tick(engine, now)
 }
 
-/// Settings events delivered to `n` only, in order.
+/// `SP_WEIGHT` / `SP_MAXWEIGHT`: every actor init sends them, so they aren't settings.
+const WEIGHT_VARS: [u16; 2] = [24, 25];
+
+/// Settings and status events delivered to `n` only, in order.
 fn settings(events: &[ScopedServerEvent], n: u32) -> Vec<ServerEvent> {
     events
         .iter()
@@ -101,15 +104,98 @@ fn settings(events: &[ScopedServerEvent], n: u32) -> Vec<ServerEvent> {
         .filter(|e| {
             matches!(
                 e,
-                ServerEvent::SkillList
+                ServerEvent::SkillList { .. }
                     | ServerEvent::ShortcutKeyList { .. }
+                    | ServerEvent::LongLongParameterChanged { .. }
+                    | ServerEvent::StatusWindow { .. }
+                    | ServerEvent::CoupleStatus { .. }
+                    | ServerEvent::AttackRange { .. }
+                    | ServerEvent::StatusCost { .. }
                     | ServerEvent::PartyConfig { .. }
                     | ServerEvent::EquipWindowConfig { .. }
                     | ServerEvent::ConfigChanged { .. }
                     | ServerEvent::ReputationList
-            )
+            ) || matches!(e, ServerEvent::ParameterChanged { var_id, .. } if !WEIGHT_VARS.contains(var_id))
         })
         .collect()
+}
+
+fn skill_list() -> ServerEvent {
+    ServerEvent::SkillList {
+        skills: vec![SkillInfo {
+            id: 1,
+            inf: 0,
+            level: 0,
+            sp: 0,
+            range: 0,
+            name: Arc::from("NV_BASIC"),
+            upgradable: true,
+        }],
+    }
+}
+
+/// The login-only part: skill list, hotkeys and the status block (spec §3), for `window`'s
+/// stats and the given exp and skill points.
+fn login_part(
+    window: StatusWindow,
+    base_exp: i64,
+    job_exp: i64,
+    skill_point: i32,
+) -> Vec<ServerEvent> {
+    let mut part = vec![
+        skill_list(),
+        ServerEvent::ShortcutKeyList { tab: 0 },
+        ServerEvent::ShortcutKeyList { tab: 1 },
+    ];
+    for (var_id, value) in [
+        (1, base_exp),
+        (22, 99_999_999),
+        (2, job_exp),
+        (23, 999_999_999),
+    ] {
+        part.push(ServerEvent::LongLongParameterChanged { var_id, value });
+    }
+    part.push(ServerEvent::ParameterChanged {
+        var_id: 12,
+        value: skill_point,
+    });
+    part.push(ServerEvent::StatusWindow { status: window });
+    for (var_id, stat) in (13..=18).zip(window.stats) {
+        part.push(ServerEvent::CoupleStatus {
+            var_id,
+            base: i32::from(stat),
+            bonus: 0,
+        });
+    }
+    part.push(ServerEvent::AttackRange { range: 1 });
+    part.push(ServerEvent::ParameterChanged {
+        var_id: 53,
+        value: 0,
+    });
+    for var_id in 219..=224 {
+        part.push(ServerEvent::CoupleStatus {
+            var_id,
+            base: 0,
+            bonus: 0,
+        });
+    }
+    for var_id in 225..=233 {
+        part.push(ServerEvent::ParameterChanged { var_id, value: 0 });
+    }
+    for var_id in 247..=252 {
+        part.push(ServerEvent::StatusCost { var_id, value: 0 });
+    }
+    part
+}
+
+/// The window of a fresh character: every stat 1 (cost 2), 48 status points.
+fn fresh_window() -> StatusWindow {
+    StatusWindow {
+        status_point: 48,
+        stats: [1; 6],
+        costs: [2; 6],
+        ..StatusWindow::default()
+    }
 }
 
 fn changemap_part() -> Vec<ServerEvent> {
@@ -141,11 +227,7 @@ fn eng_set_01_login_sends_the_settings_group_once() {
         .expect("spawn A");
     let events = push_tick(&mut engine, A, ClientIntent::NotifyActorInit, 20);
 
-    let mut expected = vec![
-        ServerEvent::SkillList,
-        ServerEvent::ShortcutKeyList { tab: 0 },
-        ServerEvent::ShortcutKeyList { tab: 1 },
-    ];
+    let mut expected = login_part(fresh_window(), 0, 0, 0);
     expected.extend(changemap_part());
     assert_eq!(settings(&events, A), expected);
 
@@ -156,7 +238,7 @@ fn eng_set_01_login_sends_the_settings_group_once() {
         .expect("B's entry");
     let first_setting = events
         .iter()
-        .position(|e| e.event == ServerEvent::SkillList)
+        .position(|e| e.event == skill_list())
         .expect("skill list");
     assert!(standing < first_setting, "{events:#?}");
     assert!(
@@ -175,7 +257,11 @@ fn eng_set_02_cross_map_arrival_sends_only_the_changemap_part() {
         .enter_by_warp(spawn_data(A, 0, 0), (100, 100), 0, 0)
         .expect("arrive");
     let events = push_tick(&mut engine, A, ClientIntent::NotifyActorInit, 20);
-    assert_eq!(settings(&events, A), changemap_part());
+    assert_eq!(
+        settings(&events, A),
+        changemap_part(),
+        "no skill list, hotkeys or status block"
+    );
 }
 
 #[test]
@@ -249,4 +335,35 @@ fn eng_set_05_login_on_a_warp_cell_sends_settings_before_the_warp() {
 
     let after_warp = push_tick(&mut engine, A, ClientIntent::NotifyActorInit, 50);
     assert!(settings(&after_warp, A).is_empty(), "{after_warp:#?}");
+}
+
+#[test]
+fn eng_set_06_status_block_carries_the_loaded_status() {
+    let mut engine = instance(Vec::new());
+    let mut spawn = spawn_data(A, 100, 100);
+    spawn.status = CharacterStatus {
+        str: 9,
+        agi: 11,
+        vit: 50,
+        int: 98,
+        dex: 99,
+        luk: 1,
+        status_point: 7,
+        skill_point: 3,
+        base_exp: 1234,
+        job_exp: 56,
+    };
+    engine.spawn_character(spawn, 0).expect("spawn");
+    let events = push_tick(&mut engine, A, ClientIntent::NotifyActorInit, 0);
+
+    let window = StatusWindow {
+        status_point: 7,
+        stats: [9, 11, 50, 98, 99, 1],
+        // 2 + (s-1)/10 below the cap of 99, 0 at it.
+        costs: [2, 3, 6, 11, 0, 2],
+        ..StatusWindow::default()
+    };
+    let mut expected = login_part(window, 1234, 56, 3);
+    expected.extend(changemap_part());
+    assert_eq!(settings(&events, A), expected);
 }

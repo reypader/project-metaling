@@ -129,7 +129,7 @@ fn enter_events(engine: &mut MapInstance, n: u32, (x, y): (u16, u16)) -> Vec<Sco
         hair_color: 1,
         pos: MapPosition { x, y, dir: 0 },
         speed: 150,
-        str: 1,
+        status: Default::default(),
         group_id: 0,
         inventory: Default::default(),
     };

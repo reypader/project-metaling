@@ -190,7 +190,7 @@ impl MapInstance {
             hair_color: info.hair_color,
             pos: from_pos,
             speed: self.world.speed[e.index()],
-            str: info.str,
+            status: info.status,
             group_id: info.group_id,
             inventory,
         };
@@ -202,7 +202,7 @@ impl MapInstance {
                 let inventory = crate::inventory::PlayerInventory::new(
                     spawn.inventory,
                     spawn.char_id,
-                    spawn.str,
+                    spawn.status.str,
                     &self.items,
                 );
                 self.world.inventories.insert(e, inventory);
@@ -398,7 +398,7 @@ mod tests {
                 dir: 0,
             },
             speed: 150,
-            str: 1,
+            status: Default::default(),
             group_id: 0,
             inventory: Default::default(),
         };

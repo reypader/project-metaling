@@ -35,6 +35,7 @@
 //! - chat (0x008d, 0x008e)
 //! - map-entry settings (0x0201, 0x010f, 0x0b20, 0x02c9, 0x02da, 0x02d9, 0x0b8d) and the load
 //!   confirm (0x0b1b)
+//! - character status (0x0acb, 0x00bd, 0x0141, 0x013a, 0x00be)
 
 pub mod char;
 pub mod encoder;
@@ -43,6 +44,7 @@ pub mod item;
 pub mod login;
 pub mod map;
 pub mod settings;
+pub mod status;
 
 pub use char::{
     encode_character_info, encode_hc_accept_enter, encode_hc_accept_enter2,
@@ -76,5 +78,9 @@ pub use map::{
 pub use settings::{
     encode_zc_config, encode_zc_config_notify, encode_zc_friends_list_empty,
     encode_zc_load_confirm, encode_zc_party_config, encode_zc_repute_info_default,
-    encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_list_empty,
+    encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_list,
+};
+pub use status::{
+    encode_zc_attack_range, encode_zc_couplestatus, encode_zc_longlongpar_change, encode_zc_status,
+    encode_zc_status_change,
 };

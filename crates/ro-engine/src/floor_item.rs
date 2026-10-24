@@ -381,7 +381,7 @@ mod tests {
                 dir: 0,
             },
             speed: 150,
-            str: 1,
+            status: Default::default(),
             group_id: 0,
             inventory: CharacterInventory {
                 slots: vec![Some(InventoryItem::new(ItemId(501), 5))],
