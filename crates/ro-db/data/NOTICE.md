@@ -54,3 +54,45 @@ dataset is regenerated from a different commit, update its section.
   - groups entries by map in rAthena load order. Each entry records its original
     `<file>:<line>` in `Source`.
 - **Regenerate:** the same command as the NPC spawn lists above.
+
+## Item database (`item/item_{usable,equip,etc}.yml`)
+
+- **Source:** rAthena commit `d4b8e7b8f16061cc2496d377ac8f777ce72a4f39`.
+  `db/re/item_db_usable.yml`, `db/re/item_db_equip.yml` and `db/re/item_db_etc.yml`.
+- **Modified on 2026-10-23 by `tools/item-import`:** converted to our own schema (`ITEM_DATA`
+  version 1), one output file per source file. The conversion:
+  - keeps only `Id`, `AegisName`, `Name`, `Type`, `Weight`, `Locations`, `View`, `Slots`, the
+    `AliasName` target, `Stack.Amount` / `Stack.Inventory`, `Flags.UniqueId` / `BindOnEquip` /
+    `DropEffect`, and `Trade.NoDrop` / `Trade.Override`; scripts, prices, jobs and combat
+    stats are dropped;
+  - applies rAthena's load rules: `DelayConsume` becomes `Usable`, invalid types become `Etc`,
+    equipment without `Locations` (or non-shadow gear with shadow positions) becomes `Etc`, a
+    shield without `View` gets view 1, `Slots` is capped at 4;
+  - turns `Locations` into an `EQP_` bit mask, `DropEffect` into its number, and `AliasName`
+    into the aliased item's id (`ViewId`);
+  - merges repeated ids field by field and sorts each file by id.
+- **Regenerate** (pass an expanded path, not one starting with `~`):
+
+  ```bash
+  cargo run -p item-import -- --rathena "$RATHENA_PATH" --out crates/ro-db/data/item
+  ```
+
+## Mob database (`mob/mob_db.yml`)
+
+- **Source:** rAthena commit `d4b8e7b8f16061cc2496d377ac8f777ce72a4f39`. `db/re/mob_db.yml`.
+- **Modified on 2026-10-23 by `tools/mob-import`:** converted to our own schema (`MOB_DATA`
+  version 1). The conversion:
+  - keeps only `Id`, `AegisName`, `Name`, `Level`, `Hp`, `WalkSpeed`, `Class`, the `Mvp` mode,
+    `Drops` and `MvpDrops`; every other stat, the AI and the skills are dropped;
+  - resolves drop item AegisNames to item ids through the item database above (unknown items are
+    skipped), places drops by `Index`, removes rate-0 drops, caps rates at 10000 and keeps at
+    most 10 drops and 3 MVP drops;
+  - writes the defaults for missing `Level` (1), `Hp` (1) and `WalkSpeed` (150, clamped to
+    20..=1000);
+  - merges repeated ids field by field and sorts by id.
+- **Regenerate** (after the item database; pass an expanded path):
+
+  ```bash
+  cargo run -p mob-import -- --rathena "$RATHENA_PATH" \
+    --items crates/ro-db/data/item --out crates/ro-db/data/mob
+  ```
