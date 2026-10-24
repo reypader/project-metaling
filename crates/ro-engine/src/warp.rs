@@ -10,6 +10,7 @@ use tracing::warn;
 use crate::engine::{MapInstance, VANISH_OUT_OF_SIGHT};
 use crate::entity::Entity;
 use crate::error::EngineError;
+use crate::settings::Arrival;
 use crate::world::WarpTrigger;
 
 /// rAthena `dead_sit` value of a dead unit.
@@ -325,7 +326,7 @@ impl MapInstance {
         });
         spawn.pos.x = cell.0;
         spawn.pos.y = cell.1;
-        let e = self.spawn_player(&mut spawn)?;
+        let e = self.spawn_player(&mut spawn, Arrival::MapChange)?;
         if let Some(info) = self.world.players.get_mut(e) {
             info.rewarp_count = rewarp_count;
         }

@@ -82,7 +82,8 @@ fn inventory(items: &[(u32, u16)]) -> CharacterInventory {
 async fn enter(server: &TestServer, n: u32) -> (Client, Vec<RawPacket>) {
     let mut client = Client::connect(server.addr).await;
     client.send(&cz_enter(n)).await;
-    client.read_exact_bytes(23).await;
+    // ZC_AID, 0x0b18, ZC_ACCEPT_ENTER, then the empty friends list (specs/map-entry-settings).
+    client.read_exact_bytes(23 + 4).await;
     client.send(&[0x7d, 0x00]).await;
     let frames = client.collect(SHORT).await;
     (client, frames)

@@ -204,7 +204,8 @@ const MAX_WIRE_MAP_NAME: usize = 15;
 
 /// How a session enters a map.
 pub enum Entry {
-    /// After `CZ_ENTER`: `ZC_ACCEPT_ENTER` now, the entry burst on `NotifyActorInit`.
+    /// After `CZ_ENTER`: `ZC_ACCEPT_ENTER` and the friends list now, the entry burst on
+    /// `NotifyActorInit`.
     Login,
     /// By a cross-map warp: `0x0091` with the resolved cell, no `ZC_ACCEPT_ENTER`.
     Warp { dest: (u16, u16), rewarp_count: u8 },
@@ -799,9 +800,9 @@ impl MapWorldActor {
         }
     }
 
-    /// Spawns the character and sends its first packet: `ZC_ACCEPT_ENTER` on login, `0x0091`
-    /// on a warp. On failure the join is dropped: that releases the claim (with the position
-    /// set on it) and drops the sender, which ends the session.
+    /// Spawns the character and sends its first packet: `ZC_ACCEPT_ENTER` (then the friends
+    /// list) on login, `0x0091` on a warp. On failure the join is dropped: that releases the
+    /// claim (with the position set on it) and drops the sender, which ends the session.
     fn join(&mut self, join: JoinSession) {
         let JoinSession {
             session_id,
@@ -822,6 +823,7 @@ impl MapWorldActor {
             return;
         }
         let now = self.now_ms();
+        let login = matches!(entry, Entry::Login);
         let first = match entry {
             Entry::Login => match self.spawn_login(spawn, now) {
                 Ok(pos) => ServerEvent::AcceptEnter {
@@ -875,6 +877,13 @@ impl MapWorldActor {
         self.by_char.insert(char_id, session_id);
         if let Some(bytes) = self.encode(&first) {
             self.send_to_session(session_id, &bytes);
+        }
+        // rAthena sends the (empty) friends list right after ZC_ACCEPT_ENTER on a login
+        // (specs/map-entry-settings).
+        if login {
+            if let Some(bytes) = self.encode(&ServerEvent::FriendsList) {
+                self.send_to_session(session_id, &bytes);
+            }
         }
         self.flush(&mut Vec::new());
     }

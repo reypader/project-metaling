@@ -74,6 +74,8 @@ pub enum ClientIntent {
         sex: Sex,
     },
     NotifyActorInit,
+    /// `CZ_BLOCKING_PLAY_CANCEL` (0x0447): the client finished loading and asks to unblock input.
+    BlockingPlayCancel,
     RequestTime {
         client_tick: u32,
     },
@@ -192,6 +194,7 @@ impl fmt::Debug for ClientIntent {
                 .field("sex", sex)
                 .finish(),
             Self::NotifyActorInit => write!(f, "NotifyActorInit"),
+            Self::BlockingPlayCancel => write!(f, "BlockingPlayCancel"),
             Self::RequestTime { client_tick } => f
                 .debug_struct("RequestTime")
                 .field("client_tick", client_tick)
@@ -488,6 +491,31 @@ pub enum ServerEvent {
     SelfChat {
         text: Vec<u8>,
     },
+    /// `0x0201`: the friends list. Always empty until friends exist.
+    FriendsList,
+    /// `0x010f`: the skill list. Always empty until skills exist.
+    SkillList,
+    /// `0x0b20`: one hotkey bank (`tab` 0 or 1). Always an empty bar until hotkeys are saved.
+    ShortcutKeyList {
+        tab: u8,
+    },
+    /// `0x02c9`: whether party invites are refused automatically.
+    PartyConfig {
+        deny_invites: bool,
+    },
+    /// `0x02da`: whether others may open this character's equipment window.
+    EquipWindowConfig {
+        show_equip: bool,
+    },
+    /// `0x02d9`: one `ZC_CONFIG` flag (`config_type` from rAthena's `e_config_type`).
+    ConfigChanged {
+        config_type: u32,
+        value: u32,
+    },
+    /// `0x0b8d`: the reputation list. Always every type at 0 points until reputation exists.
+    ReputationList,
+    /// `0x0b1b`: reply to `BlockingPlayCancel`; the client unblocks input.
+    LoadConfirmed,
 }
 
 /// High-level domain event tagged with its target broadcast scope.

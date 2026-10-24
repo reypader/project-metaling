@@ -70,6 +70,20 @@ impl CzNotifyActorInitPacket {
     }
 }
 
+/// Decoded representation of `CZ_BLOCKING_PLAY_CANCEL` (0x0447): no fields.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct CzBlockingPlayCancelPacket;
+
+impl CzBlockingPlayCancelPacket {
+    pub fn decode(_raw: &RawPacket) -> Result<Self, PacketCodecError> {
+        Ok(Self)
+    }
+
+    pub fn to_intent(&self) -> ClientIntent {
+        ClientIntent::BlockingPlayCancel
+    }
+}
+
 /// Decoded representation of `CZ_REQUEST_TIME` (0x0360).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CzRequestTimePacket {

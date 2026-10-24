@@ -350,7 +350,8 @@ impl TestServer {
         }
     }
 
-    /// Connects, enters as character `n`, reads the 23-byte burst and sends ACTORINIT.
+    /// Connects, enters as character `n`, reads the 23-byte burst and sends ACTORINIT. The
+    /// friends list after the burst is consumed by the `collect`.
     pub async fn join(&self, n: u32) -> Client {
         let mut client = Client::connect(self.addr).await;
         client.send(&cz_enter(n)).await;
@@ -510,8 +511,9 @@ pub fn frame_len(frame: &RawPacket) -> usize {
     frame.payload.len() + 2 + if is_dynamic(frame.opcode.0) { 2 } else { 0 }
 }
 
+/// Opcodes with a u16 length field after the opcode, among those the tests inspect.
 fn is_dynamic(op: u16) -> bool {
-    (0x09fd..=0x09ff).contains(&op)
+    (0x09fd..=0x09ff).contains(&op) || matches!(op, 0x0201 | 0x010f | 0x0b8d)
 }
 
 /// u32 at a FRAME offset (offset 0 = opcode). Handles the dynamic length prefix.
@@ -558,8 +560,9 @@ pub fn mapmove(frame: &RawPacket) -> (String, u16, u16) {
     )
 }
 
+/// A unit entry packet (0x09fd/0x09fe/0x09ff).
 pub fn is_entry(frame: &RawPacket) -> bool {
-    is_dynamic(frame.opcode.0)
+    (0x09fd..=0x09ff).contains(&frame.opcode.0)
 }
 
 // ---------- client packets ----------

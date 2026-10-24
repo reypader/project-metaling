@@ -32,6 +32,7 @@ const ACTION_ATTACK: u8 = 0;
 const ACTION_ATTACK_REPEAT: u8 = 7;
 use crate::mob::SpawnGroup;
 use crate::rng::SplitMix64;
+use crate::settings::Arrival;
 use crate::warp::{CellBits, MapTransfer};
 use crate::world::{NpcInfo, WarpTrigger, World};
 
@@ -406,12 +407,13 @@ impl MapInstance {
             ClientIntent::PickUpItem { floor_id } => self.pick_up(e, floor_id, now_ms),
             ClientIntent::Chat { text } => self.chat(e, &text),
             ClientIntent::DropItem { index, amount } => self.drop_item(e, index, amount, now_ms),
+            ClientIntent::BlockingPlayCancel => self.emit_self(e, ServerEvent::LoadConfirmed),
             other => debug!(map = %self.map_name, intent = ?other, "intent not handled by engine"),
         }
     }
 
     /// `CZ_NOTIFY_ACTORINIT`: the inventory lists and weights (on every one, repeats included),
-    /// then, the first time, into the grid, spawn to others, others to self.
+    /// then, the first time, into the grid, spawn to others, others to self, the entry settings.
     fn actor_init(&mut self, e: Entity, now_ms: u64) {
         self.send_inventory(e);
         if self.world.in_grid[e.index()] {
@@ -432,6 +434,7 @@ impl MapInstance {
                 self.emit_self(e, event);
             }
         }
+        self.send_entry_settings(e);
         // Arrival cell: warps chain from here (ENG-WARP-05).
         self.touch_warps(e);
     }
@@ -457,12 +460,18 @@ impl MapInstance {
         self.emit_weight(e, SP_MAXWEIGHT, max_weight);
     }
 
-    /// Creates the player entity and moves the spawn's inventory into its component.
+    /// Creates the player entity, moves the spawn's inventory into its component and sets
+    /// which entry settings its first actor init sends (`arrival`).
     pub(crate) fn spawn_player(
         &mut self,
         spawn: &mut CharacterSpawn,
+        arrival: Arrival,
     ) -> Result<Entity, EngineError> {
         let e = self.world.spawn_player(spawn)?;
+        if let Some(info) = self.world.players.get_mut(e) {
+            info.connect_new = arrival == Arrival::Login;
+            info.changemap = true;
+        }
         let inventory = mem::take(&mut spawn.inventory);
         let inventory = PlayerInventory::new(inventory, spawn.char_id, spawn.str, &self.items);
         self.world.inventories.insert(e, inventory);
@@ -850,7 +859,7 @@ impl MapInstance {
         if x >= self.walkability.width() || y >= self.walkability.height() {
             return Err(EngineError::InvalidCell { x, y });
         }
-        self.spawn_player(&mut spawn)?;
+        self.spawn_player(&mut spawn, Arrival::Login)?;
         Ok(Vec::new())
     }
 

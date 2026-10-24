@@ -33,6 +33,8 @@
 //!   `ZC_ITEM_THROW_ACK` (0x00af)
 //! - floor items (0x0add, 0x009d, 0x00a1)
 //! - chat (0x008d, 0x008e)
+//! - map-entry settings (0x0201, 0x010f, 0x0b20, 0x02c9, 0x02da, 0x02d9, 0x0b8d) and the load
+//!   confirm (0x0b1b)
 
 pub mod char;
 pub mod encoder;
@@ -40,6 +42,7 @@ pub mod helpers;
 pub mod item;
 pub mod login;
 pub mod map;
+pub mod settings;
 
 pub use char::{
     encode_character_info, encode_hc_accept_enter, encode_hc_accept_enter2,
@@ -69,4 +72,9 @@ pub use map::{
     encode_zc_notify_newentry11, encode_zc_notify_playermove, encode_zc_notify_standentry11,
     encode_zc_notify_time, encode_zc_notify_vanish, encode_zc_npcack_mapmove, encode_zc_par_change,
     encode_zc_par_change_i32, encode_zc_restart_ack, encode_zc_stopmove, ActParams,
+};
+pub use settings::{
+    encode_zc_config, encode_zc_config_notify, encode_zc_friends_list_empty,
+    encode_zc_load_confirm, encode_zc_party_config, encode_zc_repute_info_default,
+    encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_list_empty,
 };

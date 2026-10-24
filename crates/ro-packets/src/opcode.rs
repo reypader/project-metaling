@@ -103,6 +103,7 @@ impl PacketOpcode {
     pub const ZC_ADD_MEMBER_TO_GROUP: Self = Self(0x0104);
     pub const CZ_REQUEST_CHAT_PARTY: Self = Self(0x0108);
     pub const ZC_NOTIFY_CHAT_PARTY: Self = Self(0x0109);
+    pub const ZC_SKILLINFO_LIST: Self = Self(0x010f);
     pub const CZ_UPGRADE_SKILLLEVEL: Self = Self(0x0112);
     pub const CZ_USE_SKILL_TO_POS_0X0113: Self = Self(0x0113);
     pub const ZC_NOTIFY_SKILL: Self = Self(0x0114);
@@ -409,6 +410,7 @@ impl PacketOpcode {
     pub const ZC_PARTY_JOIN_REQ_ACK_0X02C5: Self = Self(0x02c5);
     pub const CZ_PARTY_JOIN_REQ_ACK: Self = Self(0x02c7);
     pub const CZ_PARTY_CONFIG: Self = Self(0x02c8);
+    pub const ZC_PARTY_CONFIG: Self = Self(0x02c9);
     pub const HC_REFUSE_SELECTCHAR: Self = Self(0x02ca);
     pub const ZC_MEMORIALDUNGEON_SUBSCRIPTION_INFO: Self = Self(0x02cb);
     pub const ZC_MEMORIALDUNGEON_SUBSCRIPTION_NOTIFY: Self = Self(0x02cc);
@@ -419,6 +421,7 @@ impl PacketOpcode {
     pub const CZ_EQUIPWIN_MICROSCOPE: Self = Self(0x02d6);
     pub const CZ_CONFIG: Self = Self(0x02d8);
     pub const ZC_CONFIG: Self = Self(0x02d9);
+    pub const ZC_CONFIG_NOTIFY: Self = Self(0x02da);
     pub const CZ_BATTLEFIELD_CHAT: Self = Self(0x02db);
     pub const ZC_BATTLEFIELD_CHAT: Self = Self(0x02dc);
     pub const ZC_BATTLEFIELD_NOTIFY_CAMPINFO: Self = Self(0x02dd);
@@ -962,7 +965,9 @@ impl PacketOpcode {
     pub const CZ_REQ_EXTEND_BODYITEM_SIZE: Self = Self(0x0b16);
     pub const ZC_INVENTORY_EXPANSION_INFO: Self = Self(0x0b18);
     pub const CZ_CLOSE_MSGBOX_EXTEND_BODYITEM_SIZE: Self = Self(0x0b19);
+    pub const ZC_LOAD_CONFIRM: Self = Self(0x0b1b);
     pub const CZ_PING_LIVE: Self = Self(0x0b1c);
+    pub const ZC_SHORTCUT_KEY_LIST_V4: Self = Self(0x0b20);
     pub const CZ_SHORTCUT_KEY_CHANGE2: Self = Self(0x0b21);
     pub const CZ_SHORTCUTKEYBAR_ROTATE2: Self = Self(0x0b22);
     pub const CZ_ADVANCED_STATUS_CHANGE: Self = Self(0x0b24);
@@ -983,6 +988,7 @@ impl PacketOpcode {
     pub const HC_ACK_MAKE_CHAR: Self = Self(0x0b6f);
     pub const HC_ACK_CHANGE_CHARACTER_SLOT: Self = Self(0x0b70);
     pub const HC_ACK_CHARINFO_PER_PAGE: Self = Self(0x0b72);
+    pub const ZC_REPUTE_INFO: Self = Self(0x0b8d);
     pub const CZ_CLOSE_REFORM_UI: Self = Self(0x0b90);
     pub const CZ_ITEM_REFORM: Self = Self(0x0b91);
     pub const CZ_DULL_0X0B93: Self = Self(0x0b93);
@@ -1108,6 +1114,7 @@ impl PacketOpcode {
             0x0104 => Some("ZC_ADD_MEMBER_TO_GROUP"),
             0x0108 => Some("CZ_REQUEST_CHAT_PARTY"),
             0x0109 => Some("ZC_NOTIFY_CHAT_PARTY"),
+            0x010f => Some("ZC_SKILLINFO_LIST"),
             0x0112 => Some("CZ_UPGRADE_SKILLLEVEL"),
             0x0113 => Some("CZ_USE_SKILL_TO_POS_0X0113"),
             0x0114 => Some("ZC_NOTIFY_SKILL"),
@@ -1414,6 +1421,7 @@ impl PacketOpcode {
             0x02c5 => Some("ZC_PARTY_JOIN_REQ_ACK_0X02C5"),
             0x02c7 => Some("CZ_PARTY_JOIN_REQ_ACK"),
             0x02c8 => Some("CZ_PARTY_CONFIG"),
+            0x02c9 => Some("ZC_PARTY_CONFIG"),
             0x02ca => Some("HC_REFUSE_SELECTCHAR"),
             0x02cb => Some("ZC_MEMORIALDUNGEON_SUBSCRIPTION_INFO"),
             0x02cc => Some("ZC_MEMORIALDUNGEON_SUBSCRIPTION_NOTIFY"),
@@ -1424,6 +1432,7 @@ impl PacketOpcode {
             0x02d6 => Some("CZ_EQUIPWIN_MICROSCOPE"),
             0x02d8 => Some("CZ_CONFIG"),
             0x02d9 => Some("ZC_CONFIG"),
+            0x02da => Some("ZC_CONFIG_NOTIFY"),
             0x02db => Some("CZ_BATTLEFIELD_CHAT"),
             0x02dc => Some("ZC_BATTLEFIELD_CHAT"),
             0x02dd => Some("ZC_BATTLEFIELD_NOTIFY_CAMPINFO"),
@@ -1967,7 +1976,9 @@ impl PacketOpcode {
             0x0b16 => Some("CZ_REQ_EXTEND_BODYITEM_SIZE"),
             0x0b18 => Some("ZC_INVENTORY_EXPANSION_INFO"),
             0x0b19 => Some("CZ_CLOSE_MSGBOX_EXTEND_BODYITEM_SIZE"),
+            0x0b1b => Some("ZC_LOAD_CONFIRM"),
             0x0b1c => Some("CZ_PING_LIVE"),
+            0x0b20 => Some("ZC_SHORTCUT_KEY_LIST_V4"),
             0x0b21 => Some("CZ_SHORTCUT_KEY_CHANGE2"),
             0x0b22 => Some("CZ_SHORTCUTKEYBAR_ROTATE2"),
             0x0b24 => Some("CZ_ADVANCED_STATUS_CHANGE"),
@@ -1988,6 +1999,7 @@ impl PacketOpcode {
             0x0b6f => Some("HC_ACK_MAKE_CHAR"),
             0x0b70 => Some("HC_ACK_CHANGE_CHARACTER_SLOT"),
             0x0b72 => Some("HC_ACK_CHARINFO_PER_PAGE"),
+            0x0b8d => Some("ZC_REPUTE_INFO"),
             0x0b90 => Some("CZ_CLOSE_REFORM_UI"),
             0x0b91 => Some("CZ_ITEM_REFORM"),
             0x0b93 => Some("CZ_DULL_0X0B93"),

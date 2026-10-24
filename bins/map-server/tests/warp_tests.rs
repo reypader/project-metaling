@@ -87,6 +87,14 @@ async fn walk_into_warp(a: &mut Client) -> (String, u16, u16) {
     mapmove(&frame)
 }
 
+/// The settings sent on login and cross-map arrival, not on a same-map warp
+/// (specs/map-entry-settings).
+const CHANGEMAP_SETTINGS: [u16; 4] = [0x02c9, 0x02da, 0x02d9, 0x0b8d];
+
+fn opcodes(frames: &[RawPacket]) -> Vec<u16> {
+    frames.iter().map(|f| f.opcode.0).collect()
+}
+
 /// Checks the post-`0x007d` burst: weights, no login-only packets.
 fn assert_entry_burst(frames: &[RawPacket]) {
     let pars: Vec<u16> = frames
@@ -95,7 +103,7 @@ fn assert_entry_burst(frames: &[RawPacket]) {
         .map(|f| frame_u16(f, 2))
         .collect();
     assert_eq!(pars, [SP_WEIGHT, SP_MAXWEIGHT], "0x00b0 WEIGHT, MAXWEIGHT");
-    for op in [0x0283, 0x0b18, 0x02eb] {
+    for op in [0x0283, 0x0b18, 0x02eb, 0x0201, 0x010f, 0x0b20] {
         assert!(
             frames.iter().all(|f| f.opcode.0 != op),
             "no {op:#06x} after a warp"
@@ -161,6 +169,13 @@ async fn bin_warp_01_cross_map_end_to_end() {
     a.send(&[0x7d, 0x00]).await;
     let frames = a.collect(SHORT).await;
     assert_entry_burst(&frames);
+    let ops = opcodes(&frames);
+    for op in CHANGEMAP_SETTINGS {
+        assert!(
+            ops.contains(&op),
+            "{op:#06x} on cross-map arrival: {ops:04x?}"
+        );
+    }
     assert!(
         frames
             .iter()
@@ -205,6 +220,13 @@ async fn bin_warp_02_same_map_end_to_end() {
     a.send(&[0x7d, 0x00]).await;
     let frames = a.collect(SHORT).await;
     assert_entry_burst(&frames);
+    let ops = opcodes(&frames);
+    for op in CHANGEMAP_SETTINGS {
+        assert!(
+            !ops.contains(&op),
+            "no {op:#06x} on a same-map warp: {ops:04x?}"
+        );
+    }
     assert!(frames
         .iter()
         .any(|f| is_entry(f) && entry_aid(f) == account(P)));

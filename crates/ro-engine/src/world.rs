@@ -40,6 +40,12 @@ pub(crate) struct PlayerInfo {
     pub(crate) group_id: i32,
     /// Consecutive warps that landed inside a warp area (rAthena `count_rewarp`).
     pub(crate) rewarp_count: u8,
+    /// First entry after a login (rAthena `connect_new`): the next actor init sends the skill
+    /// list and hotkeys.
+    pub(crate) connect_new: bool,
+    /// Arrived from login or another map (rAthena `changemap`): the next actor init sends the
+    /// config flags and reputation list. Not set by a same-map warp.
+    pub(crate) changemap: bool,
 }
 
 /// Static appearance and identity of an NPC entity (warps included).
@@ -199,6 +205,8 @@ impl World {
                 str: spawn.str,
                 group_id: spawn.group_id,
                 rewarp_count: 0,
+                connect_new: false,
+                changemap: false,
             },
         );
         self.char_to_entity.insert(spawn.char_id, entity);

@@ -11,6 +11,7 @@ mod mob;
 pub(crate) mod movement;
 pub(crate) mod path;
 mod rng;
+mod settings;
 pub(crate) mod sparse_set;
 pub(crate) mod spatial;
 mod warp;

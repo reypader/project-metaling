@@ -74,7 +74,8 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x00b9 => Some(Fixed(6)),
         0x00ba => Some(Fixed(2)),
         0x00bb => Some(Fixed(5)),
-        0x00be => Some(Fixed(5)), // ZC_STATUS_CHANGE
+        0x00bd => Some(Fixed(44)), // ZC_STATUS (specs/map-entry-settings)
+        0x00be => Some(Fixed(5)),  // ZC_STATUS_CHANGE
         0x00bf => Some(Fixed(3)),
         0x00c1 => Some(Fixed(2)),
         0x00c3 => Some(Fixed(8)),
@@ -119,6 +120,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0104 => Some(Fixed(79)),
         0x0108 => Some(Dynamic),
         0x0109 => Some(Dynamic),
+        0x010f => Some(Dynamic), // ZC_SKILLINFO_LIST (specs/map-entry-settings)
         0x0112 => Some(Fixed(4)),
         0x0113 => Some(Fixed(25)),
         0x0114 => Some(Fixed(31)),
@@ -139,8 +141,10 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0130 => Some(Fixed(6)),
         0x0134 => Some(Dynamic),
         0x0138 => Some(Fixed(3)),
+        0x013a => Some(Fixed(4)), // ZC_ATTACK_RANGE (specs/map-entry-settings)
         0x013f => Some(Fixed(26)),
         0x0140 => Some(Fixed(22)),
+        0x0141 => Some(Fixed(14)), // ZC_COUPLESTATUS (specs/map-entry-settings)
         0x0143 => Some(Fixed(10)),
         0x0145 => Some(Fixed(19)),
         0x0146 => Some(Fixed(6)),
@@ -425,6 +429,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x02c5 => Some(Fixed(30)),
         0x02c7 => Some(Fixed(7)),
         0x02c8 => Some(Fixed(3)),
+        0x02c9 => Some(Fixed(3)), // ZC_PARTY_CONFIG (specs/map-entry-settings)
         0x02ca => Some(Fixed(3)),
         0x02cb => Some(Fixed(65)),
         0x02cc => Some(Fixed(4)),
@@ -435,6 +440,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x02d6 => Some(Fixed(6)),
         0x02d8 => Some(Fixed(10)),
         0x02d9 => Some(Fixed(10)),
+        0x02da => Some(Fixed(3)), // ZC_CONFIG_NOTIFY (specs/map-entry-settings)
         0x02db => Some(Dynamic),
         0x02dc => Some(Dynamic),
         0x02dd => Some(Fixed(32)),
@@ -954,6 +960,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0ac1 => Some(Fixed(26)),
         0x0ac4 => Some(Dynamic),    // AC_ACCEPT_LOGIN
         0x0ac5 => Some(Fixed(156)), // HC_NOTIFY_ZONESVR
+        0x0acb => Some(Fixed(12)),  // ZC_LONGLONGPAR_CHANGE (specs/map-entry-settings)
         0x0acc => Some(Fixed(18)),
         0x0ace => Some(Fixed(4)),
         0x0add => Some(Fixed(24)), // ZC_ITEM_FALL_ENTRY (captured)
@@ -978,7 +985,10 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0b16 => Some(Fixed(2)),
         0x0b18 => Some(Fixed(4)), // ZC_INVENTORY_EXPANSION_INFO
         0x0b19 => Some(Fixed(2)),
+        0x0b1b => Some(Fixed(2)), // ZC_LOAD_CONFIRM (specs/map-entry-settings)
         0x0b1c => Some(Fixed(2)),
+        0x0b1d => Some(Fixed(2)), // ZC_PING_LIVE (specs/map-entry-settings)
+        0x0b20 => Some(Fixed(271)), // ZC_SHORTCUT_KEY_LIST_V4 (specs/map-entry-settings)
         0x0b21 => Some(Fixed(13)),
         0x0b22 => Some(Fixed(5)),
         0x0b24 => Some(Fixed(6)),
@@ -999,6 +1009,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0b6f => Some(Fixed(177)), // HC_ACCEPT_MAKECHAR
         0x0b70 => Some(Dynamic),    // HC_ACK_CHANGE_CHARACTER_SLOT
         0x0b72 => Some(Dynamic),    // HC_ACK_CHARINFO_PER_PAGE
+        0x0b8d => Some(Dynamic),    // ZC_REPUTE_INFO (specs/map-entry-settings)
         0x0b90 => Some(Fixed(2)),
         0x0b91 => Some(Fixed(8)),
         0x0b93 => Some(Fixed(12)),

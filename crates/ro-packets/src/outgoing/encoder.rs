@@ -25,6 +25,11 @@ use super::map::{
     encode_zc_notify_time, encode_zc_notify_vanish, encode_zc_npcack_mapmove,
     encode_zc_par_change_i32, encode_zc_restart_ack, encode_zc_stopmove,
 };
+use super::settings::{
+    encode_zc_config, encode_zc_config_notify, encode_zc_friends_list_empty,
+    encode_zc_load_confirm, encode_zc_party_config, encode_zc_repute_info_default,
+    encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_list_empty,
+};
 
 /// `ZC_NOTIFY_ACT` types for sit down / stand up (`e_damage_type`).
 const ACT_SIT_DOWN: u8 = 2;
@@ -274,6 +279,18 @@ impl EventEncoder for ModernEventEncoder {
             ServerEvent::FloorItemVanished { id } => Ok(encode_zc_item_disappear(*id)),
             ServerEvent::PublicChat { gid, text } => Ok(encode_zc_notify_chat(*gid, text)),
             ServerEvent::SelfChat { text } => Ok(encode_zc_notify_playerchat(text)),
+            ServerEvent::FriendsList => Ok(encode_zc_friends_list_empty()),
+            ServerEvent::SkillList => Ok(encode_zc_skillinfo_list_empty()),
+            ServerEvent::ShortcutKeyList { tab } => Ok(encode_zc_shortcut_key_list_empty(*tab)),
+            ServerEvent::PartyConfig { deny_invites } => Ok(encode_zc_party_config(*deny_invites)),
+            ServerEvent::EquipWindowConfig { show_equip } => {
+                Ok(encode_zc_config_notify(*show_equip))
+            }
+            ServerEvent::ConfigChanged { config_type, value } => {
+                Ok(encode_zc_config(*config_type, *value))
+            }
+            ServerEvent::ReputationList => Ok(encode_zc_repute_info_default()),
+            ServerEvent::LoadConfirmed => Ok(encode_zc_load_confirm()),
         }
     }
 }
@@ -329,6 +346,14 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
             | PacketOpcode::ZC_ITEM_DISAPPEAR
             | PacketOpcode::ZC_NOTIFY_CHAT
             | PacketOpcode::ZC_NOTIFY_PLAYERCHAT
+            | PacketOpcode::ZC_FRIENDS_LIST
+            | PacketOpcode::ZC_SKILLINFO_LIST
+            | PacketOpcode::ZC_SHORTCUT_KEY_LIST_V4
+            | PacketOpcode::ZC_PARTY_CONFIG
+            | PacketOpcode::ZC_CONFIG_NOTIFY
+            | PacketOpcode::ZC_CONFIG
+            | PacketOpcode::ZC_REPUTE_INFO
+            | PacketOpcode::ZC_LOAD_CONFIRM
     )
 }
 

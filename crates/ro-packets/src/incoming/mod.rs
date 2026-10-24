@@ -11,6 +11,7 @@
 //! - `PING` (0x0187)
 //! - `CZ_ENTER` (0x0436)
 //! - `CZ_NOTIFY_ACTORINIT` (0x007d)
+//! - `CZ_BLOCKING_PLAY_CANCEL` (0x0447)
 //! - `CZ_REQUEST_TIME` (0x0360)
 //! - `CZ_REQUEST_MOVE` (0x035f)
 //! - `CZ_CHANGE_DIRECTION` (0x0361)
@@ -38,7 +39,8 @@ pub use frame::{
 pub use helpers::{parse_sex, read_fixed_string};
 pub use login::CaLoginPacket;
 pub use map::{
-    CzChangeDirectionPacket, CzEnterPacket, CzItemPickupPacket, CzItemThrowPacket,
-    CzNotifyActorInitPacket, CzReqDisconnectPacket, CzReqNamePacket, CzRequestActPacket,
-    CzRequestChatPacket, CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket,
+    CzBlockingPlayCancelPacket, CzChangeDirectionPacket, CzEnterPacket, CzItemPickupPacket,
+    CzItemThrowPacket, CzNotifyActorInitPacket, CzReqDisconnectPacket, CzReqNamePacket,
+    CzRequestActPacket, CzRequestChatPacket, CzRequestMovePacket, CzRequestTimePacket,
+    CzRestartPacket,
 };
