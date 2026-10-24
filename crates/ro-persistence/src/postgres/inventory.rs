@@ -62,6 +62,11 @@ fn big<T: TryFrom<i64>>(row: &PgRow, col: &str) -> Result<T, RepositoryError> {
     narrow(col, wide)
 }
 
+fn int<T: TryFrom<i64>>(row: &PgRow, col: &str) -> Result<T, RepositoryError> {
+    let wide: i32 = get_col(row, col)?;
+    narrow(col, i64::from(wide))
+}
+
 fn small<T: TryFrom<i64>>(row: &PgRow, col: &str) -> Result<T, RepositoryError> {
     let wide: i16 = get_col(row, col)?;
     narrow(col, i64::from(wide))
@@ -168,7 +173,8 @@ impl InventoryRepository for PostgresRepo {
             .map_err(map_sqlx_error)?;
         let Some(row) = query(
             "SELECT c.str, c.agi, c.vit, c.int_stat, c.dex, c.luk, c.status_point, \
-             c.skill_point, c.base_exp, c.job_exp, c.unique_item_counter, a.group_id \
+             c.skill_point, c.base_exp, c.job_exp, c.hp, c.max_hp, c.sp, c.max_sp, \
+             c.unique_item_counter, a.group_id \
              FROM characters c JOIN accounts a ON a.account_id = c.account_id \
              WHERE c.char_id = $1",
         )
@@ -190,6 +196,10 @@ impl InventoryRepository for PostgresRepo {
             skill_point: small(&row, "skill_point")?,
             base_exp: big(&row, "base_exp")?,
             job_exp: big(&row, "job_exp")?,
+            hp: int(&row, "hp")?,
+            max_hp: int(&row, "max_hp")?,
+            sp: int(&row, "sp")?,
+            max_sp: int(&row, "max_sp")?,
         };
         let unique_item_counter = big(&row, "unique_item_counter")?;
         let group_id: i32 = get_col(&row, "group_id")?;

@@ -1,18 +1,23 @@
-//! The first-login status block (rAthena `clif_parse_LoadEndAck` with `connect_new`, then
-//! `clif_initialstatus`). Catalog: `packets/status.md`, `packets/settings.md`.
+//! The first-login status packets: the push before the client's first `0x007d` (rAthena's first
+//! `status_calc_pc`) and the block at its actor init (`clif_parse_LoadEndAck` with `connect_new`,
+//! then `clif_initialstatus`). Catalog: `packets/status.md`, `packets/settings.md`.
 //!
-//! Only the loaded values are real: allocated stats, points and exp. There are no exp tables and
-//! no derived-stat formulas yet, so next exp is rAthena's max-level value and every derived stat
-//! is 0.
+//! Only the loaded values are real: allocated stats, points, exp, HP and SP. There are no exp
+//! tables and no derived-stat formulas yet, so next exp is rAthena's max-level value and every
+//! derived stat is 0.
 
 use ro_core::{CharacterStatus, ServerEvent, StatusWindow};
 
-use crate::engine::MapInstance;
+use crate::engine::{MapInstance, SP_MAXWEIGHT, SP_WEIGHT};
 use crate::entity::Entity;
 
 /// `SP_*` var ids (rAthena `enum _sp`).
 const SP_BASEEXP: u16 = 1;
 const SP_JOBEXP: u16 = 2;
+const SP_HP: u16 = 5;
+const SP_MAXHP: u16 = 6;
+const SP_SP: u16 = 7;
+const SP_MAXSP: u16 = 8;
 const SP_SKILLPOINT: u16 = 12;
 const SP_STR: u16 = 13;
 const SP_NEXTBASEEXP: u16 = 22;
@@ -22,6 +27,10 @@ const SP_POW: u16 = 219;
 /// `SP_PATK`..`SP_CRATE`, `SP_TRAITPOINT`, `SP_AP`, `SP_MAXAP`: sent as `0x00b0` in this order.
 const TRAIT_PARAMS: [u16; 9] = [225, 226, 227, 228, 229, 230, 231, 232, 233];
 const SP_UPOW: u16 = 247;
+/// The derived `0x00b0` vars of the pre-entry push, in captured order: HIT, FLEE1, ASPD, ATK1,
+/// DEF1, DEF2, ATK2, FLEE2, CRITICAL, MATK2, MATK1, MDEF2, MDEF1. rAthena sends DEF2/DEF1 a
+/// second time after ATK2 (two diff branches); once each is enough here.
+const PUSH_DERIVED_PARAMS: [u16; 13] = [49, 50, 53, 41, 45, 46, 42, 51, 52, 44, 43, 48, 47];
 /// STR..LUK and POW..CRT.
 const STAT_COUNT: u16 = 6;
 
@@ -69,7 +78,60 @@ fn exp(value: u64) -> i64 {
     i64::try_from(value).unwrap_or(i64::MAX)
 }
 
+fn param(value: u32) -> i32 {
+    i32::try_from(value).unwrap_or(i32::MAX)
+}
+
 impl MapInstance {
+    /// The status push a login gets before its first `0x007d` (rAthena's first `status_calc_pc`
+    /// diffed against zero, captured in `packet_rathena_item_2026-10-24.txt` lines 44-66):
+    /// MAXWEIGHT, STR..LUK, the derived values, attack range, MAXHP, MAXSP, HP, SP, WEIGHT.
+    pub(crate) fn send_login_status_push(&mut self, e: Entity) {
+        let Some(status) = self.world.players.get(e).map(|info| info.status) else {
+            return;
+        };
+        let (weight, max_weight) = self
+            .world
+            .inventories
+            .get(e)
+            .map_or((0, 0), |i| (i.weight(), i.max_weight()));
+        self.emit_weight(e, SP_MAXWEIGHT, max_weight);
+        for (offset, stat) in (0..STAT_COUNT).zip(stats(&status)) {
+            self.emit_self(
+                e,
+                ServerEvent::CoupleStatus {
+                    var_id: u32::from(SP_STR + offset),
+                    base: i32::from(stat),
+                    bonus: 0,
+                },
+            );
+        }
+        for var_id in PUSH_DERIVED_PARAMS {
+            self.emit_self(e, ServerEvent::ParameterChanged { var_id, value: 0 });
+        }
+        self.emit_self(
+            e,
+            ServerEvent::AttackRange {
+                range: BARE_HAND_RANGE,
+            },
+        );
+        for (var_id, value) in [
+            (SP_MAXHP, status.max_hp),
+            (SP_MAXSP, status.max_sp),
+            (SP_HP, status.hp),
+            (SP_SP, status.sp),
+        ] {
+            self.emit_self(
+                e,
+                ServerEvent::ParameterChanged {
+                    var_id,
+                    value: param(value),
+                },
+            );
+        }
+        self.emit_weight(e, SP_WEIGHT, weight);
+    }
+
     /// Sends the exp vars, skill points and the status window with its follow-ups, in rAthena
     /// order. Login only.
     pub(crate) fn send_initial_status(&mut self, e: Entity) {

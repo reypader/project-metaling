@@ -204,6 +204,38 @@ Target client version: `PACKETVER = 20260219`. Packet entries are sorted by asce
 | `0` | `2` | `u16` | `packet_id` | Always `0x0b18` |
 | `2` | `2` | `u16` | `expansion_size` | Additional inventory capacity (`0` default) |
 
+### `0x099b` `ZC_NOTIFY_MAPPROPERTY2` (map property + flags)
+
+* **Frame Length:** Fixed `8` bytes (`clif_packetdb.hpp:1642`; `clif.cpp` builds it in an 8-byte buffer, `PACKETVER >= 20121010`).
+* **Provenance:** rathena `d4b8e7b8f`, `src/map/clif.cpp:6871-6906` (`clif_map_property`), enum `clif.hpp:365-373`. Applies to `20260219`. Send target `SELF`, called from `clif_parse_LoadEndAck` (`clif.cpp:10828-10846`) on every map load, after the `0x00b0` weight pair and before the area unit entries.
+* **Not** `clif_map_type` (`0x01d6`, a different packet, not sent here).
+
+| Offset | Size | Type | Field |
+| :--- | :--- | :--- | :--- |
+| `0` | `2` | `u16` | opcode `0x099b` |
+| `2` | `2` | `u16` | `property` (`map_property`: 0 NOTHING, 1 FREEPVPZONE, 2 EVENTPVPZONE, 3 AGITZONE, 4 PKSERVERZONE, 5 PVPSERVERZONE, 6 DENYSKILLZONE) |
+| `4` | `4` | `u32` | `flags` bitfield, little-endian |
+
+`property` selection in `LoadEndAck`: map has `MF_PVP` -> 1; in a duel or `MF_GVG_DUNGEON` -> 1; GvG map (`mapdata_flag_gvg`) -> 3; otherwise (`MAPPROPERTY_NOTHING`) -> 0.
+
+Flag bits (`clif.cpp:6886-6896`; a bit is set when the condition holds):
+
+| Bit | Name (rAthena comment) | Condition |
+| :--- | :--- | :--- |
+| 0 | PARTY (attack cursor on non-party, PvP) | `MF_PVP` or in a duel |
+| 1 | GUILD (attack cursor on non-guild, GvG) | `MF_BATTLEGROUND` or gvg2 |
+| 2 | SIEGE (emblem over heads) | `MF_BATTLEGROUND` or gvg2 |
+| 3 | USE_SIMPLE_EFFECT | `MF_FORCEMINEFFECT` or gvg2 |
+| 4 | DISABLE_LOCKON | `MF_NOLOCKON` or vs-map or duel |
+| 5 | COUNT_PK (PvP counter) | `MF_PVP` |
+| 6 | NO_PARTY_FORMATION | `MF_PARTYLOCK` |
+| 7 | BATTLEFIELD | `MF_BATTLEGROUND` |
+| 8 | DISABLE_COSTUMEITEM | `MF_NOCOSTUME` |
+| 9 | USECART | **`!MF_NOUSECART`** (set by default) |
+| 10 | SUNMOONSTAR_MIRACLE | **`!MF_NOSUNMOONSTARMIRACLE`** (set by default) |
+
+Plain map (no mapflags): bits 9 and 10 only -> `0x00000600` -> bytes `00 06 00 00` at offset 4. Whole frame: `9b 09 | 00 00 | 00 06 00 00`. This matches the capture payload `00 00 00 06 00 00` (prt_fild08, prontera, prt_in), so a fixed `property = 0, flags = 0x0600` is correct for every map that has no PvP/GvG/BG/nocart/nocostume/etc. mapflags.
+
 ## Player Wire Identifiers (Policy)
 
 * **Provenance:** `rathena` `src/map/pc.cpp:1444` (`sd->id = account_id`), `src/map/clif.cpp` (`clif_set_unit_idle` ~L1129, `clif_spawn_unit`, `clif_set_unit_walking` L1369-1380, `clif_clearunit_area` L970, `clif_name` L9927, `clif_sitting` L5329, `clif_parse_GetCharNameRequest` L11471), capture [`login_sequence-rathena.txt`](../captures/login_sequence-rathena.txt) lines 28, 110. Applies to `PACKETVER = 20260219`.

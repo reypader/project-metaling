@@ -350,10 +350,13 @@ fn eng_09_lifecycle() {
     let mut h = Harness::new(grid(&[]));
     assert_eq!(h.engine.map_name(), MAP);
     h.enter(B, 103, 100);
-    assert_eq!(
-        h.engine.spawn_character(spawn_data(A, 100, 100), 0),
-        Ok(Vec::new())
-    );
+    let burst = h
+        .engine
+        .spawn_character(spawn_data(A, 100, 100), 0)
+        .expect("spawns");
+    // The login burst before the first 0x007d, all to self (specs/map-entry-settings ENG-SET-07).
+    assert_eq!(burst.len(), 31, "{burst:#?}");
+    assert!(burst.iter().all(|e| e.scope == self_only(A)));
     assert_eq!(
         h.aoi(100, 100),
         vec![char_id(B)],
@@ -364,31 +367,40 @@ fn eng_09_lifecycle() {
     let events = h.tick(20);
     let kinds: Vec<(BroadcastScope, &ServerEvent)> =
         events.iter().map(|e| (e.scope.clone(), &e.event)).collect();
-    // 7 entry events, then the 10 login settings events and the 35-event status block
-    // (specs/map-entry-settings ENG-SET-01, ENG-SET-06).
-    assert_eq!(kinds.len(), 52, "{events:#?}");
-    // The (empty) inventory lists and weights come first (specs/items ENG-INV-04).
-    for (scope, _) in &kinds[..5] {
+    // 9 entry events, then the 10 login settings events and the 35-event status block
+    // (specs/map-entry-settings ENG-SET-01, ENG-SET-06, ENG-SET-08).
+    assert_eq!(kinds.len(), 54, "{events:#?}");
+    // The weapon look, then the (empty) inventory lists and weights (specs/items ENG-INV-04).
+    for (scope, _) in &kinds[..6] {
         assert_eq!(*scope, self_only(A));
     }
-    assert!(matches!(kinds[0].1, ServerEvent::InventoryStart));
-    assert!(matches!(kinds[2].1, ServerEvent::EquipSwitchList));
     assert!(matches!(
-        kinds[3].1,
+        kinds[0].1,
+        ServerEvent::SpriteChanged {
+            look_type: 2,
+            value: 0,
+            value2: 0,
+            ..
+        }
+    ));
+    assert!(matches!(kinds[1].1, ServerEvent::InventoryStart));
+    assert!(matches!(kinds[3].1, ServerEvent::EquipSwitchList));
+    assert!(matches!(
+        kinds[4].1,
         ServerEvent::ParameterChanged {
             var_id: 24,
             value: 0
         }
     ));
     assert!(matches!(
-        kinds[4].1,
+        kinds[5].1,
         ServerEvent::ParameterChanged {
             var_id: 25,
             value: 20_300
         }
     ));
-    assert_eq!(kinds[5].0, to(&[B]));
-    match kinds[5].1 {
+    assert_eq!(kinds[6].0, to(&[B]));
+    match kinds[6].1 {
         ServerEvent::UnitSpawned { unit } => {
             assert_eq!(unit.gid, account(A));
             assert_eq!(unit.char_id, Some(char_id(A)));
@@ -398,8 +410,10 @@ fn eng_09_lifecycle() {
         }
         other => panic!("expected UnitSpawned, got {other:?}"),
     }
-    assert_eq!(kinds[6].0, self_only(A));
-    assert!(matches!(kinds[6].1, ServerEvent::UnitStanding { unit } if unit.gid == account(B)));
+    assert_eq!(kinds[7].0, self_only(A));
+    assert!(matches!(kinds[7].1, ServerEvent::MapProperty { .. }));
+    assert_eq!(kinds[8].0, self_only(A));
+    assert!(matches!(kinds[8].1, ServerEvent::UnitStanding { unit } if unit.gid == account(B)));
     assert_eq!(h.aoi(100, 100), vec![char_id(A), char_id(B)]);
 
     h.push(A, ClientIntent::NotifyActorInit);

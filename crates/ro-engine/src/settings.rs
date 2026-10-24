@@ -3,7 +3,7 @@
 
 use std::sync::Arc;
 
-use ro_core::{ServerEvent, SkillInfo};
+use ro_core::{AchievementSummary, ServerEvent, SkillInfo};
 
 use crate::engine::MapInstance;
 use crate::entity::Entity;
@@ -31,6 +31,20 @@ const ENTRY_CONFIGS: [u32; 4] = [
     CONFIG_DISABLE_SHOWCOSTUMES,
 ];
 
+/// The system line a login gets after the friends list (rAthena sends its MOTD there).
+const MOTD: &[u8] = b"Welcome to Metaling.";
+/// Achievement exp for level 1 (`achievement_level_db` first row): the `0x0a24` "to next" value
+/// of a character with no achievements.
+const ACHIEVEMENT_FIRST_LEVEL_EXP: u32 = 18;
+/// Renewal `natural_heal_weight_rate`: natural regeneration stops at this weight percentage.
+const NATURAL_HEAL_WEIGHT_RATE: u32 = 70;
+/// `0x099b` for a map with no mapflags: property `MAPPROPERTY_NOTHING`, flags USECART (bit 9)
+/// and SUNMOONSTAR_MIRACLE (bit 10), which rAthena sets unless a mapflag forbids them.
+const MAP_PROPERTY_NOTHING: u16 = 0;
+const MAP_FLAGS_DEFAULT: u32 = 0x0600;
+/// `LOOK_WEAPON`: the `0x01d7` look carrying both hands.
+const LOOK_WEAPON: u8 = 2;
+
 /// NV_BASIC (Basic Skill) at level 0, the one skill rAthena always lists for a fresh novice. Sent
 /// to everyone until characters have a skill tree.
 fn nv_basic() -> SkillInfo {
@@ -46,6 +60,78 @@ fn nv_basic() -> SkillInfo {
 }
 
 impl MapInstance {
+    /// What a login gets between `0x0201` and the client's first `0x007d`, in rAthena order
+    /// (`pc_authok`, then the char-server replies): the MOTD line, `0x0091` to the character's
+    /// own cell (the client reloads the map and sends `0x007d` twice), the status push, the mail
+    /// icon, the achievement totals and the overweight percentage. The client sends `0x0447`
+    /// only after a load that a `0x0091` started (spec §5).
+    pub(crate) fn send_login_burst(&mut self, e: Entity) {
+        self.emit_self(
+            e,
+            ServerEvent::SelfChat {
+                text: MOTD.to_vec(),
+            },
+        );
+        let (dest_x, dest_y) = self.cell(e);
+        let dest_map = self.gat_name.to_string();
+        self.emit_self(
+            e,
+            ServerEvent::PlayerMapMove {
+                dest_map,
+                dest_x,
+                dest_y,
+            },
+        );
+        self.send_login_status_push(e);
+        self.emit_self(e, ServerEvent::UnreadMail { unread: false });
+        self.emit_self(
+            e,
+            ServerEvent::AchievementUpdate {
+                summary: AchievementSummary {
+                    exp_to_next: ACHIEVEMENT_FIRST_LEVEL_EXP,
+                    ..AchievementSummary::default()
+                },
+            },
+        );
+        self.emit_self(
+            e,
+            ServerEvent::OverweightPercent {
+                percent: NATURAL_HEAL_WEIGHT_RATE,
+            },
+        );
+    }
+
+    /// `0x01d7` `LOOK_WEAPON` with both hands, first thing in a map entry. rAthena sends it to the
+    /// area; only the player gets it here until observers need it (`DEFERRED.md`).
+    pub(crate) fn send_weapon_look(&mut self, e: Entity) {
+        let (value, value2) = self
+            .world
+            .inventories
+            .get(e)
+            .map_or((0, 0), |i| i.hand_looks(&self.items));
+        let gid = self.gid(e);
+        self.emit_self(
+            e,
+            ServerEvent::SpriteChanged {
+                gid,
+                look_type: LOOK_WEAPON,
+                value,
+                value2,
+            },
+        );
+    }
+
+    /// `0x099b` for the current map. No mapflags exist yet, so every map gets the plain form.
+    pub(crate) fn send_map_property(&mut self, e: Entity) {
+        self.emit_self(
+            e,
+            ServerEvent::MapProperty {
+                property: MAP_PROPERTY_NOTHING,
+                flags: MAP_FLAGS_DEFAULT,
+            },
+        );
+    }
+
     /// Sends the settings group once per entry, after the unit entries: on a login the skill
     /// list, both hotkey banks and the status block, then on a login or cross-map arrival the
     /// party, equipment window and config flags and the reputation list. A same-map warp sends nothing.

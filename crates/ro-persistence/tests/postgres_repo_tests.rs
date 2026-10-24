@@ -979,14 +979,15 @@ async fn per_inv_03_save_replaces_rows() {
     );
 }
 
-/// PER-INV-04: the play state carries the stats, points, exp and the account group (and DB-PERS of
+/// PER-INV-04: the play state carries the stats, points, exp, HP/SP and the account group (and DB-PERS of
 /// `specs/map-entry-settings` §3); deleting a character cascades.
 #[tokio::test]
 async fn per_inv_04_play_state_and_cascade() {
     let (repo, _acc, char_id) = inventory_fixture(99).await;
     sqlx::query(
         "UPDATE characters SET str = 11, agi = 12, vit = 13, int_stat = 14, dex = 15, luk = 16, \
-         status_point = 7, skill_point = 3, base_exp = 5000000000, job_exp = 42 \
+         status_point = 7, skill_point = 3, base_exp = 5000000000, job_exp = 42, \
+         hp = 31, max_hp = 45, sp = 9, max_sp = 12 \
          WHERE char_id = $1",
     )
     .bind(char_id.0 as i32)
@@ -1018,6 +1019,10 @@ async fn per_inv_04_play_state_and_cascade() {
             skill_point: 3,
             base_exp: 5_000_000_000,
             job_exp: 42,
+            hp: 31,
+            max_hp: 45,
+            sp: 9,
+            max_sp: 12,
         }
     );
     assert_eq!(state.group_id, 99);

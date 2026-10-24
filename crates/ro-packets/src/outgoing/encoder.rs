@@ -23,12 +23,13 @@ use super::map::{
     encode_zc_inventory_expansion_info, encode_zc_notify_act, encode_zc_notify_moveentry11,
     encode_zc_notify_newentry11, encode_zc_notify_playermove, encode_zc_notify_standentry11,
     encode_zc_notify_time, encode_zc_notify_vanish, encode_zc_npcack_mapmove,
-    encode_zc_par_change_i32, encode_zc_restart_ack, encode_zc_stopmove,
+    encode_zc_par_change_i32, encode_zc_restart_ack, encode_zc_sprite_change2, encode_zc_stopmove,
 };
 use super::settings::{
-    encode_zc_config, encode_zc_config_notify, encode_zc_friends_list_empty,
-    encode_zc_load_confirm, encode_zc_party_config, encode_zc_repute_info_default,
-    encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_list,
+    encode_zc_ach_update_totals, encode_zc_config, encode_zc_config_notify,
+    encode_zc_friends_list_empty, encode_zc_load_confirm, encode_zc_notify_mapproperty2,
+    encode_zc_notify_unreadmail, encode_zc_overweight_percent, encode_zc_party_config,
+    encode_zc_repute_info_default, encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_list,
 };
 use super::status::{
     encode_zc_attack_range, encode_zc_couplestatus, encode_zc_longlongpar_change, encode_zc_status,
@@ -308,6 +309,20 @@ impl EventEncoder for ModernEventEncoder {
             }
             ServerEvent::ReputationList => Ok(encode_zc_repute_info_default()),
             ServerEvent::LoadConfirmed => Ok(encode_zc_load_confirm()),
+            ServerEvent::SpriteChanged {
+                gid,
+                look_type,
+                value,
+                value2,
+            } => Ok(encode_zc_sprite_change2(*gid, *look_type, *value, *value2)),
+            ServerEvent::MapProperty { property, flags } => {
+                Ok(encode_zc_notify_mapproperty2(*property, *flags))
+            }
+            ServerEvent::UnreadMail { unread } => Ok(encode_zc_notify_unreadmail(*unread)),
+            ServerEvent::AchievementUpdate { summary } => Ok(encode_zc_ach_update_totals(summary)),
+            ServerEvent::OverweightPercent { percent } => {
+                Ok(encode_zc_overweight_percent(*percent))
+            }
         }
     }
 }
@@ -376,6 +391,11 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
             | PacketOpcode::ZC_COUPLESTATUS
             | PacketOpcode::ZC_ATTACK_RANGE
             | PacketOpcode::ZC_STATUS_CHANGE
+            | PacketOpcode::ZC_SPRITE_CHANGE2
+            | PacketOpcode::ZC_NOTIFY_MAPPROPERTY2
+            | PacketOpcode::ZC_NOTIFY_UNREADMAIL
+            | PacketOpcode::ZC_ACH_UPDATE
+            | PacketOpcode::ZC_OVERWEIGHT_PERCENT
     )
 }
 

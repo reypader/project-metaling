@@ -1,12 +1,13 @@
 //! Map-entry settings and the load confirm (spec `specs/map-entry-settings/spec.md`
-//! ENG-SET-01..06).
+//! ENG-SET-01..08).
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use std::sync::Arc;
 
 use ro_core::{
-    AccountId, BroadcastScope, CharId, CharacterSpawn, CharacterStatus, ClientIntent, MapPosition,
-    ScopedServerEvent, ServerEvent, SessionId, SessionIntent, Sex, SkillInfo, StatusWindow,
+    AccountId, AchievementSummary, BroadcastScope, CharId, CharacterSpawn, CharacterStatus,
+    ClientIntent, MapPosition, ScopedServerEvent, ServerEvent, SessionId, SessionIntent, Sex,
+    SkillInfo, StatusWindow,
 };
 use ro_db::{MapGrid, MapNpcs, NpcKind, NpcSpawn, NpcState, WarpDest};
 use ro_engine::MapInstance;
@@ -352,6 +353,7 @@ fn eng_set_06_status_block_carries_the_loaded_status() {
         skill_point: 3,
         base_exp: 1234,
         job_exp: 56,
+        ..CharacterStatus::default()
     };
     engine.spawn_character(spawn, 0).expect("spawn");
     let events = push_tick(&mut engine, A, ClientIntent::NotifyActorInit, 0);
@@ -366,4 +368,193 @@ fn eng_set_06_status_block_carries_the_loaded_status() {
     let mut expected = login_part(window, 1234, 56, 3);
     expected.extend(changemap_part());
     assert_eq!(settings(&events, A), expected);
+}
+
+fn param(var_id: u16, value: i32) -> ServerEvent {
+    ServerEvent::ParameterChanged { var_id, value }
+}
+
+#[test]
+fn eng_set_07_login_burst_before_the_first_actor_init() {
+    let mut engine = instance(Vec::new());
+    let mut spawn = spawn_data(A, 100, 101);
+    spawn.status = CharacterStatus {
+        str: 5,
+        agi: 6,
+        hp: 31,
+        max_hp: 45,
+        sp: 9,
+        max_sp: 12,
+        ..CharacterStatus::default()
+    };
+    let burst = engine.spawn_character(spawn, 0).expect("spawn");
+    assert!(
+        burst
+            .iter()
+            .all(|e| e.scope == BroadcastScope::SelfOnly(char_id(A))),
+        "{burst:#?}"
+    );
+    let events: Vec<ServerEvent> = burst.into_iter().map(|e| e.event).collect();
+
+    let mut expected = vec![
+        ServerEvent::SelfChat {
+            text: b"Welcome to Metaling.".to_vec(),
+        },
+        ServerEvent::PlayerMapMove {
+            dest_map: MAP.to_string(),
+            dest_x: 100,
+            dest_y: 101,
+        },
+        param(25, 20_000 + 300 * 5),
+    ];
+    for (var_id, base) in (13..=18).zip([5, 6, 1, 1, 1, 1]) {
+        expected.push(ServerEvent::CoupleStatus {
+            var_id,
+            base,
+            bonus: 0,
+        });
+    }
+    for var_id in [49, 50, 53, 41, 45, 46, 42, 51, 52, 44, 43, 48, 47] {
+        expected.push(param(var_id, 0));
+    }
+    expected.extend([
+        ServerEvent::AttackRange { range: 1 },
+        param(6, 45),
+        param(8, 12),
+        param(5, 31),
+        param(7, 9),
+        param(24, 0),
+        ServerEvent::UnreadMail { unread: false },
+        ServerEvent::AchievementUpdate {
+            summary: AchievementSummary {
+                exp_to_next: 18,
+                ..AchievementSummary::default()
+            },
+        },
+        ServerEvent::OverweightPercent { percent: 70 },
+    ]);
+    assert_eq!(events, expected);
+    assert!(tick(&mut engine, 10).is_empty(), "returned, not queued");
+
+    // A cross-map arrival gets no login burst: the map-server sends its 0x0091.
+    let mut other = instance(Vec::new());
+    other
+        .enter_by_warp(spawn_data(B, 0, 0), (100, 100), 0, 0)
+        .expect("arrives");
+    assert!(tick(&mut other, 10).is_empty());
+}
+
+/// Self events of an actor init with the position of the `0x01d7` look and the `0x099b`.
+fn look_and_property(events: &[ScopedServerEvent], n: u32) -> (Option<usize>, Option<usize>) {
+    let mine: Vec<&ServerEvent> = events
+        .iter()
+        .filter(|e| e.scope == BroadcastScope::SelfOnly(char_id(n)))
+        .map(|e| &e.event)
+        .collect();
+    (
+        mine.iter()
+            .position(|e| matches!(e, ServerEvent::SpriteChanged { .. })),
+        mine.iter()
+            .position(|e| matches!(e, ServerEvent::MapProperty { .. })),
+    )
+}
+
+#[test]
+fn eng_set_08_every_entry_sends_the_look_and_the_map_property() {
+    let mut engine = instance(vec![same_map_warp((100, 103), (50, 50))]);
+    engine
+        .spawn_character(spawn_data(B, 103, 100), 0)
+        .expect("spawn B");
+    push_tick(&mut engine, B, ClientIntent::NotifyActorInit, 0);
+    engine
+        .spawn_character(spawn_data(A, 100, 100), 0)
+        .expect("spawn A");
+    let events = push_tick(&mut engine, A, ClientIntent::NotifyActorInit, 10);
+
+    let mine: Vec<&ServerEvent> = events
+        .iter()
+        .filter(|e| e.scope == BroadcastScope::SelfOnly(char_id(A)))
+        .map(|e| &e.event)
+        .collect();
+    assert_eq!(
+        *mine[0],
+        ServerEvent::SpriteChanged {
+            gid: 2_000_000 + A,
+            look_type: 2,
+            value: 0,
+            value2: 0,
+        },
+        "the look comes first"
+    );
+    let property = mine
+        .iter()
+        .position(|e| matches!(e, ServerEvent::MapProperty { .. }))
+        .expect("0x099b sent");
+    assert_eq!(
+        *mine[property],
+        ServerEvent::MapProperty {
+            property: 0,
+            flags: 0x0600,
+        }
+    );
+    assert!(
+        matches!(
+            mine[property - 1],
+            ServerEvent::ParameterChanged { var_id: 25, .. }
+        ),
+        "after the weights: {mine:#?}"
+    );
+    assert!(
+        matches!(mine[property + 1], ServerEvent::UnitStanding { .. }),
+        "before the unit entries: {mine:#?}"
+    );
+    let spawned = events
+        .iter()
+        .position(|e| matches!(e.event, ServerEvent::UnitSpawned { .. }))
+        .expect("B sees A");
+    let property_at = events
+        .iter()
+        .position(|e| matches!(e.event, ServerEvent::MapProperty { .. }))
+        .expect("0x099b sent");
+    assert!(spawned < property_at, "after the spawn to others");
+    assert!(
+        !events
+            .iter()
+            .any(|e| e.scope != BroadcastScope::SelfOnly(char_id(A))
+                && matches!(e.event, ServerEvent::SpriteChanged { .. })),
+        "observers get no look yet"
+    );
+
+    // The second 0x007d after the login reload: inventory only.
+    let again = push_tick(&mut engine, A, ClientIntent::NotifyActorInit, 20);
+    assert_eq!(look_and_property(&again, A), (None, None), "{again:#?}");
+
+    // A same-map warp sends both again on its actor init.
+    engine.push_intent(intent(
+        A,
+        ClientIntent::RequestMove {
+            dest_x: 100,
+            dest_y: 103,
+        },
+    ));
+    let mut warped = false;
+    for now in (50..=1000).step_by(50) {
+        warped |= tick(&mut engine, now)
+            .iter()
+            .any(|e| matches!(e.event, ServerEvent::PlayerMapMove { .. }));
+    }
+    assert!(warped, "the walk reached the warp");
+    let after = push_tick(&mut engine, A, ClientIntent::NotifyActorInit, 1050);
+    let (look, property) = look_and_property(&after, A);
+    assert_eq!(look, Some(0), "{after:#?}");
+    assert!(property.is_some(), "{after:#?}");
+
+    // A cross-map arrival too.
+    let mut other = instance(Vec::new());
+    other
+        .enter_by_warp(spawn_data(A, 0, 0), (100, 100), 0, 0)
+        .expect("arrives");
+    let arrival = push_tick(&mut other, A, ClientIntent::NotifyActorInit, 0);
+    assert_eq!(look_and_property(&arrival, A).0, Some(0));
+    assert!(look_and_property(&arrival, A).1.is_some());
 }

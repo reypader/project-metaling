@@ -488,6 +488,18 @@ impl Client {
         }
     }
 
+    /// Consumes a login's frames between the friends list and the first `0x007d` (MOTD, `0x0091`,
+    /// status push, ... up to the closing `0x0ade`; specs/map-entry-settings §5) and returns them.
+    pub async fn read_login_burst(&mut self) -> Vec<RawPacket> {
+        let last = self
+            .wait_opcode(0x0ade, Duration::from_secs(2))
+            .await
+            .expect("login burst ends with 0x0ade");
+        let mut burst = std::mem::take(&mut self.pending);
+        burst.push(last);
+        burst
+    }
+
     pub async fn wait_opcode(&mut self, opcode: u16, timeout: Duration) -> Option<RawPacket> {
         self.wait_for(timeout, |f| f.opcode == PacketOpcode(opcode))
             .await

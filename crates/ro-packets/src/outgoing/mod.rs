@@ -36,6 +36,7 @@
 //! - map-entry settings (0x0201, 0x010f, 0x0b20, 0x02c9, 0x02da, 0x02d9, 0x0b8d) and the load
 //!   confirm (0x0b1b)
 //! - character status (0x0acb, 0x00bd, 0x0141, 0x013a, 0x00be)
+//! - the rest of the entry burst: 0x01d7, 0x099b, 0x09e7, 0x0a24, 0x0ade
 
 pub mod char;
 pub mod encoder;
@@ -73,12 +74,14 @@ pub use map::{
     encode_zc_notify_act_modern, encode_zc_notify_act_params, encode_zc_notify_moveentry11,
     encode_zc_notify_newentry11, encode_zc_notify_playermove, encode_zc_notify_standentry11,
     encode_zc_notify_time, encode_zc_notify_vanish, encode_zc_npcack_mapmove, encode_zc_par_change,
-    encode_zc_par_change_i32, encode_zc_restart_ack, encode_zc_stopmove, ActParams,
+    encode_zc_par_change_i32, encode_zc_restart_ack, encode_zc_sprite_change2, encode_zc_stopmove,
+    ActParams,
 };
 pub use settings::{
-    encode_zc_config, encode_zc_config_notify, encode_zc_friends_list_empty,
-    encode_zc_load_confirm, encode_zc_party_config, encode_zc_repute_info_default,
-    encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_list,
+    encode_zc_ach_update_totals, encode_zc_config, encode_zc_config_notify,
+    encode_zc_friends_list_empty, encode_zc_load_confirm, encode_zc_notify_mapproperty2,
+    encode_zc_notify_unreadmail, encode_zc_overweight_percent, encode_zc_party_config,
+    encode_zc_repute_info_default, encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_list,
 };
 pub use status::{
     encode_zc_attack_range, encode_zc_couplestatus, encode_zc_longlongpar_change, encode_zc_status,

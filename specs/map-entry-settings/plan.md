@@ -32,8 +32,13 @@ persistence).
   - `./verify.sh`, self-review (small fix: no reviewer run), commit.
   - User: manual client check again. **Failed** (`metaling-20261024-3.txt`): the new packets arrive correctly
     framed (lines 48–92) and the client still sends no `0x0447`.
-- [ ] **Fix 2: the remaining login-only differences, in one batch** (handoff below; new session)
-  - Spec §5 first (same pattern as §3), then code, `./verify.sh`, self-review, commit, one client check.
+- [x] **Fix 2: the remaining login-only differences, in one batch** (2026-10-24; manual client check pending) (spec §5)
+  - Spec §5, catalog facts from `metaling-explorer` (`0x099b`, `0x0a24`/`0x0a23`, `0x01d7`).
+  - ro-core HP/SP + events; ro-packets encoders (PKT-SET-05); engine login burst and entry look/property
+    (ENG-SET-07/08); map-server sends the burst; BIN-SET-01 and PER-INV-04 updated.
+  - `./verify.sh`, self-review (fix inside a reviewed feature: no reviewer run), commit.
+  - User: one client check. Expect in the proxy log `0x0091` before the first `0x007d`, a second `0x007d`, then
+    `0x0447` → `0x0b1b`; no settings error; chat works; mobs still visible after the reload.
 
 ## Handoff for Fix 2 (written 2026-10-24, end of the Fix 1 session)
 
@@ -128,3 +133,18 @@ vs `metaling-20261024-3.txt` lines 33–93; file line = proxy `#` + 10 in both):
   - NEXT*EXP uses the max-level constants, not 0, so the client can't divide by 0.
   - `ServerEvent::SkillList` now carries its entries; the engine builds NV_BASIC.
   - Small fix inside a reviewed feature: `./verify.sh` + self-review, no reviewer run.
+- Fix 2 (2026-10-24):
+  - The lead: in both rAthena logins of `packet_rathena_item_2026-10-24.txt`, `0x0447` follows the *second*
+    `0x007d`, the one after the reload that the login `0x0091` causes. Warps fit too. So the login `0x0091` is
+    the main suspect; the rest came along in the batch, as the handoff asked.
+  - `spawn_character` returns the burst (it already returned `Vec<ScopedServerEvent>`, always empty) instead of
+    queuing it, so the map-server controls the order: `0x02eb`, `0x0201`, burst. The events are cut from the
+    queue with `split_off`, so `emit_self` is reused.
+  - The settings stay on the first `0x007d` (as in rAthena). The second `0x007d` only re-sends the inventory,
+    an existing choice (ENG-INV-04). If the client turns out to clear its units on the reload, re-sending the
+    unit entries there is the next step.
+  - `0x01d7` goes to self only and `0x0a23` isn't sent (rAthena skips it with no achievements). Both are in
+    `DEFERRED.md`.
+  - Test helper `Client::read_login_burst` (consumes frames up to `0x0ade`). `item_tests.rs` `enter` and
+    `map_entry_handshake_tests.rs` use it, or its inline equivalent. The handshake test used to read up to 256
+    bytes for the 23-byte burst, which would now cut a frame in half.

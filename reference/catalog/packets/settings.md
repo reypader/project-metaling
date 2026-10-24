@@ -51,8 +51,8 @@ Gate `PACKETVER_MAIN_NUM >= 20220330`: TRUE. One entry per `reputation_db` row (
 | Opcode | Name | Frame | One-line purpose |
 | :--- | :--- | :--- | :--- |
 | `0x09e7` | `ZC_NOTIFY_UNREADMAIL` (`rodexicon`, `packets_struct.hpp:253,1865`) | 3 | `result:u8`, 1 if unread/unchecked RODEX mail (`clif_Mail_new`, `clif.cpp:16029`); 0 fresh |
-| `0x0a24` | `ZC_ACH_UPDATE` | 66 | `total_score:u32, level:u16, exp:u32, exp_tnl:u32, ach_id:u32, completed:u8, count[10]:u32, completed_time:u32, rewarded:u8`; zero achievement part when `ach` is null (`clif.cpp:21862-21885`); capture: score 10, level 0, exp 10, tnl 18 |
-| `0x0a23` | `ZC_ALL_ACH_LIST` | 22 + 50*n | `len:u16, count:u32, total_score:u32, level:u16, exp:u32, exp_tnl:u32, n x {id:u32, completed:u8, count[10]:u32, completed_time:u32, rewarded:u8}`; nothing sent when n = 0 (`clif.cpp:21820-21858`); capture n = 2 (122 bytes) |
+| `0x0a24` | `ZC_ACH_UPDATE` | 66 | `total_score:u32, level:u16, exp:u32, exp_tnl:u32, ach_id:u32, completed:u8, count[10]:u32, completed_time:u32, rewarded:u8`; zero achievement part (40 bytes from offset 16) when `ach` is null (`clif.cpp:21862-21885`); capture: score 10, level 0, exp 10, tnl 18. **Sent whenever `feature_achievement` is on, even with 0 achievements**, as `clif_achievement_update(sd, nullptr, 0)`; see [Achievement login send](#achievement-login-send-0x0a24--0x0a23) |
+| `0x0a23` | `ZC_ALL_ACH_LIST` | 22 + 50*n | `len:u16, count:u32, total_score:u32, level:u16, exp:u32, exp_tnl:u32, n x {id:u32, completed:u8, count[10]:u32, completed_time:u32, rewarded:u8}`; **nothing sent when n = 0** (`clif.cpp:21833-21834` early return); fresh-novice captures: count = 1 (72 bytes, ach id 240000 completed, score 10); a later char shows count 5 (272 bytes) |
 | `0x0ade` | `ZC_OVERWEIGHT_PERCENT` | 6 | `u32 natural_heal_weight_rate` (70), `clif_weight_limit`, from `pc_scdata_received` (`pc.cpp:14794`); gate `PACKETVER >= 20171025` |
 | `0x0141` | `ZC_COUPLESTATUS` | 14 | `type:u32 (SP_*), base:i32, bonus:i32` (STR..LUK = 13..18, POW..CRT = 219..224); [status.md](./status.md#sp_-var-ids) |
 | `0x013a` | `ZC_ATTACK_RANGE` | 4 | `range:u16` (1 for a bare-handed novice) |
@@ -87,3 +87,11 @@ Defaults for a fresh novice (no party, no pet, no homunculus, nothing toggled), 
 * Client then sends `0x0447` and gets `0x0b1b`: `1b 0b`.
 
 Open items: the exact byte contents of the two `0x0b20` frames and of `0x010f` upFlag are inferred (hotkey bytes are not visible in the capture because the proxy swallowed them); the arithmetic of frame sizes confirms 271 and 41. Re-capture after fixing `table.rs` to verify.
+
+## Achievement login send (0x0a24 / 0x0a23)
+
+Provenance: rathena `d4b8e7b8f`; applies to `20260219`. Not part of `LoadEndAck`.
+
+* Trigger: `pc_authok` (`pc.cpp:2484-2491`) zeroes `achievement_data` and calls `intif_request_achievements(char_id)` (only if `battle_config.feature_achievement`, default on). The char-server reply is handled by `intif_parse_achievements` (`intif.cpp:2161-2221`), which ends with, in this order: `achievement_update_objective` for every group (login auto-completions), `achievement_level(sd,false)`, `achievement_get_titles`, `clif_achievement_update(sd, nullptr, 0)` (`0x0a24`), `clif_achievement_list_all(sd)` (`0x0a23`). So both arrive before the client's `0x007d` (as the capture shows). With 0 stored rows `num_received == 0` simply frees the list; the sends still happen.
+* Level math (`achievement.cpp:811-870`): `total_score` = sum of `score` of completed achievements. `achievement_level_db.yml` (`db/re/`) stores levels zero-based (`achievement.cpp:407-410`: YAML `Level: 1, Points: 18` is index 0). Level 0 with score below 18: `exp = total_score`, `exp_tnl = db[0].points = 18`. Level 1 -> thresholds 49, 98, ... (YAML levels 2, 3, ...); level rises while `total_score > points` (strict).
+* **Character with NO achievements and none auto-completed**: `0x0a24` = score 0, level 0, exp 0, exp_tnl 18, achievement part all zero (66 bytes); `0x0a23` is NOT sent. If login auto-completion gives some (fresh novice capture: 1 listed entry, id 240000, completed, score 10) both are sent: `0x0a24` carries score 10, level 0, exp 10, tnl 18 and `0x0a23` count 1 (72 bytes). Note the capture shows count 1, not 2.

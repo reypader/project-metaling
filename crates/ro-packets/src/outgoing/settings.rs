@@ -1,9 +1,10 @@
-//! Map-entry settings packet encoders: friends list, skill list, hotkeys, config flags, reputation and
-//! the load confirm. Layouts: `reference/catalog/packets/settings.md`.
+//! Map-entry settings packet encoders: friends list, skill list, hotkeys, config flags, reputation,
+//! map property, mail icon, achievements, overweight percent and the load confirm. Layouts:
+//! `reference/catalog/packets/settings.md` and `packets/map.md` (`0x099b`).
 
 use bytes::{BufMut, Bytes, BytesMut};
 
-use ro_core::SkillInfo;
+use ro_core::{AchievementSummary, SkillInfo};
 
 use super::helpers::write_fixed_string;
 use crate::PacketOpcode;
@@ -98,6 +99,47 @@ pub fn encode_zc_repute_info_default() -> Bytes {
         buf.put_u64_le(repute_type);
         buf.put_i64_le(0);
     }
+    buf.freeze()
+}
+
+/// `0x0a24` frame size: opcode, the totals (14 bytes) and one achievement entry (50 bytes).
+const ACH_UPDATE_SIZE: usize = 66;
+
+/// Encodes `ZC_NOTIFY_MAPPROPERTY2` (0x099b): `property:u16, flags:u32`, 8 bytes.
+pub fn encode_zc_notify_mapproperty2(property: u16, flags: u32) -> Bytes {
+    let mut buf = BytesMut::with_capacity(8);
+    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_MAPPROPERTY2.raw());
+    buf.put_u16_le(property);
+    buf.put_u32_le(flags);
+    buf.freeze()
+}
+
+/// Encodes `ZC_NOTIFY_UNREADMAIL` (0x09e7): 1 when there is unread mail, 3 bytes.
+pub fn encode_zc_notify_unreadmail(unread: bool) -> Bytes {
+    let mut buf = BytesMut::with_capacity(3);
+    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_UNREADMAIL.raw());
+    buf.put_u8(u8::from(unread));
+    buf.freeze()
+}
+
+/// Encodes `ZC_ACH_UPDATE` (0x0a24) with the totals and no achievement (its 50-byte entry all
+/// zero), 66 bytes.
+pub fn encode_zc_ach_update_totals(summary: &AchievementSummary) -> Bytes {
+    let mut buf = BytesMut::with_capacity(ACH_UPDATE_SIZE);
+    buf.put_u16_le(PacketOpcode::ZC_ACH_UPDATE.raw());
+    buf.put_u32_le(summary.total_score);
+    buf.put_u16_le(summary.level);
+    buf.put_u32_le(summary.exp);
+    buf.put_u32_le(summary.exp_to_next);
+    buf.put_bytes(0, ACH_UPDATE_SIZE - buf.len());
+    buf.freeze()
+}
+
+/// Encodes `ZC_OVERWEIGHT_PERCENT` (0x0ade): `percent:u32`, 6 bytes.
+pub fn encode_zc_overweight_percent(percent: u32) -> Bytes {
+    let mut buf = BytesMut::with_capacity(6);
+    buf.put_u16_le(PacketOpcode::ZC_OVERWEIGHT_PERCENT.raw());
+    buf.put_u32_le(percent);
     buf.freeze()
 }
 

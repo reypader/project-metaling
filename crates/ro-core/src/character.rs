@@ -8,7 +8,7 @@ use crate::item::CharacterInventory;
 /// Default walk speed in ms per orthogonal cell (rAthena `DEFAULT_WALK_SPEED`).
 pub const DEFAULT_WALK_SPEED: u16 = 150;
 
-/// Allocated stats, unspent points and exp of a character (the `characters` row).
+/// Allocated stats, unspent points, exp and HP/SP of a character (the `characters` row).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct CharacterStatus {
     pub str: u16,
@@ -21,10 +21,15 @@ pub struct CharacterStatus {
     pub skill_point: u16,
     pub base_exp: u64,
     pub job_exp: u64,
+    pub hp: u32,
+    pub max_hp: u32,
+    pub sp: u32,
+    pub max_sp: u32,
 }
 
 impl Default for CharacterStatus {
-    /// A fresh character: every stat 1 and 48 status points (rAthena `start_status_points`).
+    /// A fresh novice: every stat 1, 48 status points (rAthena `start_status_points`) and the
+    /// schema's default HP/SP (40/11).
     fn default() -> Self {
         Self {
             str: 1,
@@ -37,6 +42,10 @@ impl Default for CharacterStatus {
             skill_point: 0,
             base_exp: 0,
             job_exp: 0,
+            hp: 40,
+            max_hp: 40,
+            sp: 11,
+            max_sp: 11,
         }
     }
 }

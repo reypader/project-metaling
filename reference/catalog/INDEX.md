@@ -17,6 +17,7 @@ This master index maps extracted protocol opcodes, bit-packing algorithms, Aegis
 | `0x0091` | `ZC_NPCACK_MAPMOVE` | Map to Client | Fixed 22 bytes | [packets/map.md#0x0091-zc_npcack_mapmove](./packets/map.md#0x0091-zc_npcack_mapmove) |
 | `0x018a` | `CZ_REQ_DISCONNECT` (Exit to Windows; type u16 ignored; refused by prevent_logout) | Client to Map | Fixed 4 bytes | [packets/map.md#0x018a-cz_req_disconnect](./packets/map.md#0x018a-cz_req_disconnect) |
 | `0x018b` | `ZC_ACK_REQ_DISCONNECT` (result 0 ok, 1 refused) | Map to Client | Fixed 4 bytes | [packets/map.md#0x018b-zc_ack_req_disconnect](./packets/map.md#0x018b-zc_ack_req_disconnect) |
+| `0x099b` | `ZC_NOTIFY_MAPPROPERTY2` (property u16 + flags u32; plain map = property 0, flags 0x0600, bits 9 USECART + 10 SUNMOONSTAR) | Map to Client | Fixed 8 bytes | [packets/map.md#0x099b-zc_notify_mapproperty2-map-property--flags](./packets/map.md#0x099b-zc_notify_mapproperty2-map-property--flags) |
 | `0x0283` | `ZC_AID` | Map to Client | Fixed 6 bytes | [packets/map.md#0x0283-zc_aid](./packets/map.md#0x0283-zc_aid) |
 | `0x02eb` | `ZC_ACCEPT_ENTER` | Map to Client | Fixed 13 bytes | [packets/map.md#0x02eb-zc_accept_enter](./packets/map.md#0x02eb-zc_accept_enter) |
 | `0x035f` | `CZ_REQUEST_MOVE` | Client to Map | Fixed 5 bytes | [packets/map.md#0x035f-cz_request_move](./packets/map.md#0x035f-cz_request_move) |

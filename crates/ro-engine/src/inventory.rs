@@ -21,6 +21,9 @@ const MAX_WEIGHT_PER_STR: u32 = 300;
 const UNKNOWN_ITEM_TYPE: u8 = 3;
 /// `EQP_VISIBLE`: heads, garment and costumes, the positions with a sprite.
 const EQP_VISIBLE: u32 = 0x301 | 0x4 | 0x3C00;
+/// `EQP_HAND_R` / `EQP_HAND_L`: weapon and shield positions.
+const EQP_HAND_R: u32 = 0x0002;
+const EQP_HAND_L: u32 = 0x0020;
 /// `card[0]` markers: forged, created, pet egg.
 const CARD0_FORGE: u32 = 0x00FF;
 const CARD0_CREATE: u32 = 0x00FE;
@@ -100,6 +103,30 @@ impl PlayerInventory {
 
     pub(crate) fn get(&self, slot: usize) -> Option<&InventoryItem> {
         self.slots.get(slot).and_then(Option::as_ref)
+    }
+
+    /// The `LOOK_WEAPON` pair for `0x01d7`: the client id of the right-hand item, then of the
+    /// left-hand item when that is a different slot (a shield); 0 for an empty hand. A
+    /// two-handed weapon fills both hands from one slot, so its left value is 0.
+    pub(crate) fn hand_looks(&self, items: &ItemDb) -> (u32, u32) {
+        let worn_in = |position: u32| {
+            self.slots.iter().enumerate().find_map(|(slot, item)| {
+                item.as_ref()
+                    .filter(|i| i.equip & position != 0)
+                    .map(|i| (slot, i))
+            })
+        };
+        let look = |item: &InventoryItem| {
+            items
+                .get(item.item_id)
+                .map_or(item.item_id.0, ItemData::client_id)
+        };
+        let right = worn_in(EQP_HAND_R);
+        let left = worn_in(EQP_HAND_L).filter(|(slot, _)| right.is_none_or(|(r, _)| r != *slot));
+        (
+            right.map_or(0, |(_, item)| look(item)),
+            left.map_or(0, |(_, item)| look(item)),
+        )
     }
 
     /// A copy for saving; trailing holes are trimmed.
@@ -406,6 +433,38 @@ pub(crate) mod tests {
 
     fn item(id: u32) -> InventoryItem {
         InventoryItem::new(ItemId(id), 1)
+    }
+
+    fn worn(id: u32, equip: u32) -> Option<InventoryItem> {
+        let mut item = item(id);
+        item.equip = equip;
+        Some(item)
+    }
+
+    fn looks(slots: Vec<Option<InventoryItem>>) -> (u32, u32) {
+        let items = test_items();
+        let inventory = CharacterInventory {
+            slots,
+            unique_item_counter: 0,
+        };
+        PlayerInventory::new(inventory, CharId(150_000), 1, &items).hand_looks(&items)
+    }
+
+    /// ENG-SET-08: the `0x01d7` hand looks: empty hands, an unworn weapon, a weapon and a
+    /// shield (an unknown id falls back to the id), a two-handed weapon.
+    #[test]
+    fn hand_looks_follow_the_worn_hands() {
+        assert_eq!(looks(vec![]), (0, 0));
+        assert_eq!(looks(vec![Some(item(1201))]), (0, 0), "not worn");
+        assert_eq!(
+            looks(vec![worn(2101, EQP_HAND_L), None, worn(1201, EQP_HAND_R)]),
+            (1201, 2101)
+        );
+        assert_eq!(
+            looks(vec![worn(1201, EQP_HAND_R | EQP_HAND_L)]),
+            (1201, 0),
+            "both hands from one slot"
+        );
     }
 
     fn slots(inv: &PlayerInventory) -> Vec<Option<(u32, u16)>> {

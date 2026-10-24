@@ -5,15 +5,29 @@ Remove an item when it lands. Newest feature first.
 
 ## map-entry-settings (branch `main`, plan `specs/map-entry-settings/plan.md`)
 
-Spec §1–§3. The settings group is sent with defaults, `0x0447` gets its `0x0b1b`, and (Fix 1) the login also
-sends NV_BASIC level 0 and the exp/status block.
-- **Manual client check:** log in as `test`. Expect no "account settings" error, a usable chat box, and
-  `0x0447` → `0x0b1b` in the proxy log (rebuild the proxy first). The settings group (`metaling-20261024-2.txt`)
-  and Fix 1 (`-3.txt`) both failed. Fix 2 sends the remaining login-only differences in one batch; see the
-  handoff in `specs/map-entry-settings/plan.md`.
-- Also check logging in on a same-map warp cell: the arrival warp hides the player in the same tick, so the
-  client's first `0x0447` is ignored (as in rAthena, which drops packets until `0x007d`). Input then depends on
-  the client sending `0x0447` again after the `0x0091` reload.
+Spec §1–§5. The settings group is sent with defaults, `0x0447` gets its `0x0b1b`, (Fix 1) the login also
+sends NV_BASIC level 0 and the exp/status block, and (Fix 2) the login gets the pre-`0x007d` burst with the
+login-time `0x0091`, and every entry starts with `0x01d7` and sends `0x099b`.
+- **Manual client check:** log in as `test`. Expect no "account settings" error, a usable chat box, and in the
+  proxy log `0x0091` before the first `0x007d`, a second `0x007d`, then `0x0447` → `0x0b1b` (rebuild the proxy
+  first). The settings group (`metaling-20261024-2.txt`) and Fix 1 (`-3.txt`) both failed. Also check that the
+  standing mobs still show after the reload (nothing is re-sent on the second `0x007d`, as in rAthena). If it
+  works, optionally bisect which Fix 2 packets are needed (spec §5).
+- Logging in on a same-map warp cell: the first `0x007d` warps the player, the client's second `0x007d` (the
+  login reload) then runs the destination's actor init, and the warp's own `0x007d` only re-sends the inventory.
+  Input should work, but the client may miss the destination's unit entries. rAthena has the same order.
+- Fix 2 simplifications (`crates/ro-engine/src/settings.rs`, `status.rs`):
+  - `0x01d7` at entry goes to the player only; rAthena also sends it to observers in view, just before their
+    `0x09fe`.
+  - The MOTD is one fixed line (`MOTD`), not configurable.
+  - `0x0a23` is never sent (rAthena skips it with no achievements; it sends it after login auto-completions).
+    `0x0a24` carries zeros and next-level exp 18.
+  - The pre-`0x007d` status push sends every field once in captured order, not a diff, and the derived values
+    are 0. rAthena sends DEF2/DEF1 twice.
+  - `0x099b` is the plain-map form (`property 0, flags 0x0600`) on every map until mapflags exist.
+  - rAthena pushes `0x0adf` name replies after mob entries unasked; metaling still answers `0x0368`.
+- Char server: metaling's `0x0b72` page is 879 bytes and rAthena's 179 (handoff item 3). Not compared yet,
+  nor `0x0ac4`, `0x082d` and `0x006b`.
 - Save and load hotkeys (`CZ_SHORTCUT_KEY_CHANGE*`, row shift) and the config toggles (`CZ_CONFIG`,
   `CZ_PARTY_CONFIG`, equipment window).
 - A real skill list (NV_BASIC's real level and job skills) with the skill tree. Today every character gets

@@ -325,6 +325,16 @@ pub struct StatusWindow {
     pub aspd: i16,
 }
 
+/// The achievement totals in `0x0a24` (and later `0x0a23`).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub struct AchievementSummary {
+    pub total_score: u32,
+    pub level: u16,
+    pub exp: u32,
+    /// Exp needed for the next achievement level.
+    pub exp_to_next: u32,
+}
+
 /// Appearance snapshot shared by the unit entry packets (`0x09fd`/`0x09fe`/`0x09ff`).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UnitAppearance {
@@ -586,6 +596,30 @@ pub enum ServerEvent {
     ReputationList,
     /// `0x0b1b`: reply to `BlockingPlayCancel`; the client unblocks input.
     LoadConfirmed,
+    /// `0x01d7`: one look of unit `gid` changed (`look_type` from rAthena's `LOOK_*`).
+    SpriteChanged {
+        gid: u32,
+        look_type: u8,
+        value: u32,
+        value2: u32,
+    },
+    /// `0x099b`: the current map's property type and flags.
+    MapProperty {
+        property: u16,
+        flags: u32,
+    },
+    /// `0x09e7`: whether the mail icon shows unread mail.
+    UnreadMail {
+        unread: bool,
+    },
+    /// `0x0a24`: the achievement totals with no achievement attached.
+    AchievementUpdate {
+        summary: AchievementSummary,
+    },
+    /// `0x0ade`: the weight percentage at which natural regeneration stops.
+    OverweightPercent {
+        percent: u32,
+    },
 }
 
 /// High-level domain event tagged with its target broadcast scope.

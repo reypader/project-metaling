@@ -42,7 +42,7 @@ pub const DEFAULT_ENTITY_CAPACITY: u32 = 16_384;
 
 /// `ZC_PAR_CHANGE` var ids (rAthena `SP_WEIGHT`, `SP_MAXWEIGHT`), in 0.1 weight units.
 pub(crate) const SP_WEIGHT: u16 = 24;
-const SP_MAXWEIGHT: u16 = 25;
+pub(crate) const SP_MAXWEIGHT: u16 = 25;
 
 /// `CZ_REQUEST_ACT` action types.
 const ACTION_SIT: u8 = 2;
@@ -412,17 +412,23 @@ impl MapInstance {
         }
     }
 
-    /// `CZ_NOTIFY_ACTORINIT`: the inventory lists and weights (on every one, repeats included),
-    /// then, the first time, into the grid, spawn to others, others to self, the entry settings.
+    /// `CZ_NOTIFY_ACTORINIT`: the inventory lists and weights (on every one, repeats included);
+    /// the first time also the `0x01d7` look before them, then into the grid, spawn to others,
+    /// `0x099b`, others to self, the entry settings.
     fn actor_init(&mut self, e: Entity, now_ms: u64) {
+        let entering = !self.world.in_grid[e.index()];
+        if entering {
+            self.send_weapon_look(e);
+        }
         self.send_inventory(e);
-        if self.world.in_grid[e.index()] {
+        if !entering {
             return;
         }
         self.world.show(e);
         if let Some(unit) = self.appearance(e) {
             self.emit_aoi(e, true, ServerEvent::UnitSpawned { unit });
         }
+        self.send_map_property(e);
         self.query_into_after(self.cell(e));
         let tick = now_ms as u32;
         for k in 0..self.aoi_after.len() {
@@ -849,7 +855,9 @@ impl MapInstance {
         &self.map_name
     }
 
-    /// Creates the entity (not yet visible; it is announced on `NotifyActorInit`).
+    /// Creates the entity for a login (not yet visible; it is announced on `NotifyActorInit`) and
+    /// returns what the player gets before its first `0x007d`, to send after `ZC_ACCEPT_ENTER` and
+    /// the friends list: the MOTD, `0x0091` to its own cell and the login status packets.
     /// A duplicate char_id returns `Err(CharacterAlreadyEntered)`.
     pub fn spawn_character(
         &mut self,
@@ -860,8 +868,10 @@ impl MapInstance {
         if x >= self.walkability.width() || y >= self.walkability.height() {
             return Err(EngineError::InvalidCell { x, y });
         }
-        self.spawn_player(&mut spawn, Arrival::Login)?;
-        Ok(Vec::new())
+        let e = self.spawn_player(&mut spawn, Arrival::Login)?;
+        let queued = self.events.len();
+        self.send_login_burst(e);
+        Ok(self.events.split_off(queued))
     }
 
     /// Adds `item.amount` of `item` to the character's inventory and sends the `0x0b41` result

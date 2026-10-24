@@ -257,6 +257,17 @@ pub fn encode_zc_npcack_mapmove(map_name: &str, x: u16, y: u16) -> Bytes {
     buf.freeze()
 }
 
+/// Encodes `ZC_SPRITE_CHANGE2` (0x01d7), fixed 15 bytes: `gid:u32, type:u8, val:u32, val2:u32`.
+pub fn encode_zc_sprite_change2(gid: u32, look_type: u8, value: u32, value2: u32) -> Bytes {
+    let mut buf = BytesMut::with_capacity(15);
+    buf.put_u16_le(PacketOpcode::ZC_SPRITE_CHANGE2.raw());
+    buf.put_u32_le(gid);
+    buf.put_u8(look_type);
+    buf.put_u32_le(value);
+    buf.put_u32_le(value2);
+    buf.freeze()
+}
+
 /// Encodes `ZC_NOTIFY_PLAYERMOVE` (0x0087).
 ///
 /// Fixed packet structure (12 bytes):

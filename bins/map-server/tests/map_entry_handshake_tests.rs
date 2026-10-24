@@ -98,24 +98,34 @@ async fn test_bin_map_persist_lifecycle_and_coordinates() {
     client.write_all(&cz_enter).await.unwrap();
     client.flush().await.unwrap();
 
-    let mut burst_buf = [0u8; 256];
-    let mut total_read = 0;
-    tokio::time::timeout(Duration::from_secs(5), async {
-        while total_read < 23 {
-            let n = client.read(&mut burst_buf[total_read..]).await.unwrap();
-            assert!(n > 0);
-            total_read += n;
-        }
-    })
-    .await
-    .expect("Timed out waiting for initial 23 bytes");
+    let mut burst_buf = [0u8; 23];
+    tokio::time::timeout(Duration::from_secs(5), client.read_exact(&mut burst_buf))
+        .await
+        .expect("Timed out waiting for initial 23 bytes")
+        .expect("reads the initial 23 bytes");
     assert_eq!(&burst_buf[0..2], &[0x83, 0x02], "Must receive ZC_AID first");
-
-    client.write_all(&[0x7d, 0x00]).await.unwrap();
-    client.flush().await.unwrap();
 
     let mut decoder = PacketDecoder::new(RathenaPacketLengthTable, TARGET_PACKETVER);
     let mut buffer = BytesMut::with_capacity(1024);
+    // The login burst before ACTORINIT ends with 0x0ade (specs/map-entry-settings §5).
+    let mut login_burst_done = false;
+    let start = tokio::time::Instant::now();
+    while !login_burst_done && start.elapsed() < Duration::from_secs(2) {
+        while let Ok(Some(frame)) = decoder.decode(&mut buffer) {
+            if frame.opcode == PacketOpcode(0x0ade) {
+                login_burst_done = true;
+                break;
+            }
+        }
+        if !login_burst_done {
+            let _ = tokio::time::timeout(Duration::from_millis(100), client.read_buf(&mut buffer))
+                .await;
+        }
+    }
+    assert!(login_burst_done, "login burst ends with 0x0ade");
+
+    client.write_all(&[0x7d, 0x00]).await.unwrap();
+    client.flush().await.unwrap();
     // After ACTORINIT the server syncs weight (ZC_PAR_CHANGE); the spawner gets no entry
     // packet about itself.
     let mut received_par_change = false;

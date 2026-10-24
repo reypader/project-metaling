@@ -1,10 +1,13 @@
-//! Map-entry settings packets, the status block and the load confirm (spec PKT-SET-01..04).
+//! Map-entry settings packets, the status block, the rest of the entry burst and the load confirm
+//! (spec PKT-SET-01..05).
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use std::sync::Arc;
 
 use bytes::{Bytes, BytesMut};
-use ro_core::{ClientIntent, ServerEvent, SkillInfo, StatusWindow, TARGET_PACKETVER};
+use ro_core::{
+    AchievementSummary, ClientIntent, ServerEvent, SkillInfo, StatusWindow, TARGET_PACKETVER,
+};
 use ro_packets::{
     decode_frame, is_implemented_outbound_opcode, lookup_packet_length, DecodedFrame, EventEncoder,
     ModernEventEncoder, PacketDecoder, PacketLength, PacketOpcode, RawPacket,
@@ -209,6 +212,76 @@ fn pkt_set_04_encodes_skill_entry_and_status_block() {
     );
 
     for op in [0x0acb, 0x00bd, 0x0141, 0x013a, 0x00be] {
+        assert!(
+            is_implemented_outbound_opcode(PacketOpcode(op), TARGET_PACKETVER),
+            "{op:#06x} should be marked implemented"
+        );
+    }
+}
+
+#[test]
+fn pkt_set_05_encodes_the_rest_of_the_entry_burst() {
+    // rAthena capture packet_rathena_item_2026-10-24.txt file line 73 (proxy #63), with the
+    // 15-byte frame the proxy cut at 11: `d7 01 <aid> 02 b1 04 00 00 00 00 00 00`.
+    assert_eq!(
+        encode(ServerEvent::SpriteChanged {
+            gid: 2_000_001,
+            look_type: 2,
+            value: 1201,
+            value2: 0,
+        }),
+        [
+            0xd7, 0x01, 0x81, 0x84, 0x1e, 0x00, 0x02, 0xb1, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00
+        ]
+    );
+    // File line 81 (proxy #71): `9b 09 00 00 00 06 00 00`.
+    assert_eq!(
+        encode(ServerEvent::MapProperty {
+            property: 0,
+            flags: 0x0600
+        }),
+        [0x9b, 0x09, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00]
+    );
+    // File line 67 (proxy #57): `e7 09 00`.
+    assert_eq!(
+        encode(ServerEvent::UnreadMail { unread: false }),
+        [0xe7, 0x09, 0x00]
+    );
+    // File line 70 (proxy #60): `de 0a 46 00 00 00`.
+    assert_eq!(
+        encode(ServerEvent::OverweightPercent { percent: 70 }),
+        [0xde, 0x0a, 0x46, 0x00, 0x00, 0x00]
+    );
+    // File line 68 (proxy #58) has score 10, level 0, exp 10, next 18; with no achievement the
+    // 50-byte entry is all zero.
+    let update = encode(ServerEvent::AchievementUpdate {
+        summary: AchievementSummary {
+            total_score: 10,
+            level: 0,
+            exp: 10,
+            exp_to_next: 18,
+        },
+    });
+    assert_eq!(update.len(), 66);
+    assert_eq!(
+        &update[..16],
+        &[0x24, 0x0a, 0x0a, 0, 0, 0, 0, 0, 0x0a, 0, 0, 0, 0x12, 0, 0, 0]
+    );
+    assert!(update[16..].iter().all(|b| *b == 0), "no achievement");
+
+    for (op, len) in [
+        (0x01d7, 15),
+        (0x099b, 8),
+        (0x09e7, 3),
+        (0x0a24, 66),
+        (0x0ade, 6),
+    ] {
+        assert_eq!(
+            lookup_packet_length(PacketOpcode(op), TARGET_PACKETVER),
+            Some(PacketLength::Fixed(len)),
+            "{op:#06x}"
+        );
         assert!(
             is_implemented_outbound_opcode(PacketOpcode(op), TARGET_PACKETVER),
             "{op:#06x} should be marked implemented"

@@ -151,3 +151,67 @@ settings packet and still never sends `0x0447`. Next try, chosen with the user: 
 - A real skill list (NV_BASIC and job skills) with the skill tree.
 - The exp/status block (`0x0acb`, `0x00bd`, `0x0141`, `0x013a`, trait `0x00be`); see PF-12.
 - If this group doesn't unblock input, the next suspects are login-time `0x0091` (PF-20), then the status block.
+
+## 5. Fix 2 (2026-10-24): the remaining login-only differences, in one batch
+Fix 1 failed too ([`metaling-20261024-3.txt`](../../reference/catalog/captures/metaling-20261024-3.txt)). Every
+attempt costs a client run, so this one sends every remaining login difference at once (plan handoff).
+
+What the captures show: in both rAthena logins of
+[`packet_rathena_item_2026-10-24.txt`](../../reference/catalog/captures/packet_rathena_item_2026-10-24.txt)
+(proxy `#` 33 → 61 → 100 → 103 and 249 → 303 → 306 → 349), the server sends `0x0091` with the character's own
+cell before the first `0x007d`. The client sends `0x007d` twice, and `0x0447` follows the second one. On warps,
+too, `0x0447` follows the `0x007d` of a `0x0091` load. So the client most likely sends `0x0447` only after a load
+that a `0x0091` started, and metaling never sends `0x0091` at login. That is the main suspect; the other items
+below come along in the same batch.
+
+### Design
+- `ro-core`:
+  - `CharacterStatus` gains `hp`, `max_hp`, `sp`, `max_sp` (default 40/40/11/11, the schema defaults);
+    persistence loads them.
+  - `AchievementSummary { total_score, level, exp, exp_to_next }`.
+  - `ServerEvent`: `SpriteChanged` (`0x01d7`), `MapProperty` (`0x099b`), `UnreadMail` (`0x09e7`),
+    `AchievementUpdate` (`0x0a24`), `OverweightPercent` (`0x0ade`).
+- `ro-packets` encoders (lengths already in `table.rs`; all marked implemented):
+
+  | Packet | Bytes |
+  | :--- | :--- |
+  | `0x01d7` | `d7 01 <gid:u32> <type:u8> <val:u32> <val2:u32>` (15) |
+  | `0x099b` | `9b 09 <property:u16> <flags:u32>` (8) |
+  | `0x09e7` | `e7 09 <unread:u8>` (3) |
+  | `0x0a24` | `24 0a <score:u32> <level:u16> <exp:u32> <exp_to_next:u32>` + 50 zero bytes (66) |
+  | `0x0ade` | `de 0a <percent:u32>` (6) |
+- `ro-engine`:
+  - `spawn_character` returns the login burst (all to self) instead of an empty list:
+    1. `0x008e` "Welcome to Metaling." (rAthena sends its version line and MOTD here).
+    2. `0x0091` with the map's `.gat` name and the spawn cell.
+    3. The status push of rAthena's first `status_calc_pc`, every field once, in captured order: `0x00b0`
+       MAXWEIGHT; `0x0141` STR..LUK (bonus 0); `0x00b0` HIT, FLEE1, ASPD, ATK1, DEF1, DEF2, ATK2, FLEE2,
+       CRITICAL, MATK2, MATK1, MDEF2, MDEF1 (all 0); `0x013a` 1; `0x00b0` MAXHP, MAXSP, HP, SP (loaded), WEIGHT.
+    4. `0x09e7` 0; `0x0a24` score 0, level 0, exp 0, exp_to_next 18 (`achievement_level_db` level 1); `0x0ade`
+       70. No `0x0a23`: rAthena skips it when there are no achievements.
+  - The actor init that shows the player (login, both warp kinds) starts with `0x01d7` `LOOK_WEAPON` with
+    the right-hand and left-hand client ids (0 when empty; a two-handed weapon gives val2 0), to self only.
+    After the spawn to others it sends `0x099b` property 0, flags `0x0600` (USECART and SUNMOONSTAR, rAthena's
+    plain-map default), before the unit entries.
+  - A repeated `0x007d` (the login reload) still only re-sends the inventory (ENG-INV-04), with no `0x01d7` or
+    `0x099b`. The settings stay on the first `0x007d`, as in rAthena.
+- `map-server`: on a login, sends `0x02eb`, `0x0201`, then the returned burst, in that order.
+
+Left out (`DEFERRED.md`): `0x01d7` to observers, the unasked `0x0adf` name pushes, `0x0a23`, a configurable
+MOTD, and the char-server `0x0b72` size difference.
+
+If this works, bisecting is optional: the batch matches what rAthena sends.
+
+### Scenarios
+- **PKT-SET-05:** the five new events encode to the bytes above (`0x01d7`, `0x099b`, `0x09e7`, `0x0ade` and the
+  `0x0a24` header match the capture), with lengths 15/8/3/66/6 in `table.rs`, and are marked implemented.
+- **ENG-SET-07:** `spawn_character` returns exactly the burst above, in order, all to self, with the loaded STR,
+  AGI and HP/SP and max weight from STR. Nothing is queued for the next tick. `enter_by_warp` returns no burst.
+- **ENG-SET-08:** a login's actor init starts with `0x01d7` (gid = account id, type 2, 0/0 with empty hands).
+  `0x099b` follows SP_MAXWEIGHT and the spawn to others and comes before the first unit entry. A second `0x007d`
+  sends neither. A same-map warp and a cross-map arrival send both again. Unit test: `hand_looks` for empty
+  hands, an unworn weapon, a weapon plus shield, and a two-handed weapon.
+- **BIN-SET-01** (updated): after `0x0201` the client gets `0x008e`, `0x0091` (own map and cell), the status
+  push, then `0x09e7`, `0x0a24`, `0x0ade`. After `0x007d` it gets `0x01d7` (15 bytes) and `0x099b`. A second
+  `0x007d` gets only the inventory frames, and `0x0447` gets `0x0b1b`.
+- **DB-PERS** (PER-INV-04): HP, max HP, SP and max SP load into `CharacterStatus`.

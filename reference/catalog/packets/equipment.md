@@ -180,3 +180,12 @@ Handled by the inventory packet (`clif_inventorylist`, `clif.cpp:3062`); see [in
 ## Equip switch (out of scope)
 
 `clif_equipswitch_*` (`clif.cpp:22236-22343`) handle the saved equip-switch feature (`equip_switch` column). Not documented here.
+
+### `0x01d7` at `LoadEndAck` (map entry, to self)
+
+Provenance: rathena `d4b8e7b8f`, `clif.cpp:10748-10776` (`clif_parse_LoadEndAck`), `clif.cpp:3965-4140` (`clif_changelook`), `pc.cpp:622-678` (`update_look`), `pc.cpp:15490-15560` (`pc_set_costume_view`), `clif.cpp:1656-1675` (`clif_refresh_clothcolor`). Applies to `20260219` (`PACKETVER >= 4` branch).
+
+* Exactly one `0x01d7` is sent: `clif_changelook(sd, LOOK_WEAPON, 0)`. For a PC with `LOOK_WEAPON`/`LOOK_SHIELD` the passed `val` is discarded: both looks are recomputed by `update_look` and the packet is `type = LOOK_WEAPON (2)`, `val = vd.look[WEAPON]`, `val2 = vd.look[SHIELD]`, target `AREA` (includes self; observers in view also get it; `SELF` only if the char is `OPTION_INVISIBLE`).
+* (a) nothing in either hand: `val = 0`, `val2 = 0`.
+* (b) weapon in right hand: `val` = item `view_id` if non-zero else its item id (capture: Knife 1201 = `b1 04 00 00`); `val2` = left-hand item view id/item id if a different inventory index (shield), else 0. Two-handed weapons occupy both hands (same index) so `val2 = 0`. Costume option (`OPTION_COSTUME`) forces both 0.
+* Other look packets at `LoadEndAck` to self for a plain novice: none. `pc_set_costume_view` only sends `LOOK_HEAD_BOTTOM/MID/TOP/ROBE` when the recomputed view differs from `status.head_*` loaded from the DB (no headgear or costumes -> nothing). `clif_refresh_clothcolor` (`LOOK_CLOTHES_COLOR` 7) is compiled only for `PACKETVER < 20091103`, so it is a no-op at 20260219 regardless of cloth color. No hair/hair-color packets either (those are in the spawn packet).

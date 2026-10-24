@@ -29,7 +29,7 @@ Open questions and disagreements about wire packets for `PACKETVER = 20260219`. 
 | [PF-17](#pf-17) | `0x02c1` coloured message layout | Minor | Open |
 | [PF-18](#pf-18) | `MSI_WRONG_BULLET` is 2493 or 2494 | Minor | Open |
 | [PF-19](#pf-19) | Server rules not settled by source (overweight attack, DEF clamps, regen weight rate) | Server rule | Open |
-| [PF-20](#pf-20) | Login-time `0x0091` that metaling doesn't send | Behaviour | Open |
+| [PF-20](#pf-20) | Login-time `0x0091` (sent since map-entry-settings Fix 2; client check pending) | Behaviour | Open |
 | [PF-21](#pf-21) | Packets the proxy can't frame (backlog: missing/wrong `table.rs` lengths; a misframe can stall the proxy log) | Code gap | Open; item rows fixed |
 
 ### Resolved
@@ -294,13 +294,14 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 
 ### PF-20
 
-**Login-time `0x0091` that metaling doesn't send**
+**Login-time `0x0091` (own cell, before the first `0x007d`)**
 
 - **Status:** Open.
 - **Capture:** every fresh login in the 2026-10-23 warp captures ([`reference/catalog/captures/`](reference/catalog/captures/README.md) `packet_sequence-20261023_030246.txt`, `_031902.txt`, `_032015.txt`) has `0x0091` with the character's own map and cell after `0x02eb`, `0x0201` and the `0x008e` MOTD lines, before the client's first `0x007d`. In one login the client then sent `0x007d` twice.
 - **Source:** `pc_authok` calls `clif_changemap` explicitly on a fresh login, but not on arrival from another map-server. The source comment calls it a fix for a "login-without-aura glitch". rAthena neither waits for it nor tracks it. Details: [mechanics/map_entry_actions.md#map-entry-cz_enter-clif_parse_wanttoconnection](reference/catalog/mechanics/map_entry_actions.md#map-entry-cz_enter-clif_parse_wanttoconnection).
-- **Ours:** `bins/map-server/src/service.rs` `join` sends only `0x0283`, `0x0b18` and `0x02eb` before `0x007d`.
-- **Resolve by:** deciding whether to send it. Compare a metaling login capture with a real client against these captures: does the character show its aura, and does the client behave the same without it? Not needed for warps: the warp feature sends `0x0091` on a map change only.
+- **Ours:** since `specs/map-entry-settings` §5 (Fix 2, 2026-10-24) the engine's login burst sends it after `0x0201` and the MOTD line, before the status push (`crates/ro-engine/src/settings.rs` `send_login_burst`). Earlier, `join` sent only `0x0283`, `0x0b18`, `0x02eb` and `0x0201` before `0x007d`.
+- **Why it likely matters:** the client sends `0x0447` only after the `0x007d` of a load that a `0x0091` started (see [map_entry_actions.md#client-input-unblock--account-settings-0x0447---0x0b1b](reference/catalog/mechanics/map_entry_actions.md#client-input-unblock--account-settings-0x0447---0x0b1b)). Without the login `0x0091` the client never sends `0x0447`.
+- **Resolve by:** the Fix 2 client check: `0x0091` before the first `0x007d`, a second `0x007d`, then `0x0447` → `0x0b1b`.
 
 ### PF-21
 

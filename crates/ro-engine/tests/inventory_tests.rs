@@ -108,13 +108,18 @@ fn to_self(events: &[ScopedServerEvent], n: u32) -> Vec<&ServerEvent> {
 }
 
 /// The inventory part of an ActorInit: everything up to SP_MAXWEIGHT.
+/// From `InventoryStart` to SP_MAXWEIGHT (a fresh entry starts with the `0x01d7` look).
 fn inventory_part(events: &[ScopedServerEvent], n: u32) -> Vec<ServerEvent> {
     let mine = to_self(events, n);
+    let start = mine
+        .iter()
+        .position(|e| matches!(e, ServerEvent::InventoryStart))
+        .expect("InventoryStart sent");
     let end = mine
         .iter()
         .position(|e| matches!(e, ServerEvent::ParameterChanged { var_id: 25, .. }))
         .expect("SP_MAXWEIGHT sent");
-    mine[..=end].iter().map(|e| (*e).clone()).collect()
+    mine[start..=end].iter().map(|e| (*e).clone()).collect()
 }
 
 fn item(id: u32, amount: u16) -> Option<InventoryItem> {

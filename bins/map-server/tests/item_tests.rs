@@ -82,8 +82,10 @@ fn inventory(items: &[(u32, u16)]) -> CharacterInventory {
 async fn enter(server: &TestServer, n: u32) -> (Client, Vec<RawPacket>) {
     let mut client = Client::connect(server.addr).await;
     client.send(&cz_enter(n)).await;
-    // ZC_AID, 0x0b18, ZC_ACCEPT_ENTER, then the empty friends list (specs/map-entry-settings).
+    // ZC_AID, 0x0b18, ZC_ACCEPT_ENTER, the empty friends list, then the login burst
+    // (specs/map-entry-settings).
     client.read_exact_bytes(23 + 4).await;
+    client.read_login_burst().await;
     client.send(&[0x7d, 0x00]).await;
     let frames = client.collect(SHORT).await;
     (client, frames)
@@ -97,14 +99,15 @@ async fn bin_item_01_entry_lists_on_the_wire() {
     let server = TestServer::start_with(repo, &[]).await;
     let (_a, frames) = enter(&server, A).await;
     assert_eq!(
-        &ops(&frames)[..7],
-        [0x0b08, 0x0b09, 0x0b39, 0x0b0b, 0x0a9b, 0x00b0, 0x00b0],
+        &ops(&frames)[..8],
+        [0x01d7, 0x0b08, 0x0b09, 0x0b39, 0x0b0b, 0x0a9b, 0x00b0, 0x00b0],
         "{frames:?}"
     );
     assert_eq!(list_entries(&frames), [(2, POTION, 5), (3, KNIFE, 1)]);
-    let weight = u32::from_le_bytes(frames[5].payload[2..6].try_into().unwrap());
+    let weight = u32::from_le_bytes(frames[6].payload[2..6].try_into().unwrap());
     assert_eq!(weight, 5 * 70 + 400);
-    assert!(!ops(&frames).contains(&0x01d7), "no look packet yet");
+    // The knife isn't worn: LOOK_WEAPON with both hands empty (specs/map-entry-settings §5).
+    assert_eq!(&frames[0].payload[4..], &[2, 0, 0, 0, 0, 0, 0, 0, 0]);
 }
 
 /// BIN-ITEM-02: `@item`, logout, relog: the item is listed; holes compact.

@@ -800,8 +800,8 @@ impl MapWorldActor {
         }
     }
 
-    /// Spawns the character and sends its first packet: `ZC_ACCEPT_ENTER` (then the friends
-    /// list) on login, `0x0091` on a warp. On failure the join is dropped: that releases the
+    /// Spawns the character and sends its first packets: `ZC_ACCEPT_ENTER`, the friends list and
+    /// the engine's login burst on login, `0x0091` on a warp. On failure the join is dropped: that releases the
     /// claim (with the position set on it) and drops the sender, which ends the session.
     fn join(&mut self, join: JoinSession) {
         let JoinSession {
@@ -824,13 +824,17 @@ impl MapWorldActor {
         }
         let now = self.now_ms();
         let login = matches!(entry, Entry::Login);
+        let mut login_burst = Vec::new();
         let first = match entry {
             Entry::Login => match self.spawn_login(spawn, now) {
-                Ok(pos) => ServerEvent::AcceptEnter {
-                    account_id,
-                    server_tick: now as u32,
-                    pos,
-                },
+                Ok((pos, burst)) => {
+                    login_burst = burst;
+                    ServerEvent::AcceptEnter {
+                        account_id,
+                        server_tick: now as u32,
+                        pos,
+                    }
+                }
                 Err(err) => {
                     warn!(
                         "Map '{}' rejected entry of char {} for {:?}: {}",
@@ -878,23 +882,29 @@ impl MapWorldActor {
         if let Some(bytes) = self.encode(&first) {
             self.send_to_session(session_id, &bytes);
         }
-        // rAthena sends the (empty) friends list right after ZC_ACCEPT_ENTER on a login
-        // (specs/map-entry-settings).
+        // On a login rAthena sends the (empty) friends list right after ZC_ACCEPT_ENTER, then the
+        // engine's login burst (MOTD, 0x0091 to the own cell, status; specs/map-entry-settings).
         if login {
             if let Some(bytes) = self.encode(&ServerEvent::FriendsList) {
                 self.send_to_session(session_id, &bytes);
+            }
+            for scoped in &login_burst {
+                if let Some(bytes) = self.encode(&scoped.event) {
+                    self.send_to_session(session_id, &bytes);
+                }
             }
         }
         self.flush(&mut Vec::new());
     }
 
     /// Spawns a logging-in character at its stored cell, or at the map centre if that cell is
-    /// off this map (e.g. saved on a fallback grid), so it is never locked out.
+    /// off this map (e.g. saved on a fallback grid), so it is never locked out. Returns the cell
+    /// and the engine's login burst (all to self).
     fn spawn_login(
         &mut self,
         mut spawn: CharacterSpawn,
         now: u64,
-    ) -> Result<MapPosition, EngineError> {
+    ) -> Result<(MapPosition, Vec<ScopedServerEvent>), EngineError> {
         let stored = spawn.pos;
         match self.engine.spawn_character(spawn.clone(), now) {
             Err(EngineError::InvalidCell { x, y }) => {
@@ -908,9 +918,11 @@ impl MapWorldActor {
                     self.map_name, spawn.char_id.0, x, y, spawn.pos.x, spawn.pos.y
                 );
                 let pos = spawn.pos;
-                self.engine.spawn_character(spawn, now).map(|_| pos)
+                self.engine
+                    .spawn_character(spawn, now)
+                    .map(|burst| (pos, burst))
             }
-            result => result.map(|_| stored),
+            result => result.map(|burst| (stored, burst)),
         }
     }
 
