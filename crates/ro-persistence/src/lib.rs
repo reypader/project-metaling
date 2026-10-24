@@ -6,5 +6,5 @@ mod repository;
 pub use postgres::PostgresRepo;
 pub use repository::{
     AccountRepository, AuthError, CancelDeleteOutcome, CharacterRepository, CreateCharacterError,
-    DeleteReserveOutcome, RepositoryError,
+    DeleteReserveOutcome, InventoryRepository, PlayState, RepositoryError,
 };

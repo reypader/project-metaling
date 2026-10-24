@@ -11,8 +11,9 @@ use super::char::{
 };
 use super::login::CaLoginPacket;
 use super::map::{
-    CzChangeDirectionPacket, CzEnterPacket, CzNotifyActorInitPacket, CzReqDisconnectPacket,
-    CzReqNamePacket, CzRequestActPacket, CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket,
+    CzChangeDirectionPacket, CzEnterPacket, CzItemPickupPacket, CzItemThrowPacket,
+    CzNotifyActorInitPacket, CzReqDisconnectPacket, CzReqNamePacket, CzRequestActPacket,
+    CzRequestChatPacket, CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket,
 };
 
 /// Enumeration of all recognized decoded client frames across login, char, and map servers.
@@ -94,6 +95,18 @@ pub fn decode_frame(raw: &RawPacket, packetver: u32) -> Result<DecodedFrame, Pac
         }
         0x0368 => {
             let p = CzReqNamePacket::decode(raw)?;
+            Ok(DecodedFrame::Intent(p.to_intent()))
+        }
+        0x0362 => {
+            let p = CzItemPickupPacket::decode(raw)?;
+            Ok(DecodedFrame::Intent(p.to_intent()))
+        }
+        0x0363 => {
+            let p = CzItemThrowPacket::decode(raw)?;
+            Ok(DecodedFrame::Intent(p.to_intent()))
+        }
+        0x00f3 => {
+            let p = CzRequestChatPacket::decode(raw)?;
             Ok(DecodedFrame::Intent(p.to_intent()))
         }
         _ => {

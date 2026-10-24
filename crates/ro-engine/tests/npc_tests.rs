@@ -82,6 +82,9 @@ fn enter(engine: &mut MapInstance, x: u16, y: u16) -> Vec<ScopedServerEvent> {
         hair_color: 3,
         pos: MapPosition { x, y, dir: 0 },
         speed: 150,
+        str: 1,
+        group_id: 0,
+        inventory: Default::default(),
     };
     engine.spawn_character(spawn, 0).expect("spawn");
     engine.push_intent(intent(A, ClientIntent::NotifyActorInit));

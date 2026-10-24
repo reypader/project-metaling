@@ -824,3 +824,266 @@ async fn test_persist_schema_002_connection_error_handling() {
     let err = result.unwrap_err();
     assert!(matches!(err, RepositoryError::Unavailable(_)));
 }
+
+// ---- Inventory (spec PER-INV-01..04) ----
+
+use ro_core::{CharacterInventory, InventoryItem, ItemId, ItemOption};
+use ro_persistence::InventoryRepository;
+
+/// A schema-initialized repo (the inventory table and counter column may be new) and a fresh
+/// character on a fresh account.
+async fn inventory_fixture(group_id: i32) -> (PostgresRepo, Account, CharId) {
+    let repo = get_repo().await;
+    repo.init_schema().await.expect("schema applies");
+    let mut acc = create_test_account(&repo, AccountState::Active).await;
+    acc.group_id = group_id;
+    repo.insert_account(&acc).await.expect("group update");
+    let req = CreateCharacterRequest {
+        account_id: acc.id,
+        name: format!("Inv_{}", acc.id.0),
+        slot: 0,
+        hair_color: 1,
+        hair_style: 2,
+        starting_job: 0,
+        sex: Sex::Male,
+    };
+    let summary = repo.create_character(req, 9).await.expect("character");
+    (repo, acc, summary.char_id)
+}
+
+fn full_item() -> InventoryItem {
+    InventoryItem {
+        item_id: ItemId(u32::MAX),
+        amount: 30000,
+        equip: u32::MAX,
+        identified: false,
+        refine: 20,
+        attribute: 1,
+        cards: [u32::MAX, 0xFF, 4001, 1],
+        options: [
+            ItemOption {
+                id: i16::MAX,
+                value: i16::MIN,
+                param: u8::MAX,
+            },
+            ItemOption {
+                id: 1,
+                value: -1,
+                param: 0,
+            },
+            ItemOption::default(),
+            ItemOption::default(),
+            ItemOption {
+                id: 5,
+                value: 5,
+                param: 5,
+            },
+        ],
+        expire_time: u32::MAX,
+        favorite: true,
+        bound: 4,
+        unique_id: 0x8000_0001_0000_0002,
+        equip_switch: 0x8000_0000,
+        enchant_grade: 4,
+    }
+}
+
+/// PER-INV-01: a round trip keeps every field, including u32::MAX cards and a u64 unique_id
+/// with the top bit set.
+#[tokio::test]
+async fn per_inv_01_round_trip_keeps_every_field() {
+    let (repo, _acc, char_id) = inventory_fixture(0).await;
+    let inventory = CharacterInventory {
+        slots: vec![Some(full_item()), Some(InventoryItem::new(ItemId(501), 5))],
+        unique_item_counter: 7,
+    };
+    repo.save_inventory(char_id, &inventory)
+        .await
+        .expect("saves");
+    let state = repo
+        .load_play_state(char_id)
+        .await
+        .expect("loads")
+        .expect("character exists");
+    assert_eq!(state.inventory, inventory);
+}
+
+/// PER-INV-02: holes compact on load and slot order is kept.
+#[tokio::test]
+async fn per_inv_02_holes_compact() {
+    let (repo, _acc, char_id) = inventory_fixture(0).await;
+    let a = InventoryItem::new(ItemId(909), 3);
+    let b = InventoryItem::new(ItemId(501), 1);
+    let c = InventoryItem::new(ItemId(1201), 1);
+    let inventory = CharacterInventory {
+        slots: vec![
+            None,
+            Some(a.clone()),
+            None,
+            None,
+            Some(b.clone()),
+            Some(c.clone()),
+        ],
+        unique_item_counter: 0,
+    };
+    repo.save_inventory(char_id, &inventory)
+        .await
+        .expect("saves");
+    let loaded = repo
+        .load_play_state(char_id)
+        .await
+        .expect("loads")
+        .expect("exists")
+        .inventory;
+    assert_eq!(loaded.slots, vec![Some(a), Some(b), Some(c)]);
+}
+
+/// PER-INV-03: a save replaces the rows atomically; the counter is persisted.
+#[tokio::test]
+async fn per_inv_03_save_replaces_rows() {
+    let (repo, _acc, char_id) = inventory_fixture(0).await;
+    let first = CharacterInventory {
+        slots: vec![Some(InventoryItem::new(ItemId(909), 1)); 4],
+        unique_item_counter: 3,
+    };
+    repo.save_inventory(char_id, &first).await.expect("saves");
+    let second = CharacterInventory {
+        slots: vec![Some(InventoryItem::new(ItemId(501), 2))],
+        unique_item_counter: 9,
+    };
+    repo.save_inventory(char_id, &second).await.expect("saves");
+    let loaded = repo
+        .load_play_state(char_id)
+        .await
+        .expect("loads")
+        .expect("exists")
+        .inventory;
+    assert_eq!(loaded, second);
+
+    let empty = CharacterInventory {
+        slots: Vec::new(),
+        unique_item_counter: 9,
+    };
+    repo.save_inventory(char_id, &empty).await.expect("saves");
+    let loaded = repo
+        .load_play_state(char_id)
+        .await
+        .expect("loads")
+        .expect("exists");
+    assert_eq!(loaded.inventory, empty);
+
+    assert_eq!(
+        repo.save_inventory(CharId(u32::MAX >> 1), &second).await,
+        Err(RepositoryError::NotFound),
+        "unknown character"
+    );
+}
+
+/// PER-INV-04: the play state carries STR and the account group; deleting a character cascades.
+#[tokio::test]
+async fn per_inv_04_play_state_and_cascade() {
+    let (repo, _acc, char_id) = inventory_fixture(99).await;
+    sqlx::query("UPDATE characters SET str = 11 WHERE char_id = $1")
+        .bind(char_id.0 as i32)
+        .execute(repo.pool())
+        .await
+        .expect("str update");
+    let inventory = CharacterInventory {
+        slots: vec![Some(InventoryItem::new(ItemId(909), 1))],
+        unique_item_counter: 1,
+    };
+    repo.save_inventory(char_id, &inventory)
+        .await
+        .expect("saves");
+    let state = repo
+        .load_play_state(char_id)
+        .await
+        .expect("loads")
+        .expect("exists");
+    assert_eq!((state.str, state.group_id), (11, 99));
+
+    sqlx::query("DELETE FROM characters WHERE char_id = $1")
+        .bind(char_id.0 as i32)
+        .execute(repo.pool())
+        .await
+        .expect("delete");
+    let rows: i64 = sqlx::query_scalar("SELECT COUNT(*) FROM inventory WHERE char_id = $1")
+        .bind(char_id.0 as i32)
+        .fetch_one(repo.pool())
+        .await
+        .expect("count");
+    assert_eq!(rows, 0, "inventory rows cascade");
+    assert_eq!(repo.load_play_state(char_id).await.expect("loads"), None);
+}
+
+/// The seed makes the `test` account a GM (group 99).
+#[tokio::test]
+async fn per_inv_04_seed_sets_test_account_group() {
+    let repo = get_repo().await;
+    repo.init_schema().await.expect("schema");
+    repo.seed_test_data().await.expect("seed");
+    let account = repo
+        .find_by_username("test")
+        .await
+        .expect("query")
+        .expect("seeded");
+    assert_eq!(account.group_id, 99);
+}
+
+/// More rows than the inventory holds are refused, not silently dropped (the next save would
+/// delete them); a save with too many slots is refused too.
+#[tokio::test]
+async fn per_inv_02_over_capacity_is_refused() {
+    let (repo, _acc, char_id) = inventory_fixture(0).await;
+    let full = CharacterInventory {
+        slots: vec![Some(InventoryItem::new(ItemId(909), 1)); 100],
+        unique_item_counter: 0,
+    };
+    repo.save_inventory(char_id, &full).await.expect("100 fits");
+    let too_many = CharacterInventory {
+        slots: vec![Some(InventoryItem::new(ItemId(909), 1)); 101],
+        unique_item_counter: 0,
+    };
+    assert!(matches!(
+        repo.save_inventory(char_id, &too_many).await,
+        Err(RepositoryError::Internal(_))
+    ));
+    sqlx::query("INSERT INTO inventory (char_id, nameid, amount) VALUES ($1, 909, 1)")
+        .bind(char_id.0 as i32)
+        .execute(repo.pool())
+        .await
+        .expect("101st row by hand");
+    assert!(matches!(
+        repo.load_play_state(char_id).await,
+        Err(RepositoryError::Internal(_))
+    ));
+}
+
+/// Concurrent saves of one character serialize: the result is one whole inventory, never both.
+#[tokio::test]
+async fn per_inv_03_concurrent_saves_serialize() {
+    let (repo, _acc, char_id) = inventory_fixture(0).await;
+    let a = CharacterInventory {
+        slots: vec![Some(InventoryItem::new(ItemId(501), 1)); 30],
+        unique_item_counter: 1,
+    };
+    let b = CharacterInventory {
+        slots: vec![Some(InventoryItem::new(ItemId(909), 1)); 40],
+        unique_item_counter: 2,
+    };
+    for _ in 0..10 {
+        let (ra, rb) = tokio::join!(
+            repo.save_inventory(char_id, &a),
+            repo.save_inventory(char_id, &b)
+        );
+        ra.expect("save a");
+        rb.expect("save b");
+        let loaded = repo
+            .load_play_state(char_id)
+            .await
+            .expect("loads")
+            .expect("exists")
+            .inventory;
+        assert!(loaded == a || loaded == b, "{} rows", loaded.slots.len());
+    }
+}

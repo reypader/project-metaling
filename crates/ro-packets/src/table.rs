@@ -56,13 +56,16 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0093 => Some(Fixed(2)),
         0x0096 => Some(Dynamic),
         0x0099 => Some(Dynamic),
-        0x009c => Some(Fixed(9)), // ZC_CHANGE_DIRECTION (struct size)
+        0x009c => Some(Fixed(9)),  // ZC_CHANGE_DIRECTION (struct size)
+        0x009d => Some(Fixed(19)), // ZC_ITEM_ENTRY
         0x009e => Some(Fixed(17)),
         0x009f => Some(Fixed(20)),
+        0x00a1 => Some(Fixed(6)), // ZC_ITEM_DISAPPEAR
         0x00a2 => Some(Fixed(14)),
         0x00a7 => Some(Fixed(9)),
         0x00ab => Some(Fixed(4)),
         0x00ae => Some(Dynamic),
+        0x00af => Some(Fixed(6)), // ZC_ITEM_THROW_ACK
         0x00b0 => Some(Fixed(8)), // ZC_PAR_CHANGE
         0x00b1 => Some(Fixed(8)), // ZC_LONGPAR_CHANGE
         0x00b2 => Some(Fixed(3)),
@@ -232,7 +235,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x01cf => Some(Fixed(28)),
         0x01d0 => Some(Fixed(8)),
         0x01d5 => Some(Dynamic),
-        0x01d7 => Some(Fixed(11)),
+        0x01d7 => Some(Fixed(15)), // ZC_SPRITE_CHANGE2 (captured)
         0x01d8 => Some(Fixed(54)),
         0x01d9 => Some(Fixed(53)),
         0x01da => Some(Fixed(60)),
@@ -953,7 +956,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0ac5 => Some(Fixed(156)), // HC_NOTIFY_ZONESVR
         0x0acc => Some(Fixed(18)),
         0x0ace => Some(Fixed(4)),
-        0x0add => Some(Fixed(22)),
+        0x0add => Some(Fixed(24)), // ZC_ITEM_FALL_ENTRY (captured)
         0x0ade => Some(Fixed(6)),
         0x0adf => Some(Fixed(58)), // ZC_ACK_REQNAMEALL_NPC (struct size)
         0x0ae6 => Some(Fixed(10)),
@@ -964,7 +967,9 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0af7 => Some(Fixed(32)), // ZC_ACK_REQNAME_BYGID
         0x0af8 => Some(Fixed(11)),
         0x0afc => Some(Fixed(16)),
+        0x0b08 => Some(Dynamic), // ZC_INVENTORY_START
         0x0b09 => Some(Dynamic),
+        0x0b0b => Some(Fixed(4)), // ZC_INVENTORY_END
         0x0b0f => Some(Dynamic),
         0x0b10 => Some(Fixed(10)),
         0x0b11 => Some(Fixed(4)),
@@ -981,6 +986,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0b2c => Some(Fixed(3)),
         0x0b35 => Some(Fixed(3)),
         0x0b39 => Some(Dynamic),
+        0x0b41 => Some(Fixed(70)), // ZC_ITEM_PICKUP_ACK
         0x0b46 => Some(Fixed(10)),
         0x0b4c => Some(Fixed(2)),
         0x0b57 => Some(Dynamic),
@@ -1203,7 +1209,7 @@ mod tests {
 
         let legacy = [
             0x0067, 0x0068, 0x0069, 0x006a, 0x006d, 0x0071, 0x0072, 0x0073, 0x007e, 0x0085, 0x0086,
-            0x0089, 0x008a, 0x0094, 0x0095, 0x009b, 0x009d,
+            0x0089, 0x008a, 0x0094, 0x0095, 0x009b,
         ];
         for op in legacy {
             assert_eq!(

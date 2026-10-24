@@ -24,6 +24,8 @@ export RUST_LOG="${RUST_LOG:-info}"
 # Committed NPC spawn lists (GPL-3.0 data, see crates/ro-db/data/NOTICE.md).
 export NPC_DATA_DIR="${NPC_DATA_DIR:-$WORKSPACE_ROOT/crates/ro-db/data/npc}"
 export MOB_SPAWN_DATA_DIR="${MOB_SPAWN_DATA_DIR:-$WORKSPACE_ROOT/crates/ro-db/data/mob_spawn}"
+export ITEM_DATA_DIR="${ITEM_DATA_DIR:-$WORKSPACE_ROOT/crates/ro-db/data/item}"
+export MOB_DATA_DIR="${MOB_DATA_DIR:-$WORKSPACE_ROOT/crates/ro-db/data/mob}"
 
 while [[ $# -gt 0 ]]; do
     case "$1" in

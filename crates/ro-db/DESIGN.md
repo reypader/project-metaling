@@ -13,7 +13,7 @@
 ┌────────────────┴──────────────┴───────────────┴──────────────┴───────────────┐
 │ crates/ro-db                                                                 │
 │  1. MapCacheLoader      -> Flat 1D CellFlags grid (width * height)           │
-│  2. YamlRegistryLoader  -> MobBlueprint, ItemBlueprint, SkillBlueprint       │
+│  2. ItemDb / MobDb (YAML) -> registries (tools/item-import, mob-import)      │
 │  3. ItemBonusCompiler   -> AOT-compiled `EquipmentModifiers` structs         │
 │  4. MapNpcs / MapMobSpawns (YAML) -> Per-map spawn lists (tools/npc-import)  │
 └────────────────┬─────────────────────────────────────────────┬───────────────┘
@@ -38,12 +38,19 @@
   * `WATER` (`1 << 2`): Water surface cell (required for *Water Ball* / *Aqua Benedicta*).
 * **Contract Implementation:** Exposes the concrete `ro_db::MapGrid` (no trait, so the pathfinder's per-cell checks inline) so `ro-engine`'s Stage 3 Movement & A* Pathfinding system can query cell walkability in $O(1)$ time with zero lock contention. Each `MapInstance` holds an `Arc<MapGrid>`; runtime cell changes (`setcell`, Ice Wall) copy it on write.
 
-### 2.2 Pipeline 2: YAML Static Registries (`db/re/` & `db/import/`)
+### 2.2 Pipeline 2: Item and Mob Registries (offline import -> YAML)
 
-* **References:** `env(RATHENA_PATH)/db/re/mob_db.yml`, `item_db.yml` (`item_db_usable.yml`, `item_db_equip.yml`, `item_db_etc.yml`), `skill_db.yml`, and `job_stats.yml`.
-* **32-Bit ID Invariant:** Per our modern `TARGET_PACKETVER` (`20260219`), all item and monster identifiers deserialize into 32-bit newtypes (`ItemId(pub u32)`, `MobId(pub u32)`).
-* **Layered Import Merging:** Following rAthena's YAML specification, `ro-db` loads `db/re/<file>.yml` first and overlays entries from `db/import/<file>.yml` by primary key (`Id`), supporting partial field overrides and `Clear: true` resets.
-* **Lookup Performance:** Once loaded, registries are frozen into immutable `FxHashMap<ItemId, ItemBlueprint>` and `FxHashMap<MobId, MobBlueprint>` tables wrapped in `Arc<StaticDb>` for lock-free sharing across all `MapWorld` worker threads.
+Like the spawn lists, the registries are imported offline into our own schema; `ro-db` never parses rAthena's item or mob YAML.
+
+1. **Offline import (dev-only, MIT, clean-room):**
+   * `tools/item-import` reads `db/re/item_db_{usable,equip,etc}.yml`, applies rAthena's load rules (`DelayConsume` -> `Usable`, equipment without `Locations` -> `Etc`, field-by-field merge of repeated ids, `AliasName` -> `ViewId`) and keeps only the fields Metaling uses. It writes `ITEM_DATA` v1 to `data/item/item_{usable,equip,etc}.yml`, in id order.
+   * `tools/mob-import` reads `db/re/mob_db.yml` and resolves `Drops` / `MvpDrops` AegisNames to item ids through `ItemDb` (loaded from `data/item/`, so run item-import first). It writes `MOB_DATA` v1 to `data/mob/mob_db.yml`.
+   * Schemas: `specs/items/spec.md` §1.
+2. **Runtime (`ItemDb::load_dir`, `MobDb::load_dir`):** the map-server loads both once at startup from `ITEM_DATA_DIR` / `MOB_DATA_DIR` and shares them through `Arc` with every map instance. A missing file in a configured directory is an error; an unset directory gives an empty registry.
+3. **Lookups:** `ItemDb` by id, by case-insensitive AegisName (unique) and by case-insensitive Name (lowest id wins); `MobDb` by id. Both use `std` hash maps over an id-sorted `Vec`.
+4. **Validation:** duplicate ids, duplicate AegisNames, unknown keys, bad headers; for mobs also the id ranges, at most 10 drops / 3 MVP drops, and rates in `1..=10000`.
+
+`Level`, `Hp` and `WalkSpeed` are imported but not wired into spawned mobs yet (`DEFERRED.md`). Scripts, jobs, prices, combat stats and `db/import` overlays are not imported.
 
 ### 2.3 Pipeline 3: Ahead-of-Time (AOT) Item Bonus Compiler
 
@@ -74,16 +81,46 @@ Script bodies are not imported; each entry records `Source: <file>:<line>` for t
 `ro-db` exposes its parsed data to `ro-engine` and `bins/map-server` using these types, defined in `ro-db`:
 
 ~~~rust
-// ItemId and ScriptId don't exist yet. Like MobId, an id lives here while only ro-db and its
-// dependents use it; it moves to ro-core only when a crate that can't depend on ro-db needs it.
-use ro_core::{ItemId, MapPosition};
+// An id lives here while only ro-db and its dependents use it, and moves to ro-core when a crate
+// that can't depend on ro-db needs it. ItemId is in ro-core (persistence stores items).
+use ro_core::ItemId;
 
 /// mob_db id; valid ranges 1001..=3998 and 20021..=31998. Sent as the unit's `job`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct MobId(pub u32);
 
+/// Future: an opaque script handle from ro-scripting.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct ScriptId(pub u32);
+
+/// Item registry (`ItemDb::load_dir`, `parse_file`, `file_to_yaml`, `from_items`;
+/// `get`, `by_aegis_name`, `by_name`).
+pub struct ItemData {
+    pub id: ItemId,
+    pub aegis_name: String,
+    pub name: String,
+    pub item_type: ItemType,          // is_stackable(), wire_type(locations)
+    pub weight: u32,                  // 0.1 units
+    pub locations: u32,               // EQP_ mask
+    pub view: u32,
+    pub view_id: Option<ItemId>,      // AliasName target; client_id() picks it
+    pub slots: u16,
+    pub stack_amount: u16, pub stack_inventory: bool,
+    pub unique_id: bool, pub bind_on_equip: bool,
+    pub drop_effect: u8,              // e_item_drop_effect
+    pub no_drop: bool, pub no_drop_override: u16,
+}
+
+/// Mob registry (`MobDb::load_dir`, `parse_file`, `file_to_yaml`, `from_mobs`; `get`).
+pub struct MobData {
+    pub id: MobId,
+    pub aegis_name: String, pub name: String,
+    pub level: u16, pub hp: u32, pub walk_speed: u16,   // imported, not wired yet
+    pub class: MobClass,              // Normal | Boss | Guardian | Battlefield | Event
+    pub mvp: bool,                    // boss_type(): 2 MVP, 1 Boss, else 0
+    pub drops: Vec<MobDrop>,          // <= 10, db order; MobDrop { item: ItemId, rate: u16 }
+    pub mvp_drops: Vec<MobDrop>,      // <= 3
+}
 
 /// One map's NPCs (`MapNpcs::load_yaml`, `from_yaml_str`, `to_yaml_string`).
 pub struct MapNpcs { pub npcs: Vec<NpcSpawn> }

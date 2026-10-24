@@ -14,11 +14,11 @@ The `PostgresRepo` repository implements the repository traits defined in this c
 
 * `bins/login-server` (`LoginService`): Consumes `AccountRepository` to authenticate credentials during client login (`CA_LOGIN`) and retrieve account records during session ticket validation or account queries.
 * `bins/char-server` (`CharService`): Consumes `CharacterRepository` to retrieve character summaries (`list_by_account` for `CH_ENTER`), select active characters (`find_by_slot` for `CH_SELECT_CHAR`), create new characters (`create_character` for `CH_MAKE_CHAR`), and manage character deletion reservations (`reserve_delete` for `CH_DELETE_CHAR3_RESERVED`, `cancel_delete` for `CH_DELETE_CHAR3_CANCEL`).
-* `bins/map-server` (`MapService`): Consumes `CharacterRepository` to load character spawn coordinates (`find_by_id` for `CZ_ENTER`) and flush updated coordinates (`last_map`, `last_pos`) upon map transfers, checkpoint saves, or disconnects.
+* `bins/map-server` (`MapService`): Consumes `CharacterRepository` to load character spawn coordinates (`find_by_id` for `CZ_ENTER`) and flush updated coordinates (`last_map`, `last_pos`) upon map transfers, checkpoint saves, or disconnects. Consumes `InventoryRepository` to load the play state (STR, account `group_id`, inventory) at `CZ_ENTER` and to save whole-inventory snapshots on logout, map change and autosave.
 
 Types involved:
 * From `ro-core` (shared DTOs): `AccountId`, `CharId`, `Sex`, `MapPosition`, `Account`, `AccountState`, `CharacterSummary`, and `CreateCharacterRequest`.
-* Owned by `ro-persistence`: `AccountRepository`, `AuthError`, `CharacterRepository`, `CreateCharacterError`, `DeleteReserveOutcome`, `CancelDeleteOutcome`, and `RepositoryError`.
+* Owned by `ro-persistence`: `AccountRepository`, `AuthError`, `CharacterRepository`, `CreateCharacterError`, `DeleteReserveOutcome`, `CancelDeleteOutcome`, `InventoryRepository`, `PlayState`, and `RepositoryError`.
 
 ---
 
@@ -164,11 +164,14 @@ CREATE TABLE character_blobs (
 ) WITH (fillfactor = 80);
 ```
 
-### 3.4 Pattern 4: Relational Economic Ledgers (`inventory_items`, `storage_items`) (Future Phases)
+### 3.4 Pattern 4: Inventory Table (`inventory`)
 
-All items use 32-bit Item IDs (`INT` / `u32`) matching `ItemId(pub u32)` and carry a unique 64-bit `item_uid` (`BIGINT`) for auditing:
-* Atomic Transactions: Player trades, vending sales, and storage transfers execute inside a single transaction (`sqlx::Transaction`) that transfers `item_uid` ownership and updates `characters.zeny`.
-* Batch Upserts: Inventory modifications execute via PostgreSQL array unnesting (`UNNEST($1::bigint[], $2::int[], ...)`) combined with `ON CONFLICT (item_uid) DO UPDATE` to flush inventory deltas in a single database round-trip.
+Built by `specs/items` (spec §2.8). One row per stored item, keyed by an identity `id`, with `char_id` → `characters` (`ON DELETE CASCADE`, indexed on `(char_id, id)`). Columns mirror rAthena's `struct item`: `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `card0..3`, `option_id/val/parm0..4`, `expire_time`, `favorite`, `bound`, `unique_id`, `equip_switch`, `enchantgrade`. `u32` fields are `BIGINT`; the `u64` `unique_id` is stored bit-cast into `BIGINT`. `characters.unique_item_counter` holds the per-character counter for `unique_id = (char_id << 32) | counter`.
+
+* **Load (`load_play_state`):** one query for `str`, `unique_item_counter` and the account's `group_id`, then the rows `ORDER BY id`. Both reads run in one `REPEATABLE READ READ ONLY` transaction, so a concurrent save can't pair the old counter with the new items. Rows fill slots `0..n`, so runtime holes compact on relog (rAthena does the same). More than 100 rows is an error (the entry is refused) rather than a silent truncation the next save would make permanent; a save with more than 100 slots is refused too.
+* **Save (`save_inventory`):** one transaction: `UPDATE characters SET unique_item_counter` (0 rows = `NotFound`), `DELETE` every row of the character, then a single multi-row `INSERT ... SELECT FROM UNNEST(...) WITH ORDINALITY ORDER BY ord`. Ids rise in slot order, so the next load keeps the slot order. The `UPDATE` must run first: its row lock serializes concurrent saves of one character. No per-row diffing: an inventory is at most 100 rows and is written on logout, map change and a 300 s autosave only.
+* **Ordering:** the map-server sends inventory and position writes for one character through one ordered writer, so they never reorder (see `bins/map-server`).
+* **Future:** storage and cart tables follow the same pattern. Trades and vending will need item moves inside one transaction across two characters.
 
 ---
 
@@ -186,8 +189,8 @@ When `map-server` flushes a character state snapshot to `char-server`, the flush
 ### 5.1 Initialization and Seed Scripts
 
 Database bootstrapping uses SQL scripts located in `crates/ro-persistence/sql/`:
-* `crates/ro-persistence/sql/01_schema.sql`: Contains DDL creating the `accounts` and `characters` tables, identity sequences, foreign key constraints, indexes, and storage fillfactors.
-* `crates/ro-persistence/sql/02_seed.sql`: Inserts the baseline development account (`account_id = 2000000`, username `"test"`, password hash `"password"`, `sex = 1`, `email = "test@example.com"`, `state = 0`) with zero initial characters.
+* `crates/ro-persistence/sql/01_schema.sql`: Contains DDL creating the `accounts`, `characters` and `inventory` tables, identity sequences, foreign key constraints, indexes, and storage fillfactors. `PostgresRepo::init_schema` runs it at every server start, so it must stay idempotent and safe to run concurrently: it takes a transaction-scoped advisory lock first, tables use `CREATE TABLE IF NOT EXISTS`, and a column added to an existing table goes in a `DO` block that runs `ALTER TABLE` only when the column is missing (an unconditional `ALTER` takes an exclusive lock and deadlocks with concurrent character writes).
+* `crates/ro-persistence/sql/02_seed.sql`: Inserts the baseline development account (`account_id = 2000000`, username `"test"`, password hash `"password"`, `sex = 1`, `email = "test@example.com"`, `state = 0`) with zero initial characters, then sets its `group_id` to 99 (GM) with an `UPDATE`, so older databases get it too.
 
 The local development container configuration in `tools/docker/docker-compose.yml` mounts the `crates/ro-persistence/sql/` directory directly into `/docker-entrypoint-initdb.d/` of the PostgreSQL container. PostgreSQL executes these scripts alphabetically on initial volume creation, establishing tables and seed data automatically.
 
@@ -204,5 +207,5 @@ Persistence functionality progresses across planned milestones:
 | Coordinate Persistence | Flushing `(last_map, last_pos)` on map transfer or logout | Resilient offline reconnect queuing |
 | `PostgresRepo` | Authoritative repository backed by `sqlx::PgPool` | Read replica query routing |
 | `character_blobs` Table | Deferred | DDL, JSONB serializers, skill/status persistence |
-| Economic Ledgers | Deferred | `inventory_items`, `storage_items`, batch `UNNEST` queries |
+| `inventory` Table / `InventoryRepository` | Whole-inventory snapshot load/save (`specs/items`) | Storage, cart, trade transactions |
 | Dirty Checkpoint Protocol | Deferred | Dirty bitmask flags (`DIRTY_SCALARS`, `DIRTY_BLOBS`, `DIRTY_INVENTORY`) |

@@ -1,8 +1,10 @@
-//! Character claims and the position writer (spec `specs/warp-map-change/spec.md` §1).
+//! Character claims and the ordered writer (specs `specs/warp-map-change/spec.md` §1,
+//! `specs/items/spec.md` §2.8).
 //!
 //! Each online character has exactly one `Claim`. Dropping it is the only release: it records
-//! the last known position for a fast re-entry, queues the database write, and only then frees
-//! the character. One writer task runs the writes in queue order.
+//! the last known position (and inventory) for a fast re-entry, queues the database writes, and
+//! only then frees the character. One writer task runs every write in queue order, so a
+//! character's position and inventory writes never reorder.
 
 use std::{
     collections::{HashMap, HashSet},
@@ -13,10 +15,15 @@ use std::{
     time::Duration,
 };
 
-use ro_core::{CharId, MapPosition};
-use ro_persistence::CharacterRepository;
+use ro_core::{CharId, CharacterInventory, MapPosition};
+use ro_persistence::{CharacterRepository, InventoryRepository, RepositoryError};
 use tokio::sync::mpsc;
-use tracing::error;
+use tracing::{error, warn};
+
+/// Everything the map-server reads and writes in the database.
+pub trait MapRepository: CharacterRepository + InventoryRepository {}
+
+impl<T: CharacterRepository + InventoryRepository + ?Sized> MapRepository for T {}
 
 pub(crate) fn lock<T>(mutex: &Mutex<T>) -> MutexGuard<'_, T> {
     mutex
@@ -24,53 +31,106 @@ pub(crate) fn lock<T>(mutex: &Mutex<T>) -> MutexGuard<'_, T> {
         .unwrap_or_else(|poisoned| poisoned.into_inner())
 }
 
-/// A position not yet confirmed written, tagged with its write's sequence number.
+/// A value not yet confirmed written, tagged with its write's sequence number.
 #[derive(Debug, Clone, PartialEq, Eq)]
-struct RecentPosition {
-    map: String,
-    pos: MapPosition,
+struct Recent<T> {
+    value: T,
     seq: u64,
 }
 
-type RecentPositions = Arc<Mutex<HashMap<CharId, RecentPosition>>>;
+type RecentMap<T> = Arc<Mutex<HashMap<CharId, Recent<T>>>>;
+
+/// What one queued write stores.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) enum WriteKind {
+    Position { map: String, pos: MapPosition },
+    Inventory(CharacterInventory),
+}
 
 /// One queued database write.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub(crate) struct PositionWrite {
+pub(crate) struct Write {
     pub(crate) char_id: CharId,
-    pub(crate) map: String,
-    pub(crate) pos: MapPosition,
+    pub(crate) kind: WriteKind,
     pub(crate) seq: u64,
+}
+
+/// Writes not yet landed, by kind.
+#[derive(Default)]
+struct RecentWrites {
+    positions: RecentMap<(String, MapPosition)>,
+    inventories: RecentMap<CharacterInventory>,
+}
+
+impl RecentWrites {
+    fn clone_handles(&self) -> Self {
+        Self {
+            positions: Arc::clone(&self.positions),
+            inventories: Arc::clone(&self.inventories),
+        }
+    }
+
+    /// Whether `write` is still the newest of its kind for its character.
+    fn is_newest(&self, write: &Write) -> bool {
+        match &write.kind {
+            WriteKind::Position { .. } => lock(&self.positions)
+                .get(&write.char_id)
+                .is_some_and(|r| r.seq == write.seq),
+            WriteKind::Inventory(_) => lock(&self.inventories)
+                .get(&write.char_id)
+                .is_some_and(|r| r.seq == write.seq),
+        }
+    }
+
+    /// Forgets the recent value if `write` is still the newest of its kind.
+    fn landed(&self, write: &Write) {
+        match &write.kind {
+            WriteKind::Position { .. } => {
+                let mut recent = lock(&self.positions);
+                if recent
+                    .get(&write.char_id)
+                    .is_some_and(|r| r.seq == write.seq)
+                {
+                    recent.remove(&write.char_id);
+                }
+            }
+            WriteKind::Inventory(_) => {
+                let mut recent = lock(&self.inventories);
+                if recent
+                    .get(&write.char_id)
+                    .is_some_and(|r| r.seq == write.seq)
+                {
+                    recent.remove(&write.char_id);
+                }
+            }
+        }
+    }
 }
 
 /// State shared by the service handle and every map actor.
 pub(crate) struct SharedState {
     /// Characters claimed by an entering or joined session, on any map.
     online: Mutex<HashSet<CharId>>,
-    /// Last position of characters whose write hasn't landed yet.
-    recent_positions: RecentPositions,
+    /// Last position and inventory of characters whose write hasn't landed yet.
+    recent: RecentWrites,
     next_seq: AtomicU64,
-    writer_tx: mpsc::UnboundedSender<PositionWrite>,
+    writer_tx: mpsc::UnboundedSender<Write>,
 }
 
 impl SharedState {
-    /// Starts the process's position writer on the current runtime.
-    pub(crate) fn new(repo: Arc<dyn CharacterRepository>) -> Arc<Self> {
+    /// Starts the process's writer on the current runtime.
+    pub(crate) fn new(repo: Arc<dyn MapRepository>) -> Arc<Self> {
         let (writer_tx, writer_rx) = mpsc::unbounded_channel();
         let state = Self::with_writer(writer_tx);
-        tokio::spawn(run_position_writer(
-            repo,
-            Arc::clone(&state.recent_positions),
-            writer_rx,
-        ));
+        tokio::spawn(run_writer(repo, state.recent.clone_handles(), writer_rx));
         Arc::new(state)
     }
 
     /// State whose writes go to `writer_tx` (tests read the other end).
-    fn with_writer(writer_tx: mpsc::UnboundedSender<PositionWrite>) -> Self {
+    fn with_writer(writer_tx: mpsc::UnboundedSender<Write>) -> Self {
         Self {
             online: Mutex::new(HashSet::new()),
-            recent_positions: Arc::new(Mutex::new(HashMap::new())),
+            recent: RecentWrites::default(),
             next_seq: AtomicU64::new(1),
             writer_tx,
         }
@@ -82,6 +142,7 @@ impl SharedState {
             shared: Arc::clone(self),
             char_id,
             last: None,
+            inventory: None,
         })
     }
 
@@ -97,34 +158,48 @@ impl SharedState {
 
     /// The newest position of `char_id` whose write hasn't landed yet.
     pub(crate) fn recent_position(&self, char_id: CharId) -> Option<(String, MapPosition)> {
-        lock(&self.recent_positions)
+        lock(&self.recent.positions)
             .get(&char_id)
-            .map(|r| (r.map.clone(), r.pos))
+            .map(|r| r.value.clone())
+    }
+
+    /// The newest inventory of `char_id` whose write hasn't landed yet.
+    pub(crate) fn recent_inventory(&self, char_id: CharId) -> Option<CharacterInventory> {
+        lock(&self.recent.inventories)
+            .get(&char_id)
+            .map(|r| r.value.clone())
+    }
+
+    fn queue(&self, char_id: CharId, kind: WriteKind, seq: u64) {
+        if self.writer_tx.send(Write { char_id, kind, seq }).is_err() {
+            error!("writer gone; state of char {} not persisted", char_id.0);
+        }
     }
 
     /// Records the position for a re-entry that races the write, then queues the write.
     pub(crate) fn persist(&self, char_id: CharId, map: String, pos: MapPosition) {
         let seq = self.next_seq.fetch_add(1, Ordering::Relaxed);
-        lock(&self.recent_positions).insert(
+        lock(&self.recent.positions).insert(
             char_id,
-            RecentPosition {
-                map: map.clone(),
-                pos,
+            Recent {
+                value: (map.clone(), pos),
                 seq,
             },
         );
-        let write = PositionWrite {
+        self.queue(char_id, WriteKind::Position { map, pos }, seq);
+    }
+
+    /// Records the inventory for a re-entry that races the write, then queues the write.
+    pub(crate) fn persist_inventory(&self, char_id: CharId, inventory: CharacterInventory) {
+        let seq = self.next_seq.fetch_add(1, Ordering::Relaxed);
+        lock(&self.recent.inventories).insert(
             char_id,
-            map,
-            pos,
-            seq,
-        };
-        if self.writer_tx.send(write).is_err() {
-            error!(
-                "position writer gone; position of char {} not persisted",
-                char_id.0
-            );
-        }
+            Recent {
+                value: inventory.clone(),
+                seq,
+            },
+        );
+        self.queue(char_id, WriteKind::Inventory(inventory), seq);
     }
 }
 
@@ -132,48 +207,53 @@ impl SharedState {
 const RETRY_FIRST: Duration = Duration::from_millis(50);
 const RETRY_MAX: Duration = Duration::from_secs(5);
 
+async fn apply(repo: &dyn MapRepository, write: &Write) -> Result<(), RepositoryError> {
+    match &write.kind {
+        WriteKind::Position { map, pos } => repo.update_position(write.char_id, map, *pos).await,
+        WriteKind::Inventory(inventory) => repo.save_inventory(write.char_id, inventory).await,
+    }
+}
+
 /// Runs writes in queue order. After a write lands, its recent entry is cleared unless a newer
-/// release replaced it. A failed write is retried with backoff until it lands or a newer write
-/// for the same character supersedes it: the char-server reads the stored map, so a lost write
-/// after a warp would send the client to the wrong map.
-async fn run_position_writer(
-    repo: Arc<dyn CharacterRepository>,
-    recent: RecentPositions,
-    mut rx: mpsc::UnboundedReceiver<PositionWrite>,
+/// write of the same kind replaced it.
+///
+/// Only `Unavailable` (the database is down or busy) is retried, with backoff, until the write
+/// lands or a newer write of the same kind for the same character supersedes it: the
+/// char-server reads the stored map, so a lost write after a warp would send the client to the
+/// wrong map. Any other error can't succeed on retry and would stall every queued write behind
+/// it: `NotFound` (the character was deleted) is done, anything else is logged and dropped. A
+/// dropped write keeps its recent entry, so a re-entry in this process still sees it.
+async fn run_writer(
+    repo: Arc<dyn MapRepository>,
+    recent: RecentWrites,
+    mut rx: mpsc::UnboundedReceiver<Write>,
 ) {
     while let Some(write) = rx.recv().await {
-        let is_newest = || {
-            lock(&recent)
-                .get(&write.char_id)
-                .is_some_and(|r| r.seq == write.seq)
-        };
         let mut wait = RETRY_FIRST;
         loop {
-            match repo
-                .update_position(write.char_id, &write.map, write.pos)
-                .await
-            {
-                Ok(()) => {
-                    let mut recent = lock(&recent);
-                    if recent
-                        .get(&write.char_id)
-                        .is_some_and(|r| r.seq == write.seq)
-                    {
-                        recent.remove(&write.char_id);
-                    }
+            match apply(repo.as_ref(), &write).await {
+                Ok(()) | Err(RepositoryError::NotFound) => {
+                    recent.landed(&write);
                     break;
                 }
-                Err(err) => {
-                    error!(
-                        "Failed to persist position of char {} (retrying in {:?}): {}",
+                Err(RepositoryError::Unavailable(err)) => {
+                    warn!(
+                        "Failed to persist char {} (retrying in {:?}): {}",
                         write.char_id.0, wait, err
                     );
                     tokio::time::sleep(wait).await;
                     wait = (wait * 2).min(RETRY_MAX);
-                    if !is_newest() {
-                        // A newer write for this character is queued behind this one.
+                    if !recent.is_newest(&write) {
+                        // A newer write of this kind for this character is queued behind it.
                         break;
                     }
+                }
+                Err(err) => {
+                    error!(
+                        "Dropping write for char {} that can't succeed: {}",
+                        write.char_id.0, err
+                    );
+                    break;
                 }
             }
         }
@@ -181,11 +261,13 @@ async fn run_position_writer(
 }
 
 /// One character's entry in the online set. It moves with the session (into the map actor,
-/// and between maps on a warp); dropping it persists `last` (if set) and releases.
+/// and between maps on a warp); dropping it persists `last` and then `inventory` (if set) and
+/// releases.
 pub struct Claim {
     shared: Arc<SharedState>,
     char_id: CharId,
     last: Option<(String, MapPosition)>,
+    inventory: Option<CharacterInventory>,
 }
 
 impl Claim {
@@ -197,13 +279,26 @@ impl Claim {
     pub(crate) fn set_last(&mut self, map: &str, pos: MapPosition) {
         self.last = Some((map.to_string(), pos));
     }
+
+    /// Records the inventory, written after the position when the claim drops.
+    pub(crate) fn set_inventory(&mut self, inventory: CharacterInventory) {
+        self.inventory = Some(inventory);
+    }
+
+    /// Queues an inventory write now (map change, autosave); the claim stays held.
+    pub(crate) fn save_inventory(&self, inventory: CharacterInventory) {
+        self.shared.persist_inventory(self.char_id, inventory);
+    }
 }
 
 impl Drop for Claim {
     fn drop(&mut self) {
-        // Record before release: a login that claims right after sees the new position.
+        // Record before release: a login that claims right after sees the new state.
         if let Some((map, pos)) = self.last.take() {
             self.shared.persist(self.char_id, map, pos);
+        }
+        if let Some(inventory) = self.inventory.take() {
+            self.shared.persist_inventory(self.char_id, inventory);
         }
         self.shared.release(self.char_id);
     }
@@ -217,9 +312,11 @@ pub(crate) mod tests {
     use std::time::Duration;
 
     use async_trait::async_trait;
-    use ro_core::{AccountId, CharacterSummary, CreateCharacterRequest, Sex};
+    use ro_core::{
+        AccountId, CharacterSummary, CreateCharacterRequest, InventoryItem, ItemId, Sex,
+    };
     use ro_persistence::{
-        CancelDeleteOutcome, CreateCharacterError, DeleteReserveOutcome, RepositoryError,
+        CancelDeleteOutcome, CreateCharacterError, DeleteReserveOutcome, PlayState, RepositoryError,
     };
     use tokio::sync::Semaphore;
 
@@ -240,6 +337,11 @@ pub(crate) mod tests {
         pub(crate) gate: Semaphore,
         /// Writes that fail before one succeeds.
         pub(crate) failures: AtomicUsize,
+        /// Stored inventories and the inventory saves, in order.
+        pub(crate) inventories: Mutex<HashMap<CharId, CharacterInventory>>,
+        pub(crate) inventory_saves: Mutex<Vec<(CharId, CharacterInventory)>>,
+        /// The error every inventory save returns, if set.
+        pub(crate) inventory_error: Mutex<Option<RepositoryError>>,
     }
 
     impl FakeRepo {
@@ -266,6 +368,9 @@ pub(crate) mod tests {
                 finds: AtomicUsize::new(0),
                 gate: Semaphore::new(permits),
                 failures: AtomicUsize::new(0),
+                inventories: Mutex::new(HashMap::new()),
+                inventory_saves: Mutex::new(Vec::new()),
+                inventory_error: Mutex::new(None),
             })
         }
 
@@ -341,6 +446,47 @@ pub(crate) mod tests {
         }
     }
 
+    #[async_trait]
+    impl InventoryRepository for FakeRepo {
+        async fn load_play_state(
+            &self,
+            char_id: CharId,
+        ) -> Result<Option<PlayState>, RepositoryError> {
+            if !lock(&self.chars).contains_key(&char_id) {
+                return Ok(None);
+            }
+            Ok(Some(PlayState {
+                str: 1,
+                group_id: 0,
+                inventory: lock(&self.inventories)
+                    .get(&char_id)
+                    .cloned()
+                    .unwrap_or_default(),
+            }))
+        }
+
+        async fn save_inventory(
+            &self,
+            char_id: CharId,
+            inventory: &CharacterInventory,
+        ) -> Result<(), RepositoryError> {
+            self.gate.acquire().await.expect("gate open").forget();
+            if let Some(err) = lock(&self.inventory_error).clone() {
+                return Err(err);
+            }
+            lock(&self.inventory_saves).push((char_id, inventory.clone()));
+            lock(&self.inventories).insert(char_id, inventory.clone());
+            Ok(())
+        }
+    }
+
+    pub(crate) fn potions(n: u16) -> CharacterInventory {
+        CharacterInventory {
+            slots: vec![Some(InventoryItem::new(ItemId(501), n))],
+            unique_item_counter: 0,
+        }
+    }
+
     /// Polls `cond` every 5 ms for up to 2 s.
     pub(crate) async fn eventually(cond: impl Fn() -> bool) -> bool {
         for _ in 0..400 {
@@ -352,7 +498,7 @@ pub(crate) mod tests {
         false
     }
 
-    fn state() -> (Arc<SharedState>, mpsc::UnboundedReceiver<PositionWrite>) {
+    fn state() -> (Arc<SharedState>, mpsc::UnboundedReceiver<Write>) {
         let (tx, rx) = mpsc::unbounded_channel();
         (Arc::new(SharedState::with_writer(tx)), rx)
     }
@@ -373,9 +519,13 @@ pub(crate) mod tests {
             Some(("prontera.gat".to_string(), at(5, 6)))
         );
         let write = rx.try_recv().expect("write queued");
+        assert_eq!(write.char_id, CHAR);
         assert_eq!(
-            (write.char_id, write.map.as_str(), write.pos),
-            (CHAR, "prontera.gat", at(5, 6))
+            write.kind,
+            WriteKind::Position {
+                map: "prontera.gat".into(),
+                pos: at(5, 6)
+            }
         );
         assert!(!is_online(&state, CHAR), "released");
     }
@@ -458,5 +608,58 @@ pub(crate) mod tests {
         repo.gate.add_permits(1);
         assert!(eventually(|| state.recent_position(CHAR).is_none()).await);
         assert_eq!(repo.writes()[1].2, at(20, 20));
+    }
+
+    /// Dropping a claim writes the position first, then the inventory (spec §2.8).
+    #[test]
+    fn bin_item_drop_writes_position_then_inventory() {
+        let (state, mut rx) = state();
+        let mut claim = state.claim(CHAR).expect("claim");
+        claim.set_inventory(potions(3));
+        claim.set_last("prontera.gat", at(1, 2));
+        drop(claim);
+        assert!(matches!(
+            rx.try_recv().expect("first").kind,
+            WriteKind::Position { .. }
+        ));
+        assert_eq!(
+            rx.try_recv().expect("second").kind,
+            WriteKind::Inventory(potions(3))
+        );
+        assert_eq!(state.recent_inventory(CHAR), Some(potions(3)));
+    }
+
+    /// Only `Unavailable` is retried: a write that can't succeed doesn't stall the queue.
+    #[tokio::test]
+    async fn bin_item_writer_drops_permanent_errors() {
+        let repo = FakeRepo::new(true);
+        *lock(&repo.inventory_error) = Some(RepositoryError::Internal("too many rows".into()));
+        let state = SharedState::new(repo.clone());
+        state.persist_inventory(CHAR, potions(1));
+        state.persist(CHAR, "geffen.gat".into(), at(3, 3));
+        assert!(
+            eventually(|| repo.writes().len() == 1).await,
+            "the position behind it lands"
+        );
+        assert_eq!(
+            state.recent_inventory(CHAR),
+            Some(potions(1)),
+            "the dropped inventory stays for a re-entry in this process"
+        );
+
+        *lock(&repo.inventory_error) = Some(RepositoryError::NotFound);
+        state.persist_inventory(CHAR, potions(2));
+        assert!(
+            eventually(|| state.recent_inventory(CHAR).is_none()).await,
+            "a deleted character's write is done"
+        );
+
+        *lock(&repo.inventory_error) = None;
+        state.persist_inventory(CHAR, potions(4));
+        assert!(eventually(|| state.recent_inventory(CHAR).is_none()).await);
+        assert_eq!(
+            lock(&repo.inventory_saves).last(),
+            Some(&(CHAR, potions(4)))
+        );
     }
 }

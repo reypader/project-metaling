@@ -10,6 +10,12 @@ use super::char::{
     encode_hc_delete_char3_reserved, encode_hc_notify_zonesvr, encode_hc_refuse_enter,
     encode_hc_refuse_makechar,
 };
+use super::item::{
+    encode_zc_equipment_itemlist, encode_zc_equipswitch_list_empty, encode_zc_inventory_end,
+    encode_zc_inventory_start, encode_zc_item_disappear, encode_zc_item_entry,
+    encode_zc_item_fall_entry, encode_zc_item_pickup_ack, encode_zc_item_throw_ack,
+    encode_zc_normal_itemlist, encode_zc_notify_chat, encode_zc_notify_playerchat,
+};
 use super::login::{encode_ac_accept_login, encode_ac_refuse_login, CharServerEntry};
 use super::map::{
     encode_zc_accept_enter, encode_zc_ack_req_disconnect, encode_zc_ack_reqnameall,
@@ -23,6 +29,8 @@ use super::map::{
 /// `ZC_NOTIFY_ACT` types for sit down / stand up (`e_damage_type`).
 const ACT_SIT_DOWN: u8 = 2;
 const ACT_STAND_UP: u8 = 3;
+/// `DMG_PICKUP_ITEM`.
+const ACT_PICKUP_ITEM: u8 = 1;
 
 /// Default event encoder connecting domain `ServerEvent` variants to Phase 0 packet serializers.
 #[derive(Debug, Default, Clone, Copy)]
@@ -204,7 +212,20 @@ impl EventEncoder for ModernEventEncoder {
                 action_tick,
             } => {
                 if *action_type <= 8 {
-                    if matches!(*action_type, ACT_SIT_DOWN | ACT_STAND_UP) {
+                    if *action_type == ACT_PICKUP_ITEM {
+                        // rAthena's pickup animation sets only src, target and type (captured).
+                        Ok(encode_zc_notify_act(
+                            *source_id,
+                            *target_id,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            *action_type,
+                            0,
+                        ))
+                    } else if matches!(*action_type, ACT_SIT_DOWN | ACT_STAND_UP) {
                         // rAthena zero-initializes sit/stand and sets only src and type.
                         Ok(encode_zc_notify_act(
                             *source_id,
@@ -238,6 +259,21 @@ impl EventEncoder for ModernEventEncoder {
             }
             ServerEvent::RestartAck { result } => Ok(encode_zc_restart_ack(*result)),
             ServerEvent::DisconnectAck { result } => Ok(encode_zc_ack_req_disconnect(*result)),
+            ServerEvent::InventoryStart => Ok(encode_zc_inventory_start()),
+            ServerEvent::InventoryNormalItems { items } => Ok(encode_zc_normal_itemlist(items)),
+            ServerEvent::InventoryEquipItems { items } => Ok(encode_zc_equipment_itemlist(items)),
+            ServerEvent::InventoryEnd => Ok(encode_zc_inventory_end()),
+            ServerEvent::EquipSwitchList => Ok(encode_zc_equipswitch_list_empty()),
+            ServerEvent::ItemAdded { item } => Ok(encode_zc_item_pickup_ack(Some(item), 0)),
+            ServerEvent::ItemAddFailed { result } => Ok(encode_zc_item_pickup_ack(None, *result)),
+            ServerEvent::ItemThrown { index, amount } => {
+                Ok(encode_zc_item_throw_ack(*index, *amount))
+            }
+            ServerEvent::FloorItemDropped { item } => Ok(encode_zc_item_fall_entry(item)),
+            ServerEvent::FloorItemEntered { item } => Ok(encode_zc_item_entry(item)),
+            ServerEvent::FloorItemVanished { id } => Ok(encode_zc_item_disappear(*id)),
+            ServerEvent::PublicChat { gid, text } => Ok(encode_zc_notify_chat(*gid, text)),
+            ServerEvent::SelfChat { text } => Ok(encode_zc_notify_playerchat(text)),
         }
     }
 }
@@ -281,6 +317,18 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
             | PacketOpcode::HC_NOTIFY_ZONESVR
             | PacketOpcode::ZC_AID
             | PacketOpcode::ZC_INVENTORY_EXPANSION_INFO
+            | PacketOpcode::ZC_INVENTORY_START
+            | PacketOpcode::ZC_NORMAL_ITEMLIST
+            | PacketOpcode::ZC_EQUIPMENT_ITEMLIST
+            | PacketOpcode::ZC_INVENTORY_END
+            | PacketOpcode::ZC_EQUIPSWITCH_LIST
+            | PacketOpcode::ZC_ITEM_PICKUP_ACK
+            | PacketOpcode::ZC_ITEM_THROW_ACK
+            | PacketOpcode::ZC_ITEM_FALL_ENTRY5
+            | PacketOpcode::ZC_ITEM_ENTRY
+            | PacketOpcode::ZC_ITEM_DISAPPEAR
+            | PacketOpcode::ZC_NOTIFY_CHAT
+            | PacketOpcode::ZC_NOTIFY_PLAYERCHAT
     )
 }
 

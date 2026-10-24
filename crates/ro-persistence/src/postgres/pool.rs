@@ -47,9 +47,9 @@ impl PostgresRepo {
         Ok(())
     }
 
-    /// Resets accounts and character tables by truncating them with identity restart.
+    /// Resets the account, character and inventory tables by truncating them with identity restart.
     pub async fn reset_tables(&self) -> Result<(), RepositoryError> {
-        raw_sql("TRUNCATE TABLE characters, accounts RESTART IDENTITY CASCADE;")
+        raw_sql("TRUNCATE TABLE inventory, characters, accounts RESTART IDENTITY CASCADE;")
             .execute(&self.pool)
             .await
             .map_err(map_sqlx_error)?;

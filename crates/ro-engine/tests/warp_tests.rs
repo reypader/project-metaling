@@ -44,6 +44,9 @@ fn spawn_data(n: u32, x: u16, y: u16) -> CharacterSpawn {
         hair_color: 3,
         pos: MapPosition { x, y, dir: 0 },
         speed: 150,
+        str: 1,
+        group_id: 0,
+        inventory: Default::default(),
     }
 }
 
@@ -347,7 +350,7 @@ fn eng_warp_02_same_map_warp_mid_path() {
 }
 
 #[test]
-fn eng_warp_02_second_actor_init_is_a_no_op() {
+fn eng_warp_02_second_actor_init_only_resends_inventory() {
     let mut engine = instance(
         grid(100, 100, &[]),
         vec![warp("w", (50, 50), (1, 1), (80, 80))],
@@ -355,7 +358,17 @@ fn eng_warp_02_second_actor_init_is_a_no_op() {
     let events = enter(&mut engine, A, (50, 50), 0);
     assert_eq!(map_moves(&events, A).len(), 1);
     assert!(!actor_init(&mut engine, A, 100).is_empty());
-    assert!(actor_init(&mut engine, A, 200).is_empty());
+    // A repeat only resends the inventory lists (specs/items ENG-INV-04): no warp, no spawn.
+    let again = actor_init(&mut engine, A, 200);
+    assert!(map_moves(&again, A).is_empty());
+    assert_eq!(again.len(), 5, "{again:#?}");
+    assert!(again.iter().all(|e| matches!(
+        e.event,
+        ServerEvent::InventoryStart
+            | ServerEvent::InventoryEnd
+            | ServerEvent::EquipSwitchList
+            | ServerEvent::ParameterChanged { .. }
+    )));
 }
 
 // ---------- ENG-WARP-04: inert warps ----------

@@ -14,12 +14,8 @@ Open questions and disagreements about wire packets for `PACKETVER = 20260219`. 
 
 | Id | Topic | Kind | Status |
 | :--- | :--- | :--- | :--- |
-| [PF-01](#pf-01) | `0x01d7` ZC_SPRITE_CHANGE2: table says 11, source sends 15 | Code disagrees | Open (capture confirms 15) |
-| [PF-02](#pf-02) | `0x0add` ZC_ITEM_FALL_ENTRY: table says 22, source sends 24 | Code disagrees | Open |
-| [PF-03](#pf-03) | `0x009d` ZC_ITEM_ENTRY rejected as legacy, but needed (19) | Code disagrees | Open |
-| [PF-04](#pf-04) | `0x00a1` ZC_ITEM_DISAPPEAR missing from table (6) | Code gap | Open |
+| [PF-03](#pf-03) | `0x009d` ZC_ITEM_ENTRY rejected as legacy, but needed (19) | Code disagrees | Open; table row added from source (19), capture still wanted |
 | [PF-05](#pf-05) | Which client opcodes apply: shuffle block vs packetdb | Source conflict | Resolved from source; capture still wanted |
-| [PF-06](#pf-06) | Chat opcode (`0x00f3`, not `0x008c`) and trailing NUL | Source conflict | Opcode resolved from source; NUL open |
 | [PF-07](#pf-07) | `0x0b41` ZC_ITEM_PICKUP_ACK length 70 and the failure form | Struct only | Open |
 | [PF-08](#pf-08) | Inventory list and item ack layouts | Struct only | Open |
 | [PF-09](#pf-09) | Exp and level-up packets and their order | Struct only | Open |
@@ -34,13 +30,16 @@ Open questions and disagreements about wire packets for `PACKETVER = 20260219`. 
 | [PF-18](#pf-18) | `MSI_WRONG_BULLET` is 2493 or 2494 | Minor | Open |
 | [PF-19](#pf-19) | Server rules not settled by source (overweight attack, DEF clamps, regen weight rate) | Server rule | Open |
 | [PF-20](#pf-20) | Login-time `0x0091` that metaling doesn't send | Behaviour | Open |
-| [PF-21](#pf-21) | Packets the proxy can't frame (backlog: missing/wrong `table.rs` lengths) | Code gap | Open, low priority |
+| [PF-21](#pf-21) | Packets the proxy can't frame (backlog: missing/wrong `table.rs` lengths; a misframe can stall the proxy log) | Code gap | Open; item rows fixed |
 
 ### Resolved
 
 | Id | Topic | Resolved | By |
 | :--- | :--- | :--- | :--- |
-| (none yet) | | | |
+| [PF-01](#pf-01) | `0x01d7` ZC_SPRITE_CHANGE2: table says 11, source sends 15 | 2026-10-23 | `item_drop_pickup_sequence.txt`; `table.rs` fixed, test `pkt_item_01_table_lengths` |
+| [PF-02](#pf-02) | `0x0add` ZC_ITEM_FALL_ENTRY: table says 22, source sends 24 | 2026-10-23 | `item_drop_pickup_sequence.txt`; `table.rs` fixed, test `pkt_item_01_table_lengths` |
+| [PF-04](#pf-04) | `0x00a1` ZC_ITEM_DISAPPEAR missing from table (6) | 2026-10-23 | `item_drop_pickup_sequence.txt`; `table.rs` fixed, test `pkt_item_01_table_lengths` |
+| [PF-06](#pf-06) | Chat opcode (`0x00f3`, not `0x008c`) and trailing NUL | 2026-10-23 | `packet_sequence-20261023_030246.txt`; decoder test `pkt_chat_01_decodes_global_message` |
 
 ## Code disagreements
 
@@ -50,7 +49,8 @@ These are places where `crates/ro-packets/src/table.rs` disagrees with what rAth
 
 **`0x01d7` ZC_SPRITE_CHANGE2 length**
 
-- **Status:** Open. Capture-confirmed 15 on 2026-10-23; `table.rs` still says 11.
+- **Status:** Resolved 2026-10-23. Settled by capture (15); `table.rs` fixed in milestone M1 of [`specs/items/plan.md`](specs/items/plan.md), pinned by `pkt_item_01_table_lengths`.
+- **Also in** `item_drop_pickup_sequence.txt` (2026-10-23): every `0x007d` gets `0x01d7` misframed the same way, with the leftover `00 00 00 00` merged into the following `0x0b08` (`08 0b 06 00 00 00`).
 - **Capture:** the warp captures ([`reference/catalog/captures/`](reference/catalog/captures/README.md) `packet_sequence-20261023_030246.txt`, `_031902.txt`, `_032015.txt`) send `0x01d7` at every `LoadEndAck`. The proxy framed it at 11 and then logged the remaining 4 bytes as a bogus `0x0000` frame, alone or with the following `0x0b08`. That gives `81 84 1e 00 | 02 | b1 04 00 00 | 00 00 00 00` = AID, LOOK_WEAPON, 1201, 0: 15 bytes. Observers in view receive it as well as self.
 - **Ours:** `crates/ro-packets/src/table.rs:235` has `0x01d7 => Fixed(11)`.
 - **Source:** 15 bytes: `u16 op, u32 AID, u8 type, u32 val, u32 val2`. The layout is `packets_struct.hpp:2591-2603` for `PACKETVER_MAIN_NUM >= 20181121`, which applies here. It is sent from `clif_sprite_change` (`clif.cpp:3935-3960`). The 11 comes from the stale `packet(0x01d7,11)` at `clif_packetdb.hpp:226`, the old u16/u16 layout.
@@ -61,7 +61,8 @@ These are places where `crates/ro-packets/src/table.rs` disagrees with what rAth
 
 **`0x0add` ZC_ITEM_FALL_ENTRY length**
 
-- **Status:** Open.
+- **Status:** Resolved 2026-10-23. Settled by capture (24); `table.rs` fixed in milestone M1 of [`specs/items/plan.md`](specs/items/plan.md), pinned by `pkt_item_01_table_lengths`.
+- **Capture:** [`item_drop_pickup_sequence.txt`](reference/catalog/captures/item_drop_pickup_sequence.txt) lines 1116-1117 and 1123-1124. A Poring death sends `0x0add` to both clients. The proxy frames it at 22 and logs the last 2 bytes (`00 00`) as a bogus 2-byte `0x0000` frame. The full payload is `41 00 00 00 | 8d 03 00 00 | 03 00 | 01 | 9d 00 | 4b 01 | 09 | 09 | 01 00 | 00 | 00 00`: floor id 0x41, ITID 909 (Jellopy), type 3 (Etc), identified 1, x 157, y 331 (the mob's own cell, `DIR_CENTER`), subX 9, subY 9, count 1, showdropeffect 0, dropeffectmode 0. That's 24 bytes.
 - **Ours:** `crates/ro-packets/src/table.rs:956` has `0x0add => Fixed(22)`.
 - **Source:** 24 bytes. `struct packet_dropflooritem` (`packets_struct.hpp:597-618`) has `u32 ITID` from `PACKETVER >= 20181121`, and `clif_dropflooritem` (`clif.cpp:865`) sends `sizeof(p)`. The 22 at `clif_packetdb.hpp:1921` dates from 2018-04-18, when ITID was u16.
 - **Resolve by:** a capture of killing a mob until it drops an item. Check the `0x0add` frame length.
@@ -71,7 +72,7 @@ These are places where `crates/ro-packets/src/table.rs` disagrees with what rAth
 
 **`0x009d` ZC_ITEM_ENTRY is rejected as legacy**
 
-- **Status:** Open.
+- **Status:** Open. `item_drop_pickup_sequence.txt` doesn't cover it: the item was picked up while still in view. Milestone M1 of [`specs/items/plan.md`](specs/items/plan.md) added the row at 19 from source and removed it from the legacy list, since ground items need it.
 - **Ours:** `crates/ro-packets/src/table.rs:1206` lists `0x009d` in the "legacy opcodes rejected" test.
 - **Source:** still used at this packetver. `clif_getareachar_item` (`clif.cpp:5391`) sends it, 19 bytes by struct, to a player who walks into view of an item already on the ground. `0x0add` is only for the moment of the drop. There is no `clif_packetdb.hpp` entry; the length comes from the struct only.
 - **Resolve by:** a capture of walking up to an item that was dropped earlier. Then add the row and drop it from the legacy list.
@@ -81,7 +82,8 @@ These are places where `crates/ro-packets/src/table.rs` disagrees with what rAth
 
 **`0x00a1` ZC_ITEM_DISAPPEAR has no table row**
 
-- **Status:** Open.
+- **Status:** Resolved 2026-10-23. Settled by capture (6); `table.rs` fixed in milestone M1 of [`specs/items/plan.md`](specs/items/plan.md), pinned by `pkt_item_01_table_lengths`.
+- **Capture:** [`item_drop_pickup_sequence.txt`](reference/catalog/captures/item_drop_pickup_sequence.txt) lines 1134-1136 and 1139-1141. After the pickup both clients get `a1 00 | 41 00 00 00`. The proxy logs it as the fragments `0x00a1`(1), `0x4100`(1), `0x0041`(4): 6 bytes. It is sent to `AREA`, so the picker and the observer both get it.
 - **Ours:** no row in `crates/ro-packets/src/table.rs`.
 - **Source:** 6 bytes (`u16 op, u32 floor item id`), sent by `clif_clearflooritem` (`clif.cpp:930`) on pickup and expiry. No `clif_packetdb.hpp` entry; struct size only.
 - **Resolve by:** the same capture as PF-02 plus picking the item up.
@@ -110,7 +112,12 @@ These are places where `crates/ro-packets/src/table.rs` disagrees with what rAth
 
 **Chat opcode and trailing NUL**
 
-- **Status:** Opcode resolved from source on 2026-10-23 (`0x00f3`). The trailing NUL is still open.
+- **Status:** Resolved 2026-10-23. Settled by capture: opcode `0x00f3`, no trailing NUL. Decoded in milestone M4 of [`specs/items/plan.md`](specs/items/plan.md) (`pkt_chat_01_decodes_global_message`).
+- **Capture:** [`packet_sequence-20261023_030246.txt`](reference/catalog/captures/packet_sequence-20261023_030246.txt) has `0x00f3` with length 26 and payload `testtest : @item knife` (22 bytes, no `00`). [`packet_sequence-20261023_031902.txt`](reference/catalog/captures/packet_sequence-20261023_031902.txt) has length 25, `testtest : @goto test`.
+  - The server appends the NUL itself (`clif.cpp:10516`).
+  - A name or `" : "` mismatch disconnects the session (`set_eof`, `clif.cpp:10501`).
+  - `is_atcommand` sees the text after the prefix.
+  - Details: [packets/chat.md](reference/catalog/packets/chat.md). Resolved: `specs/items` M4 decodes it.
 - **Conflict:** the unconditional base section of `clif_packetdb.hpp` registers `0x008c` as GlobalMessage (`:40`) and `0x00f3` as MoveToKafra (`:95`). That made `0x008c` look like the chat opcode.
 - **Evidence:**
   - `clif_packetdb.hpp` blocks are cumulative `#if PACKETVER >= date`, and the last registration wins.
@@ -129,7 +136,8 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 
 **`0x0b41` ZC_ITEM_PICKUP_ACK length and failure form**
 
-- **Status:** Open.
+- **Status:** Length and success form settled by capture on 2026-10-23. The failure form is still open.
+- **Capture:** [`item_drop_pickup_sequence.txt`](reference/catalog/captures/item_drop_pickup_sequence.txt) line 1131 (proxy-truncated to 32 payload bytes). A successful Jellopy pickup gives a 70-byte frame, with nothing misframed after it. The payload starts `05 00 | 01 00 | 8d 03 00 00 | 01 | 00 | 00×16 cards | 00 00 00 00 location | 03 type | 00 result ...`: wire index 5, count 1, nameid 909, identified 1, damaged 0, type 3, result 0. Picker-side order: `0x0b41`, then `0x00b0` SP_WEIGHT (`18 00 50 05 00 00` = 1360), then `0x08c8` type 1 (`AREA`), then `0x00a1` (`AREA`).
 - **Source:** 70 bytes, opcode `0x0b41` for `PACKETVER_MAIN_NUM >= 20200916` (`packets_struct.hpp:540-595`), built by `clif_additem` (`clif.cpp:2838-2891`). The same packet reports success and failure. `result` is the `e_additem_result` number: 0 ok, 1 invalid, 2 overweight, 4 no free slot, 5 over max stack, 6 pickup refused, 7 stack limit.
 - **Failure form:** only `index` (= 2, server slot 0), `count` (= 0) and `result` are non-zero. A source comment at `clif.cpp:12034` says the client needs this to unblock further pickups.
 - **Resolve by:** a capture of `@item` (success), picking up with a full inventory or while overweight (failure), and picking up another player's drop too early (result 6).
@@ -139,7 +147,8 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 
 **Inventory list and item ack layouts**
 
-- **Status:** Open.
+- **Status:** Inventory list lengths settled by capture on 2026-10-23. The drop ack, delete, use ack and ammo packets are still open.
+- **Capture:** [`item_drop_pickup_sequence.txt`](reference/catalog/captures/item_drop_pickup_sequence.txt) lines 75-79 and 200-204. After every `0x007d` the order is: `0x01d7` (15), `0x0b08` (6: `06 00 | 00 | 00`), `0x0b09` (39 = 5 + 34×1 and 311 = 5 + 34×9), `0x0b39` (277 = 5 + 68×4 and 209 = 5 + 68×3), `0x0b0b` (4: `00 00`), `0x0a9b` (4), `0x00b0` SP_WEIGHT, `0x00b0` SP_MAXWEIGHT. The whole list is re-sent on every `0x007d`, including repeats. SP_MAXWEIGHT was 20300 for a character with STR 1 and 23300 for one with STR 11, which matches `20000 + 300 × STR` for a novice. The client's `0x0363` drop (line 1151) has no visible reply: the proxy log of server→client traffic stops at 09:09:24.041 (see [PF-21](#pf-21)).
 - **Source:**
   - Login list: `0x0b08` start (6 bytes for the plain inventory), `0x0b09` stackables (5 + 34 per entry), `0x013c` only if ammo is worn, `0x0b39` equipment (5 + 68 per entry), `0x0b0b` end (4).
   - In the entries, `RefiningLevel` and `grade` come after the 5-entry option array, and identified/damaged/favorite share one `Flag` byte.
@@ -232,7 +241,12 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 
 **Mob kill timing**
 
-- **Status:** Open.
+- **Status:** Confirmed by capture on 2026-10-23 ([`item_drop_pickup_sequence.txt`](reference/catalog/captures/item_drop_pickup_sequence.txt) lines 1106-1131).
+  - At 22.271 the killer gets `0x0977` hp 0, then the exp packets (`0x0acb`, `0x0acc`), then `0x0add`. The observer's `0x0add` goes out at 22.269, so it's the same server tick.
+  - `0x0080` type 1 follows at 22.517 (+246 ms).
+  - The `0x0add` cell is the mob's last `0x0088` stop cell (157,331).
+  - Pickup order: `0x0b41`, `0x00b0` SP_WEIGHT, `0x08c8` type 1, `0x00a1`.
+  - The client sent `0x0361` change direction right before `0x0362`, and observers got the matching `0x009c`.
 - **Source:**
   - On the killing blow `0x0977` carries hp 0. The mob leaves the block grid at once without a packet.
   - Drops are queued on a timer with a 0 ms delay by default and appear as `0x0add`.
@@ -295,10 +309,16 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 - **Status:** Open, low priority. Revisit when nothing else is queued, or when a capture or a client bug looks odd: a misframed packet hides the packets after it.
 - **Why it matters:** `tools/proxy` frames with `crates/ro-packets/src/table.rs`. A missing or wrong length makes the proxy log `UNKNOWN / UNMAPPED` frames and then garbage 1-byte frames (`0x0000`, `0x1e84`, `0x2800`, ...) until the stream re-syncs. The map-server never sends these packets today, so only captures and client-side tests are affected.
 - **Seen in the 2026-10-23 warp captures** ([`reference/catalog/captures/`](reference/catalog/captures/README.md)):
-  - Server to client, missing from the table: `0x0141` (stat lines), `0x013a` (attack range), `0x0b0b` (inventory end), `0x0b08` (inventory start, hidden behind the `0x01d7` misframe), `0x0b1b`, `0x0b8d`, `0x080e` (party member HP), `0x010f` (skill list), `0x02c9`, `0x0acb`, `0x0999`, `0x0b41`, `0x019b`, `0x00b4`, `0x009d` ([PF-03](#pf-03)), `0x00a1` ([PF-04](#pf-04)).
-  - Wrong length: `0x01d7` ([PF-01](#pf-01)).
+  - Server to client, missing from the table: `0x0141` (stat lines), `0x013a` (attack range), `0x0b1b`, `0x0b8d`, `0x080e` (party member HP), `0x010f` (skill list), `0x02c9`, `0x0acb`, `0x0999`, `0x019b`, `0x00b4`.
   - Client to char-server, wrong length: `0x08b8` `CH_SECOND_PASSWD_ACK` is framed at 8, but the client sends 2 more bytes. The leftover bytes appear as a bogus client frame after every PIN entry.
   - Expected and not a bug: `0x8480`/`0x8481` are the raw 4-byte AccountId echo after `CH_ENTER`/`CZ_ENTER` (`bins/CLAUDE.md`), which the proxy doesn't skip.
+- **The proxy log can stall** (seen in [`item_drop_pickup_sequence.txt`](reference/catalog/captures/item_drop_pickup_sequence.txt), 2026-10-23):
+  - After 09:09:24.041 the log has no server→client packets for either map session, even though the clients kept walking and sending `0x0360`, which always gets a `0x007f` reply.
+  - `tools/proxy/src/forwarder.rs` forwards raw bytes *before* it logs them, so the clients were not affected. Only the log was.
+  - `PacketLogger::feed_and_log` (`tools/proxy/src/logger/packet_logger.rs`) waits on `Ok(None)` when a misframe lands on bytes that read as a known opcode with a large dynamic length. It then buffers silently until that length arrives, or until the 128 KiB guard clears the buffer.
+  - So the reply to the client's `0x0363` drop (line 1151) was never logged. "Nothing happened" in the client most likely means rAthena refused it with `0x00af` count 0: wire index 12 ×2 was not the Jellopy, which sat at wire index 5.
+  - **Fix:** the `specs/items` M1 table rows (done). A possible proxy hardening is to log a warning when a dynamic frame stays incomplete across more than N reads.
+- **Item rows fixed** in milestone M1 of [`specs/items/plan.md`](specs/items/plan.md) (2026-10-23): `0x0add` 24, `0x00a1` 6, `0x009d` 19, `0x0b41` 70, `0x0b08` dynamic, `0x0b0b` 4, `0x01d7` 15, `0x00af` 6.
 - **Resolve by:** for each opcode, take the length from the capture (the gap to the next real opcode) and check it against the catalog and source. Then add it to `table.rs` with a test. Re-run the proxy over a capture and expect no `UNKNOWN` frames apart from the AccountId echo.
 
 ## Capture plan

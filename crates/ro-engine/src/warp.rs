@@ -172,6 +172,12 @@ impl MapInstance {
             return;
         };
         let from_pos = self.pos(e);
+        let inventory = self
+            .world
+            .inventories
+            .remove(e)
+            .map(|i| i.into_character_inventory())
+            .unwrap_or_default();
         let spawn = CharacterSpawn {
             account_id: info.account_id,
             char_id: info.char_id,
@@ -183,10 +189,23 @@ impl MapInstance {
             hair_color: info.hair_color,
             pos: from_pos,
             speed: self.world.speed[e.index()],
+            str: info.str,
+            group_id: info.group_id,
+            inventory,
         };
         let rewarp_count = info.rewarp_count;
         if let Err(err) = self.despawn_player(e, spawn.char_id, VANISH_OUT_OF_SIGHT) {
             warn!(map = %self.map_name, char_id = ?spawn.char_id, "warp despawn failed: {err}");
+            // The player stays here: give the inventory back.
+            if self.world.entities.is_alive(e) {
+                let inventory = crate::inventory::PlayerInventory::new(
+                    spawn.inventory,
+                    spawn.char_id,
+                    spawn.str,
+                    &self.items,
+                );
+                self.world.inventories.insert(e, inventory);
+            }
             return;
         }
         self.transfers.push(MapTransfer {
@@ -306,7 +325,7 @@ impl MapInstance {
         });
         spawn.pos.x = cell.0;
         spawn.pos.y = cell.1;
-        let e = self.world.spawn_player(&spawn)?;
+        let e = self.spawn_player(&mut spawn)?;
         if let Some(info) = self.world.players.get_mut(e) {
             info.rewarp_count = rewarp_count;
         }
@@ -378,6 +397,9 @@ mod tests {
                 dir: 0,
             },
             speed: 150,
+            str: 1,
+            group_id: 0,
+            inventory: Default::default(),
         };
         let e = engine.world.spawn_player(&spawn).expect("spawn");
         engine.world.show(e);

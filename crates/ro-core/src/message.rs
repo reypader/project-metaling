@@ -6,6 +6,7 @@ use std::sync::Arc;
 use crate::ids::{
     AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, SessionId, Sex,
 };
+use crate::item::{FloorItemAppearance, ItemEntry};
 
 /// Scope definition for spatial or broadcast packets emitted by map-server.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -97,6 +98,20 @@ pub enum ClientIntent {
     /// "Exit to Windows" (`CZ_REQ_DISCONNECT`).
     RequestDisconnect {
         disconnect_type: u16,
+    },
+    /// `0x0362`: pick up the floor item with this object id.
+    PickUpItem {
+        floor_id: u32,
+    },
+    /// `0x0363`: drop `amount` of the item at wire `index` (slot + 2).
+    DropItem {
+        index: u16,
+        amount: u16,
+    },
+    /// `0x00f3`: public chat. `text` is the raw `"<name> : <message>"` bytes, any trailing NUL
+    /// removed. The map-server checks and strips the name prefix.
+    Chat {
+        text: Vec<u8>,
     },
 }
 
@@ -210,6 +225,19 @@ impl fmt::Debug for ClientIntent {
             Self::RequestDisconnect { disconnect_type } => f
                 .debug_struct("RequestDisconnect")
                 .field("disconnect_type", disconnect_type)
+                .finish(),
+            Self::PickUpItem { floor_id } => f
+                .debug_struct("PickUpItem")
+                .field("floor_id", floor_id)
+                .finish(),
+            Self::DropItem { index, amount } => f
+                .debug_struct("DropItem")
+                .field("index", index)
+                .field("amount", amount)
+                .finish(),
+            Self::Chat { text } => f
+                .debug_struct("Chat")
+                .field("text", &String::from_utf8_lossy(text))
                 .finish(),
         }
     }
@@ -411,6 +439,54 @@ pub enum ServerEvent {
     /// Reply to `RequestDisconnect`: 0 lets the client exit.
     DisconnectAck {
         result: u16,
+    },
+    /// `0x0b08`: the inventory list starts (inventory type 0, no name).
+    InventoryStart,
+    /// `0x0b09`: stackable inventory items.
+    InventoryNormalItems {
+        items: Vec<ItemEntry>,
+    },
+    /// `0x0b39`: non-stackable inventory items.
+    InventoryEquipItems {
+        items: Vec<ItemEntry>,
+    },
+    /// `0x0b0b`: the inventory list ends.
+    InventoryEnd,
+    /// `0x0a9b`: the equip-switch list. Always empty until equip switch exists.
+    EquipSwitchList,
+    /// `0x0b41` success: `item.amount` was added at `item.index`.
+    ItemAdded {
+        item: ItemEntry,
+    },
+    /// `0x0b41` failure: index 2, count 0, this `result` code, every other byte 0.
+    ItemAddFailed {
+        result: u8,
+    },
+    /// `0x00af`: `amount` left the inventory at wire `index` by a drop; 0 = refused.
+    ItemThrown {
+        index: u16,
+        amount: u16,
+    },
+    /// `0x0add`: an item fell to the floor in view.
+    FloorItemDropped {
+        item: FloorItemAppearance,
+    },
+    /// `0x009d`: a floor item already on the ground came into view.
+    FloorItemEntered {
+        item: FloorItemAppearance,
+    },
+    /// `0x00a1`: a floor item vanished (picked up, expired or out of view).
+    FloorItemVanished {
+        id: u32,
+    },
+    /// `0x008d`: public chat from `gid`; `text` is `"<name> : <message>"`.
+    PublicChat {
+        gid: u32,
+        text: Vec<u8>,
+    },
+    /// `0x008e`: a chat line to self (the speaker's echo or a system message).
+    SelfChat {
+        text: Vec<u8>,
     },
 }
 

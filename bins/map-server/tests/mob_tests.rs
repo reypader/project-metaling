@@ -36,7 +36,7 @@ impl Drop for TempDir {
 async fn bin_mob_01_loaded_mobs_are_seen_on_entry() {
     let dir = TempDir::new("entry");
     std::fs::write(dir.0.join("prontera.yml"), PRONTERA_YML).expect("write");
-    let loader = map_data_loader(None, None, Some(dir.0.clone()));
+    let loader = map_data_loader(None, None, Some(dir.0.clone()), Default::default());
     let server =
         TestServer::start_with_loader(InMemoryRepo::seeded(&[(1, 100, 100)]), loader).await;
     // Not `join`: it discards the entry frames this test looks for.

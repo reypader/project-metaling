@@ -2,7 +2,7 @@
 
 Target `PACKETVER = 20260219`, renewal (`RENEWAL`, `RENEWAL_EXP`, `RENEWAL_DROP` all on; `src/config/renewal.hpp:45,52`). Citations are `$RATHENA_PATH/src/map/...` at commit `d4b8e7b8f` unless stated; battle conf defaults from `conf/battle/*.conf`. Wire layouts: [map_units.md](../packets/map_units.md) and [ground_items.md](../packets/ground_items.md). Static data fields: [mob_db.md](../db/mob_db.md).
 
-**Verification status:** everything here is source-derived. `tools/proxy/packet_captures/` does not exist in the repo, so no mob capture could be compared. rust-ro (`$RUSTRO_PATH`, commit `14193fcd`) has no usable mob-death/drop/exp logic (only a `MobDeathClientNotification` event and DB models); not used.
+**Verification status:** written from source. [`captures/item_drop_pickup_sequence.txt`](../captures/item_drop_pickup_sequence.txt) (2026-10-23) has since confirmed the §3.1 kill order. Killer: `0x0977` hp 0 → exp packets → `0x0add` in the same tick, then `0x0080` type 1 about 250 ms later. The first drop lands on the mob's own cell (`DIR_CENTER`). See [PF-15](../../../PACKET_FINDINGS.md#pf-15). The rest (rates, damage log, respawn) is still source-only. rust-ro (`$RUSTRO_PATH`, commit `14193fcd`) has no usable mob-death/drop/exp logic (only a `MobDeathClientNotification` event and DB models); not used.
 
 ## 1. Spawn
 

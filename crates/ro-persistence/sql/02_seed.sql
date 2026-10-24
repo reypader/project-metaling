@@ -17,7 +17,7 @@ INSERT INTO accounts (
     'password',
     1,
     'test@example.com',
-    0,
+    99,
     0,
     NULL,
     NULL
@@ -29,3 +29,7 @@ SELECT setval(
     GREATEST((SELECT COALESCE(MAX(account_id), 2000000) FROM accounts), 2000000),
     true
 );
+
+-- The test account is a GM (group 99 may use every command). Also an UPDATE, so databases
+-- seeded before groups mattered get it too.
+UPDATE accounts SET group_id = 99 WHERE account_id = 2000000;

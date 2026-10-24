@@ -24,7 +24,8 @@ const MAX_LEVEL: u16 = 275;
 const MAX_SPAN: u16 = i16::MAX as u16;
 
 /// A mob_db id. Sent to the client as the unit's `job`.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(transparent)]
 pub struct MobId(pub u32);
 
 impl MobId {

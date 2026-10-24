@@ -13,6 +13,8 @@ members = [
     "bins/map-server",
     "tools/proxy",
     "tools/npc-import",
+    "tools/item-import",
+    "tools/mob-import",
 ]
 
 [workspace.package]

@@ -18,6 +18,12 @@ pub struct MapConfig {
     /// Directory holding `<map>.yml` mob spawn lists (`MOB_SPAWN_DATA_DIR`), normally
     /// `crates/ro-db/data/mob_spawn`. Unset: no map has mobs.
     pub mob_spawn_data_dir: Option<PathBuf>,
+    /// Directory holding the item registry (`ITEM_DATA_DIR`), normally `crates/ro-db/data/item`.
+    /// Unset: an empty registry.
+    pub item_data_dir: Option<PathBuf>,
+    /// Directory holding the mob registry (`MOB_DATA_DIR`), normally `crates/ro-db/data/mob`.
+    /// Unset: an empty registry.
+    pub mob_data_dir: Option<PathBuf>,
 }
 
 impl Default for MapConfig {
@@ -30,6 +36,8 @@ impl Default for MapConfig {
             map_data_dir: None,
             npc_data_dir: None,
             mob_spawn_data_dir: None,
+            item_data_dir: None,
+            mob_data_dir: None,
         }
     }
 }
@@ -69,6 +77,14 @@ struct MapCliArgs {
     /// Directory holding `<map>.yml` mob spawn lists.
     #[arg(long = "mob-spawn-data-dir")]
     mob_spawn_data_dir: Option<PathBuf>,
+
+    /// Directory holding the item registry (`item_*.yml`).
+    #[arg(long = "item-data-dir")]
+    item_data_dir: Option<PathBuf>,
+
+    /// Directory holding the mob registry (`mob_db.yml`).
+    #[arg(long = "mob-data-dir")]
+    mob_data_dir: Option<PathBuf>,
 }
 
 impl MapConfig {
@@ -124,6 +140,14 @@ impl MapConfig {
             .mob_spawn_data_dir
             .or_else(|| env("MOB_SPAWN_DATA_DIR").map(PathBuf::from));
 
+        let item_data_dir = parsed
+            .item_data_dir
+            .or_else(|| env("ITEM_DATA_DIR").map(PathBuf::from));
+
+        let mob_data_dir = parsed
+            .mob_data_dir
+            .or_else(|| env("MOB_DATA_DIR").map(PathBuf::from));
+
         Self {
             client_port,
             http_port,
@@ -132,6 +156,8 @@ impl MapConfig {
             map_data_dir,
             npc_data_dir,
             mob_spawn_data_dir,
+            item_data_dir,
+            mob_data_dir,
         }
     }
 

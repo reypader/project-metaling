@@ -5,7 +5,8 @@ use tokio::net::TcpListener;
 use tracing::{error, info, warn};
 
 use map_server::{
-    create_http_router, handle_client_session, map_data_loader, MapConfig, MapServiceHandle,
+    create_http_router, handle_client_session, load_registries, map_data_loader, MapConfig,
+    MapServiceHandle,
 };
 use ro_core::TARGET_PACKETVER;
 use ro_persistence::PostgresRepo;
@@ -31,12 +32,22 @@ async fn main() -> anyhow::Result<()> {
     if config.mob_spawn_data_dir.is_none() {
         warn!("MOB_SPAWN_DATA_DIR not set; maps will have no mobs");
     }
+    char_repo
+        .init_schema()
+        .await
+        .context("Failed to initialize the database schema")?;
+    let registries = load_registries(
+        config.item_data_dir.as_deref(),
+        config.mob_data_dir.as_deref(),
+    )
+    .context("Failed to load the item/mob registries")?;
     let service_handle = MapServiceHandle::new(
         char_repo,
         map_data_loader(
             config.map_data_dir.clone(),
             config.npc_data_dir.clone(),
             config.mob_spawn_data_dir.clone(),
+            registries,
         ),
     );
 

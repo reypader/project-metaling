@@ -396,3 +396,67 @@ mod tests {
         }
     }
 }
+
+/// Decoded representation of `CZ_ITEM_PICKUP` (0x0362): the floor item id at offset 2.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct CzItemPickupPacket {
+    pub floor_id: u32,
+}
+
+impl CzItemPickupPacket {
+    pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
+        let floor_id = read_u32_le(&raw.payload, 0, raw.opcode)?;
+        Ok(Self { floor_id })
+    }
+
+    pub fn to_intent(&self) -> ClientIntent {
+        ClientIntent::PickUpItem {
+            floor_id: self.floor_id,
+        }
+    }
+}
+
+/// Decoded representation of `CZ_ITEM_THROW` (0x0363): wire index at offset 2, amount at 4.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct CzItemThrowPacket {
+    pub index: u16,
+    pub amount: u16,
+}
+
+impl CzItemThrowPacket {
+    pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
+        let index = read_u16_le(&raw.payload, 0, raw.opcode)?;
+        let amount = read_u16_le(&raw.payload, 2, raw.opcode)?;
+        Ok(Self { index, amount })
+    }
+
+    pub fn to_intent(&self) -> ClientIntent {
+        ClientIntent::DropItem {
+            index: self.index,
+            amount: self.amount,
+        }
+    }
+}
+
+/// Decoded representation of `CZ_REQUEST_CHAT` (0x00f3): `"<name> : <message>"` with no NUL on
+/// the wire. A client that sends one anyway has its text end there.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct CzRequestChatPacket {
+    pub text: Vec<u8>,
+}
+
+impl CzRequestChatPacket {
+    pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
+        let bytes = raw.payload.as_ref();
+        let end = bytes.iter().position(|&b| b == 0).unwrap_or(bytes.len());
+        Ok(Self {
+            text: bytes[..end].to_vec(),
+        })
+    }
+
+    pub fn to_intent(&self) -> ClientIntent {
+        ClientIntent::Chat {
+            text: self.text.clone(),
+        }
+    }
+}

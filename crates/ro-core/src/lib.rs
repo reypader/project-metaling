@@ -5,6 +5,7 @@ mod account;
 mod character;
 mod http;
 mod ids;
+mod item;
 mod map_name;
 mod message;
 
@@ -12,6 +13,7 @@ pub use account::*;
 pub use character::*;
 pub use http::*;
 pub use ids::*;
+pub use item::*;
 pub use map_name::{bare_map_name, gat_map_name};
 pub use message::*;
 

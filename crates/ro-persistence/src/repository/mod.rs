@@ -4,11 +4,13 @@ use serde::{Deserialize, Serialize};
 
 mod account;
 mod character;
+mod inventory;
 
 pub use account::{AccountRepository, AuthError};
 pub use character::{
     CancelDeleteOutcome, CharacterRepository, CreateCharacterError, DeleteReserveOutcome,
 };
+pub use inventory::{InventoryRepository, PlayState};
 
 /// Standard error variants returned by persistence repositories.
 #[derive(thiserror::Error, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

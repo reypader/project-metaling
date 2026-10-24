@@ -14,14 +14,13 @@ use ro_core::{
     bare_map_name, gat_map_name, AccountId, BroadcastScope, CharId, CharacterSpawn, ClientIntent,
     MapPosition, ScopedServerEvent, ServerEvent, SessionId, SessionIntent, TARGET_PACKETVER,
 };
-use ro_db::{MapGrid, MapMobSpawns, MapNpcs, NpcKind};
+use ro_db::{ItemDb, MapGrid, MapMobSpawns, MapNpcs, MobDb, NpcKind};
 use ro_engine::{EngineError, MapInstance, MapTransfer};
 use ro_packets::{EventEncoder, Phase0EventEncoder};
-use ro_persistence::CharacterRepository;
 use tokio::sync::{mpsc, oneshot};
 use tracing::{debug, error, info, warn};
 
-use crate::claim::{Claim, SharedState};
+use crate::claim::{Claim, MapRepository, SharedState};
 
 /// Engine tick period (BIN-SRV-01).
 pub const TICK_INTERVAL: Duration = Duration::from_millis(20);
@@ -29,6 +28,17 @@ pub const TICK_INTERVAL: Duration = Duration::from_millis(20);
 pub const FALLBACK_MAP_SIZE: u16 = 512;
 /// Most commands an actor handles before it lets a tick run.
 const MAX_COMMANDS_PER_WAKE: usize = 256;
+/// rAthena `autosave_time`: how often an online character's changed inventory is saved.
+pub const AUTOSAVE_INTERVAL: Duration = Duration::from_secs(300);
+/// How often a map actor looks for due autosaves.
+const AUTOSAVE_CHECK_MS: u64 = 1000;
+
+/// The global registries every map shares (loaded once at startup).
+#[derive(Clone, Default)]
+pub struct Registries {
+    pub items: Arc<ItemDb>,
+    pub mobs: Arc<MobDb>,
+}
 
 /// Static data a map world starts with.
 #[derive(Clone)]
@@ -36,6 +46,7 @@ pub struct MapData {
     pub grid: Arc<MapGrid>,
     pub npcs: Arc<MapNpcs>,
     pub mobs: Arc<MapMobSpawns>,
+    pub registries: Registries,
 }
 
 /// Builds a map's static data from its name (`prontera.gat`).
@@ -108,13 +119,41 @@ pub fn load_mob_spawns(mob_spawn_data_dir: Option<&Path>, map_name: &str) -> Arc
     }
 }
 
+/// Loads the item and mob registries (spec §0). An unset directory warns and gives an empty
+/// registry; a set directory with a missing or bad file is an error (startup fails).
+pub fn load_registries(
+    item_data_dir: Option<&Path>,
+    mob_data_dir: Option<&Path>,
+) -> Result<Registries, ro_db::DbLoadError> {
+    let items = match item_data_dir {
+        Some(dir) => ItemDb::load_dir(dir)?,
+        None => {
+            warn!("ITEM_DATA_DIR not set; the item registry is empty");
+            ItemDb::default()
+        }
+    };
+    let mobs = match mob_data_dir {
+        Some(dir) => MobDb::load_dir(dir)?,
+        None => {
+            warn!("MOB_DATA_DIR not set; the mob registry is empty");
+            MobDb::default()
+        }
+    };
+    info!("Registries: {} items, {} mobs", items.len(), mobs.len());
+    Ok(Registries {
+        items: Arc::new(items),
+        mobs: Arc::new(mobs),
+    })
+}
+
 /// Loader reading `.gat` files from `map_data_dir`, NPC lists from `npc_data_dir` and mob
-/// spawn lists from `mob_spawn_data_dir`. Warps that can't be taken lose their trigger before
-/// the map spawns its NPCs.
+/// spawn lists from `mob_spawn_data_dir`, and handing every map the shared `registries`. Warps
+/// that can't be taken lose their trigger before the map spawns its NPCs.
 pub fn map_data_loader(
     map_data_dir: Option<PathBuf>,
     npc_data_dir: Option<PathBuf>,
     mob_spawn_data_dir: Option<PathBuf>,
+    registries: Registries,
 ) -> MapDataLoader {
     Arc::new(move |map_name: &str| {
         let mut npcs = Arc::unwrap_or_clone(load_npcs(npc_data_dir.as_deref(), map_name));
@@ -123,6 +162,7 @@ pub fn map_data_loader(
             grid: load_walkability(map_data_dir.as_deref(), map_name),
             npcs: Arc::new(npcs),
             mobs: load_mob_spawns(mob_spawn_data_dir.as_deref(), map_name),
+            registries: registries.clone(),
         }
     })
 }
@@ -155,6 +195,9 @@ fn disable_unreachable_warps(npcs: &mut MapNpcs, map_data_dir: Option<&Path>, ma
         npc.trigger = None;
     }
 }
+
+/// Between the speaker's name and the message in `0x00f3` text.
+const CHAT_SEPARATOR: &[u8] = b" : ";
 
 /// Longest map name `0x0091` carries: a 16-byte field with a NUL.
 const MAX_WIRE_MAP_NAME: usize = 15;
@@ -217,11 +260,27 @@ pub enum WorldCommand {
 /// Reserved transfers: char -> (map name, optional entry position).
 type PendingTransfers = HashMap<CharId, (String, Option<MapPosition>)>;
 
+/// Tunables of a map service.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct MapServiceOptions {
+    /// How often an online character's inventory is saved if it changed.
+    pub autosave_interval: Duration,
+}
+
+impl Default for MapServiceOptions {
+    fn default() -> Self {
+        Self {
+            autosave_interval: AUTOSAVE_INTERVAL,
+        }
+    }
+}
+
 /// Shared coordinator managing long-lived per-map `MapWorldActor` tasks and transfer reservations.
 #[derive(Clone)]
 pub struct MapServiceHandle {
     next_session_id: Arc<AtomicU64>,
-    char_repo: Arc<dyn CharacterRepository>,
+    char_repo: Arc<dyn MapRepository>,
+    options: MapServiceOptions,
     worlds: Arc<RwLock<HashMap<String, mpsc::Sender<WorldCommand>>>>,
     pending_transfers: Arc<RwLock<PendingTransfers>>,
     loader: MapDataLoader,
@@ -248,11 +307,21 @@ pub fn is_valid_map_name(map_name: &str) -> bool {
 }
 
 impl MapServiceHandle {
-    /// Starts the position writer and the default map; needs a Tokio runtime.
-    pub fn new(char_repo: Arc<dyn CharacterRepository>, loader: MapDataLoader) -> Self {
+    /// Starts the writer and the default map; needs a Tokio runtime.
+    pub fn new(char_repo: Arc<dyn MapRepository>, loader: MapDataLoader) -> Self {
+        Self::with_options(char_repo, loader, MapServiceOptions::default())
+    }
+
+    /// `new` with non-default tunables.
+    pub fn with_options(
+        char_repo: Arc<dyn MapRepository>,
+        loader: MapDataLoader,
+        options: MapServiceOptions,
+    ) -> Self {
         let handle = Self {
             next_session_id: Arc::new(AtomicU64::new(1)),
             char_repo: Arc::clone(&char_repo),
+            options,
             worlds: Arc::new(RwLock::new(HashMap::new())),
             pending_transfers: Arc::new(RwLock::new(HashMap::new())),
             loader,
@@ -263,7 +332,7 @@ impl MapServiceHandle {
         handle
     }
 
-    pub fn char_repo(&self) -> &Arc<dyn CharacterRepository> {
+    pub fn char_repo(&self) -> &Arc<dyn MapRepository> {
         &self.char_repo
     }
 
@@ -359,8 +428,10 @@ impl MapServiceHandle {
             );
             return None;
         };
-        // Read the recent position before the database: once it is gone, its write has landed.
+        // Read the recent position and inventory before the database: once they are gone,
+        // their writes have landed.
         let recent = self.shared.recent_position(char_id);
+        let recent_inventory = self.shared.recent_inventory(char_id);
         let pending = self.read_transfers().get(&char_id).cloned();
         let character = match self.char_repo.find_by_id(char_id).await {
             Ok(Some(character)) => character,
@@ -396,10 +467,30 @@ impl MapServiceHandle {
             );
             return None;
         }
+        let play = match self.char_repo.load_play_state(char_id).await {
+            Ok(Some(play)) => play,
+            Ok(None) => {
+                warn!(
+                    "Map entry rejected: no play state for character {}",
+                    char_id.0
+                );
+                return None;
+            }
+            Err(err) => {
+                error!(
+                    "Map entry rejected: play state of character {} failed to load: {}",
+                    char_id.0, err
+                );
+                return None;
+            }
+        };
         // Only a successful entry uses up the reservation.
         self.write_transfers().remove(&char_id);
         let mut spawn = CharacterSpawn::from_summary(&character);
         spawn.pos = pos;
+        spawn.str = play.str;
+        spawn.group_id = play.group_id;
+        spawn.inventory = recent_inventory.unwrap_or(play.inventory);
         Some((self.get_or_spawn_world(&map_name), spawn, claim))
     }
 
@@ -458,7 +549,8 @@ impl MapServiceHandle {
         // lock so other sessions aren't blocked on it. A racing spawn of the same map wins and
         // this one is dropped.
         let data = (self.loader)(map_name);
-        let world_actor = MapWorldActor::new(map_name.to_string(), data, self.start_time);
+        let world_actor =
+            MapWorldActor::new(map_name.to_string(), data, self.start_time, self.options);
 
         let mut worlds = match self.worlds.write() {
             Ok(guard) => guard,
@@ -484,6 +576,13 @@ impl MapServiceHandle {
 struct Session {
     account_id: AccountId,
     char_id: CharId,
+    /// The character's name: chat text must start with `"<name> : "`.
+    name: String,
+    /// Inventory revision of the last save (the engine starts every spawn at 0, which is what
+    /// the database or the hand-off already holds).
+    saved_revision: u64,
+    /// When this session's next autosave is due (actor clock, ms).
+    next_autosave_ms: u64,
     /// Released (with the last position set on it) when the session is dropped.
     claim: Claim,
     outbound_tx: mpsc::Sender<Bytes>,
@@ -511,6 +610,8 @@ struct MapWorldActor {
     aoi: Vec<CharId>,
     evict: Vec<SessionId>,
     transfers: Vec<MapTransfer>,
+    autosave_interval_ms: u64,
+    next_autosave_check_ms: u64,
 }
 
 /// Why a session leaves the map.
@@ -524,9 +625,10 @@ enum Departure {
 }
 
 impl MapWorldActor {
-    fn new(map_name: String, data: MapData, started: Instant) -> Self {
+    fn new(map_name: String, data: MapData, started: Instant, options: MapServiceOptions) -> Self {
         let map_size = (data.grid.width(), data.grid.height());
         let mut engine = MapInstance::new(map_name.clone(), data.grid);
+        engine.set_registries(data.registries.items, data.registries.mobs);
         // NPCs first: they take the low unit ids, like rAthena's load order.
         let npcs = engine.spawn_npcs(&data.npcs);
         let mobs = engine.spawn_mobs(&data.mobs);
@@ -547,6 +649,9 @@ impl MapWorldActor {
             aoi: Vec::new(),
             evict: Vec::new(),
             transfers: Vec::new(),
+            autosave_interval_ms: u64::try_from(options.autosave_interval.as_millis())
+                .unwrap_or(u64::MAX),
+            next_autosave_check_ms: 0,
         }
     }
 
@@ -585,7 +690,9 @@ impl MapWorldActor {
         let mut transfers = mem::take(&mut self.transfers);
         self.engine.drain_transfers(&mut transfers);
         // The entity is gone, so the claim is the only record of where the character was. A
-        // session evicted by this flush releases with this position.
+        // session evicted by this flush releases with this position. The inventory is saved
+        // now (every map change saves it), before the flush can evict the session and skip
+        // the hand-off.
         for transfer in &transfers {
             let char_id = transfer.spawn.char_id;
             if let Some(session) = self
@@ -594,6 +701,9 @@ impl MapWorldActor {
                 .and_then(|id| self.sessions.get_mut(id))
             {
                 session.claim.set_last(&self.map_name, transfer.from_pos);
+                session
+                    .claim
+                    .save_inventory(transfer.spawn.inventory.clone());
             }
         }
         // The warping session's last batch from this map goes out before the handoff.
@@ -603,6 +713,31 @@ impl MapWorldActor {
         }
         self.transfers = transfers;
         self.events = events;
+        if now >= self.next_autosave_check_ms {
+            self.next_autosave_check_ms = now + AUTOSAVE_CHECK_MS;
+            self.autosave(now);
+        }
+    }
+
+    /// Saves the inventory of every session whose autosave is due and whose inventory changed
+    /// since its last save.
+    fn autosave(&mut self, now: u64) {
+        for session in self.sessions.values_mut() {
+            if now < session.next_autosave_ms {
+                continue;
+            }
+            session.next_autosave_ms = now.saturating_add(self.autosave_interval_ms);
+            let Some(revision) = self.engine.inventory_revision(session.char_id) else {
+                continue;
+            };
+            if revision == session.saved_revision {
+                continue;
+            }
+            if let Some(inventory) = self.engine.inventory_snapshot(session.char_id) {
+                session.claim.save_inventory(inventory);
+                session.saved_revision = revision;
+            }
+        }
     }
 
     /// Moves a warped character's session out of this map and asks its session task to join
@@ -678,6 +813,7 @@ impl MapWorldActor {
             entry,
         } = join;
         let char_id = spawn.char_id;
+        let name = spawn.name.clone();
         if self.sessions.contains_key(&session_id) {
             warn!(
                 "Map '{}' ignoring duplicate join for {:?}",
@@ -727,6 +863,9 @@ impl MapWorldActor {
             Session {
                 account_id,
                 char_id,
+                name,
+                saved_revision: 0,
+                next_autosave_ms: now.saturating_add(self.autosave_interval_ms),
                 claim,
                 outbound_tx,
                 control_tx,
@@ -789,6 +928,30 @@ impl MapWorldActor {
         let (account_id, char_id) = (session.account_id, session.char_id);
         match intent.intent {
             ClientIntent::EnterMap { .. } => {}
+            ClientIntent::Chat { text } => {
+                let prefix_len = session.name.len() + CHAT_SEPARATOR.len();
+                // Too short to hold a message: ignored, like rAthena.
+                if text.len() <= prefix_len {
+                    return;
+                }
+                let prefix_ok = text.starts_with(session.name.as_bytes())
+                    && text[session.name.len()..].starts_with(CHAT_SEPARATOR);
+                if !prefix_ok {
+                    // rAthena treats this as a hacked or desynced client and disconnects.
+                    warn!(
+                        "Map '{}' closing {:?}: chat without the '<name> : ' prefix",
+                        self.map_name, intent.session_id
+                    );
+                    self.leave(intent.session_id, Departure::Gone);
+                    return;
+                }
+                self.engine.push_intent(SessionIntent::new(
+                    intent.session_id,
+                    Some(account_id),
+                    Some(char_id),
+                    ClientIntent::Chat { text },
+                ));
+            }
             ClientIntent::Restart { restart_type: 1 } => {
                 info!(
                     "Map '{}' returning {:?} to character selection",
@@ -861,11 +1024,14 @@ impl MapWorldActor {
             self.by_char.remove(&char_id);
         }
         // A character that warped out this tick is no longer in the engine; its claim already
-        // holds the trigger cell.
+        // holds the trigger cell, and the hand-off saved its inventory.
         let events = match self.engine.character_position(char_id) {
             None => Vec::new(),
             Some(pos) => {
                 claim.set_last(&self.map_name, pos);
+                if let Some(inventory) = self.engine.inventory_snapshot(char_id) {
+                    claim.set_inventory(inventory);
+                }
                 self.engine.remove_character(char_id).unwrap_or_else(|err| {
                     warn!(
                         "Map '{}' removing char {}: {}",
@@ -980,6 +1146,7 @@ mod tests {
             grid,
             npcs: Arc::new(MapNpcs::default()),
             mobs: Arc::new(MapMobSpawns::default()),
+            registries: Registries::default(),
         };
         MapServiceHandle::new(repo, Arc::new(move |_: &str| data.clone()))
     }
@@ -1093,15 +1260,24 @@ mod tests {
             grid: Arc::new(MapGrid::all_walkable(200, 200).expect("valid dims")),
             npcs: Arc::new(MapNpcs { npcs: vec![warp] }),
             mobs: Arc::new(MapMobSpawns::default()),
+            registries: Registries::default(),
         };
-        let mut actor = MapWorldActor::new("prontera.gat".into(), data, Instant::now());
+        let mut actor = MapWorldActor::new(
+            "prontera.gat".into(),
+            data,
+            Instant::now(),
+            MapServiceOptions::default(),
+        );
         let (outbound_tx, _outbound_rx) = mpsc::channel(1);
         let (control_tx, mut control_rx) = mpsc::channel(1);
         let session_id = SessionId(1);
         actor.join(JoinSession {
             session_id,
             account_id: ACCOUNT,
-            spawn: spawn_at(50, 50),
+            spawn: CharacterSpawn {
+                inventory: crate::claim::tests::potions(7),
+                ..spawn_at(50, 50)
+            },
             claim: shared.claim(CHAR).expect("claim"),
             outbound_tx,
             control_tx,
@@ -1121,6 +1297,11 @@ mod tests {
             shared.recent_position(CHAR),
             Some(("prontera.gat".to_string(), at(50, 50)))
         );
+        assert_eq!(
+            shared.recent_inventory(CHAR),
+            Some(crate::claim::tests::potions(7)),
+            "the inventory that left with the warp is saved even though the hand-off never ran"
+        );
         assert!(shared.claim(CHAR).is_some(), "released");
     }
 
@@ -1136,6 +1317,9 @@ mod tests {
             hair_color: 1,
             pos: at(x, y),
             speed: 150,
+            str: 1,
+            group_id: 0,
+            inventory: Default::default(),
         }
     }
 

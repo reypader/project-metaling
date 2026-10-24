@@ -374,7 +374,7 @@ async fn bin_warp_04_unreachable_destinations_are_inert() {
     write_warp_npcs(&npc_dir);
 
     let (logs, _guard) = Logs::capture();
-    let loader = map_data_loader(Some(maps), Some(npc_dir), None);
+    let loader = map_data_loader(Some(maps), Some(npc_dir), None, Default::default());
     let data = loader("prontera.gat");
     let triggers: Vec<_> = data
         .npcs
@@ -414,7 +414,7 @@ async fn bin_warp_04_without_map_data_dir_uses_the_fallback_grid() {
     let root = TempDir::new("warp04-fallback");
     let npc_dir = root.sub("npc");
     write_warp_npcs(&npc_dir);
-    let loader = map_data_loader(None, Some(npc_dir), None);
+    let loader = map_data_loader(None, Some(npc_dir), None, Default::default());
     let server = TestServer::start_with_loader(InMemoryRepo::seeded(&[(A, 20, 20)]), loader).await;
     let mut a = server.join(A).await;
 
@@ -456,7 +456,12 @@ async fn moves_ignored_while_loading(
     assert_entry_burst(&a.collect(SHORT).await);
     a.send(&[0x7d, 0x00]).await;
     let dup = a.collect(SHORT).await;
-    assert!(dup.is_empty(), "a duplicate 0x007d sends nothing: {dup:?}");
+    let ops: Vec<u16> = dup.iter().map(|f| f.opcode.0).collect();
+    assert_eq!(
+        ops,
+        [0x0b08, 0x0b0b, 0x0a9b, 0x00b0, 0x00b0],
+        "a duplicate 0x007d resends only the (empty) inventory lists (specs/items ENG-INV-04)"
+    );
 
     a.send(&cz_request_move(dest.0 + 3, dest.1)).await;
     assert!(

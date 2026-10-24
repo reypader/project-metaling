@@ -29,10 +29,15 @@
 //! - `ZC_NOTIFY_ACT` (0x08c8)
 //! - `ZC_RESTART_ACK` (0x00b3)
 //! - `ZC_ACK_REQ_DISCONNECT` (0x018b)
+//! - inventory lists (0x0b08, 0x0b09, 0x0b39, 0x0b0b, 0x0a9b), `ZC_ITEM_PICKUP_ACK` (0x0b41),
+//!   `ZC_ITEM_THROW_ACK` (0x00af)
+//! - floor items (0x0add, 0x009d, 0x00a1)
+//! - chat (0x008d, 0x008e)
 
 pub mod char;
 pub mod encoder;
 pub mod helpers;
+pub mod item;
 pub mod login;
 pub mod map;
 
@@ -46,6 +51,12 @@ pub use encoder::{
     is_implemented_outbound_opcode, ModernEventEncoder, Phase0EventEncoder, RathenaEventEncoder,
 };
 pub use helpers::write_fixed_string;
+pub use item::{
+    encode_zc_equipment_itemlist, encode_zc_equipswitch_list_empty, encode_zc_inventory_end,
+    encode_zc_inventory_start, encode_zc_item_disappear, encode_zc_item_entry,
+    encode_zc_item_fall_entry, encode_zc_item_pickup_ack, encode_zc_item_throw_ack,
+    encode_zc_normal_itemlist, encode_zc_notify_chat, encode_zc_notify_playerchat,
+};
 pub use login::{
     encode_ac_accept_login, encode_ac_accept_login_modern, encode_ac_refuse_login,
     encode_ac_refuse_login_modern, CharServerEntry,

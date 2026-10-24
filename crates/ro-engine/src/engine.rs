@@ -4,19 +4,24 @@
 //! paths -> advance every due step (AoI diff per step, pending redirect repath at step end)
 //! -> return the events. Rules: spec `specs/engine-foundation/spec.md` §0.
 
+use std::cmp::Reverse;
+use std::collections::BinaryHeap;
 use std::mem;
 use std::sync::Arc;
 
 use ro_core::{
-    gat_map_name, BroadcastScope, CharId, CharacterSpawn, ClientIntent, MapPosition,
-    ScopedServerEvent, ServerEvent, SessionIntent, Sex, UnitAppearance, UnitObjectType,
+    gat_map_name, BroadcastScope, CharId, CharacterInventory, CharacterSpawn, ClientIntent,
+    InventoryItem, MapPosition, ScopedServerEvent, ServerEvent, SessionIntent, Sex, UnitAppearance,
+    UnitObjectType,
 };
-use ro_db::{CellType, MapGrid, MapNpcs, NpcKind, NpcSpawn, NpcState};
+use ro_db::{CellType, ItemDb, MapGrid, MapNpcs, MobDb, NpcKind, NpcSpawn, NpcState};
 use smallvec::SmallVec;
 use tracing::{debug, warn};
 
 use crate::entity::Entity;
 use crate::error::EngineError;
+use crate::floor_item::MIN_FLOOR_ID;
+use crate::inventory::PlayerInventory;
 use crate::movement::WalkingPath;
 use crate::path::{AStarScratchBuffer, MAX_WALKPATH, MAX_WALK_PATH_CLICK};
 use crate::spatial::{step_visibility, AREA_SIZE};
@@ -31,15 +36,12 @@ use crate::warp::{CellBits, MapTransfer};
 use crate::world::{NpcInfo, WarpTrigger, World};
 
 /// Default entity capacity of one map instance.
-pub const DEFAULT_ENTITY_CAPACITY: u32 = 4096;
+/// Capacity is only a limit: the columns grow as entities are created. Floor items count too.
+pub const DEFAULT_ENTITY_CAPACITY: u32 = 16_384;
 
-/// `ZC_PAR_CHANGE` var ids sent at map entry (rAthena `SP_WEIGHT`, `SP_MAXWEIGHT`).
-const SP_WEIGHT: u16 = 24;
+/// `ZC_PAR_CHANGE` var ids (rAthena `SP_WEIGHT`, `SP_MAXWEIGHT`), in 0.1 weight units.
+pub(crate) const SP_WEIGHT: u16 = 24;
 const SP_MAXWEIGHT: u16 = 25;
-/// Placeholder weights in 0.1 units until inventory/stats exist: empty bag, and the max weight
-/// rAthena gives a STR 1 novice (capture `login_sequence-rathena.log`).
-const PLACEHOLDER_WEIGHT: i32 = 0;
-const PLACEHOLDER_MAX_WEIGHT: i32 = 20_300;
 
 /// `CZ_REQUEST_ACT` action types.
 const ACTION_SIT: u8 = 2;
@@ -97,6 +99,14 @@ pub struct MapInstance {
     pub(crate) next_npc_id: u32,
     /// Normalized mob spawn lines; each mob keeps the index of its line.
     pub(crate) spawn_groups: Vec<SpawnGroup>,
+    /// Floor item expiry times `(expire_at, floor id)`, soonest first. Entries for items already
+    /// gone are skipped when popped.
+    pub(crate) floor_expiry: BinaryHeap<Reverse<(u64, u32)>>,
+    /// Next floor item id to try (cycles through `[2, 2_000_000)`).
+    pub(crate) next_floor_id: u32,
+    /// Global registries shared by every instance (empty until `set_registries`).
+    pub(crate) items: Arc<ItemDb>,
+    pub(crate) mob_db: Arc<MobDb>,
 }
 
 /// rAthena direction of a one-cell step (0 N, 1 NW, 2 W, 3 SW, 4 S, 5 SE, 6 E, 7 NE; y+ is north).
@@ -148,7 +158,18 @@ impl MapInstance {
             transfers: Vec::new(),
             next_npc_id: START_NPC_ID,
             spawn_groups: Vec::new(),
+            floor_expiry: BinaryHeap::new(),
+            next_floor_id: MIN_FLOOR_ID,
+            items: Arc::new(ItemDb::default()),
+            mob_db: Arc::new(MobDb::default()),
         }
+    }
+
+    /// Shares the global item and mob registries with this instance. Call before spawning
+    /// characters: inventory weights are computed at spawn.
+    pub fn set_registries(&mut self, items: Arc<ItemDb>, mob_db: Arc<MobDb>) {
+        self.items = items;
+        self.mob_db = mob_db;
     }
 
     /// Whether the character currently has a walk in progress.
@@ -167,13 +188,9 @@ impl MapInstance {
     // ---------- helpers ----------
 
     pub(crate) fn gid(&self, e: Entity) -> u32 {
-        if let Some(p) = self.world.players.get(e) {
-            return p.account_id.0;
-        }
-        if let Some(n) = self.world.npcs.get(e) {
-            return n.gid;
-        }
-        self.world.mobs.get(e).map_or(0, |m| m.gid)
+        // The dense column has no generation: a stale handle would read the slot's new occupant.
+        debug_assert!(self.world.entities.is_alive(e), "gid of a dead entity");
+        self.world.gids.get(e.index()).copied().unwrap_or(0)
     }
 
     fn char_of(&self, e: Entity) -> Option<CharId> {
@@ -250,10 +267,20 @@ impl MapInstance {
     /// Characters that see `e` right now (Chebyshev 14, visible only), sorted, optionally
     /// without `e` itself. Resolved at emission like rAthena's `clif_send(AREA)`.
     fn aoi_recipients(&mut self, e: Entity, exclude_self: bool) -> Vec<CharId> {
+        self.recipients_within(e, AREA_SIZE, exclude_self)
+    }
+
+    /// Characters within Chebyshev `radius` of `e` (visible only), sorted.
+    pub(crate) fn recipients_within(
+        &mut self,
+        e: Entity,
+        radius: u16,
+        exclude_self: bool,
+    ) -> Vec<CharId> {
         let (x, y) = self.cell(e);
         self.world
             .grid
-            .query_radius(x, y, AREA_SIZE, &self.world.positions, &mut self.recipients);
+            .query_radius(x, y, radius, &self.world.positions, &mut self.recipients);
         let mut chars = Vec::with_capacity(self.recipients.len());
         for &r in &self.recipients {
             if exclude_self && r == e {
@@ -294,6 +321,11 @@ impl MapInstance {
 
     /// How `subject` looks to an observer that just started seeing it.
     fn entry_event(&self, subject: Entity, tick: u32) -> Option<ServerEvent> {
+        if self.is_floor_item(subject) {
+            return self
+                .floor_appearance(subject)
+                .map(|item| ServerEvent::FloorItemEntered { item });
+        }
         let unit = self.appearance(subject)?;
         Some(match self.walk_dest(subject) {
             Some(dest) => ServerEvent::UnitWalking {
@@ -371,29 +403,20 @@ impl MapInstance {
                 }
             }
             ClientIntent::RequestEntityName { entity_id } => self.name_request(e, entity_id),
+            ClientIntent::PickUpItem { floor_id } => self.pick_up(e, floor_id, now_ms),
+            ClientIntent::Chat { text } => self.chat(e, &text),
+            ClientIntent::DropItem { index, amount } => self.drop_item(e, index, amount, now_ms),
             other => debug!(map = %self.map_name, intent = ?other, "intent not handled by engine"),
         }
     }
 
-    /// `CZ_NOTIFY_ACTORINIT`: self stats, then into the grid, spawn to others, others to self.
+    /// `CZ_NOTIFY_ACTORINIT`: the inventory lists and weights (on every one, repeats included),
+    /// then, the first time, into the grid, spawn to others, others to self.
     fn actor_init(&mut self, e: Entity, now_ms: u64) {
+        self.send_inventory(e);
         if self.world.in_grid[e.index()] {
             return;
         }
-        self.emit_self(
-            e,
-            ServerEvent::ParameterChanged {
-                var_id: SP_WEIGHT,
-                value: PLACEHOLDER_WEIGHT,
-            },
-        );
-        self.emit_self(
-            e,
-            ServerEvent::ParameterChanged {
-                var_id: SP_MAXWEIGHT,
-                value: PLACEHOLDER_MAX_WEIGHT,
-            },
-        );
         self.world.show(e);
         if let Some(unit) = self.appearance(e) {
             self.emit_aoi(e, true, ServerEvent::UnitSpawned { unit });
@@ -411,6 +434,77 @@ impl MapInstance {
         }
         // Arrival cell: warps chain from here (ENG-WARP-05).
         self.touch_warps(e);
+    }
+
+    /// The entry lists in captured order: start, stackables (if any), non-stackables (if any),
+    /// end, the empty equip-switch list, SP_WEIGHT, SP_MAXWEIGHT.
+    fn send_inventory(&mut self, e: Entity) {
+        let Some(inventory) = self.world.inventories.get(e) else {
+            return;
+        };
+        let (normal, equip) = inventory.list_entries(&self.items);
+        let (weight, max_weight) = (inventory.weight(), inventory.max_weight());
+        self.emit_self(e, ServerEvent::InventoryStart);
+        if !normal.is_empty() {
+            self.emit_self(e, ServerEvent::InventoryNormalItems { items: normal });
+        }
+        if !equip.is_empty() {
+            self.emit_self(e, ServerEvent::InventoryEquipItems { items: equip });
+        }
+        self.emit_self(e, ServerEvent::InventoryEnd);
+        self.emit_self(e, ServerEvent::EquipSwitchList);
+        self.emit_weight(e, SP_WEIGHT, weight);
+        self.emit_weight(e, SP_MAXWEIGHT, max_weight);
+    }
+
+    /// Creates the player entity and moves the spawn's inventory into its component.
+    pub(crate) fn spawn_player(
+        &mut self,
+        spawn: &mut CharacterSpawn,
+    ) -> Result<Entity, EngineError> {
+        let e = self.world.spawn_player(spawn)?;
+        let inventory = mem::take(&mut spawn.inventory);
+        let inventory = PlayerInventory::new(inventory, spawn.char_id, spawn.str, &self.items);
+        self.world.inventories.insert(e, inventory);
+        Ok(e)
+    }
+
+    pub(crate) fn emit_weight(&mut self, e: Entity, var_id: u16, value: u32) {
+        self.emit_self(
+            e,
+            ServerEvent::ParameterChanged {
+                var_id,
+                value: i32::try_from(value).unwrap_or(i32::MAX),
+            },
+        );
+    }
+
+    /// Adds an item (`item.amount` of it) to `e`'s inventory: `0x0b41` and SP_WEIGHT on
+    /// success, the `0x0b41` failure form on failure. Returns the `0x0b41` result code.
+    pub(crate) fn give_item_to(&mut self, e: Entity, item: &InventoryItem) -> u8 {
+        match self.add_item(e, item) {
+            Ok(()) => 0,
+            Err(result) => {
+                self.emit_self(e, ServerEvent::ItemAddFailed { result });
+                result
+            }
+        }
+    }
+
+    /// rAthena `pc_additem`: on success sends `0x0b41` and SP_WEIGHT; on failure sends nothing
+    /// and returns the result code (the caller decides on the failure ack).
+    pub(crate) fn add_item(&mut self, e: Entity, item: &InventoryItem) -> Result<(), u8> {
+        let Some(inventory) = self.world.inventories.get_mut(e) else {
+            return Err(crate::inventory::ADD_INVALID);
+        };
+        let added = inventory.add(item, u32::from(item.amount), &self.items)?;
+        let entry = inventory.pickup_entry(added.slot, added.amount, &self.items);
+        let weight = inventory.weight();
+        if let Some(item) = entry {
+            self.emit_self(e, ServerEvent::ItemAdded { item });
+        }
+        self.emit_weight(e, SP_WEIGHT, weight);
+        Ok(())
     }
 
     /// Vanishes player `e` to its AoI (excluding itself), drops its queued intents and frees
@@ -659,13 +753,15 @@ impl MapInstance {
         for k in 0..self.left.len() {
             let other = self.left[k];
             let other_gid = self.gid(other);
-            self.emit_self(
-                e,
+            let gone = if self.is_floor_item(other) {
+                ServerEvent::FloorItemVanished { id: other_gid }
+            } else {
                 ServerEvent::UnitVanished {
                     gid: other_gid,
                     vanish_type: VANISH_OUT_OF_SIGHT,
-                },
-            );
+                }
+            };
+            self.emit_self(e, gone);
             // NPCs see nothing; skip building events for them.
             if !self.world.players.contains(other) {
                 continue;
@@ -679,10 +775,14 @@ impl MapInstance {
             );
         }
         let tick = step_end as u32;
+        // Only players see anything: skip building entry events for a mob mover.
+        let mover_sees = self.world.players.contains(e);
         for k in 0..self.entered.len() {
             let other = self.entered[k];
-            if let Some(event) = self.entry_event(other, tick) {
-                self.emit_self(e, event);
+            if mover_sees {
+                if let Some(event) = self.entry_event(other, tick) {
+                    self.emit_self(e, event);
+                }
             }
             if !self.world.players.contains(other) {
                 continue;
@@ -743,15 +843,47 @@ impl MapInstance {
     /// A duplicate char_id returns `Err(CharacterAlreadyEntered)`.
     pub fn spawn_character(
         &mut self,
-        spawn: CharacterSpawn,
+        mut spawn: CharacterSpawn,
         _now_ms: u64,
     ) -> Result<Vec<ScopedServerEvent>, EngineError> {
         let (x, y) = (spawn.pos.x, spawn.pos.y);
         if x >= self.walkability.width() || y >= self.walkability.height() {
             return Err(EngineError::InvalidCell { x, y });
         }
-        self.world.spawn_player(&spawn)?;
+        self.spawn_player(&mut spawn)?;
         Ok(Vec::new())
+    }
+
+    /// Adds `item.amount` of `item` to the character's inventory and sends the `0x0b41` result
+    /// (and SP_WEIGHT on success). Returns the `0x0b41` result code: 0 on success.
+    pub fn give_item(&mut self, char_id: CharId, item: &InventoryItem) -> Result<u8, EngineError> {
+        let e = self
+            .world
+            .entity_by_char(char_id)
+            .ok_or(EngineError::UnknownCharacter(char_id))?;
+        Ok(self.give_item_to(e, item))
+    }
+
+    /// A copy of the character's inventory for saving.
+    pub fn inventory_snapshot(&self, char_id: CharId) -> Option<CharacterInventory> {
+        let e = self.world.entity_by_char(char_id)?;
+        self.world.inventories.get(e).map(PlayerInventory::snapshot)
+    }
+
+    /// Changes whenever the character's inventory changes (0 after spawn). The map-server
+    /// compares it with the revision it last saved.
+    pub fn inventory_revision(&self, char_id: CharId) -> Option<u64> {
+        let e = self.world.entity_by_char(char_id)?;
+        self.world.inventories.get(e).map(PlayerInventory::revision)
+    }
+
+    /// Current and max weight (0.1 units).
+    pub fn weight(&self, char_id: CharId) -> Option<(u32, u32)> {
+        let e = self.world.entity_by_char(char_id)?;
+        self.world
+            .inventories
+            .get(e)
+            .map(|i| (i.weight(), i.max_weight()))
     }
 
     /// Creates the map's static NPCs (spec ENG-NPC-01). Emits nothing: no player is on the map
@@ -854,6 +986,7 @@ impl MapInstance {
         now_ms: u64,
         out: &mut Vec<ScopedServerEvent>,
     ) -> Result<(), EngineError> {
+        self.expire_floor_items(now_ms);
         // Steps that ended before `now` complete first, so this tick's clicks see them.
         self.advance_walkers(now_ms);
         let mut batch = mem::take(&mut self.intents);

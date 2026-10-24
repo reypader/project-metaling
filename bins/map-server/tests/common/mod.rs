@@ -13,9 +13,12 @@ use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::{TcpListener, TcpStream};
 use tokio_util::codec::Decoder;
 
-use map_server::{handle_client_session, MapData, MapDataLoader, MapServiceHandle};
+use map_server::{
+    handle_client_session, MapData, MapDataLoader, MapServiceHandle, MapServiceOptions, Registries,
+};
 use ro_core::{
-    AccountId, CharId, CharacterSummary, CreateCharacterRequest, MapPosition, Sex, TARGET_PACKETVER,
+    AccountId, CharId, CharacterInventory, CharacterSummary, CreateCharacterRequest, MapPosition,
+    Sex, TARGET_PACKETVER,
 };
 use ro_db::{CellType, MapGrid, MapMobSpawns, MapNpcs};
 use ro_packets::{
@@ -23,7 +26,7 @@ use ro_packets::{
 };
 use ro_persistence::{
     CancelDeleteOutcome, CharacterRepository, CreateCharacterError, DeleteReserveOutcome,
-    RepositoryError,
+    InventoryRepository, PlayState, RepositoryError,
 };
 
 pub const MAP: &str = "prontera.gat";
@@ -39,8 +42,13 @@ pub fn char_id(n: u32) -> u32 {
 #[derive(Default)]
 pub struct InMemoryRepo {
     chars: Mutex<HashMap<CharId, CharacterSummary>>,
-    /// Simulated latency of `update_position` (a slow database).
+    /// Simulated latency of `update_position` and `save_inventory` (a slow database).
     persist_delay: Mutex<Duration>,
+    /// Stored inventories, account groups and STR by character.
+    inventories: Mutex<HashMap<CharId, CharacterInventory>>,
+    groups: Mutex<HashMap<CharId, i32>>,
+    /// Every inventory save, in order.
+    pub inventory_saves: Mutex<Vec<(CharId, CharacterInventory)>>,
 }
 
 impl InMemoryRepo {
@@ -86,6 +94,35 @@ impl InMemoryRepo {
     pub fn with_persist_delay(self, delay: Duration) -> Self {
         *self.persist_delay.lock().unwrap() = delay;
         self
+    }
+
+    /// Makes character `n`'s account a GM (group 99).
+    pub fn set_gm(&self, n: u32) {
+        self.groups.lock().unwrap().insert(CharId(char_id(n)), 99);
+    }
+
+    pub fn set_inventory(&self, n: u32, inventory: CharacterInventory) {
+        self.inventories
+            .lock()
+            .unwrap()
+            .insert(CharId(char_id(n)), inventory);
+    }
+
+    pub fn stored_inventory(&self, n: u32) -> Option<CharacterInventory> {
+        self.inventories
+            .lock()
+            .unwrap()
+            .get(&CharId(char_id(n)))
+            .cloned()
+    }
+
+    pub fn inventory_saves_of(&self, n: u32) -> usize {
+        self.inventory_saves
+            .lock()
+            .unwrap()
+            .iter()
+            .filter(|(c, _)| *c == CharId(char_id(n)))
+            .count()
     }
 
     pub fn stored(&self, n: u32) -> Option<(String, MapPosition)> {
@@ -168,6 +205,48 @@ impl CharacterRepository for InMemoryRepo {
     }
 }
 
+#[async_trait]
+impl InventoryRepository for InMemoryRepo {
+    async fn load_play_state(&self, id: CharId) -> Result<Option<PlayState>, RepositoryError> {
+        if !self.chars.lock().unwrap().contains_key(&id) {
+            return Ok(None);
+        }
+        Ok(Some(PlayState {
+            str: 1,
+            group_id: self.groups.lock().unwrap().get(&id).copied().unwrap_or(0),
+            inventory: self
+                .inventories
+                .lock()
+                .unwrap()
+                .get(&id)
+                .cloned()
+                .unwrap_or_default(),
+        }))
+    }
+
+    async fn save_inventory(
+        &self,
+        id: CharId,
+        inventory: &CharacterInventory,
+    ) -> Result<(), RepositoryError> {
+        let delay = *self.persist_delay.lock().unwrap();
+        if !delay.is_zero() {
+            tokio::time::sleep(delay).await;
+        }
+        // Like the database: rows load back without holes.
+        let compact = CharacterInventory {
+            slots: inventory.items().cloned().map(Some).collect(),
+            unique_item_counter: inventory.unique_item_counter,
+        };
+        self.inventory_saves
+            .lock()
+            .unwrap()
+            .push((id, inventory.clone()));
+        self.inventories.lock().unwrap().insert(id, compact);
+        Ok(())
+    }
+}
+
 /// Loader handing every map the same 200x200 grid with `walls`, no NPCs and no mobs.
 pub fn grid_loader(walls: &[(u16, u16)]) -> MapDataLoader {
     data_loader(walls, MapNpcs::default(), MapMobSpawns::default())
@@ -183,6 +262,7 @@ pub fn data_loader(walls: &[(u16, u16)], npcs: MapNpcs, mobs: MapMobSpawns) -> M
         grid: Arc::new(grid),
         npcs: Arc::new(npcs),
         mobs: Arc::new(mobs),
+        registries: test_registries(),
     };
     Arc::new(move |_map: &str| data.clone())
 }
@@ -195,11 +275,26 @@ pub fn maps_loader(maps: Vec<(&'static str, MapNpcs)>) -> MapDataLoader {
         .into_iter()
         .map(|(map, npcs)| (map, Arc::new(npcs)))
         .collect();
+    let registries = test_registries();
     Arc::new(move |map: &str| MapData {
         grid: Arc::clone(&grid),
         npcs: maps.get(map).cloned().unwrap_or_default(),
         mobs: Arc::default(),
+        registries: registries.clone(),
     })
+}
+
+/// The shipped item and mob registries (read from `crates/ro-db/data`, like the server does).
+pub fn test_registries() -> Registries {
+    static REGISTRIES: std::sync::OnceLock<Registries> = std::sync::OnceLock::new();
+    REGISTRIES
+        .get_or_init(|| {
+            let data =
+                std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../crates/ro-db/data");
+            map_server::load_registries(Some(&data.join("item")), Some(&data.join("mob")))
+                .expect("shipped registries load")
+        })
+        .clone()
 }
 
 /// A `.gat` file of `width` x `height` walkable cells.
@@ -230,8 +325,16 @@ impl TestServer {
     }
 
     pub async fn start_with_loader(repo: InMemoryRepo, loader: MapDataLoader) -> Self {
+        Self::start_with_options(repo, loader, MapServiceOptions::default()).await
+    }
+
+    pub async fn start_with_options(
+        repo: InMemoryRepo,
+        loader: MapDataLoader,
+        options: MapServiceOptions,
+    ) -> Self {
         let repo = Arc::new(repo);
-        let service = MapServiceHandle::new(repo.clone(), loader);
+        let service = MapServiceHandle::with_options(repo.clone(), loader, options);
         let listener = TcpListener::bind("127.0.0.1:0").await.expect("bind");
         let addr = listener.local_addr().expect("local addr");
         let srv = service.clone();

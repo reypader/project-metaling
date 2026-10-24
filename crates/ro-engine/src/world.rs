@@ -2,12 +2,13 @@
 
 use std::sync::Arc;
 
-use ro_core::{AccountId, CharId, CharacterSpawn, MapPosition, Sex, UnitObjectType};
+use ro_core::{AccountId, CharId, CharacterSpawn, InventoryItem, MapPosition, Sex, UnitObjectType};
 use ro_db::{MobId, NpcState};
 use rustc_hash::FxHashMap;
 
 use crate::entity::{Entity, EntityAllocator};
 use crate::error::EngineError;
+use crate::inventory::PlayerInventory;
 use crate::movement::WalkingPath;
 use crate::sparse_set::SparseSet;
 use crate::spatial::SpatialGrid8x8;
@@ -19,6 +20,7 @@ pub(crate) enum EntityKind {
     Player,
     Npc,
     Mob,
+    FloorItem,
 }
 
 /// Static appearance and identity of a player entity.
@@ -32,6 +34,10 @@ pub(crate) struct PlayerInfo {
     pub(crate) hair_style: u16,
     pub(crate) hair_color: u16,
     pub(crate) clevel: u16,
+    /// Base STR (max weight).
+    pub(crate) str: u16,
+    /// Account permission group; 99 may use every GM command.
+    pub(crate) group_id: i32,
     /// Consecutive warps that landed inside a warp area (rAthena `count_rewarp`).
     pub(crate) rewarp_count: u8,
 }
@@ -65,6 +71,26 @@ pub(crate) struct MobInfo {
     pub(crate) spawn_group: u32,
 }
 
+/// An item lying on the floor (rAthena `flooritem_data`).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct FloorItem {
+    /// Object id, `[2, 2_000_000)`; also the entity's gid.
+    pub(crate) id: u32,
+    /// The item; `amount` is the floor amount.
+    pub(crate) item: InventoryItem,
+    /// Sub-cell offsets, `rnd[1,4] × 3`.
+    pub(crate) sub_x: u8,
+    pub(crate) sub_y: u8,
+    /// Loot owners by tier (char ids); `None` = nobody.
+    pub(crate) owners: [Option<CharId>; 3],
+    /// When each tier's wait ends (ms).
+    pub(crate) owner_ticks: [u64; 3],
+    /// Removal time (ms).
+    pub(crate) expire_at: u64,
+    /// The mob that dropped it; 0 for player drops.
+    pub(crate) mob_id: u32,
+}
+
 /// A warp's touch area and destination, resolved at spawn.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) struct WarpTrigger {
@@ -88,6 +114,8 @@ pub(crate) struct World {
     // Dense columns, one entry per allocator slot.
     pub(crate) positions: Vec<MapPosition>,
     pub(crate) kinds: Vec<EntityKind>,
+    /// Wire id: account id (players), NPC/mob id, floor item id.
+    pub(crate) gids: Vec<u32>,
     /// rAthena `dead_sit`: 0 standing, 2 sitting.
     pub(crate) dead_sit: Vec<u8>,
     pub(crate) head_dir: Vec<u16>,
@@ -98,8 +126,10 @@ pub(crate) struct World {
     pub(crate) pending_move: Vec<Option<(u16, u16)>>,
     // Sparse components.
     pub(crate) players: SparseSet<PlayerInfo>,
+    pub(crate) inventories: SparseSet<PlayerInventory>,
     pub(crate) npcs: SparseSet<NpcInfo>,
     pub(crate) mobs: SparseSet<MobInfo>,
+    pub(crate) floor_items: SparseSet<FloorItem>,
     pub(crate) warps: SparseSet<WarpTrigger>,
     pub(crate) walking_paths: SparseSet<WalkingPath>,
     // Network id lookups.
@@ -114,14 +144,17 @@ impl World {
             entities: EntityAllocator::with_capacity(capacity),
             positions: Vec::new(),
             kinds: Vec::new(),
+            gids: Vec::new(),
             dead_sit: Vec::new(),
             head_dir: Vec::new(),
             speed: Vec::new(),
             in_grid: Vec::new(),
             pending_move: Vec::new(),
             players: SparseSet::new(),
+            inventories: SparseSet::new(),
             npcs: SparseSet::new(),
             mobs: SparseSet::new(),
+            floor_items: SparseSet::new(),
             warps: SparseSet::new(),
             walking_paths: SparseSet::new(),
             char_to_entity: FxHashMap::default(),
@@ -146,7 +179,12 @@ impl World {
         {
             return Err(EngineError::CharacterAlreadyEntered(spawn.char_id));
         }
-        let entity = self.allocate(EntityKind::Player, spawn.pos, spawn.speed)?;
+        let entity = self.allocate(
+            EntityKind::Player,
+            spawn.account_id.0,
+            spawn.pos,
+            spawn.speed,
+        )?;
         self.players.insert(
             entity,
             PlayerInfo {
@@ -158,6 +196,8 @@ impl World {
                 hair_style: spawn.hair_style,
                 hair_color: spawn.hair_color,
                 clevel: spawn.base_level,
+                str: spawn.str,
+                group_id: spawn.group_id,
                 rewarp_count: 0,
             },
         );
@@ -178,7 +218,7 @@ impl World {
         if self.gid_to_entity.contains_key(&info.gid) {
             return Err(EngineError::DuplicateGid(info.gid));
         }
-        let entity = self.allocate(EntityKind::Npc, pos, speed)?;
+        let entity = self.allocate(EntityKind::Npc, info.gid, pos, speed)?;
         self.gid_to_entity.insert(info.gid, entity);
         self.npcs.insert(entity, info);
         if let Some(warp) = warp {
@@ -197,16 +237,37 @@ impl World {
         if self.gid_to_entity.contains_key(&info.gid) {
             return Err(EngineError::DuplicateGid(info.gid));
         }
-        let entity = self.allocate(EntityKind::Mob, pos, speed)?;
+        let entity = self.allocate(EntityKind::Mob, info.gid, pos, speed)?;
         self.gid_to_entity.insert(info.gid, entity);
         self.mobs.insert(entity, info);
         Ok(entity)
+    }
+
+    /// Creates a floor item entity (not in the grid; call `show`). The id must be unused.
+    pub(crate) fn spawn_floor_item(
+        &mut self,
+        item: FloorItem,
+        pos: MapPosition,
+    ) -> Result<Entity, EngineError> {
+        if self.gid_to_entity.contains_key(&item.id) {
+            return Err(EngineError::DuplicateGid(item.id));
+        }
+        let entity = self.allocate(EntityKind::FloorItem, item.id, pos, 0)?;
+        self.gid_to_entity.insert(item.id, entity);
+        self.floor_items.insert(entity, item);
+        Ok(entity)
+    }
+
+    /// Whether `gid` is in use by any entity on this map.
+    pub(crate) fn gid_taken(&self, gid: u32) -> bool {
+        self.gid_to_entity.contains_key(&gid)
     }
 
     /// Allocates a slot and resets its dense columns.
     fn allocate(
         &mut self,
         kind: EntityKind,
+        gid: u32,
         pos: MapPosition,
         speed: u16,
     ) -> Result<Entity, EngineError> {
@@ -215,6 +276,7 @@ impl World {
         if self.positions.len() < slots {
             self.positions.resize(slots, ORIGIN);
             self.kinds.resize(slots, EntityKind::Free);
+            self.gids.resize(slots, 0);
             self.dead_sit.resize(slots, 0);
             self.head_dir.resize(slots, 0);
             self.speed.resize(slots, 0);
@@ -224,6 +286,7 @@ impl World {
         let i = entity.index();
         self.positions[i] = pos;
         self.kinds[i] = kind;
+        self.gids[i] = gid;
         self.dead_sit[i] = 0;
         self.head_dir[i] = 0;
         self.speed[i] = speed;
@@ -277,10 +340,17 @@ impl World {
                 self.gid_to_entity.remove(&info.gid);
             }
         }
+        if let Some(item) = self.floor_items.remove(entity) {
+            if self.gid_to_entity.get(&item.id) == Some(&entity) {
+                self.gid_to_entity.remove(&item.id);
+            }
+        }
+        self.inventories.remove(entity);
         self.warps.remove(entity);
         self.walking_paths.remove(entity);
         self.pending_move[i] = None;
         self.kinds[i] = EntityKind::Free;
+        self.gids[i] = 0;
         self.entities.free(entity)
     }
 }
@@ -302,6 +372,9 @@ mod tests {
             hair_color: 1,
             pos: MapPosition { x, y, dir: 4 },
             speed: 150,
+            str: 1,
+            group_id: 0,
+            inventory: Default::default(),
         }
     }
 

@@ -35,6 +35,9 @@ fn spawn_data(n: u32, x: u16, y: u16) -> CharacterSpawn {
         hair_color: 3,
         pos: MapPosition { x, y, dir: 0 },
         speed: 150,
+        str: 1,
+        group_id: 0,
+        inventory: Default::default(),
     }
 }
 
@@ -361,19 +364,29 @@ fn eng_09_lifecycle() {
     let events = h.tick(20);
     let kinds: Vec<(BroadcastScope, &ServerEvent)> =
         events.iter().map(|e| (e.scope.clone(), &e.event)).collect();
-    assert_eq!(kinds.len(), 4, "{events:#?}");
-    assert_eq!(kinds[0].0, self_only(A));
+    assert_eq!(kinds.len(), 7, "{events:#?}");
+    // The (empty) inventory lists and weights come first (specs/items ENG-INV-04).
+    for (scope, _) in &kinds[..5] {
+        assert_eq!(*scope, self_only(A));
+    }
+    assert!(matches!(kinds[0].1, ServerEvent::InventoryStart));
+    assert!(matches!(kinds[2].1, ServerEvent::EquipSwitchList));
     assert!(matches!(
-        kinds[0].1,
-        ServerEvent::ParameterChanged { var_id: 24, .. }
+        kinds[3].1,
+        ServerEvent::ParameterChanged {
+            var_id: 24,
+            value: 0
+        }
     ));
-    assert_eq!(kinds[1].0, self_only(A));
     assert!(matches!(
-        kinds[1].1,
-        ServerEvent::ParameterChanged { var_id: 25, .. }
+        kinds[4].1,
+        ServerEvent::ParameterChanged {
+            var_id: 25,
+            value: 20_300
+        }
     ));
-    assert_eq!(kinds[2].0, to(&[B]));
-    match kinds[2].1 {
+    assert_eq!(kinds[5].0, to(&[B]));
+    match kinds[5].1 {
         ServerEvent::UnitSpawned { unit } => {
             assert_eq!(unit.gid, account(A));
             assert_eq!(unit.char_id, Some(char_id(A)));
@@ -383,12 +396,18 @@ fn eng_09_lifecycle() {
         }
         other => panic!("expected UnitSpawned, got {other:?}"),
     }
-    assert_eq!(kinds[3].0, self_only(A));
-    assert!(matches!(kinds[3].1, ServerEvent::UnitStanding { unit } if unit.gid == account(B)));
+    assert_eq!(kinds[6].0, self_only(A));
+    assert!(matches!(kinds[6].1, ServerEvent::UnitStanding { unit } if unit.gid == account(B)));
     assert_eq!(h.aoi(100, 100), vec![char_id(A), char_id(B)]);
 
     h.push(A, ClientIntent::NotifyActorInit);
-    assert!(h.tick(40).is_empty(), "second ActorInit is ignored");
+    let again = h.tick(40);
+    assert_eq!(
+        again.len(),
+        5,
+        "a second ActorInit only resends the inventory: {again:#?}"
+    );
+    assert!(again.iter().all(|e| e.scope == self_only(A)));
 
     let events = h.engine.remove_character(char_id(A)).expect("remove");
     assert_eq!(events.len(), 1);

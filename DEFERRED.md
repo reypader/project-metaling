@@ -3,6 +3,62 @@
 Items consciously left out of finished work, with enough context to pick them up later.
 Remove an item when it lands. Newest feature first.
 
+## items (branch `main`, plan `specs/items/plan.md`)
+
+Spec: `specs/items/spec.md` §5 lists these too. Inventory, floor items, pickup, player drop, the mob-drop
+API and `@item` are in.
+
+### Still to verify by hand
+- **Manual client check** (plan Finish): account `test` (group 99): `@item 501 5`, `@item Knife`,
+  `@item "Red Potion"`; relog (persisted); warp (kept); drop (the observer sees it); pick up; walk away and
+  back (`0x009d` / `0x00a1`); 60 s expiry; normal chat; a non-GM `@item` shows as chat.
+  Blocked until `specs/map-entry-settings` lands: the client keeps the chat box disabled without the
+  first-login settings packets and the `0x0447`/`0x0b1b` handshake.
+- **Recapture on rAthena** with the fixed proxy table. Recorded 2026-10-24 as
+  `reference/catalog/captures/packet_rathena_item_2026-10-24.txt` (has a drop and its `0x00af` reply, line 567);
+  not yet compared against the catalog. Still check: a drop (the `0x00af` reply, PF-21), walking back to
+  an old drop (`0x009d`, PF-03), an overweight or full pickup and an early pickup (the `0x0b41` failure
+  form, PF-07).
+
+### Mob drops
+- Call `MapInstance::drop_mob_items` at mob death (combat), with owners from the damage log, in the death
+  tick after the exp packets (PF-15).
+- The renewal drop level penalty and player drop-rate bonuses (`roll_mob_drops` has the slot for them).
+- MvpDrops and MVP rewards (imported, unused).
+
+### Looter mobs
+- `MD_LOOTER` (Ai 02, e.g. the Poring) picks up floor items; its `lootlist` drops at death with
+  `loot = true` (first loot item goes N, no effect). `tools/mob-import` will need the looter bit.
+
+### Item features
+- Equip / unequip (`0x0998` / `0x00ab`), `0x013c`, the `0x01d7` look packets, and the equip index at load.
+  When equip lands, decide whether a drop unequips first (rAthena allows dropping worn items).
+- Item use `0x0439` / `0x01c8`, `0x07fa` deletes, item scripts, cooldowns.
+- Rental items: `expire_time` timers and the rental-expired packets.
+- Overweight statuses `SC_WEIGHT50` / `SC_WEIGHT90`, and `0x0ade` at entry.
+- Inventory expansion: `inventory_slots` and a non-zero `0x0b18` (the persistence load refuses more than
+  100 rows today).
+- Max weight: the per-job `MaxWeight` (`job_stats.yml`) and bonuses (Enlarge Weight Limit, mounts).
+- The `pc_equippoint` dual-wield location change (`EQP_ARMS` for assassin-class one-hand weapons).
+- Autoloot and party loot share (`party_share_loot`, party item-share tiers in the loot check).
+
+### Gates and commands
+- The `NoDrop` GM override and group levels, the `nodrop` mapflag, `pc_cant_act` states (NPC dialog,
+  trade, vending, storage, opt1), and `sc.cant.pickup` / `sc.cant.drop`.
+- `@item2`, `@itembound`, pet eggs (`pet_create_egg`; `@item` refuses them with our own message), the rest
+  of the command list, and a real `groups.yml`-style permission model (today: group 99 = everything).
+- `#` char commands are plain chat.
+
+### Persistence (from the M5 review)
+- Position and inventory are saved in two transactions through one ordered writer. A crash between the two
+  writes of a logout keeps the new position with the old inventory (items gained since the last save are
+  lost, never duplicated). A combined `save_character_state` would close that.
+- Slot order on relog relies on identity values following `INSERT … ORDER BY`. An explicit `slot` column
+  would not.
+- A multi-process hand-off needs DB-level ordering (e.g. a version column checked in `save_inventory`); the
+  in-memory writer orders one process only.
+- Autosave saves the inventory only; rAthena's autosave also saves position and stats.
+
 ## mob-spawning (branch `claude`, commits from `563e8a7`)
 
 Spec: `specs/mob-spawning/spec.md` (§4 lists these too). Mobs are visible, named, inert units.
@@ -14,7 +70,9 @@ Spec: `specs/mob-spawning/spec.md` (§4 lists these too). Mobs are visible, name
 
 ### mob_db stats
 - Real `Hp`, `Level`, `WalkSpeed` and `is_boss` (1 for `Class: Boss`, 2 for `Mvp`). Today every mob has
-  1 HP, level 1 (or the line's level) and speed 150, and `is_boss` is always 0.
+  1 HP, level 1 (or the line's level) and speed 150, and `is_boss` is always 0. **The data is imported now**
+  (`crates/ro-db/data/mob/mob_db.yml`, `ro_db::MobDb` with `boss_type()`, shared with every
+  `MapInstance` via `set_registries`); only the wiring into `spawn_mobs` / `MobInfo` is left.
 - `GroupId` / `Title` in `0x0adf`. Today both are empty.
 
 ### Death and respawn (need combat)

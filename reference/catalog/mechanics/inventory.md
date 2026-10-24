@@ -2,7 +2,13 @@
 
 Target client version: `PACKETVER = 20260219` (main-server numbering: `PACKETVER_MAIN_NUM`; `PACKETVER_RE` is NOT defined because 20260219 is outside both `PACKETVER_RE` ranges, `src/config/packets.hpp:20-30`). Renewal build.
 
-* **Provenance (all sections):** `rathena` @ `d4b8e7b8f` (2026-10-06), paths relative to `$RATHENA_PATH`. Line numbers are for that commit. No proxy captures were available in the workspace when this was written (`tools/proxy/packet_captures/` is absent); every behaviour below is source-derived, so verify against a capture before relying on a detail the client observes.
+* **Provenance (all sections):** `rathena` @ `d4b8e7b8f` (2026-10-06), paths relative to `$RATHENA_PATH`. Line numbers are for that commit. Written from source. [`captures/item_drop_pickup_sequence.txt`](../captures/item_drop_pickup_sequence.txt) (2026-10-23) since confirms these points:
+* The pickup ack precedes the weight update (§3 step 8, §9).
+* The inventory list is re-sent on every `LoadEndAck` (§10).
+* `SP_MAXWEIGHT` = 20000 + 300×STR for a novice (20300 at STR 1, 23300 at STR 11; §8).
+* A fresh add takes the lowest empty slot (the Jellopy landed at wire index 5 with holes below).
+
+Everything else is still source-only.
 * Wire layouts: [packets/inventory.md](../packets/inventory.md). Item DB fields: [db/item_db.md](../db/item_db.md). SQL: [db/sql_schemas.md#inventory-table-schema](../db/sql_schemas.md#inventory-table-schema).
 
 ## 1. Data model: `struct item`

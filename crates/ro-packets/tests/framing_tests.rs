@@ -828,3 +828,31 @@ fn pkt_02_streaming_framing() {
         Err(ro_packets::PacketCodecError::MalformedHeader(_))
     ));
 }
+
+/// PKT-ITEM-01: item packet lengths match the 20260219 table and the capture.
+#[test]
+fn pkt_item_01_table_lengths() {
+    use ro_packets::{PacketLength, PacketLengthTable};
+    let table = RathenaPacketLengthTable;
+    let ver = ro_core::TARGET_PACKETVER;
+    let expected = [
+        (0x0add, PacketLength::Fixed(24)),
+        (0x00a1, PacketLength::Fixed(6)),
+        (0x009d, PacketLength::Fixed(19)),
+        (0x0b41, PacketLength::Fixed(70)),
+        (0x0b08, PacketLength::Dynamic),
+        (0x0b0b, PacketLength::Fixed(4)),
+        (0x01d7, PacketLength::Fixed(15)),
+        (0x00af, PacketLength::Fixed(6)),
+        (0x0b09, PacketLength::Dynamic),
+        (0x0b39, PacketLength::Dynamic),
+        (0x0a9b, PacketLength::Dynamic),
+    ];
+    for (op, len) in expected {
+        assert_eq!(
+            table.packet_length(PacketOpcode(op), ver),
+            Some(len),
+            "opcode {op:#06x}"
+        );
+    }
+}

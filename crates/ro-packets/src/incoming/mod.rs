@@ -18,6 +18,9 @@
 //! - `CZ_REQNAME` (0x0368)
 //! - `CZ_RESTART` (0x00b2)
 //! - `CZ_REQ_DISCONNECT` (0x018a)
+//! - `CZ_ITEM_PICKUP` (0x0362)
+//! - `CZ_ITEM_THROW` (0x0363)
+//! - `CZ_REQUEST_CHAT` (0x00f3)
 
 pub mod char;
 pub mod frame;
@@ -35,6 +38,7 @@ pub use frame::{
 pub use helpers::{parse_sex, read_fixed_string};
 pub use login::CaLoginPacket;
 pub use map::{
-    CzChangeDirectionPacket, CzEnterPacket, CzNotifyActorInitPacket, CzReqDisconnectPacket,
-    CzReqNamePacket, CzRequestActPacket, CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket,
+    CzChangeDirectionPacket, CzEnterPacket, CzItemPickupPacket, CzItemThrowPacket,
+    CzNotifyActorInitPacket, CzReqDisconnectPacket, CzReqNamePacket, CzRequestActPacket,
+    CzRequestChatPacket, CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket,
 };

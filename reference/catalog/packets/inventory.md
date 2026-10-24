@@ -2,7 +2,12 @@
 
 Target client version: `PACKETVER = 20260219`.
 
-* **Provenance (all sections):** `rathena` @ `d4b8e7b8f`: `src/map/packets_struct.hpp`, `src/map/packets.hpp`, `src/map/clif.cpp`, `src/map/clif_packetdb.hpp`. Opcode selection done by hand against the `#if PACKETVER...` ladders with `PACKETVER_MAIN_NUM = 20260219` (`PACKETVER_RE_NUM`/`ZERO` unset). Sizes computed by summing the packed fields. No proxy capture of these packets was available in the workspace: **the server->client layouts are source-derived; the client->server opcodes have a caveat (see "Client to server opcodes").**
+* **Provenance (all sections):** `rathena` @ `d4b8e7b8f`: `src/map/packets_struct.hpp`, `src/map/packets.hpp`, `src/map/clif.cpp`, `src/map/clif_packetdb.hpp`. Opcode selection done by hand against the `#if PACKETVER...` ladders with `PACKETVER_MAIN_NUM = 20260219` (`PACKETVER_RE_NUM`/`ZERO` unset). Sizes computed by summing the packed fields. **Capture check (2026-10-23, [`captures/item_drop_pickup_sequence.txt`](../captures/item_drop_pickup_sequence.txt)):**
+* Confirmed lengths: `0x0b08` (6), `0x0b09` (5+34n), `0x0b39` (5+68n), `0x0b0b` (4) and the success `0x0b41` (70).
+* Confirmed order at every `LoadEndAck`: `0x01d7` → `0x0b08` → `0x0b09` → `0x0b39` → `0x0b0b` → `0x0a9b` → SP_WEIGHT → SP_MAXWEIGHT.
+* Confirmed client opcodes: `0x0362` (6) and `0x0363` (6: wire index u16 @2, amount u16 @4).
+* Field-level layouts past the first 32 payload bytes are still source-derived (the proxy truncates payloads).
+* Still unseen on the wire: `0x00af`, `0x07fa`, `0x01c8` and the `0x0b41` failure form ([PF-07](../../../PACKET_FINDINGS.md#pf-07), [PF-08](../../../PACKET_FINDINGS.md#pf-08)).
 * Semantics (checks, ordering, weight): [mechanics/inventory.md](../mechanics/inventory.md). Item fields: [db/item_db.md](../db/item_db.md). Weight updates (`0x00b0`): [map_units.md#0x00b0-zc_par_change](./map_units.md#0x00b0-zc_par_change). Expansion info (`0x0b18`): [map.md#0x0b18-zc_inventory_expansion_info](./map.md#0x0b18-zc_inventory_expansion_info).
 * **Conventions:** little-endian; all `index` fields are the **wire index = server slot + 2** (`clif_index`, `clif.cpp:122`). All item-id fields are `u32` and carry the client view id: `AliasName` target if set (`view_id`), else the real id (`client_nameid`, `clif.cpp:144-151`, `PACKETVER_MAIN_NUM >= 20181121`). Card slots are `u32`. Bitfield bytes are LSB-first (`bit0` first, C bitfield order on little-endian).
 * **Item `type` byte** (`itemtype()`, `clif.cpp:109-118`): item DB type, except PetEgg -> 4 (Armor); ShadowGear with a shadow-weapon location -> 5 (Weapon), any other ShadowGear -> 4 (Armor). Values: 0 Healing, 2 Usable, 3 Etc, 4 Armor, 5 Weapon, 6 Card, 8 PetArmor, 10 Ammo, 18 Cash. (DelayConsume 11 never appears: it is rewritten to Usable at DB load.) See [db/item_db.md](../db/item_db.md#type-enum).
@@ -170,3 +175,19 @@ Routing: `result == 1` is sent to `AREA` (including self, so observers see the u
 ## `0x0b18` `ZC_INVENTORY_EXPANSION_INFO` (cross-reference)
 
 Fixed 4 bytes `{u16 0x0b18, i16 expansion_size}`; `expansion_size = inventory_slots - 100` (0 by default, up to 100). Sent from `pc_authok` right before `0x02eb` (`pc.cpp:2238`) and after a successful expansion purchase (`clif.cpp:23187`). Layout row already in [map.md#0x0b18-zc_inventory_expansion_info](./map.md#0x0b18-zc_inventory_expansion_info) (there named `expansion_size` u16; source declares `int16`, value never negative).
+
+## `0x0a9b` equip switch list (map entry)
+
+* **Provenance:** `rathena` @ `d4b8e7b8f`, `clif.cpp:22236-22254` (`clif_equipswitch_list`), called from the map-entry path right after `clif_inventorylist` + `pc_checkitem` (`clif.cpp:10784`) and from `clif_refresh` (`clif.cpp:9846`, `@refresh`). Compiled in for `PACKETVER >= 20170208` (applies to 20260219). `clif_packetdb.hpp:1860` `packet(0x0A9B,-1)` (dynamic). Capture-confirmed empty case: `captures/item_drop_pickup_sequence.txt` line 70, `login_sequence-rathena.txt` line 81 (after `0x0b0b`, before the first `0x00b0` weight).
+* **Layout:** `u16 0x0a9b, u16 packet_length, { u16 index+2, u32 position }*`; header 4 bytes, 6 bytes per entry. `position` = the item's `equipSwitch` location mask. Entries are emitted per equip slot `EQI_*` where `equip_switch_index[i] >= 0` and the position bit was not already emitted (a two-handed/multi-slot item appears once).
+* **Send condition:** unconditional (always sent, even empty). A player with no equip-switch items gets the 4-byte frame `9b 0a 04 00`. Metaling can always send exactly that until equip switch exists.
+
+## `0x0ade` ZC_OVERWEIGHT_PERCENT (weight-limit percentage)
+
+* **Provenance:** `clif.cpp:22040-22050` (`clif_weight_limit`), `packets_struct.hpp:3604` (struct `{int16 packetType; uint32 percent}`), `clif_packetdb.hpp:1891` `packet(0x0ADE,6)`. `PACKETVER >= 20171025` only; applies.
+* **Layout (6 bytes):** `u16 0x0ade, u32 percent`. `percent = battle_config.natural_heal_weight_rate`; default **70 in renewal** (`battle.cpp:8391`; 50 in pre-renewal, `:8394`). Capture payload `46 00 00 00` = 70. It is the weight percentage at which the client shows the weight in red.
+* **When sent:** NOT from the inventory/LoadEnd path. It is sent from `pc_scdata_received` (`pc.cpp:14791-14794`), i.e. once status-change data arrives from the char server during login/map auth, hence in the captures it appears before the client's first `0x007d` (after the stat `0x00b0`/`0x09e7`/achievement packets, `item_drop_pickup_sequence.txt` line 59). Also sent on re-entry via a map change when the char server re-sends sc data (captures show it again at line 193 after the second map load).
+
+### Map-entry order seen in captures (`item_drop_pickup_sequence.txt` lines 45-72)
+
+stat `0x00b0`s, `0x09e7`, `0x0a24`/`0x0a23` (achievements), `0x0ade` -> [client `0x007d`] -> `0x01d7`, `0x0b08`, `0x0b09`, `0x0b39`, `0x0b0b`, `0x0a9b`, then `0x00b0` weight (0x18) and max weight (0x19). Capture-observed; source order for the inventory part is in `clif_refresh`-like code `clif.cpp:10783-10795` (inventorylist, equipswitch, cart, weight, max weight).

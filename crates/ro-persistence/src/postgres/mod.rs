@@ -2,6 +2,7 @@
 
 pub mod account;
 pub mod character;
+pub mod inventory;
 pub mod pool;
 
 pub use pool::PostgresRepo;
@@ -62,13 +63,29 @@ pub(crate) fn sex_to_i16(sex: Sex) -> i16 {
     }
 }
 
-/// Translates SQLx error variants into standard `RepositoryError` instances.
+/// SQLSTATE classes a retry can fix: connection exceptions (08), transaction rollbacks such as
+/// serialization failures and deadlocks (40), insufficient resources (53), and operator
+/// intervention such as a server shutdown or restart (57).
+pub(crate) fn is_transient_sqlstate(code: &str) -> bool {
+    matches!(code.get(..2), Some("08" | "40" | "53" | "57"))
+}
+
+/// Translates SQLx error variants into standard `RepositoryError` instances. Errors a retry can
+/// fix are `Unavailable`.
 pub(crate) fn map_sqlx_error(err: SqlxError) -> RepositoryError {
     match err {
         SqlxError::RowNotFound => RepositoryError::NotFound,
-        SqlxError::PoolTimedOut | SqlxError::Io(_) => RepositoryError::Unavailable(err.to_string()),
+        SqlxError::PoolTimedOut
+        | SqlxError::PoolClosed
+        | SqlxError::WorkerCrashed
+        | SqlxError::Io(_) => RepositoryError::Unavailable(err.to_string()),
         SqlxError::Database(db_err) => {
-            if db_err.is_unique_violation() {
+            if db_err
+                .code()
+                .is_some_and(|code| is_transient_sqlstate(&code))
+            {
+                RepositoryError::Unavailable(db_err.message().to_string())
+            } else if db_err.is_unique_violation() {
                 RepositoryError::Conflict(db_err.message().to_string())
             } else {
                 RepositoryError::Internal(db_err.message().to_string())
@@ -113,5 +130,24 @@ mod tests {
             map_sqlx_error(SqlxError::PoolTimedOut),
             RepositoryError::Unavailable(SqlxError::PoolTimedOut.to_string())
         );
+    }
+
+    /// Errors a retry can fix are `Unavailable` (the map-server writer retries only those).
+    #[test]
+    fn transient_errors_are_unavailable() {
+        for code in ["08006", "40001", "40P01", "53300", "57P01", "57P03"] {
+            assert!(is_transient_sqlstate(code), "{code}");
+        }
+        for code in ["23505", "22003", "42P01", "XX000"] {
+            assert!(!is_transient_sqlstate(code), "{code}");
+        }
+        assert!(matches!(
+            map_sqlx_error(SqlxError::PoolClosed),
+            RepositoryError::Unavailable(_)
+        ));
+        assert!(matches!(
+            map_sqlx_error(SqlxError::WorkerCrashed),
+            RepositoryError::Unavailable(_)
+        ));
     }
 }

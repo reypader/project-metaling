@@ -3,6 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::ids::{AccountId, CharId, CharacterSummary, MapPosition, Sex};
+use crate::item::CharacterInventory;
 
 /// Default walk speed in ms per orthogonal cell (rAthena `DEFAULT_WALK_SPEED`).
 pub const DEFAULT_WALK_SPEED: u16 = 150;
@@ -21,10 +22,16 @@ pub struct CharacterSpawn {
     pub pos: MapPosition,
     /// Walk speed in ms per orthogonal cell.
     pub speed: u16,
+    /// Base STR (max weight).
+    pub str: u16,
+    /// Account permission group; 99 may use every GM command.
+    pub group_id: i32,
+    pub inventory: CharacterInventory,
 }
 
 impl CharacterSpawn {
-    /// Builds a spawn at the summary's last position with the default walk speed.
+    /// Builds a spawn at the summary's last position with the default walk speed, STR 1, group 0
+    /// and an empty inventory; the map-server fills those from its play-state load.
     /// The caller must check `summary.account_id` against the session's account first.
     pub fn from_summary(summary: &CharacterSummary) -> Self {
         Self {
@@ -38,6 +45,9 @@ impl CharacterSpawn {
             hair_color: summary.hair_color,
             pos: summary.last_pos,
             speed: DEFAULT_WALK_SPEED,
+            str: 1,
+            group_id: 0,
+            inventory: CharacterInventory::default(),
         }
     }
 }

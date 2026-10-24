@@ -13,6 +13,8 @@ client version, `PACKETVER = 20260219`.
 | `crates/ro-persistence` | PostgreSQL storage |
 | `tools/proxy` | Packet-logging proxy (dev only) |
 | `tools/npc-import` | Converts rAthena NPC files to the YAML in `crates/ro-db/data/npc` and `crates/ro-db/data/mob_spawn` (dev only) |
+| `tools/item-import` | Converts rAthena's item database to the YAML in `crates/ro-db/data/item` (dev only) |
+| `tools/mob-import` | Converts rAthena's mob database to the YAML in `crates/ro-db/data/mob`, resolving drops through the item data (dev only) |
 
 `./verify.sh` runs fmt, clippy and the tests. `CLAUDE.md` has the full set of commands.
 
