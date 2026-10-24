@@ -39,6 +39,8 @@ persistence).
   - `./verify.sh`, self-review (fix inside a reviewed feature: no reviewer run), commit.
   - User: one client check. Expect in the proxy log `0x0091` before the first `0x007d`, a second `0x007d`, then
     `0x0447` → `0x0b1b`; no settings error; chat works; mobs still visible after the reload.
+  - **Passed** (2026-10-24, `metaling-20261024-4.txt`): input unblocked, chat, `@item`, drop and pickup work. A
+    chat-related client error remains (`DEFERRED.md`).
 
 ## Handoff for Fix 2 (written 2026-10-24, end of the Fix 1 session)
 

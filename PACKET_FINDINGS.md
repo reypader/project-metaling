@@ -29,7 +29,6 @@ Open questions and disagreements about wire packets for `PACKETVER = 20260219`. 
 | [PF-17](#pf-17) | `0x02c1` coloured message layout | Minor | Open |
 | [PF-18](#pf-18) | `MSI_WRONG_BULLET` is 2493 or 2494 | Minor | Open |
 | [PF-19](#pf-19) | Server rules not settled by source (overweight attack, DEF clamps, regen weight rate) | Server rule | Open |
-| [PF-20](#pf-20) | Login-time `0x0091` (sent since map-entry-settings Fix 2; client check pending) | Behaviour | Open |
 | [PF-21](#pf-21) | Packets the proxy can't frame (backlog: missing/wrong `table.rs` lengths; a misframe can stall the proxy log) | Code gap | Open; item rows fixed |
 
 ### Resolved
@@ -40,6 +39,7 @@ Open questions and disagreements about wire packets for `PACKETVER = 20260219`. 
 | [PF-02](#pf-02) | `0x0add` ZC_ITEM_FALL_ENTRY: table says 22, source sends 24 | 2026-10-23 | `item_drop_pickup_sequence.txt`; `table.rs` fixed, test `pkt_item_01_table_lengths` |
 | [PF-04](#pf-04) | `0x00a1` ZC_ITEM_DISAPPEAR missing from table (6) | 2026-10-23 | `item_drop_pickup_sequence.txt`; `table.rs` fixed, test `pkt_item_01_table_lengths` |
 | [PF-06](#pf-06) | Chat opcode (`0x00f3`, not `0x008c`) and trailing NUL | 2026-10-23 | `packet_sequence-20261023_030246.txt`; decoder test `pkt_chat_01_decodes_global_message` |
+| [PF-20](#pf-20) | Login-time `0x0091`: the client sends `0x0447` only after a `0x0091` load | 2026-10-24 | `metaling-20261024-4.txt` lines 39–137; `specs/map-entry-settings` §5, test `bin_set_01_login_gets_settings_and_load_confirm` |
 
 ## Code disagreements
 
@@ -296,12 +296,12 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 
 **Login-time `0x0091` (own cell, before the first `0x007d`)**
 
-- **Status:** Open.
+- **Status:** Resolved (2026-10-24). Sending it fixed the missing `0x0447` and the disabled chat box: [`metaling-20261024-4.txt`](reference/catalog/captures/metaling-20261024-4.txt) lines 39 (`0x0091`), 69 and 72 (two `0x007d`), 136–137 (`0x0447` → `0x0b1b`), the same again for a second account at lines 215–315.
 - **Capture:** every fresh login in the 2026-10-23 warp captures ([`reference/catalog/captures/`](reference/catalog/captures/README.md) `packet_sequence-20261023_030246.txt`, `_031902.txt`, `_032015.txt`) has `0x0091` with the character's own map and cell after `0x02eb`, `0x0201` and the `0x008e` MOTD lines, before the client's first `0x007d`. In one login the client then sent `0x007d` twice.
 - **Source:** `pc_authok` calls `clif_changemap` explicitly on a fresh login, but not on arrival from another map-server. The source comment calls it a fix for a "login-without-aura glitch". rAthena neither waits for it nor tracks it. Details: [mechanics/map_entry_actions.md#map-entry-cz_enter-clif_parse_wanttoconnection](reference/catalog/mechanics/map_entry_actions.md#map-entry-cz_enter-clif_parse_wanttoconnection).
 - **Ours:** since `specs/map-entry-settings` §5 (Fix 2, 2026-10-24) the engine's login burst sends it after `0x0201` and the MOTD line, before the status push (`crates/ro-engine/src/settings.rs` `send_login_burst`). Earlier, `join` sent only `0x0283`, `0x0b18`, `0x02eb` and `0x0201` before `0x007d`.
 - **Why it likely matters:** the client sends `0x0447` only after the `0x007d` of a load that a `0x0091` started (see [map_entry_actions.md#client-input-unblock--account-settings-0x0447---0x0b1b](reference/catalog/mechanics/map_entry_actions.md#client-input-unblock--account-settings-0x0447---0x0b1b)). Without the login `0x0091` the client never sends `0x0447`.
-- **Resolve by:** the Fix 2 client check: `0x0091` before the first `0x007d`, a second `0x007d`, then `0x0447` → `0x0b1b`.
+- **Resolved by:** the Fix 2 client check above.
 
 ### PF-21
 

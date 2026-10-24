@@ -8,11 +8,18 @@ Remove an item when it lands. Newest feature first.
 Spec §1–§5. The settings group is sent with defaults, `0x0447` gets its `0x0b1b`, (Fix 1) the login also
 sends NV_BASIC level 0 and the exp/status block, and (Fix 2) the login gets the pre-`0x007d` burst with the
 login-time `0x0091`, and every entry starts with `0x01d7` and sends `0x099b`.
-- **Manual client check:** log in as `test`. Expect no "account settings" error, a usable chat box, and in the
-  proxy log `0x0091` before the first `0x007d`, a second `0x007d`, then `0x0447` → `0x0b1b` (rebuild the proxy
-  first). The settings group (`metaling-20261024-2.txt`) and Fix 1 (`-3.txt`) both failed. Also check that the
-  standing mobs still show after the reload (nothing is re-sent on the second `0x007d`, as in rAthena). If it
-  works, optionally bisect which Fix 2 packets are needed (spec §5).
+- **Manual client check passed** (2026-10-24, `reference/catalog/captures/metaling-20261024-4.txt`): two `0x007d`
+  after the login `0x0091`, then `0x0447` → `0x0b1b`; the chat box takes input; mobs stay visible after the reload
+  (the client asks their names later).
+- **A chat-related error is still shown** after login. The user's guess is chat settings. The capture has no
+  unanswered client packet that hints at it (only `0x08c9` cash shop list and `0x0b1c` pings go unanswered, and
+  rAthena answers neither in its captures). Every packet rAthena sends that metaling never sends is either a
+  proxy misframe or belongs to a feature metaling doesn't have yet (party `0x080e`/`0x0101`, mob HP `0x0977`,
+  exp gain `0x0acc`, `0x0088`, `0x00b2`). Next steps: record the exact error text, check whether the same client
+  shows it on rAthena, then ask `metaling-explorer` which packet carries it. Candidates: the `0x0a23` achievement
+  list (rAthena sends it after login auto-completions), `0x0adf` name pushes, or a chat/UI-settings packet the
+  proxy hides inside a misframe.
+- Optional: bisect which Fix 2 packets are needed. The login `0x0091` is the one that unblocked input.
 - Logging in on a same-map warp cell: the first `0x007d` warps the player, the client's second `0x007d` (the
   login reload) then runs the destination's actor init, and the warp's own `0x007d` only re-sends the inventory.
   Input should work, but the client may miss the destination's unit entries. rAthena has the same order.
@@ -49,8 +56,9 @@ API and `@item` are in.
 - **Manual client check** (plan Finish): account `test` (group 99): `@item 501 5`, `@item Knife`,
   `@item "Red Potion"`; relog (persisted); warp (kept); drop (the observer sees it); pick up; walk away and
   back (`0x009d` / `0x00a1`); 60 s expiry; normal chat; a non-GM `@item` shows as chat.
-  Blocked until `specs/map-entry-settings` lands: the client keeps the chat box disabled without the
-  first-login settings packets and the `0x0447`/`0x0b1b` handshake.
+  Partly done on 2026-10-24 (`metaling-20261024-4.txt`): `@item knife` / `@item blade` as GM, drops and
+  pickups seen by a second client, a non-GM `@item` shown as chat. Still to check: `@item 501 5` and a quoted
+  name, relog (persisted), warp (kept), walking away and back, 60 s expiry.
 - **Recapture on rAthena** with the fixed proxy table. Recorded 2026-10-24 as
   `reference/catalog/captures/packet_rathena_item_2026-10-24.txt` (has a drop and its `0x00af` reply, line 567);
   not yet compared against the catalog. Still check: a drop (the `0x00af` reply, PF-21), walking back to
