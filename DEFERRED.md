@@ -8,10 +8,9 @@ Remove an item when it lands. Newest feature first.
 Spec §1–§3. The settings group is sent with defaults, `0x0447` gets its `0x0b1b`, and (Fix 1) the login also
 sends NV_BASIC level 0 and the exp/status block.
 - **Manual client check:** log in as `test`. Expect no "account settings" error, a usable chat box, and
-  `0x0447` → `0x0b1b` in the proxy log (rebuild the proxy first). The settings group alone failed
-  (`metaling-20261024-2.txt`). If Fix 1 fails too, try login-time `0x0091` (PF-20) next, then the pre-`0x007d`
-  status push (HP/SP and derived values, PF-12) and the other login-only packets listed in
-  `map_entry_actions.md#client-input-unblock--account-settings-0x0447---0x0b1b`.
+  `0x0447` → `0x0b1b` in the proxy log (rebuild the proxy first). The settings group (`metaling-20261024-2.txt`)
+  and Fix 1 (`-3.txt`) both failed. Fix 2 sends the remaining login-only differences in one batch; see the
+  handoff in `specs/map-entry-settings/plan.md`.
 - Also check logging in on a same-map warp cell: the arrival warp hides the player in the same tick, so the
   client's first `0x0447` is ignored (as in rAthena, which drops packets until `0x007d`). Input then depends on
   the client sending `0x0447` again after the `0x0091` reload.
