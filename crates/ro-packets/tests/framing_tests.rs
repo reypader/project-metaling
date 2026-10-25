@@ -899,3 +899,27 @@ fn pf21_party_hp_length() {
         Some(PacketLength::Fixed(14))
     );
 }
+
+/// PF-21: rows the captures misframed (catalog PF-21 table; `0x010e` after `@jlevel` and skill
+/// points stalled the proxy log in `equip_sequence_3.txt` line 2967).
+#[test]
+fn pf21_capture_3_rows() {
+    use ro_packets::{PacketLength, PacketLengthTable};
+    let len =
+        |op| RathenaPacketLengthTable.packet_length(PacketOpcode(op), ro_core::TARGET_PACKETVER);
+    for (op, n) in [
+        (0x010e, 11),
+        (0x0441, 4),
+        (0x00b6, 6),
+        (0x0148, 8),
+        (0x09cb, 17),
+        (0x0b1a, 29),
+        (0x00c0, 7),
+        (0x019b, 10),
+        (0x07fa, 8),
+        (0x0139, 16),
+    ] {
+        assert_eq!(len(op), Some(PacketLength::Fixed(n)), "0x{op:04x}");
+    }
+    assert_eq!(len(0x00b4), Some(PacketLength::Dynamic));
+}

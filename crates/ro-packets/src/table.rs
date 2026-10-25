@@ -70,6 +70,8 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x00b1 => Some(Fixed(8)), // ZC_LONGPAR_CHANGE
         0x00b2 => Some(Fixed(3)),
         0x00b3 => Some(Fixed(3)), // ZC_RESTART_ACK
+        0x00b4 => Some(Dynamic),  // ZC_SAY_DIALOG (PF-21)
+        0x00b6 => Some(Fixed(6)), // ZC_CLOSE_DIALOG (PF-21)
         0x00b8 => Some(Fixed(7)),
         0x00b9 => Some(Fixed(6)),
         0x00ba => Some(Fixed(2)),
@@ -77,6 +79,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x00bd => Some(Fixed(44)), // ZC_STATUS (specs/map-entry-settings)
         0x00be => Some(Fixed(5)),  // ZC_STATUS_CHANGE
         0x00bf => Some(Fixed(3)),
+        0x00c0 => Some(Fixed(7)), // ZC_EMOTION (PF-21)
         0x00c1 => Some(Fixed(2)),
         0x00c3 => Some(Fixed(8)),
         0x00c5 => Some(Fixed(7)),
@@ -120,7 +123,8 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0104 => Some(Fixed(79)),
         0x0108 => Some(Dynamic),
         0x0109 => Some(Dynamic),
-        0x010f => Some(Dynamic), // ZC_SKILLINFO_LIST (specs/map-entry-settings)
+        0x010e => Some(Fixed(11)), // ZC_SKILLINFO_UPDATE (PF-21; its absence stalled equip_sequence_3)
+        0x010f => Some(Dynamic),   // ZC_SKILLINFO_LIST (specs/map-entry-settings)
         0x0112 => Some(Fixed(4)),
         0x0113 => Some(Fixed(25)),
         0x0114 => Some(Fixed(31)),
@@ -141,9 +145,10 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0130 => Some(Fixed(6)),
         0x0134 => Some(Dynamic),
         0x0138 => Some(Fixed(3)),
-        0x013a => Some(Fixed(4)), // ZC_ATTACK_RANGE (specs/map-entry-settings)
-        0x013b => Some(Fixed(4)), // ZC_ACTION_FAILURE (specs/equipment)
-        0x013c => Some(Fixed(4)), // ZC_EQUIP_ARROW (specs/equipment)
+        0x0139 => Some(Fixed(16)), // ZC_ATTACK_FAILURE_FOR_DISTANCE (PF-21)
+        0x013a => Some(Fixed(4)),  // ZC_ATTACK_RANGE (specs/map-entry-settings)
+        0x013b => Some(Fixed(4)),  // ZC_ACTION_FAILURE (specs/equipment)
+        0x013c => Some(Fixed(4)),  // ZC_EQUIP_ARROW (specs/equipment)
         0x013f => Some(Fixed(26)),
         0x0140 => Some(Fixed(22)),
         0x0141 => Some(Fixed(14)), // ZC_COUPLESTATUS (specs/map-entry-settings)
@@ -151,6 +156,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0145 => Some(Fixed(19)),
         0x0146 => Some(Fixed(6)),
         0x0147 => Some(Fixed(39)),
+        0x0148 => Some(Fixed(8)), // ZC_RESURRECTION (PF-21)
         0x0149 => Some(Fixed(9)),
         0x014a => Some(Fixed(6)),
         0x014d => Some(Fixed(2)),
@@ -200,6 +206,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0198 => Some(Fixed(8)),
         0x0199 => Some(Fixed(4)),
         0x019a => Some(Fixed(14)),
+        0x019b => Some(Fixed(10)), // ZC_NOTIFY_EFFECT (PF-21)
         0x019c => Some(Dynamic),
         0x019d => Some(Fixed(6)),
         0x019f => Some(Fixed(6)),
@@ -632,6 +639,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0439 => Some(Fixed(8)),
         0x043e => Some(Dynamic),
         0x043f => Some(Fixed(25)),
+        0x0441 => Some(Fixed(4)), // ZC_SKILLINFO_DELETE (PF-21)
         0x0443 => Some(Fixed(8)),
         0x0444 => Some(Dynamic),
         0x0445 => Some(Fixed(10)),
@@ -658,6 +666,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x07f7 => Some(Dynamic),
         0x07f8 => Some(Dynamic),
         0x07f9 => Some(Dynamic),
+        0x07fa => Some(Fixed(8)), // ZC_DELETE_ITEM_FROM_BODY (PF-21)
         0x07fc => Some(Fixed(10)),
         0x0801 => Some(Dynamic),
         0x0802 => Some(Fixed(18)),
@@ -861,7 +870,8 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x09bc => Some(Fixed(6)),
         0x09c3 => Some(Fixed(8)),
         0x09ca => Some(Fixed(23)),
-        0x09cd => Some(Fixed(8)), // ZC_MSG_COLOR (specs/equipment)
+        0x09cb => Some(Fixed(17)), // ZC_USE_SKILL2 (PF-21)
+        0x09cd => Some(Fixed(8)),  // ZC_MSG_COLOR (specs/equipment)
         0x09ce => Some(Fixed(102)),
         0x09d1 => Some(Fixed(14)),
         0x09d4 => Some(Fixed(2)),
@@ -993,7 +1003,8 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0b16 => Some(Fixed(2)),
         0x0b18 => Some(Fixed(4)), // ZC_INVENTORY_EXPANSION_INFO
         0x0b19 => Some(Fixed(2)),
-        0x0b1b => Some(Fixed(2)), // ZC_LOAD_CONFIRM (specs/map-entry-settings)
+        0x0b1a => Some(Fixed(29)), // ZC_USESKILL_ACK (PF-21)
+        0x0b1b => Some(Fixed(2)),  // ZC_LOAD_CONFIRM (specs/map-entry-settings)
         0x0b1c => Some(Fixed(2)),
         0x0b1d => Some(Fixed(2)), // ZC_PING_LIVE (specs/map-entry-settings)
         0x0b20 => Some(Fixed(271)), // ZC_SHORTCUT_KEY_LIST_V4 (specs/map-entry-settings)

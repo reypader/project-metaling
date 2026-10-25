@@ -20,6 +20,8 @@ The second login (line 331) shows `0x010f` as 644 bytes; same cause, only the sw
 | Opcode | Name | Frame | Layout after opcode | Source |
 | :--- | :--- | :--- | :--- | :--- |
 | `0x010f` | `ZC_SKILLINFO_LIST` | 4 + 37*n | `len:u16`, then n x skill entry (below) | `packets_struct.hpp:4271-4280`, `clif.cpp:5696-5750` |
+| `0x010e` | `ZC_SKILLINFO_UPDATE` | 11 | `skillId:u16, level:u16, sp:u16, range2:u16, upFlag:u8`; sent to self by `clif_skillup` per skill point (reply to `0x0112`), followed by a `0x010f` re-send and `0x00b0` SP_SKILLPOINT. `0x0b33` form is gated off at 20260219 | `packets.hpp:489-497`, `clif.cpp:5832-5846`; capture `equip_sequence_3.txt` 2525-2531 (9 shown + leftover `00 01` read as bogus `0x0100`) |
+| `0x0441` | `ZC_SKILLINFO_DELETE` | 4 | `skillId:u16`; `clif_deleteskill`, when an item-granted skill is removed (e.g. Bravery Bag take-off, skill 1013) | `packets.hpp:1189-1193`, `clif.cpp:5809-5825`; `equip_sequence_2.txt` 829 |
 | `0x0b20` | `ZC_SHORTCUT_KEY_LIST` (V4) | 271 | `rotate:u8, tab:u16, 38 x {isSkill:u8, id:u32, count:u16}` | `packets_struct.hpp:1575-1590`, `clif.cpp:11217-11245` |
 | `0x02c9` | `ZC_PARTY_CONFIG` | 3 | `denyPartyInvites:u8` (0 allow, 1 auto-deny) | `packets_struct.hpp:4038-4043`, `clif.cpp:7914-7924` |
 | `0x02da` | `ZC_CONFIG_NOTIFY` | 3 | `showEquip:u8` (0 disabled, 1 allow others to view equipment) | `packets.hpp:1955-1959`, `clif.cpp:10301-10311` |

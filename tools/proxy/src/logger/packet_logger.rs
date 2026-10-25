@@ -1,4 +1,8 @@
-use std::{cmp::min, sync::Arc};
+use std::{
+    cmp::min,
+    sync::Arc,
+    time::{Duration, Instant},
+};
 
 use bytes::{Buf, BytesMut};
 use ro_core::{ServerType, TARGET_PACKETVER};
@@ -29,12 +33,19 @@ pub struct PacketLogger {
     pending_reads: usize,
     /// Whether that incomplete frame already has its `[PENDING FRAME]` note.
     pending_noted: bool,
+    /// When the head frame was first seen incomplete.
+    pending_since: Option<Instant>,
+    /// How long a frame may stay incomplete before the next read drops it.
+    stall_timeout: Duration,
 }
 
 /// Reads a frame may stay incomplete before the logger writes a `[PENDING FRAME]` note.
 const PENDING_NOTE_AFTER_READS: usize = 3;
 /// Bytes of a pending frame's head shown in its note.
 const PENDING_NOTE_HEAD_BYTES: usize = 64;
+/// A frame still incomplete this long after it started is a misframe: the servers write each
+/// packet whole, so a real frame's bytes arrive within milliseconds.
+const DEFAULT_STALL_TIMEOUT: Duration = Duration::from_secs(1);
 
 impl PacketLogger {
     pub fn new(
@@ -53,12 +64,26 @@ impl PacketLogger {
             buffer: BytesMut::with_capacity(4096),
             pending_reads: 0,
             pending_noted: false,
+            pending_since: None,
+            stall_timeout: DEFAULT_STALL_TIMEOUT,
         }
+    }
+
+    /// Overrides how long a frame may stay incomplete (tests).
+    pub fn with_stall_timeout(mut self, timeout: Duration) -> Self {
+        self.stall_timeout = timeout;
+        self
     }
 
     /// Feed incoming raw wire bytes into the logger's framing buffer and log all complete packets.
     /// Note: Bytes should already have been forwarded across the network socket.
     pub fn feed_and_log(&mut self, chunk: &[u8]) {
+        if self
+            .pending_since
+            .is_some_and(|since| since.elapsed() >= self.stall_timeout)
+        {
+            self.drop_stalled_frame();
+        }
         self.buffer.extend_from_slice(chunk);
 
         // Guard against runaway buffer if completely desynced
@@ -195,12 +220,52 @@ impl PacketLogger {
     fn clear_pending(&mut self) {
         self.pending_reads = 0;
         self.pending_noted = false;
+        self.pending_since = None;
+    }
+
+    /// Logs the buffered bytes of a frame that stayed incomplete past the stall timeout as one
+    /// unframed entry with a note, and empties the buffer, so framing restarts at the read that
+    /// comes next (a new server write, so most likely a packet start). Without this a misframe
+    /// that reads as a large dynamic frame holds the log until that many bytes arrive.
+    fn drop_stalled_frame(&mut self) {
+        let waited = self
+            .pending_since
+            .map_or(Duration::ZERO, |since| since.elapsed());
+        let opcode = PacketOpcode(u16::from_le_bytes([self.buffer[0], self.buffer[1]]));
+        let note = format!(
+            "[STALLED FRAME DROPPED] {} incomplete for {} ms; {} bytes logged as unframed, framing restarts at the next read",
+            opcode,
+            waited.as_millis(),
+            self.buffer.len()
+        );
+        warn!(
+            target: "proxy",
+            "[{:?} Session #{}] [{}] {}",
+            self.server_type, self.session_id, self.direction, note
+        );
+        self.record_note(&note);
+        let seq = self.tracker.next_seq();
+        let payload = format_hex_preview_limited(&self.buffer[2..], self.tracker.preview_limit());
+        self.tracker.record(PacketSequenceEntry {
+            seq,
+            direction: self.direction,
+            opcode,
+            length: self.buffer.len(),
+            detail: format!(
+                "[UNFRAMED, {} bytes of a stalled frame] payload: {}",
+                self.buffer.len(),
+                payload
+            ),
+        });
+        self.buffer.clear();
+        self.clear_pending();
     }
 
     /// Counts a read that left the head frame incomplete. After a few, writes one note with the
     /// frame's expected length and head bytes, so a stalled log shows what it is waiting on.
     fn note_pending_frame(&mut self) {
         self.pending_reads += 1;
+        self.pending_since.get_or_insert_with(Instant::now);
         if self.pending_noted || self.pending_reads < PENDING_NOTE_AFTER_READS {
             return;
         }
@@ -639,6 +704,89 @@ mod tests {
 
         logger.feed_and_log(&frame[40..]);
         assert_eq!(tracker.packet_count(), 2, "the frame logs once complete");
+        assert!(logger.buffer.is_empty());
+    }
+
+    /// A misframe that reads as a big dynamic frame (here `0x0b39` claiming 1000 bytes) would
+    /// hold the log until that many bytes arrive. Once it has been pending longer than the stall
+    /// timeout, the next read drops it (logged as unframed bytes with a note) and framing
+    /// restarts at that read.
+    #[test]
+    fn test_stalled_frame_is_dropped_at_the_next_read() {
+        let tracker = Arc::new(SessionSequenceTracker::new());
+        let mut logger = PacketLogger::new(
+            ServerType::Map,
+            1,
+            PacketDirection::ServerToClient,
+            tracker.clone(),
+        )
+        .with_stall_timeout(std::time::Duration::ZERO);
+        let mut bogus = vec![0x39, 0x0b];
+        bogus.extend_from_slice(&1000u16.to_le_bytes());
+        bogus.extend_from_slice(&[0xaa; 20]);
+        logger.feed_and_log(&bogus);
+        assert_eq!(tracker.packet_count(), 0, "still pending");
+
+        logger.feed_and_log(&reqname_frame());
+        assert!(logger.buffer.is_empty());
+        let flow = tracker.format_sequence_flow();
+        assert!(flow.contains("[STALLED FRAME DROPPED]"), "{flow}");
+        assert!(flow.contains("24 bytes"), "{flow}");
+        assert!(
+            flow.contains("0x0a30"),
+            "the next read frames again: {flow}"
+        );
+    }
+
+    /// With the default timeout a frame split over quick reads still completes.
+    #[test]
+    fn test_split_frame_within_timeout_is_kept() {
+        let tracker = Arc::new(SessionSequenceTracker::new());
+        let mut logger = PacketLogger::new(
+            ServerType::Map,
+            1,
+            PacketDirection::ServerToClient,
+            tracker.clone(),
+        );
+        let frame = reqname_frame();
+        logger.feed_and_log(&frame[..50]);
+        logger.feed_and_log(&frame[50..]);
+        let flow = tracker.format_sequence_flow();
+        assert!(!flow.contains("DROPPED"), "{flow}");
+        assert!(flow.contains("0x0a30"), "{flow}");
+    }
+
+    /// One skill point as rAthena sends it (`equip_sequence_3.txt` lines 2535-2546): `0x010e`,
+    /// the `0x010f` list, `SP_SKILLPOINT`. Before `0x010e` had a row, each one misframed and a
+    /// run of them stalled the log.
+    #[test]
+    fn test_skill_up_burst_frames_cleanly() {
+        let tracker = Arc::new(SessionSequenceTracker::new());
+        let mut logger = PacketLogger::new(
+            ServerType::Map,
+            1,
+            PacketDirection::ServerToClient,
+            tracker.clone(),
+        );
+        let mut burst = vec![
+            0x0e, 0x01, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
+        ];
+        let mut list = vec![0x0f, 0x01, 41, 0x00];
+        list.extend_from_slice(&[0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00]);
+        list.extend_from_slice(&[0x00, 0x00]);
+        let mut name = [0u8; 24];
+        name[..8].copy_from_slice(b"NV_BASIC");
+        list.extend_from_slice(&name);
+        list.push(0x01);
+        assert_eq!(list.len(), 41);
+        burst.extend_from_slice(&list);
+        burst.extend_from_slice(&[0xb0, 0x00, 0x0c, 0x00, 0x3b, 0x00, 0x00, 0x00]);
+        for _ in 0..50 {
+            logger.feed_and_log(&burst);
+        }
+        let flow = tracker.format_sequence_flow();
+        assert!(!flow.contains("UNKNOWN"), "{flow}");
+        assert_eq!(tracker.packet_count(), 150);
         assert!(logger.buffer.is_empty());
     }
 

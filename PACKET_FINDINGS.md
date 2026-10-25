@@ -312,7 +312,24 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 - **Status:** Open, low priority. Revisit when nothing else is queued, or when a capture or a client bug looks odd: a misframed packet hides the packets after it.
 - **Why it matters:** `tools/proxy` frames with `crates/ro-packets/src/table.rs`. A missing or wrong length makes the proxy log `UNKNOWN / UNMAPPED` frames and then garbage 1-byte frames (`0x0000`, `0x1e84`, `0x2800`, ...) until the stream re-syncs. The map-server never sends these packets today, so only captures and client-side tests are affected.
 - **Seen in the 2026-10-23 warp captures** ([`reference/catalog/captures/`](reference/catalog/captures/README.md)):
-  - Server to client, missing from the table: `0x0b1b`, `0x0b8d`, `0x010f` (skill list), `0x02c9`, `0x0acb`, `0x019b`, `0x00b4`. [`equip_sequence_2.txt`](reference/catalog/captures/equip_sequence_2.txt) adds `0x07fa` 8 (line 308), `0x019b` 10 (line 315), `0x0b1a` 36 (line 699) and `0x0441` 4 (line 829), lengths from the frame gaps. [`equip_sequence_3.txt`](reference/catalog/captures/equip_sequence_3.txt) adds `0x00b6` 6 (line 370, after `@die`), `0x0148` 8 (`ZC_RESURRECTION`, line 404), `0x09cb` (line 412, misframed) and `0x0139` (line 1357, misframed), and repeats `0x019b` and `0x0b1a`. (`0x0141` and `0x013a` were added by `specs/map-entry-settings`; `0x0999` and `0x099a` by equipment M1; `0x080e` party HP, 14 bytes, from `equip_sequence.txt` line 267, pinned by `pf21_party_hp_length`.)
+  - Server to client, missing from the table (`0x0b1b`, `0x0b8d`, `0x010f`, `0x02c9`, `0x0acb`, `0x0141`, `0x013a`, `0x0999`, `0x099a`, `0x080e` are now in). Confirmed from rAthena d4b8e7b at 20260219 (`sizeof` of the packed structs; rAthena frames by struct size, not the packetdb) and checked against the frame arithmetic of [`equip_sequence_3.txt`](reference/catalog/captures/equip_sequence_3.txt):
+
+    | Opcode | rAthena name | Length | Fields after opcode | Sender, when |
+    | :--- | :--- | :--- | :--- | :--- |
+    | `0x010e` | `ZC_SKILLINFO_UPDATE` | 11 | skillId u16, level u16, sp u16, range2 u16, upFlag u8 | `clif_skillup`, per skill point (`0x0112`) |
+    | `0x0441` | `ZC_SKILLINFO_DELETE` | 4 | skillId u16 | `clif_deleteskill`, item-granted skill removed |
+    | `0x00b6` | `ZC_CLOSE_DIALOG` | 6 | npcId u32 | `clif_scriptclose`, NPC script window close (capture: right after `@die`) |
+    | `0x00b4` | `ZC_SAY_DIALOG` | dynamic (u16 len at offset 2) | len u16, npcId u32, message char[] | NPC `mes`. At 20260219 (>= 20220504) `mes` uses `0x0972` (extra `type:u8`) instead; `0x00b4` struct still exists |
+    | `0x0148` | `ZC_RESURRECTION` | 8 | gid u32, type u16 (ignored) | `clif_resurrection`, `@revive` / raise, AREA |
+    | `0x09cb` | `ZC_USE_SKILL` (2nd form) | 17 | skillId u16, heal i32, targetAID u32, srcAID u32, result u8 | `clif_skill_nodamage`, non-damage skill (capture: skill 0x36 on revive) |
+    | `0x0b1a` | `ZC_USESKILL_ACK` | 29 | srcId u32, dstId u32, x u16, y u16, skillId u16, element u32, delayTime u32, disposable u8, attackMT u32 | `clif_skillcasting`, cast start |
+    | `0x00c0` | `ZC_EMOTION` | 7 | GID u32, type u8 | `clif_emotion` |
+    | `0x019b` | `ZC_NOTIFY_EFFECT` | 10 | aid u32, effectId u32 | `clif_misceffect` (level-up 0/1, etc.) |
+    | `0x07fa` | `ZC_DELETE_ITEM_FROM_BODY` | 8 | deleteType u16, index u16, count u16 | `clif_delitem` |
+    | `0x0139` | `ZC_ATTACK_FAILURE_FOR_DISTANCE` | 16 | targetAID u32, targetX u16, targetY u16, x u16, y u16, attackRange u16 | `clif_movetoattack`, target out of range |
+
+    Source (rAthena `src/map/`): `packets.hpp` 489 (`0x010e`), 755 (`0x00b6`), 825 (`0x07fa`), 959 (`0x0148`), 1120 (`0x019b`), 1189 (`0x0441`), 1973 (`0x00c0`); `packets_struct.hpp` 3947-3964 (`0x0b1a`, branch `>= 20181212`), 4670-4683 (`0x09cb`, branch `>= 20130731`), 5420-5428 (`0x0139`), 5484-5492 (`0x00b4`).
+  - Misframes in capture 3 explained by those lengths: the `0x0b1a` shown as 36 is a 29-byte `0x0b1a` plus a 7-byte `0x00c0` emotion (tail `c0 00 <id> 02`). `0x09cb` shown as 15 is 17 with its last 2 bytes read as a bogus `0x0100`; `0x010e` shown as 9 is 11 likewise (`00 01`). Every 2-byte `0x0100` right after a `0x010e` or `0x09cb` is that artifact. `0x0139` shown as 8 is 16, and the `0x014d`, `0x00a2`, `0x8d12` frames at lines 1348-1351 are debris from it. The `0x0000`, `0x0001`, `0x5341`, `0x8ee9`, `0x6700`, `0xe967` frames are debris too (skill-name strings such as `_CLOAKING` in the bytes), not packets. The line 2967 stall (`0x0300`, 768 bytes) followed these upstream misframes: `0x010f` was already in the table as dynamic.
   - Client to char-server, wrong length: `0x08b8` `CH_SECOND_PASSWD_ACK` is framed at 8, but the client sends 2 more bytes. The leftover bytes appear as a bogus client frame after every PIN entry.
   - Expected and not a bug: `0x8480`/`0x8481` are the raw 4-byte AccountId echo after `CH_ENTER`/`CZ_ENTER` (`bins/CLAUDE.md`), which the proxy doesn't skip.
 - **The proxy log can stall** (seen in [`item_drop_pickup_sequence.txt`](reference/catalog/captures/item_drop_pickup_sequence.txt), 2026-10-23):

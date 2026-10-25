@@ -129,6 +129,7 @@ Some lines in the capture file are notes from the proxy, not packets. They show 
 - `forwarding N bytes to the client has been blocked for over 1000 ms`: that side stopped reading. Written while the write is still waiting, so it shows up even if the write never finishes.
 - `the N bytes above took X ms to forward to the client`: a slow forward that did finish.
 - `[PENDING FRAME] 0x.... expects N bytes, has M after 3 reads; head: [...]`: the log is waiting on a frame that hasn't completed after three reads. Usually a wrong or missing `table.rs` length. Forwarding is not affected. Written once per frame.
+- `[STALLED FRAME DROPPED] 0x.... incomplete for N ms; M bytes logged as unframed, ...`: a frame stayed incomplete for over 1 s, so it was a misframe (the servers write each packet whole). Its bytes are logged as one `[UNFRAMED, ...]` entry and framing restarts at the next read, so a missing `table.rs` row costs a few garbled lines instead of the rest of the session's log. The fix is still the `table.rs` row.
 - `session closed: <reason>`: which side ended the session (EOF, read error, or a failed forward).
 
 `--full-payload` (or `PROXY_FULL_PAYLOAD=1`, which also reaches the proxy through `./run_rathena_servers.sh`) logs whole payloads, for fields past byte 32 such as char-select looks or entry-packet headgear.
