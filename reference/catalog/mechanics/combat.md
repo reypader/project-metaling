@@ -164,4 +164,4 @@ Player (Novice, fist, base level L, STR/DEX/LUK/AGI known) vs a mob (level `ML`,
 ## Catalog status
 
 * Normal player-vs-mob attack: covered here.
-* **Not yet catalogued:** magic damage (`battle_calc_magic_attack`), skill ratios (`src/map/skills/<job>/*.cpp`), `attr_fix` matrix (`db/re/attr_fix.yml`), refine table, monster-vs-player damage, PvP/GvG caps.
+* **Not yet catalogued:** magic damage (`battle_calc_magic_attack`), skill ratios (`src/map/skills/<job>/*.cpp`), `attr_fix` matrix (`db/re/attr_fix.yml`), refine table (now in [stats.md](./stats.md#refine-bonuses-weapon-atk-weapon-matk-armor-def), [../db/refine.md](../db/refine.md)), monster-vs-player damage, PvP/GvG caps.

@@ -87,7 +87,7 @@ Same loop with `job_exp`/`multi_level_up_job`; per level: `job_level++` and `ski
 
 ### Direct set (script/GM)
 
-`setparam` of `BaseLevel` (`pc.cpp:10412-10440`): caps to max base level, adds the status points for each skipped level, sets `base_exp = 0`, sends `NEXTBASEEXP`, `STATUSPOINT`, `TRAITPOINT`, `BASEEXP`, recalcs. `BaseExp`/`JobExp` set uses `pc_gainexp(exp_flag=2)` or `pc_lostexp` as described above.
+`setparam` of `BaseLevel` (`pc.cpp:10412-10440`): caps to max base level, adds the status points for each skipped level, sets `base_exp = 0`, sends `NEXTBASEEXP`, `STATUSPOINT`, `TRAITPOINT`, `BASEEXP`, recalcs. GM `@baselevelup`/`@joblevelup` (relative change, resets exp, different point/heal rules): [atcommands.md#baselevelup--joblevelup](./atcommands.md#baselevelup--joblevelup). `BaseExp`/`JobExp` set uses `pc_gainexp(exp_flag=2)` or `pc_lostexp` as described above.
 
 ## Death exp penalty
 

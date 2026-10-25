@@ -110,6 +110,7 @@ This master index maps extracted protocol opcodes, bit-packing algorithms, Aegis
 | Max HP/SP | Base table x (1 + VIT/INT %), x1.25 upper, fallback formula, new-char values | [mechanics/stats.md#maxhp--maxsp](./mechanics/stats.md#maxhp--maxsp) |
 | Max weight / regen | `MaxWeight + STR*300` (0.1 units), 70%/90% overweight, natural HP/SP regen amounts, 500 ms tick, sitting/walking | [mechanics/stats.md#max-weight-and-overweight](./mechanics/stats.md#max-weight-and-overweight) |
 | Stat point costs and limits | Cost `2+(low-1)/10` below 100, `16+4*((low-100)/5)` above; max 99/80/130/117; trait max 110 | [mechanics/stats.md#stat-point-costs-and-limits](./mechanics/stats.md#stat-point-costs-and-limits) |
+| Battle/player config knobs | Every `battle_config` value the player stat formulas read: enable masks, hitrate/AGI/VIT penalties, max ASPD (amotion conversion), HP/SP rate and caps, max parameter per class group, overweight rates, stat point table, multi_level_up; shipped vs compiled defaults; renewal-ignored list | [mechanics/battle_config.md](./mechanics/battle_config.md) |
 | Combat Formulas | Renewal player-vs-mob normal attack pipeline overview; deferrable list (elements, cards, skills) | [mechanics/combat.md#combat-damage-pipeline](./mechanics/combat.md#combat-damage-pipeline) |
 | Hit / crit chance | `hit - flee` clamp 5..100, crit `cri - 2*luk` per mille, lucky dodge, mobs don't crit by default | [mechanics/combat.md#1-hit-chance](./mechanics/combat.md#1-hit-chance) |
 | Normal-attack damage | Status/weapon/equip ATK parts, variance, size, DEF `(4000+d)/(4000+10d) - sDEF`, crit x1.4 (no DEF bypass) | [mechanics/combat.md#3-base-damage-of-a-player-normal-attack-renewal](./mechanics/combat.md#3-base-damage-of-a-player-normal-attack-renewal) |
@@ -152,11 +153,13 @@ This master index maps extracted protocol opcodes, bit-packing algorithms, Aegis
 | Equipment stats | `W_*` weapon type, attack range, renewal ASPD base per weapon, equipment pass of `status_calc_pc` | [mechanics/equipment.md#6-effect-on-status-and-combat](./mechanics/equipment.md#6-effect-on-status-and-combat) |
 | Equip persistence | `inventory.equip` mask, login rebuild of `equip_index` | [mechanics/equipment.md#7-persistence-and-login](./mechanics/equipment.md#7-persistence-and-login) |
 | Exp gain (`pc_gainexp`) | Order of checks, rates baked into mob DB at load, renewal level-diff penalty after party split, per-kill cap | [mechanics/experience.md#pc_gainexp-flow](./mechanics/experience.md#pc_gainexp-flow) |
+| Job change (`@job`/`@jobchange`, `pc_jobchange`) | Atcommand parsing/deny list/messages, order of ops (job lvl 1, exp 0, base lvl cap, stat points, look packets, skill list `0x010f`, option strip, forced unequip via `pc_isequip` + `pc_unequipitem(.,2)`), no heal, immediate `chrif_save` | [mechanics/job_change.md](./mechanics/job_change.md) |
 | Level-up | `multi_level_up` off = one level per gain, max-level exp caps, packet order, unconditional full heal, +1 skill point per job level | [mechanics/experience.md#level-up](./mechanics/experience.md#level-up) |
 | Death exp penalty | Type, base/job rates, novice exempt, insurance | [mechanics/experience.md#death-exp-penalty](./mechanics/experience.md#death-exp-penalty) |
 | Atcommand dispatch | `is_atcommand` flow, groups.yml permission gate (no permission = normal chat) | [mechanics/atcommands.md#is_atcommand-flow](./mechanics/atcommands.md#is_atcommand-flow) |
 | `@item` / `@itembound` | Lookup order (Aegis, name, id), amount, non-stackable loop, failure codes, msgs 18/19 | [mechanics/atcommands.md#item](./mechanics/atcommands.md#item) |
 | `@item2` + test commands | `@item2` params; `@monster`, `@blvl`, `@zeny`, `@heal`, `@go`, ... syntax and aliases | [mechanics/atcommands.md#item2](./mechanics/atcommands.md#item2) |
+| `@baselevelup` / `@joblevelup` | Clamps, status/skill point deltas, reset-on-negative, packets order, heal, elvmax unequip, msg ids 21-25/47/158/159/986/987 | [mechanics/atcommands.md#baselevelup--joblevelup](./mechanics/atcommands.md#baselevelup--joblevelup) |
 
 ## 3. Scripting VM (`./scripting/`)
 
@@ -184,3 +187,5 @@ This master index maps extracted protocol opcodes, bit-packing algorithms, Aegis
 | `statpoint.yml` | Status points per level (`Points[L+1] - Points[L]`), trait points from 201, skill points per job level | [db/exp_tables.md#statpointyml](./db/exp_tables.md#statpointyml) |
 | `level_penalty.yml` | Renewal level-difference exp penalty, worked out per difference | [db/exp_tables.md#renewal-level-difference-exp-penalty](./db/exp_tables.md#renewal-level-difference-exp-penalty) |
 | NPC source files | Manifest (`npc/re/scripts_main.conf`, `npc:`/`import:`/`delnpc:`), lexing, header grammar (warp/warp2/script/duplicate/shops), names, sprite constants (`JT_` enum), counts | [db/npc_files.md#rathena-npc-source-files-npctxt-conf](./db/npc_files.md#rathena-npc-source-files-npctxt-conf) |
+| `refine.yml` / `enchantgrade.yml` | Refine Bonus/RandomBonus tables (cumulative, 1/100 units) for Armor L1-2 and Weapon L1-5, MAX_REFINE 20, grade percent bonuses | [db/refine.md](./db/refine.md) |
+| Refine bonuses applied | Weapon `atk2 = B/100`, MATK (not bows), overrefine, armor `(sum+50)/100`, wlv5 P.ATK/S.MATK, armor L2 RES/MRES, capture checks | [mechanics/stats.md#refine-bonuses-weapon-atk-weapon-matk-armor-def](./mechanics/stats.md#refine-bonuses-weapon-atk-weapon-matk-armor-def) |

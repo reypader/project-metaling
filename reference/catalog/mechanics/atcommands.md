@@ -71,6 +71,39 @@ Handler `ACMD_FUNC(item)` `atcommand.cpp:1462-1547`. Same handler serves `@itemb
 
 Exact semantics, bounds, and messages for these are not extracted yet (names/syntax only).
 
+## @baselevelup / @joblevelup
+
+Source: rAthena `src/map/atcommand.cpp` `ACMD_FUNC(baselevelup)` 1664-1743, `ACMD_FUNC(joblevelup)` 1745-1809 (applies to 20260219; not packet-version dependent). Helpers in `src/map/pc.cpp`: `pc_baselevelchanged` 8306, `pc_maxbaselv`/`pc_maxjoblv` 8579/8599, `pc_resetstate` 9347, `pc_resetskill` 9428, `PlayerStatPointDatabase` 8735-8780. Messages from `conf/msg_conf/map_msg.conf`, shown with `clif_displaymessage` (chat-line system message). Experience-side context: [experience.md#level-up](./experience.md#level-up), [experience.md#direct-set-scriptgm](./experience.md#direct-set-scriptgm).
+
+Argument: `atoi(message)` (non-numeric = 0). Empty or 0 -> msg 986 (base) / 987 (job) usage text, return -1, nothing changes. Max levels come from the job DB per class (`MaxBaseLevel`/`MaxJobLevel`, see [../db/exp_tables.md](../db/exp_tables.md)), not from exp tables.
+
+### @baselevelup `<n>`
+
+Positive n:
+1. If `base_level >= max_base` -> msg 47 "Base level can't go any higher.", return -1.
+2. n clamped to `max_base - base_level`.
+3. Status points granted: sum over each level step L -> L+1 (L = old level .. new-1) of `max(0, Points[L+1] - Points[L])` from statpoint.yml (`pc_gets_status_point`); trait points likewise (`pc_gets_trait_point`). Added to `status_point`/`trait_point`; `base_level += n`.
+4. In order: `status_calc_pc(SCO_FORCE)`; `status_percent_heal(100,100)` (full HP and SP); `clif_misceffect` effect 0 (`0x019b` ZC_NOTIFY_EFFECT, target AREA = self + neighbours); achievements; msg 21 "Base level raised."
+Negative n (|n| = k):
+1. If `base_level == 1` -> msg 158 "Base level can't go any lower.", return -1.
+2. k clamped to `base_level - 1` (cannot reach below 1).
+3. Points to remove = sum over steps (L-1 -> L) for L = old level down to old-k+1 of the same per-step delta (status and trait).
+4. If `status_point < remove` OR `trait_point < remove_trait`: `pc_resetstate` is called (BEFORE base_level is decremented): status_point = `Points[old_level]` (+ `transcendent_status_points` for upper/4th-primary, trait_point also reset), all six stats set to 1 (trait stats to 0), sends all `SP_STR..`, `SP_U*` cost vars, `SP_STATUSPOINT`, `SP_TRAITPOINT`, clears TK mission, `status_calc_pc(SCO_NONE)`. Then the removal is subtracted (floored at 0 independently per pool). Net result after a reset: `Points[old_level] - remove` (roughly `Points[new_level]`), so stats are reset but the player is left with the correct total for the new level. If the player has enough unspent points, only the subtraction happens and allocated stats are untouched.
+5. `base_level -= k`; msg 22 "Base level lowered."; `status_calc_pc(SCO_FORCE)`. NO heal and NO effect on level down (HP/SP only change via recalc clamping).
+Common tail (both directions, only reached on success): `base_exp = 0`; then `clif_updatestatus` in order `SP_STATUSPOINT (0x00b0)`, `SP_TRAITPOINT`, `SP_BASELEVEL (0x00b0)`, `SP_BASEEXP (0x0acb)`, `SP_NEXTBASEEXP (0x0acb)`; `pc_baselevelchanged`; `party_send_levelup` if in a party; if n > 0 and battle conf `atcommand_levelup_events` -> NPC event `NPCE_BASELVUP` (OnPCBaseLvUpEvent). Exp is reset even when n is clamped.
+`pc_baselevelchanged` (both directions): for every equip slot, if the item's `elvmax` (EquipLevelMax) is non-zero and `base_level > elvmax`, `pc_unequipitem(sd, idx, 3)` (flag 3 = 1 (recalc status afterwards) + 2 (force unequip, ignores restrictions such as cursed), `pc.cpp:12390-12395`; the item stays in inventory); then `pc_show_questinfo` (refresh quest-info icons for the new level). Only the MAX level is checked here; EquipLevelMin is not rechecked by this function (a min-level item stays equipped after a level drop).
+
+### @joblevelup `<n>`
+
+Positive n: if `job_level >= max_job` -> msg 23 "Job level can't go any higher.", -1. n clamped to `max_job - job_level`. `job_level += n`; `skill_point += n` (1 per level, no table); `clif_misceffect` effect 1 (`0x019b`, AREA); achievements; msg 24 "Job level raised."
+Negative n: if `job_level == 1` -> msg 159 "Job level can't go any lower.", -1. k clamped to `job_level - 1`. `job_level -= k`. If `skill_point < k`: `pc_resetskill(sd, 0)` (flag 0: all learned skills set to level 0, skill points refunded into `skill_point`; also strips riding/falcon/wug/cart/madogear options, vaporizes homunculus, etc.; it does NOT send packets itself with flag 0, no `skill_info` block resend). Then if `skill_point` is still `< k` it is set to 0, else `skill_point -= k`. Unspent points alone are used first; learned skills are only wiped when unspent points are insufficient. msg 25 "Job level lowered."
+Common tail: `job_exp = 0`; `clif_updatestatus`: `SP_JOBLEVEL`, `SP_JOBEXP (0x0acb)`, `SP_NEXTJOBEXP (0x0acb)`, `SP_SKILLPOINT`; then `status_calc_pc(SCO_FORCE)`. No heal, no party notify, no `pc_baselevelchanged`/equip check, no SP_STATUSPOINT. If n > 0 and `atcommand_levelup_events` -> `NPCE_JOBLVUP`. Note: after a skill wipe via this command rAthena never resends the skill list (`clif_skillinfoblock`), so the client list is stale until relog/refresh; a new server should resend it.
+
+### Config and permissions
+* `conf/battle/gm.conf:44-47` `atcommand_levelup_events` (default `no`, `battle.cpp:8772`): when on, a positive change also fires the level-up NPC events. Otherwise no battle conf alters these commands. `multi_level_up*` and exp rates do not apply (direct set).
+* Default atcommand levels: see the Permissions section above (`conf/atcommands.yml`).
+* Persistence: nothing is saved by the command; `base_level`, `job_level`, exps, status/skill/trait points and stats ride the normal periodic/logout char save ([experience.md#persistence](./experience.md#persistence)).
+
 ## rust-ro (MIT, secondary) 
 
 `rust-ro/server/src/server/request_handler/chat.rs` only treats a message as a command if it starts with `"<CharName> : @"` (fixed symbol, TODO configurable) and dispatches to `atcommand.rs`, which has `item`, `go`, `warp`, `blvl`, `jlvl`, `heal`, `speed`, `reload`, etc. (line 61 `"item" =>`, `handle_item` line 202). No group/permission check was observed. Useful only as a feature checklist.

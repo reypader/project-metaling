@@ -29,7 +29,7 @@ Spec: `specs/engine-foundation/spec.md`. Everything else in this document is a *
 * **Equipment (`src/equipment.rs`, `src/job.rs`, `src/wear.rs`, `src/status.rs`, spec `specs/equipment/spec.md`):** `equipment.rs` holds the pure rules (equip point, the `pc_isequip` subset, hand and accessory choice, ammo pairing, looks and gear status of a worn set); `job.rs` the job id → mapid table; `wear.rs` the flows. `PlayerInventory` owns a worn-slot table (`WornSlots`, slot per position in `EQI` order) beside the items' `equip` masks; looks and gear status read the table, so an equip takes its positions one at a time and each displaced item's looks and push already count the new item (the captured interleave). Every equip change bumps the inventory revision. `PlayerInfo.looks` caches `UnitLooks`; entry packets read it, never the inventory, and every equip change refreshes it. Head and robe looks go out only when the resolved view changes (costumes override); hand and shoe looks always. `PlayerInfo.derived` holds `DerivedStatus`; `recalc` diffs the gear-only values (weapon ATK and MATK, hard DEF, range) against it and pushes what changed. Ammo: the icon `0x0983` is started on equip (area) and at every actor init (self, between the inventory lists), never ended; a ranged weapon's take-off and a weapon the ammo can't pair with take the ammo off. A dropped worn stack comes off first. Unequip-all while dead is refused on purpose (rAthena allows it; spec §2.5).
 * **Entry settings (`src/settings.rs`, spec `specs/map-entry-settings/spec.md`):** `PlayerInfo` carries rAthena's `connect_new` (set by `spawn_character`) and `changemap` (set by every spawn, so login and cross-map arrival, not by a same-map warp). The `NotifyActorInit` that shows the player sends, after the unit entries, the skill list and both hotkey banks if `connect_new`, then `0x02c9`, `0x02da`, `0x02d9` ×4 and `0x0b8d` if `changemap`, and clears both. All defaults; nothing is saved. `BlockingPlayCancel` (`0x0447`) answers `LoadConfirmed` (`0x0b1b`), which unblocks the client's input. `spawn_character` returns the login burst instead of queuing it, so the map-server can send it right after `ZC_ACCEPT_ENTER` and the friends list: the MOTD, `0x0091` to the player's own cell, the status push, `0x09e7`, `0x0a24` and `0x0ade`. The client reloads the map on that `0x0091` and sends `0x007d` twice: the first runs the actor init and the settings, the second only re-sends the inventory. The client sends `0x0447` only after a load that a `0x0091` started. Every actor init that shows the player starts with `0x01d7` (weapon look, self only) and sends `0x099b` after the spawn to others.
 * **Event routing:** AoI events are resolved to recipients **at emission** (`BroadcastScope::Characters`, sorted), like rAthena's `clif_send(AREA)`; per-observer visibility events are `SelfOnly`. Resolving after the tick would double-send entries to units that come into view later in the same tick.
-* **Not implemented yet:** item use, item scripts and refine bonuses, looter mobs, Stage 1 (status), Stage 2b (mob AI, mob movement, death and respawn), Stage 3c (combat, script portals, warp skills), Tier 2 combat columns, `rayon` parallelism, sub-cell redirect offsets, `OFFICIAL_WALKPATH`.
+* **Not implemented yet:** item use, item scripts, looter mobs, the stat model of §9 (planned: `specs/stats/`; today `PlayerInfo.derived` holds the gear-only values), status effects (§10), mob AI, mob movement, death and respawn, combat (§11), script portals, warp skills, `rayon` parallelism, sub-cell redirect offsets, `OFFICIAL_WALKPATH`.
 
 ---
 
@@ -48,14 +48,16 @@ pub struct World {
     pub positions: Vec<MapPosition>,     // Logical (x, y, dir) cell on the map
     pub kinds: Vec<EntityKind>,          // Player, Monster, Npc, Portal, SkillUnit, FloorItem
 
-    // --- TIER 2: Combat Actor SparseSet<T> Columns ---
-    pub stat_dirty: SparseSet<StatDirtyFlags>,         // DIRTY_BASE | DIRTY_EQUIP | DIRTY_STATUS
-    pub base_attrs: SparseSet<BaseAttributes>,         // STR..LUK, Base/Job Lv, Base HP/SP/Speed
-    pub equip_mods: SparseSet<EquipmentModifiers>,     // Flat + % mods from equipped items/cards
-    pub status_mods: SparseSet<StatusModifiers>,       // Flat + % mods from ActiveStatuses
-    pub present_attrs: SparseSet<PresentAttributes>,   // Authoritative ATK, DEF, ASPD, move_speed
-    pub vitals: SparseSet<Vitals>,                     // Current HP, SP, ShieldHP
-    pub active_statuses: SparseSet<ActiveStatuses>,    // FixedBitSet (600 bits) + SmallVec<[StatusEntry; 16]>
+    // --- TIER 2: Combat Actor SparseSet<T> Columns (model and rules: §9) ---
+    pub base_stats: SparseSet<BaseStats>,              // Players: allocated STR..LUK, levels, job, points (persisted). Mobs: mob_db row
+    pub gear: SparseSet<GearStatus>,                   // Per-hand weapon records (ATK, refine, MATK, wlv, range, type), hard DEF/MDEF
+    pub base_bonus: SparseSet<BonusTotals>,            // Summed modifiers of the base layer: gear bonuses, cards, passive skills
+    pub battle_bonus: SparseSet<BonusTotals>,          // Summed modifiers of active statuses (the battle layer)
+    pub combat_bonus: SparseSet<CombatBonus>,          // Hit-time tables: race/size/element %, ignore-DEF, crit ATK (§11)
+    pub status: SparseSet<Status>,                     // Computed battle status: the snapshot every system reads
+    pub vitals: SparseSet<Vitals>,                     // Current HP, SP (AP later)
+    pub active_statuses: SparseSet<ActiveStatuses>,    // FixedBitSet (presence) + SmallVec<[StatusEntry; 16]> (§10)
+    pub stat_dirty: DirtySet,                          // Actors whose status must be rebuilt this tick, + which sums are stale
 
     // --- TIER 3: Transient State & Intent SparseSet<T> Columns ---
     pub primary_intents: SparseSet<PrimaryActionIntent>,
@@ -82,7 +84,7 @@ pub struct World {
 | :--- | :--- | :--- |
 | **`smallvec`** *(features: `union`, `const_generics`)* | • `SpatialGrid8x8` cell blocks (`SmallVec<[Entity; 8]>`)<br>• `ActiveStatuses.entries` (`SmallVec<[StatusEntry; 16]>`)<br>• `WalkingPath.waypoints` (`SmallVec<[(u16, u16); 32]>`)\br>• `instant_intents` (`SmallVec<[InstantIntent; 4]>`) | Keeps 99% of spatial block lists, status arrays, intent queues, and 32-step walk paths inline on the stack/struct without heap allocations during 50 Hz ticks, while spilling safely to the heap if 40 entities stack on one cell. |
 | **`fixedbitset`** | • `ActiveStatuses.bitmask` (`FixedBitSet`) on every combat actor | Ragnarok Online has 600+ status effects (`SC_*`). `FixedBitSet` packs 640 status presence flags into ten `u64` words (80 bytes), giving Stage 1 and Stage 3 systems $O(1)$ `"is frozen/stunned?"` checks without archetype table moves. |
-| **`bitflags`** | • `StatDirtyFlags` (`DIRTY_BASE \| DIRTY_EQUIP \| DIRTY_STATUS`) in Stage 1<br>• `CombatLockFlags` & `EntityStateFlags` | Provides zero-cost, strongly-typed bitmask operations so Stage 1's `stat_aggregation_system` only recalculates entities whose specific attribute layers mutated. |
+| **`bitflags`** | • `StaleSums` (`GEAR \| PASSIVES \| STATUSES`) in the dirty set (§9.5)<br>• `StateFlags` (cant move / attack / cast ...) in `Status`, `CombatLockFlags` | Strongly-typed bitmasks: the recalc pass re-sums only the modifier sources that changed, and gates read one bitfield. |
 | **`rustc-hash`** (`FxHashMap` / `FxHashSet`) | • `char_to_entity` and `gid_to_entity` lookup tables in `World`<br>• Rare, low-cardinality state (<50 instances per map, such as open trade windows or chat rooms) | Replaces Rust's default cryptographic SipHash with a fast single-multiply hash tailored for integer keys (`u32`, `u64`, `CharId`, `Entity`), resolving network IDs in nanoseconds. |
 | **`rayon`** *(future phase)* | • Inter-map parallel `World::step_tick()` execution<br>• Intra-map parallel iteration in Stage 1 (`par_iter_mut` over dirty stats), Stage 2b (Mob AI), Stage 3 (`par_iter().fold()` into thread-local `Vec<EngineEvent>` buffers), and Stage 5 (AoI gather) | Work-stealing data parallelism that pairs directly with contiguous `SparseSet<T>` dense slices (`&[T]` and `&mut [T]`) and read-only `&World` simulation passes. |
 | **`tracing`** | • Structured tick instrumentation, unhandled intent diagnostics, and slow-tick warnings | Zero-allocation structured logging compatible with async and multi-threaded `rayon` spans. |
@@ -130,7 +132,9 @@ A player can send multiple packets within a single server tick window (e.g., cli
 
 ## 5. The 5-Stage Deterministic Tick Schedule
 
-> **Future phase.** The foundation runs a reduced, single-threaded version of this schedule (see §1a). Stage 1, Stage 2b, Stage 3c and all `rayon` usage are not implemented.
+> **Future phase.** The foundation runs a reduced, single-threaded version of this schedule (see §1a). Mob AI, combat, status effects and all `rayon` usage are not implemented. The stats feature (`specs/stats/`) adds the Stage 3 recalc pass and the Stage 4 follow-ups.
+>
+> **Revised 2026-10-25** (stats planning, settled with the user). The earlier draft recalculated status at the *start* of a tick, so a change made during tick N showed up in tick N+1 and HP/SP clamps used the old maximum. The recalc now runs after all of the tick's mutations and before HP/SP are committed, so a change, its stat push and its follow-ups (heal to the new max after a level-up, clamp when the max drops) land in the same tick. All simulation still reads one frozen snapshot: the `status` committed at the end of the previous tick.
 
 `World::step_tick()` runs on a fixed heartbeat (e.g., **`TICK_DELTA_MS = 20ms` / 50 Hz**). Every tick advances a monotonic millisecond clock:
 
@@ -144,41 +148,47 @@ pub struct ServerTick {
 
 ~~~text
 ┌──────────────────────────────────────────────────────────────────────────────┐
-│ STAGE 1: PRESENT STATUS ESTABLISHMENT (Dirty-Only Parallel Pass)             │
-│  [NextTickStatuses] ──► [BaseAttrs + EquipMods + StatusMods] ──► [Present]   │
+│ STAGE 1: TIMERS, INTENTS & HITS          (reads last tick's `status` only)   │
+│  • Timers: floor-item expiry, status expiry/periodic ticks, walk steps       │
+│  • Drain ClientIntents (move, equip, stat-up, GM commands, attack, cast)     │
+│  • Mob AI sensors ──► mob intents                                            │
+│  • Pathfinding, cell steps, portal hits                                      │
+│  • Swings/skill hits resolve against the snapshot ──► HitResolved events     │
 └──────────────────────────────────────┬───────────────────────────────────────┘
                                        ▼
 ┌──────────────────────────────────────────────────────────────────────────────┐
-│ STAGE 2: INTENT INGESTION & AI PLANNING                                      │
-│  • Drain ClientIntents ──► PrimaryActionIntent & InstantIntents              │
-│  • Mob AI Sensor (Read SpatialGrid + PresentAttr) ──► PrimaryActionIntent    │
+│ STAGE 2: EFFECTS ──► MODIFIERS                                               │
+│  • Scripts, procs, skill effects start/end statuses, change gear/levels      │
+│  • Every change that can move a stat marks the actor dirty (+ stale sums)    │
 └──────────────────────────────────────┬───────────────────────────────────────┘
                                        ▼
 ┌──────────────────────────────────────────────────────────────────────────────┐
-│ STAGE 3: SIMULATION & READ-ONLY EVENT GENERATION (&World -> Buffered Events) │
-│  • 3a. Pathfinding System: PrimaryActionIntent::MoveTo ──► A* WalkingPath    │
-│  • 3b. Movement Step System: Advance cells by move_speed ──► EntityStepped   │
-│  • 3c. Combat & Environment: Calc damage / portal hits ──► Damage / Warp     │
+│ STAGE 3: RECALC (dirty actors only; pure, parallel-friendly)                 │
+│  • Re-sum stale modifier sources ──► base_bonus / battle_bonus               │
+│  • ro_mechanics::calc_status: primary (base ──► battle) ──► secondary        │
+│  • Diff against the stored `status` ──► stat pushes; store the new snapshot  │
 └──────────────────────────────────────┬───────────────────────────────────────┘
                                        ▼
 ┌──────────────────────────────────────────────────────────────────────────────┐
-│ STAGE 4: EVENT TRAVERSAL, NET DELTA COLLAPSE & STATE COMMIT (Single-Thread)  │
-│  • Fold EngineEvents into net EntityTickDelta (Clamped HP/SP, Final Pos)     │
-│  • Commit Vitals, update SpatialGrid8x8, queue NextTickStatuses              │
+│ STAGE 4: COMMIT VITALS & FOLLOW-UPS (single-threaded)                        │
+│  • Fold HP/SP deltas in event order, clamp to the NEW max, deaths            │
+│  • Follow-ups registered by Stage 1–2 changes (heal to max after level-up)   │
 └──────────────────────────────────────┬───────────────────────────────────────┘
                                        ▼
 ┌──────────────────────────────────────────────────────────────────────────────┐
-│ STAGE 5: SERVER EVENT DISPATCH (AoI Diffing, Multicast & Singlecast)         │
-│  • Emit ServerEvent { scope: BroadcastScope, payload: ServerEventPayload }   │
+│ STAGE 5: SERVER EVENT DISPATCH (AoI routing, multicast & singlecast)         │
+│  • Emit ServerEvent { scope, payload }                                       │
 └──────────────────────────────────────────────────────────────────────────────┘
 ~~~
 
 ### 5.1 Stage-by-Stage Execution Rules
-* **Stage 1 (Present Status Establishment):** Applies queued status changes from the end of the previous tick, expires statuses where `expires_at_ms <= tick.now_ms`, and runs a `rayon` parallel pass over entities with non-zero `StatDirtyFlags` (`BaseAttributes` $\rightarrow$ `EquipmentModifiers` $\rightarrow$ `StatusModifiers` $\rightarrow$ `PresentAttributes`).
-* **Stage 2 (Intent Ingestion & AI Planning):** Drains inbound `ClientIntent` items into `primary_intents` and `instant_intents`, then runs Monster AI sensors in parallel (`&World`) to populate monster `PrimaryActionIntent` slots.
-* **Stage 3 (Simulation & Read-Only Event Generation):** Holds immutable borrows (`&World`). Worker threads evaluate consumables, pathfinding, cell steps, portal triggers, and combat formulas, pushing results into thread-local `Vec<EngineEvent>` buffers via `rayon::par_iter().fold()`.
-* **Stage 4 (Event Traversal, Net Delta Collapse & State Commit):** Single-threaded reduction barrier. Traverses all buffered `EngineEvent` items, folding net deltas to **HP, SP, Position, and MoveSpeed** per entity (clamping overkill damage at `0 HP` so dead entities ignore subsequent actions) while queueing status additions/removals for the next tick's Stage 1. Preserves discrete combat hits and movement starts so client visual animations are never lost.
-* **Stage 5 (Server Event Dispatch):** Emits `ServerEvent` messages for singlecast gauge updates (`ZC_PAR_CHANGE`) and AoI multicast visual animations (`ZC_NOTIFY_PLAYERMOVE`, `ZC_NOTIFY_ACT`, `ZC_MSG_STATE_CHANGE2`).
+* **Stage 1 (Timers, Intents & Hits):** Pops due timers, drains inbound `ClientIntent` items in FIFO order (equip, stat-up and GM commands run their flows here and only *mark* the actor dirty), runs mob AI sensors, plans paths, steps walkers and checks portals. Attacks and skill hits compute their `DamageResult` from the `status` snapshot committed last tick (§11) and emit `HitResolved` events; they never mutate HP directly. With `rayon`, the read-only parts run as `&World` passes folding into thread-local event buffers.
+* **Stage 2 (Effects → Modifiers):** Applies what Stage 1 decided: status starts and ends (§10), proc rolls, script world commands, gear and level changes. Anything that can move a stat marks the actor in `stat_dirty` together with which modifier sums are stale (`GEAR`, `PASSIVES`, `STATUSES`).
+* **Stage 3 (Recalc):** For each dirty actor: re-sum only the stale sources, call the pure `ro_mechanics::calc_status` (§9.4), diff the result against the stored snapshot and push what changed in rAthena's order (§9.6), then store it. **Recalc never runs inline inside a flow.** The only exception is spawn/login, where the first snapshot is computed synchronously with nothing to diff against. A pure function over `&[Entity]` makes this the natural `par_iter` pass later.
+* **Stage 4 (Commit Vitals & Follow-ups):** Single-threaded reduction. Folds HP/SP deltas from `HitResolved`, heals and drains **in event order** (deterministic), clamps each to the max computed in Stage 3, records deaths, and consumes stateful defences in order (barriers, hit-count walls, §11.4). Then it runs the follow-ups that Stage 1–2 changes registered (level-up: full heal to the new MaxHP/MaxSP; max dropped: clamp and push `SP_HP`/`SP_SP`). Swings already resolved against a target that dies in this tick still show their animation, and their damage counts as overkill (rAthena's damage log counts overkill too).
+* **Stage 5 (Server Event Dispatch):** Emits `ServerEvent` messages: singlecast stat pushes (`0x00b0`, `0x0141`, `0x013a`) and AoI multicast visuals (`ZC_NOTIFY_PLAYERMOVE`, `ZC_NOTIFY_ACT`, `0x0983`).
+
+**Deliberate packet-order deviation.** rAthena recalculates inline, so a captured equip sequence interleaves each displaced item's stat diff between the acks (catalog `packets/equipment.md` "Captured equip sequences"). Here one net diff follows all of the tick's acks. Unequip-all of N items sends one diff instead of N. The client is expected to accept this because every push is an independent absolute value. A manual client check confirms it (`specs/stats/spec.md`).
 
 ---
 
@@ -187,7 +197,7 @@ pub struct ServerTick {
 In *Ragnarok Online*, movement is **hybrid predictive**: the server does *not* broadcast a packet on every single tile step. When an entity begins moving (or changes direction), the server calculates the full path, validates walkability, and broadcasts the **start cell, destination cell, sub-cell offset, and start timestamp** (`WBUFPOS2`). Both the client and `World` then step the entity along the identical A* path at the entity's `move_speed`.
 
 ### 6.1 Move Speed, Step Duration & Sub-Cell Coordinates
-1. **`move_speed` Definition (`PresentAttributes.move_speed: u16`):**
+1. **`move_speed` Definition (`Status.speed: u16`, §9):**
    * Expressed in **milliseconds required to cross 1 orthogonal cell**.
    * Default player walk speed is `150` (`150ms` per orthogonal tile, or `6.67` tiles/sec). Buffs like *Increase AGI* or Pecopeco mounts lower this value (e.g., `112ms`).
 2. **Orthogonal vs. Diagonal Step Timing:**
@@ -292,9 +302,9 @@ pub fn intent_to_pathfinding_system(
         };
 
         let move_speed = world
-            .present_attrs
+            .status
             .get(entity)
-            .map(|a| a.move_speed)
+            .map(|s| s.speed)
             .unwrap_or(150);
 
         // 3. Calculate sub-cell offset if redirecting mid-stride
@@ -348,9 +358,9 @@ pub fn movement_step_system(
         let new_dir = calc_ro_direction((from_pos.x, from_pos.y), to_coords);
 
         let move_speed = world
-            .present_attrs
+            .status
             .get(entity)
-            .map(|a| a.move_speed)
+            .map(|s| s.speed)
             .unwrap_or(150);
 
         let next_idx = path.current_idx + 1;
@@ -498,7 +508,7 @@ pub enum ServerEventPayload {
         dual_wield_damage: i32,
     },
 
-    /// Sent to `AreaOfInterest` when a status effect starts or expires in Stage 1.
+    /// Sent to `AreaOfInterest` when a status effect starts or expires (Stage 2, §10).
     /// Wire Packet: `ZC_MSG_STATE_CHANGE` (`0x0196`) / `ZC_MSG_STATE_CHANGE2` (`0x043F` / `0x0983`).
     StatusStateChanged {
         gid: u32,
@@ -534,7 +544,188 @@ pub enum ServerEventPayload {
 | `ActorSpawnedOrEnteredAoI` | `AreaOfInterest` / `SelfOnly` | `ZC_NOTIFY_STANDENTRY` / `ZC_NOTIFY_NEWENTRY` | Stage 4 (AoI block diff or Spawn) |
 | `ActorVanished` | `AreaOfInterest` | `ZC_NOTIFY_VANISH` (`0x0080`) | Stage 4 (AoI leave, Death, Warp) |
 | `ActorStoppedAt` | `AreaOfInterest` | `ZC_STOPMOVE` (`0x0088`) | Stage 4 (Knockback / Immobilize) |
-| `PlayerParamsUpdated` | `SelfOnly(char_id)` | `ZC_PAR_CHANGE` (`0x00B0`) | Stage 5 (Collapsed Net Deltas) |
+| `PlayerParamsUpdated` | `SelfOnly(char_id)` | `ZC_PAR_CHANGE` (`0x00B0`) | Stage 3 (recalc diff) / Stage 4 (HP/SP commit) |
 | `ActorActionPerformed` | `AreaOfInterest` | `ZC_NOTIFY_ACT` (`0x008A` / `0x08C8`) | Stage 5 (Discrete Combat/Sit/Stand) |
-| `StatusStateChanged` | `AreaOfInterest` | `ZC_MSG_STATE_CHANGE2` (`0x0983`) | Stage 1 (Status Applied / Expired) |
+| `StatusStateChanged` | `AreaOfInterest` | `ZC_MSG_STATE_CHANGE2` (`0x0983`) | Stage 2 (Status Applied / Expired) |
 | `PlayerMapMove` | `SelfOnly(char_id)` | `ZC_NPCACK_MAPMOVE` (`0x0091`) | Stage 4 (Portal collision) |
+
+---
+
+## 9. Stats: Sources, Modifiers & Recalculation
+
+> **Status:** design settled with the user on 2026-10-25. The core player part is planned in `specs/stats/` (job data, every derived stat, refine, stat-up, `@blvl`/`@jlvl`/`@job`); item bonuses, passive skills, status effects (§10) and damage (§11) are later plans that plug into the same model. rAthena is the behavioural reference (catalog `mechanics/stats.md`, `packets/status.md`, `db/job_stats.md`, `db/refine.md`, `mechanics/battle_config.md`); the structure is ours.
+
+### 9.1 Why not rAthena's shape, and why not the old Tier 2 sketch
+rAthena's `status_calc_pc` rebuilds a player's whole status from zero on every change, then `status_calc_bl_main` layers status effects on top per `SCB_*` flag, and pushes a diff. Its layers are not clean "flat + percent" tiers:
+* Max weight reads **allocated** STR only (no job bonus, no gear, no buffs).
+* MaxHP scales the base table by **battle** VIT (buffs included) and then adds **equipment-only** VIT flat on top.
+* MaxHP has several separate percent pools applied in a fixed order (equip %, item %, `hp_rate`), so one generic `pct` per stat cannot reproduce it.
+* Item scripts run in the middle of the rebuild and can read the stats accumulated so far.
+
+So the earlier `equip_mods` / `status_mods` "flat + %" tiers are dropped. What we keep from rAthena is the **full rebuild** (no incremental math on stored values, so nothing drifts) and the **two layers** (base, battle). What we add is ECS-shaped: every stat effect is plain data with a source, the summed data is cached per source kind, and the rebuild is a pure function.
+
+### 9.2 Inputs (all read-only at runtime)
+| Input | Where it comes from | Holds |
+| :--- | :--- | :--- |
+| `BaseStats` (component) | players: `characters` row via `CharacterSpawn` (persisted); mobs: `MobDb` row at spawn | allocated STR..LUK (and traits later), base/job level, job id, status/skill points |
+| Job row | `ro_db::JobDb` ← `tools/job-import` ← rAthena `job_stats`/`job_basepoints`/`job_aspd`/`job_exp`/`statpoint` (GPL data under `crates/ro-db/data/job/`) | cumulative job-level bonus row, base HP/SP tables, ASPD base per weapon + shield, MaxWeight, max levels, status-point table |
+| Refine table | `ro_db::RefineDb` ← `tools/refine-import` (GPL data under `crates/ro-db/data/refine/`) | cumulative bonus (1/100) and overrefine per group, item level and refine |
+| `GearStatus` (component) | worn items (`ItemDb` fields + instance refine) | per-hand weapon records (`atk`, `atk2` refine, `matk`, `wlv`, `overrefine`, `range`, weapon type), hard DEF and hard MDEF, ammo |
+| `base_bonus: BonusTotals` | Σ modifiers of gear bonuses, cards, combos, passive skills | named slots (§9.3) |
+| `battle_bonus: BonusTotals` | Σ modifiers of active statuses (§10) | named slots |
+| `BattleConfig` | our own YAML (MIT, rAthena default values), `BATTLE_CONFIG` path, unset = defaults | caps, rates, enable flags (catalog `mechanics/battle_config.md`) |
+
+`ro-mechanics` never sees `ro-db` types: `ro-engine` hands it plain borrowed views (`&JobRow`-shaped structs) so the formulas stay pure and the crate stays dependency-free.
+
+### 9.3 Modifiers: named slots with a source
+A **modifier** is `{ slot, value }` and always belongs to a **source**: a worn item (its compiled bonuses, §9.8), a card or combo, a learned passive skill, or an active status effect (§10). Slots are named after rAthena's `b*` bonus types, because each one enters its formula at a specific place:
+
+* **Primary:** `Str`, `Agi`, `Vit`, `Int`, `Dex`, `Luk` (and `AllStats` expanded at compile time).
+* **Secondary flat:** `BaseAtk`, `Atk` (equip ATK, `eatk`), `Matk`, `Def`, `Def2`, `Mdef`, `Mdef2`, `Hit`, `Flee`, `Flee2`, `Critical`, `MaxHp`, `MaxSp`, `AspdFixed`, `AspdAdd` (amotion), `MaxWeight`, `Range`.
+* **Secondary percent pools, each kept separate:** `AtkRate`, `MatkRate`, `DefRate`, `MdefRate`, `HitRate`, `FleeRate`, `CriticalRate`, `MaxHpRate` (equip), `MaxHpRateItem`, `MaxSpRate`, `MaxSpRateItem`, `AspdRate`, `SpeedRate`, `HpRecovRate`, `SpRecovRate`.
+* **Hit-time tables** (`AddRace`, `AddSize`, `AddEle`, `SubRace`, `SubEle`, `IgnoreDefRace`, `CritAtkRate`, ...) are not stats: they live in `CombatBonus` and are read only when damage is computed (§11).
+
+Each slot has an **aggregation rule**: most `Sum`, some `Max`/`Min` (rAthena takes the strongest movement-speed bonus and the strongest penalty rather than summing them). `BonusTotals` is a fixed array indexed by slot (`[i32; SLOT_COUNT]`), cache-friendly and allocation-free.
+
+### 9.4 Layers and the recalc function
+`ro_mechanics::calc_status(&StatusInputs, &BattleConfig) -> Status` is pure: no allocation, no RNG, no world access. In dependency order:
+
+1. **Base primary** = job bonus row[job level] + allocated + `base_bonus` primary slots (+ fixed class extras such as Super Novice's +10).
+2. **Battle primary** = base primary + `battle_bonus` primary slots, clamped. `0x0141` sends `base = allocated`, `bonus = battle − allocated`.
+3. **Secondary**, each formula reading the layer rAthena reads:
+
+| Secondary | Reads |
+| :--- | :--- |
+| Max weight | job MaxWeight + **allocated** STR × 300 + `MaxWeight` slots |
+| Status ATK (`batk`) | battle STR/DEX/LUK (swapped for ranged weapons) + base level + `BaseAtk` |
+| Weapon ATK (`SP_ATK2`) | `GearStatus` hands (`atk` + refine `atk2`) + `Atk` slots |
+| Status MATK / weapon MATK | battle INT/DEX/LUK + level; weapon MATK + refine (no refine MATK on bows) + `Matk` |
+| Soft DEF / soft MDEF | battle VIT/AGI (INT/DEX/VIT) + level + `Def2`/`Mdef2` (`float` math) |
+| Hard DEF / hard MDEF | `GearStatus` hard DEF/MDEF + `(Σ refine + 50)/100` + `Def`/`Mdef`, then rates |
+| HIT, FLEE, CRIT, perfect dodge | battle DEX/AGI/LUK + level + flat slots, then the rate slots |
+| ASPD (amotion) | job ASPD base for the right weapon (+ shield or 1/4 left weapon) + battle AGI/DEX + `AspdFixed` + `AspdRate` + `AspdAdd`, caps from config |
+| MaxHP / MaxSP | job base table[level] × (1 + battle VIT/INT %) × class factor + **equipment-only** VIT/INT flat + flat slots, then each % pool in order, then config rate and caps |
+| Regen amounts, speed | battle VIT/INT + MaxHP/SP; base speed + `SpeedRate` (Max/Min aggregation) |
+| `StateFlags` | OR of the behaviour flags of active statuses (§10) |
+
+**Precision:** where rAthena computes in `float` or `double` and truncates once, `ro-mechanics` uses the same C type, because the truncation edge differs (soft DEF/MDEF, the ASPD square root, the MaxHP percentages). Tests pin the catalog's worked values (bare level-1 Novice: ASPD 156, amotion 440).
+
+### 9.5 Dirty tracking and caching
+`DirtySet` holds the actors to rebuild this tick, plus `StaleSums` bits per actor:
+* `GEAR`: equip, unequip, refine or card change → rebuild `GearStatus` and the gear part of `base_bonus`.
+* `PASSIVES`: skill learned or reset, or a weapon change for weapon-conditional passives → rebuild the passive part of `base_bonus`.
+* `STATUSES`: a status started, ended or changed its vals → rebuild `battle_bonus` and `StateFlags`.
+* No bit, only dirty: allocated stats, levels or job changed → the cached sums are still valid, only `calc_status` runs.
+
+The expensive part, summing the modifiers of 10+ items and their cards, runs only when its source changes. A recalc is otherwise pure arithmetic over a few cached arrays. Each actor is marked at most once per tick, so unequip-all of N items costs one rebuild.
+
+### 9.6 Pushes
+After Stage 3 computes the new `Status`, the diff against the stored snapshot emits one packet per changed field in rAthena's fixed order (catalog `packets/status.md` "Recalculation pushes"): `0x0141` STR..LUK, HIT, FLEE1, ASPD, SPEED, ATK1, DEF1/DEF2 (hard), ATK2, DEF2/DEF1 (soft), FLEE2, CRITICAL, MATK2/MATK1, MDEF1/MDEF2, MDEF2/MDEF1, ATTACKRANGE (`0x013a`), MAXHP, MAXSP, HP, SP, then the trait values. `SP_WEIGHT`/`SP_MAXWEIGHT` are their own pushes when they change. HP/SP clamps to a lower max push from Stage 4. Mobs have no push: their HP bar (`0x0977`) belongs to combat.
+
+### 9.7 Where each subsystem enters
+| Change | Stage it happens in | Marks | Follow-up (Stage 4) |
+| :--- | :--- | :--- | :--- |
+| Equip / unequip / refine | 1 (intent) | dirty + `GEAR` | clamp HP/SP if the max dropped |
+| Stat-up (`0x00bb`) | 1 (intent; `0x00be`, `SP_STATUSPOINT`, `0x00bc` sent in the flow) | dirty | — |
+| Base level up (exp, `@blvl`) | 1/2 | dirty | full heal to the **new** MaxHP/MaxSP (positive base change only) |
+| Job level / job change | 1/2 | dirty (+ `PASSIVES` once skills exist); `@job` force-unequips (each unequip marks `GEAR`) | clamp |
+| Passive skill learned | 1 | dirty + `PASSIVES` | — |
+| Status start / end / expiry | 2 (expiry is a Stage 1 timer feeding Stage 2) | dirty + `STATUSES` | clamp |
+| Damage, heal, drain | 1 (`HitResolved`) | not dirty (vitals only) | fold, clamp, death |
+
+### 9.8 Item bonuses (future plan)
+* The item importer **compiles** the common unconditional script lines (`bonus bStr,1;`, `bonus2 bAddRace,RC_DemiHuman,5;`, `bonus bMaxHPrate,5;`, ...) into a declarative `Bonuses:` list on the item. The engine only sums data; no VM runs inside the recalc.
+* Scripts the compiler can't express (conditionals on refine, job or other stats; `autobonus`; `skill`-granting) are flagged on the item and left for the scripting VM. A VM-evaluated item becomes one more modifier **source**, re-evaluated on its own triggers and never inside `calc_status`.
+* **Hard MDEF ruling:** hard MDEF is a base equipment stat like DEF. The importer lifts unconditional `bonus bMdef,N;` into a first-class `MagicDefense` item field next to `Defense`. Conditional MDEF stays in compiled bonuses. Both feed the same hard-MDEF slot. Until that plan, gear hard MDEF is 0.
+* Cards merge their compiled bonuses into the carrier item's source. Combos are matched against the worn set when the `GEAR` sum is rebuilt.
+* `EquipScript` / `UnEquipScript` are one-shot events to the scripting VM (Stage 2), not modifiers.
+
+### 9.9 Skills (future plan)
+* **Passive skills** (Owl's Eye DEX+lv, Dragonology INT, Cavalier Mastery's ASPD restore) are modifier sources in the base layer, from a passive-skill table keyed by `(skill, level)` plus an optional weapon-type condition.
+* **Weapon masteries** that add ATK only on hit (Sword Mastery) go to `CombatBonus`, not the status.
+* **Active buffs** are status effects (§10). **Offensive skills** are damage contexts (§11) with a skill ratio.
+
+---
+
+## 10. Status Effects (future plan)
+
+> Design only. The catalog entry (`mechanics/status.md`) is still a placeholder and must be filled before the status-effect plan.
+
+### 10.1 Data-driven registry
+rAthena hard-codes each status change's stat effect in `status_calc_*` switch cases. We describe it as data instead (decided with the user): a **status registry** in our own format, one entry per SC:
+
+~~~yaml
+- Status: Blessing
+  Icon: EFST_BLESSING            # client icon (0x0983 / 0x0196)
+  Modifiers:                     # slot <- a*valN + b, summed into battle_bonus
+    - { Slot: Str, From: Val1 }
+    - { Slot: Int, From: Val1 }
+    - { Slot: Dex, From: Val1 }
+    - { Slot: Hit, From: Val2 }
+  Flags: []                      # NoMove, NoAttack, NoCast, NoPickup, NoRegen, NoEquip, ... -> StateFlags
+  EndOn: [Death]                 # Death, Hit, Logout, MapChange, Dispel, ...
+  Cancels: [Curse, Stone]        # statuses removed on start
+  Hook: none                     # optional named Rust hook for behaviour data can't express
+~~~
+
+* The registry's **format and the modifier definitions are ours**. They are written from catalogued facts (which stat, what value), which the licensing rules allow. Anything copied wholesale from rAthena's `status.yml` (icons, flags, durations) comes in only through a `tools/status-import` into `crates/ro-db/data/status/`, like every other GPL dataset. The status-effect plan settles the split.
+* Odd cases get a small named Rust hook (Kyrie's barrier, Hiding's visibility, Poison's periodic damage) rather than a per-SC `match` over hundreds of statuses.
+* Forking a mechanic means editing data, not code.
+
+### 10.2 Runtime
+* `ActiveStatuses` per actor: a `FixedBitSet` for O(1) "has SC?" checks, plus `SmallVec<[StatusEntry; 16]>` holding `{ id, val1..val4, started_ms, expires_ms, next_tick_ms, source }`.
+* **Timers:** one per-map `BinaryHeap<Reverse<(due_ms, entity, sc, generation)>>`, popped in Stage 1 like floor-item expiry. Entries that no longer match (status refreshed or removed) are skipped, so there's no per-tick scan.
+* **Start, refresh and end** happen in Stage 2. Each one marks the actor dirty + `STATUSES` and emits the icon events (`0x0983` start, `0x0196` end) in the order rAthena sends them.
+* **Periodic effects** (poison, bleeding, regen-style buffs) emit HP/SP deltas at their tick. Stage 4 folds them with everything else.
+* **Resistance and immunity** are checked at start (a pure function of the target's `Status` + `StateFlags` + level) in `ro-mechanics`.
+* `StateFlags` lives in `Status`, so every gate (move, attack, cast, pick up, equip, regen) reads one bitfield of the committed snapshot.
+* **Mobs** use the same components. A mob's `Status` is computed once at spawn from its `MobDb` row and rebuilt only when its statuses change.
+
+---
+
+## 11. Damage Pipeline: Outgoing & Incoming (future plan)
+
+> Design only. Formulas: catalog `mechanics/combat.md` (normal attack, renewal) and `mechanics/auto_attack.md` (timing). Magic, skills and monster-vs-player are not yet catalogued.
+
+### 11.1 Shape
+Damage is a **pure function** in `ro-mechanics`:
+
+~~~text
+calc_damage(attacker: AttackerView, defender: DefenderView, ctx: AttackContext, rng: &mut Rng) -> DamageResult
+
+AttackerView  = &Status (battle) + GearStatus hands + CombatBonus (offensive tables) + level, size/race/element
+DefenderView  = &Status (battle) + CombatBonus (defensive tables) + size, race, element & level, StateFlags
+AttackContext = kind (Weapon | Magic | Misc), skill id/level/ratio, element override, hit count (div),
+                range class (short/long), flags (no-crit, ignore-flee, ignore-DEF ...)
+DamageResult  = { damage, damage2 (left hand), div, type (normal/crit/miss/lucky/multi), flags }
+~~~
+
+Both views are borrowed from the snapshot committed last tick, so every hit in a tick sees the same world. Damage then doesn't depend on processing order, and a `rayon` fold can compute it.
+
+### 11.2 Outgoing side (attacker), normal weapon attack, renewal order
+1. Lucky dodge (defender `flee2`), multi-hit roll (Double Attack), crit roll (attacker `cri` − 2×defender LUK; a crit always hits), hit roll (`clamp(hit − flee, min_hitrate, max_hitrate)`).
+2. Parts:
+   * status ATK ×2 (neutral element)
+   * weapon ATK: variance from the item ATK and weapon level, plus the refine `atk2`, plus overrefine `rnd()%over + 1`; size fix, weapon element
+   * equip ATK
+   * percent ATK (`AtkRate` slots)
+   * the attacker's **offensive** `CombatBonus` (race, size and element %) applied to the weapon and equip parts before they are summed
+3. P.ATK multiplier, mastery ATK (passives in `CombatBonus`), crit ATK rate, skill ratio.
+
+### 11.3 Incoming side (defender)
+1. Res.
+2. Hard DEF `(4000 + def)/(4000 + 10·def)`, then soft DEF subtraction.
+3. Minimum 1 on a landed hit.
+4. Crit ×(1.4 + C.RATE).
+5. The defender's **defensive** `CombatBonus` (`SubRace`/`SubEle`/`SubSize` %), then status-based final reductions (damage-reduction statuses), then `div`.
+6. Magic: MATK variance, then the renewal MDEF formula on hard and soft MDEF.
+
+The order is rAthena's (`battle_calc_weapon_attack`); the structure is a fixed sequence of small pure steps, each unit-testable against catalog values.
+
+### 11.4 What is not pure, and where it goes
+* **Stateful defences** (Kyrie's barrier HP, Safety Wall's hit count, Energy Coat's SP drain) consume state. `calc_damage` returns the raw result. In Stage 4 the fold walks hits in event order and lets each defence consume its charge before HP is reduced, deterministically.
+* **Reactions** (reflect, autospell, status-on-hit procs, auto-guard) are rolled when the hit resolves (Stage 1, from the snapshot) and emitted as events. Reflect becomes a reverse HP delta in the same Stage 4 fold. Procs start statuses in Stage 2 of the **next** tick, or cast through the normal skill path, so a proc can never re-enter the tick that produced it.
+* **HP application:** `HitResolved` events carry the result. Stage 4 folds them in order, clamps at 0, records the kill and the damage log (overkill counted), and emits `0x08c8` timing as in `mechanics/auto_attack.md`. A target already dead in the fold ignores later deltas but keeps their animation.
+
+### 11.5 Mobs and players are one path
+Mob attackers and defenders use the same `Status`. They differ in data (mob_db `Attack` as weapon ATK with ±20 % variance, `batk = STR + level`, no crit by default via `enable_critical`, `flee2` 0 via `enable_perfect_flee`), so `BattleConfig` and the mob's `Status` decide what differs, not separate code paths.

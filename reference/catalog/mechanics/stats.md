@@ -4,6 +4,8 @@ Target client version: `PACKETVER = 20260219`, renewal build (`RENEWAL`, `RENEWA
 
 All divisions are C integer division (truncate toward zero) unless a term is written with a decimal. Terms called "float" are computed in `float` and truncated once at the end, as marked.
 
+Config knobs read by these formulas (caps, rates, penalties, defaults, load-time scaling): [battle_config.md](./battle_config.md).
+
 ## Derived Stat Formulas
 
 ### Stat sources (the six primary stats)
@@ -220,6 +222,27 @@ The check order is: baby first, then Summoner, extended, trait/4th, 3rd (trans s
 * New characters: PACKETVER >= 20120307 clients send no stat distribution; the server creates every stat as 1 and `status_point = start_status_points` = 48 (`inter_athena.conf:16`, `char.cpp:1437-1461`, `char_clif.cpp:1270-1300`).
 * Stat reset (`pc_resetstate`): `status_point = table_point(base_level)` (plus `transcendent_status_points` for Rebirthed/high classes, `pc.cpp:9358-9366`), all stats back to 1.
 * `pc_statusup` gate: point total available, per-step cost, class max; request count capped to what is affordable ([../packets/status.md](../packets/status.md#stat-up-request-and-acknowledgement)).
+
+## Refine bonuses (weapon ATK, weapon MATK, armor DEF)
+
+Source: `rathena` `d4b8e7b8f`, `status_calc_pc_sub` equipment loop `src/map/status.cpp:3908-4096`, `battle.cpp:2402-2420,2443-2495`; data in [../db/refine.md](../db/refine.md). Applies to 20260219 (renewal). `R` = item refine (clamped to 20), `B(R)` = the cumulative `Bonus` for that item's group/level at refine R (1/100 units; 0 if R = 0, item not `Refineable`, or no entry).
+
+* **Which items:** every worn item that is Weapon or Armor type, per `EQI` slot, same loop as `def`/scripts (duplicates of multi-slot gear skipped, ammo skipped). Armor type covers body armor, shield, garment, shoes, headgear and accessories alike, there is no location filter. Shadow gear and Ammo contribute nothing (shadow tables have no Bonus). Costume headgear/garments are normal Armor items but are not `Refineable` in item_db, so they give 0; no explicit costume check exists. There is **no broken-item check** in the pass: broken gear (`attribute == 1`) cannot be equipped (`pc.cpp:1890`). A worn item that later becomes broken is not re-checked by this pass.
+* **Weapon ATK:** `wa.atk2 += B/100` (integer division), where `wa` is `rhw` or `lhw` (left only for a weapon in `EQI_HAND_L` with `equip == EQP_HAND_L`). Item `Attack` goes to `wa.atk`. Renewal grade bonus (only Weapon level 5, `enchantgrade > 0`): `wa.atk2 += (B/100) * gradeBonus / 100` (integer, grade percent from refine.md).
+* **Weapon MATK (renewal):** `wa.matk += item.matk`, then `wa.matk += B/100` (and the same grade term `((B/100)*gradeBonus)/100`) **unless `sd->weapontype1 == W_BOW`** (the right-hand type; bows get ATK refine but no MATK refine). Then `weapon_matk_rate` (`bonus`) scales `wa.matk` by `1 + rate/100` over the item + refine MATK.
+* **Overrefine:** `weapon_data.overrefine = RandomBonus(R) / 100` (the table's maximum, set whenever a refine entry exists, even if 0). Damage: `rnd()%overrefine + 1` is added to each weapon hit (1..overrefine) in `battle_add_weapon_damage` (`battle.cpp:2402-2420`), after the renewal variance roll; for MATK `matk_min += 1`, `matk_max += overrefine - 1` (see the MATK block above). The variance term uses only `wa.atk` (item ATK) and `wlv`, not `atk2` (`variance = 5*atk*wlv/100`); `atk2` is part of `watk` that variance is applied around (details: [combat.md](./combat.md)).
+* **Weapon level 5 only (renewal):** `patk += R*2` and `smatk += R*2` (P.ATK / S.MATK, trait stats), once per worn level-5 weapon with a refine entry. Not yet modelled.
+* **Armor DEF:** per armor item `refinedef += B(R)` (raw, 1/100 units), accumulated across all worn armor. After the loop and the combos, **one** rounding: `def += (refinedef + 50) / 100` (integer division, round half up on the total, not per item; `status.cpp:4096`). The item's own `def` was already added per item (`status.cpp:3917`).
+* **Armor level 2 only (renewal):** `res += R*2` and `mres += R*2` (R/MR trait stats), per worn level-2 armor with a refine entry. Not yet modelled.
+* **Recalc trigger:** refine and equip are part of the full `status_calc_pc`; the refine level is also clamped there if it exceeds `MAX_REFINE`.
+
+### Check against the captures
+
+| Capture ([stats section above](#derived-stat-formulas)) | Table | Result |
+| :--- | :--- | :--- |
+| Knife +10, `SP_ATK2` 17 -> 37 | Weapon level 1, B(10) = 2000 | +20 ATK (`2000/100`); 17+20 = 37. Matches. RandomBonus(10) = 900 -> overrefine 9 (not in `SP_ATK2`). |
+| Rod +10, `SP_MATK1` 30 -> 50 | Weapon level 1, B(10) = 2000, not a bow | +20 MATK; 30+20 = 50. Matches. (Knife +10 -> `SP_MATK1` 20, same +20.) |
+| Hat +10 and Silk Robe +10, `SP_DEF2` +18 each | Armor level 1, B(10) = 1800 | `(1800+50)/100 = 18`. Matches for each item worn alone. Rounding is on the summed raw bonus, so it differs from per-item rounding only for odd sums: three level-2 armors at +1 (120 each) give `(360+50)/100 = 4`, not `1+1+1`. |
 
 ## Open questions
 
