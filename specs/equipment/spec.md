@@ -11,7 +11,8 @@
 - Item data gains the equipment fields (weapon/ammo type, ATK, DEF, range, level, gender, jobs, classes).
 
 Out of scope (see §5):
-- item scripts (`Script`, `EquipScript`, `UnEquipScript`, `bonus`), cards and combos
+- item scripts (`Script`, `EquipScript`, `UnEquipScript`, `bonus`), cards and combos. (Capture 2's Bravery Bag
+  sends `0x010f` and `0x0441` around its push because its script grants a skill; we send neither.)
 - refine and enchant-grade bonuses
 - bind-on-equip
 - the equip-switch window (`0x0a9b` stays empty)
@@ -33,9 +34,12 @@ Out of scope (see §5):
 - `reference/catalog/db/item_db.md`: `SubType`, `Attack`, `Defense`, `Range`, `Jobs`, `Classes`, `Gender`,
   `EquipLevelMin/Max`.
 - Capture `reference/catalog/captures/packet_sequence-20261023_030246.txt` lines 841–865 (Knife swap).
-- `PACKET_FINDINGS.md` PF-11 (partly settled), PF-16, PF-18 (resolved), PF-21.
-- A new capture at the M1 checkpoint (plan.md) covers take-off, failures, shields, headgear and ammo. Until it
-  lands, those parts are source reading.
+- Captures `equip_sequence.txt` and `equip_sequence_2.txt` (2026-10-25), written up in catalog
+  `packets/equipment.md` "Captured equip sequences": take-off, unequip-all, failures, a shield, a two-hander,
+  headgear, garments, shoes, ammo, entry looks, char-select looks.
+- `PACKET_FINDINGS.md` PF-11 (resolved), PF-16, PF-18 (resolved), PF-21.
+- **Still source-only:** the `0x099a` failure forms, the dead gates, a shield in an entry packet, costumes, dual
+  wield, bullets.
 
 When this spec and the catalog disagree, the catalog wins and this spec gets fixed.
 
@@ -70,7 +74,7 @@ New optional keys, omitted when default:
     AmmoType: Arrow        # Ammo only: AMMO_* name (catalog §1 "Ammo")
     Attack: 17             # Weapon and Ammo
     MagicAttack: 0         # Weapon; imported, unused
-    Defense: 0             # any equipment
+    Defense: 0             # Armor and ShadowGear
     Range: 1               # Weapon; capped at 14
     WeaponLevel: 1         # Weapon, 1..=5
     ArmorLevel: 1          # Armor
@@ -89,7 +93,12 @@ New optional keys, omitted when default:
 - **`Gender`**: forced values from catalog §3a ("Gender"): `W_MUSICAL` Male, `W_WHIP` Female, the two wedding
   rings.
 - **Fields cleared by type**, as rAthena does (catalog `item_db.md`): `Attack` only for Weapon/Ammo,
-  `MagicAttack`/`Range` only for Weapon, `SubType` only for Weapon/Ammo (Card subtypes are dropped).
+  `MagicAttack`/`Range` only for Weapon, `Defense` only for Armor/ShadowGear, `SubType` only for Weapon/Ammo
+  (Card subtypes are dropped). The final type decides (after the no-`Locations` demotion). A `SubType` on any
+  other type skips the whole entry, as rAthena rejects it. `WeaponLevel` 0 becomes 1 on a weapon, `ArmorLevel`
+  0 becomes 1 on armor.
+- **`Jobs` resolution** normalizes names (case and underscores), so `Super_Novice` and `SuperNovice` match. The
+  shipped data imports with no warnings.
 - `ro-db` exposes them on `ItemData` with typed enums (`WeaponType`, `AmmoType`, `Gender`). `WeaponType`
   carries the `W_*` number (needed for the char-select `weapon` field and ASPD later).
 
@@ -102,6 +111,9 @@ New optional keys, omitted when default:
   - `UnitLooks`: weapon and shield client ids (`ViewId` or item id; shield 0 for a two-hander), head bottom /
     top / mid and robe view ids after the costume override (catalog §5). Entry packets read this cache, so
     building an entry event never touches the inventory;
+  - looks are computed from the worn-slot table: weapon = the `HAND_R` item, shield = the `HAND_L` item unless
+    it's the same item. A multi-slot headgear shows only in its highest slot, decided by the item's own
+    `Locations` (Goggles, top + mid: top = 1, mid = 0, even while only its mid slot is assigned; captured);
   - `GearStatus` (§2.10).
 - **Weapon type** (rAthena `status.weapon`): the right-hand `WeaponType`, or the left-hand one when the right
   is empty, or the dual-wield constant for a dagger/sword/axe pair (catalog §1 "Weapon type resolution").
@@ -110,14 +122,16 @@ New optional keys, omitted when default:
   Novice. Stats will reuse it.
 
 ### 2.2 Equip request (`0x0998`, catalog `packets/equipment.md` `0x0998` and mechanics §3)
-Inputs: wire index (slot = index − 2), requested position mask. Checks in order; the first hit decides:
+Inputs: wire index (slot = index − 2), requested position mask. Checks in order; the first hit decides. A
+failure `0x0999` is `{index, location 0, view 0, result}` (captured: `16 00 00 00 00 00 00 00 01`).
 
 1. Dead: `0x0080` type 1 to the area including self (like the pickup gate), no ack.
 2. Slot out of `[0, 100)` or empty: no ack.
 3. Not identified: `0x0999` result 2.
 4. Unknown item id (not in `ItemDb`) or a type that can't be worn (only Weapon, Armor, Ammo, ShadowGear can):
    no ack. Pet armor: no ack (deferred).
-5. Ammo: the position becomes `EQP_AMMO` whatever the client sent.
+5. Ammo: the requested position becomes `EQP_AMMO` whatever the client sent (it sends `0` or `0x8000`;
+   both captured).
 6. `pos` = the item's `Locations`, widened to `EQP_ARMS` for a dagger / one-hand sword / one-hand axe when the
    character's mapid is in the Assassin or Kagerou/Oboro line (catalog §1 "Two-handed and dual wield").
 7. `pc_isequip` subset, in catalog §3a order:
@@ -134,9 +148,18 @@ Inputs: wire index (slot = index − 2), requested position mask. Checks in orde
 8. Fit: `pos & requested == 0`, or the item is already worn: result 2.
 9. Resolve the final mask (accessory auto-slot, dual-wield hand choice; catalog §1). Two-handers keep
    `EQP_ARMS`.
-10. **Displace** every occupant of a position in the final mask: run §2.6 on it with recalc on, forced, and no
-    ammo cascade (rAthena flag `1|2|4`). Each displaced item sends its own look, `0x099a` and status push.
-    An item covering two positions is displaced once.
+10. **Take the positions one by one** (captured; catalog "The new item takes each slot as the loop reaches
+    it"). Walk the final mask's positions in rAthena `EQI` order (catalog §1: accessories, shoes, garment, head
+    low / mid / top, armor, `HAND_L`, `HAND_R`, costumes, ammo, shadow). For each one:
+    1. if another item holds it, displace that item: §2.6 with recalc on, forced, no ammo cascade (rAthena
+       flag `1|2|4`). It sends its own looks, `0x099a` and status push. An item covering two positions is
+       displaced once;
+    2. assign the position to the new item in the worn-slot table right away.
+
+    So a later displacement's looks and push already count the new item in the positions assigned before
+    it. Bow over Knife + Guard: the Guard's push has no bow; the Knife's look is {0, bow} and its push holds
+    the bow's ATK2 and range. Goggles over a Hat: the Hat's push holds the Goggles' DEF, and nothing is
+    pushed after the Goggles' `0x0999`. Gear status (§2.10) counts each item once, wherever it sits.
 11. Ack:
     - ammo: `0x0983` (EFST 695, state 1, total = remain = 9999, vals 0) to the area, then `0x013c` {index} and
       `0x013b` type 3 to self. No `0x0999`.
@@ -144,7 +167,8 @@ Inputs: wire index (slot = index − 2), requested position mask. Checks in orde
       intersects `EQP_VISIBLE` (head low/mid/top, garment, the four costume slots), else 0.
 12. Set `equip` = final mask.
 13. Looks, to the area including self:
-    - a hand position changed: one `0x01d7` `LOOK_WEAPON` {weapon id, shield id};
+    - one `0x01d7` `LOOK_WEAPON` {weapon id, shield id} per hand position in the final mask, so a two-hander
+      sends two identical packets (captured);
     - shoes: `0x01d7` `LOOK_SHOES` {view id or item id};
     - head / garment / costume positions: `0x01d7` `LOOK_HEAD_BOTTOM`/`MID`/`TOP` or `LOOK_ROBE` only for
       the views that changed after the costume override (catalog §5).
@@ -156,7 +180,8 @@ Nothing changes on any failure before step 10.
 
 **Captured order for a one-hand weapon swap** (catalog "Captured weapon swap"), which the tests pin:
 self gets `0x01d7`(old off) → `0x099a`(old) → push → `0x0999`(new) → `0x01d7`(new) → push; an observer gets
-the two `0x01d7` only.
+the two `0x01d7` only. The other captured orders (two-hander, headgear, garment, ammo, unequip-all) are in the
+catalog's "Captured equip sequences" with byte values; the ENG tests use them.
 
 ### 2.3 Sitting
 Sitting doesn't block equip, take-off, unequip-all or drop (catalog "Sitting/dead gates").
@@ -190,11 +215,19 @@ Sitting doesn't block equip, take-off, unequip-all or drop (catalog "Sitting/dea
 - The ammo icon EFST is never ended, as in rAthena: unequipping ammo sends only `0x099a`.
   *(Planning default: mirror rAthena, including the area broadcast of `0x0983`.)*
 - **Map entry:** when ammo is worn, `0x0983` + `0x013c` go out with the inventory lists, between `0x0b09` and
-  `0x0b39` (catalog `status_change.md`; capture pending).
+  `0x0b39` (captured twice). **To self only.** rAthena also sends that `0x0983` to the area, but observers get it
+  before their entry packet for the player (capture 2 line 221 vs 222), so it can't show; metaling already sends
+  the login `0x01d7` to self only for the same reason (`settings.rs` `send_weapon_look`). A player coming into
+  view later gets no `0x0983` in rAthena either. The live equip's area `0x0983` stays.
 - Using up ammo needs combat; out of scope here. When it comes, removing the whole worn stack unequips
   first (§2.8).
 
 ### 2.8 Removing a worn item (drop now; ammo use and other deletes later)
+The client refuses to drop a worn item, or part of worn ammo ("must unequip first"), and never sends `0x0363`
+(user report, capture 1). So this path is server-side safety against a stale or modified client, built from
+rAthena's source; nothing captures it. Using up the last arrow in combat (capture 2 line 364) sends the ammo's
+`0x099a` before `0x07fa`, which fits the same rule for the combat feature.
+
 `remove_item` on a worn slot that reaches amount 0 runs §2.6 (forced, recalc on, ammo cascade on) before the
 slot is cleared. A drop's order becomes (catalog `inventory.md` §6):
 `0x0add` (area) → looks / `0x099a` / ammo `0x099a` / push → `SP_WEIGHT` → `0x00af`.
@@ -204,7 +237,9 @@ Picking an item up clears `equip` on the copy (already true: `add_item` zeroes i
 ### 2.9 Map entry and other players
 - The inventory lists already carry `WearState` = `equip` (`0x0b39`) and the `0x01d7` `LOOK_WEAPON` at entry.
 - Entry packets (`0x09fd`/`0x09fe`/`0x09ff`) send `UnitLooks`: weapon u32, shield u32, accessory (head bottom),
-  accessory2 (head top), accessory3 (head mid), robe. Capture: a worn Knife shows `b1 04 00 00`.
+  accessory2 (head top), accessory3 (head mid), robe. Captured (catalog "Entry looks for the equipper"): a bow
+  gives weapon 1701 and shield 0, Goggles accessory2 1 and accessory3 0, a Hat accessory2 16, the Bravery Bag robe
+  2. A shield in an entry packet isn't captured (live `LOOK_WEAPON` {1201, 2101} is).
 - The login status push and the `0x00bd` window use the gear values (§2.10).
 
 ### 2.10 Status hook (catalog `packets/status.md` "Recalculation pushes", mechanics §6)
@@ -224,8 +259,12 @@ Picking an item up clears `equip` on the copy (already true: `add_item` zeroes i
 - **Weight** isn't touched by equip.
 - **Hand-off to the stats feature:** stats replaces the gear-only computation with the full
   `status_calc_pc`. The diff, push order, storage and call sites stay as they are.
-- *Gap until stats lands:* rAthena also pushes `SP_ASPD` on a weapon swap (capture: 440 ↔ 590). Here ASPD
-  stays 0 and isn't pushed.
+- **Gear status reads the worn-slot table**, which §2.2 step 10 fills one position at a time, so a displaced
+  item's recalc already counts the new item in the positions assigned so far. Each item counts once.
+- *Gap until stats lands:* rAthena also pushes `SP_ASPD` on every weapon or shield change (capture: 440 ↔ 590),
+  and `SP_ATK1` when a bow comes on or off (status ATK uses DEX for ranged weapons). Here ASPD and ATK1 don't
+  change and aren't pushed, so some captured pushes are shorter here (bow over Knife + Guard: no final push at
+  all).
 
 ### 2.11 Persistence and char select (catalog §7, `packets/char.md`)
 - `inventory.equip` already round-trips.
@@ -240,8 +279,9 @@ Picking an item up clears `equip` on the copy (already true: `add_item` zeroes i
   autosave, logout and map change pick it up.
 - **Char select:** `CharacterSummary` gains `CharacterLooks`, loaded by every summary query. `0x0b72` /
   `0x006b` / `0x0b6f` fill `weapon` (i16 type), `shield`, `accessory` (head bottom), `accessory2` (head top),
-  `accessory3` (head mid) and `robePalette` (robe view, i32). Whether the client draws a weapon from the type is
-  open (catalog `char.md` Q4; the manual check settles it).
+  `accessory3` (head mid) and `robePalette` (robe view, i32). Captured: a Knife gives `weapon` 1, Goggles
+  `accessory2` 1 and `accessory3` 0, the Bravery Bag `robePalette` 2. The client never draws the weapon or shield
+  on the select screen (only in combat stance), so a missing weapon there is expected; headgear shows.
 
 ## 3. Scenarios
 
@@ -262,9 +302,11 @@ Picking an item up clears `equip` on the copy (already true: `add_item` zeroes i
 **PKT** (`crates/ro-packets/tests`):
 - **PKT-EQ-01, table lengths:** `0x0999` 11, `0x099a` 9, `0x0bae` 3, `0x013c` 4, `0x013b` 4, `0x0291` 4,
   `0x0983` 29, `0x0196` 9, `0x0998` 8, `0x00ab` 4, `0x0bf5` 6.
-- **PKT-EQ-02:** decodes `0x0998` (the captured `06 00 02 00 00 00`), `0x00ab` and `0x0bf5`.
+- **PKT-EQ-02:** decodes `0x0998` (the captured `06 00 02 00 00 00`, and ammo `1b 00 00 80 00 00`), `0x00ab`
+  (`1a 00`) and `0x0bf5` (the captured `ff 83 00 00` = `0x83ff`).
 - **PKT-EQ-03:** `0x0999` and `0x099a` encode the captured bytes (`06 00 02 00 00 00 00 00 00`;
-  `02 00 02 00 00 00 00`), plus the `0x099a` failure form `02 00 00 00 00 00 01`.
+  `02 00 02 00 00 00 00`), the `0x0999` failure `16 00 00 00 00 00 00 00 01`, the headgear ack
+  `18 00 00 01 00 00 10 00 00`, plus the `0x099a` failure form `02 00 00 00 00 00 01`.
 - **PKT-EQ-04:** `0x0bae`, `0x013c`, `0x013b`, `0x0291` and `0x0983` (EFST 695, 9999/9999) layouts.
 - **PKT-EQ-05:** `0x01d7` for `LOOK_SHOES`, `LOOK_HEAD_*` and `LOOK_ROBE` (15 bytes; `val2` 0).
 - **PKT-EQ-06:** entry packets put `UnitLooks` at the weapon/shield/accessory/robe offsets (catalog
@@ -284,10 +326,14 @@ Picking an item up clears `equip` on the copy (already true: `add_item` zeroes i
   item; Knight id 7 for a Knight item), class (a transcendent-only item on a novice) → 2. Level beats gender.
 - **ENG-EQ-03, captured swap:** wearing Knife A, equip Knife B. Self gets exactly the captured order (pushes
   contain `SP_ATK2` 0 then 17; no ASPD). An observer gets the two `0x01d7`. Swapping back mirrors it.
-- **ENG-EQ-04:** a two-hander replaces a weapon and a shield: two displacements with their own packets, then one
-  `0x0999` with `0x22`. Taking it off sends two identical `0x01d7`.
-- **ENG-EQ-05:** headgear: `0x0999` carries `View`. A Top+Mid headgear sends only `LOOK_HEAD_TOP`. A costume top
-  overrides a normal top and removing it restores the normal view.
+- **ENG-EQ-04:** a bow (`0x22`) over Knife + Guard, as captured: Guard off (look {Knife, 0}, `0x099a`, push of
+  DEF only), then Knife off (look {0, bow}, `0x099a`, push of ATK2 and range that already count the bow), then
+  `0x0999` with `0x22`, two identical `LOOK_WEAPON` {bow, 0}, and no final push. Over a Knife alone the Knife's
+  look is {0, bow}. Taking the bow off sends two identical `0x01d7` before its `0x099a`.
+- **ENG-EQ-05:** headgear: `0x0999` carries `View`. A Top+Mid headgear sends only `LOOK_HEAD_TOP`, never
+  `LOOK_HEAD_MID`. Goggles over a Hat: Hat `0x099a` → `LOOK_HEAD_TOP` 0 → push with the Goggles' DEF →
+  `0x0999` (view 1) → `LOOK_HEAD_TOP` 1, no push. A garment with a view sends `LOOK_ROBE` after `0x0999` and
+  after its `0x099a` on take-off. A costume top overrides a normal top and removing it restores the normal view.
 - **ENG-EQ-06, failures:** not identified → result 2; already worn → 2; wrong position → 2; dead → `0x0080` and
   no ack; empty or out-of-range slot → nothing.
 - **ENG-EQ-07, take-off:** success order; the three `0x099a` failure forms.
@@ -296,12 +342,12 @@ Picking an item up clears `equip` on the copy (already true: `add_item` zeroes i
 - **ENG-EQ-09, ammo:** an archer (job 3) with a bow equips arrows → `0x0983` (area) + `0x013c` + `0x013b` 3, no
   `0x0999`. Arrows with no bow → `0x0291` 1691 + result 2. Taking off the bow removes the arrows (their
   `0x099a` before the bow's push). Equipping a dagger over the bow removes the arrows.
-- **ENG-EQ-10, drop worn:** dropping a worn weapon gives `0x0add` → look / `0x099a` / push → `SP_WEIGHT` →
+- **ENG-EQ-10, drop worn (unit test only; the client won't send it, §2.8):** dropping a worn weapon gives `0x0add` → look / `0x099a` / push → `SP_WEIGHT` →
   `0x00af`, and the observer sees the look. Dropping 5 of 100 worn arrows keeps them worn.
 - **ENG-EQ-11, entry looks:** an observer's entry packet for a player wearing a knife, a shield, a headgear and
   a garment carries those looks. Spawning with worn gear builds `UnitLooks` and `GearStatus` from the masks.
 - **ENG-EQ-12, map entry ammo:** worn arrows add `0x0983` + `0x013c` between `0x0b09` and `0x0b39` on every
-  `0x007d`.
+  `0x007d`, to self only (an observer gets neither).
 - **ENG-STAT-01, hook:** no change → no packets. ATK2 change → `SP_ATK2` only. DEF change → `SP_DEF1` then
   `SP_DEF2`. Range change (a bow) → `0x013a`. Several changes come in catalog order.
 - **ENG-STAT-02, login:** a login wearing a Knife sends `SP_ATK2` 17 in the push and `atk_bonus` 17 in `0x00bd`.

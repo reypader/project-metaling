@@ -20,7 +20,6 @@ Open questions and disagreements about wire packets for `PACKETVER = 20260219`. 
 | [PF-08](#pf-08) | Inventory list and item ack layouts | Struct only | Open |
 | [PF-09](#pf-09) | Exp and level-up packets and their order | Struct only | Open |
 | [PF-10](#pf-10) | Status window packets (`0x00bd`, `0x0141`, `0x00be`, `0x00bc`) | Struct only | Open |
-| [PF-11](#pf-11) | Equip packets (`0x0998`, `0x0999`, `0x099a`) | Struct only | Open; weapon swap captured, take-off/ammo/failures still wanted |
 | [PF-12](#pf-12) | Where HP, SP, zeny and levels come from at login | Behaviour | Open |
 | [PF-13](#pf-13) | Attack request and swing packet order | Behaviour | Open |
 | [PF-14](#pf-14) | Attack range: straight line reaches one cell further | Behaviour | Open |
@@ -34,6 +33,7 @@ Open questions and disagreements about wire packets for `PACKETVER = 20260219`. 
 
 | Id | Topic | Resolved | By |
 | :--- | :--- | :--- | :--- |
+| [PF-11](#pf-11) | Equip packets (`0x0998`, `0x0999`, `0x099a`, take-off, unequip-all, ammo, looks) | 2026-10-25 | `equip_sequence.txt`, `equip_sequence_2.txt`; [packets/equipment.md#captured-equip-sequences](reference/catalog/packets/equipment.md#captured-equip-sequences) |
 | [PF-18](#pf-18) | `MSI_WRONG_BULLET` is 2493 or 2494 | 2026-10-24 | `clif.hpp:599` branch read: 2493 at 20260219; `table.rs` rows for `0x0291`/`0x07e6`/`0x09cd` added (equipment M1, `pkt_eq_01_table_lengths`) |
 | [PF-01](#pf-01) | `0x01d7` ZC_SPRITE_CHANGE2: table says 11, source sends 15 | 2026-10-23 | `item_drop_pickup_sequence.txt`; `table.rs` fixed, test `pkt_item_01_table_lengths` |
 | [PF-02](#pf-02) | `0x0add` ZC_ITEM_FALL_ENTRY: table says 22, source sends 24 | 2026-10-23 | `item_drop_pickup_sequence.txt`; `table.rs` fixed, test `pkt_item_01_table_lengths` |
@@ -188,7 +188,7 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 
 **Equip packets**
 
-- **Status:** Open.
+- **Status:** Resolved 2026-10-25 by [`equip_sequence.txt`](reference/catalog/captures/equip_sequence.txt) and [`equip_sequence_2.txt`](reference/catalog/captures/equip_sequence_2.txt), written up in [packets/equipment.md#captured-equip-sequences](reference/catalog/packets/equipment.md#captured-equip-sequences). Everything below is confirmed, plus: the new item takes each slot as `pc_equipitem`'s loop reaches it (a later displacement's push already counts it), a two-hander sends two `LOOK_WEAPON`, EFST 695, the login `0x0983` + `0x013c` position, `0x0bf5 {ff 83 00 00}`, and the char-select look values. Still source-only: the `0x099a` failure forms, dead gates, costumes, dual wield, bullets.
 - **Source:**
   - `0x0998` request, 8 bytes (`u16 index` = slot + 2, `u32 location`).
   - `0x0999` ack, 11 bytes (`index`, `u32 location`, `u16 view`, `u8 result`: 0 ok, 1 level too low, 2 fail).
@@ -196,7 +196,7 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
   - A displaced item gets its own unequip ack before the new item's equip ack.
   - Ammo gets `0x013c` then `0x013b` type 3, and no `0x0999`.
 - **Evidence (2026-10-24):** [`packet_sequence-20261023_030246.txt`](reference/catalog/captures/packet_sequence-20261023_030246.txt) lines 841–865 hold two Knife-for-Knife swaps, re-framed by hand in [packets/equipment.md#captured-weapon-swap](reference/catalog/packets/equipment.md#captured-weapon-swap). Confirmed: `0x0998` 8, `0x0999` 11 (result 0 = ok, view 0 for a weapon), `0x099a` 9 (flag 0 = ok), and the displaced item's look + `0x099a` + status push come before the new item's `0x0999`.
-- **Resolve by:** a capture (after `table.rs` has `0x0999`/`0x099a`/`0x0bae`/`0x013c`/`0x013b`, `specs/equipment` M1) of `0x00ab` take-off, unequip-all, a level-too-low equip, a shield then a two-hander, a headgear, and arrows (`0x0983` EFST 695, `0x013c`, `0x013b` type 3).
+- **Resolved by:** the two 2026-10-25 captures above (take-off, unequip-all, level and job failures, a shield then a two-hander, headgear, a garment, shoes, arrows).
 - **Catalog:** [packets/equipment.md](reference/catalog/packets/equipment.md), [mechanics/equipment.md#3-pc_equipitem-flow](reference/catalog/mechanics/equipment.md#3-pc_equipitem-flow).
 
 ## Behaviour and order
@@ -312,7 +312,7 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 - **Status:** Open, low priority. Revisit when nothing else is queued, or when a capture or a client bug looks odd: a misframed packet hides the packets after it.
 - **Why it matters:** `tools/proxy` frames with `crates/ro-packets/src/table.rs`. A missing or wrong length makes the proxy log `UNKNOWN / UNMAPPED` frames and then garbage 1-byte frames (`0x0000`, `0x1e84`, `0x2800`, ...) until the stream re-syncs. The map-server never sends these packets today, so only captures and client-side tests are affected.
 - **Seen in the 2026-10-23 warp captures** ([`reference/catalog/captures/`](reference/catalog/captures/README.md)):
-  - Server to client, missing from the table: `0x0b1b`, `0x0b8d`, `0x010f` (skill list), `0x02c9`, `0x0acb`, `0x019b`, `0x00b4`. (`0x0141` and `0x013a` were added by `specs/map-entry-settings`; `0x0999` and `0x099a` by equipment M1; `0x080e` party HP, 14 bytes, from `equip_sequence.txt` line 267, pinned by `pf21_party_hp_length`.)
+  - Server to client, missing from the table: `0x0b1b`, `0x0b8d`, `0x010f` (skill list), `0x02c9`, `0x0acb`, `0x019b`, `0x00b4`. [`equip_sequence_2.txt`](reference/catalog/captures/equip_sequence_2.txt) adds `0x07fa` 8 (line 308), `0x019b` 10 (line 315), `0x0b1a` 36 (line 699) and `0x0441` 4 (line 829), lengths from the frame gaps. (`0x0141` and `0x013a` were added by `specs/map-entry-settings`; `0x0999` and `0x099a` by equipment M1; `0x080e` party HP, 14 bytes, from `equip_sequence.txt` line 267, pinned by `pf21_party_hp_length`.)
   - Client to char-server, wrong length: `0x08b8` `CH_SECOND_PASSWD_ACK` is framed at 8, but the client sends 2 more bytes. The leftover bytes appear as a bogus client frame after every PIN entry.
   - Expected and not a bug: `0x8480`/`0x8481` are the raw 4-byte AccountId echo after `CH_ENTER`/`CZ_ENTER` (`bins/CLAUDE.md`), which the proxy doesn't skip.
 - **The proxy log can stall** (seen in [`item_drop_pickup_sequence.txt`](reference/catalog/captures/item_drop_pickup_sequence.txt), 2026-10-23):
@@ -321,6 +321,7 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
   - `PacketLogger::feed_and_log` (`tools/proxy/src/logger/packet_logger.rs`) waits on `Ok(None)` when a misframe lands on bytes that read as a known opcode with a large dynamic length. It then buffers silently until that length arrives, or until the 128 KiB guard clears the buffer.
   - So the reply to the client's `0x0363` drop (line 1151) was never logged. "Nothing happened" in the client most likely means rAthena refused it with `0x00af` count 0: wire index 12 ×2 was not the Jellopy, which sat at wire index 5.
   - **Fix:** the `specs/items` M1 table rows (done). The proxy now writes a `[PENDING FRAME]` note when a frame stays incomplete across 3 reads, and a note when a forward is blocked for over 1 s (2026-10-25).
+- **Client freeze in [`equip_sequence.txt`](reference/catalog/captures/equip_sequence.txt)** (01:32:41, session `#7`): a Knife equip over bow + arrows, after `@item arrow` and a name request on self, stopped all logged server traffic for that session; the equip did go through on the server. [`equip_sequence_2.txt`](reference/catalog/captures/equip_sequence_2.txt) repeated the steps (lines 739–795, the name request on a mob instead) with no freeze and no `[PROXY NOTE]` stall lines. Not reproduced; cause unknown. Rerun with the name request on self if it matters.
 - **Item rows fixed** in milestone M1 of [`specs/items/plan.md`](specs/items/plan.md) (2026-10-23): `0x0add` 24, `0x00a1` 6, `0x009d` 19, `0x0b41` 70, `0x0b08` dynamic, `0x0b0b` 4, `0x01d7` 15, `0x00af` 6.
 - **Equipment rows fixed** in milestone M1 of [`specs/equipment/plan.md`](specs/equipment/plan.md) (2026-10-25): `0x0999` 11, `0x099a` 9, `0x0bae` 3, `0x013c` 4, `0x013b` 4, `0x0291` 4, `0x07e6` 8, `0x09cd` 8, pinned by `pkt_eq_01_table_lengths`.
 - **Resolve by:** for each opcode, take the length from the capture (the gap to the next real opcode) and check it against the catalog and source. Then add it to `table.rs` with a test. Re-run the proxy over a capture and expect no `UNKNOWN` frames apart from the AccountId echo.

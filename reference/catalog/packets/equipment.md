@@ -6,7 +6,7 @@ Scope: packets exchanged when a player wears or removes an item, plus the look-c
 
 **Shuffle check:** the `clif_shuffle.hpp` branch that applies to 20260219 is `PACKETVER > 20180307` (L4723-4761). It does not list `0x0998`, `0x00ab` or `0x0bf5`, so these opcodes come straight from `packets.hpp` / `clif_packetdb.hpp`. See [PF-05](../../../PACKET_FINDINGS.md#pf-05).
 
-**Captures:** the weapon swap (`0x0998`, `0x0999`, `0x099a`, `0x01d7`) is capture-verified; see [Captured weapon swap](#captured-weapon-swap). Take-off (`0x00ab`), unequip-all, failure acks, shields, headgear and ammo are not captured yet. If a capture disagrees, the capture wins.
+**Captures:** the weapon swap is in [Captured weapon swap](#captured-weapon-swap). Take-off (`0x00ab`), unequip-all, wear failures, a shield, a two-hander, headgear, garments, shoes, ammo, entry looks and char-select looks are in [Captured equip sequences](#captured-equip-sequences). Still source-only: the `0x099a` failure forms, the dead gates, a shield in an entry packet, costumes, dual wield and bullets. If a capture disagrees, the capture wins.
 
 ## Captured weapon swap
 
@@ -40,6 +40,88 @@ What this settles:
 * No weight packet, attack-range packet or skill list follows (the Knife's range 1 equals bare hands).
 
 **Index convention:** every `index` field on the wire is `server_index + 2` (`clif.cpp:122-128`, `client_index` / `server_index`). Server inventory slot 0 is wire index 2.
+
+## Captured equip sequences
+
+Sources (rAthena `d4b8e7b`, both 2026-10-25): capture 1 = [`captures/equip_sequence.txt`](../captures/equip_sequence.txt) (one client), capture 2 = [`captures/equip_sequence_2.txt`](../captures/equip_sequence_2.txt) (equipper plus an observer, full payloads). The equipper is AID `80 84 1e 00`, an Archer. Line numbers are file lines; bytes are after the opcode. "Push" = the recalculation diff: `0x00b0` var `0x35` ASPD, `0x29` ATK1, `0x2a` ATK2, `0x2d` DEF1 (soft, re-sent whenever DEF2 changes), `0x2e` DEF2 (hard), plus `0x013a` attack range.
+
+Wire indexes in capture 1: 2 Knife, `0x0e` Bow (1701), `0x0f` Arrows (1750), `0x10` Knife, `0x11` Guard (2101), `0x12` Katana (1116), `0x13` Hat (2220, view 16), `0x14` Goggles (2225, top + mid, view 1), `0x15` Hood (2501), `0x16` Gakkung (1714), `0x17` Shoes (2403). Capture 2 adds `0x18` Hat, `0x19` Hood, `0x1a` Bravery Bag (2576, garment, view 2), `0x1b` Arrows ×100, and the Knife at `0x0f` (after the first arrows ran out). rAthena re-packs the inventory on relog, so indexes shift between sessions (`#10`: Knife `0x17`).
+
+### Wire forms
+
+* `0x0999` = `index u16 | location u32 | view u16 | result u8`. A failure carries location 0 and view 0: Gakkung (level) `16 00 00 00 00 00 00 00 01` (capture 1 line 713), Katana (job) `12 00 00 00 00 00 00 00 02` (line 706).
+* `0x099a` = `index u16 | location u32 | flag u8`.
+* `0x0bf5` from the equipment window's unequip-all button: `ff 83 00 00` = `0x83ff` (every base slot plus ammo; no costume or shadow bits).
+* Ammo: the client sends requested position `0x8000` (capture 2 line 745) or `0` (line 1489); both succeed.
+
+### The new item takes each slot as the loop reaches it
+
+`pc_equipitem` walks the new item's slots in `EQI` order ([mechanics §3](../mechanics/equipment.md#3-pc_equipitem-flow) step 11). For each slot it displaces the occupant (look, `0x099a`, push) and then sets `equip_index[i]` to the new item at once. So a later displacement's look and push already see the new item in the slots handled earlier. The final push after the new item's `0x0999` then holds only what is still different.
+
+**Bow (`0x22`) over Knife + Guard** (capture 1 lines 687–702):
+
+| # | Packet | Bytes | Meaning |
+| :--- | :--- | :--- | :--- |
+| 1 | `0x01d7` | `80 84 1e 00 \| 02 \| b1 04 00 00 \| 00 00 00 00` | `EQI_HAND_L` first: Guard off, look {Knife, 0} |
+| 2 | `0x099a` | `11 00 \| 20 00 00 00 \| 00` | Guard off |
+| 3 | push | ASPD, DEF1, DEF2 0 | no bow yet |
+| — | | | `HAND_L` := bow |
+| 4 | `0x01d7` | `… 02 \| 00 00 00 00 \| a5 06 00 00` | `EQI_HAND_R`: Knife off, look {0, **1701**} |
+| 5 | `0x099a` | `10 00 \| 02 00 00 00 \| 00` | Knife off |
+| 6 | push | ASPD, **ATK2 15**, **range 5** | the bow already counts |
+| 7 | `0x0999` | `0e 00 \| 22 00 00 00 \| 00 00 \| 00` | bow on |
+| 8–9 | `0x01d7` ×2 | `… 02 \| a5 06 00 00 \| 00 00 00 00` | one per hand |
+| 10 | push | ASPD, ATK1 | stats-feature values only |
+
+* **Bow over a Knife alone** (capture 1 lines 877–887; capture 2 lines 705–717, 1535–1543): `HAND_L` is empty, so it is set first; the Knife's look is {0, 1701} and its push holds ATK2 15 and range 5.
+* **Goggles over a Hat** (capture 1 lines 727–733, capture 2 lines 1128–1136): `HEAD_MID` comes before `HEAD_TOP`. Hat `0x099a {13 00, 00 01 00 00, 00}` → `LOOK_HEAD_TOP` 0 → push already holding the Goggles' DEF → `0x0999 {14 00, 00 03 00 00, 01 00, 00}` → `LOOK_HEAD_TOP` 1. No push after the Goggles.
+* **Hat over Goggles** (capture 2 lines 479–489): Goggles `0x099a {14 00, 00 03 00 00, 00}` → `LOOK_HEAD_TOP` 0 → push DEF1, DEF2 0 → `0x0999 {18 00, 00 01 00 00, 10 00, 00}` → `LOOK_HEAD_TOP` 16 → push DEF1, DEF2 2.
+* **Knife over a bow** (capture 2 lines 462–475): the bow comes off with two `0x01d7` {0, 0}, `0x099a {0e 00, 22 00 00 00, 00}` and a push of ASPD, ATK2 0, range 1; then `0x0999`, one `0x01d7` {1201, 0}, push ASPD, ATK2 17.
+
+### Looks
+
+* **Hands:** equip sends `0x0999` then one `LOOK_WEAPON` per hand in the final mask (a two-hander sends two identical packets). Take-off sends one `LOOK_WEAPON` per hand **before** the `0x099a`.
+* **Shield** (capture 1 lines 674–679): Guard `0x0999 {11 00, 20 00 00 00, 00 00, 00}` → `LOOK_WEAPON` {1201, 2101} → push ASPD, DEF1, DEF2.
+* **Headgear:** the Hat's `0x0999` carries view 16, then `LOOK_HEAD_TOP` (4) 16, then a push. A top + mid headgear sends only `LOOK_HEAD_TOP`, never `LOOK_HEAD_MID`, even mid-displacement when only its mid slot is assigned yet (capture 2 line 1136). Its mid view is 0 everywhere: entry packets and char select show `accessory2` 1, `accessory3` 0.
+* **Garment:** the Hood (View 0) sends `0x0999` view 0, no look, then a push. The Bravery Bag over the Hood (capture 2 lines 606–615): Hood `0x099a {19 00, 04 00 00 00, 00}` → push → `0x0999 {1a 00, 04 00 00 00, 02 00, 00}` → `LOOK_ROBE` (12) 2 → push. Take-off with `0x00ab {1a 00}` (lines 826–833): `0x099a` → `LOOK_ROBE` 0 → push. Around the push the Bravery Bag also sends `0x010f` (and `0x0441 {f5 03}` on take-off): its item script grants skill 1013. That belongs to item scripts.
+* **Shoes** (capture 1): `0x0999` view 0 → `LOOK_SHOES` (9) with the item id `63 09 00 00`. Take-off sends `LOOK_SHOES` 0 before the `0x099a`.
+* **Order:** on take-off the hand and shoe looks come before `0x099a`, and head and robe looks after it. On equip every look comes after `0x0999`. The push is always last.
+* The observer gets only the `0x01d7` packets (and `0x0983`).
+
+### Ammo
+
+* **Arrows on a bow** (capture 1 lines 815–818, capture 2 lines 745–749): `0x0983 {b7 02 | 80 84 1e 00 | 01 | 0f 27 00 00 | 0f 27 00 00 | 0…}` (EFST 695, state 1, 9999, 9999) to self **and the observer**, then `0x013c {1b 00}`, `0x013b {03 00}`. No `0x0999`, no push.
+* **Arrows with no bow** (capture 1 lines 798–805, capture 2 lines 1457–1459): `0x0291 {9b 06}` (1691), then `0x0999 {1b 00, 0, 0, 02}`.
+* **Bow take-off with arrows worn** (capture 1 lines 820–828): two `0x01d7` {0, 0} → bow `0x099a` → arrows `0x099a {0f 00, 00 80 00 00, 00}` → one push (ASPD, ATK1, ATK2 0, range 1).
+* **Knife over a bow with arrows worn** (capture 1 lines 848–860, capture 2 lines 784–795 and 1595–1607): bow displaced (two looks, `0x099a`, push) → `0x0999` Knife → `0x01d7` Knife → arrows `0x099a` (cascade) → push (ASPD, ATK2 17).
+* **Arrows run out in combat** (capture 2 lines 364–366): arrows `0x099a {0f 00, 00 80 00 00, 00}` → `0x07fa {01 00 | 0f 00 | 01 00}` → `SP_WEIGHT`. No push. Attacking with a bow and no arrows gets `0x013b {00 00}` (line 728).
+* **Login with arrows worn** (capture 1 lines 510–516, capture 2 lines 218–229): `0x01d7` → `0x0b08` → `0x0b09` → `0x0983` + `0x013c` → `0x0b39` → `0x0b0b`. rAthena sends that `0x0983` to the area too: the observer got it (line 221) **before** its `0x09fe` for the equipper (line 222), just like the login `0x01d7` (line 220), so the observer doesn't know the unit yet.
+* An observer who sees the equipper come into view later gets only the entry packet, no `0x0983` (capture 2 lines 993–995).
+
+### Unequip all (`0x0bf5 {ff 83 00 00}`)
+
+* Hat + Bravery Bag + bow + arrows (capture 2 lines 1022–1044), in `EQI` order: Bravery Bag (`0x099a`, `LOOK_ROBE` 0, script packets, push) → Hat (`0x099a`, `LOOK_HEAD_TOP` 0, push) → bow (two `0x01d7`, `0x099a`, arrows `0x099a`, one push) → `0x0bae {00}`.
+* Bow + arrows (lines 1084–1094): two `0x01d7` → bow `0x099a` → arrows `0x099a` → push → `0x0bae {00}`. The arrows aren't removed twice.
+
+### Entry looks for the equipper (observer `#3`, capture 2)
+
+| Line | Packet | Worn | `weapon` | `shield` | `accessory` | `accessory2` | `accessory3` | `robe` |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 222 | `0x09fe` | Bow, arrows, Goggles | 1701 | 0 | 0 | 1 | 0 | 0 |
+| 631 | `0x09fd` | Knife, Hat, Bravery Bag | 1201 | 0 | 0 | 16 | 0 | 2 |
+| 993 | `0x09fd` | Bow, arrows, Hat, Bravery Bag | 1701 | 0 | 0 | 16 | 0 | 2 |
+| 1374 | `0x09fe` | Knife, Goggles, Bravery Bag | 1201 | 0 | 0 | 1 | 0 | 2 |
+
+`weapon`/`shield` are item ids; a two-hander's `shield` is 0. The observer's own Knife shows as 1201 in the equipper's `0x09ff` (line 234).
+
+### Char select (capture 2 lines 1157, 1309)
+
+`test` (Archer) wearing a Knife and Goggles: `weapon` (offset 90) = **1** (`W_DAGGER`, the type), `accessory2` (100) = 1, `accessory3` (102) = 0, `shield` 0. `robePalette` (162) = 0, then 2 after the Bravery Bag was worn at the next restart (the restart saved the look columns). Novices with a Knife show `weapon` 1 too. The client doesn't draw weapons or shields on the select screen; it draws them only in combat stance (user report), so that's expected.
+
+### Client-side behaviour
+
+* The client refuses to drop a worn item, or part of worn ammo, with a "must unequip first" message and never sends `0x0363` (user report). The one worn drop in capture 1 (line 916) was sent only because the client had missed an equip ack. So the server's worn-drop path is safety only.
+* Capture 1 froze the client's server traffic once (01:32:41, after `@item arrow`, a name request on self, and a Knife over bow + arrows). Capture 2 repeated the steps (lines 739–795, with the name request on a mob) without a freeze and with no `[PROXY NOTE]` stall lines. Unexplained; see [PF-21](../../../PACKET_FINDINGS.md#pf-21).
 
 ## Opcode summary
 
@@ -167,7 +249,7 @@ Total 15 bytes.
 
 | Trigger | Packet sent | Source |
 | :--- | :--- | :--- |
-| Right-hand slot changes (equip/unequip) | one `0x01d7`, `type = LOOK_WEAPON(2)`, `val = vd.look[WEAPON]`, `val2 = vd.look[SHIELD]` | `clif.cpp:4119-4125` |
+| Right-hand slot changes (equip/unequip) | one `0x01d7`, `type = LOOK_WEAPON(2)`, `val = vd.look[WEAPON]`, `val2 = vd.look[SHIELD]`; a two-hander sends one per hand, so two identical packets (capture-confirmed, [Looks](#looks)) | `clif.cpp:4119-4125` |
 | Left-hand slot changes | same packet: `LOOK_SHIELD` is rewritten to `LOOK_WEAPON` with both values | same |
 | Shoes slot changes | `type = LOOK_SHOES(9)`, `val` = shoes `view_id`, else shoes nameid, 0 if unequipped | `clif.cpp:4064-4077` |
 | Head low/mid/top or garment (incl. costume) view changes | `type = LOOK_HEAD_BOTTOM(3)` / `LOOK_HEAD_MID(5)` / `LOOK_HEAD_TOP(4)` / `LOOK_ROBE(12)`, `val` = view id, `val2 = 0`; only sent for the slots whose resulting view differs from before | `pc.cpp:15490-15545` |
@@ -211,7 +293,7 @@ Sequence for `pc_unequipitem(n, flag)` on success, in packet order:
 5. Weapon (`EQP_ARMS`, type weapon) of a ranged class (bow, instrument, whip, gun types, grenade) and `ammo_unequip` battle option on (`battle.conf:173`, default yes) and `!(flag & 4)`: worn ammo is unequipped next: `0x099a {ammo index+2, ammo equip mask (EQP_AMMO), 0}`, no EFST end, no calc of its own.
 6. `pc_unequipitem_sub`: if `flag & 1` (or a combo was removed): `status_calc_pc` then diff pushes (`SP_*` updates, `SP_ATTACKRANGE` etc.). Then unequip scripts.
 
-Equipping a weapon that no longer matches worn ammo calls `pc_unequipitem(ammo, 2|4)` from `pc_equipitem`: only `0x099a` for the ammo, no calc of its own; `pc_equipitem` does one `status_calc_pc(SCO_NONE)` at the end. Equipping a new item over occupied slots unequips the old one with `1|2|4`: look + `0x099a` + its own `status_calc_pc` diff push (flag 1), and no ammo cascade (flag 4). The push is capture-confirmed ([Captured weapon swap](#captured-weapon-swap) rows 3–4), so a swap sends two recalculation pushes.
+Equipping a weapon that no longer matches worn ammo calls `pc_unequipitem(ammo, 2|4)` from `pc_equipitem`: only `0x099a` for the ammo, no calc of its own; `pc_equipitem` does one `status_calc_pc(SCO_NONE)` at the end. Equipping a new item over occupied slots unequips the old one with `1|2|4`: look + `0x099a` + its own `status_calc_pc` diff push (flag 1), and no ammo cascade (flag 4). The push is capture-confirmed ([Captured weapon swap](#captured-weapon-swap) rows 3–4), so a swap sends two recalculation pushes. The new item takes each slot right after that slot's occupant comes off, so a later displaced item's look and push already count it ([Captured equip sequences](#the-new-item-takes-each-slot-as-the-loop-reaches-it)).
 
 ### Worn item deleted or dropped (`0x0363`)
 

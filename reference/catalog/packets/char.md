@@ -74,7 +74,7 @@ Target client version: `PACKETVER = 20260219`. Packet entries are sorted by asce
 * **`accessory` / `accessory2` / `accessory3` (96/100/102):** head bottom / top / mid **view ids** (`status.head_*`, i.e. the item `look`), already costume-resolved when saved. **`robePalette` (162):** `status.robe` view id.
 * **`bodypalette` (106):** `clothes_color`; `pc_makesavestatus` zeroes it when `save_clothcolor` is off, and zeroes `status.body` when `save_body_style` is off (`pc.cpp:1352-1359`). `body` (88) is the full i16 `status.body`.
 * **Widths:** weapon/shield are 16-bit here even though the map entry packets use 32-bit at this packetver. Item ids above 32767 would not fit; the char-select field is a type/view, not an item id.
-* **Character-select weapon sprite:** rAthena sends a `W_*` type here and never an item id. No source in rAthena or the catalog says whether the client draws a weapon sprite on the select screen from it. **Open**; needs a capture with a weapon-wielding char, ideally compared with the `char.weapon` column value.
+* **Character-select weapon sprite (settled 2026-10-25):** rAthena sends the `W_*` type here, never an item id. [`captures/equip_sequence_2.txt`](../captures/equip_sequence_2.txt) lines 1157 and 1309: a Knife gives `weapon` = 1 (`W_DAGGER`); Goggles (top + mid) give `accessory2` = 1 and `accessory3` = 0; a Bravery Bag gives `robePalette` = 2. The client doesn't draw the weapon or shield on the select screen; it draws them only in combat stance (user report), so a missing weapon there is expected. Headgear does show. More in [equipment.md](./equipment.md#char-select-capture-2-lines-1157-1309).
 
 ### Where the `char` table columns come from and when they are written
 

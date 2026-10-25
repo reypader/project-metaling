@@ -39,10 +39,10 @@ Duration: if `tick <= 0` (includes `INFINITE_TICK = -1`, `timer.hpp:21`) it is r
 
 ## `EFST_CLIENT_ONLY_EQUIP_ARROW` = 695
 
-Computed from the enum: `EFST_PROVOKE` is 0 (after `EFST_BLANK = -1`), the only explicit assignment is `EFST_SILVERVEIN_RUSH_POSTDELAY = 596` (`status.hpp`), and `EFST_CLIENT_ONLY_EQUIP_ARROW` is declared at `status.hpp:2143`. Counting from there gives 695. Not verified against a capture; if the icon does not appear, check this value first.
+Computed from the enum: `EFST_PROVOKE` is 0 (after `EFST_BLANK = -1`), the only explicit assignment is `EFST_SILVERVEIN_RUSH_POSTDELAY = 596` (`status.hpp`), and `EFST_CLIENT_ONLY_EQUIP_ARROW` is declared at `status.hpp:2143`. Counting from there gives 695. **Capture-confirmed** (2026-10-25): `0x0983 {b7 02 …}` on every arrow equip in [`captures/equip_sequence.txt`](../captures/equip_sequence.txt) and [`equip_sequence_2.txt`](../captures/equip_sequence_2.txt) ([packets/equipment.md](./equipment.md#ammo)).
 
 Ammo equip call (`clif_arrowequip`, `clif.cpp:4204-4217`): `clif_status_change(&sd, EFST_CLIENT_ONLY_EQUIP_ARROW, 1, INFINITE_TICK, 0, 0, 0)`. So the wire packet is `0x0983`, `state = 1`, total = remain = 9999, `val1 = val2 = val3 = 0` (the "1" is the state byte, not val1). Immediately followed by `0x013c`.
 
 * Sent from exactly two places: ammo equip (`pc.cpp:12164`) and `clif_inventorylist` when `equip_index[EQI_AMMO] >= 0` (`clif.cpp:3125-3126`, so at every login / `LoadEndAck` inventory send, between the normal list and the equip list). Both therefore emit `0x0983` + `0x013c`.
 * **Nothing ever ends this EFST.** grep of `src/map` finds no other reference. Unequipping ammo (directly, because the weapon was removed/changed, or by consumption/drop of the whole stack) sends only `0x099a` (flag 0); no `0x0196`. Metaling can mirror that or send `0x0196 {695, GID, 0}` itself; rAthena does not.
-* Because of `AREA`, observers also receive the `0x0983` for the ammo EFST of a player who equips ammo; it is harmless client-side but is a deviation to decide on.
+* Because of `AREA`, observers also receive the `0x0983` for the ammo EFST of a player who equips ammo (capture-confirmed). At login the area copy reaches observers before their entry packet for the player, and a player coming into view later gets no `0x0983`, so observers only ever see the live equip.

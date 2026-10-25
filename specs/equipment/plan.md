@@ -20,37 +20,75 @@ context that isn't in the code.
 - M0's docs (this spec and plan, `PACKET_FINDINGS.md`, `reference/catalog/`) are committed in
   "Equipment: M0 catalog, spec and plan" (CLAUDE.md allows M0 docs on their own). The tree was clean after it.
   M1 onwards stays uncommitted until Finish.
-- The new capture (checkpoint below) doesn't exist yet. If session C starts without it, ask the user before
-  M7 instead of building from source reading alone.
+- **Exception:** M1 was committed and pushed on its own (`4fe67f1`) so the user could build the proxy on another
+  machine. At Finish, the reviewer's diff is `git diff 6be7d91 -- . ':!tools/proxy'` plus untracked files, not
+  `git diff HEAD`. `88b9b71` (proxy diagnostics + `0x080e`) is outside this plan.
+- `handoff-A.md` (session A) is folded into this file and the catalog, and deleted.
+- **Session A2 (2026-10-25)** did the capture check, M2 and M3. Its docs (both captures, catalog,
+  `PACKET_FINDINGS.md`, this spec and plan) are committed on their own as "Equipment: capture check docs".
+  The **M2 and M3 code and the regenerated item data are uncommitted** in the working tree, together with
+  `crates/ro-db/data/NOTICE.md` and `crates/ro-db/DESIGN.md` (they describe that code and data). They stay
+  uncommitted until Finish like the rest; the Finish diff above already covers them.
 
-### Capture facts (`reference/catalog/captures/packet_sequence-20261023_030246.txt` lines 841–865)
-- Sessions: `#6` = account 2000001 / char 150006 (`test2`, novice, STR 1), the equipper; `#3` = account 2000000
-  (`test`), the observer.
-- The proxy table then had `0x01d7` at 11 and no `0x0999`/`0x099a` rows, so frames are split wrongly. The
-  hand-framed bytes are in `reference/catalog/packets/equipment.md` "Captured weapon swap". Use them as the
-  PKT-EQ-02/03 vectors and the ENG-EQ-03 order.
-- At login `#6` wore Knife (1201) at wire 2: `0x0b39` entry `02 00 | b1 04 00 00 | 05 | 02 00 00 00 |
-  02 00 00 00`. The `0x09ff` other players got for `#6` had weapon `b1 04 00 00`.
-- `0x0999` for a weapon has view 0. `SP_ATK2` = 17 = the Knife's `Attack`. No `0x013a`, weight or skill
-  packets follow.
+### Session B: start here
+1. `git status` should show the M2/M3 code, the regenerated `crates/ro-db/data/item/*.yml` and the new
+   `crates/ro-packets/tests/equip_codec_tests.rs` as uncommitted. Don't revert or re-do them.
+2. **Run the DB-backed tests first** (`ro-persistence`, `bins/*`); session A2 couldn't (see the M3 note).
+   The metaling and rAthena compose files share the project name "docker", so
+   `docker compose -f tools/docker/docker-compose.yml up -d db` replaces a running `rathena-db`. Ask the user
+   before starting it if `rathena-*` containers are up (`docker ps`). Then `./verify.sh` (all crates).
+3. Optional captures the user may record before M5/M7 are listed under "Capture follow-ups" below. Don't
+   block on them; check whether a new `reference/catalog/captures/equip_sequence_3.txt` exists.
+4. Read the "Implementation notes" for M2/M3 before touching ro-db, ro-core or ro-packets types.
 
-### Capture checkpoint (after M1, the user records it)
-The current proxy can't frame `0x0999`, `0x099a`, `0x0bae`, `0x013c`, `0x013b` or `0x0291`, so record only
-after M1 lands (rebuild the proxy). Against `./run_rathena_servers.sh`, two clients on one map, a `group_id 99`
-account, the other observing. Set one character to Archer in rAthena's DB for the ammo steps.
-1. Log in wearing a Knife, and a second time wearing arrows + a bow (the `0x0983`/`0x013c` entry position).
-2. `@item` a Knife, a Guard (2101), a two-hander (e.g. 1116 Katana), a headgear with `View` (e.g. 2220 Hat),
-   a Top+Mid headgear, a garment, shoes, a level-limited item.
-3. Equip the knife, then the Guard, then the two-hander (displaces both), then take it off with `0x00ab`.
-4. Equip and take off the hat, garment and shoes. Try the level-limited item (result 1).
-5. Archer: equip the bow, equip arrows, take off the bow (cascade), equip arrows with no bow (`0x0291` 1691).
-6. Unequip all from the equipment window.
-7. Drop a worn knife. Drop part of the worn arrows.
-8. Relog and look at char select with gear on (does the weapon show? `char.md` Q4).
+### Captures (all checked against the spec on 2026-10-25)
+Byte-level write-up: catalog `packets/equipment.md` "Captured weapon swap" and "Captured equip sequences". Use
+those bytes as the PKT and ENG test vectors.
+- `packet_sequence-20261023_030246.txt` lines 841–865: Knife-for-Knife swap (ENG-EQ-03, PKT-EQ-02/03). The
+  proxy table then misframed it; use the hand-framed bytes.
+- `equip_sequence.txt` (capture 1): one client, an Archer via `@job archer`. Shield, two-hander, headgear, shoes,
+  level/job failures, ammo, login with arrows.
+- `equip_sequence_2.txt` (capture 2): equipper `#6`/`#8`/`#10` (account 2000000, `test`, Archer) plus observer
+  `#3`, full payloads. Garments (Hood, then Bravery Bag, which has a view), unequip-all, entry looks, char-select
+  looks. No shoes or shield in it (capture 1 has them).
+- **What changed in the spec from them** (the capture won each time):
+  - §2.2 step 10: the new item takes each position as the `EQI` loop reaches it, so a later displaced item's look
+    and push already count it. Build the worn-slot table up one position at a time and run each displaced
+    item's recalc against it. Two-hander that holds only `HAND_L` so far: counts once, like any item.
+  - §2.2 step 13: one `LOOK_WEAPON` per hand in the final mask (a two-hander sends two).
+  - Head looks: a multi-slot headgear's lower slots are 0 by its own `Locations`, not by the slot table (no
+    `LOOK_HEAD_MID` ever for Goggles).
+  - §2.7: the login `0x0983` goes to self only (our ruling; rAthena's area copy arrives before the observer
+    knows the unit).
+  - §2.8: the client never sends a drop for a worn item. ENG-EQ-10 is a unit test only; not in the manual check.
+  - §2.10 gap: rAthena also pushes ASPD on shield changes and ATK1 on bow changes.
+  - §2.11: char select `weapon` = 1 for a Knife; the client draws no weapon/shield there (only in combat stance).
+- Not captured (source reading): `0x099a` failure forms, dead gates, a shield in an entry packet, costumes, dual
+  wield, bullets.
+- Ammo requests come with position `0` or `0x8000`; `0x0bf5` from the window is `ff 83 00 00`.
+- Bravery Bag's `0x010f`/`0x0441` come from its item script (skill grant). Out of scope; don't send them.
+- The capture-1 client freeze didn't repeat in capture 2 (PF-21 note). Nothing for metaling to copy.
+- Inventory indexes shift between sessions in the captures (rAthena re-packs on load); match items by id.
+- **Shield in an entry packet** means the `shield` field (offset 31) of the `0x09fd`/`0x09fe`/`0x09ff` packets
+  an observer gets when the wearer comes into view. The captures only ever show 0 there (no one wore a shield
+  while an observer saw them enter); the live `LOOK_WEAPON` {1201, 2101} for a Guard is captured. It's a
+  byte check, not a visual one: the client draws weapons and shields only in combat stance (user), on the
+  map and at char select alike.
 
-Commit the capture under `reference/catalog/captures/` with a README row (redact PINs and `0x008e` text), then
-check it against the spec before M7: list every difference, fix the spec and catalog (the capture wins), and
-update PF-11.
+### Capture follow-ups (optional; told to the user 2026-10-25)
+One more rAthena capture could settle the source-only parts. By value to the remaining milestones:
+1. **Dual wield** (M5 rules, M7 looks and status, M9 char select): an Assassin (`job_class` 12) with two
+   daggers. Equip one, then a second (which hand does it take? spec §2.2 step 9, catalog §1 "dual-wield hand
+   choice"), swap one, take each off, unequip all; an observer watching; relog to char select (the `weapon`
+   field should be a dual constant, `DOUBLE_DD` 25). Highest value: the hand choice and the look values are
+   pure source reading today.
+2. **Shield in an entry packet** (M7, ENG-EQ-11): wear Knife + Guard, the observer walks out of view and back,
+   and the wearer relogs while observed. Cheap; source is clear (`shield` = 2101).
+3. **Dead gates** (M7, ENG-EQ-06): die, then try to equip and take off. Shows whether the client even sends
+   `0x0998`/`0x00ab` while dead. Cheap but low value: the spec's answer (clear-unit, no ack) is harmless.
+4. **Bullets** (M5 pairing): skip. Needs a Gunslinger and a gun, and it only checks `0x0291` 2493, the same
+   path as arrows' 1691.
+The take-off failure forms can't be captured: the client never asks to take off an item that isn't worn.
 
 ### Catalog facts gathered in M0 (all written into the catalog)
 - Job/class/gender checks, job id → mapid bits, `Jobs` name → `(index, bit)`, renewal `Classes` table:
@@ -129,7 +167,7 @@ rulings under "Implementation notes". Work stays uncommitted until Finish (gener
 | :--- | :--- | :--- |
 | **A: wire and data** | M1, M2, M3 | Mechanical and leaf-level (ro-packets table, importer + ro-db, ro-core vocabulary + codecs). No engine context needed. M1 first so the user can record the capture while the rest runs. |
 | **B: persistence and rules** | M4, M5, M6 | Schema + char select, then pure rule functions and the status hook. Each is testable alone; they're the foundation M7 builds on. |
-| **C: engine flows** | Capture check, M7, M8 | The core: needs the capture and the rules fresh in context. The heaviest session. |
+| **C: engine flows** | M7, M8 | The core: needs the captures and the rules fresh in context. The heaviest session. (The capture check ran early, in session A2.) |
 | **D: wiring and finish** | M9, Finish | BIN tests, reviewer over the full diff, fixes, DEFERRED, smoke, manual check, commit. The reviewer needs a fresh context. |
 
 If a session runs short, cut at a milestone boundary; never mid-milestone.
@@ -142,6 +180,45 @@ Rulings made during implementation, and review results later milestones must hon
   `crates/ro-packets/tests/framing_tests.rs` pins all spec PKT-EQ-01 lengths plus those two and `0x013a`.
   PF-21's missing list and PF-18's "still to add" note are updated. The proxy was rebuilt; the capture
   checkpoint is unblocked.
+- **M2 (session A2, 2026-10-25):**
+  - `ro_db` exports `WeaponType` (24 item subtypes, `id()` = `W_*`; no dual-wield constants, those are
+    the engine's resolved type in M5), `AmmoType` (`id()` = `AMMO_*`), `Gender`, `ALL_JOBS`,
+    `ALL_CLASSES`. `ItemData` has the new fields flat (YAML keys as spec §1) and now implements
+    `Default` (`Etc`, id 0, all jobs/classes, override 100); test builders use `..ItemData::default()`.
+  - `ItemType` derives `Default` (`Etc`).
+  - `ro-db`'s YAML loader raises serde-saphyr's node budget (250k → 2M nodes, 8M events) in
+    `yaml.rs` `parse_options`: `item_equip.yml` v2 is ~310k nodes. Applies to every ro-db dataset.
+  - Importer: `Jobs`/`Classes` keep file order (`Switches`); `All` in `Jobs` applies first; a later
+    `Jobs` replaces, a later `Classes` edits (an earlier absent `Classes` counts as `All`). Unknown job
+    or class names allow everything, with a warning. The real import gives **0 warnings**.
+  - Spec fix from the catalog: `Defense` is kept only for Armor/ShadowGear; a `SubType` on a type other
+    than Weapon/Ammo/Card skips the entry.
+  - Data regenerated (`item_equip.yml` grew from ~91k to ~156k lines); `NOTICE.md`, `ro-db/DESIGN.md`
+    updated. Values match the captures (Bow ATK 15 / range 5, Guard DEF 20, Goggles 5, Bravery Bag 20).
+- **M3 (session A2, 2026-10-25):**
+  - ro-core intents: `EquipItem { index, position }`, `UnequipItem { index }`, `UnequipAll { location }`
+    (wire index kept, like `DropItem`).
+  - ro-core events: `EquipAck { index, location, view, result }` (0x0999), `UnequipAck { index,
+    location, failed }` (0x099a), `UnequipAllAck { failed }` (0x0bae), `AmmoEquipped { index }`
+    (0x013c), `ActionFailure { failure_type }` (0x013b), `ClientMessage { msg_id }` (0x0291),
+    `StatusIconStarted { efst, gid, state, total_ms, remain_ms, values }` (0x0983, generic). Looks keep
+    using the existing `SpriteChanged`.
+  - `UnitLooks { weapon: u32, shield: u32, head_bottom, head_top, head_mid, robe: u16 }` is
+    `UnitAppearance.looks`; `CharacterLooks { weapon_type, shield, head_top, head_mid, head_bottom,
+    robe: u16 }` (serde) is `CharacterSummary.looks`. Both `Default` = bare. Every existing literal
+    (engine `appearance`, persistence `list_by_account` row mapping, map-server `claim.rs` test and
+    `tests/common`) passes `::default()` for now: **M4 must load `CharacterLooks` in persistence,
+    M7 must fill `UnitLooks` in `engine.rs` `appearance` (~:215-265) from the cache.**
+  - ro-packets: decoders `CzReqWearEquipPacket` / `CzReqTakeoffEquipPacket` /
+    `CzReqTakeoffEquipAllPacket` in `incoming/map.rs` and `decode_frame`; encoders in the new
+    `outgoing/equip.rs`, plus `encode_zc_msg_state_change3` in `outgoing/status.rs`; opcode consts
+    added (`ZC_REQ_WEAR_EQUIP_ACK`, `ZC_REQ_TAKEOFF_EQUIP_ACK`, `ZC_ACK_TAKEOFF_EQUIP_ALL`,
+    `ZC_EQUIP_ARROW`, `ZC_ACTION_FAILURE`, `ZC_MSG`); all reported by `is_implemented_outbound_opcode`.
+    Entry packets and `encode_character_info` write the looks. Tests:
+    `crates/ro-packets/tests/equip_codec_tests.rs` (PKT-EQ-02..07, captured bytes).
+  - Not run this session: the DB-backed tests (`ro-persistence`, `bins/*`). The metaling DB wasn't up,
+    and `docker compose ... up -d db` would have replaced the user's running `rathena-db` (shared
+    compose project "docker"). They compile and pass clippy; run them at the start of session B.
 
 ## Milestones
 Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
@@ -158,14 +235,19 @@ Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
 - [x] **M1 ro-packets table** *(session A, 2026-10-25)*
   - Add `0x0999` 11, `0x099a` 9, `0x0bae` 3, `0x013c` 4, `0x013b` 4, `0x0291` 4. PKT-EQ-01.
   - Trim PF-21's list. Rebuild `tools/proxy` and tell the user the capture checkpoint is unblocked.
-- [ ] **M2 item data v2** *(session A)*
+- [x] **Capture check** *(session A2, 2026-10-25; moved ahead of M2)*
+  - Both captures redacted and committed under `reference/catalog/captures/` with README rows.
+  - Catalog: `packets/equipment.md` "Captured equip sequences", `mechanics/equipment.md` §1/§3/§5, `char.md`
+    (Q4 settled), `status_change.md` (EFST 695 confirmed), `INDEX.md`. PF-11 resolved; PF-21 gets four
+    missing rows and the freeze note. Spec fixed (see "Captures" above).
+- [x] **M2 item data v2** *(session A2, 2026-10-25)*
   - ro-db: `WeaponType` (with `W_*` numbers), `AmmoType`, `Gender`, the new `ItemData` fields, v2 header only.
     DB-ITEM-04/05.
   - `tools/item-import`: parse `SubType`, `Attack`, `MagicAttack`, `Defense`, `Range`, `WeaponLevel`,
     `ArmorLevel`, `EquipLevelMin/Max`, `Gender`, `Jobs`, `Classes`, `Refineable` with the type-clearing and
     forced-gender rules; the `Jobs` name table from catalog §3a. TOOL-ITEM-06..08, TOOL-ITEM-05 updated.
   - Regenerate `crates/ro-db/data/item/`, update `NOTICE.md`, DB-ITEM-03 updated. `ro-db/DESIGN.md`.
-- [ ] **M3 ro-core vocabulary + ro-packets codecs** *(session A)*
+- [x] **M3 ro-core vocabulary + ro-packets codecs** *(session A2, 2026-10-25)*
   - ro-core: intents `EquipItem {index, position}`, `UnequipItem {index}`, `UnequipAll {location}`; events for
     `0x0999`, `0x099a`, `0x0bae`, `0x013c`, `0x013b`, `0x0291`, `0x0983` (generic status-icon start);
     `UnitLooks` on `UnitAppearance`; `CharacterLooks` on `CharacterSummary` (8 literal files).
@@ -181,11 +263,12 @@ Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
   - `job.rs` (job id → mapid, branch, upper/baby/third/fourth), `equipment.rs` rule functions: equip point,
     `pc_isequip` subset, final-mask resolution, ammo pairing, weapon-type resolution, `UnitLooks` /
     `CharacterLooks` from a worn set (costume override). ENG-EQ-01, ENG-EQ-02.
+  - Make looks and gear status functions of a **worn-slot table** (position → slot), not of the items' `equip`
+    masks: M7's displacement runs recalcs while the new item holds only some of its positions (spec §2.2
+    step 10). Head views use each item's own `Locations` for the multi-slot rule.
 - [ ] **M6 engine status hook** *(session B)*
   - `DerivedStatus` stored per player, `GearStatus`, `recalc(e)` with the ordered diff push; login push and
     `0x00bd` use stored values; spawn builds them from the worn set. ENG-STAT-01/02.
-- [ ] **Capture check** *(session C start)*: compare the user's new capture with the spec (see checkpoint).
-  Fix the spec and catalog first.
 - [ ] **M7 engine equip flows** *(session C)*
   - `EquipItem` / `UnequipItem` / `UnequipAll` handling: gates, displacement, acks, looks to the area,
     `UnitLooks` cache refresh, revision bump, recalc. Entry events use `UnitLooks`.
