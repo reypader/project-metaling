@@ -5,7 +5,7 @@ use sqlx::postgres::PgRow;
 use sqlx::query;
 
 use ro_core::{
-    CharId, CharacterInventory, CharacterStatus, InventoryItem, ItemId, ItemOption,
+    CharId, CharacterInventory, CharacterLooks, CharacterStatus, InventoryItem, ItemId, ItemOption,
     INVENTORY_SLOTS, ITEM_CARD_SLOTS, ITEM_OPTION_SLOTS,
 };
 
@@ -236,6 +236,7 @@ impl InventoryRepository for PostgresRepo {
         &self,
         char_id: CharId,
         inventory: &CharacterInventory,
+        looks: &CharacterLooks,
     ) -> Result<(), RepositoryError> {
         if inventory.slots.len() > INVENTORY_SLOTS {
             return Err(RepositoryError::Internal(format!(
@@ -249,12 +250,22 @@ impl InventoryRepository for PostgresRepo {
         // This UPDATE must stay first: its row lock on `characters` serializes concurrent saves
         // of one character. With the DELETE first, a second save could miss the first one's
         // inserted rows and both inventories would survive (`per_inv_03_concurrent_saves_serialize`).
-        let updated = query("UPDATE characters SET unique_item_counter = $1 WHERE char_id = $2")
-            .bind(i64::from(inventory.unique_item_counter))
-            .bind(char_id)
-            .execute(&mut *tx)
-            .await
-            .map_err(map_sqlx_error)?;
+        let updated = query(
+            "UPDATE characters SET unique_item_counter = $1, weapon_type = $2, shield_view = $3, \
+             head_top_view = $4, head_mid_view = $5, head_bot_view = $6, robe_view = $7 \
+             WHERE char_id = $8",
+        )
+        .bind(i64::from(inventory.unique_item_counter))
+        .bind(i32::from(looks.weapon_type))
+        .bind(i32::from(looks.shield))
+        .bind(i32::from(looks.head_top))
+        .bind(i32::from(looks.head_mid))
+        .bind(i32::from(looks.head_bottom))
+        .bind(i32::from(looks.robe))
+        .bind(char_id)
+        .execute(&mut *tx)
+        .await
+        .map_err(map_sqlx_error)?;
         if updated.rows_affected() == 0 {
             return Err(RepositoryError::NotFound);
         }

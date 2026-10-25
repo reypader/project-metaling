@@ -181,7 +181,7 @@ Target client version: `PACKETVER = 20260219`. All integers little-endian, struc
 | `73` | `4` | `i32` | `max_hp` | `-1` unless damaged mob |
 | `77` | `4` | `i32` | `hp` | `-1` unless damaged mob |
 | `81` | `1` | `u8` | `is_boss` | |
-| `82` | `2` | `u16` | `body` | `LOOK_BODY2` |
+| `82` | `2` | `u16` | `body` | `LOOK_BODY2`. Players: captured = `job` in every `0x09fd`/`0x09fe`/`0x09ff` (`equip_sequence_2..4.txt`) |
 | `84` | `24` | `[u8; 24]` | `name` | |
 
 ## `0x09fe` `ZC_NOTIFY_NEWENTRY11` (unit spawns in view)

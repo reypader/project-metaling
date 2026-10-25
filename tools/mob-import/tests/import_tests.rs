@@ -25,6 +25,7 @@ fn item(id: u32, aegis: &str) -> ItemData {
         drop_effect: 0,
         no_drop: false,
         no_drop_override: 100,
+        ..ItemData::default()
     }
 }
 

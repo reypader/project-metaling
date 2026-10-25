@@ -10,9 +10,8 @@ use std::mem;
 use std::sync::Arc;
 
 use ro_core::{
-    gat_map_name, BroadcastScope, CharId, CharacterInventory, CharacterSpawn, ClientIntent,
-    InventoryItem, MapPosition, ScopedServerEvent, ServerEvent, SessionIntent, Sex, UnitAppearance,
-    UnitObjectType,
+    gat_map_name, BroadcastScope, CharId, CharacterSpawn, ClientIntent, InventoryItem, MapPosition,
+    ScopedServerEvent, ServerEvent, SessionIntent, Sex, UnitAppearance, UnitLooks, UnitObjectType,
 };
 use ro_db::{CellType, ItemDb, MapGrid, MapNpcs, MobDb, NpcKind, NpcSpawn, NpcState};
 use smallvec::SmallVec;
@@ -33,7 +32,7 @@ const ACTION_ATTACK_REPEAT: u8 = 7;
 use crate::mob::SpawnGroup;
 use crate::rng::SplitMix64;
 use crate::settings::Arrival;
-use crate::warp::{CellBits, MapTransfer};
+use crate::warp::{CellBits, InventorySnapshot, MapTransfer};
 use crate::world::{NpcInfo, WarpTrigger, World};
 
 /// Default entity capacity of one map instance.
@@ -228,6 +227,7 @@ impl MapInstance {
                     dead_sit: 0,
                     clevel: mob.level,
                     effect_state: 0,
+                    looks: UnitLooks::default(),
                 });
             };
             return Some(UnitAppearance {
@@ -245,6 +245,7 @@ impl MapInstance {
                 dead_sit: 0,
                 clevel: 0,
                 effect_state: npc.effect_state,
+                looks: UnitLooks::default(),
             });
         };
         Some(UnitAppearance {
@@ -262,6 +263,7 @@ impl MapInstance {
             dead_sit: self.world.dead_sit[i],
             clevel: info.clevel,
             effect_state: 0,
+            looks: info.looks,
         })
     }
 
@@ -407,6 +409,9 @@ impl MapInstance {
             ClientIntent::PickUpItem { floor_id } => self.pick_up(e, floor_id, now_ms),
             ClientIntent::Chat { text } => self.chat(e, &text),
             ClientIntent::DropItem { index, amount } => self.drop_item(e, index, amount, now_ms),
+            ClientIntent::EquipItem { index, position } => self.equip_item(e, index, position),
+            ClientIntent::UnequipItem { index } => self.unequip_item(e, index),
+            ClientIntent::UnequipAll { location } => self.unequip_all(e, location),
             ClientIntent::BlockingPlayCancel => self.emit_self(e, ServerEvent::LoadConfirmed),
             other => debug!(map = %self.map_name, intent = ?other, "intent not handled by engine"),
         }
@@ -457,6 +462,7 @@ impl MapInstance {
         if !normal.is_empty() {
             self.emit_self(e, ServerEvent::InventoryNormalItems { items: normal });
         }
+        self.send_worn_ammo(e);
         if !equip.is_empty() {
             self.emit_self(e, ServerEvent::InventoryEquipItems { items: equip });
         }
@@ -481,7 +487,12 @@ impl MapInstance {
         let inventory = mem::take(&mut spawn.inventory);
         let inventory =
             PlayerInventory::new(inventory, spawn.char_id, spawn.status.str, &self.items);
+        let looks = inventory.gear(&self.items).unit_looks();
         self.world.inventories.insert(e, inventory);
+        if let Some(info) = self.world.players.get_mut(e) {
+            info.looks = looks;
+        }
+        self.init_derived(e);
         Ok(e)
     }
 
@@ -884,10 +895,16 @@ impl MapInstance {
         Ok(self.give_item_to(e, item))
     }
 
-    /// A copy of the character's inventory for saving.
-    pub fn inventory_snapshot(&self, char_id: CharId) -> Option<CharacterInventory> {
+    /// A copy of the character's inventory and char-select looks for saving.
+    pub fn inventory_snapshot(&self, char_id: CharId) -> Option<InventorySnapshot> {
         let e = self.world.entity_by_char(char_id)?;
-        self.world.inventories.get(e).map(PlayerInventory::snapshot)
+        self.world
+            .inventories
+            .get(e)
+            .map(|inventory| InventorySnapshot {
+                inventory: inventory.snapshot(),
+                looks: inventory.gear(&self.items).character_looks(),
+            })
     }
 
     /// Changes whenever the character's inventory changes (0 after spawn). The map-server

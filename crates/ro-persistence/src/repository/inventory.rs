@@ -2,7 +2,7 @@
 
 use async_trait::async_trait;
 
-use ro_core::{CharId, CharacterInventory, CharacterStatus};
+use ro_core::{CharId, CharacterInventory, CharacterLooks, CharacterStatus};
 
 use super::RepositoryError;
 
@@ -22,10 +22,12 @@ pub trait InventoryRepository: Send + Sync {
     async fn load_play_state(&self, char_id: CharId) -> Result<Option<PlayState>, RepositoryError>;
 
     /// Replaces the character's inventory rows (slot order, holes skipped) and stores the
-    /// `unique_id` counter, in one transaction. `NotFound` if the character doesn't exist.
+    /// `unique_id` counter and the char-select looks of the worn gear, in one transaction.
+    /// `NotFound` if the character doesn't exist.
     async fn save_inventory(
         &self,
         char_id: CharId,
         inventory: &CharacterInventory,
+        looks: &CharacterLooks,
     ) -> Result<(), RepositoryError>;
 }

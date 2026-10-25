@@ -1,15 +1,18 @@
-//! Item registry YAML (`ITEM_DATA`) loading (spec DB-ITEM-01..03).
+//! Item registry YAML (`ITEM_DATA`) loading (spec DB-ITEM-01..05).
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use std::path::{Path, PathBuf};
 
 use ro_core::ItemId;
-use ro_db::{DbLoadError, ItemData, ItemDb, ItemType, ITEM_DATA_FILES};
+use ro_db::{
+    AmmoType, DbLoadError, Gender, ItemData, ItemDb, ItemType, WeaponType, ALL_CLASSES, ALL_JOBS,
+    ITEM_DATA_FILES,
+};
 
 const VALID: &str = r#"
 Header:
   Type: ITEM_DATA
-  Version: 1
+  Version: 2
 Body:
   - Id: 501
     AegisName: Red_Potion
@@ -46,7 +49,7 @@ Body:
 "#;
 
 fn header(body: &str) -> String {
-    format!("Header:\n  Type: ITEM_DATA\n  Version: 1\nBody:\n{body}")
+    format!("Header:\n  Type: ITEM_DATA\n  Version: 2\nBody:\n{body}")
 }
 
 fn knife() -> ItemData {
@@ -67,6 +70,7 @@ fn knife() -> ItemData {
         drop_effect: 0,
         no_drop: true,
         no_drop_override: 99,
+        ..ItemData::default()
     }
 }
 
@@ -170,7 +174,7 @@ fn expect_err(text: &str) -> DbLoadError {
 fn db_item_02_rejects_wrong_header() {
     for text in [
         VALID.replace("Type: ITEM_DATA", "Type: ITEM_DB"),
-        VALID.replace("Version: 1", "Version: 3"),
+        VALID.replace("Version: 2", "Version: 3"),
     ] {
         assert!(matches!(expect_err(&text), DbLoadError::Schema { .. }));
     }
@@ -237,6 +241,177 @@ fn db_item_02_load_dir() {
     std::fs::remove_dir_all(&dir).ok();
 }
 
+const EQUIPMENT: &str = r#"
+Header:
+  Type: ITEM_DATA
+  Version: 2
+Body:
+  - Id: 1201
+    AegisName: Knife
+    Name: Knife
+    Type: Weapon
+    Weight: 400
+    Locations: 2
+    Slots: 3
+    WeaponType: Dagger
+    Attack: 17
+    MagicAttack: 5
+    Range: 1
+    WeaponLevel: 1
+    EquipLevelMin: 1
+    EquipLevelMax: 99
+    Gender: Female
+    Jobs: [1, 2, 0]
+    Classes: 3
+    Refineable: true
+  - Id: 1750
+    AegisName: Arrow
+    Name: Arrow
+    Type: Ammo
+    Weight: 1
+    Locations: 32768
+    AmmoType: Arrow
+    Attack: 25
+  - Id: 2101
+    AegisName: Guard
+    Name: Guard
+    Type: Armor
+    Weight: 300
+    Locations: 32
+    View: 1
+    Defense: 20
+    ArmorLevel: 1
+  - Id: 1599
+    AegisName: Plain
+    Name: Plain
+    Type: Weapon
+    Weight: 1
+    Locations: 2
+"#;
+
+/// DB-ITEM-04: the v2 equipment keys load, round-trip, and are omitted when default.
+#[test]
+fn db_item_04_equipment_fields_round_trip() {
+    let items = ItemDb::parse_file("equip.yml", EQUIPMENT).expect("v2 file parses");
+    let knife = &items[0];
+    assert_eq!(knife.weapon_type, WeaponType::Dagger);
+    assert_eq!(knife.weapon_type.id(), 1, "W_DAGGER");
+    assert_eq!(knife.ammo_type, None);
+    assert_eq!(
+        (
+            knife.attack,
+            knife.magic_attack,
+            knife.range,
+            knife.weapon_level
+        ),
+        (17, 5, 1, 1)
+    );
+    assert_eq!((knife.equip_level_min, knife.equip_level_max), (1, 99));
+    assert_eq!(knife.gender, Gender::Female);
+    assert_eq!(knife.jobs, [1, 2, 0]);
+    assert_eq!(knife.classes, 3);
+    assert!(knife.refineable);
+
+    let arrow = &items[1];
+    assert_eq!(arrow.ammo_type, Some(AmmoType::Arrow));
+    assert_eq!(arrow.ammo_type.map(AmmoType::id), Some(1), "AMMO_ARROW");
+    assert_eq!(arrow.attack, 25);
+    let guard = &items[2];
+    assert_eq!((guard.defense, guard.armor_level), (20, 1));
+
+    let plain = &items[3];
+    assert_eq!(
+        plain.weapon_type,
+        WeaponType::Fist,
+        "no WeaponType = W_FIST"
+    );
+    assert_eq!(plain.gender, Gender::Both);
+    assert_eq!(plain.jobs, ALL_JOBS, "no Jobs = every job");
+    assert_eq!(plain.classes, ALL_CLASSES, "no Classes = every class");
+    assert_eq!((plain.equip_level_min, plain.equip_level_max), (0, 0));
+    assert!(!plain.refineable);
+
+    let text = ItemDb::file_to_yaml(&items).expect("serializes");
+    let again = ItemDb::parse_file("again.yml", &text).expect("reparses");
+    assert_eq!(items, again);
+    let plain_text = ItemDb::file_to_yaml(&items[3..]).expect("serializes");
+    for key in [
+        "WeaponType",
+        "AmmoType",
+        "Attack",
+        "MagicAttack",
+        "Defense",
+        "Range",
+        "WeaponLevel",
+        "ArmorLevel",
+        "EquipLevel",
+        "Gender",
+        "Jobs",
+        "Classes",
+        "Refineable",
+    ] {
+        assert!(
+            !plain_text.contains(key),
+            "default {key} written: {plain_text}"
+        );
+    }
+}
+
+/// DB-ITEM-04: every weapon and ammo type name round-trips with its rAthena number.
+#[test]
+fn db_item_04_type_numbers() {
+    let weapons = [
+        (WeaponType::Fist, 0),
+        (WeaponType::Dagger, 1),
+        (WeaponType::OneHandSword, 2),
+        (WeaponType::TwoHandSword, 3),
+        (WeaponType::OneHandSpear, 4),
+        (WeaponType::TwoHandSpear, 5),
+        (WeaponType::OneHandAxe, 6),
+        (WeaponType::TwoHandAxe, 7),
+        (WeaponType::Mace, 8),
+        (WeaponType::TwoHandMace, 9),
+        (WeaponType::Staff, 10),
+        (WeaponType::Bow, 11),
+        (WeaponType::Knuckle, 12),
+        (WeaponType::Musical, 13),
+        (WeaponType::Whip, 14),
+        (WeaponType::Book, 15),
+        (WeaponType::Katar, 16),
+        (WeaponType::Revolver, 17),
+        (WeaponType::Rifle, 18),
+        (WeaponType::Gatling, 19),
+        (WeaponType::Shotgun, 20),
+        (WeaponType::Grenade, 21),
+        (WeaponType::Huuma, 22),
+        (WeaponType::TwoHandStaff, 23),
+    ];
+    for (t, id) in weapons {
+        assert_eq!(t.id(), id, "{t:?}");
+    }
+    let ammo = [
+        (AmmoType::Arrow, 1),
+        (AmmoType::Dagger, 2),
+        (AmmoType::Bullet, 3),
+        (AmmoType::Shell, 4),
+        (AmmoType::Grenade, 5),
+        (AmmoType::Shuriken, 6),
+        (AmmoType::Kunai, 7),
+        (AmmoType::Cannonball, 8),
+        (AmmoType::ThrowWeapon, 9),
+    ];
+    for (t, id) in ammo {
+        assert_eq!(t.id(), id, "{t:?}");
+    }
+}
+
+/// DB-ITEM-05: a v1 file is rejected (the data is regenerated, no backwards compatibility).
+#[test]
+fn db_item_05_rejects_v1() {
+    let v1 = VALID.replace("Version: 2", "Version: 1");
+    assert!(matches!(expect_err(&v1), DbLoadError::Schema { .. }));
+}
+
 fn shipped_dir() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("data/item")
 }
@@ -270,4 +445,19 @@ fn db_item_03_shipped_data_loads() {
     assert_eq!((potion.item_type, potion.weight), (ItemType::Healing, 70));
     let knife = db.by_aegis_name("knife").expect("Knife");
     assert_eq!((knife.id, knife.locations), (ItemId(1201), 0x2));
+    assert_eq!(
+        (knife.weapon_type, knife.attack, knife.range),
+        (WeaponType::Dagger, 17, 1),
+        "DB-ITEM-03: v2 equipment fields"
+    );
+    let guard = db.get(ItemId(2101)).expect("Guard");
+    assert_eq!(guard.defense, 20);
+    let arrow = db.get(ItemId(1750)).expect("Arrow");
+    assert_eq!(arrow.ammo_type, Some(AmmoType::Arrow));
+    let rings = [ItemId(2634), ItemId(2635)].map(|id| db.get(id).expect("wedding ring").gender);
+    assert_eq!(
+        rings,
+        [Gender::Male, Gender::Female],
+        "forced wedding-ring genders"
+    );
 }

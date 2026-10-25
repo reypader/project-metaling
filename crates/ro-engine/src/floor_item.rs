@@ -252,6 +252,8 @@ impl MapInstance {
         }
         let mut dropped = stack.clone();
         dropped.amount = amount;
+        // On the floor nothing is worn, even a partial drop of worn arrows.
+        dropped.equip = 0;
 
         let own = self.cell(e);
         let cell = self
@@ -263,6 +265,8 @@ impl MapInstance {
         {
             return refuse(self);
         }
+        // Spec §2.8: a worn item whose whole stack goes comes off first, after the `0x0add`.
+        self.unequip_before_removal(e, slot, amount);
         // The gates above make these unreachable; if a gate change ever lets one through, the
         // item would exist twice, so say so loudly.
         let Some(inventory) = self.world.inventories.get_mut(e) else {

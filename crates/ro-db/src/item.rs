@@ -1,5 +1,5 @@
 //! The item registry (`ITEM_DATA` YAML), produced offline by `tools/item-import` from rAthena's
-//! item database. Only the fields the inventory, floor items and `@item` use.
+//! item database. Only the fields the inventory, floor items, `@item` and equipment use.
 
 use std::collections::HashMap;
 use std::path::Path;
@@ -12,8 +12,12 @@ use crate::DbLoadError;
 
 /// `Header.Type` of an item file.
 pub const ITEM_DATA_TYPE: &str = "ITEM_DATA";
-/// `Header.Version` this crate reads and writes.
-pub const ITEM_DATA_VERSION: u32 = 1;
+/// `Header.Version` this crate reads and writes (2 added the equipment fields).
+pub const ITEM_DATA_VERSION: u32 = 2;
+/// `Jobs` of an item usable by every job: all bits of the three base-class sets.
+pub const ALL_JOBS: [u64; 3] = [u64::MAX; 3];
+/// `Classes` of an item usable by every class (renewal `ITEMJ_ALL`, seven bits).
+pub const ALL_CLASSES: u8 = 0x7f;
 /// The files of an item data directory, in load order (mirrors rAthena's split).
 pub const ITEM_DATA_FILES: [&str; 3] = ["item_usable.yml", "item_equip.yml", "item_etc.yml"];
 
@@ -27,11 +31,13 @@ const SCHEMA: Schema = Schema {
     version: ITEM_DATA_VERSION,
 };
 
-/// Item type after rAthena's load rules (`DelayConsume` is already `Usable`).
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+/// Item type after rAthena's load rules (`DelayConsume` is already `Usable`). `Etc` is rAthena's
+/// default type.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ItemType {
     Healing,
     Usable,
+    #[default]
     Etc,
     Armor,
     Weapon,
@@ -69,6 +75,94 @@ impl ItemType {
             Self::Cash => 18,
         }
     }
+}
+
+/// A weapon's `SubType` (rAthena `W_*`). Items that aren't weapons, and weapons without a
+/// `SubType`, are `Fist`.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum WeaponType {
+    #[default]
+    Fist,
+    Dagger,
+    OneHandSword,
+    TwoHandSword,
+    OneHandSpear,
+    TwoHandSpear,
+    OneHandAxe,
+    TwoHandAxe,
+    Mace,
+    TwoHandMace,
+    Staff,
+    Bow,
+    Knuckle,
+    Musical,
+    Whip,
+    Book,
+    Katar,
+    Revolver,
+    Rifle,
+    Gatling,
+    Shotgun,
+    Grenade,
+    Huuma,
+    TwoHandStaff,
+}
+
+impl WeaponType {
+    /// The `W_*` number (char-select `weapon` field, ASPD tables).
+    pub fn id(self) -> u8 {
+        self as u8
+    }
+}
+
+/// An ammo item's `SubType` (rAthena `AMMO_*`).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum AmmoType {
+    Arrow = 1,
+    Dagger,
+    Bullet,
+    Shell,
+    Grenade,
+    Shuriken,
+    Kunai,
+    Cannonball,
+    ThrowWeapon,
+}
+
+impl AmmoType {
+    /// The `AMMO_*` number.
+    pub fn id(self) -> u8 {
+        self as u8
+    }
+}
+
+/// Who may wear an item (rAthena `e_sex` values: female 0, male 1, both 2).
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum Gender {
+    Female,
+    Male,
+    #[default]
+    Both,
+}
+
+fn is_default<T: Default + PartialEq>(v: &T) -> bool {
+    *v == T::default()
+}
+
+fn all_jobs() -> [u64; 3] {
+    ALL_JOBS
+}
+
+fn is_all_jobs(v: &[u64; 3]) -> bool {
+    *v == ALL_JOBS
+}
+
+fn all_classes() -> u8 {
+    ALL_CLASSES
+}
+
+fn is_all_classes(v: &u8) -> bool {
+    *v == ALL_CLASSES
 }
 
 fn default_no_drop_override() -> u16 {
@@ -114,6 +208,47 @@ pub struct ItemData {
     /// Card slots.
     #[serde(default, skip_serializing_if = "is_zero_u16")]
     pub slots: u16,
+    /// Weapons only; `Fist` otherwise.
+    #[serde(default, skip_serializing_if = "is_default")]
+    pub weapon_type: WeaponType,
+    /// Ammo only.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub ammo_type: Option<AmmoType>,
+    /// Weapons and ammo.
+    #[serde(default, skip_serializing_if = "is_zero_u32")]
+    pub attack: u32,
+    /// Weapons; imported, unused for now.
+    #[serde(default, skip_serializing_if = "is_zero_u32")]
+    pub magic_attack: u32,
+    /// Armor and shadow gear: hard DEF.
+    #[serde(default, skip_serializing_if = "is_zero_u32")]
+    pub defense: u32,
+    /// Weapons: attack range in cells, at most 14.
+    #[serde(default, skip_serializing_if = "is_zero_u8")]
+    pub range: u8,
+    /// Weapons: 1..=5.
+    #[serde(default, skip_serializing_if = "is_zero_u8")]
+    pub weapon_level: u8,
+    /// Armor: 1 or more.
+    #[serde(default, skip_serializing_if = "is_zero_u8")]
+    pub armor_level: u8,
+    /// Lowest base level that may equip it; 0 = no minimum.
+    #[serde(default, skip_serializing_if = "is_zero_u16")]
+    pub equip_level_min: u16,
+    /// Highest base level that may equip it; 0 = no maximum.
+    #[serde(default, skip_serializing_if = "is_zero_u16")]
+    pub equip_level_max: u16,
+    #[serde(default, skip_serializing_if = "is_default")]
+    pub gender: Gender,
+    /// rAthena `class_base`: base-class bitsets for the first-class, 2-1 and 2-2 branches.
+    #[serde(default = "all_jobs", skip_serializing_if = "is_all_jobs")]
+    pub jobs: [u64; 3],
+    /// rAthena `ITEMJ_*` mask (normal, upper, baby, third, third upper, third baby, fourth).
+    #[serde(default = "all_classes", skip_serializing_if = "is_all_classes")]
+    pub classes: u8,
+    /// Imported, unused for now.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub refineable: bool,
     /// Per-item stack cap; 0 = none.
     #[serde(default, skip_serializing_if = "is_zero_u16")]
     pub stack_amount: u16,
@@ -136,6 +271,45 @@ pub struct ItemData {
         skip_serializing_if = "is_default_no_drop_override"
     )]
     pub no_drop_override: u16,
+}
+
+/// An `Etc` item with id 0 and every other field at its YAML default. For tests and builders:
+/// `ItemData { id, .., ..ItemData::default() }`.
+impl Default for ItemData {
+    fn default() -> Self {
+        Self {
+            id: ItemId(0),
+            aegis_name: String::new(),
+            name: String::new(),
+            item_type: ItemType::default(),
+            weight: 0,
+            locations: 0,
+            view: 0,
+            view_id: None,
+            slots: 0,
+            weapon_type: WeaponType::default(),
+            ammo_type: None,
+            attack: 0,
+            magic_attack: 0,
+            defense: 0,
+            range: 0,
+            weapon_level: 0,
+            armor_level: 0,
+            equip_level_min: 0,
+            equip_level_max: 0,
+            gender: Gender::default(),
+            jobs: ALL_JOBS,
+            classes: ALL_CLASSES,
+            refineable: false,
+            stack_amount: 0,
+            stack_inventory: false,
+            unique_id: false,
+            bind_on_equip: false,
+            drop_effect: 0,
+            no_drop: false,
+            no_drop_override: DEFAULT_NO_DROP_OVERRIDE,
+        }
+    }
 }
 
 impl ItemData {

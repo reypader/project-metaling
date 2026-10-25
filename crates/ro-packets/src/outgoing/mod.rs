@@ -37,9 +37,11 @@
 //!   confirm (0x0b1b)
 //! - character status (0x0acb, 0x00bd, 0x0141, 0x013a, 0x00be)
 //! - the rest of the entry burst: 0x01d7, 0x099b, 0x09e7, 0x0a24, 0x0ade
+//! - equipment (0x0999, 0x099a, 0x0bae, 0x013c, 0x013b, 0x0291) and the status icon 0x0983
 
 pub mod char;
 pub mod encoder;
+pub mod equip;
 pub mod helpers;
 pub mod item;
 pub mod login;
@@ -55,6 +57,10 @@ pub use char::{
 };
 pub use encoder::{
     is_implemented_outbound_opcode, ModernEventEncoder, Phase0EventEncoder, RathenaEventEncoder,
+};
+pub use equip::{
+    encode_zc_ack_takeoff_equip_all, encode_zc_action_failure, encode_zc_equip_arrow,
+    encode_zc_msg, encode_zc_req_takeoff_equip_ack, encode_zc_req_wear_equip_ack,
 };
 pub use helpers::write_fixed_string;
 pub use item::{
@@ -84,6 +90,6 @@ pub use settings::{
     encode_zc_repute_info_default, encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_list,
 };
 pub use status::{
-    encode_zc_attack_range, encode_zc_couplestatus, encode_zc_longlongpar_change, encode_zc_status,
-    encode_zc_status_change,
+    encode_zc_attack_range, encode_zc_couplestatus, encode_zc_longlongpar_change,
+    encode_zc_msg_state_change3, encode_zc_status, encode_zc_status_change,
 };

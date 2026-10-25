@@ -8,9 +8,20 @@ use sqlx::{query, Error as SqlxError, Transaction};
 
 use crate::RepositoryError;
 use crate::{CancelDeleteOutcome, CharacterRepository, CreateCharacterError, DeleteReserveOutcome};
-use ro_core::{AccountId, CharId, CharacterSummary, CreateCharacterRequest, MapPosition, Sex};
+use ro_core::{
+    AccountId, CharId, CharacterLooks, CharacterSummary, CreateCharacterRequest, MapPosition, Sex,
+};
 
 use super::{get_col, map_sex, map_sqlx_error, sex_to_i16, PostgresRepo};
+
+/// The `characters` columns `row_to_character_summary` reads, for every summary query.
+macro_rules! summary_columns {
+    () => {
+        "char_id, account_id, slot, name, sex, job_class, base_level, job_level, \
+         hair_style, hair_color, last_map, last_x, last_y, last_dir, delete_date, \
+         weapon_type, shield_view, head_top_view, head_mid_view, head_bot_view, robe_view"
+    };
+}
 
 /// Validates pure invariant constraints on a character creation request.
 pub(crate) fn validate_create_character_request(
@@ -136,6 +147,19 @@ pub(crate) fn row_to_character_summary(row: &PgRow) -> Result<CharacterSummary, 
     let last_y: i16 = get_col(row, "last_y")?;
     let last_dir: i16 = get_col(row, "last_dir")?;
     let delete_date: Option<i64> = get_col(row, "delete_date")?;
+    let look = |col: &str| -> Result<u16, RepositoryError> {
+        let v: i32 = get_col(row, col)?;
+        // An out-of-range value (a hand-edited row) shows as no look.
+        Ok(u16::try_from(v).unwrap_or(0))
+    };
+    let looks = CharacterLooks {
+        weapon_type: look("weapon_type")?,
+        shield: look("shield_view")?,
+        head_top: look("head_top_view")?,
+        head_mid: look("head_mid_view")?,
+        head_bottom: look("head_bot_view")?,
+        robe: look("robe_view")?,
+    };
 
     Ok(CharacterSummary {
         char_id: CharId(char_id as u32),
@@ -155,6 +179,7 @@ pub(crate) fn row_to_character_summary(row: &PgRow) -> Result<CharacterSummary, 
             dir: last_dir as u8,
         },
         delete_date: delete_date.map(|t| t as u64),
+        looks,
     })
 }
 
@@ -164,15 +189,16 @@ impl CharacterRepository for PostgresRepo {
         &self,
         account_id: AccountId,
     ) -> Result<Vec<CharacterSummary>, RepositoryError> {
-        let rows = query(
+        let rows = query(concat!(
             r#"
-            SELECT char_id, account_id, slot, name, sex, job_class, base_level, job_level,
-                   hair_style, hair_color, last_map, last_x, last_y, last_dir, delete_date
+            SELECT "#,
+            summary_columns!(),
+            r#"
             FROM characters
             WHERE account_id = $1
             ORDER BY slot ASC
-            "#,
-        )
+            "#
+        ))
         .bind(account_id.0 as i32)
         .fetch_all(&self.pool)
         .await
@@ -186,14 +212,15 @@ impl CharacterRepository for PostgresRepo {
         account_id: AccountId,
         slot: u8,
     ) -> Result<Option<CharacterSummary>, RepositoryError> {
-        let row = query(
+        let row = query(concat!(
             r#"
-            SELECT char_id, account_id, slot, name, sex, job_class, base_level, job_level,
-                   hair_style, hair_color, last_map, last_x, last_y, last_dir, delete_date
+            SELECT "#,
+            summary_columns!(),
+            r#"
             FROM characters
             WHERE account_id = $1 AND slot = $2
-            "#,
-        )
+            "#
+        ))
         .bind(account_id.0 as i32)
         .bind(slot as i16)
         .fetch_optional(&self.pool)
@@ -210,14 +237,15 @@ impl CharacterRepository for PostgresRepo {
         &self,
         char_id: CharId,
     ) -> Result<Option<CharacterSummary>, RepositoryError> {
-        let row = query(
+        let row = query(concat!(
             r#"
-            SELECT char_id, account_id, slot, name, sex, job_class, base_level, job_level,
-                   hair_style, hair_color, last_map, last_x, last_y, last_dir, delete_date
+            SELECT "#,
+            summary_columns!(),
+            r#"
             FROM characters
             WHERE char_id = $1
-            "#,
-        )
+            "#
+        ))
         .bind(char_id.0 as i32)
         .fetch_optional(&self.pool)
         .await
@@ -244,7 +272,7 @@ impl CharacterRepository for PostgresRepo {
 
         check_slot_and_name_availability(&mut tx, &req, max_slots).await?;
 
-        let row = query(
+        let row = query(concat!(
             r#"
             INSERT INTO characters (
                 account_id, slot, name, sex, job_class, base_level, job_level,
@@ -255,10 +283,11 @@ impl CharacterRepository for PostgresRepo {
                 $6, $7, 'prontera.gat', 156, 191, 0,
                 'prontera.gat', 156, 191, NULL
             )
-            RETURNING char_id, account_id, slot, name, sex, job_class, base_level, job_level,
-                      hair_style, hair_color, last_map, last_x, last_y, last_dir, delete_date
-            "#,
-        )
+            RETURNING "#,
+            summary_columns!(),
+            r#"
+            "#
+        ))
         .bind(req.account_id.0 as i32)
         .bind(req.slot as i16)
         .bind(&req.name)

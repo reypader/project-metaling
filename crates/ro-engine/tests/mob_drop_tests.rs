@@ -38,6 +38,7 @@ fn item(id: u32, item_type: ItemType, drop_effect: u8) -> ItemData {
         drop_effect,
         no_drop: false,
         no_drop_override: 100,
+        ..ItemData::default()
     }
 }
 

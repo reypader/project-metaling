@@ -181,8 +181,9 @@ failure `0x0999` is `{index, location 0, view 0, result}` (captured: `16 00 00 0
     - shoes: `0x01d7` `LOOK_SHOES` {view id or item id};
     - head / garment / costume positions: `0x01d7` `LOOK_HEAD_BOTTOM`/`MID`/`TOP` or `LOOK_ROBE` only for
       the views that changed after the costume override (catalog §5).
-14. Ammo cascade: a weapon went into a hand and the worn ammo no longer pairs with it → unequip the ammo
-    (forced, no recalc of its own: only its `0x099a`).
+14. Ammo cascade: an item went into a hand (a weapon, or a shield that leaves no weapon) and the worn ammo
+    no longer pairs with the resulting weapon type → unequip the ammo (forced, no recalc of its own: only
+    its `0x099a`).
 15. Recalculate status and push the diff (§2.10).
 
 Nothing changes on any failure before step 10.
@@ -339,6 +340,8 @@ Picking an item up clears `equip` on the copy (already true: `add_item` zeroes i
 - **PKT-EQ-06:** entry packets put `UnitLooks` at the weapon/shield/accessory/robe offsets (catalog
   `map_units.md`).
 - **PKT-EQ-07:** the char-select entry puts `CharacterLooks` at offsets 90/96/98/100/102/162 (catalog `char.md`).
+- **PKT-EQ-08:** a player's `body` is its job id: char-select offset 88 and the entry packets' `body`; NPCs and
+  mobs send 0. Found in the manual check (an SQL-made Archer drew a Novice body); every capture agrees.
 
 **PER** (`crates/ro-persistence/tests/postgres_repo_tests.rs`):
 - **PER-EQ-01:** `save_inventory` with looks updates the look columns in the same transaction, and summary

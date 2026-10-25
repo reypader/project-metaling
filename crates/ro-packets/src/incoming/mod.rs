@@ -22,6 +22,8 @@
 //! - `CZ_ITEM_PICKUP` (0x0362)
 //! - `CZ_ITEM_THROW` (0x0363)
 //! - `CZ_REQUEST_CHAT` (0x00f3)
+//! - `CZ_REQ_WEAR_EQUIP` (0x0998), `CZ_REQ_TAKEOFF_EQUIP` (0x00ab),
+//!   `CZ_REQ_TAKEOFF_EQUIP_ALL` (0x0bf5)
 
 pub mod char;
 pub mod frame;
@@ -41,6 +43,6 @@ pub use login::CaLoginPacket;
 pub use map::{
     CzBlockingPlayCancelPacket, CzChangeDirectionPacket, CzEnterPacket, CzItemPickupPacket,
     CzItemThrowPacket, CzNotifyActorInitPacket, CzReqDisconnectPacket, CzReqNamePacket,
-    CzRequestActPacket, CzRequestChatPacket, CzRequestMovePacket, CzRequestTimePacket,
-    CzRestartPacket,
+    CzReqTakeoffEquipAllPacket, CzReqTakeoffEquipPacket, CzReqWearEquipPacket, CzRequestActPacket,
+    CzRequestChatPacket, CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket,
 };

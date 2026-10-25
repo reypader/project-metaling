@@ -1,4 +1,5 @@
-//! Character status packet encoders: `0x0acb`, `0x00bd`, `0x0141`, `0x013a`, `0x00be`.
+//! Character status packet encoders: `0x0acb`, `0x00bd`, `0x0141`, `0x013a`, `0x00be`, and the
+//! status icon `0x0983`.
 //! Layouts: `reference/catalog/packets/status.md`.
 
 use bytes::{BufMut, Bytes, BytesMut};
@@ -75,6 +76,30 @@ pub fn encode_zc_status_change(var_id: u16, value: u8) -> Bytes {
     buf.put_u16_le(PacketOpcode::ZC_STATUS_CHANGE.raw());
     buf.put_u16_le(var_id);
     buf.put_u8(value);
+    buf.freeze()
+}
+
+/// Encodes `ZC_MSG_STATE_CHANGE3` (0x0983): a status icon started on unit `gid`,
+/// `efst:u16, gid:u32, state:u8, total:u32, remain:i32, val1..3:i32`, 29 bytes
+/// (`reference/catalog/packets/status_change.md`).
+pub fn encode_zc_msg_state_change3(
+    efst: u16,
+    gid: u32,
+    state: u8,
+    total_ms: u32,
+    remain_ms: i32,
+    values: [i32; 3],
+) -> Bytes {
+    let mut buf = BytesMut::with_capacity(29);
+    buf.put_u16_le(PacketOpcode::ZC_MSG_STATE_CHANGE3.raw());
+    buf.put_u16_le(efst);
+    buf.put_u32_le(gid);
+    buf.put_u8(state);
+    buf.put_u32_le(total_ms);
+    buf.put_i32_le(remain_ms);
+    for value in values {
+        buf.put_i32_le(value);
+    }
     buf.freeze()
 }
 

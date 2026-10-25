@@ -45,6 +45,7 @@ fn data(id: u32, aegis: &str, name: &str, item_type: ItemType, weight: u32) -> I
         drop_effect: 0,
         no_drop: false,
         no_drop_override: 100,
+        ..ItemData::default()
     }
 }
 
@@ -132,6 +133,7 @@ fn items_of(engine: &MapInstance, n: u32) -> Vec<(u32, u16)> {
     engine
         .inventory_snapshot(char_id(n))
         .expect("inventory")
+        .inventory
         .items()
         .map(|i| (i.item_id.0, i.amount))
         .collect()
@@ -299,7 +301,10 @@ fn eng_cmd_06_lists_amounts_unknown() {
     say(&mut e, GM, "@item Jellopy -3");
     say(&mut e, GM, "@item Jellopy 0");
     assert_eq!(
-        e.inventory_snapshot(char_id(GM)).expect("inv").slots[1]
+        e.inventory_snapshot(char_id(GM))
+            .expect("inv")
+            .inventory
+            .slots[1]
             .as_ref()
             .map(|i| i.amount),
         Some(4)

@@ -8,7 +8,6 @@ use std::time::Duration;
 
 use common::*;
 use map_server::{load_registries, MapServiceOptions};
-use ro_core::{CharacterInventory, InventoryItem, ItemId};
 use ro_db::{MapNpcs, NpcKind, NpcSpawn, NpcState, WarpDest};
 use ro_packets::RawPacket;
 
@@ -44,10 +43,6 @@ fn cz_pickup(id: u32) -> Vec<u8> {
     frame
 }
 
-fn ops(frames: &[RawPacket]) -> Vec<u16> {
-    frames.iter().map(|f| f.opcode.0).collect()
-}
-
 /// `(wire index, item id, amount)` of each `0x0b09` / `0x0b39` entry (payload after the
 /// dynamic header: inv_type, then entries).
 fn list_entries(frames: &[RawPacket]) -> Vec<(u16, u32, u16)> {
@@ -66,29 +61,6 @@ fn list_entries(frames: &[RawPacket]) -> Vec<(u16, u32, u16)> {
         }
     }
     out
-}
-
-fn inventory(items: &[(u32, u16)]) -> CharacterInventory {
-    CharacterInventory {
-        slots: items
-            .iter()
-            .map(|&(id, n)| Some(InventoryItem::new(ItemId(id), n)))
-            .collect(),
-        unique_item_counter: 0,
-    }
-}
-
-/// Enters as `n` and returns everything after the `0x007d`.
-async fn enter(server: &TestServer, n: u32) -> (Client, Vec<RawPacket>) {
-    let mut client = Client::connect(server.addr).await;
-    client.send(&cz_enter(n)).await;
-    // ZC_AID, 0x0b18, ZC_ACCEPT_ENTER, the empty friends list, then the login burst
-    // (specs/map-entry-settings).
-    client.read_exact_bytes(23 + 4).await;
-    client.read_login_burst().await;
-    client.send(&[0x7d, 0x00]).await;
-    let frames = client.collect(SHORT).await;
-    (client, frames)
 }
 
 /// BIN-ITEM-01: the entry lists are on the wire right after `0x007d`, in order.
@@ -297,19 +269,4 @@ async fn bin_chat_02_non_gm_command_is_chat() {
     let echo = a.wait_opcode(0x008e, LONG).await.expect("echo");
     assert_eq!(&echo.payload[..], b"Char1 : @item 501\0");
     assert!(a.collect(SHORT).await.iter().all(|f| f.opcode.0 != 0x0b41));
-}
-
-async fn wait_until(cond: impl Fn() -> bool) -> bool {
-    wait_until_for(cond, LONG).await
-}
-
-async fn wait_until_for(cond: impl Fn() -> bool, timeout: Duration) -> bool {
-    let deadline = tokio::time::Instant::now() + timeout;
-    while tokio::time::Instant::now() < deadline {
-        if cond() {
-            return true;
-        }
-        tokio::time::sleep(Duration::from_millis(20)).await;
-    }
-    cond()
 }

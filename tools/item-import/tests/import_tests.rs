@@ -1,11 +1,11 @@
-//! rAthena item database conversion (spec TOOL-ITEM-01..05).
+//! rAthena item database conversion (spec TOOL-ITEM-01..08).
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use std::path::PathBuf;
 
 use item_import::{convert, render_file, Converted, SOURCES};
 use ro_core::ItemId;
-use ro_db::{ItemData, ItemDb, ItemType};
+use ro_db::{AmmoType, Gender, ItemData, ItemDb, ItemType, WeaponType, ALL_CLASSES, ALL_JOBS};
 
 fn db(body: &str) -> String {
     format!("Header:\n  Type: ITEM_DB\n  Version: 3\nBody:\n{body}")
@@ -278,6 +278,306 @@ fn tool_item_04_merge_sort_header() {
     assert_eq!(parsed, out.files[0]);
 }
 
+/// TOOL-ITEM-06: `SubType` maps to the weapon / ammo type; equipment fields are cleared by type;
+/// `Range` is capped at 14 and `WeaponLevel` clamped to 1..=5.
+#[test]
+fn tool_item_06_subtype_and_cleared_fields() {
+    let equip = "  - Id: 1201
+    AegisName: Knife
+    Name: Knife
+    Type: Weapon
+    SubType: Dagger
+    Attack: 17
+    MagicAttack: 3
+    Range: 1
+    WeaponLevel: 1
+    EquipLevelMin: 1
+    Refineable: true
+    Locations:
+      Right_Hand: true
+  - Id: 1116
+    AegisName: Katana
+    Name: Katana
+    Type: Weapon
+    SubType: 2hSword
+    Range: 20
+    WeaponLevel: 9
+    Locations:
+      Both_Hand: true
+  - Id: 1599
+    AegisName: No_Level
+    Name: No Level
+    Type: Weapon
+    Locations:
+      Right_Hand: true
+  - Id: 2101
+    AegisName: Guard
+    Name: Guard
+    Type: Armor
+    Defense: 20
+    Attack: 5
+    Range: 3
+    WeaponLevel: 2
+    EquipLevelMin: 10
+    EquipLevelMax: 50
+    Locations:
+      Left_Hand: true
+  - Id: 2301
+    AegisName: Cotton_Shirt
+    Name: Cotton Shirt
+    Type: Armor
+    Defense: 10
+    ArmorLevel: 1
+    Locations:
+      Armor: true
+  - Id: 1299
+    AegisName: Demoted
+    Name: Demoted
+    Type: Weapon
+    SubType: Dagger
+    Attack: 9
+";
+    let etc = "  - Id: 1750
+    AegisName: Arrow
+    Name: Arrow
+    Type: Ammo
+    SubType: Arrow
+    Attack: 25
+    Defense: 4
+    Range: 2
+    Locations:
+      Ammo: true
+  - Id: 13200
+    AegisName: Bullet
+    Name: Bullet
+    Type: Ammo
+    SubType: bullet
+    Locations:
+      Ammo: true
+  - Id: 4001
+    AegisName: Poring_Card
+    Name: Poring Card
+    Type: Card
+    SubType: Enchant
+  - Id: 909
+    AegisName: Jellopy
+    Name: Jellopy
+    Type: Etc
+    SubType: Dagger
+";
+    let out = run("", equip, etc);
+    let knife = find(&out, 1201);
+    assert_eq!(knife.weapon_type, WeaponType::Dagger);
+    assert_eq!(
+        (
+            knife.attack,
+            knife.magic_attack,
+            knife.range,
+            knife.weapon_level
+        ),
+        (17, 3, 1, 1)
+    );
+    assert_eq!((knife.equip_level_min, knife.refineable), (1, true));
+    let katana = find(&out, 1116);
+    assert_eq!(
+        katana.weapon_type,
+        WeaponType::TwoHandSword,
+        "SubType names are case-insensitive"
+    );
+    assert_eq!(katana.range, 14, "Range capped at AREA_SIZE");
+    assert_eq!(katana.weapon_level, 5, "WeaponLevel clamped to 5");
+    assert_eq!(
+        find(&out, 1599).weapon_level,
+        1,
+        "a weapon's level 0 becomes 1"
+    );
+    assert_eq!(find(&out, 1599).weapon_type, WeaponType::Fist);
+
+    let guard = find(&out, 2101);
+    assert_eq!(guard.defense, 20);
+    assert_eq!(
+        (guard.attack, guard.range, guard.weapon_level),
+        (0, 0, 0),
+        "weapon fields cleared on armor"
+    );
+    assert_eq!(guard.armor_level, 1, "an armor's level 0 becomes 1");
+    assert_eq!((guard.equip_level_min, guard.equip_level_max), (10, 50));
+    assert_eq!(find(&out, 2301).armor_level, 1);
+
+    let demoted = find(&out, 1299);
+    assert_eq!(demoted.item_type, ItemType::Etc, "no Locations");
+    assert_eq!(
+        (demoted.weapon_type, demoted.attack),
+        (WeaponType::Fist, 0),
+        "cleared after the demotion"
+    );
+
+    let arrow = find(&out, 1750);
+    assert_eq!(arrow.ammo_type, Some(AmmoType::Arrow));
+    assert_eq!(arrow.attack, 25, "ammo keeps Attack");
+    assert_eq!((arrow.defense, arrow.range), (0, 0), "cleared on ammo");
+    assert_eq!(find(&out, 13200).ammo_type, Some(AmmoType::Bullet));
+    let card = find(&out, 4001);
+    assert_eq!(
+        (card.weapon_type, card.ammo_type),
+        (WeaponType::Fist, None),
+        "card subtypes dropped"
+    );
+    assert!(
+        out.files.iter().flatten().all(|i| i.id.0 != 909),
+        "SubType on an Etc item rejects the entry"
+    );
+    assert!(
+        out.report.warnings.iter().any(|w| w.contains("909")),
+        "{:?}",
+        out.report.warnings
+    );
+}
+
+fn jobs_of(list: &str) -> [u64; 3] {
+    let equip = format!(
+        "  - Id: 1201\n    AegisName: Knife\n    Name: Knife\n    Type: Weapon\n{list}    Locations:\n      Right_Hand: true\n"
+    );
+    find(&run("", &equip, ""), 1201).jobs
+}
+
+/// TOOL-ITEM-07: `Jobs` -> the three base-class bitsets (catalog mechanics/equipment.md §3a).
+#[test]
+fn tool_item_07_jobs() {
+    assert_eq!(jobs_of(""), ALL_JOBS, "absent = every job");
+    assert_eq!(jobs_of("    Jobs:\n      All: true\n"), ALL_JOBS);
+    assert_eq!(
+        jobs_of("    Jobs:\n      Novice: true\n      Knight: true\n      Crusader: true\n"),
+        [1 << 0, 1 << 1, 1 << 1],
+        "Novice (0,0), Knight (1,1), Crusader (2,1)"
+    );
+    assert_eq!(
+        jobs_of("    Jobs:\n      Archer: true\n      BardDancer: true\n      Super_Novice: true\n      Spirit_Handler: true\n      Soul_Linker: true\n"),
+        [1 << 3, (1 << 0) | (1 << 10), (1 << 3) | (1 << 7)],
+        "underscored and joined names resolve alike"
+    );
+    assert_eq!(
+        jobs_of("    Jobs:\n      Novice: false\n      All: true\n"),
+        [!1, u64::MAX, u64::MAX],
+        "All applies first, then the exclusion"
+    );
+    assert_eq!(
+        jobs_of("    Jobs:\n      Novice: true\n      Nobody: true\n"),
+        ALL_JOBS,
+        "an unknown name makes the item usable by every job"
+    );
+
+    // An overriding entry replaces the list.
+    let usable = "  - Id: 1201\n    Jobs:\n      Thief: true\n";
+    let equip = "  - Id: 1201\n    AegisName: Knife\n    Name: Knife\n    Type: Weapon\n    Jobs:\n      Swordman: true\n    Locations:\n      Right_Hand: true\n";
+    let out = run("", equip, usable);
+    assert_eq!(
+        find(&out, 1201).jobs,
+        [1 << 6, 0, 0],
+        "later Jobs replaces earlier"
+    );
+}
+
+fn item_with(fields: &str) -> ItemData {
+    let equip = format!(
+        "  - Id: 1201\n    AegisName: Knife\n    Name: Knife\n    Type: Weapon\n{fields}    Locations:\n      Right_Hand: true\n"
+    );
+    find(&run("", &equip, ""), 1201).clone()
+}
+
+/// TOOL-ITEM-08: `Classes` groups and the forced `Gender` values.
+#[test]
+fn tool_item_08_classes_and_gender() {
+    assert_eq!(item_with("").classes, ALL_CLASSES, "absent = every class");
+    assert_eq!(
+        item_with("    Classes:\n      All: true\n").classes,
+        ALL_CLASSES
+    );
+    assert_eq!(
+        item_with("    Classes:\n      Normal: true\n      Baby: true\n").classes,
+        0x01 | 0x04
+    );
+    assert_eq!(
+        item_with("    Classes:\n      All_Upper: true\n").classes,
+        0x02 | 0x10 | 0x40,
+        "upper, third upper, fourth"
+    );
+    assert_eq!(
+        item_with("    Classes:\n      All_Third: true\n").classes,
+        0x08 | 0x10 | 0x20,
+        "All_Third excludes Fourth"
+    );
+    assert_eq!(
+        item_with("    Classes:\n      All_Baby: true\n").classes,
+        0x04 | 0x20
+    );
+    assert_eq!(
+        item_with("    Classes:\n      All: true\n      Upper: false\n").classes,
+        ALL_CLASSES & !0x02
+    );
+    assert_eq!(
+        item_with("    Classes:\n      Normal: true\n      Bogus: true\n").classes,
+        ALL_CLASSES,
+        "an unknown name allows every class"
+    );
+    // Unlike Jobs, an overriding Classes edits the earlier value.
+    let equip = "  - Id: 1201\n    AegisName: Knife\n    Name: Knife\n    Type: Weapon\n    Classes:\n      Normal: true\n    Locations:\n      Right_Hand: true\n";
+    let etc = "  - Id: 1201\n    Classes:\n      Baby: true\n";
+    assert_eq!(find(&run("", equip, etc), 1201).classes, 0x01 | 0x04);
+    let etc_only = "  - Id: 1201\n    Classes:\n      Upper: false\n";
+    let plain = "  - Id: 1201\n    AegisName: Knife\n    Name: Knife\n    Type: Weapon\n    Locations:\n      Right_Hand: true\n";
+    assert_eq!(
+        find(&run("", plain, etc_only), 1201).classes,
+        ALL_CLASSES & !0x02,
+        "an override edits the default ITEMJ_ALL"
+    );
+
+    assert_eq!(item_with("").gender, Gender::Both);
+    assert_eq!(item_with("    Gender: female\n").gender, Gender::Female);
+    let equip = "  - Id: 1901
+    AegisName: Violin
+    Name: Violin
+    Type: Weapon
+    SubType: Musical
+    Gender: Female
+    Locations:
+      Right_Hand: true
+  - Id: 1950
+    AegisName: Rope
+    Name: Rope
+    Type: Weapon
+    SubType: Whip
+    Locations:
+      Right_Hand: true
+  - Id: 2634
+    AegisName: Bridegroom_Ring
+    Name: Wedding Ring
+    Type: Armor
+    Locations:
+      Both_Accessory: true
+  - Id: 2635
+    AegisName: Bride_Ring
+    Name: Wedding Ring
+    Type: Armor
+    Gender: Male
+    Locations:
+      Both_Accessory: true
+";
+    let out = run("", equip, "");
+    assert_eq!(
+        find(&out, 1901).gender,
+        Gender::Male,
+        "instruments are male-only"
+    );
+    assert_eq!(
+        find(&out, 1950).gender,
+        Gender::Female,
+        "whips are female-only"
+    );
+    assert_eq!(find(&out, 2634).gender, Gender::Male);
+    assert_eq!(find(&out, 2635).gender, Gender::Female);
+}
+
 fn rathena() -> Option<PathBuf> {
     let path = PathBuf::from(std::env::var_os("RATHENA_PATH")?);
     path.join(SOURCES[0].0).is_file().then_some(path)
@@ -297,6 +597,7 @@ fn tool_item_05_real_counts() {
         vec![6415, 12982, 9959],
         "catalog db/item_db.md entry counts"
     );
+    let out_warnings = out.report.warnings;
     let all: Vec<ItemData> = out.files.into_iter().flatten().collect();
     let db = ItemDb::from_items("import", all).expect("unique ids and aegis names");
     let count = |t| db.iter().filter(|i| i.item_type == t).count();
@@ -313,4 +614,31 @@ fn tool_item_05_real_counts() {
     let knife = db.get(ItemId(1201)).expect("Knife");
     assert_eq!((knife.weight, knife.locations, knife.slots), (400, 0x2, 3));
     assert_eq!(db.get(ItemId(2101)).expect("Guard").view, 1);
+    assert_eq!(
+        (
+            knife.weapon_type,
+            knife.attack,
+            knife.range,
+            knife.weapon_level
+        ),
+        (WeaponType::Dagger, 17, 1, 1)
+    );
+    assert_ne!(knife.jobs, ALL_JOBS, "the Knife has a job list");
+    assert_eq!(db.get(ItemId(2101)).expect("Guard").defense, 20);
+    assert_eq!(
+        db.get(ItemId(1750)).expect("Arrow").ammo_type,
+        Some(AmmoType::Arrow)
+    );
+    assert_eq!(
+        db.get(ItemId(1701)).expect("Bow").weapon_type,
+        WeaponType::Bow
+    );
+    let unknown_jobs: Vec<&String> = out_warnings
+        .iter()
+        .filter(|w| w.contains("unknown job"))
+        .collect();
+    assert!(
+        unknown_jobs.is_empty(),
+        "every shipped job name resolves: {unknown_jobs:?}"
+    );
 }

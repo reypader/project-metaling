@@ -41,6 +41,22 @@ pub struct CharacterSummary {
     pub last_map: String,
     pub last_pos: MapPosition,
     pub delete_date: Option<u64>,
+    pub looks: CharacterLooks,
+}
+
+/// The worn gear the char-select screen shows (the `characters` look columns). Not the same as
+/// the map's [`UnitLooks`](crate::UnitLooks): the weapon here is a type, not an item id.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CharacterLooks {
+    /// The weapon type (rAthena `W_*`, or a dual-wield constant); 0 bare-handed.
+    pub weapon_type: u16,
+    /// The `View` of the armor in the left hand; 0 for nothing or a left-hand weapon.
+    pub shield: u16,
+    /// View ids after the costume override.
+    pub head_top: u16,
+    pub head_mid: u16,
+    pub head_bottom: u16,
+    pub robe: u16,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

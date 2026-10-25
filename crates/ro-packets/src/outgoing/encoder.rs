@@ -10,6 +10,10 @@ use super::char::{
     encode_hc_delete_char3_reserved, encode_hc_notify_zonesvr, encode_hc_refuse_enter,
     encode_hc_refuse_makechar,
 };
+use super::equip::{
+    encode_zc_ack_takeoff_equip_all, encode_zc_action_failure, encode_zc_equip_arrow,
+    encode_zc_msg, encode_zc_req_takeoff_equip_ack, encode_zc_req_wear_equip_ack,
+};
 use super::item::{
     encode_zc_equipment_itemlist, encode_zc_equipswitch_list_empty, encode_zc_inventory_end,
     encode_zc_inventory_start, encode_zc_item_disappear, encode_zc_item_entry,
@@ -32,8 +36,8 @@ use super::settings::{
     encode_zc_repute_info_default, encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_list,
 };
 use super::status::{
-    encode_zc_attack_range, encode_zc_couplestatus, encode_zc_longlongpar_change, encode_zc_status,
-    encode_zc_status_change,
+    encode_zc_attack_range, encode_zc_couplestatus, encode_zc_longlongpar_change,
+    encode_zc_msg_state_change3, encode_zc_status, encode_zc_status_change,
 };
 
 /// `ZC_NOTIFY_ACT` types for sit down / stand up (`e_damage_type`).
@@ -323,6 +327,35 @@ impl EventEncoder for ModernEventEncoder {
             ServerEvent::OverweightPercent { percent } => {
                 Ok(encode_zc_overweight_percent(*percent))
             }
+            ServerEvent::EquipAck {
+                index,
+                location,
+                view,
+                result,
+            } => Ok(encode_zc_req_wear_equip_ack(
+                *index, *location, *view, *result,
+            )),
+            ServerEvent::UnequipAck {
+                index,
+                location,
+                failed,
+            } => Ok(encode_zc_req_takeoff_equip_ack(*index, *location, *failed)),
+            ServerEvent::UnequipAllAck { failed } => Ok(encode_zc_ack_takeoff_equip_all(*failed)),
+            ServerEvent::AmmoEquipped { index } => Ok(encode_zc_equip_arrow(*index)),
+            ServerEvent::ActionFailure { failure_type } => {
+                Ok(encode_zc_action_failure(*failure_type))
+            }
+            ServerEvent::ClientMessage { msg_id } => Ok(encode_zc_msg(*msg_id)),
+            ServerEvent::StatusIconStarted {
+                efst,
+                gid,
+                state,
+                total_ms,
+                remain_ms,
+                values,
+            } => Ok(encode_zc_msg_state_change3(
+                *efst, *gid, *state, *total_ms, *remain_ms, *values,
+            )),
         }
     }
 }
@@ -396,6 +429,13 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
             | PacketOpcode::ZC_NOTIFY_UNREADMAIL
             | PacketOpcode::ZC_ACH_UPDATE
             | PacketOpcode::ZC_OVERWEIGHT_PERCENT
+            | PacketOpcode::ZC_REQ_WEAR_EQUIP_ACK
+            | PacketOpcode::ZC_REQ_TAKEOFF_EQUIP_ACK
+            | PacketOpcode::ZC_ACK_TAKEOFF_EQUIP_ALL
+            | PacketOpcode::ZC_EQUIP_ARROW
+            | PacketOpcode::ZC_ACTION_FAILURE
+            | PacketOpcode::ZC_MSG
+            | PacketOpcode::ZC_MSG_STATE_CHANGE3
     )
 }
 
@@ -403,7 +443,8 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
 mod tests {
     use super::*;
     use ro_core::{
-        AccountId, CharId, CharServerInfo, CharacterSummary, MapPosition, Sex, TARGET_PACKETVER,
+        AccountId, CharId, CharServerInfo, CharacterLooks, CharacterSummary, MapPosition, Sex,
+        TARGET_PACKETVER,
     };
 
     #[test]
@@ -533,6 +574,7 @@ mod tests {
                     dir: 0,
                 },
                 delete_date: None,
+                looks: CharacterLooks::default(),
             }],
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();
@@ -582,6 +624,7 @@ mod tests {
                     dir: 2,
                 },
                 delete_date: None,
+                looks: CharacterLooks::default(),
             }],
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();
@@ -608,6 +651,7 @@ mod tests {
                     dir: 0,
                 },
                 delete_date: None,
+                looks: CharacterLooks::default(),
             },
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();

@@ -15,7 +15,7 @@ use ro_core::{
     MapPosition, ScopedServerEvent, ServerEvent, SessionId, SessionIntent, TARGET_PACKETVER,
 };
 use ro_db::{ItemDb, MapGrid, MapMobSpawns, MapNpcs, MobDb, NpcKind};
-use ro_engine::{EngineError, MapInstance, MapTransfer};
+use ro_engine::{EngineError, InventorySnapshot, MapInstance, MapTransfer};
 use ro_packets::{EventEncoder, Phase0EventEncoder};
 use tokio::sync::{mpsc, oneshot};
 use tracing::{debug, error, info, warn};
@@ -702,9 +702,10 @@ impl MapWorldActor {
                 .and_then(|id| self.sessions.get_mut(id))
             {
                 session.claim.set_last(&self.map_name, transfer.from_pos);
-                session
-                    .claim
-                    .save_inventory(transfer.spawn.inventory.clone());
+                session.claim.save_inventory(InventorySnapshot {
+                    inventory: transfer.spawn.inventory.clone(),
+                    looks: transfer.looks,
+                });
             }
         }
         // The warping session's last batch from this map goes out before the handoff.
@@ -734,8 +735,8 @@ impl MapWorldActor {
             if revision == session.saved_revision {
                 continue;
             }
-            if let Some(inventory) = self.engine.inventory_snapshot(session.char_id) {
-                session.claim.save_inventory(inventory);
+            if let Some(snapshot) = self.engine.inventory_snapshot(session.char_id) {
+                session.claim.save_inventory(snapshot);
                 session.saved_revision = revision;
             }
         }
@@ -1050,8 +1051,8 @@ impl MapWorldActor {
             None => Vec::new(),
             Some(pos) => {
                 claim.set_last(&self.map_name, pos);
-                if let Some(inventory) = self.engine.inventory_snapshot(char_id) {
-                    claim.set_inventory(inventory);
+                if let Some(snapshot) = self.engine.inventory_snapshot(char_id) {
+                    claim.set_inventory(snapshot);
                 }
                 self.engine.remove_character(char_id).unwrap_or_else(|err| {
                     warn!(

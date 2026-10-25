@@ -43,9 +43,9 @@
 Like the spawn lists, the registries are imported offline into our own schema; `ro-db` never parses rAthena's item or mob YAML.
 
 1. **Offline import (dev-only, MIT, clean-room):**
-   * `tools/item-import` reads `db/re/item_db_{usable,equip,etc}.yml`, applies rAthena's load rules (`DelayConsume` -> `Usable`, equipment without `Locations` -> `Etc`, field-by-field merge of repeated ids, `AliasName` -> `ViewId`) and keeps only the fields Metaling uses. It writes `ITEM_DATA` v1 to `data/item/item_{usable,equip,etc}.yml`, in id order.
+   * `tools/item-import` reads `db/re/item_db_{usable,equip,etc}.yml`, applies rAthena's load rules (`DelayConsume` -> `Usable`, equipment without `Locations` -> `Etc`, field-by-field merge of repeated ids, `AliasName` -> `ViewId`) and keeps only the fields Metaling uses, including the equipment fields with rAthena's type-clearing, level-clamping and forced-gender rules and the `Jobs` / `Classes` bitsets. It writes `ITEM_DATA` v2 to `data/item/item_{usable,equip,etc}.yml`, in id order.
    * `tools/mob-import` reads `db/re/mob_db.yml` and resolves `Drops` / `MvpDrops` AegisNames to item ids through `ItemDb` (loaded from `data/item/`, so run item-import first). It writes `MOB_DATA` v1 to `data/mob/mob_db.yml`.
-   * Schemas: `specs/items/spec.md` §1.
+   * Schemas: `specs/items/spec.md` §1; the v2 equipment keys in `specs/equipment/spec.md` §1.
 2. **Runtime (`ItemDb::load_dir`, `MobDb::load_dir`):** the map-server loads both once at startup from `ITEM_DATA_DIR` / `MOB_DATA_DIR` and shares them through `Arc` with every map instance. A missing file in a configured directory is an error; an unset directory gives an empty registry.
 3. **Lookups:** `ItemDb` by id, by case-insensitive AegisName (unique) and by case-insensitive Name (lowest id wins); `MobDb` by id. Both use `std` hash maps over an id-sorted `Vec`.
 4. **Validation:** duplicate ids, duplicate AegisNames, unknown keys, bad headers; for mobs also the id ranges, at most 10 drops / 3 MVP drops, and rates in `1..=10000`.
@@ -105,6 +105,17 @@ pub struct ItemData {
     pub view: u32,
     pub view_id: Option<ItemId>,      // AliasName target; client_id() picks it
     pub slots: u16,
+    // Equipment (ITEM_DATA v2). Default = omitted in YAML; ItemData::default() for builders.
+    pub weapon_type: WeaponType,      // W_* (id()); Fist unless a weapon
+    pub ammo_type: Option<AmmoType>,  // AMMO_* (id()); ammo only
+    pub attack: u32, pub magic_attack: u32, pub defense: u32,
+    pub range: u8,                    // <= 14
+    pub weapon_level: u8, pub armor_level: u8,
+    pub equip_level_min: u16, pub equip_level_max: u16,   // 0 = no bound
+    pub gender: Gender,               // Female | Male | Both (e_sex numbers)
+    pub jobs: [u64; 3],               // class_base: first/2-1/2-2 branch bitsets; ALL_JOBS
+    pub classes: u8,                  // ITEMJ_* mask; ALL_CLASSES = 0x7f
+    pub refineable: bool,
     pub stack_amount: u16, pub stack_inventory: bool,
     pub unique_id: bool, pub bind_on_equip: bool,
     pub drop_effect: u8,              // e_item_drop_effect

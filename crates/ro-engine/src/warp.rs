@@ -3,7 +3,7 @@
 
 use std::sync::Arc;
 
-use ro_core::{CharacterSpawn, MapPosition, ServerEvent};
+use ro_core::{CharacterInventory, CharacterLooks, CharacterSpawn, MapPosition, ServerEvent};
 use ro_db::NpcState;
 use tracing::warn;
 
@@ -31,6 +31,16 @@ pub struct MapTransfer {
     pub rewarp_count: u8,
     /// The cell that fired the warp, on this map.
     pub from_pos: MapPosition,
+    /// Char-select looks of the worn gear, saved with `spawn.inventory`.
+    pub looks: CharacterLooks,
+}
+
+/// What the map-server saves for an online character (`MapInstance::inventory_snapshot`).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct InventorySnapshot {
+    pub inventory: CharacterInventory,
+    /// Char-select looks of the worn gear (written to the character's look columns).
+    pub looks: CharacterLooks,
 }
 
 /// One bit per map cell.
@@ -173,11 +183,14 @@ impl MapInstance {
             return;
         };
         let from_pos = self.pos(e);
-        let inventory = self
+        let (inventory, looks) = self
             .world
             .inventories
             .remove(e)
-            .map(|i| i.into_character_inventory())
+            .map(|i| {
+                let looks = i.gear(&self.items).character_looks();
+                (i.into_character_inventory(), looks)
+            })
             .unwrap_or_default();
         let spawn = CharacterSpawn {
             account_id: info.account_id,
@@ -215,6 +228,7 @@ impl MapInstance {
             dest: trigger.dest,
             rewarp_count,
             from_pos,
+            looks,
         });
     }
 

@@ -7,6 +7,7 @@ use ro_core::{AchievementSummary, ServerEvent, SkillInfo};
 
 use crate::engine::MapInstance;
 use crate::entity::Entity;
+use crate::wear::LOOK_WEAPON;
 
 /// How a player entity came onto this map; decides the entry settings (rAthena `connect_new` /
 /// `changemap`). A same-map warp keeps the entity, so it has no arrival.
@@ -42,8 +43,6 @@ const NATURAL_HEAL_WEIGHT_RATE: u32 = 70;
 /// and SUNMOONSTAR_MIRACLE (bit 10), which rAthena sets unless a mapflag forbids them.
 const MAP_PROPERTY_NOTHING: u16 = 0;
 const MAP_FLAGS_DEFAULT: u32 = 0x0600;
-/// `LOOK_WEAPON`: the `0x01d7` look carrying both hands.
-const LOOK_WEAPON: u8 = 2;
 
 /// NV_BASIC (Basic Skill) at level 0, the one skill rAthena always lists for a fresh novice. Sent
 /// to everyone until characters have a skill tree.
@@ -106,9 +105,9 @@ impl MapInstance {
     pub(crate) fn send_weapon_look(&mut self, e: Entity) {
         let (value, value2) = self
             .world
-            .inventories
+            .players
             .get(e)
-            .map_or((0, 0), |i| i.hand_looks(&self.items));
+            .map_or((0, 0), |info| (info.looks.weapon, info.looks.shield));
         let gid = self.gid(e);
         self.emit_self(
             e,

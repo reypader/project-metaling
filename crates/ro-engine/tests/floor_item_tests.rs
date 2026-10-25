@@ -47,6 +47,7 @@ fn data(id: u32, item_type: ItemType, weight: u32) -> ItemData {
         drop_effect: 0,
         no_drop: false,
         no_drop_override: 100,
+        ..ItemData::default()
     }
 }
 

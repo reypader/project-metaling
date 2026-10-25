@@ -115,6 +115,19 @@ pub enum ClientIntent {
     Chat {
         text: Vec<u8>,
     },
+    /// `0x0998`: wear the item at wire `index` (slot + 2) on the `EQP_*` `position` mask.
+    EquipItem {
+        index: u16,
+        position: u32,
+    },
+    /// `0x00ab`: take off the item at wire `index`.
+    UnequipItem {
+        index: u16,
+    },
+    /// `0x0bf5`: take off everything worn on the `EQP_*` `location` mask.
+    UnequipAll {
+        location: u32,
+    },
 }
 
 impl fmt::Debug for ClientIntent {
@@ -242,6 +255,18 @@ impl fmt::Debug for ClientIntent {
                 .debug_struct("Chat")
                 .field("text", &String::from_utf8_lossy(text))
                 .finish(),
+            Self::EquipItem { index, position } => f
+                .debug_struct("EquipItem")
+                .field("index", index)
+                .field("position", position)
+                .finish(),
+            Self::UnequipItem { index } => {
+                f.debug_struct("UnequipItem").field("index", index).finish()
+            }
+            Self::UnequipAll { location } => f
+                .debug_struct("UnequipAll")
+                .field("location", location)
+                .finish(),
         }
     }
 }
@@ -335,6 +360,22 @@ pub struct AchievementSummary {
     pub exp_to_next: u32,
 }
 
+/// What other players see a unit wearing: the gear fields of the entry packets. Weapon and
+/// shield are client item ids (`ViewId` or item id), not types; see
+/// [`CharacterLooks`](crate::CharacterLooks) for the char-select form.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub struct UnitLooks {
+    /// The right-hand item; 0 for none.
+    pub weapon: u32,
+    /// The left-hand item; 0 for none or when a two-hander fills both hands.
+    pub shield: u32,
+    /// View ids after the costume override (`accessory`, `accessory2`, `accessory3`).
+    pub head_bottom: u16,
+    pub head_top: u16,
+    pub head_mid: u16,
+    pub robe: u16,
+}
+
 /// Appearance snapshot shared by the unit entry packets (`0x09fd`/`0x09fe`/`0x09ff`).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UnitAppearance {
@@ -360,6 +401,8 @@ pub struct UnitAppearance {
     pub clevel: u16,
     /// rAthena `sc.option` (`effect_state`): `0x2` hidden, `0x4` cloaked NPCs.
     pub effect_state: i32,
+    /// Worn gear; all 0 for NPCs and mobs.
+    pub looks: UnitLooks,
 }
 
 /// High-level domain events emitted by logic modules and engine systems, decoupled from wire serialization.
@@ -619,6 +662,45 @@ pub enum ServerEvent {
     /// `0x0ade`: the weight percentage at which natural regeneration stops.
     OverweightPercent {
         percent: u32,
+    },
+    /// `0x0999`: the reply to `EquipItem`. `result` 0 ok, 1 level too low, 2 failed; a failure
+    /// carries location 0 and view 0. `view` is the item's `View` for a visible slot, else 0.
+    EquipAck {
+        index: u16,
+        location: u32,
+        view: u16,
+        result: u8,
+    },
+    /// `0x099a`: an item came off (`location` = the mask it was worn on), or a take-off failed.
+    UnequipAck {
+        index: u16,
+        location: u32,
+        failed: bool,
+    },
+    /// `0x0bae`: the reply to `UnequipAll`.
+    UnequipAllAck {
+        failed: bool,
+    },
+    /// `0x013c`: the ammo at wire `index` is now worn.
+    AmmoEquipped {
+        index: u16,
+    },
+    /// `0x013b`: `ZC_ACTION_FAILURE`; type 3 is "ammunition equipped", 0 "equip ammo first".
+    ActionFailure {
+        failure_type: u16,
+    },
+    /// `0x0291`: show the client's message number `msg_id` (a `msgstringtable` line, 0-based).
+    ClientMessage {
+        msg_id: u16,
+    },
+    /// `0x0983`: status icon `efst` started on unit `gid`. Times are in ms.
+    StatusIconStarted {
+        efst: u16,
+        gid: u32,
+        state: u8,
+        total_ms: u32,
+        remain_ms: i32,
+        values: [i32; 3],
     },
 }
 

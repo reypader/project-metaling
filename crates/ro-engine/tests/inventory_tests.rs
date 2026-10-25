@@ -37,6 +37,7 @@ fn data(id: u32, item_type: ItemType, weight: u32, locations: u32, view: u32) ->
         drop_effect: 0,
         no_drop: false,
         no_drop_override: 100,
+        ..ItemData::default()
     }
 }
 
@@ -267,7 +268,10 @@ fn eng_inv_06_warp_carries_inventory() {
         from.give_item(char_id(A), &InventoryItem::new(ItemId(909), 1)),
         Ok(0)
     );
-    let before = from.inventory_snapshot(char_id(A)).expect("snapshot");
+    let before = from
+        .inventory_snapshot(char_id(A))
+        .expect("snapshot")
+        .inventory;
     assert_eq!(
         before.slots[1].as_ref().map(|i| i.item_id),
         Some(ItemId(909))
@@ -295,6 +299,9 @@ fn eng_inv_06_warp_carries_inventory() {
     let mut to = instance(vec![]);
     to.enter_by_warp(transfer.spawn, transfer.dest, transfer.rewarp_count, 600)
         .expect("arrives");
-    assert_eq!(to.inventory_snapshot(char_id(A)), Some(before));
+    assert_eq!(
+        to.inventory_snapshot(char_id(A)).map(|s| s.inventory),
+        Some(before)
+    );
     assert_eq!(to.weight(char_id(A)), Some((5 * 70 + 400 + 10, 23_300)));
 }

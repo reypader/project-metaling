@@ -3,6 +3,53 @@
 Items consciously left out of finished work, with enough context to pick them up later.
 Remove an item when it lands. Newest feature first.
 
+## equipment (branch `main`, plan `specs/equipment/plan.md`)
+
+Spec: `specs/equipment/spec.md` §5. Equip, take-off, unequip-all, dual wield (Assassin/Kagerou class), ammo
+with its icon and cascades, looks (live, entry packets, char select), the gear-only status push, and a
+dropped worn stack coming off first are in.
+
+### Still to verify by hand
+- **Manual client check** (plan Finish): `@item` a knife, a guard, a hat; equip, swap, take off, unequip
+  all; an observer sees the looks; relog keeps the gear; char select; an Archer (`UPDATE characters SET
+  job_class = 3`) with a bow and arrows.
+- A shield replacing a bow takes the arrows off (our ruling; not captured).
+
+### Needs the stats feature
+- ASPD, status ATK/MATK, soft DEF/MDEF, HIT, FLEE, CRIT, MaxHP/SP from gear: the stats feature fills
+  `DerivedStatus` (ASPD is 0 until then). rAthena also pushes ASPD on shield changes, ATK1 on bow changes
+  and `SP_CRITICAL` on katar changes; we push only the gear-only values that changed.
+- Per-hand values: `Gear::hands` puts a two-hander that holds only `HAND_L` mid-displacement on the
+  left; rAthena counts it as the right-hand weapon (its `equip` is still 0, catalog §3 step 11). Harmless
+  while ATK2 is a sum and range a max; fix it before per-hand ATK, dual-wield penalties or ASPD.
+- Refine and grade bonuses to ATK/DEF/MATK (refine is always 0 today; the +10 numbers are in catalog
+  `mechanics/stats.md`).
+- Re-checking worn gear on a level or job change (rAthena force-unequips), and a GM `@job` command. Until
+  then, test job-limited gear with `UPDATE characters SET job_class = …`.
+
+### Item features
+- Item scripts and bonuses (item MDEF is script-only in renewal data, so `hard_mdef` stays 0); cards and
+  combos; `EquipScript` / `UnEquipScript`. Bravery Bag's skill-grant packets come from its script.
+- Bind-on-equip (`bound = 4`, `clif_notify_bindOnEquip`).
+- Equip switch (`0x0a9b` contents, `equip_switch` column use).
+- Pet armor.
+- Identification: mob-dropped equipment is unidentified, so it fails with result 2 until identify exists.
+
+### Gates
+- Strip / `cant.equip` / `SC_PYROCLASTIC` / `SC_KYOUGAKU` blocks; map `NoEquip`; `PCBLOCK_EQUIP` and
+  NPC-script gates with `MSI_CAN_NOT_EQUIP_ITEM` (372); `canequip_tick`.
+- `AS_LEFT` dual wield for non-Assassins; the `AS_VENOMKNIFE` dagger-ammo rule.
+- Soul Linker Super Novice shortcuts; the `PC_PERM_USE_ALL_EQUIPMENT` GM bypass.
+
+### Packets
+- `skillrange_from_weapon` skill-list re-send on a range change.
+- The ammo EFST end (`0x0196`): rAthena never sends it. Revisit if the client keeps the icon after
+  unequip.
+- Entry `body` for NPCs with a player sprite: rAthena sends their class there (catalog `map_units.md`); we
+  send 0. Only matters once such NPCs show a job body.
+- Bullets and cannonballs are untested against a capture (only arrows are captured); the `0x099a` failure
+  forms are from source reading.
+
 ## map-entry-settings (branch `main`, plan `specs/map-entry-settings/plan.md`)
 
 Spec §1–§5. The settings group is sent with defaults, `0x0447` gets its `0x0b1b`, (Fix 1) the login also
@@ -76,15 +123,12 @@ API and `@item` are in.
   `loot = true` (first loot item goes N, no effect). `tools/mob-import` will need the looter bit.
 
 ### Item features
-- Equip / unequip (`0x0998` / `0x00ab`), `0x013c`, the `0x01d7` look packets, and the equip index at load.
-  When equip lands, decide whether a drop unequips first (rAthena allows dropping worn items).
 - Item use `0x0439` / `0x01c8`, `0x07fa` deletes, item scripts, cooldowns.
 - Rental items: `expire_time` timers and the rental-expired packets.
 - Overweight statuses `SC_WEIGHT50` / `SC_WEIGHT90`, and `0x0ade` at entry.
 - Inventory expansion: `inventory_slots` and a non-zero `0x0b18` (the persistence load refuses more than
   100 rows today).
 - Max weight: the per-job `MaxWeight` (`job_stats.yml`) and bonuses (Enlarge Weight Limit, mounts).
-- The `pc_equippoint` dual-wield location change (`EQP_ARMS` for assassin-class one-hand weapons).
 - Autoloot and party loot share (`party_share_loot`, party item-share tiers in the loot check).
 
 ### Gates and commands

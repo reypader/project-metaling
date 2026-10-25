@@ -2,8 +2,8 @@
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
 use ro_core::{
-    AccountId, CharId, CharacterSpawn, CharacterSummary, MapPosition, ServerEvent, Sex,
-    UnitAppearance, UnitObjectType, DEFAULT_WALK_SPEED,
+    AccountId, CharId, CharacterLooks, CharacterSpawn, CharacterSummary, MapPosition, ServerEvent,
+    Sex, UnitAppearance, UnitLooks, UnitObjectType, DEFAULT_WALK_SPEED,
 };
 
 fn summary() -> CharacterSummary {
@@ -25,6 +25,7 @@ fn summary() -> CharacterSummary {
             dir: 4,
         },
         delete_date: None,
+        looks: CharacterLooks::default(),
     }
 }
 
@@ -68,6 +69,7 @@ fn unit_appearance_and_new_server_events_construct() {
         dead_sit: 0,
         clevel: 1,
         effect_state: 0,
+        looks: UnitLooks::default(),
     };
     let events = [
         ServerEvent::PlayerMoved {

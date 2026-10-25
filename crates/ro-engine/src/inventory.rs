@@ -6,6 +6,8 @@ use ro_core::{
 };
 use ro_db::{ItemData, ItemDb};
 
+use crate::equipment::{Gear, WornSlots, EQP_VISIBLE};
+
 /// `e_additem_result` codes; they go on the wire unchanged (`0x0b41` `result`).
 pub(crate) const ADD_INVALID: u8 = 1;
 pub(crate) const ADD_OVERWEIGHT: u8 = 2;
@@ -19,11 +21,6 @@ const BASE_MAX_WEIGHT: u32 = 20_000;
 const MAX_WEIGHT_PER_STR: u32 = 300;
 /// Wire type of an item missing from the registry (Etc).
 const UNKNOWN_ITEM_TYPE: u8 = 3;
-/// `EQP_VISIBLE`: heads, garment and costumes, the positions with a sprite.
-const EQP_VISIBLE: u32 = 0x301 | 0x4 | 0x3C00;
-/// `EQP_HAND_R` / `EQP_HAND_L`: weapon and shield positions.
-const EQP_HAND_R: u32 = 0x0002;
-const EQP_HAND_L: u32 = 0x0020;
 /// `card[0]` markers: forged, created, pet egg.
 const CARD0_FORGE: u32 = 0x00FF;
 const CARD0_CREATE: u32 = 0x00FE;
@@ -46,6 +43,8 @@ pub(crate) struct PlayerInventory {
     unique_item_counter: u32,
     /// Bumped on every change; the map-server saves when it differs from the last save.
     revision: u64,
+    /// The slot worn at each position, from the items' `equip` masks.
+    worn: WornSlots,
 }
 
 /// A successful add: where it went and how much.
@@ -74,13 +73,24 @@ impl PlayerInventory {
     ) -> Self {
         let mut slots = inventory.slots;
         slots.resize(INVENTORY_SLOTS, None);
+        // Two rows claiming one position (a hand-edited database): the first keeps it and the
+        // later one loads unworn, so the item lists and the worn-slot table agree.
+        let mut taken = 0u32;
+        for item in slots.iter_mut().flatten() {
+            if item.equip & taken != 0 {
+                item.equip = 0;
+            }
+            taken |= item.equip;
+        }
         let weight = slots
             .iter()
             .flatten()
             .map(|item| item_weight(items, item.item_id).saturating_mul(u32::from(item.amount)))
             .fold(0u32, u32::saturating_add);
+        let worn = WornSlots::from_slots(&slots);
         Self {
             slots,
+            worn,
             weight,
             max_weight: max_weight(str),
             char_id,
@@ -105,28 +115,41 @@ impl PlayerInventory {
         self.slots.get(slot).and_then(Option::as_ref)
     }
 
-    /// The `LOOK_WEAPON` pair for `0x01d7`: the client id of the right-hand item, then of the
-    /// left-hand item when that is a different slot (a shield); 0 for an empty hand. A
-    /// two-handed weapon fills both hands from one slot, so its left value is 0.
-    pub(crate) fn hand_looks(&self, items: &ItemDb) -> (u32, u32) {
-        let worn_in = |position: u32| {
-            self.slots.iter().enumerate().find_map(|(slot, item)| {
-                item.as_ref()
-                    .filter(|i| i.equip & position != 0)
-                    .map(|i| (slot, i))
-            })
-        };
-        let look = |item: &InventoryItem| {
-            items
-                .get(item.item_id)
-                .map_or(item.item_id.0, ItemData::client_id)
-        };
-        let right = worn_in(EQP_HAND_R);
-        let left = worn_in(EQP_HAND_L).filter(|(slot, _)| right.is_none_or(|(r, _)| r != *slot));
-        (
-            right.map_or(0, |(_, item)| look(item)),
-            left.map_or(0, |(_, item)| look(item)),
-        )
+    /// The worn set, for looks and gear status.
+    pub(crate) fn gear<'a>(&'a self, items: &'a ItemDb) -> Gear<'a> {
+        Gear::new(&self.worn, &self.slots, items)
+    }
+
+    /// The slot worn at the first of `positions` (in `EQI` order) that holds an item.
+    pub(crate) fn worn_at(&self, positions: u32) -> Option<usize> {
+        self.worn.at(positions)
+    }
+
+    /// Points `position` at `slot` in the worn-slot table. An equip takes its positions one at a
+    /// time (spec §2.2 step 10); [`Self::set_equip`] records the final mask.
+    pub(crate) fn wear_position(&mut self, position: u32, slot: usize) {
+        self.worn.assign(position, slot);
+    }
+
+    /// Sets the worn mask of the item at `slot`. Bumps the revision so autosave sees it.
+    pub(crate) fn set_equip(&mut self, slot: usize, mask: u32) {
+        if let Some(item) = self.slots.get_mut(slot).and_then(Option::as_mut) {
+            item.equip = mask;
+            self.revision += 1;
+        }
+    }
+
+    /// Takes the item at `slot` off: frees its positions and clears its mask. Returns the mask it
+    /// was worn on, or `None` when it wasn't worn.
+    pub(crate) fn take_off(&mut self, slot: usize) -> Option<u32> {
+        let item = self.slots.get_mut(slot)?.as_mut()?;
+        let mask = std::mem::take(&mut item.equip);
+        if mask == 0 {
+            return None;
+        }
+        self.worn.clear_slot(slot);
+        self.revision += 1;
+        Some(mask)
     }
 
     /// A copy for saving; trailing holes are trimmed.
@@ -265,7 +288,14 @@ impl PlayerInventory {
         removed.amount = amount;
         stack.amount -= amount;
         if stack.amount == 0 {
+            // Callers take a worn item off first (`unequip_before_removal`, spec §2.8), so the
+            // looks, status and `0x099a` follow. Release builds still never keep a stale position.
+            debug_assert_eq!(
+                stack.equip, 0,
+                "removing worn slot {slot} without unequipping"
+            );
             *entry = None;
+            self.worn.clear_slot(slot);
         }
         self.weight = self
             .weight
@@ -379,6 +409,7 @@ fn list_entry(
 #[cfg(test)]
 pub(crate) mod tests {
     use super::*;
+    use crate::equipment::{EQP_HAND_L, EQP_HAND_R};
     use ro_db::ItemType;
 
     pub(crate) fn data(id: u32, item_type: ItemType, weight: u32) -> ItemData {
@@ -399,6 +430,7 @@ pub(crate) mod tests {
             drop_effect: 0,
             no_drop: false,
             no_drop_override: 100,
+            ..ItemData::default()
         }
     }
 
@@ -447,7 +479,10 @@ pub(crate) mod tests {
             slots,
             unique_item_counter: 0,
         };
-        PlayerInventory::new(inventory, CharId(150_000), 1, &items).hand_looks(&items)
+        let looks = PlayerInventory::new(inventory, CharId(150_000), 1, &items)
+            .gear(&items)
+            .unit_looks();
+        (looks.weapon, looks.shield)
     }
 
     /// ENG-SET-08: the `0x01d7` hand looks: empty hands, an unworn weapon, a weapon and a
@@ -465,6 +500,20 @@ pub(crate) mod tests {
             (1201, 0),
             "both hands from one slot"
         );
+    }
+
+    /// A position claimed by two loaded rows stays with the first; the second loads unworn.
+    #[test]
+    fn conflicting_worn_rows_load_first_wins() {
+        let items = test_items();
+        let inventory = CharacterInventory {
+            slots: vec![worn(1201, EQP_HAND_R), worn(1201, EQP_HAND_R)],
+            unique_item_counter: 0,
+        };
+        let inv = PlayerInventory::new(inventory, CharId(150_000), 1, &items);
+        assert_eq!(inv.worn_at(EQP_HAND_R), Some(0));
+        let equips: Vec<u32> = inv.snapshot().items().map(|i| i.equip).collect();
+        assert_eq!(equips, [EQP_HAND_R, 0]);
     }
 
     fn slots(inv: &PlayerInventory) -> Vec<Option<(u32, u16)>> {

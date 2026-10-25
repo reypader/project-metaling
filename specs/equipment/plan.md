@@ -345,6 +345,81 @@ Rulings made during implementation, and review results later milestones must hon
   the capture-3 dual-wield sequences (ENG-EQ-13) in M7's tests; `prepare_equip` already returns the
   captured hand choice. Check `docker ps` first: if rAthena is up, start the metaling DB with `-p metaling`
   (see the session B note above).
+- **Session C (2026-10-25):** capture 4 checked and its docs committed (`3a7107f`). M7 and M8 done,
+  `./verify.sh` green (656 tests, DB up as container `metaling-db`). Code is uncommitted, as planned.
+- **M7 (session C):**
+  - Flows in the new `ro-engine/src/wear.rs` (`impl MapInstance`): `equip_item`, `unequip_item`,
+    `unequip_all`, and the core `unequip_slot(e, slot, Unequip { recalc, cascade })` with three flag sets:
+    `TAKE_OFF` (take-off, unequip-all, dropped stack), `DISPLACED` (pushes, no cascade) and
+    `CASCADED_AMMO` (only its `0x099a`). `engine.rs` `handle_intent` routes the three intents.
+  - `PlayerInventory` got `worn_at`, `wear_position` (one position, no bump), `set_equip` (bumps the
+    revision) and `take_off` (frees the positions, clears `equip`, bumps). `hand_looks` and the duplicate
+    `EQP_*` consts in `inventory.rs` are gone; its ENG-SET-08 unit test now reads `Gear::unit_looks`.
+  - `PlayerInfo.looks: UnitLooks` is the cache: built in `spawn_player`, refreshed by `refresh_looks`
+    after every table change (returns before/after; head and robe looks are sent from that diff, hand and
+    shoe looks always). `appearance` and `send_weapon_look` read it. `LOOK_WEAPON` now lives in `wear.rs`.
+  - Look order as captured: unequip = hand/shoe looks → `0x099a` → head looks → (cascade) → push; equip =
+    `0x0999` → hand/shoe looks → head looks → (ammo cascade) → push. Head looks check bottom, mid, top,
+    robe in that order.
+  - Weapon MATK: `GearStatus.matk` (both hands' `MagicAttack`) → `DerivedStatus.matk1`; `status_window`
+    sends `matk_bonus` = `matk1`, `matk` = `matk2`.
+  - Unequip-all while dead → `0x0bae` result 1 with the inline comment the user asked for (`wear.rs`
+    `unequip_all`). The dead tests are unit tests in `wear.rs` (they set `dead_sit`; nothing kills a
+    player yet).
+  - The `lib.rs` dead-code allows for `equipment`/`job` and the ones on `recalc`/`derived_diff` are gone.
+    **`Gear::character_looks` keeps a `cfg_attr(not(test), allow(dead_code))` until M9 uses it.**
+  - Tests: `crates/ro-engine/tests/equipment_tests.rs` (ENG-EQ-01 flow, 03, 04, 05 ×5, 06, 07, 08, 11,
+    13, ENG-STAT-01 Rod, 02 MATK, 03).
+- **M8 (session C):**
+  - Ammo equip sends `0x0983` (area) + `0x013c` + `0x013b` 3, no `0x0999`. `send_worn_ammo` (self only)
+    runs in `send_inventory` between `0x0b09` and `0x0b39`, on every actor init.
+  - Cascades: a ranged weapon's take-off (`TAKE_OFF`) takes the worn ammo off after its head looks and
+    before its push; an equip whose final mask touches a hand runs `drop_unfit_ammo` after the looks,
+    using the new `weapon_type()`. **Ruling:** that includes a shield (a Guard over a bow leaves no weapon,
+    so arrows come off); the spec said "a weapon went into a hand". Uncaptured either way.
+  - Drop: `floor_item.rs` `drop_item` calls `unequip_before_removal` after `add_floor_item` (the
+    `0x0add`) and before `inventory.remove`, only when the whole worn stack goes.
+  - Tests: ENG-EQ-08 (arrows once), 09 ×4, 10, 12 in `equipment_tests.rs`.
+- **Session D, start here:** M9 then Finish. M9 needs: `CharacterLooks` from `Gear::character_looks`
+  carried with the inventory snapshot (engine API) into `WriteKind::Inventory` (`claim.rs` passes
+  `CharacterLooks::default()` today, see the M4 note), `tests/common` storing the looks for BIN-EQ-02, and
+  removing the `character_looks` dead-code allow. The reviewer's diff is `git diff 6be7d91 -- .
+  ':!tools/proxy'` plus untracked files (see "Git state"); capture docs commits `8f322e0`/`3a7107f` are in
+  that range too and are docs only.
+
+- **M9 (session D, 2026-10-25):**
+  - `ro_engine::InventorySnapshot { inventory, looks }` (in `warp.rs`): `MapInstance::inventory_snapshot`
+    returns it, and `MapTransfer` got `looks` (taken before the inventory moves out). The claim's
+    `WriteKind::Inventory`, `set_inventory` and `save_inventory` carry the snapshot; the writer passes its
+    looks to `save_inventory`. The recent-write map keeps only the inventory: a re-entry rebuilds the looks
+    from the worn gear. `Gear::character_looks`'s dead-code allow is gone.
+  - `tests/common` writes the looks into the stored summary (like the look columns), with
+    `stored_looks(n)`; `ops`, `inventory`, `enter`, `wait_until(_for)` moved there from `item_tests.rs`.
+  - Tests: `bins/map-server/tests/equip_tests.rs` (BIN-EQ-01..03) and `claim.rs`
+    `bin_eq_02_writer_saves_looks_with_inventory`. BIN-EQ-02 checks the char list through the fake repo's
+    `list_by_account`; the char-server's encoding of the looks is PKT-EQ (M3) and the columns PER-EQ-01.
+
+- **Finish review (session D, 2026-10-25):** `reviewer` over the full diff. Fixed:
+  - **Must fix:** the importer forced the wedding-ring genders by made-up AegisNames, so 2634/2635
+    loaded as `Both`. It now matches item ids 2634 (Male) / 2635 (Female) (`metaling-explorer` confirmed
+    `WEDDING_RING_M`/`_F`, catalog §3a); the fixture uses the real names, the data is regenerated, and
+    DB-ITEM-03 checks both rings.
+  - A dropped stack's floor copy has `equip` 0. `PlayerInventory::remove` `debug_assert`s that an emptied
+    slot isn't worn (callers must use `unequip_before_removal`). Two loaded rows claiming one position:
+    the first wins, the second loads unworn. The schema rename is guarded against both columns existing.
+    Out-of-range look columns load as 0. `kept()` in the importer reads straight.
+  - Left as noted: `Gear::hands` puts a mid-displacement two-hander on the left (DEFERRED, for stats).
+  - Checked, no change: head looks go bottom, mid, top, robe as in rAthena's `pc_set_costume_view`
+    (catalog §5 "Look send order").
+  - **Shield over a bow:** rAthena leaves the arrows worn (its ammo check runs only for an `IT_WEAPON`,
+    and the displaced bow is unequipped without the cascade; catalog §3 step 14). Metaling keeps the
+    user's ruling (arrows come off); raised with the user at Finish.
+
+- **Manual check fix (session D, 2026-10-25):** the SQL-made Archer showed "Archer" in char select and the
+  status window but drew a Novice body. The char-select entry and the three entry packets sent `body` 0;
+  the client draws the body sprite from `body`, and every capture has `body` = `job` (char.md, map_units.md
+  updated). Both encoders now send the job for players (0 for NPCs and mobs). PKT-EQ-08. Pre-existing
+  since the char and entry encoders were written; it only shows for a job other than Novice.
 
 ## Milestones
 Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
@@ -395,20 +470,20 @@ Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
 - [x] **M6 engine status hook** *(session B, 2026-10-25)*
   - `DerivedStatus` stored per player, `GearStatus`, `recalc(e)` with the ordered diff push; login push and
     `0x00bd` use stored values; spawn builds them from the worn set. ENG-STAT-01/02.
-- [ ] **M7 engine equip flows** *(session C)*
+- [x] **M7 engine equip flows** *(session C, 2026-10-25)*
   - `EquipItem` / `UnequipItem` / `UnequipAll` handling: gates, displacement, acks, looks to the area,
     `UnitLooks` cache refresh, revision bump, recalc. Entry events use `UnitLooks`.
   - ENG-EQ-03..08, ENG-EQ-11, ENG-STAT-03. `ro-engine/DESIGN.md`.
   - From capture 4: unequip-all while dead → `0x0bae` result 1 with the inline "rAthena allows this; we
     treat it as a bug" comment; weapon MATK in `GearStatus` (M6 note); the costume/head-look cases of
     ENG-EQ-05.
-- [ ] **M8 engine ammo + worn-item removal** *(session C)*
+- [x] **M8 engine ammo + worn-item removal** *(session C, 2026-10-25)*
   - Ammo equip acks, cascade on weapon removal and on a mismatched weapon, map-entry `0x0983` + `0x013c`;
     worn-item unequip inside remove/drop. ENG-EQ-09, ENG-EQ-10, ENG-EQ-12.
-- [ ] **M9 map-server wiring** *(session D)*
+- [x] **M9 map-server wiring** *(session D, 2026-10-25)*
   - Claim writer carries looks; engine API returns the looks with the inventory snapshot; char-server list
     sends them; fakes updated. BIN-EQ-01..03.
-- [ ] **Finish** *(session D)*
+- [x] **Finish** *(session D, 2026-10-25; manual client check passed after the `body` fix)*
   - Run the `reviewer` over `git diff HEAD` plus untracked files; apply its fixes.
   - `DESIGN.md` for ro-engine, ro-db, ro-persistence. `DEFERRED.md`: an "equipment" section from spec §5;
     remove the items-section equip bullets (lines ~79-80, ~87) that this feature closes.

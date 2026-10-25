@@ -126,6 +126,8 @@ impl PacketOpcode {
     pub const CZ_PC_PURCHASE_ITEMLIST_FROMMC: Self = Self(0x0134);
     pub const ZC_ATTACK_RANGE: Self = Self(0x013a);
     pub const CZ_PKMODE_CHANGE: Self = Self(0x0138);
+    pub const ZC_ACTION_FAILURE: Self = Self(0x013b);
+    pub const ZC_EQUIP_ARROW: Self = Self(0x013c);
     pub const CZ_ITEM_CREATE: Self = Self(0x013f);
     pub const CZ_MOVETO_MAP: Self = Self(0x0140);
     pub const ZC_COUPLESTATUS: Self = Self(0x0141);
@@ -372,6 +374,7 @@ impl PacketOpcode {
     pub const HC_ACK_IS_VALID_CHARNAME: Self = Self(0x028e);
     pub const CH_REQ_CHANGE_CHARNAME_0X028F: Self = Self(0x028f);
     pub const HC_ACK_CHANGE_CHARNAME_0X0290: Self = Self(0x0290);
+    pub const ZC_MSG: Self = Self(0x0291);
     pub const CZ_STANDING_RESURRECTION: Self = Self(0x0292);
     pub const ZC_BOSS_INFO: Self = Self(0x0293);
     pub const ZC_READ_BOOK: Self = Self(0x0294);
@@ -819,6 +822,8 @@ impl PacketOpcode {
     pub const ZC_MSG_STATE_CHANGE3: Self = Self(0x0983);
     pub const CZ_CLAN_CHAT: Self = Self(0x098d);
     pub const CZ_REQ_WEAR_EQUIP: Self = Self(0x0998);
+    pub const ZC_REQ_WEAR_EQUIP_ACK: Self = Self(0x0999);
+    pub const ZC_REQ_TAKEOFF_EQUIP_ACK: Self = Self(0x099a);
     pub const ZC_NOTIFY_MAPPROPERTY2: Self = Self(0x099b);
     pub const ZC_SKILL_ENTRY4: Self = Self(0x099f);
     pub const HC_CHARLIST_NOTIFY: Self = Self(0x09a0);
@@ -1003,6 +1008,7 @@ impl PacketOpcode {
     pub const CZ_REQUEST_UPGRADE_ENCHANT: Self = Self(0x0b9d);
     pub const CZ_REQUEST_RESET_ENCHANT: Self = Self(0x0b9e);
     pub const CZ_CLOSE_UI_ENCHANT: Self = Self(0x0ba0);
+    pub const ZC_ACK_TAKEOFF_EQUIP_ALL: Self = Self(0x0bae);
     pub const CZ_USE_PACKAGEITEM: Self = Self(0x0baf);
     pub const CZ_APPROXIMATE_ACTOR: Self = Self(0x0bb0);
     pub const CZ_RESET_SKILL: Self = Self(0x0bb1);
@@ -1141,6 +1147,8 @@ impl PacketOpcode {
             0x0134 => Some("CZ_PC_PURCHASE_ITEMLIST_FROMMC"),
             0x0138 => Some("CZ_PKMODE_CHANGE"),
             0x013a => Some("ZC_ATTACK_RANGE"),
+            0x013b => Some("ZC_ACTION_FAILURE"),
+            0x013c => Some("ZC_EQUIP_ARROW"),
             0x013f => Some("CZ_ITEM_CREATE"),
             0x0140 => Some("CZ_MOVETO_MAP"),
             0x0141 => Some("ZC_COUPLESTATUS"),
@@ -1387,6 +1395,7 @@ impl PacketOpcode {
             0x028e => Some("HC_ACK_IS_VALID_CHARNAME"),
             0x028f => Some("CH_REQ_CHANGE_CHARNAME_0X028F"),
             0x0290 => Some("HC_ACK_CHANGE_CHARNAME_0X0290"),
+            0x0291 => Some("ZC_MSG"),
             0x0292 => Some("CZ_STANDING_RESURRECTION"),
             0x0293 => Some("ZC_BOSS_INFO"),
             0x0294 => Some("ZC_READ_BOOK"),
@@ -1834,6 +1843,8 @@ impl PacketOpcode {
             0x0983 => Some("ZC_MSG_STATE_CHANGE3"),
             0x098d => Some("CZ_CLAN_CHAT"),
             0x0998 => Some("CZ_REQ_WEAR_EQUIP"),
+            0x0999 => Some("ZC_REQ_WEAR_EQUIP_ACK"),
+            0x099a => Some("ZC_REQ_TAKEOFF_EQUIP_ACK"),
             0x099b => Some("ZC_NOTIFY_MAPPROPERTY2"),
             0x099f => Some("ZC_SKILL_ENTRY4"),
             0x09a0 => Some("HC_CHARLIST_NOTIFY"),
@@ -2018,6 +2029,7 @@ impl PacketOpcode {
             0x0b9d => Some("CZ_REQUEST_UPGRADE_ENCHANT"),
             0x0b9e => Some("CZ_REQUEST_RESET_ENCHANT"),
             0x0ba0 => Some("CZ_CLOSE_UI_ENCHANT"),
+            0x0bae => Some("ZC_ACK_TAKEOFF_EQUIP_ALL"),
             0x0baf => Some("CZ_USE_PACKAGEITEM"),
             0x0bb0 => Some("CZ_APPROXIMATE_ACTOR"),
             0x0bb1 => Some("CZ_RESET_SKILL"),

@@ -48,7 +48,7 @@ Target client version: `PACKETVER = 20260219`. Packet entries are sorted by asce
 | 82 | 2 | `speed` | always `DEFAULT_WALK_SPEED` |
 | 84 | 2 | `job` | class id |
 | 86 | 2 | `head` | hair style |
-| 88 | 2 | `body` | `status.body` (>= 20231220) |
+| 88 | 2 | `body` | `status.body` (>= 20231220). **Captured: always equals `job`** (Novice 0, Archer 3, Assassin 12, Bard 19; captures `equip_sequence_2..4.txt`). The client draws the body sprite from it, so 0 shows a Novice body while the job name says otherwise. |
 | 90 | 2 | `weapon` (**i16**) | see below |
 | 92 | 2 | `level` | base level |
 | 94 | 2 | `sppoint` | skill points |

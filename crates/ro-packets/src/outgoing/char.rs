@@ -29,14 +29,14 @@ pub fn encode_character_info(buf: &mut BytesMut, c: &CharacterSummary) {
     buf.put_i16_le(150); // speed
     buf.put_i16_le(c.job_class as i16); // job
     buf.put_i16_le(c.hair_style as i16); // head
-    buf.put_i16_le(0); // body (since >= 20141022)
-    buf.put_i16_le(0); // weapon
+    buf.put_i16_le(c.job_class as i16); // body: the client draws the body sprite from it (= job)
+    buf.put_i16_le(c.looks.weapon_type as i16); // weapon: the W_* type, not an item id
     buf.put_i16_le(c.base_level as i16); // level
     buf.put_i16_le(0); // sppoint
-    buf.put_i16_le(0); // accessory
-    buf.put_i16_le(0); // shield
-    buf.put_i16_le(0); // accessory2
-    buf.put_i16_le(0); // accessory3
+    buf.put_u16_le(c.looks.head_bottom); // accessory
+    buf.put_i16_le(c.looks.shield as i16); // shield: the left armor's View
+    buf.put_u16_le(c.looks.head_top); // accessory2
+    buf.put_u16_le(c.looks.head_mid); // accessory3
     buf.put_i16_le(c.hair_color as i16); // headpalette
     buf.put_i16_le(0); // bodypalette
     buf.put_slice(&write_fixed_string::<24>(&c.name)); // name
@@ -65,7 +65,7 @@ pub fn encode_character_info(buf: &mut BytesMut, c: &CharacterSummary) {
         None => 0,
     };
     buf.put_i32_le(del_rev_date); // DelRevDate
-    buf.put_i32_le(0); // robePalette
+    buf.put_i32_le(i32::from(c.looks.robe)); // robePalette: the robe view
     buf.put_i32_le(0); // chr_slot_changeCnt
     buf.put_i32_le(0); // chr_name_changeCnt
     buf.put_u8(c.sex as u8); // sex
@@ -257,7 +257,7 @@ mod tests {
     use super::*;
     use crate::outgoing::encoder::ModernEventEncoder;
     use crate::EventEncoder;
-    use ro_core::{AccountId, MapPosition, ServerEvent, Sex};
+    use ro_core::{AccountId, CharacterLooks, MapPosition, ServerEvent, Sex};
 
     #[test]
     fn test_encode_hc_notify_zonesvr() {
@@ -295,6 +295,7 @@ mod tests {
                 dir: 0,
             },
             delete_date: Some(delete_ts),
+            looks: CharacterLooks::default(),
         };
 
         let mut buf = BytesMut::new();
@@ -336,6 +337,7 @@ mod tests {
                 dir: 0,
             },
             delete_date: None,
+            looks: CharacterLooks::default(),
         };
         let chars = vec![make_char(0), make_char(1), make_char(2)];
         let bytes = encode_hc_ack_charinfo_per_page(&chars).unwrap();
@@ -379,6 +381,7 @@ mod tests {
                 dir: 0,
             },
             delete_date: None,
+            looks: CharacterLooks::default(),
         };
         let dummy_chars = vec![dummy_char; 375];
         let res_char_list = encode_hc_accept_enter(9, 0, 0, &dummy_chars);

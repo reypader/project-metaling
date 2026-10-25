@@ -17,8 +17,8 @@ use map_server::{
     handle_client_session, MapData, MapDataLoader, MapServiceHandle, MapServiceOptions, Registries,
 };
 use ro_core::{
-    AccountId, CharId, CharacterInventory, CharacterSummary, CreateCharacterRequest, MapPosition,
-    Sex, TARGET_PACKETVER,
+    AccountId, CharId, CharacterInventory, CharacterLooks, CharacterSummary,
+    CreateCharacterRequest, InventoryItem, ItemId, MapPosition, Sex, TARGET_PACKETVER,
 };
 use ro_db::{CellType, MapGrid, MapMobSpawns, MapNpcs};
 use ro_packets::{
@@ -78,6 +78,7 @@ impl InMemoryRepo {
                     last_map: map.to_string(),
                     last_pos: MapPosition { x, y, dir: 0 },
                     delete_date: None,
+                    looks: CharacterLooks::default(),
                 },
             );
         }
@@ -123,6 +124,15 @@ impl InMemoryRepo {
             .iter()
             .filter(|(c, _)| *c == CharId(char_id(n)))
             .count()
+    }
+
+    /// The look columns of character `n` (what the char list shows).
+    pub fn stored_looks(&self, n: u32) -> Option<CharacterLooks> {
+        self.chars
+            .lock()
+            .unwrap()
+            .get(&CharId(char_id(n)))
+            .map(|c| c.looks)
     }
 
     pub fn stored(&self, n: u32) -> Option<(String, MapPosition)> {
@@ -228,6 +238,7 @@ impl InventoryRepository for InMemoryRepo {
         &self,
         id: CharId,
         inventory: &CharacterInventory,
+        looks: &CharacterLooks,
     ) -> Result<(), RepositoryError> {
         let delay = *self.persist_delay.lock().unwrap();
         if !delay.is_zero() {
@@ -243,6 +254,10 @@ impl InventoryRepository for InMemoryRepo {
             .unwrap()
             .push((id, inventory.clone()));
         self.inventories.lock().unwrap().insert(id, compact);
+        // Like the database: the look columns are written with the inventory.
+        if let Some(c) = self.chars.lock().unwrap().get_mut(&id) {
+            c.looks = *looks;
+        }
         Ok(())
     }
 }
@@ -621,4 +636,49 @@ pub fn cz_request_time(tick: u32) -> Vec<u8> {
     let mut b = vec![0x60, 0x03];
     b.extend_from_slice(&tick.to_le_bytes());
     b
+}
+
+/// Opcodes of `frames`, in order.
+pub fn ops(frames: &[RawPacket]) -> Vec<u16> {
+    frames.iter().map(|f| f.opcode.0).collect()
+}
+
+/// An inventory of `(item id, amount)` stacks, one per slot.
+pub fn inventory(items: &[(u32, u16)]) -> CharacterInventory {
+    CharacterInventory {
+        slots: items
+            .iter()
+            .map(|&(id, n)| Some(InventoryItem::new(ItemId(id), n)))
+            .collect(),
+        unique_item_counter: 0,
+    }
+}
+
+/// Enters as `n` and returns everything in the 150 ms after the `0x007d`.
+pub async fn enter(server: &TestServer, n: u32) -> (Client, Vec<RawPacket>) {
+    let mut client = Client::connect(server.addr).await;
+    client.send(&cz_enter(n)).await;
+    // ZC_AID, 0x0b18, ZC_ACCEPT_ENTER, the empty friends list, then the login burst
+    // (specs/map-entry-settings).
+    client.read_exact_bytes(23 + 4).await;
+    client.read_login_burst().await;
+    client.send(&[0x7d, 0x00]).await;
+    let frames = client.collect(Duration::from_millis(150)).await;
+    (client, frames)
+}
+
+/// Polls `cond` every 20 ms for up to 2 s.
+pub async fn wait_until(cond: impl Fn() -> bool) -> bool {
+    wait_until_for(cond, Duration::from_secs(2)).await
+}
+
+pub async fn wait_until_for(cond: impl Fn() -> bool, timeout: Duration) -> bool {
+    let deadline = tokio::time::Instant::now() + timeout;
+    while tokio::time::Instant::now() < deadline {
+        if cond() {
+            return true;
+        }
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    }
+    cond()
 }

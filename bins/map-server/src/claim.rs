@@ -16,6 +16,7 @@ use std::{
 };
 
 use ro_core::{CharId, CharacterInventory, MapPosition};
+use ro_engine::InventorySnapshot;
 use ro_persistence::{CharacterRepository, InventoryRepository, RepositoryError};
 use tokio::sync::mpsc;
 use tracing::{error, warn};
@@ -43,8 +44,12 @@ type RecentMap<T> = Arc<Mutex<HashMap<CharId, Recent<T>>>>;
 /// What one queued write stores.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) enum WriteKind {
-    Position { map: String, pos: MapPosition },
-    Inventory(CharacterInventory),
+    Position {
+        map: String,
+        pos: MapPosition,
+    },
+    /// The inventory and the look columns, in one transaction.
+    Inventory(InventorySnapshot),
 }
 
 /// One queued database write.
@@ -189,17 +194,18 @@ impl SharedState {
         self.queue(char_id, WriteKind::Position { map, pos }, seq);
     }
 
-    /// Records the inventory for a re-entry that races the write, then queues the write.
-    pub(crate) fn persist_inventory(&self, char_id: CharId, inventory: CharacterInventory) {
+    /// Records the inventory for a re-entry that races the write, then queues the write. A
+    /// re-entry rebuilds the looks from the worn gear, so only the inventory is kept.
+    pub(crate) fn persist_inventory(&self, char_id: CharId, snapshot: InventorySnapshot) {
         let seq = self.next_seq.fetch_add(1, Ordering::Relaxed);
         lock(&self.recent.inventories).insert(
             char_id,
             Recent {
-                value: inventory.clone(),
+                value: snapshot.inventory.clone(),
                 seq,
             },
         );
-        self.queue(char_id, WriteKind::Inventory(inventory), seq);
+        self.queue(char_id, WriteKind::Inventory(snapshot), seq);
     }
 }
 
@@ -210,7 +216,10 @@ const RETRY_MAX: Duration = Duration::from_secs(5);
 async fn apply(repo: &dyn MapRepository, write: &Write) -> Result<(), RepositoryError> {
     match &write.kind {
         WriteKind::Position { map, pos } => repo.update_position(write.char_id, map, *pos).await,
-        WriteKind::Inventory(inventory) => repo.save_inventory(write.char_id, inventory).await,
+        WriteKind::Inventory(snapshot) => {
+            repo.save_inventory(write.char_id, &snapshot.inventory, &snapshot.looks)
+                .await
+        }
     }
 }
 
@@ -267,7 +276,7 @@ pub struct Claim {
     shared: Arc<SharedState>,
     char_id: CharId,
     last: Option<(String, MapPosition)>,
-    inventory: Option<CharacterInventory>,
+    inventory: Option<InventorySnapshot>,
 }
 
 impl Claim {
@@ -281,13 +290,13 @@ impl Claim {
     }
 
     /// Records the inventory, written after the position when the claim drops.
-    pub(crate) fn set_inventory(&mut self, inventory: CharacterInventory) {
-        self.inventory = Some(inventory);
+    pub(crate) fn set_inventory(&mut self, snapshot: InventorySnapshot) {
+        self.inventory = Some(snapshot);
     }
 
     /// Queues an inventory write now (map change, autosave); the claim stays held.
-    pub(crate) fn save_inventory(&self, inventory: CharacterInventory) {
-        self.shared.persist_inventory(self.char_id, inventory);
+    pub(crate) fn save_inventory(&self, snapshot: InventorySnapshot) {
+        self.shared.persist_inventory(self.char_id, snapshot);
     }
 }
 
@@ -297,8 +306,8 @@ impl Drop for Claim {
         if let Some((map, pos)) = self.last.take() {
             self.shared.persist(self.char_id, map, pos);
         }
-        if let Some(inventory) = self.inventory.take() {
-            self.shared.persist_inventory(self.char_id, inventory);
+        if let Some(snapshot) = self.inventory.take() {
+            self.shared.persist_inventory(self.char_id, snapshot);
         }
         self.shared.release(self.char_id);
     }
@@ -313,7 +322,8 @@ pub(crate) mod tests {
 
     use async_trait::async_trait;
     use ro_core::{
-        AccountId, CharacterSummary, CreateCharacterRequest, InventoryItem, ItemId, Sex,
+        AccountId, CharacterLooks, CharacterSummary, CreateCharacterRequest, InventoryItem, ItemId,
+        Sex,
     };
     use ro_persistence::{
         CancelDeleteOutcome, CreateCharacterError, DeleteReserveOutcome, PlayState, RepositoryError,
@@ -340,6 +350,8 @@ pub(crate) mod tests {
         /// Stored inventories and the inventory saves, in order.
         pub(crate) inventories: Mutex<HashMap<CharId, CharacterInventory>>,
         pub(crate) inventory_saves: Mutex<Vec<(CharId, CharacterInventory)>>,
+        /// The looks of the last inventory save, by character.
+        pub(crate) looks: Mutex<HashMap<CharId, CharacterLooks>>,
         /// The error every inventory save returns, if set.
         pub(crate) inventory_error: Mutex<Option<RepositoryError>>,
     }
@@ -360,6 +372,7 @@ pub(crate) mod tests {
                 last_map: "prontera.gat".into(),
                 last_pos: at(100, 100),
                 delete_date: None,
+                looks: CharacterLooks::default(),
             };
             let permits = if open_gate { Semaphore::MAX_PERMITS } else { 0 };
             Arc::new(Self {
@@ -370,6 +383,7 @@ pub(crate) mod tests {
                 failures: AtomicUsize::new(0),
                 inventories: Mutex::new(HashMap::new()),
                 inventory_saves: Mutex::new(Vec::new()),
+                looks: Mutex::new(HashMap::new()),
                 inventory_error: Mutex::new(None),
             })
         }
@@ -469,12 +483,14 @@ pub(crate) mod tests {
             &self,
             char_id: CharId,
             inventory: &CharacterInventory,
+            looks: &CharacterLooks,
         ) -> Result<(), RepositoryError> {
             self.gate.acquire().await.expect("gate open").forget();
             if let Some(err) = lock(&self.inventory_error).clone() {
                 return Err(err);
             }
             lock(&self.inventory_saves).push((char_id, inventory.clone()));
+            lock(&self.looks).insert(char_id, *looks);
             lock(&self.inventories).insert(char_id, inventory.clone());
             Ok(())
         }
@@ -484,6 +500,14 @@ pub(crate) mod tests {
         CharacterInventory {
             slots: vec![Some(InventoryItem::new(ItemId(501), n))],
             unique_item_counter: 0,
+        }
+    }
+
+    /// `potions(n)` with bare looks, as the engine would snapshot it.
+    pub(crate) fn snapshot(n: u16) -> InventorySnapshot {
+        InventorySnapshot {
+            inventory: potions(n),
+            looks: CharacterLooks::default(),
         }
     }
 
@@ -615,7 +639,7 @@ pub(crate) mod tests {
     fn bin_item_drop_writes_position_then_inventory() {
         let (state, mut rx) = state();
         let mut claim = state.claim(CHAR).expect("claim");
-        claim.set_inventory(potions(3));
+        claim.set_inventory(snapshot(3));
         claim.set_last("prontera.gat", at(1, 2));
         drop(claim);
         assert!(matches!(
@@ -624,7 +648,7 @@ pub(crate) mod tests {
         ));
         assert_eq!(
             rx.try_recv().expect("second").kind,
-            WriteKind::Inventory(potions(3))
+            WriteKind::Inventory(snapshot(3))
         );
         assert_eq!(state.recent_inventory(CHAR), Some(potions(3)));
     }
@@ -635,7 +659,7 @@ pub(crate) mod tests {
         let repo = FakeRepo::new(true);
         *lock(&repo.inventory_error) = Some(RepositoryError::Internal("too many rows".into()));
         let state = SharedState::new(repo.clone());
-        state.persist_inventory(CHAR, potions(1));
+        state.persist_inventory(CHAR, snapshot(1));
         state.persist(CHAR, "geffen.gat".into(), at(3, 3));
         assert!(
             eventually(|| repo.writes().len() == 1).await,
@@ -648,18 +672,40 @@ pub(crate) mod tests {
         );
 
         *lock(&repo.inventory_error) = Some(RepositoryError::NotFound);
-        state.persist_inventory(CHAR, potions(2));
+        state.persist_inventory(CHAR, snapshot(2));
         assert!(
             eventually(|| state.recent_inventory(CHAR).is_none()).await,
             "a deleted character's write is done"
         );
 
         *lock(&repo.inventory_error) = None;
-        state.persist_inventory(CHAR, potions(4));
+        state.persist_inventory(CHAR, snapshot(4));
         assert!(eventually(|| state.recent_inventory(CHAR).is_none()).await);
         assert_eq!(
             lock(&repo.inventory_saves).last(),
             Some(&(CHAR, potions(4)))
         );
+    }
+
+    /// The writer saves the snapshot's looks with its inventory (spec BIN-EQ-02).
+    #[tokio::test]
+    async fn bin_eq_02_writer_saves_looks_with_inventory() {
+        let repo = FakeRepo::new(true);
+        let state = SharedState::new(repo.clone());
+        let looks = CharacterLooks {
+            weapon_type: 1,
+            shield: 1,
+            head_top: 5,
+            ..CharacterLooks::default()
+        };
+        state.persist_inventory(
+            CHAR,
+            InventorySnapshot {
+                inventory: potions(1),
+                looks,
+            },
+        );
+        assert!(eventually(|| state.recent_inventory(CHAR).is_none()).await);
+        assert_eq!(lock(&repo.looks).get(&CHAR), Some(&looks));
     }
 }

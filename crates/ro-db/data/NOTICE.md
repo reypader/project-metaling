@@ -64,13 +64,25 @@ dataset is regenerated from a different commit, update its section.
   - keeps only `Id`, `AegisName`, `Name`, `Type`, `Weight`, `Locations`, `View`, `Slots`, the
     `AliasName` target, `Stack.Amount` / `Stack.Inventory`, `Flags.UniqueId` / `BindOnEquip` /
     `DropEffect`, and `Trade.NoDrop` / `Trade.Override`; scripts, prices, jobs and combat
-    stats are dropped;
+    stats are dropped (version 1; version 2 below adds the equipment fields);
   - applies rAthena's load rules: `DelayConsume` becomes `Usable`, invalid types become `Etc`,
     equipment without `Locations` (or non-shadow gear with shadow positions) becomes `Etc`, a
     shield without `View` gets view 1, `Slots` is capped at 4;
   - turns `Locations` into an `EQP_` bit mask, `DropEffect` into its number, and `AliasName`
     into the aliased item's id (`ViewId`);
   - merges repeated ids field by field and sorts each file by id.
+- **Modified on 2026-10-25 by `tools/item-import` (`ITEM_DATA` version 2, equipment feature):**
+  regenerated from the same commit and files. The conversion now also keeps `SubType` (as
+  `WeaponType` / `AmmoType`; card subtypes are dropped), `Attack`, `MagicAttack`, `Defense`,
+  `Range`, `WeaponLevel`, `ArmorLevel`, `EquipLevelMin` / `EquipLevelMax`, `Gender`, `Jobs`,
+  `Classes` and `Refineable`, and applies rAthena's rules for them:
+  - an entry with `SubType` on a type other than Weapon, Ammo or Card is skipped;
+  - fields are cleared by type (`Attack` for weapons and ammo, `MagicAttack` and `Range` for
+    weapons, `Defense` for armor and shadow gear), `Range` is capped at 14, a weapon's level
+    becomes 1..=5 and an armor's at least 1;
+  - `Gender` is forced for instruments (male), whips (female) and the two wedding rings;
+  - `Jobs` becomes three base-class bitsets and `Classes` an `ITEMJ_` mask, with an unknown
+    name allowing every job or class.
 - **Regenerate** (pass an expanded path, not one starting with `~`):
 
   ```bash

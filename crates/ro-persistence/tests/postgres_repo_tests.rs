@@ -827,7 +827,9 @@ async fn test_persist_schema_002_connection_error_handling() {
 
 // ---- Inventory (spec PER-INV-01..04) ----
 
-use ro_core::{CharacterInventory, CharacterStatus, InventoryItem, ItemId, ItemOption};
+use ro_core::{
+    CharacterInventory, CharacterLooks, CharacterStatus, InventoryItem, ItemId, ItemOption,
+};
 use ro_persistence::InventoryRepository;
 
 /// A schema-initialized repo (the inventory table and counter column may be new) and a fresh
@@ -897,7 +899,7 @@ async fn per_inv_01_round_trip_keeps_every_field() {
         slots: vec![Some(full_item()), Some(InventoryItem::new(ItemId(501), 5))],
         unique_item_counter: 7,
     };
-    repo.save_inventory(char_id, &inventory)
+    repo.save_inventory(char_id, &inventory, &CharacterLooks::default())
         .await
         .expect("saves");
     let state = repo
@@ -926,7 +928,7 @@ async fn per_inv_02_holes_compact() {
         ],
         unique_item_counter: 0,
     };
-    repo.save_inventory(char_id, &inventory)
+    repo.save_inventory(char_id, &inventory, &CharacterLooks::default())
         .await
         .expect("saves");
     let loaded = repo
@@ -946,12 +948,16 @@ async fn per_inv_03_save_replaces_rows() {
         slots: vec![Some(InventoryItem::new(ItemId(909), 1)); 4],
         unique_item_counter: 3,
     };
-    repo.save_inventory(char_id, &first).await.expect("saves");
+    repo.save_inventory(char_id, &first, &CharacterLooks::default())
+        .await
+        .expect("saves");
     let second = CharacterInventory {
         slots: vec![Some(InventoryItem::new(ItemId(501), 2))],
         unique_item_counter: 9,
     };
-    repo.save_inventory(char_id, &second).await.expect("saves");
+    repo.save_inventory(char_id, &second, &CharacterLooks::default())
+        .await
+        .expect("saves");
     let loaded = repo
         .load_play_state(char_id)
         .await
@@ -964,7 +970,9 @@ async fn per_inv_03_save_replaces_rows() {
         slots: Vec::new(),
         unique_item_counter: 9,
     };
-    repo.save_inventory(char_id, &empty).await.expect("saves");
+    repo.save_inventory(char_id, &empty, &CharacterLooks::default())
+        .await
+        .expect("saves");
     let loaded = repo
         .load_play_state(char_id)
         .await
@@ -973,7 +981,8 @@ async fn per_inv_03_save_replaces_rows() {
     assert_eq!(loaded.inventory, empty);
 
     assert_eq!(
-        repo.save_inventory(CharId(u32::MAX >> 1), &second).await,
+        repo.save_inventory(CharId(u32::MAX >> 1), &second, &CharacterLooks::default())
+            .await,
         Err(RepositoryError::NotFound),
         "unknown character"
     );
@@ -998,7 +1007,7 @@ async fn per_inv_04_play_state_and_cascade() {
         slots: vec![Some(InventoryItem::new(ItemId(909), 1))],
         unique_item_counter: 1,
     };
-    repo.save_inventory(char_id, &inventory)
+    repo.save_inventory(char_id, &inventory, &CharacterLooks::default())
         .await
         .expect("saves");
     let state = repo
@@ -1064,13 +1073,16 @@ async fn per_inv_02_over_capacity_is_refused() {
         slots: vec![Some(InventoryItem::new(ItemId(909), 1)); 100],
         unique_item_counter: 0,
     };
-    repo.save_inventory(char_id, &full).await.expect("100 fits");
+    repo.save_inventory(char_id, &full, &CharacterLooks::default())
+        .await
+        .expect("100 fits");
     let too_many = CharacterInventory {
         slots: vec![Some(InventoryItem::new(ItemId(909), 1)); 101],
         unique_item_counter: 0,
     };
     assert!(matches!(
-        repo.save_inventory(char_id, &too_many).await,
+        repo.save_inventory(char_id, &too_many, &CharacterLooks::default())
+            .await,
         Err(RepositoryError::Internal(_))
     ));
     sqlx::query("INSERT INTO inventory (char_id, nameid, amount) VALUES ($1, 909, 1)")
@@ -1096,10 +1108,11 @@ async fn per_inv_03_concurrent_saves_serialize() {
         slots: vec![Some(InventoryItem::new(ItemId(909), 1)); 40],
         unique_item_counter: 2,
     };
+    let bare = CharacterLooks::default();
     for _ in 0..10 {
         let (ra, rb) = tokio::join!(
-            repo.save_inventory(char_id, &a),
-            repo.save_inventory(char_id, &b)
+            repo.save_inventory(char_id, &a, &bare),
+            repo.save_inventory(char_id, &b, &bare)
         );
         ra.expect("save a");
         rb.expect("save b");
@@ -1111,4 +1124,144 @@ async fn per_inv_03_concurrent_saves_serialize() {
             .inventory;
         assert!(loaded == a || loaded == b, "{} rows", loaded.slots.len());
     }
+}
+
+// ---- Equipment looks (spec PER-EQ-01..02) ----
+
+/// PER-EQ-01: `save_inventory` writes the look columns with the inventory, and every summary
+/// query returns them. A new character starts bare.
+#[tokio::test]
+async fn per_eq_01_looks_saved_with_inventory() {
+    let (repo, acc, char_id) = inventory_fixture(0).await;
+    let created = CharacterRepository::find_by_id(&repo, char_id)
+        .await
+        .expect("loads")
+        .expect("exists");
+    assert_eq!(created.looks, CharacterLooks::default());
+
+    let looks = CharacterLooks {
+        weapon_type: 28,
+        shield: 1,
+        head_top: 16,
+        head_mid: 3,
+        head_bottom: 4,
+        robe: 2,
+    };
+    let inventory = CharacterInventory {
+        slots: vec![Some(InventoryItem::new(ItemId(1201), 1))],
+        unique_item_counter: 1,
+    };
+    repo.save_inventory(char_id, &inventory, &looks)
+        .await
+        .expect("saves");
+
+    let by_id = CharacterRepository::find_by_id(&repo, char_id)
+        .await
+        .expect("loads")
+        .expect("exists");
+    assert_eq!(by_id.looks, looks);
+    let by_slot = repo
+        .find_by_slot(acc.id, 0)
+        .await
+        .expect("loads")
+        .expect("exists");
+    assert_eq!(by_slot.looks, looks);
+    let listed = repo.list_by_account(acc.id).await.expect("lists");
+    assert_eq!(listed.len(), 1);
+    assert_eq!(listed[0].looks, looks);
+
+    // A refused save (too many slots) leaves the looks alone.
+    let too_many = CharacterInventory {
+        slots: vec![Some(InventoryItem::new(ItemId(909), 1)); 101],
+        unique_item_counter: 0,
+    };
+    assert!(repo
+        .save_inventory(char_id, &too_many, &CharacterLooks::default())
+        .await
+        .is_err());
+    let after = CharacterRepository::find_by_id(&repo, char_id)
+        .await
+        .expect("loads")
+        .expect("exists");
+    assert_eq!(after.looks, looks);
+}
+
+/// Column names of `characters` in `schema`.
+async fn character_columns(repo: &PostgresRepo, schema: &str) -> Vec<String> {
+    sqlx::query_scalar(
+        "SELECT column_name::text FROM information_schema.columns \
+         WHERE table_schema = $1 AND table_name = 'characters'",
+    )
+    .bind(schema)
+    .fetch_all(repo.pool())
+    .await
+    .expect("columns")
+}
+
+/// PER-EQ-02: the schema pass is idempotent on a fresh database and on one that still has the
+/// old `weapon_view` column (renamed to `weapon_type`, values kept; `robe_view` added). Runs in
+/// its own Postgres schema so the shared tables aren't touched.
+#[tokio::test]
+async fn per_eq_02_schema_migrates_look_columns() {
+    use sqlx::postgres::{PgConnectOptions, PgPoolOptions};
+    use std::str::FromStr;
+
+    let main = get_repo().await;
+    let schema = format!("per_eq_02_{}", next_account_id().0);
+    sqlx::query(&format!("CREATE SCHEMA {schema}"))
+        .execute(main.pool())
+        .await
+        .expect("schema created");
+    let options = PgConnectOptions::from_str(&test_db_url())
+        .expect("db url")
+        .options([("search_path", schema.as_str())]);
+    let pool = PgPoolOptions::new()
+        .max_connections(1)
+        .connect_with(options)
+        .await
+        .expect("connects");
+    let repo = PostgresRepo::new(pool);
+
+    // Fresh database, twice.
+    repo.init_schema().await.expect("fresh schema");
+    repo.init_schema().await.expect("idempotent");
+    let cols = character_columns(&main, &schema).await;
+    assert!(cols.iter().any(|c| c == "weapon_type"), "{cols:?}");
+    assert!(cols.iter().any(|c| c == "robe_view"), "{cols:?}");
+    assert!(!cols.iter().any(|c| c == "weapon_view"), "{cols:?}");
+
+    // Turn it back into the old layout, with a character wearing something.
+    sqlx::raw_sql(
+        "ALTER TABLE characters RENAME COLUMN weapon_type TO weapon_view; \
+         ALTER TABLE characters DROP COLUMN robe_view; \
+         INSERT INTO accounts (account_id, username, password_hash) VALUES (2000000, 'old', 'x'); \
+         INSERT INTO characters (account_id, slot, name, sex, weapon_view, head_top_view) \
+         VALUES (2000000, 0, 'Old', 1, 7, 16);",
+    )
+    .execute(repo.pool())
+    .await
+    .expect("old layout");
+
+    repo.init_schema().await.expect("migrates");
+    repo.init_schema()
+        .await
+        .expect("idempotent after migration");
+    let cols = character_columns(&main, &schema).await;
+    assert!(cols.iter().any(|c| c == "weapon_type"), "{cols:?}");
+    assert!(cols.iter().any(|c| c == "robe_view"), "{cols:?}");
+    assert!(!cols.iter().any(|c| c == "weapon_view"), "{cols:?}");
+    let old = repo
+        .list_by_account(AccountId(2_000_000))
+        .await
+        .expect("lists");
+    assert_eq!(old.len(), 1);
+    assert_eq!(old[0].looks.weapon_type, 7);
+    assert_eq!(old[0].looks.head_top, 16);
+    assert_eq!(old[0].looks.robe, 0);
+
+    repo.pool().close().await;
+    sqlx::query(&format!("DROP SCHEMA {schema} CASCADE"))
+        .execute(main.pool())
+        .await
+        .expect("schema dropped");
 }

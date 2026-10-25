@@ -2,8 +2,8 @@
 
 use bytes::BytesMut;
 use ro_core::{
-    AccountId, CharId, CharServerInfo, CharacterSummary, ClientIntent, MapPosition, ServerEvent,
-    Sex, UnitAppearance, UnitObjectType,
+    AccountId, CharId, CharServerInfo, CharacterLooks, CharacterSummary, ClientIntent, MapPosition,
+    ServerEvent, Sex, UnitAppearance, UnitLooks, UnitObjectType,
 };
 use ro_packets::{
     decode_frame, encode_ac_accept_login, encode_ac_refuse_login, encode_hc_notify_zonesvr,
@@ -216,6 +216,7 @@ fn test_outgoing_serializers_and_redecoding() {
                     dead_sit: 0,
                     clevel: 10,
                     effect_state: 0,
+                    looks: UnitLooks::default(),
                 },
             },
             ro_core::TARGET_PACKETVER,
@@ -350,6 +351,7 @@ fn test_event_encoder_integration() {
                 dir: 4,
             },
             delete_date: None,
+            looks: CharacterLooks::default(),
         }],
     };
     let bytes = encoder.encode_event(&event, ver).unwrap();
@@ -386,6 +388,7 @@ fn test_event_encoder_integration() {
                 dir: 4,
             },
             delete_date: None,
+            looks: CharacterLooks::default(),
         }],
     };
     let page_bytes = encoder.encode_event(&page_event, ver).unwrap();

@@ -22,11 +22,14 @@ impl Schema {
         path: &str,
         text: &str,
     ) -> Result<Vec<T>, DbLoadError> {
-        let file: DbFile<T> = serde_saphyr::from_str(text).map_err(|e| DbLoadError::Parse {
-            path: path.to_string(),
-            line: e.location().and_then(|l| usize::try_from(l.line()).ok()),
-            message: e.to_string(),
-        })?;
+        let file: DbFile<T> =
+            serde_saphyr::from_str_with_options(text, parse_options()).map_err(|e| {
+                DbLoadError::Parse {
+                    path: path.to_string(),
+                    line: e.location().and_then(|l| usize::try_from(l.line()).ok()),
+                    message: e.to_string(),
+                }
+            })?;
         let header = &file.header;
         if header.r#type != self.db_type || header.version != self.version {
             return Err(DbLoadError::Schema {
@@ -76,6 +79,18 @@ impl Schema {
             message: e.to_string(),
         })
     }
+}
+
+/// The default parser budget (250k nodes) is too small for `item_equip.yml` (about 310k nodes
+/// since `ITEM_DATA` v2). These files come from our own data directory, so the cap is raised
+/// well above the largest one rather than removed.
+fn parse_options() -> serde_saphyr::Options {
+    let mut budget = serde_saphyr::Budget::default();
+    budget.max_nodes = 2_000_000;
+    budget.max_events = 8_000_000;
+    let mut options = serde_saphyr::Options::default();
+    options.budget = Some(budget);
+    options
 }
 
 #[derive(Debug, Serialize, Deserialize)]

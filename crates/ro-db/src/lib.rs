@@ -10,7 +10,10 @@ mod npc;
 mod yaml;
 
 pub use cell::{CellType, DbLoadError, MapDataError};
-pub use item::{ItemData, ItemDb, ItemType, ITEM_DATA_FILES, ITEM_DATA_TYPE, ITEM_DATA_VERSION};
+pub use item::{
+    AmmoType, Gender, ItemData, ItemDb, ItemType, WeaponType, ALL_CLASSES, ALL_JOBS,
+    ITEM_DATA_FILES, ITEM_DATA_TYPE, ITEM_DATA_VERSION,
+};
 pub use map::MapGrid;
 pub use mob::{
     MobClass, MobData, MobDb, MobDrop, MAX_DROP_RATE, MAX_MOB_DROPS, MAX_MVP_DROPS, MOB_DATA_FILE,

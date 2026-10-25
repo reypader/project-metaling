@@ -474,3 +474,62 @@ impl CzRequestChatPacket {
         }
     }
 }
+
+/// Decoded representation of `CZ_REQ_WEAR_EQUIP` (0x0998): wire index at offset 2, `EQP_*`
+/// position mask at 4.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct CzReqWearEquipPacket {
+    pub index: u16,
+    pub position: u32,
+}
+
+impl CzReqWearEquipPacket {
+    pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
+        let index = read_u16_le(&raw.payload, 0, raw.opcode)?;
+        let position = read_u32_le(&raw.payload, 2, raw.opcode)?;
+        Ok(Self { index, position })
+    }
+
+    pub fn to_intent(&self) -> ClientIntent {
+        ClientIntent::EquipItem {
+            index: self.index,
+            position: self.position,
+        }
+    }
+}
+
+/// Decoded representation of `CZ_REQ_TAKEOFF_EQUIP` (0x00ab): wire index at offset 2.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct CzReqTakeoffEquipPacket {
+    pub index: u16,
+}
+
+impl CzReqTakeoffEquipPacket {
+    pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
+        let index = read_u16_le(&raw.payload, 0, raw.opcode)?;
+        Ok(Self { index })
+    }
+
+    pub fn to_intent(&self) -> ClientIntent {
+        ClientIntent::UnequipItem { index: self.index }
+    }
+}
+
+/// Decoded representation of `CZ_REQ_TAKEOFF_EQUIP_ALL` (0x0bf5): `EQP_*` mask at offset 2.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct CzReqTakeoffEquipAllPacket {
+    pub location: u32,
+}
+
+impl CzReqTakeoffEquipAllPacket {
+    pub fn decode(raw: &RawPacket) -> Result<Self, PacketCodecError> {
+        let location = read_u32_le(&raw.payload, 0, raw.opcode)?;
+        Ok(Self { location })
+    }
+
+    pub fn to_intent(&self) -> ClientIntent {
+        ClientIntent::UnequipAll {
+            location: self.location,
+        }
+    }
+}

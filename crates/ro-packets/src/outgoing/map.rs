@@ -103,19 +103,19 @@ fn put_unit_head(buf: &mut BytesMut, opcode: PacketOpcode, len: u16, unit: &Unit
     buf.put_i32_le(unit.effect_state); // effect_state (sc.option)
     buf.put_u16_le(unit.job);
     buf.put_u16_le(unit.hair_style); // head
-    buf.put_u32_le(0); // weapon
-    buf.put_u32_le(0); // shield
-    buf.put_u16_le(0); // accessory (head bottom)
+    buf.put_u32_le(unit.looks.weapon);
+    buf.put_u32_le(unit.looks.shield);
+    buf.put_u16_le(unit.looks.head_bottom); // accessory
 }
 
 /// Writes `accessory2` through `sex` (26 bytes), shared by all three entry packets.
 fn put_unit_middle(buf: &mut BytesMut, unit: &UnitAppearance) {
-    buf.put_u16_le(0); // accessory2 (head top)
-    buf.put_u16_le(0); // accessory3 (head mid)
+    buf.put_u16_le(unit.looks.head_top); // accessory2
+    buf.put_u16_le(unit.looks.head_mid); // accessory3
     buf.put_u16_le(unit.hair_color); // head_palette
     buf.put_i16_le(0); // body_palette
     buf.put_u16_le(unit.head_dir);
-    buf.put_u16_le(0); // robe
+    buf.put_u16_le(unit.looks.robe);
     buf.put_u32_le(0); // guild_id
     buf.put_i16_le(0); // emblem_ver
     buf.put_i16_le(0); // honor
@@ -131,7 +131,11 @@ fn put_unit_tail(buf: &mut BytesMut, unit: &UnitAppearance) {
     buf.put_i32_le(-1); // max_hp: -1 unless a damaged mob
     buf.put_i32_le(-1); // hp
     buf.put_u8(0); // is_boss
-    buf.put_u16_le(0); // body (LOOK_BODY2)
+                   // body (LOOK_BODY2): a player's body sprite is its job (every capture); 0 for the rest.
+    buf.put_u16_le(match unit.object_type {
+        UnitObjectType::Pc => unit.job,
+        UnitObjectType::Npc | UnitObjectType::MobSpriteNpc | UnitObjectType::Mob => 0,
+    });
     buf.put_slice(&write_fixed_string::<24>(&unit.name));
 }
 

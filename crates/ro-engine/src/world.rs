@@ -3,7 +3,7 @@
 use std::sync::Arc;
 
 use ro_core::{
-    AccountId, CharId, CharacterSpawn, CharacterStatus, InventoryItem, MapPosition, Sex,
+    AccountId, CharId, CharacterSpawn, CharacterStatus, InventoryItem, MapPosition, Sex, UnitLooks,
     UnitObjectType,
 };
 use ro_db::{MobId, NpcState};
@@ -15,6 +15,7 @@ use crate::inventory::PlayerInventory;
 use crate::movement::WalkingPath;
 use crate::sparse_set::SparseSet;
 use crate::spatial::SpatialGrid8x8;
+use crate::status::DerivedStatus;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum EntityKind {
@@ -41,6 +42,12 @@ pub(crate) struct PlayerInfo {
     pub(crate) status: CharacterStatus,
     /// Account permission group; 99 may use every GM command.
     pub(crate) group_id: i32,
+    /// The derived status as last pushed to the client (spec §2.10). Built at spawn from the
+    /// worn gear; `MapInstance::recalc` diffs against it.
+    pub(crate) derived: DerivedStatus,
+    /// What other players see, as last sent (spec §2.1). Built at spawn and refreshed by every
+    /// equip change; entry packets read it, never the inventory.
+    pub(crate) looks: UnitLooks,
     /// Consecutive warps that landed inside a warp area (rAthena `count_rewarp`).
     pub(crate) rewarp_count: u8,
     /// First entry after a login (rAthena `connect_new`): the next actor init sends the skill
@@ -207,6 +214,8 @@ impl World {
                 clevel: spawn.base_level,
                 status: spawn.status,
                 group_id: spawn.group_id,
+                derived: DerivedStatus::default(),
+                looks: UnitLooks::default(),
                 rewarp_count: 0,
                 connect_new: false,
                 changemap: false,

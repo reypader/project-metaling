@@ -47,11 +47,12 @@ CREATE TABLE IF NOT EXISTS characters (
     hair_style    SMALLINT NOT NULL DEFAULT 1,
     hair_color    SMALLINT NOT NULL DEFAULT 0,
     clothes_color SMALLINT NOT NULL DEFAULT 0,
-    weapon_view   INT NOT NULL DEFAULT 0,
+    weapon_type   INT NOT NULL DEFAULT 0,
     shield_view   INT NOT NULL DEFAULT 0,
     head_top_view INT NOT NULL DEFAULT 0,
     head_mid_view INT NOT NULL DEFAULT 0,
     head_bot_view INT NOT NULL DEFAULT 0,
+    robe_view     INT NOT NULL DEFAULT 0,
     last_map      VARCHAR(64) NOT NULL DEFAULT 'prontera.gat',
     last_x        SMALLINT NOT NULL DEFAULT 156,
     last_y        SMALLINT NOT NULL DEFAULT 191,
@@ -77,6 +78,30 @@ BEGIN
           AND table_name = 'characters' AND column_name = 'unique_item_counter'
     ) THEN
         ALTER TABLE characters ADD COLUMN unique_item_counter BIGINT NOT NULL DEFAULT 0;
+    END IF;
+END $$;
+
+-- Char-select looks (equipment): the weapon column holds the weapon type, not a view, so
+-- databases from before it get `weapon_view` renamed; `robe_view` is new.
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_schema = current_schema()
+          AND table_name = 'characters' AND column_name = 'weapon_view'
+    ) AND NOT EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_schema = current_schema()
+          AND table_name = 'characters' AND column_name = 'weapon_type'
+    ) THEN
+        ALTER TABLE characters RENAME COLUMN weapon_view TO weapon_type;
+    END IF;
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_schema = current_schema()
+          AND table_name = 'characters' AND column_name = 'robe_view'
+    ) THEN
+        ALTER TABLE characters ADD COLUMN robe_view INT NOT NULL DEFAULT 0;
     END IF;
 END $$;
 

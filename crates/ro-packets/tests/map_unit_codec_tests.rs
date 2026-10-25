@@ -4,8 +4,8 @@
 
 use bytes::{Bytes, BytesMut};
 use ro_core::{
-    AccountId, CharId, ClientIntent, MapPosition, ServerEvent, Sex, UnitAppearance, UnitObjectType,
-    TARGET_PACKETVER,
+    AccountId, CharId, ClientIntent, MapPosition, ServerEvent, Sex, UnitAppearance, UnitLooks,
+    UnitObjectType, TARGET_PACKETVER,
 };
 use ro_packets::{
     is_implemented_outbound_opcode, pack_pos2, pack_pos_dir, unpack_pos2, unpack_pos_dir,
@@ -80,6 +80,7 @@ fn alice() -> UnitAppearance {
         dead_sit: 2,
         clevel: 42,
         effect_state: 0,
+        looks: UnitLooks::default(),
     }
 }
 
@@ -560,6 +561,7 @@ fn kafra() -> UnitAppearance {
         dead_sit: 0,
         clevel: 0,
         effect_state: 0x4,
+        looks: UnitLooks::default(),
     }
 }
 
@@ -648,6 +650,7 @@ fn poring() -> UnitAppearance {
         dead_sit: 0,
         clevel: 5,
         effect_state: 0,
+        looks: UnitLooks::default(),
     }
 }
 
