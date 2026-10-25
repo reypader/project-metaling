@@ -856,3 +856,35 @@ fn pkt_item_01_table_lengths() {
         );
     }
 }
+
+/// PKT-EQ-01: equipment packet lengths match the 20260219 table, the catalog and the capture.
+#[test]
+fn pkt_eq_01_table_lengths() {
+    use ro_packets::{PacketLength, PacketLengthTable};
+    let table = RathenaPacketLengthTable;
+    let ver = ro_core::TARGET_PACKETVER;
+    let expected = [
+        (0x0999, 11), // ZC_ACK_WEAR_EQUIP_V5
+        (0x099a, 9),  // ZC_ACK_TAKEOFF_EQUIP_V5
+        (0x0bae, 3),  // ZC_ACK_TAKEOFF_EQUIP_ALL
+        (0x013c, 4),  // ZC_EQUIP_ARROW
+        (0x013b, 4),  // ZC_ACTION_FAILURE
+        (0x0291, 4),  // ZC_MSG
+        (0x07e2, 8),  // ZC_MSG_VALUE
+        (0x07e6, 8),  // ZC_MSG_SKILL
+        (0x09cd, 8),  // ZC_MSG_COLOR
+        (0x0983, 29), // ZC_MSG_STATE_CHANGE3
+        (0x0196, 9),  // ZC_SC_END
+        (0x0998, 8),  // CZ_REQ_WEAR_EQUIP_V5
+        (0x00ab, 4),  // CZ_REQ_TAKEOFF_EQUIP
+        (0x0bf5, 6),  // CZ_REQ_TAKEOFF_EQUIP_ALL
+        (0x013a, 4),  // ZC_ATTACK_RANGE
+    ];
+    for (op, len) in expected {
+        assert_eq!(
+            table.packet_length(PacketOpcode(op), ver),
+            Some(PacketLength::Fixed(len)),
+            "opcode {op:#06x}"
+        );
+    }
+}

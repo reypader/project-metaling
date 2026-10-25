@@ -142,6 +142,8 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0134 => Some(Dynamic),
         0x0138 => Some(Fixed(3)),
         0x013a => Some(Fixed(4)), // ZC_ATTACK_RANGE (specs/map-entry-settings)
+        0x013b => Some(Fixed(4)), // ZC_ACTION_FAILURE (specs/equipment)
+        0x013c => Some(Fixed(4)), // ZC_EQUIP_ARROW (specs/equipment)
         0x013f => Some(Fixed(26)),
         0x0140 => Some(Fixed(22)),
         0x0141 => Some(Fixed(14)), // ZC_COUPLESTATUS (specs/map-entry-settings)
@@ -388,6 +390,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x028e => Some(Fixed(30)), // HC_ACK_IS_VALID_CHARNAME
         0x028f => Some(Fixed(6)),
         0x0290 => Some(Fixed(4)),
+        0x0291 => Some(Fixed(4)), // ZC_MSG (specs/equipment)
         0x0292 => Some(Fixed(2)),
         0x0293 => Some(Fixed(70)),
         0x0294 => Some(Fixed(10)),
@@ -645,6 +648,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x07e3 => Some(Fixed(6)),
         0x07e4 => Some(Dynamic),
         0x07e5 => Some(Fixed(8)),
+        0x07e6 => Some(Fixed(8)), // ZC_MSG_SKILL (specs/equipment)
         0x07e7 => Some(Fixed(32)),
         0x07e8 => Some(Dynamic),
         0x07e9 => Some(Fixed(5)),
@@ -835,6 +839,8 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0983 => Some(Fixed(29)),
         0x098d => Some(Dynamic),
         0x0998 => Some(Fixed(8)),
+        0x0999 => Some(Fixed(11)), // ZC_ACK_WEAR_EQUIP_V5 (captured)
+        0x099a => Some(Fixed(9)),  // ZC_ACK_TAKEOFF_EQUIP_V5 (captured)
         0x099b => Some(Fixed(8)),
         0x099f => Some(Fixed(22)),
         0x09a0 => Some(Fixed(6)), // HC_CHARLIST_NOTIFY
@@ -854,6 +860,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x09bc => Some(Fixed(6)),
         0x09c3 => Some(Fixed(8)),
         0x09ca => Some(Fixed(23)),
+        0x09cd => Some(Fixed(8)), // ZC_MSG_COLOR (specs/equipment)
         0x09ce => Some(Fixed(102)),
         0x09d1 => Some(Fixed(14)),
         0x09d4 => Some(Fixed(2)),
@@ -1020,6 +1027,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0b9d => Some(Fixed(14)),
         0x0b9e => Some(Fixed(12)),
         0x0ba0 => Some(Fixed(2)),
+        0x0bae => Some(Fixed(3)), // ZC_ACK_TAKEOFF_EQUIP_ALL (specs/equipment)
         0x0baf => Some(Fixed(16)),
         0x0bb0 => Some(Fixed(9)),
         0x0bb1 => Some(Fixed(3)),

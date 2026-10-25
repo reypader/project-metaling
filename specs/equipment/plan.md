@@ -137,7 +137,11 @@ If a session runs short, cut at a milestone boundary; never mid-milestone.
 ## Implementation notes (M1 onwards)
 Rulings made during implementation, and review results later milestones must honour.
 
-- (none yet)
+- **M1 (session A, 2026-10-25):** besides the six rows, added `0x07e6` 8 and `0x09cd` 8 (catalog
+  `packets/equipment.md` "Siblings"; `0x07e2` 8 was already there). `pkt_eq_01_table_lengths` in
+  `crates/ro-packets/tests/framing_tests.rs` pins all spec PKT-EQ-01 lengths plus those two and `0x013a`.
+  PF-21's missing list and PF-18's "still to add" note are updated. The proxy was rebuilt; the capture
+  checkpoint is unblocked.
 
 ## Milestones
 Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
@@ -151,7 +155,7 @@ Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
     `status_change.md` (`0x0983`/`0x0196`, EFST 695), take-off/drop order, `0x00ab` failures, unequip-all,
     `0x0291` and the `MSI_*` values.
   - This spec and plan.
-- [ ] **M1 ro-packets table** *(session A)*
+- [x] **M1 ro-packets table** *(session A, 2026-10-25)*
   - Add `0x0999` 11, `0x099a` 9, `0x0bae` 3, `0x013c` 4, `0x013b` 4, `0x0291` 4. PKT-EQ-01.
   - Trim PF-21's list. Rebuild `tools/proxy` and tell the user the capture checkpoint is unblocked.
 - [ ] **M2 item data v2** *(session A)*

@@ -28,13 +28,13 @@ Open questions and disagreements about wire packets for `PACKETVER = 20260219`. 
 | [PF-16](#pf-16) | ASPD value on the wire is amotion | Behaviour | Open |
 | [PF-17](#pf-17) | `0x02c1` coloured message layout | Minor | Open |
 | [PF-19](#pf-19) | Server rules not settled by source (overweight attack, DEF clamps, regen weight rate) | Server rule | Open |
-| [PF-21](#pf-21) | Packets the proxy can't frame (backlog: missing/wrong `table.rs` lengths; a misframe can stall the proxy log) | Code gap | Open; item rows fixed |
+| [PF-21](#pf-21) | Packets the proxy can't frame (backlog: missing/wrong `table.rs` lengths; a misframe can stall the proxy log) | Code gap | Open; item and equipment rows fixed |
 
 ### Resolved
 
 | Id | Topic | Resolved | By |
 | :--- | :--- | :--- | :--- |
-| [PF-18](#pf-18) | `MSI_WRONG_BULLET` is 2493 or 2494 | 2026-10-24 | `clif.hpp:599` branch read: 2493 at 20260219; `table.rs` rows for `0x0291`/`0x07e6`/`0x09cd` still to add |
+| [PF-18](#pf-18) | `MSI_WRONG_BULLET` is 2493 or 2494 | 2026-10-24 | `clif.hpp:599` branch read: 2493 at 20260219; `table.rs` rows for `0x0291`/`0x07e6`/`0x09cd` added (equipment M1, `pkt_eq_01_table_lengths`) |
 | [PF-01](#pf-01) | `0x01d7` ZC_SPRITE_CHANGE2: table says 11, source sends 15 | 2026-10-23 | `item_drop_pickup_sequence.txt`; `table.rs` fixed, test `pkt_item_01_table_lengths` |
 | [PF-02](#pf-02) | `0x0add` ZC_ITEM_FALL_ENTRY: table says 22, source sends 24 | 2026-10-23 | `item_drop_pickup_sequence.txt`; `table.rs` fixed, test `pkt_item_01_table_lengths` |
 | [PF-04](#pf-04) | `0x00a1` ZC_ITEM_DISAPPEAR missing from table (6) | 2026-10-23 | `item_drop_pickup_sequence.txt`; `table.rs` fixed, test `pkt_item_01_table_lengths` |
@@ -280,7 +280,7 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 **`MSI_WRONG_BULLET` value**
 
 - **Status:** Resolved from source 2026-10-24 (value 2493); a capture of wrong ammo would still confirm the client string.
-- **Source:** 2493 or 2494 depending on a packetver branch (`clif.hpp:616` and `:634`). The branch is `#if (PACKETVER >= 20130807 && PACKETVER <= 20130814) && !defined(PACKETVER_ZERO)` at `clif.hpp:599`; 20260219 takes the `#else`, so `MSI_WRONG_BULLET` = 2493. `clif_msg` is `0x0291` ZC_MSG, `msgId.W`, 4 bytes, now in the catalog. Other values: `MSI_FAIL_NEED_EQUIPPED_BOW` 1691, `MSI_CAN_NOT_EQUIP_ITEM` 372, `MSI_USESKILL_FAIL_MADOGEAR` 1435, `MSI_USESKILL_FAIL_CART` 1519. Code gap: `crates/ro-packets/src/table.rs` has no rows for `0x0291` (4), `0x07e6` (8) or `0x09cd` (8). The `EFST_CLIENT_ONLY_EQUIP_ARROW` status packet is still not covered.
+- **Source:** 2493 or 2494 depending on a packetver branch (`clif.hpp:616` and `:634`). The branch is `#if (PACKETVER >= 20130807 && PACKETVER <= 20130814) && !defined(PACKETVER_ZERO)` at `clif.hpp:599`; 20260219 takes the `#else`, so `MSI_WRONG_BULLET` = 2493. `clif_msg` is `0x0291` ZC_MSG, `msgId.W`, 4 bytes, now in the catalog. Other values: `MSI_FAIL_NEED_EQUIPPED_BOW` 1691, `MSI_CAN_NOT_EQUIP_ITEM` 372, `MSI_USESKILL_FAIL_MADOGEAR` 1435, `MSI_USESKILL_FAIL_CART` 1519. `crates/ro-packets/src/table.rs` rows for `0x0291` (4), `0x07e6` (8) and `0x09cd` (8) were added in equipment M1 (2026-10-25), pinned by `pkt_eq_01_table_lengths`. The `EFST_CLIENT_ONLY_EQUIP_ARROW` status packet is still not covered.
 - **Resolve by (optional):** a capture of equipping the wrong ammo type for the weapon.
 - **Catalog:** [mechanics/equipment.md](reference/catalog/mechanics/equipment.md).
 
@@ -312,7 +312,7 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 - **Status:** Open, low priority. Revisit when nothing else is queued, or when a capture or a client bug looks odd: a misframed packet hides the packets after it.
 - **Why it matters:** `tools/proxy` frames with `crates/ro-packets/src/table.rs`. A missing or wrong length makes the proxy log `UNKNOWN / UNMAPPED` frames and then garbage 1-byte frames (`0x0000`, `0x1e84`, `0x2800`, ...) until the stream re-syncs. The map-server never sends these packets today, so only captures and client-side tests are affected.
 - **Seen in the 2026-10-23 warp captures** ([`reference/catalog/captures/`](reference/catalog/captures/README.md)):
-  - Server to client, missing from the table: `0x0141` (stat lines), `0x013a` (attack range), `0x0b1b`, `0x0b8d`, `0x080e` (party member HP), `0x010f` (skill list), `0x02c9`, `0x0acb`, `0x0999`, `0x099a` (hidden inside a misframed `0x0000` frame), `0x019b`, `0x00b4`.
+  - Server to client, missing from the table: `0x0b1b`, `0x0b8d`, `0x080e` (party member HP), `0x010f` (skill list), `0x02c9`, `0x0acb`, `0x019b`, `0x00b4`. (`0x0141` and `0x013a` were added by `specs/map-entry-settings`; `0x0999` and `0x099a` by equipment M1.)
   - Client to char-server, wrong length: `0x08b8` `CH_SECOND_PASSWD_ACK` is framed at 8, but the client sends 2 more bytes. The leftover bytes appear as a bogus client frame after every PIN entry.
   - Expected and not a bug: `0x8480`/`0x8481` are the raw 4-byte AccountId echo after `CH_ENTER`/`CZ_ENTER` (`bins/CLAUDE.md`), which the proxy doesn't skip.
 - **The proxy log can stall** (seen in [`item_drop_pickup_sequence.txt`](reference/catalog/captures/item_drop_pickup_sequence.txt), 2026-10-23):
@@ -322,6 +322,7 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
   - So the reply to the client's `0x0363` drop (line 1151) was never logged. "Nothing happened" in the client most likely means rAthena refused it with `0x00af` count 0: wire index 12 ×2 was not the Jellopy, which sat at wire index 5.
   - **Fix:** the `specs/items` M1 table rows (done). A possible proxy hardening is to log a warning when a dynamic frame stays incomplete across more than N reads.
 - **Item rows fixed** in milestone M1 of [`specs/items/plan.md`](specs/items/plan.md) (2026-10-23): `0x0add` 24, `0x00a1` 6, `0x009d` 19, `0x0b41` 70, `0x0b08` dynamic, `0x0b0b` 4, `0x01d7` 15, `0x00af` 6.
+- **Equipment rows fixed** in milestone M1 of [`specs/equipment/plan.md`](specs/equipment/plan.md) (2026-10-25): `0x0999` 11, `0x099a` 9, `0x0bae` 3, `0x013c` 4, `0x013b` 4, `0x0291` 4, `0x07e6` 8, `0x09cd` 8, pinned by `pkt_eq_01_table_lengths`.
 - **Resolve by:** for each opcode, take the length from the capture (the gap to the next real opcode) and check it against the catalog and source. Then add it to `table.rs` with a test. Re-run the proxy over a capture and expect no `UNKNOWN` frames apart from the AccountId echo.
 
 ## Capture plan
