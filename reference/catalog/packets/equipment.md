@@ -43,7 +43,7 @@ What this settles:
 
 ## Captured equip sequences
 
-Sources (rAthena `d4b8e7b`, both 2026-10-25): capture 1 = [`captures/equip_sequence.txt`](../captures/equip_sequence.txt) (one client), capture 2 = [`captures/equip_sequence_2.txt`](../captures/equip_sequence_2.txt) (equipper plus an observer, full payloads). The equipper is AID `80 84 1e 00`, an Archer. Line numbers are file lines; bytes are after the opcode. "Push" = the recalculation diff: `0x00b0` var `0x35` ASPD, `0x29` ATK1, `0x2a` ATK2, `0x2d` DEF1 (soft, re-sent whenever DEF2 changes), `0x2e` DEF2 (hard), plus `0x013a` attack range.
+Sources (rAthena `d4b8e7b`, all 2026-10-25): capture 1 = [`captures/equip_sequence.txt`](../captures/equip_sequence.txt) (one client), capture 2 = [`captures/equip_sequence_2.txt`](../captures/equip_sequence_2.txt) (equipper plus an observer, full payloads), capture 3 = [`captures/equip_sequence_3.txt`](../captures/equip_sequence_3.txt) (the same pair, the equipper turned Assassin; see "Dual wield, katar and shield" below). The equipper is AID `80 84 1e 00`, an Archer in captures 1 and 2. Line numbers are file lines; bytes are after the opcode. "Push" = the recalculation diff: `0x00b0` var `0x35` ASPD, `0x29` ATK1, `0x2a` ATK2, `0x2d` DEF1 (soft, re-sent whenever DEF2 changes), `0x2e` DEF2 (hard), `0x34` CRITICAL, plus `0x013a` attack range.
 
 Wire indexes in capture 1: 2 Knife, `0x0e` Bow (1701), `0x0f` Arrows (1750), `0x10` Knife, `0x11` Guard (2101), `0x12` Katana (1116), `0x13` Hat (2220, view 16), `0x14` Goggles (2225, top + mid, view 1), `0x15` Hood (2501), `0x16` Gakkung (1714), `0x17` Shoes (2403). Capture 2 adds `0x18` Hat, `0x19` Hood, `0x1a` Bravery Bag (2576, garment, view 2), `0x1b` Arrows ×100, and the Knife at `0x0f` (after the first arrows ran out). rAthena re-packs the inventory on relog, so indexes shift between sessions (`#10`: Knife `0x17`).
 
@@ -103,6 +103,32 @@ Wire indexes in capture 1: 2 Knife, `0x0e` Bow (1701), `0x0f` Arrows (1750), `0x
 * Hat + Bravery Bag + bow + arrows (capture 2 lines 1022–1044), in `EQI` order: Bravery Bag (`0x099a`, `LOOK_ROBE` 0, script packets, push) → Hat (`0x099a`, `LOOK_HEAD_TOP` 0, push) → bow (two `0x01d7`, `0x099a`, arrows `0x099a`, one push) → `0x0bae {00}`.
 * Bow + arrows (lines 1084–1094): two `0x01d7` → bow `0x099a` → arrows `0x099a` → push → `0x0bae {00}`. The arrows aren't removed twice.
 
+### Dual wield, katar and shield (capture 3)
+
+Equipper = map sessions `#5`, `#8`, `#15` (account 2000000, char 150000 `test`), `@job 12` (Assassin) at line 458, `@blevel 99` at line 682. Observer = `#6`, `#12`, `#18` (account 2000001, char 150006). Wire indexes: `0x17` Knife (1201, worn in the right hand at login), `0x1c` Jur (1250, katar, two-handed), `0x1d` Gladius (1219, dagger), `0x1e` Damascus (1222, dagger), `0x1f` Tsurugi (1119, one-hand sword), `0x10` Guard (2101), `0x1b` Arrows (1750), `0x20` Fire Arrow (1752), `0x13` Goggles, `0x1a` Bravery Bag. ATK values seen in the pushes: Knife 17, Damascus 118, Gladius 105, Tsurugi 130, Jur 125.
+
+* **Request mask:** the client sends the `location` field of its inventory list (`0x0b39` offset 7). rAthena doesn't re-send the list on `@job`, so the Knife, listed `0x02` while an Archer, is requested with `0x02` (line 854); items gained after the job change are listed and requested with `0x22` (line 721). After a relog every dagger and sword lists `0x22` (line 1983).
+* **Hand choice** (request `0x22`, matches [mechanics §1](../mechanics/equipment.md#two-handed-and-dual-wield)):
+
+  | Lines | Worn before | Item | Result |
+  | :--- | :--- | :--- | :--- |
+  | 721–726 | Knife R | Damascus | `0x0999` location `0x20` (left) |
+  | 730–740 | Knife R, Damascus L | Gladius | Knife displaced, Gladius `0x02` (right) |
+  | 1328–1335 | Damascus R | Tsurugi | `0x20` (left) |
+  | 1312–1325, 1807–1820 | Jur (both) | Damascus / Tsurugi | Jur displaced, then `0x02` (right) |
+  | 2123–2134 | nothing | Tsurugi, then Damascus | `0x02`, then `0x20` |
+
+  Left only if the right hand is taken and the left is free; otherwise right (displacing the right-hand item).
+* **Looks:** `LOOK_WEAPON` = {right item id, left item id}. A left-hand weapon goes in the `shield` field: Knife + Damascus `02 | b1 04 00 00 | c6 04 00 00` (line 724), Tsurugi + Damascus {1119, 1222}. Taking one hand off sends one `LOOK_WEAPON` with the other hand kept: Knife off under Damascus = {0, 1222} (line 733).
+* **Push:** ATK2 counts both hands. Knife + Damascus 135 (line 726), Gladius + Damascus 223 (740), Tsurugi + Damascus 248 (913). ASPD changes on every hand change.
+* **Jur over Damascus L + Gladius R** (lines 835–852), per-slot as for the bow: `HAND_L` first: look {1219, 0}, Damascus `0x099a {1e 00, 20 00 00 00, 00}`, push ASPD + ATK2 105 → `HAND_L` := Jur → look {0, **1250**}, Gladius `0x099a {1d 00, 02 00 00 00, 00}`, push ASPD + ATK2 **125** (the Jur in the left hand already counts) → `0x0999 {1c 00, 22 00 00 00, 00 00, 00}` → two `LOOK_WEAPON` {1250, 0} → push ASPD + **CRITICAL** 4 (katar doubles crit; stats feature). No ATK2 after the `0x0999`: the Jur counts once. Same at lines 922–939 (Tsurugi R + Damascus L) and 1784–1803.
+* **One-hander over the Jur** (Knife, lines 854–867): two `LOOK_WEAPON` {0, 0} → Jur `0x099a {1c 00, 22 00 00 00, 00}` → push ASPD, ATK2 0, CRITICAL 2 → `0x0999` → `LOOK_WEAPON` {1201, 0} → push ASPD, ATK2 17.
+* **Guard over the Jur** (lines 3508–3522): two {0, 0} → Jur `0x099a` → push → `0x0999 {10 00, 20 00 00 00, 00 00, 00}` → `LOOK_WEAPON` {0, 2101} → push ASPD, DEF1, DEF2. Then Tsurugi `0x02` (3524–3529): `LOOK_WEAPON` {1119, 2101}.
+* **Unequip all** (lines 2094–2117, Bravery Bag, Goggles, Damascus L, Tsurugi R): in `EQI` order, garment → head → `HAND_L` (look {1119, 0}, `0x099a {1e 00, 20 …}`, push) → `HAND_R` (look {0, 0}, `0x099a {1f 00, 02 …}`, push) → `0x0bae {00}`. One push per item.
+* **Arrows with no bow** (lines 2145–2148, 2201–2217, 2264–2266): `0x0291 {9b 06}` then `0x0999 {…, 02}`, both for the request mask `0` and `0x8000`, with daggers or the Jur worn. The reply to line 2978 is missing: the proxy log of `#8` stalled on a misframed skill list after `@jlevel 99` (line 2977, [PF-21](../../../PACKET_FINDINGS.md#pf-21)).
+* **Death:** `@die` with a Knife (line 360), the Jur (1264) and Damascus + Tsurugi (1409) sends `0x0080 {…, 01}` to the area and no look change. `@revive` (`0x0148`) sends none either. An observer who walks into view of the dead player gets `0x09ff` with `state` 1 and the weapons still in `weapon`/`shield` (line 1540: 1222, 1119). The client doesn't draw weapons or shields on a dead body (user report), so that is client-side. No equip request was sent while dead, so the dead gate is still source-only.
+* **Attacks** (for the auto-attack feature): `0x08c8` from the dual-wielder carries the left-hand hit in `damage2` (line 1368: damage 84, `damage2` 47, `src_speed` 560 = the ASPD push value). The katar's `damage2` is a small second number (line 1005: damage 206, `damage2` 2).
+
 ### Entry looks for the equipper (observer `#3`, capture 2)
 
 | Line | Packet | Worn | `weapon` | `shield` | `accessory` | `accessory2` | `accessory3` | `robe` |
@@ -114,9 +140,23 @@ Wire indexes in capture 1: 2 Knife, `0x0e` Bow (1701), `0x0f` Arrows (1750), `0x
 
 `weapon`/`shield` are item ids; a two-hander's `shield` is 0. The observer's own Knife shows as 1201 in the equipper's `0x09ff` (line 234).
 
+Capture 3 (observer `#6`/`#18`):
+
+| Line | Packet | Worn | `weapon` | `shield` | `state` |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 1176 | `0x09ff` | Jur | 1250 | 0 | 0 |
+| 1540 | `0x09ff` | Damascus R + Tsurugi L, **dead** | 1222 | 1119 | 1 |
+| 1977 | `0x09fe` | Tsurugi R + Damascus L (login) | 1119 | 1222 | — |
+| 3538 | `0x09fd` | Tsurugi + Guard | 1119 | **2101** | — |
+| 3677 | `0x09ff` | Tsurugi + Guard (walked back into view) | 1119 | 2101 | 0 |
+
+A left-hand weapon and a shield both go in `shield` as the item id. The entry packet has no combat-stance field; an observer who walks back into view sees the player out of combat stance even while the player's own client still shows it (user report).
+
 ### Char select (capture 2 lines 1157, 1309)
 
 `test` (Archer) wearing a Knife and Goggles: `weapon` (offset 90) = **1** (`W_DAGGER`, the type), `accessory2` (100) = 1, `accessory3` (102) = 0, `shield` 0. `robePalette` (162) = 0, then 2 after the Bravery Bag was worn at the next restart (the restart saved the look columns). Novices with a Knife show `weapon` 1 too. The client doesn't draw weapons or shields on the select screen; it draws them only in combat stance (user report), so that's expected.
+
+Capture 3 (`0x006b` at lines 1913, 2994, 3713): Tsurugi R + Damascus L → `weapon` **28** (`W_DOUBLE_DS`), `shield` 0 (a left-hand weapon isn't a shield); Jur → `weapon` 16 (`W_KATAR`); Tsurugi + Guard → `weapon` 2, `shield` **1** (the Guard's `View`).
 
 ### Client-side behaviour
 

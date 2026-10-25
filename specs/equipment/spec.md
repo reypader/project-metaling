@@ -37,9 +37,11 @@ Out of scope (see §5):
 - Captures `equip_sequence.txt` and `equip_sequence_2.txt` (2026-10-25), written up in catalog
   `packets/equipment.md` "Captured equip sequences": take-off, unequip-all, failures, a shield, a two-hander,
   headgear, garments, shoes, ammo, entry looks, char-select looks.
+- Capture `equip_sequence_3.txt` (2026-10-25, catalog "Dual wield, katar and shield (capture 3)"): an Assassin's
+  dual-wield hand choice, looks and pushes, a katar, a shield in entry packets, deaths, char select `W_DOUBLE_DS`.
 - `PACKET_FINDINGS.md` PF-11 (resolved), PF-16, PF-18 (resolved), PF-21.
-- **Still source-only:** the `0x099a` failure forms, the dead gates, a shield in an entry packet, costumes, dual
-  wield, bullets.
+- **Still source-only:** the `0x099a` failure forms, the dead gates (capture 3 has deaths but no request while
+  dead), costumes, bullets.
 
 When this spec and the catalog disagree, the catalog wins and this spec gets fixed.
 
@@ -112,12 +114,13 @@ New optional keys, omitted when default:
     top / mid and robe view ids after the costume override (catalog §5). Entry packets read this cache, so
     building an entry event never touches the inventory;
   - looks are computed from the worn-slot table: weapon = the `HAND_R` item, shield = the `HAND_L` item unless
-    it's the same item. A multi-slot headgear shows only in its highest slot, decided by the item's own
+    it's the same item. A left-hand weapon goes in `shield` as its item id, like a shield (captured: Knife +
+    Damascus = {1201, 1222}). A multi-slot headgear shows only in its highest slot, decided by the item's own
     `Locations` (Goggles, top + mid: top = 1, mid = 0, even while only its mid slot is assigned; captured);
   - `GearStatus` (§2.10).
 - **Weapon type** (rAthena `status.weapon`): the right-hand `WeaponType`, or the left-hand one when the right
-  is empty, or the dual-wield constant for a dagger/sword/axe pair (catalog §1 "Weapon type resolution").
-  `W_FIST` (0) when bare-handed.
+  is empty, or the dual-wield constant for a dagger/sword/axe pair (catalog §1 "Weapon type resolution";
+  captured: Tsurugi + Damascus = `W_DOUBLE_DS` 28). `W_FIST` (0) when bare-handed.
 - **Job identity:** a job id → mapid table (catalog §3a), in a new `ro-engine/src/job.rs`. Unknown ids act as
   Novice. Stats will reuse it.
 
@@ -147,7 +150,10 @@ failure `0x0999` is `{index, location 0, view 0, result}` (captured: `16 00 00 0
    6. Class (`Classes` against the mapid's upper/baby/third/fourth flags, renewal table): result 2.
 8. Fit: `pos & requested == 0`, or the item is already worn: result 2.
 9. Resolve the final mask (accessory auto-slot, dual-wield hand choice; catalog §1). Two-handers keep
-   `EQP_ARMS`.
+   `EQP_ARMS`. Hand choice for a request naming both hands (captured, capture 3): left only if the right hand is
+   taken and the left is free, otherwise right (displacing the right-hand item). A request naming one hand uses
+   it: the client sends its inventory list's `location`, which isn't refreshed on a job change, so a dagger listed
+   before `@job` asks for `0x02` only.
 10. **Take the positions one by one** (captured; catalog "The new item takes each slot as the loop reaches
     it"). Walk the final mask's positions in rAthena `EQI` order (catalog §1: accessories, shoes, garment, head
     low / mid / top, armor, `HAND_L`, `HAND_R`, costumes, ammo, shadow). For each one:
@@ -238,8 +244,11 @@ Picking an item up clears `equip` on the copy (already true: `add_item` zeroes i
 - The inventory lists already carry `WearState` = `equip` (`0x0b39`) and the `0x01d7` `LOOK_WEAPON` at entry.
 - Entry packets (`0x09fd`/`0x09fe`/`0x09ff`) send `UnitLooks`: weapon u32, shield u32, accessory (head bottom),
   accessory2 (head top), accessory3 (head mid), robe. Captured (catalog "Entry looks for the equipper"): a bow
-  gives weapon 1701 and shield 0, Goggles accessory2 1 and accessory3 0, a Hat accessory2 16, the Bravery Bag robe
-  2. A shield in an entry packet isn't captured (live `LOOK_WEAPON` {1201, 2101} is).
+  gives weapon 1701 and shield 0, Goggles accessory2 1 and accessory3 0, a Hat accessory2 16, the Bravery Bag
+  robe 2. Capture 3: Tsurugi + Guard gives weapon 1119, shield 2101; Damascus R + Tsurugi L gives 1222, 1119.
+- Death changes no looks: no `0x01d7` on death or revive, and an observer's entry packet for a dead player
+  (`state` 1) still carries the weapons (capture 3 line 1540). The client hides them on a dead body. Entry
+  packets carry no combat stance.
 - The login status push and the `0x00bd` window use the gear values (§2.10).
 
 ### 2.10 Status hook (catalog `packets/status.md` "Recalculation pushes", mechanics §6)
@@ -247,7 +256,9 @@ Picking an item up clears `equip` on the copy (already true: `add_item` zeroes i
   DEF (hard), ATK2, DEF2 (soft), FLEE2, CRITICAL, MATK min/max, MDEF hard/soft, ATTACKRANGE, MAXHP, MAXSP, HP,
   SP, trait values). Stored per player.
 - **This feature computes only the gear part:**
-  - `atk2` = right-hand weapon `Attack` + left-hand weapon `Attack` (refine 0; no refine bonus yet).
+  - `atk2` = right-hand weapon `Attack` + left-hand weapon `Attack` (refine 0; no refine bonus yet). A
+    two-hander counts once. Captured: Knife + Damascus 135, Tsurugi + Damascus 248, the Jur 125 both while it
+    holds only `HAND_L` mid-displacement and after.
   - `hard_def` = Σ `Defense` of worn items, each item once, ammo skipped.
   - `range` = max(1, right weapon `Range`, left weapon `Range`). Bare hands: 1.
   - Everything else keeps today's values (loaded HP/SP/MaxHP/MaxSP; 0 for the rest).
@@ -262,7 +273,8 @@ Picking an item up clears `equip` on the copy (already true: `add_item` zeroes i
 - **Gear status reads the worn-slot table**, which §2.2 step 10 fills one position at a time, so a displaced
   item's recalc already counts the new item in the positions assigned so far. Each item counts once.
 - *Gap until stats lands:* rAthena also pushes `SP_ASPD` on every weapon or shield change (capture: 440 ↔ 590),
-  and `SP_ATK1` when a bow comes on or off (status ATK uses DEX for ranged weapons). Here ASPD and ATK1 don't
+  and `SP_ATK1` when a bow comes on or off (status ATK uses DEX for ranged weapons), and `SP_CRITICAL` when a
+  katar comes on or off (capture 3: 2 ↔ 4). Here ASPD and ATK1 don't
   change and aren't pushed, so some captured pushes are shorter here (bow over Knife + Guard: no final push at
   all).
 
@@ -280,7 +292,9 @@ Picking an item up clears `equip` on the copy (already true: `add_item` zeroes i
 - **Char select:** `CharacterSummary` gains `CharacterLooks`, loaded by every summary query. `0x0b72` /
   `0x006b` / `0x0b6f` fill `weapon` (i16 type), `shield`, `accessory` (head bottom), `accessory2` (head top),
   `accessory3` (head mid) and `robePalette` (robe view, i32). Captured: a Knife gives `weapon` 1, Goggles
-  `accessory2` 1 and `accessory3` 0, the Bravery Bag `robePalette` 2. The client never draws the weapon or shield
+  `accessory2` 1 and `accessory3` 0, the Bravery Bag `robePalette` 2. Capture 3: Tsurugi + Damascus `weapon` 28
+  and `shield` 0 (a left-hand weapon isn't a shield), the Jur 16, Tsurugi + Guard `weapon` 2 and `shield` 1 (the
+  Guard's `View`). The client never draws the weapon or shield
   on the select screen (only in combat stance), so a missing weapon there is expected; headgear shows.
 
 ## 3. Scenarios
@@ -321,7 +335,9 @@ Picking an item up clears `equip` on the copy (already true: `add_item` zeroes i
 
 **ENG** (`crates/ro-engine` unit and integration tests):
 - **ENG-EQ-01, rules:** `pos` widening for an Assassin with a dagger only. The accessory auto-slot picks right,
-  then left when right is taken. The dual-wield hand choice. A two-hander gets `EQP_ARMS`.
+  then left when right is taken. The dual-wield hand choice, as captured: right free → right; right taken and
+  left free → left; both taken → right; a one-hand request (`0x02`) → right. A two-hander gets `EQP_ARMS`. Weapon
+  type: dagger + sword → 28, dagger + dagger → 25, katar → 16, bare → 0.
 - **ENG-EQ-02, checks in order:** level too low → 1, over max → 1; gender, broken, job (Novice vs a Swordman-only
   item; Knight id 7 for a Knight item), class (a transcendent-only item on a novice) → 2. Level beats gender.
 - **ENG-EQ-03, captured swap:** wearing Knife A, equip Knife B. Self gets exactly the captured order (pushes
@@ -346,6 +362,11 @@ Picking an item up clears `equip` on the copy (already true: `add_item` zeroes i
   `0x00af`, and the observer sees the look. Dropping 5 of 100 worn arrows keeps them worn.
 - **ENG-EQ-11, entry looks:** an observer's entry packet for a player wearing a knife, a shield, a headgear and
   a garment carries those looks. Spawning with worn gear builds `UnitLooks` and `GearStatus` from the masks.
+- **ENG-EQ-13, dual wield (capture 3):** an Assassin (job 12) wearing a Knife equips a Damascus → `0x0999`
+  location `0x20`, `LOOK_WEAPON` {1201, 1222}, push ATK2 135. A Jur over Damascus L + Gladius R → Damascus off
+  (look {1219, 0}, ATK2 105), Gladius off (look {0, 1250}, ATK2 125), `0x0999` `0x22`, two {1250, 0}, no final
+  push. Entry packets carry the left-hand weapon in `shield`; char-select looks give `weapon` 28 for Tsurugi +
+  Damascus.
 - **ENG-EQ-12, map entry ammo:** worn arrows add `0x0983` + `0x013c` between `0x0b09` and `0x0b39` on every
   `0x007d`, to self only (an observer gets neither).
 - **ENG-STAT-01, hook:** no change → no packets. ATK2 change → `SP_ATK2` only. DEF change → `SP_DEF1` then

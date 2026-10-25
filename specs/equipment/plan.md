@@ -37,8 +37,8 @@ context that isn't in the code.
    The metaling and rAthena compose files share the project name "docker", so
    `docker compose -f tools/docker/docker-compose.yml up -d db` replaces a running `rathena-db`. Ask the user
    before starting it if `rathena-*` containers are up (`docker ps`). Then `./verify.sh` (all crates).
-3. Optional captures the user may record before M5/M7 are listed under "Capture follow-ups" below. Don't
-   block on them; check whether a new `reference/catalog/captures/equip_sequence_3.txt` exists.
+3. Capture 3 (`equip_sequence_3.txt`) arrived and was checked in session B; its docs are committed on their
+   own as "Equipment: capture 3 check docs".
 4. Read the "Implementation notes" for M2/M3 before touching ro-db, ro-core or ro-packets types.
 
 ### Captures (all checked against the spec on 2026-10-25)
@@ -63,8 +63,22 @@ those bytes as the PKT and ENG test vectors.
   - §2.8: the client never sends a drop for a worn item. ENG-EQ-10 is a unit test only; not in the manual check.
   - §2.10 gap: rAthena also pushes ASPD on shield changes and ATK1 on bow changes.
   - §2.11: char select `weapon` = 1 for a Knife; the client draws no weapon/shield there (only in combat stance).
-- Not captured (source reading): `0x099a` failure forms, dead gates, a shield in an entry packet, costumes, dual
-  wield, bullets.
+- `equip_sequence_3.txt` (capture 3, session B, 2026-10-25): equipper `#5`/`#8`/`#15` (`test`, `@job 12`
+  Assassin), observer `#6`/`#12`/`#18`. Dual wield, a katar (Jur), Tsurugi + Guard, three deaths, the observer
+  walking in and out of view, unequip-all, arrow failures, char select. Write-up: catalog `packets/equipment.md`
+  "Dual wield, katar and shield (capture 3)". **What it settled** (the spec now says so):
+  - Hand choice (§2.2 step 9): right free → right; right taken, left free → left; both taken → right. A
+    one-hand request (`0x02`) goes right: the client's inventory `location` isn't refreshed on `@job`.
+  - Looks: a left-hand weapon's item id goes in `shield` (`LOOK_WEAPON` and entry packets). Char select:
+    left-hand weapon → `shield` 0, `weapon` = dual constant (Tsurugi + Damascus = 28 `W_DOUBLE_DS`); Guard →
+    `shield` 1 (its `View`). Entry packet with a Guard: `shield` 2101.
+  - ATK2 sums both hands; a two-hander counts once, including mid-displacement while it holds only `HAND_L`.
+  - Death sends no look change; a dead player's entry packet keeps its weapons (`state` 1). Don't clear
+    `UnitLooks` on death. The client hides them, and never shows an observer the combat stance on entry.
+  - Gap until stats: a katar pushes `SP_CRITICAL` (2 ↔ 4) in rAthena; not here.
+  - The `#8` log stalled after `@jlevel 99` (PF-21), so the reply to the arrow request at line 2978 is missing.
+- Not captured (source reading): `0x099a` failure forms, dead gates (no request was sent while dead), costumes,
+  bullets.
 - Ammo requests come with position `0` or `0x8000`; `0x0bf5` from the window is `ff 83 00 00`.
 - Bravery Bag's `0x010f`/`0x0441` come from its item script (skill grant). Out of scope; don't send them.
 - The capture-1 client freeze didn't repeat in capture 2 (PF-21 note). Nothing for metaling to copy.
@@ -76,7 +90,8 @@ those bytes as the PKT and ENG test vectors.
   map and at char select alike.
 
 ### Capture follow-ups (optional; told to the user 2026-10-25)
-One more rAthena capture could settle the source-only parts. By value to the remaining milestones:
+**Items 1 and 2 are done by capture 3** (above); item 3 only partly (deaths, but no equip request while dead).
+The original list:
 1. **Dual wield** (M5 rules, M7 looks and status, M9 char select): an Assassin (`job_class` 12) with two
    daggers. Equip one, then a second (which hand does it take? spec §2.2 step 9, catalog §1 "dual-wield hand
    choice"), swap one, take each off, unequip all; an observer watching; relog to char select (the `weapon`
