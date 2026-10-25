@@ -55,6 +55,15 @@ pub struct ProxyArgs {
     /// Optional output log file path (defaults to packet_sequence-<date>.log)
     #[arg(short = 'o', long = "log-file")]
     pub log_file: Option<String>,
+
+    /// Log every payload byte instead of the first 32 (or set PROXY_FULL_PAYLOAD=1)
+    #[arg(
+        long = "full-payload",
+        env = "PROXY_FULL_PAYLOAD",
+        action = clap::ArgAction::SetTrue,
+        value_parser = clap::builder::BoolishValueParser::new()
+    )]
+    pub full_payload: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -68,6 +77,7 @@ pub struct ProxyConfig {
     pub char_target: String,
     pub map_target: String,
     pub log_file: Option<String>,
+    pub full_payload: bool,
 }
 
 /// Formats host and port into a valid network address string.
@@ -193,6 +203,7 @@ impl ProxyArgs {
             char_target,
             map_target,
             log_file,
+            full_payload: self.full_payload,
         })
     }
 }
@@ -252,6 +263,7 @@ mod tests {
             listen_char_port: 6121,
             listen_map_port: 5121,
             log_file: None,
+            full_payload: false,
         };
 
         let config = args.build_config().unwrap();
@@ -273,6 +285,7 @@ mod tests {
             listen_char_port: 6121,
             listen_map_port: 5121,
             log_file: Some("/tmp/custom_proxy.log".to_string()),
+            full_payload: false,
         };
 
         let config = args.build_config().unwrap();
@@ -291,6 +304,7 @@ mod tests {
             listen_char_port: 6121,
             listen_map_port: 5121,
             log_file: Some("   ".to_string()),
+            full_payload: false,
         };
 
         let config = args.build_config().unwrap();
@@ -376,6 +390,7 @@ mod tests {
             listen_char_port: 6121,
             listen_map_port: 5121,
             log_file: None,
+            full_payload: false,
         };
 
         let config = args.build_config().unwrap();

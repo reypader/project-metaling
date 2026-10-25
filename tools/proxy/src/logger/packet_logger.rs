@@ -13,7 +13,7 @@ use tokio_util::codec::Decoder;
 use tracing::{debug, warn};
 
 use crate::logger::{
-    resync::{find_resync_offset, format_hex_preview},
+    resync::{find_resync_offset, format_hex_preview, format_hex_preview_limited},
     session::{PacketDirection, PacketSequenceEntry, SessionSequenceTracker},
 };
 
@@ -25,7 +25,16 @@ pub struct PacketLogger {
     direction: PacketDirection,
     tracker: Arc<SessionSequenceTracker>,
     buffer: BytesMut,
+    /// Consecutive reads that ended with the same frame still incomplete.
+    pending_reads: usize,
+    /// Whether that incomplete frame already has its `[PENDING FRAME]` note.
+    pending_noted: bool,
 }
+
+/// Reads a frame may stay incomplete before the logger writes a `[PENDING FRAME]` note.
+const PENDING_NOTE_AFTER_READS: usize = 3;
+/// Bytes of a pending frame's head shown in its note.
+const PENDING_NOTE_HEAD_BYTES: usize = 64;
 
 impl PacketLogger {
     pub fn new(
@@ -42,6 +51,8 @@ impl PacketLogger {
             direction,
             tracker,
             buffer: BytesMut::with_capacity(4096),
+            pending_reads: 0,
+            pending_noted: false,
         }
     }
 
@@ -65,13 +76,16 @@ impl PacketLogger {
         while self.buffer.len() >= 2 {
             match self.decoder.decode(&mut self.buffer) {
                 Ok(Some(raw_packet)) => {
+                    self.clear_pending();
                     self.log_raw_packet(&raw_packet);
                 }
                 Ok(None) => {
                     // Frame incomplete, wait for more data from TCP stream
+                    self.note_pending_frame();
                     break;
                 }
                 Err(err) => {
+                    self.clear_pending();
                     let advance_bytes = find_resync_offset(
                         &self.buffer,
                         &RathenaPacketLengthTable,
@@ -102,7 +116,8 @@ impl PacketLogger {
                         } else {
                             &[]
                         };
-                        let payload_preview = format_hex_preview(raw_payload);
+                        let payload_preview =
+                            format_hex_preview_limited(raw_payload, self.tracker.preview_limit());
                         let seq = self.tracker.next_seq();
 
                         debug!(
@@ -171,6 +186,53 @@ impl PacketLogger {
         }
     }
 
+    /// Records a proxy-side note in this logger's direction (see
+    /// [`SessionSequenceTracker::record_note`]).
+    pub fn record_note(&mut self, note: &str) {
+        self.tracker.record_note(self.direction, note);
+    }
+
+    fn clear_pending(&mut self) {
+        self.pending_reads = 0;
+        self.pending_noted = false;
+    }
+
+    /// Counts a read that left the head frame incomplete. After a few, writes one note with the
+    /// frame's expected length and head bytes, so a stalled log shows what it is waiting on.
+    fn note_pending_frame(&mut self) {
+        self.pending_reads += 1;
+        if self.pending_noted || self.pending_reads < PENDING_NOTE_AFTER_READS {
+            return;
+        }
+        self.pending_noted = true;
+        let opcode = PacketOpcode(u16::from_le_bytes([self.buffer[0], self.buffer[1]]));
+        let expected = match RathenaPacketLengthTable.packet_length(opcode, TARGET_PACKETVER) {
+            Some(PacketLength::Fixed(n)) => n.to_string(),
+            Some(PacketLength::Dynamic) if self.buffer.len() >= 4 => {
+                u16::from_le_bytes([self.buffer[2], self.buffer[3]]).to_string()
+            }
+            _ => "an unknown number of".to_string(),
+        };
+        let head = format_hex_preview_limited(
+            &self.buffer,
+            PENDING_NOTE_HEAD_BYTES.max(self.tracker.preview_limit()),
+        );
+        let note = format!(
+            "[PENDING FRAME] {} expects {} bytes, has {} after {} reads; head: {}",
+            opcode,
+            expected,
+            self.buffer.len(),
+            self.pending_reads,
+            head
+        );
+        warn!(
+            target: "proxy",
+            "[{:?} Session #{}] [{}] {}",
+            self.server_type, self.session_id, self.direction, note
+        );
+        self.record_note(&note);
+    }
+
     fn record_unmapped_packet(&mut self, err: &PacketCodecError, consumed: usize) {
         let head_opcode = u16::from_le_bytes([self.buffer[0], self.buffer[1]]);
         let opcode = PacketOpcode(head_opcode);
@@ -180,7 +242,7 @@ impl PacketLogger {
         } else {
             &[]
         };
-        let payload_preview = format_hex_preview(raw_payload);
+        let payload_preview = format_hex_preview_limited(raw_payload, self.tracker.preview_limit());
 
         let dyn_hint = if self.buffer.len() >= 4 {
             let cand_len = u16::from_le_bytes([self.buffer[2], self.buffer[3]]);
@@ -231,7 +293,8 @@ impl PacketLogger {
         } else {
             2 + raw.payload.len()
         };
-        let payload_preview = format_hex_preview(&raw.payload);
+        let payload_preview =
+            format_hex_preview_limited(&raw.payload, self.tracker.preview_limit());
 
         let (is_implemented, detail_msg) = if self.direction == PacketDirection::ClientToServer {
             match decode_frame(raw, TARGET_PACKETVER) {
@@ -281,6 +344,7 @@ impl Drop for PacketLogger {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::logger::recorder::PacketSequenceRecorder;
 
     #[test]
     fn test_packet_logger_feed_valid_packet_and_sequence() {
@@ -499,6 +563,100 @@ mod tests {
         assert_eq!(tracker.packet_count(), 1);
         let flow = tracker.format_sequence_flow();
         assert!(flow.contains("[TRAILING PARTIAL FRAME on EOF, 4 bytes]"));
+    }
+
+    /// A ZC_ACK_REQNAMEALL frame (fixed 106) whose payload bytes count up from 0.
+    fn reqname_frame() -> Vec<u8> {
+        let mut frame = vec![0x30, 0x0a];
+        frame.extend(0..104u8);
+        frame
+    }
+
+    #[test]
+    fn test_full_payload_logs_every_byte() {
+        let recorder = Arc::new(PacketSequenceRecorder::new().with_full_payload(true));
+        let tracker = Arc::new(SessionSequenceTracker::with_global(
+            ServerType::Map,
+            1,
+            recorder.clone(),
+        ));
+        let mut logger =
+            PacketLogger::new(ServerType::Map, 1, PacketDirection::ServerToClient, tracker);
+        logger.feed_and_log(&reqname_frame());
+
+        let entries = recorder.entries();
+        assert_eq!(entries.len(), 1);
+        assert!(!entries[0].detail.contains("(+"), "{}", entries[0].detail);
+        assert!(
+            entries[0].detail.contains("66 67]"),
+            "{}",
+            entries[0].detail
+        );
+    }
+
+    #[test]
+    fn test_default_payload_is_cut() {
+        let recorder = Arc::new(PacketSequenceRecorder::new());
+        let tracker = Arc::new(SessionSequenceTracker::with_global(
+            ServerType::Map,
+            1,
+            recorder.clone(),
+        ));
+        let mut logger =
+            PacketLogger::new(ServerType::Map, 1, PacketDirection::ServerToClient, tracker);
+        logger.feed_and_log(&reqname_frame());
+
+        let entries = recorder.entries();
+        assert!(
+            entries[0].detail.contains("(+72 bytes)"),
+            "{}",
+            entries[0].detail
+        );
+    }
+
+    #[test]
+    fn test_pending_frame_noted_once_after_three_reads() {
+        let tracker = Arc::new(SessionSequenceTracker::new());
+        let mut logger = PacketLogger::new(
+            ServerType::Map,
+            1,
+            PacketDirection::ServerToClient,
+            tracker.clone(),
+        );
+        let frame = reqname_frame();
+
+        logger.feed_and_log(&frame[..10]);
+        logger.feed_and_log(&frame[10..20]);
+        assert_eq!(tracker.packet_count(), 0, "no note before the third read");
+        logger.feed_and_log(&frame[20..30]);
+        assert_eq!(tracker.packet_count(), 1, "note after the third read");
+        logger.feed_and_log(&frame[30..40]);
+        assert_eq!(tracker.packet_count(), 1, "the note is written once");
+
+        let flow = tracker.format_sequence_flow();
+        assert!(flow.contains("[PENDING FRAME"), "{flow}");
+        assert!(flow.contains("expects 106 bytes, has 30"), "{flow}");
+
+        logger.feed_and_log(&frame[40..]);
+        assert_eq!(tracker.packet_count(), 2, "the frame logs once complete");
+        assert!(logger.buffer.is_empty());
+    }
+
+    #[test]
+    fn test_record_note() {
+        let tracker = Arc::new(SessionSequenceTracker::new());
+        let mut logger = PacketLogger::new(
+            ServerType::Map,
+            1,
+            PacketDirection::ServerToClient,
+            tracker.clone(),
+        );
+        logger.record_note("forward to client took 1500 ms");
+        let flow = tracker.format_sequence_flow();
+        assert!(
+            flow.contains("[PROXY NOTE] forward to client took 1500 ms"),
+            "{flow}"
+        );
     }
 
     #[test]

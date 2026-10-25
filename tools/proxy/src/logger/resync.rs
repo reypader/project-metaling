@@ -2,13 +2,20 @@ use std::cmp::min;
 
 use ro_packets::{PacketLength, PacketLengthTable, PacketOpcode};
 
+/// How many payload bytes a log line shows unless `--full-payload` is on.
+pub const DEFAULT_PREVIEW_BYTES: usize = 32;
+
 /// Formats a byte slice as a hex dump preview with ASCII representation.
 pub fn format_hex_preview(bytes: &[u8]) -> String {
+    format_hex_preview_limited(bytes, DEFAULT_PREVIEW_BYTES)
+}
+
+/// Like [`format_hex_preview`], but shows at most `max_bytes` bytes (`usize::MAX` shows all).
+pub fn format_hex_preview_limited(bytes: &[u8], max_bytes: usize) -> String {
     if bytes.is_empty() {
         return "[]".to_string();
     }
-    const MAX_PREVIEW_BYTES: usize = 32;
-    let take_count = min(bytes.len(), MAX_PREVIEW_BYTES);
+    let take_count = min(bytes.len(), max_bytes);
     let hex_part: Vec<String> = bytes[..take_count]
         .iter()
         .map(|b| format!("{:02x}", b))
@@ -24,11 +31,11 @@ pub fn format_hex_preview(bytes: &[u8]) -> String {
         })
         .collect();
 
-    if bytes.len() > MAX_PREVIEW_BYTES {
+    if bytes.len() > take_count {
         format!(
             "[{} ... (+{} bytes)] |{}|",
             hex_part.join(" "),
-            bytes.len() - MAX_PREVIEW_BYTES,
+            bytes.len() - take_count,
             ascii_part
         )
     } else {
@@ -131,6 +138,16 @@ mod tests {
     fn test_format_hex_preview() {
         assert_eq!(format_hex_preview(&[]), "[]");
         assert_eq!(format_hex_preview(b"RO"), "[52 4f] |RO|");
+    }
+
+    #[test]
+    fn test_format_hex_preview_limited() {
+        let bytes = [0xabu8; 40];
+        let cut = format_hex_preview_limited(&bytes, DEFAULT_PREVIEW_BYTES);
+        assert!(cut.contains("... (+8 bytes)"), "{cut}");
+        let full = format_hex_preview_limited(&bytes, usize::MAX);
+        assert!(!full.contains("(+"), "{full}");
+        assert_eq!(full.matches("ab").count(), 40);
     }
 
     #[test]

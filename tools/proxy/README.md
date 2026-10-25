@@ -57,6 +57,10 @@ Options:
           Override proxy char listen port [default: 6121]
       --listen-map-port <PORT>
           Override proxy map listen port [default: 5121]
+  -o, --log-file <LOG_FILE>
+          Output log file path (defaults to packet_sequence-<date>.log)
+      --full-payload
+          Log every payload byte instead of the first 32 [env: PROXY_FULL_PAYLOAD=]
   -h, --help
           Print help
   -V, --version
@@ -118,6 +122,16 @@ When a packet opcode is not yet registered in `table.rs`:
 ```text
 WARN [MAP Session #3] [Seq #5  ] [<< SERVER -> CLIENT] UNMAPPED OPCODE: 0x0abc (reason: Unknown or unregistered packet opcode: 0x0abc, consumed 6 bytes) (candidate dynamic len=6), payload: [01 02 03 04]
 ```
+
+### Proxy Notes in the Capture
+Some lines in the capture file are notes from the proxy, not packets. They show as opcode `0x0000` with a `[PROXY NOTE]` detail:
+
+- `forwarding N bytes to the client has been blocked for over 1000 ms`: that side stopped reading. Written while the write is still waiting, so it shows up even if the write never finishes.
+- `the N bytes above took X ms to forward to the client`: a slow forward that did finish.
+- `[PENDING FRAME] 0x.... expects N bytes, has M after 3 reads; head: [...]`: the log is waiting on a frame that hasn't completed after three reads. Usually a wrong or missing `table.rs` length. Forwarding is not affected. Written once per frame.
+- `session closed: <reason>`: which side ended the session (EOF, read error, or a failed forward).
+
+`--full-payload` (or `PROXY_FULL_PAYLOAD=1`, which also reaches the proxy through `./run_rathena_servers.sh`) logs whole payloads, for fields past byte 32 such as char-select looks or entry-packet headgear.
 
 ### End-of-Session Chronological Trace
 When a client disconnects, the proxy outputs the entire conversational packet sequence:

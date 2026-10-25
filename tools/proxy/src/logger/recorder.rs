@@ -12,7 +12,7 @@ use std::{
 use ro_core::{ServerType, TARGET_PACKETVER};
 use ro_packets::PacketOpcode;
 
-use crate::logger::session::PacketDirection;
+use crate::logger::{resync::DEFAULT_PREVIEW_BYTES, session::PacketDirection};
 
 pub const DEFAULT_MAX_RECORDED_PACKETS: usize = 50_000;
 
@@ -35,6 +35,7 @@ pub struct PacketSequenceRecorder {
     max_capacity: usize,
     seq_counter: AtomicUsize,
     entries: Mutex<VecDeque<GlobalSequenceEntry>>,
+    preview_limit: usize,
 }
 
 impl Default for PacketSequenceRecorder {
@@ -53,7 +54,23 @@ impl PacketSequenceRecorder {
             max_capacity: max_capacity.max(1),
             seq_counter: AtomicUsize::new(1),
             entries: Mutex::new(VecDeque::new()),
+            preview_limit: DEFAULT_PREVIEW_BYTES,
         }
+    }
+
+    /// When `full` is set, log lines show every payload byte instead of the first 32.
+    pub fn with_full_payload(mut self, full: bool) -> Self {
+        self.preview_limit = if full {
+            usize::MAX
+        } else {
+            DEFAULT_PREVIEW_BYTES
+        };
+        self
+    }
+
+    /// The most payload bytes a log line shows.
+    pub fn preview_limit(&self) -> usize {
+        self.preview_limit
     }
 
     pub fn max_capacity(&self) -> usize {

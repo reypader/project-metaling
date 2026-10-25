@@ -888,3 +888,14 @@ fn pkt_eq_01_table_lengths() {
         );
     }
 }
+
+/// PF-21: `0x080e` ZC_NOTIFY_HP_TO_GROUPM_R2 is 14 bytes (`u32 AID, i32 hp, i32 max_hp`), per
+/// `reference/catalog/captures/equip_sequence.txt` line 267.
+#[test]
+fn pf21_party_hp_length() {
+    use ro_packets::{PacketLength, PacketLengthTable};
+    assert_eq!(
+        RathenaPacketLengthTable.packet_length(PacketOpcode(0x080e), ro_core::TARGET_PACKETVER),
+        Some(PacketLength::Fixed(14))
+    );
+}

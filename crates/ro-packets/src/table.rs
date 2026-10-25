@@ -670,6 +670,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0809 => Some(Fixed(50)),
         0x080a => Some(Fixed(18)),
         0x080b => Some(Fixed(6)),
+        0x080e => Some(Fixed(14)), // ZC_NOTIFY_HP_TO_GROUPM_R2 (captured, PF-21)
         0x0810 => Some(Fixed(3)),
         0x0811 => Some(Dynamic),
         0x0812 => Some(Fixed(8)),

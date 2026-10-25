@@ -3,7 +3,7 @@
 Packet logs recorded through `tools/proxy` against real rAthena (`./run_rathena_servers.sh`). Catalog entries and `PACKET_FINDINGS.md` cite them as ground truth. A capture beats rAthena source when they disagree.
 
 - **Recording:** `tools/proxy` writes logs as `*.log`, which `.gitignore` excludes. A capture is committed only when the catalog cites it: copy it here as `.txt` and add a row below.
-- **Payloads:** the proxy prints each payload as hex, cut after 32 bytes (`... (+N bytes)`).
+- **Payloads:** the proxy prints each payload as hex, cut after 32 bytes (`... (+N bytes)`), unless it runs with `--full-payload` / `PROXY_FULL_PAYLOAD=1`. Lines with opcode `0x0000` and `[PROXY NOTE]` are proxy notes (blocked forwards, stalled frames, session closes; see `tools/proxy/README.md`).
 - **Framing:** the proxy frames packets with `crates/ro-packets/src/table.rs`. A packet missing from that table, or listed with the wrong length, shows up as `UNKNOWN / UNMAPPED` or as bogus `0x0000`-style frames until the stream re-syncs. See [PF-21](../../../PACKET_FINDINGS.md#pf-21).
 - **Redaction:** server `0x008e` text (MOTD, version line, command replies) is rAthena message text. It is replaced with `[redacted: rAthena message text ...]` so no rAthena-derived content lives outside `crates/ro-db/data/`. The opcode and frame length are kept. Account and character names are throwaway test accounts. The proxy already redacts passwords. The PIN in `0x08b8` (`CH_SECOND_PASSWD_ACK`) is redacted by hand. The proxy frames that packet 2 bytes short, so its last two PIN bytes show up as a bogus `0x????` client frame, also redacted (see PF-21).
 

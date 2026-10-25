@@ -127,6 +127,23 @@ fn test_dom_proxy_01_cli_flags_precedence_over_env_vars() {
     assert_eq!(config.map_target, "192.168.1.50:5999");
 }
 
+#[test]
+fn test_dom_proxy_01_full_payload_flag_and_env() {
+    let _lock = ENV_MUTEX.lock().unwrap();
+    std::env::remove_var("PROXY_FULL_PAYLOAD");
+
+    let default = ProxyArgs::try_parse_from(["proxy"]).expect("default args parse");
+    assert!(!default.build_config().expect("config").full_payload);
+
+    let flag = ProxyArgs::try_parse_from(["proxy", "--full-payload"]).expect("flag parses");
+    assert!(flag.build_config().expect("config").full_payload);
+
+    std::env::set_var("PROXY_FULL_PAYLOAD", "1");
+    let env = ProxyArgs::try_parse_from(["proxy"]).expect("env args parse");
+    std::env::remove_var("PROXY_FULL_PAYLOAD");
+    assert!(env.build_config().expect("config").full_payload);
+}
+
 // ============================================================================
 // DOM-PROXY-02: Clean Shutdown and Sequence Log Flush on Signals
 // ============================================================================

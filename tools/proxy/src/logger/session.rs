@@ -10,7 +10,7 @@ use std::{
 use ro_core::ServerType;
 use ro_packets::PacketOpcode;
 
-use crate::logger::recorder::PacketSequenceRecorder;
+use crate::logger::{recorder::PacketSequenceRecorder, resync::DEFAULT_PREVIEW_BYTES};
 
 pub const DEFAULT_MAX_SESSION_HISTORY: usize = 10_000;
 
@@ -128,6 +128,26 @@ impl SessionSequenceTracker {
 
     pub fn packet_count(&self) -> usize {
         self.packet_counter.load(Ordering::SeqCst)
+    }
+
+    /// The most payload bytes a log line shows (the global recorder's setting).
+    pub fn preview_limit(&self) -> usize {
+        match self.global_sink {
+            Some((_, _, ref recorder)) => recorder.preview_limit(),
+            None => DEFAULT_PREVIEW_BYTES,
+        }
+    }
+
+    /// Records a proxy-side note (not a packet) in the sequence, e.g. a slow forward or a closed
+    /// session. It shows as opcode `0x0000` with a `[PROXY NOTE]` detail.
+    pub fn record_note(&self, direction: PacketDirection, note: &str) {
+        self.record(PacketSequenceEntry {
+            seq: self.next_seq(),
+            direction,
+            opcode: PacketOpcode(0),
+            length: 0,
+            detail: format!("[PROXY NOTE] {note}"),
+        });
     }
 
     /// Formats the complete chronological sequence flow observed during this session.

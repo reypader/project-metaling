@@ -47,7 +47,10 @@ async fn main() -> Result<()> {
     );
     info!("============================================================");
 
-    let recorder = Arc::new(PacketSequenceRecorder::new());
+    if config.full_payload {
+        info!("  Full payloads: on (log lines show every byte)");
+    }
+    let recorder = Arc::new(PacketSequenceRecorder::new().with_full_payload(config.full_payload));
 
     let login_listener = match TcpListener::bind(&login_bind).await {
         Ok(listener) => listener,
