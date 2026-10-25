@@ -40,8 +40,10 @@ Out of scope (see §5):
 - Capture `equip_sequence_3.txt` (2026-10-25, catalog "Dual wield, katar and shield (capture 3)"): an Assassin's
   dual-wield hand choice, looks and pushes, a katar, a shield in entry packets, deaths, char select `W_DOUBLE_DS`.
 - `PACKET_FINDINGS.md` PF-11 (resolved), PF-16, PF-18 (resolved), PF-21.
-- **Still source-only:** the `0x099a` failure forms, the dead gates (capture 3 has deaths but no request while
-  dead), costumes, bullets.
+- Capture `equip_sequence_4.txt` (2026-10-25, catalog "Dead, costumes, accessories and refine (capture 4)"):
+  requests while dead, accessories, costumes, low/mid/top headgear, broken gear, gender, sitting, a two-hander
+  over a shield, arrows with a katar, refine and MATK/MDEF pushes, char select `W_KATAR`/`W_MUSICAL`.
+- **Still source-only:** the `0x099a` failure forms, bullets.
 
 When this spec and the catalog disagree, the catalog wins and this spec gets fixed.
 
@@ -128,7 +130,8 @@ New optional keys, omitted when default:
 Inputs: wire index (slot = index − 2), requested position mask. Checks in order; the first hit decides. A
 failure `0x0999` is `{index, location 0, view 0, result}` (captured: `16 00 00 00 00 00 00 00 01`).
 
-1. Dead: `0x0080` type 1 to the area including self (like the pickup gate), no ack.
+1. Dead: `0x0080` type 1 to the area including self (like the pickup gate), no ack. The client sends no
+   `0x0998` while dead (capture 4), so this is safety only.
 2. Slot out of `[0, 100)` or empty: no ack.
 3. Not identified: `0x0999` result 2.
 4. Unknown item id (not in `ItemDb`) or a type that can't be worn (only Weapon, Armor, Ammo, ShadowGear can):
@@ -193,13 +196,18 @@ catalog's "Captured equip sequences" with byte values; the ENG tests use them.
 Sitting doesn't block equip, take-off, unequip-all or drop (catalog "Sitting/dead gates").
 
 ### 2.4 Take-off (`0x00ab`, catalog mechanics §4 and `packets/equipment.md` "Take-off / drop order")
-1. Dead: `0x0080` type 1 to the area, no ack.
+1. Dead: `0x0080` type 1 to the area, no ack. The client sends no `0x00ab` while dead (capture 4).
 2. Slot out of range: `0x099a` {index **2**, location 0, flag 1}.
 3. Slot empty or not worn: `0x099a` {requested index, 0, 1}.
 4. Otherwise run §2.6 with recalc on and the ammo cascade on (rAthena flag 1).
 
 ### 2.5 Unequip all (`0x0bf5`, catalog "unequip-all")
-- No dead check. (rAthena gates on `pc_cant_act`, whose states don't exist here.)
+- Dead: `0x0bae` result 1, nothing removed. **Deliberate divergence** (user ruling, 2026-10-25): rAthena has
+  no dead check here, and capture 4 (line 353) shows a dead player's unequip-all running in full; we treat
+  that as a bug. Result 1 is the form rAthena sends for its `pc_cant_act` gate (whose other states don't
+  exist here).
+- The request mask comes from the window: `0x83ff` from the equipment window, `0x3f7c00` from the costume
+  window (costumes and shadow gear; capture 4 line 396).
 - For each worn position in rAthena `EQI` order whose mask intersects the request: §2.6 with flag 1. A
   two-hander is removed once; ammo already removed by its weapon's cascade is skipped.
 - Each item recalculates on its own, so the client sees one push per item.
@@ -260,12 +268,17 @@ Picking an item up clears `equip` on the copy (already true: `add_item` zeroes i
     two-hander counts once. Captured: Knife + Damascus 135, Tsurugi + Damascus 248, the Jur 125 both while it
     holds only `HAND_L` mid-displacement and after.
   - `hard_def` = Σ `Defense` of worn items, each item once, ammo skipped.
+  - `matk1` = right-hand weapon `MagicAttack` + left-hand weapon `MagicAttack` (refine 0), sent as
+    `SP_MATK1` and as the window's right side (`matk_bonus`). Captured (capture 4): a Rod +10 (MATK 30) gives
+    `SP_MATK1` 50 and `SP_MATK2` 27 (status MATK; stays 0 here until stats). Item MDEF goes to `SP_MDEF2`
+    (`hard_mdef`), but renewal item MDEF comes from item scripts, so it stays 0 here.
   - `range` = max(1, right weapon `Range`, left weapon `Range`). Bare hands: 1.
   - Everything else keeps today's values (loaded HP/SP/MaxHP/MaxSP; 0 for the rest).
 - **`recalc(e)`**: compute the new value, compare it with the stored one, send one packet per changed field
   in the catalog push order, store the new value. Wire mapping: `SP_ATK2` ← `atk2`; a hard-DEF change sends
-  `SP_DEF1` (soft) then `SP_DEF2` (hard), as renewal does; `SP_ATTACKRANGE` (`0x013a`) ← `range`.
-- **The login push** (`send_login_status_push`) and `0x00bd` (`atk_bonus`, `hard_def`) send the stored
+  `SP_DEF1` (soft) then `SP_DEF2` (hard), as renewal does; a MATK change sends `SP_MATK2` then `SP_MATK1`
+  (captured); `SP_ATTACKRANGE` (`0x013a`) ← `range`.
+- **The login push** (`send_login_status_push`) and `0x00bd` (`atk_bonus`, `matk_bonus`, `hard_def`) send the stored
   values instead of 0. The push still sends every field once (`DEFERRED.md` "Fix 2 simplifications").
 - **Weight** isn't touched by equip.
 - **Hand-off to the stats feature:** stats replaces the gear-only computation with the full
@@ -334,8 +347,8 @@ Picking an item up clears `equip` on the copy (already true: `add_item` zeroes i
   fresh one.
 
 **ENG** (`crates/ro-engine` unit and integration tests):
-- **ENG-EQ-01, rules:** `pos` widening for an Assassin with a dagger only. The accessory auto-slot picks right,
-  then left when right is taken. The dual-wield hand choice, as captured: right free → right; right taken and
+- **ENG-EQ-01, rules:** `pos` widening for an Assassin with a dagger only. The accessory auto-slot (captured, capture 4)
+  picks right (`0x08`), then left (`0x80`) when right is taken; both taken → right (its item is displaced). The dual-wield hand choice, as captured: right free → right; right taken and
   left free → left; both taken → right; a one-hand request (`0x02`) → right. A two-hander gets `EQP_ARMS`. Weapon
   type: dagger + sword → 28, dagger + dagger → 25, katar → 16, bare → 0.
 - **ENG-EQ-02, checks in order:** level too low → 1, over max → 1; gender, broken, job (Novice vs a Swordman-only
@@ -350,13 +363,17 @@ Picking an item up clears `equip` on the copy (already true: `add_item` zeroes i
   `LOOK_HEAD_MID`. Goggles over a Hat: Hat `0x099a` → `LOOK_HEAD_TOP` 0 → push with the Goggles' DEF →
   `0x0999` (view 1) → `LOOK_HEAD_TOP` 1, no push. A garment with a view sends `LOOK_ROBE` after `0x0999` and
   after its `0x099a` on take-off. A costume top overrides a normal top and removing it restores the normal view.
+  Capture 4: with the costume worn, a normal top's equip or removal sends no `LOOK_HEAD_TOP`, and a costume with
+  the same view as the normal top sends none; a low + mid + top headgear sends only `LOOK_HEAD_TOP`, on equip
+  and on removal; `UnitLooks` and `CharacterLooks` carry the costume's view.
 - **ENG-EQ-06, failures:** not identified → result 2; already worn → 2; wrong position → 2; dead → `0x0080` and
   no ack; empty or out-of-range slot → nothing.
 - **ENG-EQ-07, take-off:** success order; the three `0x099a` failure forms.
-- **ENG-EQ-08, unequip all:** per-item packets and pushes, then `0x0bae`. A two-hander is removed once; ammo
+- **ENG-EQ-08, unequip all:** per-item packets and pushes, then `0x0bae`. Dead → `0x0bae` result 1 and nothing
+  removed (our ruling, §2.5). A two-hander is removed once; ammo
   removed by a bow's cascade isn't removed twice.
 - **ENG-EQ-09, ammo:** an archer (job 3) with a bow equips arrows → `0x0983` (area) + `0x013c` + `0x013b` 3, no
-  `0x0999`. Arrows with no bow → `0x0291` 1691 + result 2. Taking off the bow removes the arrows (their
+  `0x0999`. Arrows with no bow (or a katar, capture 4) → `0x0291` 1691 + result 2. Taking off the bow removes the arrows (their
   `0x099a` before the bow's push). Equipping a dagger over the bow removes the arrows.
 - **ENG-EQ-10, drop worn (unit test only; the client won't send it, §2.8):** dropping a worn weapon gives `0x0add` → look / `0x099a` / push → `SP_WEIGHT` →
   `0x00af`, and the observer sees the look. Dropping 5 of 100 worn arrows keeps them worn.
@@ -370,7 +387,7 @@ Picking an item up clears `equip` on the copy (already true: `add_item` zeroes i
 - **ENG-EQ-12, map entry ammo:** worn arrows add `0x0983` + `0x013c` between `0x0b09` and `0x0b39` on every
   `0x007d`, to self only (an observer gets neither).
 - **ENG-STAT-01, hook:** no change → no packets. ATK2 change → `SP_ATK2` only. DEF change → `SP_DEF1` then
-  `SP_DEF2`. Range change (a bow) → `0x013a`. Several changes come in catalog order.
+  `SP_DEF2`. Range change (a bow) → `0x013a`. A Rod → `SP_ATK2` 15, `SP_MATK2` 0, `SP_MATK1` 30. Several changes come in catalog order.
 - **ENG-STAT-02, login:** a login wearing a Knife sends `SP_ATK2` 17 in the push and `atk_bonus` 17 in `0x00bd`.
 - **ENG-STAT-03:** an equip change bumps the inventory revision (autosave sees it).
 

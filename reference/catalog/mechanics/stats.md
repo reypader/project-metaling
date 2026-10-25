@@ -55,6 +55,8 @@ cap 0..65535
 ```
 What the window shows: left = status MATK (computed on the battle status), right = `rhw.matk + lhw.matk + ematk + consumable + pseudobuff` ([packets/status.md](../packets/status.md#0x00bd-zc_status)).
 
+**Captured** ([captures/equip_sequence_4.txt](../captures/equip_sequence_4.txt), write-up in [packets/equipment.md](../packets/equipment.md#dead-costumes-accessories-and-refine-capture-4)): `SP_MATK1` (43) = the right side, `SP_MATK2` (44) = the left side. A Mage with a Rod +10 (MATK 30, weapon level 1) gets `SP_MATK1` 50 and `SP_MATK2` 27; a Knife +10 (MATK 0) gives `SP_MATK1` 20. So a level-1 weapon's refine adds 2 MATK per level, as it adds 2 ATK (`SP_ATK2` 17 → 37 for the Knife). The relog `0x00bd` has `max_mattPower` = `SP_MATK1`, `min_mattPower` = `SP_MATK2`. Armor +10 adds 18 to `SP_DEF2` (Hat 2 → 20, Silk Robe 20 → 38); the Silk Robe's script MDEF 10 goes to `SP_MDEF2`.
+
 ### DEF and MDEF (renewal)
 
 > Open findings: [PF-19](../../../PACKET_FINDINGS.md#pf-19).

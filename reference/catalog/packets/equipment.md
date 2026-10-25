@@ -6,7 +6,7 @@ Scope: packets exchanged when a player wears or removes an item, plus the look-c
 
 **Shuffle check:** the `clif_shuffle.hpp` branch that applies to 20260219 is `PACKETVER > 20180307` (L4723-4761). It does not list `0x0998`, `0x00ab` or `0x0bf5`, so these opcodes come straight from `packets.hpp` / `clif_packetdb.hpp`. See [PF-05](../../../PACKET_FINDINGS.md#pf-05).
 
-**Captures:** the weapon swap is in [Captured weapon swap](#captured-weapon-swap). Take-off (`0x00ab`), unequip-all, wear failures, a shield, a two-hander, headgear, garments, shoes, ammo, entry looks and char-select looks are in [Captured equip sequences](#captured-equip-sequences). Still source-only: the `0x099a` failure forms, the dead gates, a shield in an entry packet, costumes, dual wield and bullets. If a capture disagrees, the capture wins.
+**Captures:** the weapon swap is in [Captured weapon swap](#captured-weapon-swap). Take-off (`0x00ab`), unequip-all, wear failures, a shield, a two-hander, headgear, garments, shoes, ammo, entry looks and char-select looks are in [Captured equip sequences](#captured-equip-sequences). Dual wield, a katar and a shield in entry packets are in [capture 3](#dual-wield-katar-and-shield-capture-3); dead requests, accessories, costumes, low/mid/top headgear, broken gear, gender and refine pushes are in [capture 4](#dead-costumes-accessories-and-refine-capture-4). Still source-only: the `0x099a` failure forms and bullets. If a capture disagrees, the capture wins.
 
 ## Captured weapon swap
 
@@ -129,6 +129,34 @@ Equipper = map sessions `#5`, `#8`, `#15` (account 2000000, char 150000 `test`),
 * **Death:** `@die` with a Knife (line 360), the Jur (1264) and Damascus + Tsurugi (1409) sends `0x0080 {…, 01}` to the area and no look change. `@revive` (`0x0148`) sends none either. An observer who walks into view of the dead player gets `0x09ff` with `state` 1 and the weapons still in `weapon`/`shield` (line 1540: 1222, 1119). The client doesn't draw weapons or shields on a dead body (user report), so that is client-side. No equip request was sent while dead, so the dead gate is still source-only.
 * **Attacks** (for the auto-attack feature): `0x08c8` from the dual-wielder carries the left-hand hit in `damage2` (line 1368: damage 84, `damage2` 47, `src_speed` 560 = the ASPD push value). The katar's `damage2` is a small second number (line 1005: damage 206, `damage2` 2).
 
+### Dead, costumes, accessories and refine (capture 4)
+
+Equipper = map sessions `#6`, `#9` (account 2000000, char 150000 `test`, male), an Assassin at login, `@job 2` (Mage) at line 1334, `@job bard` at 1476. Observer = `#3` (account 2000001, char 150006 `testtest`, female), which later becomes a Dancer (1868) and an Assassin (2591). Wire indexes (`0x0b39` at line 228): `0x1f` Tsurugi, `0x10` Guard, `0x16` Shoes, `0x1a` Bravery Bag (view 2), `0x18` and `0x12` Hat (view 16), `0x25` Sahkkat_C (5267, top, view 67), `0x26` Flu Mask (low, view 8), `0x27` One-Eyed Glass (mid, view 23), `0x28` C_Sahkkat (19639, costume top `0x400`, view 67), `0x21`–`0x23` Clip, `0x24` Ring; added later `0x29` Cap of Blindness (5304, low + mid + top `0x301`, view 326), `0x2c` Hat +10, `0x2d` unidentified Hat, `0x2e` broken Hat, `0x2f` broken Knife +10, `0x30` Knife +10, `0x31` Silk Robe +10, `0x32` Rod +10, `0x33` Whip, `0x34` Guitar. Masks below use this catalog's names (`EQP_ACC_R` = `0x08`, `EQP_ACC_L` = `0x80`).
+
+* **Dead (`@die` at line 327, `@revive` at 415):** the client sent no `0x0998` or `0x00ab` while dead (the user tried; it refuses on its own), but it did send unequip-all, and rAthena ran it in full (`clif_parse_unequipall` has no dead check): `0x0bf5 {ff 83 00 00}` at line 353 removed both accessories, shoes, garment, head low/mid/top, Guard and Tsurugi, each with its normal looks, `0x099a` and push, then `0x0bae {00}` (line 393). The costume window's button sends `0x0bf5 {00 7c 3f 00}` = `0x3f7c00` (costumes + the unused `0x4000` + shadow) and removed the costume top (lines 396–400). Metaling treats unequip-all while dead as an rAthena bug (user ruling, 2026-10-25); see the equipment spec §2.5.
+* **Accessories** (request `0x88` every time): Ring with both free → `0x08` (line 493); Clip with `0x08` taken → `0x80` (499); a third Clip with both taken displaces the `0x08` item and takes `0x08` (503: Ring `0x099a {24 00, 08 …}` → push → `0x0999 {23 00, 08 …}`); same at 526, 537, 545. That is [mechanics §1](../mechanics/equipment.md#accessory-auto-slot-pccpp12118-12138): left (`0x80`) only when right (`0x08`) is taken and left is free. No looks; the pushes are item-script stats (`0x0141`, `SP_MAXSP`), out of scope. Unequip-all removes `0x80` before `0x08` (`EQI_ACC_L` first, lines 360, 364).
+* **Costume top over a normal top:** head looks are sent only when the resolved view changes ([mechanics §5](../mechanics/equipment.md)):
+  * Unequip-all with the costume worn: the Hat's `0x099a` (line 381) has no `LOOK_HEAD_TOP`. The costume window's unequip-all then sends `LOOK_HEAD_TOP` 0 after the costume's `0x099a {28 00, 00 04 00 00, 00}`.
+  * Costume over Sahkkat_C (both view 67, lines 532, 842): `0x0999 {28 00, 00 04 00 00, 43 00, 00}` and no look. Taking the costume off again (869–870): only `0x099a`.
+  * Cap of Blindness while the costume is worn (800–814): Flu Mask `0x099a` → `LOOK_HEAD_BOTTOM` 0, One-Eyed Glass → `LOOK_HEAD_MID` 0, Sahkkat_C `0x099a` with no look, `0x0999 {29 00, 01 03 00 00, 46 01, 00}` and no look. Taking the costume off (`0x00ab {28 00}`, 824–827): `0x099a` → `LOOK_HEAD_TOP` 326.
+  * Costume over the Cap (940–943): `0x0999` → `LOOK_HEAD_TOP` 67.
+* **Low + mid + top headgear** (Cap of Blindness): over Flu Mask + One-Eyed Glass + Hat (908–924): three `0x099a`, each followed by its look 0 (bottom, mid, top), then `0x0999` view 326 and one `LOOK_HEAD_TOP` 326. Taken off by Sahkkat_C (829–841) or the One-Eyed Glass (886–894): `0x099a {29 00, 01 03 00 00}` → `LOOK_HEAD_TOP` 0 only (its low and mid views were already 0).
+* **Head low and mid alone:** Flu Mask `0x0999 {26 00, 01 00 00 00, 08 00, 00}` → `LOOK_HEAD_BOTTOM` 8 (line 444); One-Eyed Glass `{27 00, 00 02 00 00, 17 00, 00}` → `LOOK_HEAD_MID` 23 (448).
+* **Wear failures:** broken Hat and broken Knife → `{idx, 0, 0, 02}` (lines 1203–1207, 1241–1244). The client never sent a request for the unidentified Hat (`0x2d`). Whip on a male Bard → 2 (1532); Guitar on a female Novice and Dancer → 2 (1839, 1923); Whip on the Dancer works (1939). Silk Robe on a Novice → 2 (1291; job).
+* **Sitting** (`0x0437` action 2 at line 1537): equipping a Knife over the Rod works as usual (1552–1564).
+* **Two-hander over a shield and a knife** (Kakkung, 1569–1586): Guard off (look {1201, 0}, `0x099a`, push ASPD, DEF1, DEF2) → Knife off (look {0, **1714**}, `0x099a`, push ASPD, ATK2 100, `0x013a` 5) → `0x0999 {15 00, 22 …}` → two {1714, 0} → push ASPD. The Bow repeats it (1633–1651). A Guard over the Bow (1658–1672): two {0, 0} → `0x099a` → push ASPD, ATK2 0, `0x013a` 1 → `0x0999` → {0, 2101} → push ASPD, DEF1, DEF2.
+* **Arrows with a katar** (the observer as an Assassin with the Jur, after `@jlevel 99`; lines 2720–2722, 2739–2741): `0x0291 {9b 06}` (1691) then `0x0999 {0b 00, 00 00 00 00, 00 00, 02}`. This is the reply capture 3 lost at its line 2978.
+* **Refine (for the stats feature):** every push names `SP_MATK1`/`SP_MATK2` and `SP_MDEF1`/`SP_MDEF2` as [packets/status.md](./status.md) does:
+
+  | Lines | Item (+10) | Push |
+  | :--- | :--- | :--- |
+  | 1258–1268 | Knife (ATK 17), Novice | `SP_ATK2` 37, `SP_MATK2` 34, `SP_MATK1` 20 |
+  | 1399–1412 | Rod (ATK 15, MATK 30), Mage | `SP_ATK2` 35, `SP_MATK2` 27, `SP_MATK1` **50** |
+  | 1112–1120 | Hat (DEF 2, card 4403) | `SP_DEF2` 50 → 70 (an unrefined Hat: +2, line 907) |
+  | 1417–1422 | Silk Robe (DEF 20; MDEF 10 from its script) | `SP_DEF2` 70 → 108, `SP_MDEF1` 27, `SP_MDEF2` 0 → **10** |
+
+  So `SP_MATK1` carries the weapon MATK with its refine bonus (+20 at +10 for a level-1 weapon), `SP_MATK2` the status MATK; a refine of +10 adds 20 to `SP_ATK2` on a level-1 weapon and 18 to `SP_DEF2` on armor; item MDEF goes to `SP_MDEF2`. Push order: `SP_ASPD`, `SP_ATK2`, `SP_MATK2`, `SP_MATK1`; DEF1, DEF2, MDEF1, MDEF2 when MDEF changes too. Both MATK vars go out whenever either changes; a change with no MATK effect (Tsurugi off, line 1260) sends neither. The relog `0x00bd` (line 2873, Guitar worn) carries `max_mattPower` 0 and `min_mattPower` 27, matching `SP_MATK1` 0 and `SP_MATK2` 27.
+
 ### Entry looks for the equipper (observer `#3`, capture 2)
 
 | Line | Packet | Worn | `weapon` | `shield` | `accessory` | `accessory2` | `accessory3` | `robe` |
@@ -150,6 +178,8 @@ Capture 3 (observer `#6`/`#18`):
 | 3538 | `0x09fd` | Tsurugi + Guard | 1119 | **2101** | — |
 | 3677 | `0x09ff` | Tsurugi + Guard (walked back into view) | 1119 | 2101 | 0 |
 
+Capture 4 (observer `#3`): `0x09fe` at line 224, Tsurugi + Guard, Flu Mask, One-Eyed Glass, Hat under the costume top, Bravery Bag → `weapon` 1119, `shield` 2101, `accessory` 8, `accessory2` **67** (the costume), `accessory3` 23, `robe` 2. `0x09ff` at 2262, Bard with the Guitar, Hat +10 under the costume → 1907, 0, 0, 67, 0, 2.
+
 A left-hand weapon and a shield both go in `shield` as the item id. The entry packet has no combat-stance field; an observer who walks back into view sees the player out of combat stance even while the player's own client still shows it (user report).
 
 ### Char select (capture 2 lines 1157, 1309)
@@ -157,6 +187,8 @@ A left-hand weapon and a shield both go in `shield` as the item id. The entry pa
 `test` (Archer) wearing a Knife and Goggles: `weapon` (offset 90) = **1** (`W_DAGGER`, the type), `accessory2` (100) = 1, `accessory3` (102) = 0, `shield` 0. `robePalette` (162) = 0, then 2 after the Bravery Bag was worn at the next restart (the restart saved the look columns). Novices with a Knife show `weapon` 1 too. The client doesn't draw weapons or shields on the select screen; it draws them only in combat stance (user report), so that's expected.
 
 Capture 3 (`0x006b` at lines 1913, 2994, 3713): Tsurugi R + Damascus L → `weapon` **28** (`W_DOUBLE_DS`), `shield` 0 (a left-hand weapon isn't a shield); Jur → `weapon` 16 (`W_KATAR`); Tsurugi + Guard → `weapon` 2, `shield` **1** (the Guard's `View`).
+
+Capture 4: at login (line 150) Tsurugi + Guard, Flu Mask, One-Eyed Glass, a Hat under the costume top, Bravery Bag → `weapon` 2, `shield` 1, `accessory` 8, `accessory2` **67** (costume over the Hat's 16), `accessory3` 23, `robePalette` 2. After the session: the Assassin observer with the Jur → `weapon` 16 (line 2775); the Bard with the Guitar → `weapon` **13** (`W_MUSICAL`), `accessory2` 67, `robePalette` 2 (line 2796).
 
 ### Client-side behaviour
 

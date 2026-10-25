@@ -31,8 +31,9 @@ context that isn't in the code.
   uncommitted until Finish like the rest; the Finish diff above already covers them.
 
 ### Session B: start here
-1. `git status` should show the M2/M3 code, the regenerated `crates/ro-db/data/item/*.yml` and the new
-   `crates/ro-packets/tests/equip_codec_tests.rs` as uncommitted. Don't revert or re-do them.
+1. `git status` should show the M2-M6 code, the regenerated `crates/ro-db/data/item/*.yml` and the new
+   files (`equip_codec_tests.rs`, `ro-engine/src/{job,equipment}.rs`, `ro-engine/tests/equipment_tests.rs`)
+   as uncommitted. Don't revert or re-do them. Session C: see "Session C, start here" below.
 2. **Run the DB-backed tests first** (`ro-persistence`, `bins/*`); session A2 couldn't (see the M3 note).
    The metaling and rAthena compose files share the project name "docker", so
    `docker compose -f tools/docker/docker-compose.yml up -d db` replaces a running `rathena-db`. Ask the user
@@ -77,8 +78,25 @@ those bytes as the PKT and ENG test vectors.
     `UnitLooks` on death. The client hides them, and never shows an observer the combat stance on entry.
   - Gap until stats: a katar pushes `SP_CRITICAL` (2 ↔ 4) in rAthena; not here.
   - The `#8` log stalled after `@jlevel 99` (PF-21), so the reply to the arrow request at line 2978 is missing.
-- Not captured (source reading): `0x099a` failure forms, dead gates (no request was sent while dead), costumes,
-  bullets.
+- `equip_sequence_4.txt` (capture 4, session C, 2026-10-25): equipper `#6`/`#9` (`test`, male; Assassin,
+  then `@job 2` Mage, then `@job bard`), observer `#3` (`testtest`, female; later Dancer, then Assassin with
+  the Jur). Covers every item of the "Capture 4 plan" below. Write-up: catalog `packets/equipment.md` "Dead,
+  costumes, accessories and refine (capture 4)". **What it settled** (spec updated):
+  - **Dead:** the client sends no `0x0998`/`0x00ab` while dead, but sends `0x0bf5`, and rAthena runs it in full
+    (line 353). **User ruling: that's an rAthena bug.** Metaling refuses unequip-all while dead with `0x0bae`
+    result 1 (rAthena's `pc_cant_act` form) and leaves an inline comment at the gate saying so (spec §2.5).
+    The costume window's unequip-all sends `0x3f7c00`.
+  - **Accessories:** match `resolve_position` as written (right `0x08` → left `0x80` → right replaced).
+  - **Costumes:** head looks only on a changed view (already the rule); the capture pins the cases
+    (spec ENG-EQ-05). Char select and entry packets carry the costume view.
+  - **MATK/MDEF answered:** `SP_MATK1` = weapon MATK (window right, `matk_bonus`), `SP_MATK2` = status
+    MATK; item MDEF → `SP_MDEF2`. See the M6 note below for what M7 does with it.
+  - Broken → 2 and gender → 2 as specced; the client never sends a request for an unidentified item.
+    Sitting blocks nothing. Arrows with the Jur → `0x0291` 1691 + result 2 (capture 3's lost reply).
+  - Refine numbers for the stats feature (+10: weapon ATK2 and MATK1 +20, armor DEF2 +18) are in catalog
+    `mechanics/stats.md`.
+  - No proxy stalls or misframes (PF-21 note).
+- Not captured (source reading): `0x099a` failure forms, bullets.
 - Ammo requests come with position `0` or `0x8000`; `0x0bf5` from the window is `ff 83 00 00`.
 - Bravery Bag's `0x010f`/`0x0441` come from its item script (skill grant). Out of scope; don't send them.
 - The capture-1 client freeze didn't repeat in capture 2 (PF-21 note). Nothing for metaling to copy.
@@ -88,6 +106,29 @@ those bytes as the PKT and ENG test vectors.
   while an observer saw them enter); the live `LOOK_WEAPON` {1201, 2101} for a Guard is captured. It's a
   byte check, not a visual one: the client draws weapons and shields only in combat stance (user), on the
   map and at char select alike.
+
+### Capture 4 plan (session B, 2026-10-25; for M7 and the stats feature) — **done, see capture 4 above**
+The proxy now has the `0x010e` row (and 10 more, PF-21) that caused capture 3's stall, and drops a frame
+stuck over 1 s instead of stalling the log (`[STALLED FRAME DROPPED]`, `tools/proxy/README.md`). The user's
+list, plus additions, in order of value to M7:
+1. **Dead gates (M7, ENG-EQ-06):** while dead, try equip (`0x0998`), take-off (`0x00ab`) and unequip-all
+   (`0x0bf5`), with an observer in view (does the observer get `0x0080` type 1?).
+2. **Redo after `@jlevel 99`:** skill-ups, then arrows (`0x20`, mask `0x8000`) with the Jur worn: the reply
+   lost at capture 3 line 2978.
+3. **Costumes (M7 looks, source-only):** a costume top over a normal hat, take it off (the hat's view
+   should come back), observer in view, relog to char select.
+4. **Head low and mid alone, and a low+mid+top item:** `LOOK_HEAD_BOTTOM`/`MID` values, entry `accessory`/
+   `accessory3`.
+5. **Accessories:** two Clips (right, then left), a third (replaces right).
+6. **Broken and unidentified gear** via `@item2` (`identify` 0; `attribute` 1): both should get result 2.
+7. **MATK weapons** (e.g. a rod as a Mage): which of `SP_MATK1`/`SP_MATK2` (43/44) carries the weapon MATK,
+   and the `0x00bd` MATK pair (session B left both at 0). For the stats feature.
+8. **Refined weapons and armor** (`@item2` with `refine`, or `@refine` on worn gear): refine's share of
+   ATK2/DEF in the pushes. For the stats feature (refine is out of scope here).
+9. **MDEF armor:** which of `SP_MDEF1`/`SP_MDEF2` it moves. In renewal item data, MDEF comes from the item
+   `Script` (`bonus bMdef`), which this feature doesn't import, so this only names the var.
+10. Cheap extras: a whip on a male character (gender, result 2), equip while sitting, a two-hander over a
+    shield.
 
 ### Capture follow-ups (optional; told to the user 2026-10-25)
 **Items 1 and 2 are done by capture 3** (above); item 3 only partly (deaths, but no equip request while dead).
@@ -235,6 +276,76 @@ Rulings made during implementation, and review results later milestones must hon
     and `docker compose ... up -d db` would have replaced the user's running `rathena-db` (shared
     compose project "docker"). They compile and pass clippy; run them at the start of session B.
 
+- **Session B (2026-10-25):** capture 3 checked and committed (`8f322e0`). The DB-backed tests ran green.
+  rAthena was still up, so the metaling DB was started as **`docker compose -p metaling -f
+  tools/docker/docker-compose.yml up -d db`**: its own compose project, so `rathena-db` isn't replaced. It
+  uses a fresh volume `metaling_metalingdb` (not `docker_metalingdb`); stop it with `docker compose -p metaling
+  -f tools/docker/docker-compose.yml down` (keeps the volume).
+- **M4 (session B):**
+  - `InventoryRepository::save_inventory(char_id, inventory, looks: &CharacterLooks)` writes the six look
+    columns in the same `UPDATE characters` that sets the counter (still first in the transaction). The
+    map-server claim writer passes **`CharacterLooks::default()`** for now (comment in `claim.rs` `apply`):
+    **M9 must carry the real looks** in `WriteKind::Inventory`. Both fakes (`claim.rs` tests,
+    `tests/common`) ignore the looks; M9's BIN-EQ-02 needs `tests/common` to store them.
+  - Every summary query (`list_by_account`, `find_by_slot`, `find_by_id`, `create_character` `RETURNING`)
+    uses one `summary_columns!()` macro and fills `CharacterLooks` (`shield_view` → `shield`,
+    `head_bot_view` → `head_bottom`).
+  - Schema: the `CREATE TABLE` has `weapon_type` and `robe_view`; a guarded `DO` block renames `weapon_view`
+    and adds `robe_view` on older databases. PER-EQ-01 `per_eq_01_looks_saved_with_inventory`, PER-EQ-02
+    `per_eq_02_schema_migrates_look_columns` (runs in its own Postgres schema via `search_path`, dropped at
+    the end; a failed run leaves a `per_eq_02_*` schema behind, harmless).
+  - The char-server already encodes `CharacterSummary.looks` (M3), so char select shows whatever the columns
+    hold.
+- **M5 (session B):**
+  - `metaling-explorer` added the full job id → mapid table (154 ids, plus the unmapped list) to catalog
+    §3a. `ro-engine/src/job.rs` holds it as a sorted `(id, mapid)` array, generated from the catalog table
+    (numbers only), with `job_mapid` (unknown → 0, Novice), `job_can_use`, `class_can_use`,
+    `dual_wields` (`mapid & 0xfff` is Assassin 0x106 or Kagerou/Oboro 0x109), `is_mechanic`/`is_genetic`.
+  - `ro-engine/src/equipment.rs`: `EQP_*` consts, `EQI_ORDER`, `WornSlots` (slot per position, `u8`;
+    `from_slots`, `at(mask)` = first held position in `EQI` order, `assign`, `clear_slot`), `Gear { worn,
+    slots, items }` with `weapon_type()`, `unit_looks()`, `character_looks()`; `Wearer { base_level, sex,
+    mapid }`; `Refusal { NoAck, Result(u8), Message { msg_id } }`; `equip_point`, `check_equip`,
+    `resolve_position`, `prepare_equip` (spec §2.2 steps 3-9), `equip_view`, `ammo_fits_weapon`,
+    `is_ranged`. Tests are unit tests in the module (ENG-EQ-01/02, the ENG-EQ-06 refusals, ENG-EQ-05/13
+    looks).
+  - Rulings: cannonballs fail only for Mechanic (1435) and Genetic (1519) forms, as rAthena; other jobs
+    pass to the job check (the spec said "cannonballs fail"). Dagger ammo fails with result 2 and no
+    message. The accessory card override is skipped (no cards). Shadow arms/accessories reuse the
+    first/second pick (shadow accessories prefer left, per catalog).
+  - Both `equipment` and `job` are `#[cfg_attr(not(test), allow(dead_code))]` in `lib.rs` until the
+    flows use them: **remove those two attributes in M7.**
+  - `inventory.rs` still has its own `EQP_VISIBLE` / `EQP_HAND_*` and `hand_looks` (used by the entry
+    `0x01d7` in `settings.rs`). M7 should switch those to `equipment` (`Gear::unit_looks`).
+- **M6 (session B):**
+  - `equipment.rs` `GearStatus { atk2, hard_def, range }` and `Gear::gear_status()` (both hands' `Attack`,
+    `Defense` once per worn slot with ammo skipped, range = max(1, hands)).
+  - `status.rs` `DerivedStatus` holds HIT..ATTACKRANGE by the var each is sent as (`hard_def` → `SP_DEF2`,
+    `soft_def` → `SP_DEF1`, `hard_mdef` → `SP_MDEF2`, `soft_mdef` → `SP_MDEF1`, `matk1`/`matk2` by var).
+    **Ruling:** HP, SP and their maxima stay in `CharacterStatus` (one source of truth; nothing recomputes
+    them yet), and speed and trait values aren't in it: the stats feature adds them with the formulas.
+  - **Updated in session C from capture 4:** `matk1` is the weapon side (`SP_MATK1`, window `matk_bonus`),
+    `matk2` the status side (`SP_MATK2`, window `matk`); `hard_mdef` → `SP_MDEF2` is confirmed. `derived_diff`'s
+    order already matches the capture (ASPD, ATK2, MATK2, MATK1; DEF1, DEF2, MDEF1, MDEF2). **M7 adds weapon
+    MATK to the gear part:** `GearStatus.matk` = both hands' `MagicAttack` → `DerivedStatus.matk1`, and
+    `status_window` sends `matk_bonus` = `matk1`, `matk` = `matk2` (drop the "which side" comment in
+    `status.rs`). `hard_mdef` stays 0 (item MDEF is script-only in renewal data).
+  - `derived_diff(old, new)` builds the ordered push (pure, unit-tested ENG-STAT-01); `MapInstance::recalc(e)`
+    recomputes from the worn gear, emits the diff, stores. `init_derived(e)` runs in `spawn_player` (no
+    push). `PlayerInfo.derived` stores it.
+  - The login push and `0x00bd` (`status_window(status, derived)`) and the status block's `0x013a` use the
+    stored values. The window's MATK pair stays 0 (which var is which side is for stats).
+  - `PlayerInventory` now owns the `WornSlots` (built in `new`, `gear(items)` accessor); `remove` clears a
+    slot's positions when it empties. **M7 must keep it in step** on every equip/unequip (assign position
+    by position during displacement, `clear_slot` on unequip) and bump `revision`.
+  - `recalc` and `derived_diff` carry dead-code allows until M7 calls them (remove with the `lib.rs` ones).
+  - Tests: `crates/ro-engine/tests/equipment_tests.rs` (new; ENG-STAT-02, ENG-EQ-11 status part). M7/M8
+    should add their flow tests there; it already has an item registry (Knife, Bow, Guard, Hat), `worn()`,
+    `spawn_data`, `actor_init` and `self_events` helpers.
+- **Session C, start here:** M4-M6 are done and green (`./verify.sh` 628 tests, DB up). Next is M7. Keep
+  the capture-3 dual-wield sequences (ENG-EQ-13) in M7's tests; `prepare_equip` already returns the
+  captured hand choice. Check `docker ps` first: if rAthena is up, start the metaling DB with `-p metaling`
+  (see the session B note above).
+
 ## Milestones
 Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
 
@@ -268,26 +379,29 @@ Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
     `UnitLooks` on `UnitAppearance`; `CharacterLooks` on `CharacterSummary` (8 literal files).
   - ro-packets: decoders `0x0998`, `0x00ab`, `0x0bf5`; encoders for the new events; entry packets and the
     char entry read the looks. PKT-EQ-02..07.
-- [ ] **M4 ro-persistence + char select** *(session B)*
+- [x] **M4 ro-persistence + char select** *(session B, 2026-10-25)*
   - Schema: rename `weapon_view` → `weapon_type`, add `robe_view` (guarded `DO` block). Summary queries load
     `CharacterLooks`. `save_inventory(char_id, inventory, looks)` writes them in the same transaction.
   - PER-EQ-01/02. `ro-persistence/DESIGN.md`.
   - No early review: the schema change is two columns. Review early only if the repository API grows beyond
     this.
-- [ ] **M5 engine rules (pure)** *(session B)*
+- [x] **M5 engine rules (pure)** *(session B, 2026-10-25)*
   - `job.rs` (job id → mapid, branch, upper/baby/third/fourth), `equipment.rs` rule functions: equip point,
     `pc_isequip` subset, final-mask resolution, ammo pairing, weapon-type resolution, `UnitLooks` /
     `CharacterLooks` from a worn set (costume override). ENG-EQ-01, ENG-EQ-02.
   - Make looks and gear status functions of a **worn-slot table** (position → slot), not of the items' `equip`
     masks: M7's displacement runs recalcs while the new item holds only some of its positions (spec §2.2
     step 10). Head views use each item's own `Locations` for the multi-slot rule.
-- [ ] **M6 engine status hook** *(session B)*
+- [x] **M6 engine status hook** *(session B, 2026-10-25)*
   - `DerivedStatus` stored per player, `GearStatus`, `recalc(e)` with the ordered diff push; login push and
     `0x00bd` use stored values; spawn builds them from the worn set. ENG-STAT-01/02.
 - [ ] **M7 engine equip flows** *(session C)*
   - `EquipItem` / `UnequipItem` / `UnequipAll` handling: gates, displacement, acks, looks to the area,
     `UnitLooks` cache refresh, revision bump, recalc. Entry events use `UnitLooks`.
   - ENG-EQ-03..08, ENG-EQ-11, ENG-STAT-03. `ro-engine/DESIGN.md`.
+  - From capture 4: unequip-all while dead → `0x0bae` result 1 with the inline "rAthena allows this; we
+    treat it as a bug" comment; weapon MATK in `GearStatus` (M6 note); the costume/head-look cases of
+    ENG-EQ-05.
 - [ ] **M8 engine ammo + worn-item removal** *(session C)*
   - Ammo equip acks, cascade on weapon removal and on a mismatched weapon, map-entry `0x0983` + `0x013c`;
     worn-item unequip inside remove/drop. ENG-EQ-09, ENG-EQ-10, ENG-EQ-12.

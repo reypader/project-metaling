@@ -71,7 +71,7 @@ An item occupying several `EQI` entries must be processed once for bonuses. A sl
 
 ### Accessory auto-slot (`pc.cpp:~12118-12138`)
 
-An item whose capability is `EQP_ACC` (both accessory slots) goes into one slot: take `request & EQP_ACC`; if the request names both, choose left only when right is already occupied and left is empty, else right. If the accessory has a card inserted whose own location is `EQP_ACC_L` or `EQP_ACC_R`, that card's location overrides the choice. The same logic applies to shadow accessories (`EQP_SHADOW_ACC`, choosing right if left occupied and right empty, else left).
+An item whose capability is `EQP_ACC` (both accessory slots) goes into one slot: take `request & EQP_ACC`; if the request names both, choose left only when right is already occupied and left is empty, else right. If the accessory has a card inserted whose own location is `EQP_ACC_L` or `EQP_ACC_R`, that card's location overrides the choice. The same logic applies to shadow accessories (`EQP_SHADOW_ACC`, choosing right if left occupied and right empty, else left). Captured (capture 4, [packets/equipment.md](../packets/equipment.md#dead-costumes-accessories-and-refine-capture-4)): both free → `0x08`, `0x08` taken → `0x80`, both taken → the `0x08` item is displaced.
 
 ### Ammo
 
@@ -204,7 +204,66 @@ Base-class number (`mapid & 0xff`) by branch (same number reused across branches
 
 Composition: transcendent = `UPPER | 2nd-class mapid` (Lord Knight = `UPPER|KNIGHT`, Paladin = `UPPER|CRUSADER`; Novice High/1st-class highs = `UPPER|n`); baby = `BABY | mapid` (Super Baby = `BABY|SUPER_NOVICE`); third = `THIRD | 2nd-class mapid` (Rune Knight = `THIRD|KNIGHT`, Royal Guard = `THIRD|CRUSADER`, Super Novice E = `THIRD|SUPER_NOVICE`, Star Emperor = `THIRD|STAR_GLADIATOR`, Soul Reaper = `THIRD|SOUL_LINKER`, Night Watch = `THIRD|REBELLION`, Shinkiro/Shiranui = `THIRD|KAGEROUOBORO`); trans-third (`*_T`) = `THIRD|UPPER|2nd`; baby-third = `THIRD|BABY|2nd`; fourth = `FOURTH|THIRD|2nd-class mapid` (Hyper Novice = `FOURTH|SUPER_NOVICE_E`, Dragon Knight = `FOURTH|RUNE_KNIGHT`, Imperial Guard = `FOURTH|ROYAL_GUARD`, Sky Emperor = `FOURTH|STAR_EMPEROR`, Soul Ascetic = `FOURTH|SOUL_REAPER`). Fourth classes carry no UPPER/BABY bit. There are no baby fourth classes and no baby Death Knight/Spirit Handler/Gangsi.
 
-Selected numeric job ids (`mmo.hpp` `e_job`, client ids): Novice 0, Swordman 1, Mage 2, Archer 3, Acolyte 4, Merchant 5, Thief 6, Knight 7, Priest 8, Wizard 9, Blacksmith 10, Hunter 11, Assassin 12, Crusader 14, Monk 15, Sage 16, Rogue 17, Alchemist 18, Bard 19, Dancer 20, Wedding 22, Super Novice 23, Gunslinger 24, Ninja 25, Xmas 26, Summer 27, Hanbok 28, Oktoberfest 29, Summer2 30; Novice High 4001 .. Thief High 4007, Lord Knight 4008, High Priest 4009, High Wizard 4010, Whitesmith 4011, Sniper 4012, Assassin Cross 4013, Paladin 4015, Champion 4016, Professor 4017, Stalker 4018, Creator 4019, Clown 4020, Gypsy 4021; Baby 4023 ..; Super Baby 4045; Taekwon 4046, Star Gladiator 4047, Soul Linker 4049, Gangsi 4050, Death Knight 4051, Dark Collector 4052; Rune Knight 4054, Warlock 4055, Ranger 4056, Arch Bishop 4057, Mechanic 4058, Guillotine Cross 4059, `*_T` 4060-4065, Royal Guard 4066, Sorcerer 4067, Minstrel 4068, Wanderer 4069, Sura 4070, Genetic 4071, Shadow Chaser 4072, `*_T` 4073-4079; baby thirds 4096-4108; Super Novice E 4190, Super Baby E 4191; Kagerou 4211, Oboro 4212; Rebellion 4215; Summoner 4218; Baby Ninja 4222; Baby Taekwon 4225 ..; Star Emperor 4239, Soul Reaper 4240; Dragon Knight 4252 .. Trouvere 4264 (4th jobs 4252-4264); Sky Emperor 4302, Soul Ascetic 4303, Shinkiro 4304, Shiranui 4305, Night Watch 4306, Hyper Novice 4307, Spirit Handler 4308. (Enum is sequential from the anchors shown in `e_job`; verify any id not listed by counting from the nearest explicit `= N`.)
+Full table, every id `pc_jobid2mapid` maps (154 ids; `pc.cpp:7519`, ids from `mmo.hpp` `e_job`, mapids from `map.hpp` `e_mapid`; rAthena commit d4b8e7b, applies to 20260219). Three id/name/mapid triples per row. The mapid always equals the composition rules above; no exceptions found.
+
+| id | JOB_ | mapid | id | JOB_ | mapid | id | JOB_ | mapid |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| 0 | NOVICE | 0x0 | 1 | SWORDMAN | 0x1 | 2 | MAGE | 0x2 |
+| 3 | ARCHER | 0x3 | 4 | ACOLYTE | 0x4 | 5 | MERCHANT | 0x5 |
+| 6 | THIEF | 0x6 | 7 | KNIGHT | 0x101 | 8 | PRIEST | 0x104 |
+| 9 | WIZARD | 0x102 | 10 | BLACKSMITH | 0x105 | 11 | HUNTER | 0x103 |
+| 12 | ASSASSIN | 0x106 | 14 | CRUSADER | 0x201 | 15 | MONK | 0x204 |
+| 16 | SAGE | 0x202 | 17 | ROGUE | 0x206 | 18 | ALCHEMIST | 0x205 |
+| 19 | BARD | 0x203 | 20 | DANCER | 0x203 | 22 | WEDDING | 0xc |
+| 23 | SUPER_NOVICE | 0x100 | 24 | GUNSLINGER | 0x8 | 25 | NINJA | 0x9 |
+| 26 | XMAS | 0xd | 27 | SUMMER | 0xe | 28 | HANBOK | 0xf |
+| 29 | OKTOBERFEST | 0x10 | 30 | SUMMER2 | 0x11 | 4001 | NOVICE_HIGH | 0x100000 |
+| 4002 | SWORDMAN_HIGH | 0x100001 | 4003 | MAGE_HIGH | 0x100002 | 4004 | ARCHER_HIGH | 0x100003 |
+| 4005 | ACOLYTE_HIGH | 0x100004 | 4006 | MERCHANT_HIGH | 0x100005 | 4007 | THIEF_HIGH | 0x100006 |
+| 4008 | LORD_KNIGHT | 0x100101 | 4009 | HIGH_PRIEST | 0x100104 | 4010 | HIGH_WIZARD | 0x100102 |
+| 4011 | WHITESMITH | 0x100105 | 4012 | SNIPER | 0x100103 | 4013 | ASSASSIN_CROSS | 0x100106 |
+| 4015 | PALADIN | 0x100201 | 4016 | CHAMPION | 0x100204 | 4017 | PROFESSOR | 0x100202 |
+| 4018 | STALKER | 0x100206 | 4019 | CREATOR | 0x100205 | 4020 | CLOWN | 0x100203 |
+| 4021 | GYPSY | 0x100203 | 4023 | BABY | 0x200000 | 4024 | BABY_SWORDMAN | 0x200001 |
+| 4025 | BABY_MAGE | 0x200002 | 4026 | BABY_ARCHER | 0x200003 | 4027 | BABY_ACOLYTE | 0x200004 |
+| 4028 | BABY_MERCHANT | 0x200005 | 4029 | BABY_THIEF | 0x200006 | 4030 | BABY_KNIGHT | 0x200101 |
+| 4031 | BABY_PRIEST | 0x200104 | 4032 | BABY_WIZARD | 0x200102 | 4033 | BABY_BLACKSMITH | 0x200105 |
+| 4034 | BABY_HUNTER | 0x200103 | 4035 | BABY_ASSASSIN | 0x200106 | 4037 | BABY_CRUSADER | 0x200201 |
+| 4038 | BABY_MONK | 0x200204 | 4039 | BABY_SAGE | 0x200202 | 4040 | BABY_ROGUE | 0x200206 |
+| 4041 | BABY_ALCHEMIST | 0x200205 | 4042 | BABY_BARD | 0x200203 | 4043 | BABY_DANCER | 0x200203 |
+| 4045 | SUPER_BABY | 0x200100 | 4046 | TAEKWON | 0x7 | 4047 | STAR_GLADIATOR | 0x107 |
+| 4049 | SOUL_LINKER | 0x207 | 4050 | GANGSI | 0xb | 4051 | DEATH_KNIGHT | 0x10b |
+| 4052 | DARK_COLLECTOR | 0x20b | 4054 | RUNE_KNIGHT | 0x1101 | 4055 | WARLOCK | 0x1102 |
+| 4056 | RANGER | 0x1103 | 4057 | ARCH_BISHOP | 0x1104 | 4058 | MECHANIC | 0x1105 |
+| 4059 | GUILLOTINE_CROSS | 0x1106 | 4060 | RUNE_KNIGHT_T | 0x101101 | 4061 | WARLOCK_T | 0x101102 |
+| 4062 | RANGER_T | 0x101103 | 4063 | ARCH_BISHOP_T | 0x101104 | 4064 | MECHANIC_T | 0x101105 |
+| 4065 | GUILLOTINE_CROSS_T | 0x101106 | 4066 | ROYAL_GUARD | 0x1201 | 4067 | SORCERER | 0x1202 |
+| 4068 | MINSTREL | 0x1203 | 4069 | WANDERER | 0x1203 | 4070 | SURA | 0x1204 |
+| 4071 | GENETIC | 0x1205 | 4072 | SHADOW_CHASER | 0x1206 | 4073 | ROYAL_GUARD_T | 0x101201 |
+| 4074 | SORCERER_T | 0x101202 | 4075 | MINSTREL_T | 0x101203 | 4076 | WANDERER_T | 0x101203 |
+| 4077 | SURA_T | 0x101204 | 4078 | GENETIC_T | 0x101205 | 4079 | SHADOW_CHASER_T | 0x101206 |
+| 4096 | BABY_RUNE_KNIGHT | 0x201101 | 4097 | BABY_WARLOCK | 0x201102 | 4098 | BABY_RANGER | 0x201103 |
+| 4099 | BABY_ARCH_BISHOP | 0x201104 | 4100 | BABY_MECHANIC | 0x201105 | 4101 | BABY_GUILLOTINE_CROSS | 0x201106 |
+| 4102 | BABY_ROYAL_GUARD | 0x201201 | 4103 | BABY_SORCERER | 0x201202 | 4104 | BABY_MINSTREL | 0x201203 |
+| 4105 | BABY_WANDERER | 0x201203 | 4106 | BABY_SURA | 0x201204 | 4107 | BABY_GENETIC | 0x201205 |
+| 4108 | BABY_SHADOW_CHASER | 0x201206 | 4190 | SUPER_NOVICE_E | 0x1100 | 4191 | SUPER_BABY_E | 0x201100 |
+| 4211 | KAGEROU | 0x109 | 4212 | OBORO | 0x109 | 4215 | REBELLION | 0x108 |
+| 4218 | SUMMONER | 0xa | 4220 | BABY_SUMMONER | 0x20000a | 4222 | BABY_NINJA | 0x200009 |
+| 4223 | BABY_KAGEROU | 0x200109 | 4224 | BABY_OBORO | 0x200109 | 4225 | BABY_TAEKWON | 0x200007 |
+| 4226 | BABY_STAR_GLADIATOR | 0x200107 | 4227 | BABY_SOUL_LINKER | 0x200207 | 4228 | BABY_GUNSLINGER | 0x200008 |
+| 4229 | BABY_REBELLION | 0x200108 | 4239 | STAR_EMPEROR | 0x1107 | 4240 | SOUL_REAPER | 0x1207 |
+| 4241 | BABY_STAR_EMPEROR | 0x201107 | 4242 | BABY_SOUL_REAPER | 0x201207 | 4252 | DRAGON_KNIGHT | 0x11101 |
+| 4253 | MEISTER | 0x11105 | 4254 | SHADOW_CROSS | 0x11106 | 4255 | ARCH_MAGE | 0x11102 |
+| 4256 | CARDINAL | 0x11104 | 4257 | WINDHAWK | 0x11103 | 4258 | IMPERIAL_GUARD | 0x11201 |
+| 4259 | BIOLO | 0x11205 | 4260 | ABYSS_CHASER | 0x11206 | 4261 | ELEMENTAL_MASTER | 0x11202 |
+| 4262 | INQUISITOR | 0x11204 | 4263 | TROUBADOUR | 0x11203 | 4264 | TROUVERE | 0x11203 |
+| 4302 | SKY_EMPEROR | 0x11107 | 4303 | SOUL_ASCETIC | 0x11207 | 4304 | SHINKIRO | 0x1109 |
+| 4305 | SHIRANUI | 0x1109 | 4306 | NIGHT_WATCH | 0x1108 | 4307 | HYPER_NOVICE | 0x11100 |
+| 4308 | SPIRIT_HANDLER | 0x10a |  |  |  |  |  |  |
+
+Unmapped ids (treated as Novice, `pc.cpp:2099-2104`): 13 `KNIGHT2`, 21 `CRUSADER2`, 31 `MAX_BASIC` (sentinel), 4014 `LORD_KNIGHT2`, 4022 `PALADIN2`, 4036 `BABY_KNIGHT2`, 4044 `BABY_CRUSADER2`, 4048 `STAR_GLADIATOR2`, 4080-4087 `RUNE_KNIGHT2`, `RUNE_KNIGHT_T2`, `ROYAL_GUARD2`, `ROYAL_GUARD_T2`, `RANGER2`, `RANGER_T2`, `MECHANIC2`, `MECHANIC_T2`, 4109-4112 `BABY_{RUNE_KNIGHT,ROYAL_GUARD,RANGER,MECHANIC}2`, 4238 `BABY_STAR_GLADIATOR2`, 4243 `STAR_EMPEROR2`, 4244 `BABY_STAR_EMPEROR2`, 4278-4281 `WINDHAWK2`, `MEISTER2`, `DRAGON_KNIGHT2`, `IMPERIAL_GUARD2`, 4316 `SKY_EMPEROR2`, 4331 `SECOND_JOB_START` (sentinel), 4332-4344 `*_2ND` (Rune Knight, Mechanic, Guillotine Cross, Warlock, Archbishop, Ranger, Royal Guard, Genetic, Shadow Chaser, Sorcerer, Sura, Minstrel, Wanderer), 4350 `SECOND_JOB_END` (sentinel). Ids with no enum name (e.g. 4219, 4221, 4053, 4088-4095) are also unmapped. Mapped Star Gladiator is 4047 only; 4048 is the unmapped mounted variant.
+
+Notes: 2-1/2-2 are mapid bits `0x100`/`0x200`; Summoner/Baby Summoner are 4218/4220 (Baby Ninja 4222, Baby Taekwon 4225); Spirit Handler 4308 -> `0x10a` (2-1 of Summoner); Hyper Novice 4307 -> `0x11100`; Shinkiro/Shiranui 4304/4305 -> `0x1109`, Night Watch 4306 -> `0x1108`.
 
 #### `Jobs` -> `class_base[3]`
 - `class_base` is three `u64` bitsets: index 0 = first class and Novice branch (no 2-x bit), index 1 = 2-1 branch, index 2 = 2-2 branch. Bit position = base-class number `n` from the table above.
@@ -287,7 +346,7 @@ Other places that force-unequip with flag 2: level/class change invalidation (`p
 Server state: `sd->status.{weapon,shield,head_top,head_mid,head_bottom,robe}` (all persisted in the `char` table as `smallint unsigned`, `sql-files/main.sql:253-258`) and the per-unit `vd.look[]` array that entry packets read.
 
 * **Weapon/shield look** (`update_look`, `pc.cpp:623`): right-hand item -> `view_id` if non-zero else `nameid`; left-hand item likewise, but 0 when left and right slots are the same item (2H); 0 when nothing is worn; both 0 under `OPTION_COSTUME`. Sent together in one `LOOK_WEAPON` packet (val = weapon, val2 = shield). `status.weapon` holds the weapon **type** (`W_*` or dual constant) and `status.shield` holds the shield **view** (`item.look`) or 0; they are distinct from the sent look.
-* **Headgear/robe look** (`pc_set_costume_view`, `pc.cpp:15490`): start from zero, then normal slots: head_low -> `look` unless the same item also occupies mid/top (then 0); head_mid -> `look` unless it also occupies top (then 0); head_top -> `look`; garment -> robe `look`. Then, unless the map has `nocostume` or the character setting `disable_showcostumes` is set, costume slots override the same way (costume low/mid/top, costume garment). `setlook_*` script overrides win last. A multi-slot headgear is therefore drawn by its highest slot only (avoids the client drawing it on top of itself). A look packet is sent only when the new value differs from the previous. Capture-confirmed for Goggles (top + mid): only `LOOK_HEAD_TOP` is ever sent, even mid-displacement when only the mid slot is assigned yet, and entry packets and char select carry head mid 0. So the "also occupies top" test follows the item's own location mask, not the current `equip_index`.
+* **Headgear/robe look** (`pc_set_costume_view`, `pc.cpp:15490`): start from zero, then normal slots: head_low -> `look` unless the same item also occupies mid/top (then 0); head_mid -> `look` unless it also occupies top (then 0); head_top -> `look`; garment -> robe `look`. Then, unless the map has `nocostume` or the character setting `disable_showcostumes` is set, costume slots override the same way (costume low/mid/top, costume garment). `setlook_*` script overrides win last. A multi-slot headgear is therefore drawn by its highest slot only (avoids the client drawing it on top of itself). A look packet is sent only when the new value differs from the previous. Capture-confirmed for Goggles (top + mid): only `LOOK_HEAD_TOP` is ever sent, even mid-displacement when only the mid slot is assigned yet, and entry packets and char select carry head mid 0. So the "also occupies top" test follows the item's own location mask, not the current `equip_index`. Capture 4 confirms the costume rules: with a costume top worn, changing or removing the normal top sends no `LOOK_HEAD_TOP`; a costume whose view equals the normal top's sends none either; removing the costume sends the normal top's view; a low + mid + top headgear sends only `LOOK_HEAD_TOP`, on equip and on removal; char select and entry packets carry the costume view.
 * **Shoes**: look 9 = shoes `view_id` or nameid, or 0.
 * The entry packets (`0x09fe`/`0x09ff`/`0x09fd`) carry `weapon`, `shield`, `head`s and `robe` straight from these values ([../packets/map_units.md](../packets/map_units.md) field table).
 
@@ -325,5 +384,5 @@ Per-item instance fields that affect equipment: `refine` (0..`MAX_REFINE`, clamp
 ## Open points
 
 * `MSI_WRONG_BULLET` is 2493 at 20260219 (PF-18, resolved from source).
-* Captured (2026-10-25, [packets/equipment.md](../packets/equipment.md#captured-equip-sequences)): take-off, unequip-all, a shield, a two-hander, headgear, garments, shoes, level and job failures, arrows (EFST 695 confirmed). Capture 3 adds dual wield (hand choice, looks, ATK2 of both hands, `W_DOUBLE_DS` at char select), a katar, a shield in entry packets and deaths. Still source-only: the `0x099a` failure acks, the dead gates (no request was sent while dead), costumes, bullets and the other ammo pairings.
+* Captured (2026-10-25, [packets/equipment.md](../packets/equipment.md#captured-equip-sequences)): take-off, unequip-all, a shield, a two-hander, headgear, garments, shoes, level and job failures, arrows (EFST 695 confirmed). Capture 3 adds dual wield (hand choice, looks, ATK2 of both hands, `W_DOUBLE_DS` at char select), a katar, a shield in entry packets and deaths. Capture 4 adds the dead requests (the client sends no equip or take-off while dead; rAthena runs unequip-all while dead in full), accessories, costumes, low/mid/top headgear, broken gear, gender failures, sitting and refine pushes. Still source-only: the `0x099a` failure acks, bullets and the other ammo pairings.
 * `clif_msg` (`0x0291`) and `0x0983` layouts are in the catalog ([packets/equipment.md](../packets/equipment.md#messages-sent-as-chat-style-notices-clif_msg-msi_), [status_change.md](../packets/status_change.md)).
