@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, db/re/item_db_usable.yml.
-# Modified: reduced to the fields Metaling uses and normalized by tools/item-import. Do not edit by hand.
+# Modified: reduced to the fields Metaling uses (ITEM_DATA v2, with equipment fields) and normalized by tools/item-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
 %YAML 1.2
 ---
 Header:
   Type: ITEM_DATA
-  Version: 1
+  Version: 2
 Body:
 - Id: 500
   AegisName: Warnut_Chocoball
@@ -730,11 +730,21 @@ Body:
   Name: Awakening Potion
   Type: Usable
   Weight: 150
+  EquipLevelMin: 40
+  Jobs:
+  - 2031
+  - 2031
+  - 246
 - Id: 657
   AegisName: Berserk_Potion
   Name: Berserk Potion
   Type: Usable
   Weight: 200
+  EquipLevelMin: 85
+  Jobs:
+  - 422
+  - 422
+  - 226
 - Id: 658
   AegisName: Union_Of_Tribe
   Name: Union of Tribe
@@ -932,6 +942,7 @@ Body:
   Name: Coupon
   Type: Usable
   Weight: 0
+  Classes: 0
   NoDrop: true
 - Id: 9510
   AegisName: Enchant_Stone_Box17
@@ -1367,36 +1378,43 @@ Body:
   Name: Mora Mandar
   Type: Healing
   Weight: 20
+  EquipLevelMin: 100
 - Id: 11521
   AegisName: Pingui_Berry_Juice
   Name: Pingui Berry Juice
   Type: Healing
   Weight: 50
+  EquipLevelMin: 100
 - Id: 11522
   AegisName: Red_Raffle_Sap
   Name: Red Raffle Sap
   Type: Healing
   Weight: 100
+  EquipLevelMin: 100
 - Id: 11523
   AegisName: Yellow_Raffle_Sap
   Name: Yellow Raffle Sap
   Type: Healing
   Weight: 120
+  EquipLevelMin: 110
 - Id: 11524
   AegisName: White_Raffle_Sap
   Name: White Raffle Sap
   Type: Healing
   Weight: 140
+  EquipLevelMin: 120
 - Id: 11525
   AegisName: Mora_Hip_Tea
   Name: Mora Hip Tea
   Type: Healing
   Weight: 150
+  EquipLevelMin: 120
 - Id: 11526
   AegisName: Rafflecino
   Name: Rafflecino
   Type: Healing
   Weight: 100
+  EquipLevelMin: 120
 - Id: 11527
   AegisName: Baklava
   Name: Baklava
@@ -1856,21 +1874,25 @@ Body:
   Name: Red Syrup
   Type: Healing
   Weight: 70
+  EquipLevelMin: 60
 - Id: 11622
   AegisName: High_YelloPotion
   Name: Yellow Syrup
   Type: Healing
   Weight: 100
+  EquipLevelMin: 60
 - Id: 11623
   AegisName: High_WhitePotion
   Name: White Syrup
   Type: Healing
   Weight: 140
+  EquipLevelMin: 60
 - Id: 11624
   AegisName: High_BluePotion
   Name: Blue Syrup
   Type: Healing
   Weight: 100
+  EquipLevelMin: 60
 - Id: 11625
   AegisName: Gourmet_Popcorn
   Name: Gourmet Butter Popcorn
@@ -1886,12 +1908,14 @@ Body:
   Name: High Quality Beef Jerky
   Type: Healing
   Weight: 1
+  EquipLevelMin: 60
   NoDrop: true
 - Id: 11628
   AegisName: Fleshy_Larva
   Name: Fleshy Larva
   Type: Healing
   Weight: 1
+  EquipLevelMin: 60
   NoDrop: true
 - Id: 11629
   AegisName: Acorn_Chocoball
@@ -1920,12 +1944,14 @@ Body:
   Name: New Year Wind Rice Cake
   Type: Healing
   Weight: 1
+  EquipLevelMin: 60
   NoDrop: true
 - Id: 11634
   AegisName: 2401_ev_Yugwa
   Name: New Year Yugwa
   Type: Healing
   Weight: 1
+  EquipLevelMin: 60
   NoDrop: true
 - Id: 11635
   AegisName: 2401_ev_RedLin
@@ -1937,36 +1963,42 @@ Body:
   Name: Lime Soda
   Type: Healing
   Weight: 1
+  EquipLevelMin: 90
   NoDrop: true
 - Id: 11637
   AegisName: 24_S_Ev_Berry_Soda
   Name: Berry Soda
   Type: Healing
   Weight: 1
+  EquipLevelMin: 90
   NoDrop: true
 - Id: 11638
   AegisName: 24_A_Ev_Choco_C
   Name: Symposium Choco Egg Cookie
   Type: Healing
   Weight: 1
+  EquipLevelMin: 100
   NoDrop: true
 - Id: 11639
   AegisName: 24_A_Ev_Egg_C
   Name: Symposium Egg Cookie
   Type: Healing
   Weight: 1
+  EquipLevelMin: 100
   NoDrop: true
 - Id: 11640
   AegisName: E_Deli_BBQ
   Name: Well Roasted Meat
   Type: Healing
   Weight: 1
+  EquipLevelMin: 70
   NoDrop: true
 - Id: 11641
   AegisName: E_Leather_Bottle
   Name: Leather Water Bottle
   Type: Healing
   Weight: 1
+  EquipLevelMin: 70
   NoDrop: true
 - Id: 11701
   AegisName: Girl_Bunch_Of_Flower
@@ -3321,6 +3353,7 @@ Body:
   Name: Halo-Halo
   Type: Usable
   Weight: 100
+  EquipLevelMin: 20
 - Id: 12248
   AegisName: Masquerade_Ball_Box
   Name: Fancy Ball Box
@@ -3371,6 +3404,7 @@ Body:
   Name: Cold Medicine
   Type: Healing
   Weight: 100
+  EquipLevelMin: 50
 - Id: 12258
   AegisName: Bombring_Box
   Name: Bomb Poring Box
@@ -4113,16 +4147,31 @@ Body:
   Name: Repair A
   Type: Usable
   Weight: 1
+  Jobs:
+  - 0
+  - 32
+  - 0
+  Classes: 120
 - Id: 12393
   AegisName: RepairB
   Name: Repair B
   Type: Usable
   Weight: 1
+  Jobs:
+  - 0
+  - 32
+  - 0
+  Classes: 120
 - Id: 12394
   AegisName: RepairC
   Name: Repair C
   Type: Usable
   Weight: 1
+  Jobs:
+  - 0
+  - 32
+  - 0
+  Classes: 120
 - Id: 12395
   AegisName: Tantanmen
   Name: Tantan Noodle
@@ -5631,11 +5680,13 @@ Body:
   Name: Siege Arrow Quiver S
   Type: Usable
   Weight: 100
+  EquipLevelMin: 130
 - Id: 12678
   AegisName: Siege_Arrow_Quiver_A
   Name: Siege Arrow Quiver A
   Type: Usable
   Weight: 100
+  EquipLevelMin: 95
 - Id: 12679
   AegisName: Sg_White_Potion_Box
   Name: Siege White Potion Box
@@ -5768,12 +5819,14 @@ Body:
   Name: Elixir of Life
   Type: Healing
   Weight: 10
+  EquipLevelMin: 85
   NoDrop: true
 - Id: 12705
   AegisName: Noble_Nameplate
   Name: Noble Nameplate
   Type: Usable
   Weight: 100
+  EquipLevelMin: 90
   NoDrop: true
 - Id: 12706
   AegisName: Lucky_Cookie01
@@ -5931,26 +5984,51 @@ Body:
   Name: Luxurious Rune
   Type: Healing
   Weight: 100
+  Jobs:
+  - 0
+  - 2
+  - 0
+  Classes: 120
 - Id: 12735
   AegisName: Runstone_Ancient
   Name: Ancient Rune
   Type: Healing
   Weight: 100
+  Jobs:
+  - 0
+  - 2
+  - 0
+  Classes: 120
 - Id: 12736
   AegisName: Runstone_Mystic
   Name: Mystic Rune
   Type: Healing
   Weight: 100
+  Jobs:
+  - 0
+  - 2
+  - 0
+  Classes: 120
 - Id: 12737
   AegisName: Runstone_Ordinary
   Name: General Rune
   Type: Healing
   Weight: 100
+  Jobs:
+  - 0
+  - 2
+  - 0
+  Classes: 120
 - Id: 12738
   AegisName: Runstone_Rare
   Name: Rare Rune
   Type: Healing
   Weight: 100
+  Jobs:
+  - 0
+  - 2
+  - 0
+  Classes: 120
 - Id: 12739
   AegisName: Snow_Flower
   Name: Snow Flowers
@@ -6311,18 +6389,21 @@ Body:
   Name: Mercenary Casting
   Type: Usable
   Weight: 0
+  EquipLevelMin: 20
   NoDrop: true
 - Id: 12808
   AegisName: Mother_Love_Box
   Name: Mother's Gentle Heart Box
   Type: Usable
   Weight: 0
+  EquipLevelMax: 120
   NoDrop: true
 - Id: 12809
   AegisName: Level_Up_Box
   Name: Level Up Box
   Type: Usable
   Weight: 0
+  EquipLevelMin: 120
   NoDrop: true
 - Id: 12810
   AegisName: Event_Gift_Box
@@ -6361,24 +6442,28 @@ Body:
   Name: Old Ore Box
   Type: Usable
   Weight: 0
+  EquipLevelMin: 60
   NoDrop: true
 - Id: 12817
   AegisName: Old_Card_Album_
   Name: Old Card Album
   Type: Usable
   Weight: 0
+  EquipLevelMin: 80
   NoDrop: true
 - Id: 12818
   AegisName: High_Weapon_Box_
   Name: High Weapon Box
   Type: Usable
   Weight: 0
+  EquipLevelMin: 100
   NoDrop: true
 - Id: 12819
   AegisName: Zherlthsh_Tck_Box_
   Name: Zherlthsh Tck Box
   Type: Usable
   Weight: 0
+  EquipLevelMin: 150
   NoDrop: true
 - Id: 12820
   AegisName: Mao_Guai_Scroll
@@ -6477,36 +6562,43 @@ Body:
   Name: Iron Treasure Box
   Type: Usable
   Weight: 0
+  EquipLevelMin: 10
 - Id: 12839
   AegisName: bronze_Treasure_Box
   Name: bronze Treasure Box
   Type: Usable
   Weight: 0
+  EquipLevelMin: 20
 - Id: 12840
   AegisName: Silver_Treasure_Box
   Name: Silver Treasure Box
   Type: Usable
   Weight: 0
+  EquipLevelMin: 30
 - Id: 12841
   AegisName: Golden_Treasure_Box
   Name: Golden Treasure Box
   Type: Usable
   Weight: 0
+  EquipLevelMin: 40
 - Id: 12842
   AegisName: Platinum_Treasure_Box
   Name: Platinum Treasure Box
   Type: Usable
   Weight: 0
+  EquipLevelMin: 50
 - Id: 12843
   AegisName: Pearl_Treasure_Box
   Name: Pearl Treasure Box
   Type: Usable
   Weight: 0
+  EquipLevelMin: 60
 - Id: 12844
   AegisName: Diamond_Treasure_Box
   Name: Diamond Treasure Box
   Type: Usable
   Weight: 0
+  EquipLevelMin: 70
 - Id: 12845
   AegisName: WOB_Amatsu
   Name: Amatsu_Butterfly_Wing
@@ -9764,6 +9856,7 @@ Body:
   Name: Observer Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 35
   NoDrop: true
 - Id: 13866
   AegisName: Flying_Angel_Box
@@ -12609,18 +12702,21 @@ Body:
   Name: Neo Muffler Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 95
   NoDrop: true
 - Id: 14285
   AegisName: Valkyrja's_Shield_C_Box
   Name: Neo Valkyrja's Shield Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 95
   NoDrop: true
 - Id: 14286
   AegisName: Skul_Ring_C_Box
   Name: Neo Skull Ring Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 95
   NoDrop: true
 - Id: 14287
   AegisName: S_Barricade_Repair_Kit
@@ -12898,66 +12994,77 @@ Body:
   Name: Guild Member Hat Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 14332
   AegisName: Party_Recruiter_Hat_Box
   Name: Party Member Hat Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 14333
   AegisName: Bf_Recruiter_Hat_Box
   Name: Boyfriend Hat Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 14334
   AegisName: Friend_Recr_Hat_Box
   Name: Friend Hat Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 14335
   AegisName: Gf_Recruiter_Hat_Box
   Name: Girlfriend Hat Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 14336
   AegisName: Marcher_Hat_Box
   Name: Holy Marcher Hat Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 14337
   AegisName: F_Guildsman_Recr_Box
   Name: Guild Member Hat Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 14338
   AegisName: F_Party_Recr_Hat_Box
   Name: Party Member Hat Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 14339
   AegisName: FBf_Recruiter_Hat_Box
   Name: Boyfriend Hat Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 14340
   AegisName: F_Friend_Recr_Hat_Box
   Name: Friend Hat Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 14341
   AegisName: FGf_Recruiter_Hat_Box
   Name: Girlfriend Hat Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 14342
   AegisName: FMarcher_Hat_Box
@@ -13944,12 +14051,22 @@ Body:
   Name: Light Awakening Potion
   Type: Usable
   Weight: 20
+  EquipLevelMin: 40
+  Jobs:
+  - 2031
+  - 2031
+  - 246
   NoDrop: true
 - Id: 14511
   AegisName: Light_Berserk_Pot
   Name: Light Berserk Potion
   Type: Usable
   Weight: 20
+  EquipLevelMin: 85
+  Jobs:
+  - 422
+  - 422
+  - 226
   NoDrop: true
 - Id: 14512
   AegisName: Meteor_10_Scroll
@@ -14738,11 +14855,13 @@ Body:
   Name: Memorial Garuda Lucky Egg
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 14701
   AegisName: TW_13y_Lucky_Egg_06
   Name: Midgard Immortal Lucky Egg
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 14704
   AegisName: Gemstone_Shadow_Box
   Name: Gemstone Shadow Box
@@ -15943,6 +16062,7 @@ Body:
   Name: Valkyrie's Gift Box
   Type: Cash
   Weight: 0
+  EquipLevelMin: 1
 - Id: 16251
   AegisName: Gemini_Diadem_Box
   Name: Gemini Diadem Box
@@ -16043,6 +16163,7 @@ Body:
   Name: Indonesia Beret Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 16267
   AegisName: HE_Battle_Manual_Box
   Name: HE Battle Manual Box
@@ -16070,12 +16191,14 @@ Body:
   Name: Hockey Mask Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 16272
   AegisName: Observer_Box1
   Name: Observer Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 35
   NoDrop: true
 - Id: 16273
   AegisName: All_In_One_Ring_Box1
@@ -16148,30 +16271,35 @@ Body:
   Name: Guild Member Hat Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 16285
   AegisName: Party_Recruit_Hat_Box1
   Name: Party Member Hat Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 16286
   AegisName: Bf_Recruit_Hat_Box1
   Name: Boyfriend Hat Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 16287
   AegisName: Gf_Recruit_Hat_Box1
   Name: Girlfriend Hat Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 16288
   AegisName: Friend_Recruit_Hat_Box1
   Name: Friend Hat Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 16289
   AegisName: Claymore_C_box1
@@ -16749,12 +16877,14 @@ Body:
   Name: Siege Teleport Scroll Silver 10Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
   NoDrop: true
 - Id: 16380
   AegisName: S_Tele_Scroll2_Box30
   Name: Siege Teleport Scroll Silver 30Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
   NoDrop: true
 - Id: 16381
   AegisName: F_Siege_Tele_10Sc_Box
@@ -17453,6 +17583,7 @@ Body:
   Name: Rice Ball Hat Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 16573
   AegisName: Skull_Hood_Box
   Name: Skull Hood Box
@@ -17646,24 +17777,28 @@ Body:
   Name: Half Asprika Box 7days
   Type: Usable
   Weight: 10
+  EquipLevelMin: 47
   NoDrop: true
 - Id: 16626
   AegisName: Half_Megin_Box
   Name: Half Megin Box 7days
   Type: Cash
   Weight: 10
+  EquipLevelMin: 47
   NoDrop: true
 - Id: 16627
   AegisName: Half_Brysing_Box
   Name: Half Brysing Box 7days
   Type: Cash
   Weight: 10
+  EquipLevelMin: 47
   NoDrop: true
 - Id: 16628
   AegisName: Half_Brynhild_Box
   Name: Half Brynhild Box 7days
   Type: Cash
   Weight: 10
+  EquipLevelMin: 47
   NoDrop: true
 - Id: 16629
   AegisName: Granpeco_Hairband_Box
@@ -17901,6 +18036,7 @@ Body:
   Name: Kotak Ketupat Warna Warni
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 16670
   AegisName: Battle_Manual_Box_A
   Name: Field Manual Box A
@@ -18271,72 +18407,84 @@ Body:
   Name: Hairtail Box(1hr)
   Type: Usable
   Weight: 10
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 16742
   AegisName: Hairtail_Box2
   Name: Hairtail Box(7day)
   Type: Usable
   Weight: 10
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 16743
   AegisName: Spearfish_Box1
   Name: Marlin Box(1hr)
   Type: Usable
   Weight: 10
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 16744
   AegisName: Spearfish_Box2
   Name: Marlin Box(7day)
   Type: Usable
   Weight: 10
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 16745
   AegisName: Saurel_Box1
   Name: Saurel Box(1hr)
   Type: Usable
   Weight: 10
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 16746
   AegisName: Saurel_Box2
   Name: Saurel Box(7day)
   Type: Usable
   Weight: 10
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 16747
   AegisName: Tuna_Box1
   Name: Tuna Box(1hr)
   Type: Usable
   Weight: 10
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 16748
   AegisName: Tuna_Box2
   Name: Tuna Box(7day)
   Type: Usable
   Weight: 10
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 16749
   AegisName: Malang_Crab_Box1
   Name: Malangdo Crab Box(1hr)
   Type: Usable
   Weight: 10
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 16750
   AegisName: Malang_Crab_Box2
   Name: Malangdo Crab Box(7day)
   Type: Usable
   Weight: 10
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 16751
   AegisName: Brindle_Eel_Box1
   Name: Spotty Eel Box1
   Type: Usable
   Weight: 10
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 16752
   AegisName: Brindle_Eel_Box2
   Name: Spotty Eel Box2
   Type: Usable
   Weight: 10
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 16753
   AegisName: Unbreak_Weap_Box
@@ -19191,12 +19339,14 @@ Body:
   Name: Hockey Mask Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 16900
   AegisName: C_Observer_Box
   Name: Observer Box
   Type: Cash
   Weight: 10
+  EquipLevelMin: 35
   NoDrop: true
 - Id: 16901
   AegisName: C_All_In_One_Ring_Box
@@ -20701,6 +20851,7 @@ Body:
   Name: Shining Egg
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
   NoDrop: true
 - Id: 17205
   AegisName: Special_Po_Box
@@ -20775,6 +20926,7 @@ Body:
   Name: Valerian Egg
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 17231
   AegisName: Refine_Ore_Box3
   Name: Refining Ore Box
@@ -20838,6 +20990,7 @@ Body:
   Name: Immortal Egg
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 17244
   AegisName: Almighty_Box2
   Name: Event Almighty Box
@@ -20893,6 +21046,7 @@ Body:
   Name: Sapphire Egg
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 17256
   AegisName: Good_Student_Gift_Box
   Name: Good Student Gift Box
@@ -21022,6 +21176,7 @@ Body:
   Name: Events Beauty Gift Box
   Type: Cash
   Weight: 10
+  Classes: 0
   NoDrop: true
 - Id: 17286
   AegisName: E_Cloth_Dye_Coupon_Box
@@ -21113,6 +21268,7 @@ Body:
   Name: Midgard Egg
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 17308
   AegisName: Half_Asprika_Box_1
   Name: Half Asprika box1
@@ -21123,6 +21279,7 @@ Body:
   Name: Half Brynhild box1
   Type: Usable
   Weight: 0
+  EquipLevelMin: 47
 - Id: 17314
   AegisName: C_Wing_Of_Fly_1Day_Box
   Name: Unlimited Fly Wing 1 Day Box
@@ -21146,11 +21303,13 @@ Body:
   Name: Sweet Midgard Egg
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 17320
   AegisName: Brithday_IdRO10th_Scr
   Name: Birthday IdRO10th Scroll
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 17321
   AegisName: 3_Life_Potion_pack
   Name: Three Master Package
@@ -21168,6 +21327,7 @@ Body:
   Name: Requiem Egg
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 17331
   AegisName: Almighty_Box3
   Name: Event Almighty Box
@@ -21191,6 +21351,7 @@ Body:
   Name: Holy Spirit Egg
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 17338
   AegisName: Refine_Ore_Box5
   Name: Ore Box V
@@ -21385,6 +21546,7 @@ Body:
   Name: Miracle Lucky Egg
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 17432
   AegisName: Silvervine_Box10_2
   Name: Lucky Silvervine Fruit Box II(10)
@@ -21402,6 +21564,7 @@ Body:
   Name: Legend Hero Lucky Egg
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 17438
   AegisName: 3_Life_Potion_pack2
   Name: Three Master Package II
@@ -21443,6 +21606,7 @@ Body:
   Name: Blessing Midgard Lucky Egg
   Type: Cash
   Weight: 0
+  EquipLevelMin: 1
 - Id: 17449
   AegisName: Biscuit_Stick_Set
   Name: Set Bar Cookies
@@ -21478,6 +21642,7 @@ Body:
   Name: Winter Midgard Egg
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 17465
   AegisName: Refine_Ore_Box6
   Name: Refine Ore Box VI
@@ -21519,6 +21684,7 @@ Body:
   Name: Spring Festival Lucky Egg
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 17472
   AegisName: Vigorgra_Package_v3
   Name: Support Package III
@@ -22742,47 +22908,55 @@ Body:
   Name: Egg Of Wisdom
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
 - Id: 22521
   AegisName: 80LVUP
   Name: Level Up Box (80)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 80
   NoDrop: true
 - Id: 22522
   AegisName: 100LVUP
   Name: Level Up Box (100)
   Type: Cash
   Weight: 0
+  EquipLevelMin: 100
   NoDrop: true
 - Id: 22523
   AegisName: 120LVUP
   Name: Level Up Box (120)
   Type: Cash
   Weight: 0
+  EquipLevelMin: 120
   NoDrop: true
 - Id: 22524
   AegisName: 130LVUP
   Name: Level Up Box (130)
   Type: Cash
   Weight: 0
+  EquipLevelMin: 130
   NoDrop: true
 - Id: 22525
   AegisName: 140LVUP
   Name: Level Up Box (140)
   Type: Cash
   Weight: 0
+  EquipLevelMin: 140
   NoDrop: true
 - Id: 22526
   AegisName: 150LVUP
   Name: Level Up Box (150)
   Type: Cash
   Weight: 0
+  EquipLevelMin: 150
   NoDrop: true
 - Id: 22527
   AegisName: 160LVUP
   Name: Level Up Box (160)
   Type: Cash
   Weight: 0
+  EquipLevelMin: 160
   NoDrop: true
 - Id: 22528
   AegisName: Pet_Ticket_Box
@@ -22800,16 +22974,19 @@ Body:
   Name: Christmas Box
   Type: Cash
   Weight: 200
+  EquipLevelMin: 1
 - Id: 22531
   AegisName: Special_Christmas_Box
   Name: Special Christmas Box
   Type: Cash
   Weight: 200
+  EquipLevelMin: 1
 - Id: 22532
   AegisName: Santa_Gift
   Name: Santa Gift
   Type: Cash
   Weight: 200
+  EquipLevelMin: 1
 - Id: 22533
   AegisName: New_Year_Gift_Box
   Name: New Year Gift Box
@@ -22821,6 +22998,7 @@ Body:
   Name: Closed Mind Box
   Type: Cash
   Weight: 1000
+  EquipLevelMin: 1
 - Id: 22535
   AegisName: WorkerScroll_A
   Name: Scroll Summoning Workers(Male)
@@ -22838,6 +23016,7 @@ Body:
   Name: Prize Of Hero
   Type: Usable
   Weight: 100
+  EquipLevelMin: 1
 - Id: 22538
   AegisName: Hanbok_bag
   Name: Hanbok bag
@@ -22854,6 +23033,7 @@ Body:
   Name: Lux Anima Runestone
   Type: Usable
   Weight: 10
+  Classes: 120
   NoDrop: true
 - Id: 22541
   AegisName: PCBang_Coupon_Box6
@@ -22872,12 +23052,22 @@ Body:
   Name: "[Not For Sale] Berserk Potion"
   Type: Usable
   Weight: 200
+  EquipLevelMin: 85
+  Jobs:
+  - 422
+  - 422
+  - 226
   NoDrop: true
 - Id: 22544
   AegisName: Awakening_Potion_B
   Name: "[Not For Sale] Awakening Potion"
   Type: Usable
   Weight: 150
+  EquipLevelMin: 40
+  Jobs:
+  - 2031
+  - 2031
+  - 246
   NoDrop: true
 - Id: 22545
   AegisName: Speed_Up_Potion_B
@@ -23250,6 +23440,7 @@ Body:
   Name: Death's Chest
   Type: Usable
   Weight: 0
+  EquipLevelMin: 170
 - Id: 22685
   AegisName: Solo_Christmas_Gift
   Name: Single Union Christmas Gift
@@ -23266,6 +23457,7 @@ Body:
   Name: Sentimental Fragment
   Type: Usable
   Weight: 1
+  EquipLevelMin: 100
 - Id: 22691
   AegisName: Piece_Of_Record1
   Name: Record Fragment
@@ -23551,6 +23743,7 @@ Body:
   Name: Gift Buff Set
   Type: Usable
   Weight: 100
+  EquipLevelMin: 1
   NoDrop: true
 - Id: 22781
   AegisName: PC_NomalBox
@@ -23581,6 +23774,7 @@ Body:
   Name: Special Gift Box
   Type: Usable
   Weight: 100
+  Classes: 0
   NoDrop: true
 - Id: 22812
   AegisName: Sealed_Dracula_Scroll
@@ -23634,6 +23828,7 @@ Body:
   Name: Summer Vacation Costumes
   Type: Usable
   Weight: 100
+  EquipLevelMin: 1
 - Id: 22823
   AegisName: Sealed_B_Shecil_Scroll
   Name: Sealed Sniper Scroll
@@ -23660,6 +23855,7 @@ Body:
   Name: Sealed Album Scroll
   Type: Usable
   Weight: 10
+  EquipLevelMin: 1
   NoDrop: true
 - Id: 22829
   AegisName: Sealed_Card
@@ -23672,17 +23868,20 @@ Body:
   Name: Integer Time
   Type: Usable
   Weight: 50
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 22838
   AegisName: Something_Candy_Holder
   Name: Something Candy Holders
   Type: Usable
   Weight: 10
+  EquipLevelMin: 1
 - Id: 22839
   AegisName: Happy_Box_J
   Name: Happy Box
   Type: Usable
   Weight: 200
+  EquipLevelMin: 1
 - Id: 22841
   AegisName: Pumpkin_Candy
   Name: Pumpkin Candy
@@ -23814,6 +24013,7 @@ Body:
   Name: Lucky Roulette Ticket
   Type: Usable
   Weight: 100
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 22870
   AegisName: Xmas_Package_14
@@ -24790,6 +24990,7 @@ Body:
   Name: Rebellion Jumping Support Box
   Type: Usable
   Weight: 0
+  EquipLevelMin: 100
   NoDrop: true
 - Id: 23142
   AegisName: EXPUP_Potion1
@@ -24990,6 +25191,7 @@ Body:
   Name: Shining Blue Lucky Egg
   Type: Cash
   Weight: 10
+  EquipLevelMin: 1
   NoDrop: true
 - Id: 23198
   AegisName: PremiumWoodenBox
@@ -25335,60 +25537,75 @@ Body:
   Name: Level Up Box (10)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 23269
   AegisName: 20LVUP
   Name: Level Up Box (20)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 20
   NoDrop: true
 - Id: 23270
   AegisName: 30LVUP
   Name: Level Up Box (30)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 30
   NoDrop: true
 - Id: 23271
   AegisName: 40LVUP
   Name: Level Up Box (40)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 40
   NoDrop: true
 - Id: 23272
   AegisName: 50LVUP
   Name: Level Up Box (50)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 23273
   AegisName: 60LVUP
   Name: Level Up Box (60)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 60
   NoDrop: true
 - Id: 23274
   AegisName: 70LVUP
   Name: Level Up Box (70)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 70
   NoDrop: true
 - Id: 23275
   AegisName: 90LVUP
   Name: Level Up Box (90)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 90
   NoDrop: true
 - Id: 23276
   AegisName: 175LVUP
   Name: Level Up Box (175)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 175
   NoDrop: true
 - Id: 23277
   AegisName: Mado_Box
   Name: Emergency Magic Gear
   Type: Usable
   Weight: 300
+  EquipLevelMin: 100
+  Jobs:
+  - 0
+  - 32
+  - 0
+  Classes: 120
 - Id: 23278
   AegisName: HelpmeShorty
   Name: Help Me Shorty
@@ -25400,6 +25617,8 @@ Body:
   Name: Novice Fly Wing
   Type: Usable
   Weight: 0
+  EquipLevelMin: 1
+  EquipLevelMax: 98
   NoDrop: true
 - Id: 23281
   AegisName: RaceShadow_Mix
@@ -25490,6 +25709,7 @@ Body:
   Name: Poring Treasure Box
   Type: Usable
   Weight: 200
+  EquipLevelMin: 30
 - Id: 23303
   AegisName: C_CatPaw_1Day_Para
   Name: Infinite Cat Hand Ticket Box (1 Day)
@@ -25741,11 +25961,13 @@ Body:
   Name: Psychotropic
   Type: Usable
   Weight: 10
+  EquipLevelMin: 100
 - Id: 23361
   AegisName: Serum
   Name: Serum
   Type: Healing
   Weight: 100
+  EquipLevelMin: 100
 - Id: 23362
   AegisName: Pig_Potato
   Name: Meatball
@@ -25872,114 +26094,133 @@ Body:
   Name: First aid Box (5)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 5
   NoDrop: true
 - Id: 23485
   AegisName: Firstaid_Box_10
   Name: First aid Box (10)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 23486
   AegisName: Firstaid_Box_15
   Name: First aid Box (15)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 15
   NoDrop: true
 - Id: 23487
   AegisName: Firstaid_Box_20
   Name: First aid Box (20)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 20
   NoDrop: true
 - Id: 23488
   AegisName: Firstaid_Box_25
   Name: First aid Box (25)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 25
   NoDrop: true
 - Id: 23489
   AegisName: Firstaid_Box_30
   Name: First aid Box (30)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 30
   NoDrop: true
 - Id: 23490
   AegisName: Firstaid_Box_35
   Name: First aid Box (35)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 35
   NoDrop: true
 - Id: 23491
   AegisName: Firstaid_Box_40
   Name: First aid Box (40)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 40
   NoDrop: true
 - Id: 23492
   AegisName: Firstaid_Box_45
   Name: First aid Box (45)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 45
   NoDrop: true
 - Id: 23493
   AegisName: Firstaid_Box_50
   Name: First aid Box (50)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 23494
   AegisName: Firstaid_Box_55
   Name: First aid Box (55)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 55
   NoDrop: true
 - Id: 23495
   AegisName: Firstaid_Box_60
   Name: First aid Box (60)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 60
   NoDrop: true
 - Id: 23496
   AegisName: Firstaid_Box_65
   Name: First aid Box (65)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 65
   NoDrop: true
 - Id: 23497
   AegisName: Firstaid_Box_70
   Name: First aid Box (70)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 70
   NoDrop: true
 - Id: 23498
   AegisName: Firstaid_Box_75
   Name: First aid Box (75)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 75
   NoDrop: true
 - Id: 23499
   AegisName: Firstaid_Box_80
   Name: First aid Box (80)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 80
   NoDrop: true
 - Id: 23500
   AegisName: Firstaid_Box_85
   Name: First aid Box (85)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 85
   NoDrop: true
 - Id: 23501
   AegisName: Firstaid_Box_90
   Name: First aid Box (90)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 90
   NoDrop: true
 - Id: 23502
   AegisName: Firstaid_Box_95
   Name: First aid Box (95)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 95
   NoDrop: true
 - Id: 23503
   AegisName: Red_Potion_B_20
@@ -26092,36 +26333,42 @@ Body:
   Name: Adventurer Box (15)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 15
   NoDrop: true
 - Id: 23577
   AegisName: Adventurer_Box_30
   Name: Adventurer Box (30)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 30
   NoDrop: true
 - Id: 23578
   AegisName: Adventurer_Box_45
   Name: Adventurer Box (45)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 45
   NoDrop: true
 - Id: 23579
   AegisName: Adventurer_Box_60
   Name: Adventurer Box (60)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 60
   NoDrop: true
 - Id: 23580
   AegisName: Adventurer_Box_75
   Name: Adventurer Box (75)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 75
   NoDrop: true
 - Id: 23581
   AegisName: Adventurer_Box_90
   Name: Adventurer Box (90)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 90
   NoDrop: true
 - Id: 23582
   AegisName: E_Wing_Of_Fly_3Day_Box
@@ -26134,30 +26381,35 @@ Body:
   Name: Beginner's Armor Box
   Type: Usable
   Weight: 0
+  EquipLevelMin: 100
   NoDrop: true
 - Id: 23584
   AegisName: Rebeginer_S_Box
   Name: Beginner's Shadow Box
   Type: Usable
   Weight: 0
+  EquipLevelMin: 120
   NoDrop: true
 - Id: 23585
   AegisName: Rebeginer_Box_100
   Name: Beginner Support Box (100)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 100
   NoDrop: true
 - Id: 23586
   AegisName: Rebeginer_Box_110
   Name: Beginner Support Box (110)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 110
   NoDrop: true
 - Id: 23587
   AegisName: Rebeginer_Box_120
   Name: Beginner Support Box (120)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 120
   NoDrop: true
 - Id: 23604
   AegisName: Main_Dish_Course
@@ -26704,6 +26956,7 @@ Body:
   Name: Palace Guard Cap Combination
   Type: Usable
   Weight: 10
+  EquipLevelMin: 50
 - Id: 23844
   AegisName: Bs_Item_M_S_37
   Name: Bandit's Hood SynthesisBox
@@ -26995,6 +27248,7 @@ Body:
   Name: Level Up Box (110)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 110
   NoDrop: true
 - Id: 23905
   AegisName: Season_Evt_Reward_3
@@ -27221,72 +27475,84 @@ Body:
   Name: Booster Pack (15)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 15
   NoDrop: true
 - Id: 100031
   AegisName: Booster_Pack_30
   Name: Booster Pack(30)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 30
   NoDrop: true
 - Id: 100032
   AegisName: Booster_Pack_45
   Name: Booster Pack(45)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 45
   NoDrop: true
 - Id: 100033
   AegisName: Booster_Pack_60
   Name: Booster Pack(60)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 60
   NoDrop: true
 - Id: 100034
   AegisName: Booster_Pack_75
   Name: Booster Pack(75)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 75
   NoDrop: true
 - Id: 100035
   AegisName: Booster_Pack_90
   Name: Booster Pack(90)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 90
   NoDrop: true
 - Id: 100036
   AegisName: Booster_Pack_100
   Name: Booster Pack(100)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 100
   NoDrop: true
 - Id: 100037
   AegisName: Booster_Pack_115
   Name: Booster Pack(115)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 115
   NoDrop: true
 - Id: 100038
   AegisName: Booster_Pack_130
   Name: Booster Pack(130)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 130
   NoDrop: true
 - Id: 100039
   AegisName: Booster_Pack_145
   Name: Booster Pack(145)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 145
   NoDrop: true
 - Id: 100040
   AegisName: Booster_Pack_160
   Name: Booster Pack(160)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 160
   NoDrop: true
 - Id: 100041
   AegisName: Booster_Pack_175
   Name: Booster Pack(175)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 175
   NoDrop: true
 - Id: 100043
   AegisName: Boost_Up_1
@@ -27311,24 +27577,28 @@ Body:
   Name: Attacker Booster Armor Crate
   Type: Usable
   Weight: 0
+  EquipLevelMin: 100
   NoDrop: true
 - Id: 100047
   AegisName: Boost_Ran_Box
   Name: Ranged Booster Crate
   Type: Usable
   Weight: 0
+  EquipLevelMin: 100
   NoDrop: true
 - Id: 100048
   AegisName: Boost_Ele_Box
   Name: Elemental Booster Crate
   Type: Usable
   Weight: 0
+  EquipLevelMin: 100
   NoDrop: true
 - Id: 100049
   AegisName: Boost_Defn_Box
   Name: Defiant Booster Crate
   Type: Usable
   Weight: 0
+  EquipLevelMin: 100
   NoDrop: true
 - Id: 100050
   AegisName: Goal_Gift_Box
@@ -27503,66 +27773,77 @@ Body:
   Name: Noblesses Refine Ticket
   Type: Usable
   Weight: 0
+  EquipLevelMin: 100
   NoDrop: true
 - Id: 100129
   AegisName: Imperial_Rifine_Ticket
   Name: Imperial Refine Ticket
   Type: Usable
   Weight: 0
+  EquipLevelMin: 125
   NoDrop: true
 - Id: 100130
   AegisName: Grace_Rifine_Ticket
   Name: Grace Refine Ticket
   Type: Usable
   Weight: 0
+  EquipLevelMin: 150
   NoDrop: true
 - Id: 100131
   AegisName: Imperial_Convert1
   Name: Imperial Physical Modification Permit (Garment)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 125
   NoDrop: true
 - Id: 100132
   AegisName: Imperial_Convert2
   Name: Imperial Magical Modification Permit (Garment)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 125
   NoDrop: true
 - Id: 100133
   AegisName: Grace_Convert1
   Name: Grace Physical Modification Permit (Garment)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 150
   NoDrop: true
 - Id: 100134
   AegisName: Grace_Convert2
   Name: Grace Magical Modification Permit (Garment)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 150
   NoDrop: true
 - Id: 100135
   AegisName: Imperial_Convert3
   Name: Imperial Physical Modification Permit (Armor)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 125
   NoDrop: true
 - Id: 100136
   AegisName: Imperial_Convert4
   Name: Imperial Magical Modification Permit (Armor)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 125
   NoDrop: true
 - Id: 100137
   AegisName: Grace_Convert3
   Name: Grace Physical Modification Permit (Armor)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 150
   NoDrop: true
 - Id: 100138
   AegisName: Grace_Convert4
   Name: Grace Magical Modification Permit (Armor)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 150
   NoDrop: true
 - Id: 100142
   AegisName: Abyss_Ddbox2
@@ -27625,6 +27906,12 @@ Body:
   Name: Mado Strengthening Suit
   Type: Usable
   Weight: 300
+  EquipLevelMin: 100
+  Jobs:
+  - 0
+  - 32
+  - 0
+  Classes: 120
 - Id: 100160
   AegisName: Auto_M_Box
   Name: Automatic Module Box
@@ -28055,12 +28342,14 @@ Body:
   Name: Booster Pack(190)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 190
   NoDrop: true
 - Id: 100336
   AegisName: Booster_Pack_200
   Name: Booster Pack(200)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 200
   NoDrop: true
 - Id: 100337
   AegisName: Booster_Call
@@ -28085,42 +28374,51 @@ Body:
   Name: Booster Weapon Upgrade Package
   Type: Usable
   Weight: 0
+  EquipLevelMin: 100
   NoDrop: true
 - Id: 100341
   AegisName: E_ILL_Up
   Name: Illusion (Bound) Upgrade Package
   Type: Usable
   Weight: 0
+  EquipLevelMin: 130
   NoDrop: true
 - Id: 100342
   AegisName: Exp_Up_1
   Name: Growth Potion (Small)
   Type: Usable
   Weight: 0
+  EquipLevelMax: 50
   NoDrop: true
 - Id: 100343
   AegisName: Exp_Up_2
   Name: Growth Potion (Medium)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 50
+  EquipLevelMax: 100
   NoDrop: true
 - Id: 100344
   AegisName: Exp_Up_3
   Name: Growth Potion (Advanced)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 100
+  EquipLevelMax: 160
   NoDrop: true
 - Id: 100345
   AegisName: Exp_Up_4
   Name: Growth Potion(Superior)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 160
   NoDrop: true
 - Id: 100346
   AegisName: Jexp_Up_1
   Name: Job Potion (Small)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 100347
   AegisName: 2020_Goal_Gift_Box
@@ -28552,6 +28850,7 @@ Body:
   Name: Purified Growth Elixier
   Type: Usable
   Weight: 0
+  EquipLevelMin: 200
   NoDrop: true
 - Id: 100462
   AegisName: MD_Airboat_Reward
@@ -28691,24 +28990,31 @@ Body:
   Name: Special Growth Potion (Lower)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 35
+  EquipLevelMax: 50
   NoDrop: true
 - Id: 100509
   AegisName: Exp_Up_2_S
   Name: Special Growth Potion (Intermediate)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 85
+  EquipLevelMax: 99
   NoDrop: true
 - Id: 100510
   AegisName: Exp_Up_3_S
   Name: Special Growth Potion (Advanced)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 130
+  EquipLevelMax: 160
   NoDrop: true
 - Id: 100511
   AegisName: Exp_Up_4_S
   Name: Special Growth Potion (Superior)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 175
   NoDrop: true
 - Id: 100512
   AegisName: Ex_Skill_Shadow_Cube
@@ -28967,21 +29273,25 @@ Body:
   Name: Pontifex Courage
   Type: Usable
   Weight: 10
+  EquipLevelMin: 180
 - Id: 100651
   AegisName: Pontifex_Wisdom
   Name: Pontifex Wisdom
   Type: Usable
   Weight: 10
+  EquipLevelMin: 180
 - Id: 100652
   AegisName: Pontifex_Tenacity
   Name: Pontifex Tenacity
   Type: Usable
   Weight: 10
+  EquipLevelMin: 180
 - Id: 100653
   AegisName: Pontifex_Belief
   Name: Pontifex Belief
   Type: Usable
   Weight: 10
+  EquipLevelMin: 180
 - Id: 100655
   AegisName: Blue_Prints_Scroll
   Name: Cleansing Blueprint Bundle
@@ -29084,12 +29394,14 @@ Body:
   Name: Booster Pack(215)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 215
   NoDrop: true
 - Id: 100727
   AegisName: Booster_Pack_230
   Name: Booster Pack(230)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 230
   NoDrop: true
 - Id: 100728
   AegisName: AngelPoringJewel_Box
@@ -29249,6 +29561,7 @@ Body:
   Name: Soy Sauce Bibim Noodles
   Type: Usable
   Weight: 0
+  EquipLevelMin: 200
   NoDrop: true
 - Id: 100834
   AegisName: Hero_Weapon_Up_Box_3
@@ -30368,12 +30681,14 @@ Body:
   Name: Booster Pack(120)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 120
   NoDrop: true
 - Id: 101236
   AegisName: Booster_Pack_150
   Name: Booster Pack(150)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 150
   NoDrop: true
 - Id: 101238
   AegisName: E_EXP_Drop_Up_7days
@@ -30670,12 +30985,14 @@ Body:
   Name: Boost Armor Box
   Type: Usable
   Weight: 0
+  EquipLevelMin: 100
   NoDrop: true
 - Id: 101453
   AegisName: Special_Coin_Pack
   Name: Special Coin Pack
   Type: Usable
   Weight: 0
+  EquipLevelMin: 200
   NoDrop: true
 - Id: 101454
   AegisName: Metal_W_Box
@@ -30688,6 +31005,7 @@ Body:
   Name: Automatic (bound) upgrade package
   Type: Usable
   Weight: 0
+  EquipLevelMin: 160
   NoDrop: true
 - Id: 101456
   AegisName: Memento_Box
@@ -30785,84 +31103,98 @@ Body:
   Name: Booster Pack(10)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 10
   NoDrop: true
 - Id: 101491
   AegisName: Booster_Pack_20
   Name: Booster Pack(20)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 20
   NoDrop: true
 - Id: 101492
   AegisName: Booster_Pack_40
   Name: Booster Pack(40)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 40
   NoDrop: true
 - Id: 101493
   AegisName: Booster_Pack_50
   Name: Booster Pack(50)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 50
   NoDrop: true
 - Id: 101494
   AegisName: Booster_Pack_70
   Name: Booster Pack(70)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 70
   NoDrop: true
 - Id: 101495
   AegisName: Booster_Pack_80
   Name: Booster Pack (80)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 80
   NoDrop: true
 - Id: 101496
   AegisName: Booster_Pack_110
   Name: Booster Pack(110)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 110
   NoDrop: true
 - Id: 101497
   AegisName: Booster_Pack_140
   Name: Booster Pack(140)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 140
   NoDrop: true
 - Id: 101498
   AegisName: Booster_Pack_170
   Name: Booster Pack(170)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 170
   NoDrop: true
 - Id: 101499
   AegisName: Booster_Pack_180
   Name: Booster Pack (180)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 180
   NoDrop: true
 - Id: 101500
   AegisName: Booster_Pack_210
   Name: Booster Pack(210)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 210
   NoDrop: true
 - Id: 101501
   AegisName: Booster_Pack_220
   Name: Booster Pack(220)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 220
   NoDrop: true
 - Id: 101502
   AegisName: Booster_Pack_240
   Name: Booster Pack(240)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 240
   NoDrop: true
 - Id: 101503
   AegisName: Booster_Pack_250
   Name: Booster Pack (250)
   Type: Usable
   Weight: 0
+  EquipLevelMin: 250
   NoDrop: true
 - Id: 101512
   AegisName: Hero_Weapon_Box_TH1
@@ -30908,6 +31240,7 @@ Body:
   Name: Booster box
   Type: Usable
   Weight: 0
+  EquipLevelMax: 10
   NoDrop: true
 - Id: 101542
   AegisName: FullPene_Select_Box
@@ -32172,6 +32505,7 @@ Body:
   Name: Voitata Hat Recipe
   Type: Usable
   Weight: 10
+  EquipLevelMin: 240
 - Id: 102306
   AegisName: 2023_Spring_Select
   Name: 2023 Spring Reward Outfit Selection Box
@@ -32189,16 +32523,19 @@ Body:
   Name: Beelzebub's Crown Recipe
   Type: Usable
   Weight: 10
+  EquipLevelMin: 240
 - Id: 102310
   AegisName: Bs_Item_M_S_62
   Name: Vesper Headgear Recipe
   Type: Usable
   Weight: 10
+  EquipLevelMin: 240
 - Id: 102311
   AegisName: Bs_Item_M_S_63
   Name: Moan of Corruption Recipe
   Type: Usable
   Weight: 10
+  EquipLevelMin: 240
 - Id: 102332
   AegisName: Enchant_Stone_Box31
   Name: Costume Enchant Stone Box 31
@@ -32634,6 +32971,7 @@ Body:
   Name: Dimensions Weapon Refinement Device
   Type: Usable
   Weight: 200
+  EquipLevelMin: 250
   DropEffect: 1
 - Id: 102676
   AegisName: Loki_Coin_4
@@ -32856,18 +33194,21 @@ Body:
   Name: +9 Gaebolg Equipment Refine Hammer
   Type: Usable
   Weight: 100
+  EquipLevelMin: 245
   NoDrop: true
 - Id: 102882
   AegisName: Gaebolg_A_Hammer_2
   Name: +10 Gaebolg Equipment Refine Hammer
   Type: Usable
   Weight: 100
+  EquipLevelMin: 245
   NoDrop: true
 - Id: 102883
   AegisName: Gaebolg_A_Hammer_3
   Name: +11 Gaebolg Equipment Refine Hammer
   Type: Usable
   Weight: 100
+  EquipLevelMin: 245
   NoDrop: true
 - Id: 102900
   AegisName: Refine_Furious
@@ -32961,6 +33302,7 @@ Body:
   Name: "[Not For Sale] Premium Booster Box"
   Type: Usable
   Weight: 0
+  EquipLevelMax: 10
   NoDrop: true
 - Id: 103049
   AegisName: P_Compensation_Box
@@ -33193,6 +33535,7 @@ Body:
   Name: Time Gap Refine Hammer
   Type: Usable
   Weight: 10
+  EquipLevelMin: 250
 - Id: 103309
   AegisName: Reform_4th_Skill_Shadow
   Name: 4th Class Jobs Skills Random Option Grant Cube
@@ -33979,24 +34322,28 @@ Body:
   Name: Immortal Magic Box
   Type: Usable
   Weight: 100
+  EquipLevelMin: 200
   NoDrop: true
 - Id: 104007
   AegisName: Ch1_MD_Reward_2
   Name: Superior Immortal Magic Box
   Type: Usable
   Weight: 100
+  EquipLevelMin: 200
   NoDrop: true
 - Id: 104008
   AegisName: Ch1_MD_Reward_3
   Name: Supreme Immortal Magic Box
   Type: Usable
   Weight: 100
+  EquipLevelMin: 200
   NoDrop: true
 - Id: 104009
   AegisName: Ch1_MD_Reward_4
   Name: Extra Superior Immortal Magic Box
   Type: Usable
   Weight: 100
+  EquipLevelMin: 200
   NoDrop: true
 - Id: 104174
   AegisName: Hanmac_Collabo_1
@@ -34502,108 +34849,129 @@ Body:
   Name: Tangled Singularity
   Type: Usable
   Weight: 100
+  EquipLevelMin: 260
   DropEffect: 1
 - Id: 105162
   AegisName: aegis_105162
   Name: Boundary Singularity
   Type: Usable
   Weight: 100
+  EquipLevelMin: 270
   DropEffect: 1
 - Id: 105163
   AegisName: Fron_Fix_DK_T_Sword
   Name: Boundary Tuning (Frontier Dragon Sword)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105164
   AegisName: Fron_Fix_IG_Spear
   Name: Boundary Tuning (Frontier Imperial Spear)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105165
   AegisName: Fron_Fix_MT_T_Axe
   Name: Boundary Tuning (Frontier Mechanical Axe)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105166
   AegisName: Fron_Fix_BO_Hall
   Name: Boundary Tuning (Frontier Biological Hall)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105167
   AegisName: Fron_Fix_SHC_Katar
   Name: Boundary Tuning (Frontier Shadow Katar)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105168
   AegisName: Fron_Fix_ABC_Dagger
   Name: Boundary Tuning (Frontier Abyss Dagger)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105169
   AegisName: Fron_Fix_AG_Staff
   Name: Boundary Tuning (Frontier Arc Staff)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105170
   AegisName: Fron_Fix_EM_Book
   Name: Boundary Tuning (Frontier Elemental Book)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105171
   AegisName: Fron_Fix_CD_Rod
   Name: Boundary Tuning (Frontier Saint Lord)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105172
   AegisName: Fron_Fix_IQ_Claw
   Name: Boundary Tuning (Frontier Judgment Claw)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105173
   AegisName: Fron_Fix_WH_Bow
   Name: Boundary Tuning (Frontier Wind Bow)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105174
   AegisName: Fron_Fix_TR_Vilolin
   Name: Boundary Tuning (Frontier Musical Violin)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105175
   AegisName: Fron_Fix_TR_Rope
   Name: Tuning of the Boundary (Frontier Musical Rope)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105176
   AegisName: Fron_Fix_SS_Humma
   Name: Tuning of the Boundary (Frontier Moonlight Fuma S
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105177
   AegisName: Fron_Fix_NW_Rifle
   Name: Tuning of the Boundary (Frontier Knight Rifle)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105178
   AegisName: Fron_Fix_SKE_Book
   Name: Tuning of the Boundary (Frontier Emperor Battle B
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105179
   AegisName: Fron_Fix_SOA_Staff
   Name: Tuning of the Boundary (Frontier Soul Staff)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105180
   AegisName: Fron_Fix_HN_Rod
   Name: Tuning of the Boundary (Frontier Hyper Rod)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105181
   AegisName: Fron_Fix_SH_Foxtail
   Name: Tuning of the Boundary (Frontier Spirit Foxtail)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
 - Id: 105219
   AegisName: aegis_105219
   Name: "[A] Wrathful Two-Handed Dagger Box"
@@ -34631,48 +34999,56 @@ Body:
   Name: Tuning of the Dimension (Faceworm Queen's Horn)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
   DropEffect: 1
 - Id: 105416
   AegisName: A_DM_Fix_IG_Spear
   Name: Dimensional Tuning (Ispetar)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
   DropEffect: 1
 - Id: 105417
   AegisName: A_DM_Fix_ABC_Bow
   Name: Dimensional Tuning (Baregun Crossbow)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
   DropEffect: 1
 - Id: 105418
   AegisName: A_DM_Fix_BO_Sword
   Name: Second-Dimensional Tuning (Falx)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
   DropEffect: 1
 - Id: 105419
   AegisName: A_DM_Fix_AG_T_Staff
   Name: Second-Dimensional Tuning (Wepawet)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
   DropEffect: 1
 - Id: 105420
   AegisName: A_DM_Fix_EM_Book
   Name: Second-Dimensional Tuning (Elemental Spirits)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
   DropEffect: 1
 - Id: 105421
   AegisName: A_DM_Fix_NW_Launcher
   Name: Second-Dimensional Tuning (Agent Launcher)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
   DropEffect: 1
 - Id: 105422
   AegisName: A_DM_Fix_SKE_Book
   Name: Second-Dimensional Tuning (Book of the Red Moon)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
   DropEffect: 1
 - Id: 105488
   AegisName: All_In_One_Healing_E
@@ -34918,36 +35294,42 @@ Body:
   Name: Second Dimensional Tuning (Submarine Anchor)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
   DropEffect: 1
 - Id: 105686
   AegisName: A_DM_Fix_SHC_Katar
   Name: Second Dimensional Tuning (Vida Noctorno)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
   DropEffect: 1
 - Id: 105687
   AegisName: A_DM_Fix_CD_Book
   Name: Second Dimensional Tuning (Judgment Day)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
   DropEffect: 1
 - Id: 105688
   AegisName: A_DM_Fix_TR_Violin
   Name: Second Dimensional Tuning (Geigg)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
   DropEffect: 1
 - Id: 105689
   AegisName: A_DM_Fix_TR_Whip
   Name: Second Dimensional Tuning (Needle Whip)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
   DropEffect: 1
 - Id: 105690
   AegisName: A_DM_Fix_HN_Mace
   Name: Second Dimensional Tuning (Jack O'Rush)
   Type: Usable
   Weight: 50
+  EquipLevelMin: 265
   DropEffect: 1
 - Id: 105715
   AegisName: aegis_105715
@@ -35014,6 +35396,7 @@ Body:
   Name: Divine Box
   Type: Usable
   Weight: 500
+  EquipLevelMin: 250
   DropEffect: 1
 - Id: 105927
   AegisName: Select_Costume_DEC_1
@@ -36704,21 +37087,25 @@ Body:
   Name: Concentrated Red Potion
   Type: Healing
   Weight: 2
+  EquipLevelMin: 120
 - Id: 1100004
   AegisName: Concentrated_B_P
   Name: Concentrated Blue Potion
   Type: Healing
   Weight: 2
+  EquipLevelMin: 120
 - Id: 1100005
   AegisName: Concentrated_G_P
   Name: Concentrated Gold Potion
   Type: Healing
   Weight: 2
+  EquipLevelMin: 180
 - Id: 1100006
   AegisName: Ep19_Dry_Icegangu
   Name: Dried Ice Gangu
   Type: Healing
   Weight: 5
+  EquipLevelMin: 200
 - Id: 1100007
   AegisName: Fried_Sausage
   Name: Roasted sausages
@@ -36735,72 +37122,84 @@ Body:
   Name: Southern Style Roast Pork with Rice Bowl
   Type: Healing
   Weight: 30
+  EquipLevelMin: 180
   NoDrop: true
 - Id: 1100010
   AegisName: Poring_Kombucha
   Name: Poring Kombucha
   Type: Healing
   Weight: 5
+  EquipLevelMin: 180
   NoDrop: true
 - Id: 1100011
   AegisName: Monster_Bread
   Name: Monster Bread
   Type: Healing
   Weight: 3
+  EquipLevelMin: 180
   NoDrop: true
 - Id: 1100012
   AegisName: Monster_Bread_
   Name: Forbidden Monster Bread
   Type: Healing
   Weight: 3
+  EquipLevelMin: 180
   NoDrop: true
 - Id: 1100013
   AegisName: South_Pork_Slice
   Name: Southern Style Pork Head Meat
   Type: Healing
   Weight: 20
+  EquipLevelMin: 120
   NoDrop: true
 - Id: 1100014
   AegisName: Grilled_Fish
   Name: Fire-grilled Fish
   Type: Healing
   Weight: 2
+  EquipLevelMin: 60
   NoDrop: true
 - Id: 1100015
   AegisName: Grilled_Veg_Skewers_
   Name: Fire-grilled Suspicious Skewers
   Type: Healing
   Weight: 10
+  EquipLevelMin: 60
   NoDrop: true
 - Id: 1100016
   AegisName: Night_M_Ice_Flakes
   Name: Night Market Bingsu
   Type: Healing
   Weight: 3
+  EquipLevelMin: 120
   NoDrop: true
 - Id: 1100017
   AegisName: Night_M_Ice_Cream
   Name: Night Market Ice Cream
   Type: Healing
   Weight: 2
+  EquipLevelMin: 120
   NoDrop: true
 - Id: 1100018
   AegisName: Night_M_Cotton_Candy
   Name: Night Market Cotton Candy
   Type: Healing
   Weight: 2
+  EquipLevelMin: 120
   NoDrop: true
 - Id: 1100019
   AegisName: Grilled_Veg_Skewers
   Name: Fire-grilled Vegetable Skewers
   Type: Healing
   Weight: 1
+  EquipLevelMin: 60
   NoDrop: true
 - Id: 1100020
   AegisName: Grilled_Hm_Sausage
   Name: Fire-grilled Homemade Sausage
   Type: Healing
   Weight: 1
+  EquipLevelMin: 60
   NoDrop: true
 - Id: 1100021
   AegisName: 2403_ev_Berry_Cup
@@ -36813,6 +37212,7 @@ Body:
   Name: Moist Macaron
   Type: Healing
   Weight: 1
+  EquipLevelMin: 60
   NoDrop: true
 - Id: 1100027
   AegisName: 2501_ev_Matjalal
@@ -36834,24 +37234,28 @@ Body:
   Name: Hanmac Triple Cheese Burger
   Type: Healing
   Weight: 1
+  EquipLevelMin: 200
   NoDrop: true
 - Id: 1100033
   AegisName: CLB_HM_Pizzalio
   Name: Hanmac Pizzario Burger
   Type: Healing
   Weight: 1
+  EquipLevelMin: 100
   NoDrop: true
 - Id: 1100034
   AegisName: CLB_HM_PC_Yangnyeom
   Name: Pocket Chicken Seasoning
   Type: Healing
   Weight: 1
+  EquipLevelMin: 200
   NoDrop: true
 - Id: 1100035
   AegisName: CLB_HM_PC_Hot_Fried
   Name: Pocket Chicken Hot Fries
   Type: Healing
   Weight: 1
+  EquipLevelMin: 100
   NoDrop: true
 - Id: 1100036
   AegisName: aegis_1100036
