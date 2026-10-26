@@ -58,6 +58,7 @@ impl PacketOpcode {
     pub const CZ_REQ_NEXT_SCRIPT: Self = Self(0x00b9);
     pub const CZ_REQ_STATUS: Self = Self(0x00ba);
     pub const CZ_STATUS_CHANGE: Self = Self(0x00bb);
+    pub const ZC_STATUS_CHANGE_ACK: Self = Self(0x00bc);
     pub const ZC_STATUS: Self = Self(0x00bd);
     pub const ZC_STATUS_CHANGE: Self = Self(0x00be);
     pub const CZ_REQ_EMOTION: Self = Self(0x00bf);
@@ -1079,6 +1080,7 @@ impl PacketOpcode {
             0x00b9 => Some("CZ_REQ_NEXT_SCRIPT"),
             0x00ba => Some("CZ_REQ_STATUS"),
             0x00bb => Some("CZ_STATUS_CHANGE"),
+            0x00bc => Some("ZC_STATUS_CHANGE_ACK"),
             0x00bd => Some("ZC_STATUS"),
             0x00be => Some("ZC_STATUS_CHANGE"),
             0x00bf => Some("CZ_REQ_EMOTION"),

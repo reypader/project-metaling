@@ -76,6 +76,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x00b9 => Some(Fixed(6)),
         0x00ba => Some(Fixed(2)),
         0x00bb => Some(Fixed(5)),
+        0x00bc => Some(Fixed(6)),  // ZC_STATUS_CHANGE_ACK (specs/stats)
         0x00bd => Some(Fixed(44)), // ZC_STATUS (specs/map-entry-settings)
         0x00be => Some(Fixed(5)),  // ZC_STATUS_CHANGE
         0x00bf => Some(Fixed(3)),

@@ -926,3 +926,21 @@ fn pf21_capture_3_rows() {
     }
     assert_eq!(len(0x00b4), Some(PacketLength::Dynamic));
 }
+
+/// specs/stats: the stat-up request and its ack must frame, or a stat-up capture misframes.
+#[test]
+fn stats_stat_up_rows() {
+    use ro_packets::{PacketLength, PacketLengthTable};
+    let len =
+        |op| RathenaPacketLengthTable.packet_length(PacketOpcode(op), ro_core::TARGET_PACKETVER);
+    assert_eq!(
+        len(0x00bb),
+        Some(PacketLength::Fixed(5)),
+        "CZ_STATUS_CHANGE"
+    );
+    assert_eq!(
+        len(0x00bc),
+        Some(PacketLength::Fixed(6)),
+        "ZC_STATUS_CHANGE_ACK"
+    );
+}
