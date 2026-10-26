@@ -14,7 +14,7 @@ Spec: `specs/stats/spec.md`. Design: `crates/ro-engine/DESIGN.md` §5 (revised t
 | Status effects (future) | Data-driven registry in our own format (DESIGN.md §10), Rust hooks only for odd cases. |
 | Config knobs | Typed `BattleConfig` in `ro-mechanics`, our own YAML (`config/battle.yml`), rAthena **shipped** defaults, `BATTLE_CONFIG` env var. |
 | GM commands | `@blvl`, `@jlvl`, `@job` (with the job gear re-check and force-unequip). |
-| *Planning defaults (user may revisit)* | Stat-up refused while dead (rAthena doesn't check). Our own message wording for the GM commands. `@job` skips the skill tree, option stripping, trans/trait point grants (spec §5). ~~Stat-up and level pushes come after the acks at tick end~~ **superseded 2026-10-26 by the capture:** flows queue their trailing pushes as Stage 4 follow-ups, so the wire order matches rAthena (spec §2.1 "Follow-up queue"). |
+| *Planning defaults (user may revisit)* | Stat-up refused while dead (rAthena doesn't check). Our own message wording for the GM commands. `@job` skips the skill tree, option stripping, trans/trait point grants (spec §5). ~~Stat-up and level pushes come after the acks at tick end~~ **superseded 2026-10-26 by the capture, confirmed by the user the same day:** flows queue their trailing pushes as Stage 4 follow-ups, so the wire order matches rAthena (spec §2.1 "Follow-up queue"). M3 must also flush or drop a player's queue when they leave the map or disconnect in the same tick. |
 
 ## Notes for the implementer
 
