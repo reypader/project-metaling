@@ -14,15 +14,39 @@ Spec: `specs/stats/spec.md`. Design: `crates/ro-engine/DESIGN.md` §5 (revised t
 | Status effects (future) | Data-driven registry in our own format (DESIGN.md §10), Rust hooks only for odd cases. |
 | Config knobs | Typed `BattleConfig` in `ro-mechanics`, our own YAML (`config/battle.yml`), rAthena **shipped** defaults, `BATTLE_CONFIG` env var. |
 | GM commands | `@blvl`, `@jlvl`, `@job` (with the job gear re-check and force-unequip). |
-| *Planning defaults (user may revisit)* | Stat-up refused while dead (rAthena doesn't check). Our own message wording for the GM commands. `@job` skips the skill tree, option stripping, trans/trait point grants (spec §5). Stat-up and level pushes come after the acks at tick end, not inline (follows from the tick order). |
+| *Planning defaults (user may revisit)* | Stat-up refused while dead (rAthena doesn't check). Our own message wording for the GM commands. `@job` skips the skill tree, option stripping, trans/trait point grants (spec §5). ~~Stat-up and level pushes come after the acks at tick end~~ **superseded 2026-10-26 by the capture:** flows queue their trailing pushes as Stage 4 follow-ups, so the wire order matches rAthena (spec §2.1 "Follow-up queue"). |
 
 ## Notes for the implementer
 
 ### Git state at hand-off
-- M0 (DESIGN.md, catalog, this spec and plan) is committed on its own as "Stats: M0 design, catalog, spec and plan" (CLAUDE.md allows M0 docs on their own). M1 onwards stays uncommitted until Finish; generated data may commit early (items precedent).
+- M0 (DESIGN.md, catalog, this spec and plan) is committed on its own as "Stats: M0 design, catalog, spec and plan" (`3e03ebb`; CLAUDE.md allows M0 docs on their own). M1 onwards stays uncommitted until Finish; generated data may commit early (items precedent).
+- **Pre-capture proxy fix (2026-10-25, after M0, uncommitted unless the user committed it to build the proxy elsewhere):** `0x00bc` `ZC_STATUS_CHANGE_ACK` Fixed(6) in `crates/ro-packets/src/table.rs`, its name in `opcode.rs`, and test `stats_stat_up_rows` in `tests/framing_tests.rs`. Without it a stat-up capture misframes. It counts as part of M4's table work. If it was committed separately, start the Finish reviewer diff from before that commit.
+
+### Captures (recorded 2026-10-26, processed in session A)
+`reference/catalog/captures/attribute_sequence.txt` is redacted (PIN, `0x008e`, `0x01c3`) and written up:
+- catalog `packets/status.md` "Captured stat-up, level and job sequences";
+- catalog `mechanics/stats.md` "Captured status values";
+- confirmation notes in `atcommands.md` and `job_change.md`;
+- an INDEX row and a captures README row.
+
+The spec was fixed where the capture disagreed. What it settled:
+- **Stat-up:** recalc diff first (`SP_MAXWEIGHT` before the stat's `0x0141` for STR), then `0x00be`, `SP_STATUSPOINT`, `0x00bc`. Over-affordable amounts raise as far as possible. No failure was captured: the client doesn't send one.
+- **`@blvl +n`:** diff, heal (`SP_HP`, `SP_SP`), `0x019b`, message, then `SP_STATUSPOINT`, `SP_TRAITPOINT`, `SP_BASELEVEL`, exp. **`@blvl −n`:** message, clamp pushes, diff, tail. The spec had the tail first; that was wrong.
+- **`@jlvl`:** up is effect, message, pushes, diff; down is message, pushes, clamp, diff.
+- **`@job`:**
+  - `0x010f` **is** re-sent (after the looks). The spec now does that; it is cheap.
+  - A forced unequip of a two-hander sends `LOOK_WEAPON` twice, then `0x099a`, right after the job-level pushes.
+  - The trans ±52 and trait +7 grants, and the stat resets they trigger, were captured but stay out of scope.
+- **Recalc details:**
+  - A clamped HP/SP is pushed before the diff and again in it.
+  - The diff compares internal units, so LUK re-sends `FLEE2`/`CRITICAL`.
+- **Values:** Novice B1 with Knife + Cotton Shirt (amotion **590**, not the bare-hand 440), Novice B11/J10, Bard B99, Swordman, Knight. Also ASPD steps, shield +50, Blade/Guard +6 refine. They are MECH-01..04 vectors, and ENG-STAT-11 checks them against the shipped data.
+- **Not captured** (an observer, the `@blvl −n` reset, `elvmax`, a stat-up failure): listed in spec §5.
+- **Left open on purpose:** a Knight wearing a katar (can't use it) shows amotion **1250**. The catalog's "unlisted weapon = base 200" predicts 2040. It only shows up because rAthena recalcs before the forced unequip. Our single recalc runs after it, so the engine never computes ASPD for an unusable weapon.
+- **4th-class HP/SP confirmed:** `@job 4254` in the capture is **Shadow Cross** (not Dragon Knight). Its MaxHP/MaxSP at two VIT/INT values match the catalog fallback formula with ×1.25 exactly (catalog stats.md "4th-class MaxHP/MaxSP"). A stopped explorer noted that Dragon_Knight *does* have `job_basepoints` rows. Check catalog `db/job_stats.md`'s "4th classes have no tables" against the import report in M1.
 
 ### Catalog facts gathered in M0 (all written into the catalog)
-- `mechanics/battle_config.md` (new): every knob the formulas read, conf file + line, default, read site. **Shipped conf values differ from compiled defaults** for `max_sp` (1000000 vs 32500), `max_ap`, and the 3rd/4th/extended/summoner/baby-3rd `max_*_parameter` (shipped 130/130/130/130/130/117). Use shipped. `natural_heal_weight_rate` is commented out in the conf, so the compiled 70 applies. ASPD caps convert `(2000 − aspd×10)×2` at load; clamp `amotion ≥ cap/2`. Max-param selection order: baby-third, baby, summoner, extended, 4th (trait), third-trans, third, trans, default. The per-job `MaxStats` overrides would win, but it's empty in the DB. `start_status_points` lives in `inter_athena.conf`. `atcommand_max_stat_bypass` doesn't exist (group permission `bypass_max_stat`). `critical_rate` is skipped for players. Open: whether 4th classes carry the third-class flag for `pc_maxaspd`. If not, they cap at 190.
+- `mechanics/battle_config.md` (new): every knob the formulas read, conf file + line, default, read site. **Shipped conf values differ from compiled defaults** for `max_sp` (1000000 vs 32500), `max_ap`, and the 3rd/4th/extended/summoner/baby-3rd `max_*_parameter` (shipped 130/130/130/130/130/117). Use shipped. `natural_heal_weight_rate` is commented out in the conf, so the compiled 70 applies. ASPD caps convert `(2000 − aspd×10)×2` at load; clamp `amotion ≥ cap/2`. Max-param selection order: baby-third, baby, summoner, extended, 4th (trait), third-trans, third, trans, default. The per-job `MaxStats` overrides would win, but it's empty in the DB. `start_status_points` lives in `inter_athena.conf`. `atcommand_max_stat_bypass` doesn't exist (group permission `bypass_max_stat`). `critical_rate` is skipped for players. ~~Open: whether 4th classes carry the third-class flag~~ settled by the capture: they do (193 cap).
 - `db/refine.md` (new) + `mechanics/stats.md` "Refine bonuses": `Bonus`/`RandomBonus` are 1/100 units and **cumulative per level** (the +N entry is the whole bonus). MAX_REFINE 20. No bonus unless `Refineable` and refine > 0. Weapon `atk2 += Bonus/100`; weapon MATK `+= Bonus/100` except bows; armor `refinedef += Bonus` over **every worn Armor-type item, any location**, then once `def += (refinedef + 50)/100` (rounded on the sum). Overrefine `= RandomBonus/100`, used only in damage. Shadow groups have no bonus. Grade bonus only for weapon level 5 / armor level 2 (deferred; its `enchantgrade − 1` indexing is flagged unverified). The captured +10 values match.
 - `mechanics/atcommands.md` "@baselevelup / @joblevelup": spec §2.5 is a faithful summary. Note the `elvmax` check runs on level down too (harmless), there is **no heal or effect on level down**, and points are removed after an optional `pc_resetstate` *before* the decrement (status points = table at the **old** level).
 - `mechanics/job_change.md` (new): the 22-step `pc_jobchange`; spec §2.6 keeps steps 5–7, 9, 11, 12, 14, 19–20 and the save. **Correction made in M0:** the explorer first wrote the skill list as `0x0b32`. The login capture and `packets/settings.md` show `0x010f` (the `0x0b32` gate is false for our client); job_change.md and INDEX.md were fixed.
@@ -79,19 +103,38 @@ Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
   - `metaling-explorer` ×4: `mechanics/job_change.md`, `atcommands.md` "@baselevelup / @joblevelup", `db/refine.md` + stats "Refine bonuses", `mechanics/battle_config.md`; INDEX rows. Fixed the `0x0b32` → `0x010f` error.
   - `crates/ro-engine/DESIGN.md`: §2 Tier 2 columns, §3.1 bitflags row, §5 tick order rewritten, §6 speed accessor, §7/§8 stage refs, §1a "not implemented", new §9 (stats), §10 (status effects), §11 (damage).
   - This spec and plan. Committed on their own. **User checkpoint.**
-- [ ] **M1 data: job and refine importers, ro-db registries** *(session A)*
+- [x] **M1 data: job and refine importers, ro-db registries** *(session A, done 2026-10-26)*
+  - Done: `tools/job-import`, `tools/refine-import`, `ro_db::{JobDb, Job, JobBonus, RefineDb, RefineGroup, RefineBonus}`, data in `crates/ro-db/data/{job,refine}/`, NOTICE sections, ro-db DESIGN.md.
+  - Import result: 148 jobs. 27 mounted/dummy names skipped (`Knight2`, ...). 72 jobs fallback-filled: every 4th class (all 275 levels), 3rd classes at 1-98, and Gangsi/Death Knight/Dark Collector. The special-case jobs (Super Novice, Summoner, Ninja, Gunslinger) have full tables.
+  - **Caveat:** Hyper Novice (4307) is fallback-filled. rAthena's Super Novice HP adjustments might apply to it too; unverified. Note it in DEFERRED at Finish.
+  - Data API for M3: `Job::bonus(job_level) -> JobBonus` (cumulative, 12 stats), `base_hp/base_sp(base_level)`, `aspd_base(WeaponType)` (200 if unlisted), `shield_aspd()`, `max_weight`, `max_base_level`, `max_job_level`. Also `JobDb::status_points(base_level)` and `RefineDb::bonus(group, item_level, refine) -> {bonus, random_bonus}` (1/100 units, cumulative).
   - `tools/job-import`: merge the five renewal files per catalog `db/job_stats.md` (later key wins; defaults), the `e_job` name/id table, fallback-fill the HP/SP tables, keep `BonusStats` sparse, drop outfits, AP and exp tables; `statpoint.yml` with `Points` only. Header + attribution, `NOTICE.md` section.
   - `tools/refine-import`: Armor 1–2, Weapon 1–5, `Bonus`/`RandomBonus` per refine 1–20.
-  - `ro-db`: `JobDb` (accumulate `BonusStats` into per-job-level rows at load; lookups by id and by case-insensitive name), `RefineDb`. DB-JOB-01..04, DB-REF-01. `crates/ro-db/DESIGN.md`.
+  - `ro-db`: `JobDb` (accumulate `BonusStats` into per-job-level rows at load; lookups by id and by case-insensitive name), `RefineDb`. DB-JOB-01..05, DB-REF-01. `crates/ro-db/DESIGN.md`.
   - Generate `crates/ro-db/data/{job,refine}/` (may be its own commit, like the items data).
-- [ ] **M2 `ro-mechanics` formulas** *(session A)*
+- [x] **M2 `ro-mechanics` formulas** *(session A, done 2026-10-26)*
+  - Done: `ro_mechanics::{calc_status, StatusInputs, JobRow, GearInput, HandInput, RefineInput, WeaponClass, Primary, Status, ClassFlags, BattleConfig, BonusSlot, BonusTotals, stat_cost, next_stat_cost, raise_stat, StatRaise}`, plus `config/battle.yml` (every default written out). The crate depends only on `serde`; `serde-saphyr` is a dev-dependency, so the map-server parses `BATTLE_CONFIG` itself (M6). `ro-engine` now depends on `ro-mechanics`, unused until M3.
+  - Tests: MECH-01..06 (18) with the captured windows: Novice B1/B11/J10/B6, Swordman B37, Knight B99, Bard B99, Shadow Cross and Lord/Rune Knight MaxHP. Mutation-checked: dropping the 4th-class ×1.25 or integer soft DEF fails them.
+  - **Mapping notes for M3** (the engine builds the inputs):
+    - `JobRow.bonus` = `Job::bonus(job_level)` (first six fields).
+    - `GearInput.right` is the right-hand weapon, with a two-hander on `HAND_L` counting here (the `hands()` fix). Bare hands: `HandInput::bare(job.aspd_base(Fist))`.
+    - `left` only for a *different* second weapon (dual wield).
+    - `shield` = a shield is worn (ASPD adds `job.shield_aspd()`).
+    - `WeaponClass` from `WeaponType`: Katar → `Katar`; Bow → `Bow`; Musical, Whip, Revolver, Rifle, Gatling, Shotgun, Grenade → `Ranged`; other weapons → `Melee`.
+    - `HandInput.refine` = `RefineDb::bonus(Weapon, item.weapon_level, refine)` for `Refineable` items, else zero. `armor_refine` = Σ `RefineDb::bonus(Armor, armor_level, refine).bonus` over worn Armor-type `Refineable` items.
+    - `item_def` = Σ item `Defense` (the existing `gear_status` loop). `range` = the existing gear range (bare 1).
+    - `ClassFlags` from the mapid: `upper` = `JOBL_UPPER`, `baby` = `JOBL_BABY`, `third` = `JOBL_THIRD`, `fourth` = `JOBL_FOURTH`, `trait_job` = `pc_is_trait_job`: the 4th classes, probably also the expanded 4th lines without the `JOBL_FOURTH` bit (Night Watch, Shinkiro/Shiranui, Spirit Handler). **Unverified:** check the exact set in the catalog first, or ask `metaling-explorer`. `summoner` = Summoner line; `extended` = Kagerou/Oboro/Rebellion lines (second mask `0x109` / `0x108`).
+    - Stat cap = `BattleConfig::max_stat(&class)`. `0x00be`/`0x00bd` cost = `next_stat_cost(stat, cap)` (replaces `status.rs` `stat_raise_cost`).
+  - `Status` is the new snapshot. Push values: `SP_ATK1` batk, `SP_ATK2` watk, `SP_MATK2` status_matk, `SP_MATK1` weapon_matk, `SP_DEF1` soft_def, `SP_DEF2` hard_def, `SP_MDEF1` soft_mdef, `SP_MDEF2` hard_mdef, `SP_FLEE2` `flee2_shown()`, `SP_CRITICAL` `critical_shown()`, `SP_ASPD` amotion. Diff on the raw `cri`/`flee2` (captured re-send).
   - Input view structs (no `ro-db` dependency), `BattleConfig` (serde, shipped defaults, ASPD conversion, max-param selection by a class-group enum the engine supplies), bonus-slot types (`BonusSlot`, `BonusTotals`) with zero sources, `calc_status` (base → battle primary → every secondary of spec §2.2), refine application, stat cost and cap. `config/battle.yml` with every default written out.
   - MECH-01..06. Add `ro-mechanics` deps (serde) and `ro-engine → ro-mechanics`.
+  - `Status` keeps `cri` and `flee2` in rAthena's 1/10 units (the diff compares them; the push divides by 10).
 - [ ] **M3 engine stat model and tick order** *(session B)*
   - `job_level` in `CharacterSpawn` and `PlayerInfo`; `GearStatus` per hand + the `hands()` fix; the `Status` snapshot replaces `DerivedStatus`; the dirty set; `recalc` → mark dirty; the recalc pass + Stage 4 follow-ups (clamp, heal-to-max hook) in `step_tick`; extended `derived_diff` (MAXHP/MAXSP/HP/SP, `0x0141` bonus); job-based max weight + `SP_MAXWEIGHT` push; login push / `0x00bd` real values; `0x0141` ×6 at a changemap actor init; synchronous compute at spawn and transfer arrival.
   - `set_registries` gains `JobDb`, `RefineDb`, `BattleConfig`.
   - Rewrite the equipment tests' push expectations to the single net diff (ENG-STAT-02).
-  - ENG-STAT-01..04, ENG-STAT-09, ENG-STAT-10. DESIGN.md §1a.
+  - The per-player **follow-up queue** (spec §2.1): typed entries (ready packet, heal-to-max, save request), drained in Stage 4 after that player's diff. The Stage 3 order is `SP_MAXWEIGHT`, clamp pushes, diff. M4 and M5 queue their trailing pushes here; this is how the captured orders come out. DESIGN.md §5 gets a line on it, and §9.6/§9.7 (which still say "clamps push from Stage 4" and "stat-up acks sent in the flow") change to the captured order.
+  - ENG-STAT-01..04, ENG-STAT-09, ENG-STAT-10, ENG-STAT-11 (shipped data reproduces the captured windows). DESIGN.md §1a.
   - **Early review?** Yes, one `reviewer` pass on M3 alone: later milestones build on the tick-order change and the shared status state in the map-server (CLAUDE.md's early-review rule).
 - [ ] **M4 stat-up** *(session C)*
   - ro-core `ClientIntent::RaiseStat`, `0x00bc` and `0x019b` events if missing; ro-packets `0x00bb` decoder, `0x00bc`/`0x019b` encoders (+ table rows). PKT-STAT-01.

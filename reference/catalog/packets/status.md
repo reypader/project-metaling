@@ -146,8 +146,9 @@ Rules worth copying:
 * Diff-based: an unchanged field sends nothing. Comparison is against the pre-call battle status.
 * The first calculation at login happens when the inventory table arrives from the char server (`intif.cpp:3505`: `status_calc_pc(SCO_FIRST|SCO_FORCE)`, then `status_calc_weight(CALCWT_ITEM|CALCWT_MAXBONUS)`), at which point `sd->prev` is null. The diff-push still runs against a zeroed snapshot, so (source reading, unverified by capture) HP/SP/MaxHP/MaxSP and all derived values are pushed before the client sends `0x007d`. Zeny, base/job level and the job/char identity fields the client already has from the character-select entry; `LoadEndAck` itself only (re)sends exp, skill points, `0x00bd` block (see below).
 * `SCO_FORCE` bypasses the "hold recalc while delayed damage is pending" queue (`status.cpp:6527-6537`).
-* HP/SP clamps: when `max_hp`/`max_sp` shrinks below current, HP/SP are clamped and `SP_HP`/`SP_SP` are pushed (`status.cpp:6198-6225`).
-* Weight is not part of this diff; `status_calc_weight` pushes `SP_WEIGHT` and `SP_MAXWEIGHT` itself only when they change (`status.cpp:3693-3697`), and `pc_additem`/`pc_delitem` push `SP_WEIGHT`.
+* HP/SP clamps: when `max_hp`/`max_sp` shrinks below current, HP/SP are clamped and `SP_HP`/`SP_SP` are pushed (`status.cpp:6198-6225`). **Captured:** the clamp push comes *before* the diff, and the diff sends the clamped field again after MAXHP/MAXSP (see [Captured sequences](#captured-stat-up-level-and-job-sequences)).
+* Weight is not part of this diff; `status_calc_weight` pushes `SP_WEIGHT` and `SP_MAXWEIGHT` itself only when they change (`status.cpp:3693-3697`), and `pc_additem`/`pc_delitem` push `SP_WEIGHT`. **Captured:** a changed `SP_MAXWEIGHT` goes out *before* the diff's first `0x0141`.
+* **Captured:** the diff compares rAthena's internal units, so `FLEE2` (`flee2`, 1/10) and `CRITICAL` (`cri`, 1/10) are re-sent on every LUK change even when the displayed `/10` value is unchanged, and the pairs (DEF1+DEF2, MATK2+MATK1, MDEF2+MDEF1) always go out together.
 * Level-up, job change, stat-up, equip/unequip, skill learn/passives, buffs/debuffs and many script `bonus` effects all call `status_calc_pc`. Level-up flow: [../mechanics/experience.md](../mechanics/experience.md#level-up).
 
 ## Where the status packets sit in the map-entry order
@@ -160,6 +161,68 @@ Do not duplicate; see [map_entry_actions.md](../mechanics/map_entry_actions.md#m
 2. First login only (`state.connect_new`, `10904-10988`): `SP_BASEEXP`, `SP_NEXTBASEEXP`, `SP_JOBEXP`, `SP_NEXTJOBEXP` (`0x0acb`), `SP_SKILLPOINT` (`0x00b0`), then `clif_initialstatus` = `0x00bd` + the follow-up `0x0141`/`0x013a`/`0x00b0`/`0x00be` packets listed under ZC_STATUS. `SP_STATUSPOINT`, HP/SP, level and zeny are NOT in this block.
 3. Map change (not first login, `10989-11003`): `0x0141` for STR..LUK and (renewal) POW..CRT only. No `0x00bd`, no exp, no weight beyond step 1, no HP/SP.
 4. Changemap-only content later calls `status_calc_pc(SCO_NONE)` (`clif.cpp:11092`), so any changed derived value gets a diff push.
+
+## Captured stat-up, level and job sequences
+
+Source: [captures/attribute_sequence.txt](../captures/attribute_sequence.txt) (rAthena `d4b8e7b`, `PACKETVER 20260219`; line numbers are file lines). Session `#3` = `test` (Bard, base 99, job 1); `#5` and `#7` = `testtesttest` (Novice base 1 at login, then Swordman, Knight, Lord Knight, Rune Knight, Shadow Cross, Knight). No observer client, so area delivery is still source-only. Values per step are in [mechanics/stats.md](../mechanics/stats.md#captured-status-values). `0x080e` (party HP bar) follows each `SP_HP` push because the character is in a party; it is not a status packet.
+
+**Proxy misframing:** the proxy used for this recording did not know `0x00bc`. Only the first ack frames correctly (line 162). Later acks show as a short `0x00bc`, a bogus `0x0100`, and a bogus frame that swallows the first byte of the next packet (`0x410c`, `0xb00d`, ...). The bytes are `var`, `ok = 1`, `value`, as in the layout above. `table.rs` has had the row since (`stats_stat_up_rows`).
+
+**Stat-up** (lines 157-245, 454-1696, 4508-4541). Every captured request succeeded. Order, matching `pc_statusup`:
+
+1. The recalc pushes: `SP_MAXWEIGHT` first when STR changed, then the stat's `0x0141`, then the changed derived values in the recalc order.
+2. `0x00be` with the next-point cost of that stat (0 at the cap: INT 99 at line 243).
+3. `SP_STATUSPOINT`.
+4. `0x00bc` ok 1 with the new stat.
+
+An over-affordable `amount` raises as far as points and the cap allow:
+
+* INT +99 from 3 stops at the cap 99 (line 236).
+* STR +231 stops at 99 (line 4508).
+* DEX +99 with 17 points stops at 9, leaving 1 (line 4531).
+
+There is no captured failure (`ok = 0`). The client sends no request while the stat's `+` is disabled (no points, or at the cap), so the failure form stays source-only.
+
+**`@blvl +n`** (lines 401-423; also 1062, 1360, 1842, 2956, 3052, 3173). Source order confirmed:
+
+1. The diff (no HP/SP: nothing was clamped).
+2. The heal: `SP_HP`, `SP_SP`.
+3. `0x019b` effect 0.
+4. The message.
+5. `SP_STATUSPOINT`, `SP_TRAITPOINT` (0), `SP_BASELEVEL`.
+6. `0x0acb` `SP_BASEEXP` 0, `SP_NEXTBASEEXP`.
+
+**`@blvl -n`** (lines 679-703, level 11 to 6 with 52 unspent points against 21 to remove, so no reset):
+
+1. The message first.
+2. Clamp pushes `SP_HP` 66 and `SP_SP` 18.
+3. The diff, ending `MAXHP`, `MAXSP`, `HP`, `SP`.
+4. The same tail as level up. No heal, no effect.
+
+The stat-reset branch was not exercised.
+
+**`@jlvl +n`** (lines 428-450, 722-735, 1769):
+
+1. `0x019b` effect 1.
+2. The message.
+3. `SP_JOBLEVEL`, `0x0acb` `SP_JOBEXP` 0, `SP_NEXTJOBEXP`, `SP_SKILLPOINT`.
+4. The diff (job-bonus `0x0141`s, derived values). No heal.
+
+**`@jlvl -n`** (lines 705-718): the message, the same four pushes, then the clamp push (`SP_SP` 17), then the diff (ending `MAXSP`, `SP`).
+
+**`@job`**. Source order ([job_change.md](../mechanics/job_change.md#2-pc_jobchangesd-job-upper-order-of-operations)) confirmed step for step:
+
+| Lines | Change | What the capture adds |
+| :--- | :--- | :--- |
+| 1714-1764 | Novice → Swordman | Plain case: `0x00be` ×6, `SP_JOBLEVEL`, `SP_JOBEXP`, `SP_NEXTJOBEXP`, looks `LOOK_BASE`, `LOOK_HAIR`, `LOOK_CLOTHES_COLOR`, `LOOK_BODY2`, **`0x010f` skill list** (step 15), the diff (`SP_MAXWEIGHT` first, `0x0141` ×6 for the job bonus, derived values, `MAXHP`, `MAXSP`; no HP/SP push, no heal), `pc_equiplookall` (`LOOK_WEAPON`, `LOOK_SHOES`, `LOOK_HEAD_BOTTOM`, `LOOK_HEAD_TOP`, `LOOK_HEAD_MID`, `LOOK_ROBE`), achievement packets, then the message. No `SP_SKILLPOINT`. |
+| 2010-2042 | Swordman → Knight | Same shape. |
+| 2102-2161 | `@job lrd_knight` | Unknown name: usage and the job list as `0x008e` lines, then the failure message. Nothing else. |
+| 2238-2269 | Knight → Lord Knight (4008) | Step 8: `SP_STATUSPOINT` (+52) before the `0x00be` ×6. |
+| 2619-2700 | Lord Knight → Rune Knight (4054) | Step 8 with fewer than 52 points left: `pc_resetstate` first. It sends `0x0141` ×6 (base 1, bonus = the **old** battle value − 1), trait `0x0141` ×6, `0x00be` ×6, trait `0x00be` ×6, `SP_STATUSPOINT`, `SP_TRAITPOINT`, then its own recalc (`SP_MAXWEIGHT`, the `SP_SP` clamp, the diff). Then step 9's `0x00be` ×6 and the usual tail. |
+| 3697-3761 | Rune Knight → Shadow Cross (4254) | Step 10 grants 7 trait points (`SP_TRAITPOINT` 7, trait costs 1). **Forced unequip** of a worn Katana (step 12) right after the job-exp pushes: `0x01d7` `LOOK_WEAPON` 0 **twice** (two-hander, one per hand slot), then `0x099a` (pos `0x22`), then the looks. The diff (`ATK2` 0, `ASPD`) carries the unequip's effect. Skill deletes `0x0441` and a second `0x010f` sit between `SP_MAXWEIGHT` and the `0x0141`s. |
+| 4352-4494 | Shadow Cross (base 170) → Knight (max 99) | Step 7: `pc_resetstate` (pushes as above, then its recalc: `SP_MAXWEIGHT`, skill deletes, `0x010f`, the `SP_HP`/`SP_SP` clamp, the diff, `SP_STATUSPOINT` 1273), then `SP_BASELEVEL` 99, `SP_BASEEXP`, `SP_NEXTBASEEXP`. Step 8 subtracts 52 (`SP_STATUSPOINT` 1221). Step 9's `0x00be` ×6. Step 10 runs a second `pc_resetstate` (back to 1273). The forced unequip of a katar (`0x01d7` ×2, `0x099a`) follows the job-level pushes. The final diff shows `ASPD` 1250 → 440, because the reset's recalc ran while the katar was still worn. |
+
+**Relog** (session `#7`, lines 4568-4640): the same login pattern as session `#3`. That is the pre-ready diff (`SP_MAXWEIGHT`, `0x0141` ×6, every derived value with the DEF pair twice, `0x013a`, `MAXHP`, `MAXSP`, `HP`, `SP`, `SP_WEIGHT`) before `0x007d`, then the `0x00bd` block. This confirms the source-only "diff against a zeroed snapshot" bullet under [Recalculation pushes](#recalculation-pushes).
 
 ## Open points
 

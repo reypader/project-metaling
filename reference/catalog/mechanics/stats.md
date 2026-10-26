@@ -1,6 +1,6 @@
 # Base and Derived Stat Formulas
 
-Target client version: `PACKETVER = 20260219`, renewal build (`RENEWAL`, `RENEWAL_ASPD`, `RENEWAL_STAT` all defined in `src/config/renewal.hpp:55-74`). Provenance for every section: `rathena` at `$RATHENA_PATH`, commit `d4b8e7b8f` (2026-10-06), paths `src/map/status.cpp`, `pc.cpp`, `pc.hpp`, `conf/battle/*.conf`, `db/re/*.yml`. No proxy capture of the status window exists in the repo, so nothing here is capture-verified. Wire packets: [../packets/status.md](../packets/status.md). Static job data (HP/SP tables, weights, ASPD bases, job bonuses): [../db/job_stats.md](../db/job_stats.md). Exp tables, level-up flow: [experience.md](./experience.md), [../db/exp_tables.md](../db/exp_tables.md).
+Target client version: `PACKETVER = 20260219`, renewal build (`RENEWAL`, `RENEWAL_ASPD`, `RENEWAL_STAT` all defined in `src/config/renewal.hpp:55-74`). Provenance for every section: `rathena` at `$RATHENA_PATH`, commit `d4b8e7b8f` (2026-10-06), paths `src/map/status.cpp`, `pc.cpp`, `pc.hpp`, `conf/battle/*.conf`, `db/re/*.yml`. The derived-stat formulas below are checked against the captured status values in [Captured status values](#captured-status-values) ([captures/attribute_sequence.txt](../captures/attribute_sequence.txt)); sections not covered there are source-only. Wire packets: [../packets/status.md](../packets/status.md). Static job data (HP/SP tables, weights, ASPD bases, job bonuses): [../db/job_stats.md](../db/job_stats.md). Exp tables, level-up flow: [experience.md](./experience.md), [../db/exp_tables.md](../db/exp_tables.md).
 
 All divisions are C integer division (truncate toward zero) unless a term is written with a decimal. Terms called "float" are computed in `float` and truncated once at the end, as marked.
 
@@ -118,7 +118,7 @@ adelay   = 2*amotion
 ```
 `pc_maxaspd` is battle-config `max_aspd` (190), `max_third_aspd` 193, `max_extended_aspd` 193 (Kagerou/Oboro/Rebellion), `max_summoner_aspd` 193; converted at startup to `(2000 - cfg*10)*2` (`battle.cpp:8965`), so the floor is amotion 100 (ASPD 190) / 70 (193). The client shows ASPD `= 200 - amotion/10`.
 
-Worked check (hand-computed, not captured): bare-fisted level-1 Novice, AGI=DEX=1: `stat = sqrt(0.2+0.5)*0.25+196 = 196.209`, `P = 196 - min(40,200) = 156`, `amotion = 2000-1560 = 440`, `adelay = 880`, displayed ASPD 156.
+Worked check (hand-computed): bare-fisted level-1 Novice, AGI=DEX=1: `stat = sqrt(0.2+0.5)*0.25+196 = 196.209`, `P = 196 - min(40,200) = 156`, `amotion = 2000-1560 = 440`, `adelay = 880`, displayed ASPD 156. Not captured for a Novice. A **bare Knight** with AGI = DEX = 1 shows 440 (Fist base 40 too). The captured Novice wore a Knife: 590, which needs a Novice Dagger base of 55. See the ASPD rows in [Captured status values](#captured-status-values).
 
 ### MaxHP / MaxSP
 
@@ -244,8 +244,68 @@ Source: `rathena` `d4b8e7b8f`, `status_calc_pc_sub` equipment loop `src/map/stat
 | Rod +10, `SP_MATK1` 30 -> 50 | Weapon level 1, B(10) = 2000, not a bow | +20 MATK; 30+20 = 50. Matches. (Knife +10 -> `SP_MATK1` 20, same +20.) |
 | Hat +10 and Silk Robe +10, `SP_DEF2` +18 each | Armor level 1, B(10) = 1800 | `(1800+50)/100 = 18`. Matches for each item worn alone. Rounding is on the summed raw bonus, so it differs from per-item rounding only for odd sums: three level-2 armors at +1 (120 each) give `(360+50)/100 = 4`, not `1+1+1`. |
 
+## Captured status values
+
+Source: [captures/attribute_sequence.txt](../captures/attribute_sequence.txt) (file line numbers). Packet order: [../packets/status.md](../packets/status.md#captured-stat-up-level-and-job-sequences). Field mapping as in [`SP_*` var ids](../packets/status.md#sp_-var-ids): soft DEF = `SP_DEF1`, hard DEF = `SP_DEF2`, soft MDEF = `SP_MDEF1`, hard MDEF = `SP_MDEF2`, status MATK = `SP_MATK2`, weapon MATK = `SP_MATK1`, status ATK = `SP_ATK1`, weapon ATK = `SP_ATK2`. "Battle" stats include the job bonus (the `0x0141` bonus). Every value in the tables below matches the formulas in this file by hand; the job-table inputs (HP/SP tables, ASPD bases, `MaxWeight`) come from `db/re` and are checked by tests once imported.
+
+**Characters.**
+
+* `testtesttest` (session `#5`, `#7`), male.
+  * At login: Novice, base 1, job 1, all stats 1, 48 points.
+  * Wears a Knife (1201, weapon level 1, ATK 17, refine 0) and a Cotton Shirt (2301, DEF 10).
+* `test` (session `#3`): Bard (19), base 99, job 1, allocated STR 11, AGI 10, VIT 1, INT 1, DEX 10, LUK 1 (DEX +1 job bonus), 1217 points. Weapon view 1907.
+
+| Lines | State | amotion | ATK1 / ATK2 | MATK2 / MATK1 | DEF1 / DEF2 | MDEF1 / MDEF2 | HIT | FLEE1 / FLEE2 | CRIT | MaxHP / MaxSP | MaxWeight |
+| :--- | :--- | ---: | :--- | :--- | :--- | :--- | ---: | :--- | ---: | :--- | ---: |
+| 294-321, 352 | Novice B1 J1, all 1, Knife + Cotton Shirt | 590 | 1 / 17 | 1 / 0 | 1 / 10 | 1 / 0 | 177 | 102 / 1 | 1 | 40 / 11 | 20300 |
+| 402-416 | same at B11 J1 | 590 | 4 / 17 | 3 / 0 | 6 / 10 | 4 / 0 | 187 | 112 / 1 | 1 | 90 / 21 | 20300 |
+| 435-450 | B11 J10 (job bonus +1 to all six) | 590 | 5 / 17 | 5 / 0 | 6 / 10 | 5 / 0 | 188 | 113 / 1 | 1 | 91 / 21 | 20300 |
+| 681-695 | B6 J10, allocated STR 3, AGI 4, INT 12 (others 1) | 590 | 6 / 17 | 20 / 0 | 5 / 10 | 15 / 0 | 183 | 111 / 1 | 1 | 66 / 18 | 20900 |
+| 45-72, 110 | Bard B99 J1 (above) | 470 | 38 / 142 | 27 / 0 | 52 / 60 | 28 / 0 | 285 | 209 / 1 | 2 | 4096 / 630 | 30300 |
+| 1729-1747 | Swordman B37 J1, allocated STR 13, AGI 21, VIT 17, INT 19, DEX 29, LUK 16, Knife + Cotton Shirt | 470 | 33 / 17 | 47 / 0 | 31 / 10 (not pushed) | 37 / 0 | 246 | 161 / 2 | 6 | 834 / 99 | 31900 |
+| 4576-4602, 4632 | Knight B99 J1, allocated STR 99, AGI 99, VIT 1 (+1), INT 1, DEX 9, LUK 1, bare-handed, Cotton Shirt | 270 | 125 / 0 | 26 / 0 | 70 / 10 | 27 / 0 | 283 | 298 / 1 | 2 | 8137 / 310 | 57700 |
+
+**ASPD steps** (Novice B11-B26, job 10 bonus +1, Knife; values are battle AGI/DEX). Each matches `P = (int)(196 + sqrt(DEX²/5 + AGI²/2)/4) − 55`:
+
+* AGI 6, DEX 2 → 580 (line 857).
+* AGI 12 → 570 (909).
+* AGI 17 → 560 (952).
+* AGI 22, DEX 9 → 550 (1319).
+* DEX 29 → 540 (1528).
+
+**ASPD with shields and two-handers** (Swordman B48 J11, then Knight and others):
+
+* Swordman with Blade (1107): 460. Adding a Guard (2101) gives 510. The Guard alone gives 440, bare hands 390 (lines 1953-2000, 2044-2097). So a shield adds the job's `Shield` base × 10 to amotion (Swordman 5 → +50), as the formula says.
+* Lord Knight with Blade + Guard: 480 (2610). Rune Knight: 610 (2656).
+* Knight B99, AGI = DEX = 1:
+  * bare: 440 (4485);
+  * wearing a katar, which a Knight can't use: **1250** (4409). The "unlisted weapon = 200" rule predicts 2040, so check the imported `job_aspd` rows before trusting the default (open question below).
+
+**Refine** (Swordman, lines 1935-1999, 2063-2097):
+
+* Blade (1107) +0 → `SP_ATK2` 53. Blade +6 → 65 (+12, 2 per refine level, as for the weapon-level-1 Knife) and `SP_MATK1` 12 (the same +12 as MATK).
+* Guard (2101) +0 adds hard DEF 20 (10 → 30); Guard +6 gives 38, so the refine adds 8.
+
+**4th-class MaxHP/MaxSP** (Shadow Cross 4254, base 170; lines 3753-3754, 3789). The fallback base formula above with Shadow Cross's `HpFactor` 64, `HpIncrease` 5398, `SpFactor` 7, `SpIncrease` 4 gives base HP 18513 and base SP 1034. Then:
+
+| VIT / INT | MaxHP | MaxSP | Check |
+| :--- | ---: | ---: | :--- |
+| 4 / 3 (job 1) | 24066 | 1331 | `18513 × 1.04 × 1.25`, `1034 × 1.03 × 1.25` |
+| 10 / 8 (job 60) | 25455 | 1395 | `× 1.10 × 1.25`, `× 1.08 × 1.25` |
+
+All four are exact. This confirms the fallback formula and the 4th-class ×1.25. Truncating after each factor or once at the end gives the same four numbers.
+
+**Stat costs** (`0x00be`) match the renewal formula: 2 for stats 1-10, 3 for 11-20, 4 for 21-30, 5 from 31. INT 99 shows 0 (the cap for a Bard).
+
+**Status points** (`SP_STATUSPOINT`) match `statpoint.yml` deltas:
+
+* Novice 48 → 85 at B11, 67 at B26 after spending.
+* Bard B99 with 56 points spent shows 1217 (1273 − 56).
+* The Knight reset at B99 gives 1273.
+
 ## Open questions
 
+* Knight + katar amotion 1250 ([Captured status values](#captured-status-values)): find which `job_aspd` entry or default produces it once `tools/job-import` has run. If the Knight row has no Katar, the default is not 200.
 * Hard DEF/MDEF post-renewal clamps (`DEFTYPE_MIN/MAX`) were not located in the headers read.
 * 4th-class AP regeneration and the `status_heal(..., 1)` third parameter in the natural-heal loop were not analysed.
 * Equipment ATK (weapon ATK/refine/overrefine) and status effects layered by `status_calc_bl_main` (buff percentages) are out of scope here; they belong in combat.md / status.md.

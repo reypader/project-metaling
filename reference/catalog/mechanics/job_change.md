@@ -59,4 +59,10 @@ Order inside (`pc.cpp:12398-12525`): clear `equip_index` entries for the item's 
 
 ## Open points
 
-* `SP_SKILLPOINT` is not resent at job change; not verified against a real capture (no capture exists). Capture a `@job` on rAthena via `tools/proxy` to confirm packet order, in particular the `0x010f` re-send and whether `0x00b0 SP_HP` appears.
+* **Resolved by capture** ([captures/attribute_sequence.txt](../captures/attribute_sequence.txt), table in [packets/status.md](../packets/status.md#captured-stat-up-level-and-job-sequences)). Section 2's order holds, including steps 7, 8 and 10 and the forced unequip in step 12 (two `0x01d7` for a two-hander, then `0x099a`). Also confirmed:
+  * `SP_SKILLPOINT` is not sent.
+  * `0x010f` is re-sent after the looks.
+  * `SP_HP` appears only as a clamp push, when a `pc_resetstate` lowered MaxHP.
+  * No heal and no `0x019b`.
+  * The success message comes last.
+* Still not captured: an observer's view of the area `0x01d7` packets.

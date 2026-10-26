@@ -68,7 +68,7 @@ So 190 -> 400, 193 -> 340 (stored as doubled amotion). `MIN_ASPD` = 8000 (`statu
 | `max_extended_aspd` | `player.conf:86` | 193 (`:8747`) | `MAPID_SECONDMASK` is Kagerou/Oboro or Rebellion |
 | `max_summoner_aspd` | `player.conf:89` | 193 (`:8402`) | `MAPID_FIRSTMASK == MAPID_SUMMONER` |
 
-Used: `status.cpp:4618-4620` (base) and `:6415` (final): `amotion = clamp(amotion, pc_maxaspd(sd)/2, MIN_ASPD/2)`, i.e. lower clamp `2000 - maxaspd*10`. Applies in renewal (the renewal ASPD path is the one that uses them). Note: the chain only tests JOBL_THIRD, extended, summoner; whether 4th-job classes carry JOBL_THIRD was not verified (open question). Mob/non-PC ASPD uses constants `MAX_ASPD_NOPC` instead (`status.cpp:5099`).
+Used: `status.cpp:4618-4620` (base) and `:6415` (final): `amotion = clamp(amotion, pc_maxaspd(sd)/2, MIN_ASPD/2)`, i.e. lower clamp `2000 - maxaspd*10`. Applies in renewal (the renewal ASPD path is the one that uses them). Note: the chain only tests JOBL_THIRD, extended, summoner; 4th-job classes carry `JOBL_THIRD` in their mapid (e.g. Shadow Cross `0x11106`), so they use `max_third_aspd`. **Captured:** a Shadow Cross reached amotion 80 (below the 190 floor of 100; [captures/attribute_sequence.txt](../captures/attribute_sequence.txt) line 4243), consistent with the 193 cap. Mob/non-PC ASPD uses constants `MAX_ASPD_NOPC` instead (`status.cpp:5099`).
 
 ## 5. MaxHP / MaxSP / MaxAP
 
