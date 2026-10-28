@@ -677,6 +677,37 @@ fn eng_stat_08_job_refusals_and_sex() {
     assert!(a.iter().all(is_message), "already a Dancer: {a:?}");
 }
 
+/// Spec §2.6 step 10: `@job`'s equip looks carry each slot's view when they are sent, so an
+/// equip later in the same tick isn't undone on screen (Finish review m-1).
+#[test]
+fn eng_stat_08_equip_looks_are_read_when_sent() {
+    let slots = vec![Some(InventoryItem::new(ItemId(KNIFE), 1))];
+    let mut w = World::new(NOVICE, 10, CharacterStatus::default(), slots);
+    let text = format!("{} : @job swordman", name(A)).into_bytes();
+    let out = w.tick(&[
+        (A, ClientIntent::Chat { text }),
+        (
+            A,
+            ClientIntent::EquipItem {
+                index: 2,
+                position: EQP_HAND_R,
+            },
+        ),
+    ]);
+    for n in [A, B] {
+        let seen = seen_by(&out, n);
+        let last_weapon = seen
+            .iter()
+            .rev()
+            .find(|e| matches!(e, ServerEvent::SpriteChanged { look_type, .. } if *look_type == LOOK_WEAPON));
+        assert_eq!(
+            last_weapon,
+            Some(&look(LOOK_WEAPON, KNIFE, 0)),
+            "{n}: {seen:?}"
+        );
+    }
+}
+
 /// Spec §2.6: `@job` keeps usable gear on, and sends no heal.
 #[test]
 fn eng_stat_08_usable_gear_stays() {

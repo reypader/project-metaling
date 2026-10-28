@@ -3,6 +3,52 @@
 Items consciously left out of finished work, with enough context to pick them up later.
 Remove an item when it lands. Newest feature first.
 
+## stats (branch `main`, plan `specs/stats/plan.md`)
+
+Spec: `specs/stats/spec.md` §5. Job and refine data, every derived stat from job, level, allocated stats and
+gear (ATK/MATK/DEF/MDEF only), the tick's recalc pass with the follow-up queue, stat-up, the real `0x0141`,
+`@blvl`/`@jlvl`/`@job` with the gear re-checks, and saving job, levels and stats are in.
+
+### Still to verify by hand
+- **Manual client check:** the user's metaling recording
+  (`reference/catalog/captures/metaling_attribute_sequence.txt`, 2026-10-28) matched captures 1-3 in every
+  flow, apart from documented deviations. Still worth checking by eye in the client: an equip of a Knife +10
+  or Guard (one net diff) and the status window after `@jlvl` (job bonus shown as `+`).
+- Char select (`0x0b72`, `crates/ro-packets/src/outgoing/char.rs`) still sends placeholder HP/SP
+  (100/100/50/50) and 0 skill points. The real values are saved now; the char server doesn't load or send
+  them yet.
+- Not captured: a stat above 255 (unreachable with the shipped caps of 130 or less; `FollowUp::CoupleStat`
+  covers it from the source), two `elvmax` items coming off in one command, and `@job`'s ammo refusal
+  `0x0291` before the forced unequip (source reading only).
+- A Knight wearing a katar showed amotion 1250 in capture 1, where the catalog predicts 2040. rAthena
+  recalcs before its forced unequip; ours runs after, so we never compute ASPD for an unusable weapon.
+
+### Modifier sources and mechanics
+- Item, card and combo bonuses, and gear hard MDEF (`crates/ro-engine/DESIGN.md` §9.8). Passive skills
+  (§9.9). Status effects (§10), including restoring saved ones at login (capture 2's late `SP_ASPD` is a
+  Berserk Potion buff). Damage (§11). Mob `Status` from `MobDb`.
+- `die_counter` (the Super Novice +10 assumes no deaths), Taekwon ranker HP ×3, enchant grade, overrefine
+  damage.
+- Exp tables (NEXTBASEEXP/NEXTJOBEXP stay placeholders), exp gain and natural level-up.
+- Natural regen, overweight statuses, trait stats and AP. `SP_TRAITPOINT` is sent as 0; rAthena sends the
+  running trait total.
+
+### GM commands
+- `@job`: class-change level vars; the skill tree and skill deletes (`0x0441`; the `0x010f` re-send is
+  done); option stripping (cart, falcon, peco, mado, homunculus); transcendent (±52) and trait (+7) point
+  grants and their stat resets; the party class update; the upper/baby flag argument.
+- `@jlvl` negative: `pc_resetskill` (no skills yet).
+- Level effects not sent: achievement updates (`0x0a24`), the `0x0446` quest marker refresh, and the
+  observer's party HP bar `0x080e` (capture 3).
+- `LOOK_CLOTHES_COLOR` is always 0 in `@job`'s looks: no cloth colour is stored yet, so a dyed character
+  would lose its colour until relog.
+
+### Engine (`crates/ro-engine/src/{stats,status,wear}.rs`)
+- An `elvmax` unequip runs as a follow-up, so its own stat diff goes out next tick. The captured items had
+  no stats, so nothing was visible; an `elvmax` item with stats would show its diff one tick late.
+- `status_diff` allocates two `Vec`s per recalc (dirty players only; idle ticks allocate nothing).
+- `wear.rs`: `DISPLACED` and `CASCADED_AMMO` are now identical; merge them or give them a reason to differ.
+
 ## equipment (branch `main`, plan `specs/equipment/plan.md`)
 
 Spec: `specs/equipment/spec.md` §5. Equip, take-off, unequip-all, dual wield (Assassin/Kagerou class), ammo
@@ -15,17 +61,8 @@ dropped worn stack coming off first are in.
   job_class = 3`) with a bow and arrows.
 - A shield replacing a bow takes the arrows off (our ruling; not captured).
 
-### Needs the stats feature
-- ASPD, status ATK/MATK, soft DEF/MDEF, HIT, FLEE, CRIT, MaxHP/SP from gear: the stats feature fills
-  `DerivedStatus` (ASPD is 0 until then). rAthena also pushes ASPD on shield changes, ATK1 on bow changes
-  and `SP_CRITICAL` on katar changes; we push only the gear-only values that changed.
-- Per-hand values: `Gear::hands` puts a two-hander that holds only `HAND_L` mid-displacement on the
-  left; rAthena counts it as the right-hand weapon (its `equip` is still 0, catalog §3 step 11). Harmless
-  while ATK2 is a sum and range a max; fix it before per-hand ATK, dual-wield penalties or ASPD.
-- Refine and grade bonuses to ATK/DEF/MATK (refine is always 0 today; the +10 numbers are in catalog
-  `mechanics/stats.md`).
-- Re-checking worn gear on a level or job change (rAthena force-unequips), and a GM `@job` command. Until
-  then, test job-limited gear with `UPDATE characters SET job_class = …`.
+### Needs later stats work
+- Grade bonuses to ATK/DEF/MATK (enchant grade; refine landed with the stats feature).
 
 ### Item features
 - Item scripts and bonuses (item MDEF is script-only in renewal data, so `hard_mdef` stays 0); cards and
@@ -76,8 +113,8 @@ login-time `0x0091`, and every entry starts with `0x01d7` and sends `0x099b`.
   - The MOTD is one fixed line (`MOTD`), not configurable.
   - `0x0a23` is never sent (rAthena skips it with no achievements; it sends it after login auto-completions).
     `0x0a24` carries zeros and next-level exp 18.
-  - The pre-`0x007d` status push sends every field once in captured order, not a diff, and the derived values
-    are 0. rAthena sends DEF2/DEF1 twice.
+  - The pre-`0x007d` status push sends every field once in captured order, not a diff. rAthena sends
+    DEF2/DEF1 twice.
   - `0x099b` is the plain-map form (`property 0, flags 0x0600`) on every map until mapflags exist.
   - rAthena pushes `0x0adf` name replies after mob entries unasked; metaling still answers `0x0368`.
 - Char server: metaling's `0x0b72` page is 879 bytes and rAthena's 179 (handoff item 3). Not compared yet,
@@ -88,10 +125,7 @@ login-time `0x0091`, and every entry starts with `0x01d7` and sends `0x099b`.
   NV_BASIC level 0, upgradable.
 - Status block placeholders (`crates/ro-engine/src/status.rs`):
   - NEXTBASEEXP/NEXTJOBEXP are the max-level constants until exp tables are imported.
-  - Derived stats (ATK, MATK, DEF, MDEF, HIT, FLEE, CRIT, ASPD) are 0 until `ro-mechanics` has the formulas.
-  - The stat cap is 99 for every job (3rd/4th classes allow 130, babies 80).
   - Trait stats, their costs and AP are 0.
-  - Stat-up (`0x00bb`), level-up and the `0x0141` re-send on a map change are not wired.
 - Reputation points (always 0) and the reputation types list (fixed 1–4 in `ro-packets`).
 
 ## items (branch `main`, plan `specs/items/plan.md`)

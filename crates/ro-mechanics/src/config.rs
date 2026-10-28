@@ -141,6 +141,12 @@ impl BattleConfig {
         range("max_summoner_aspd", self.max_summoner_aspd, 100, 199)?;
         range("hp_rate", self.hp_rate, 1, u32::MAX)?;
         range("sp_rate", self.sp_rate, 1, u32::MAX)?;
+        // MaxHP/MaxSP are saved to `int` columns, and a 0 cap would clamp every player to dead.
+        let int = i32::MAX.unsigned_abs();
+        range("max_hp_lv99", self.max_hp_lv99, 1, int)?;
+        range("max_hp_lv150", self.max_hp_lv150, 1, int)?;
+        range("max_hp", self.max_hp, 1, int)?;
+        range("max_sp", self.max_sp, 1, int)?;
         range("min_hitrate", self.min_hitrate, 0, 100)?;
         range("max_hitrate", self.max_hitrate, 0, 100)?;
         let short = u32::from(i16::MAX.unsigned_abs());

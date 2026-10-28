@@ -52,6 +52,9 @@ pub(crate) enum FollowUp {
     /// `0x0141` for STR..LUK `offset` from the snapshot this tick's recalc committed: a stat
     /// above 255 after its stat-up ack (which carries only 255).
     CoupleStat(u16),
+    /// Every equip look to the area (`@job`, rAthena `pc_equiplookall`), each slot's view read
+    /// when it is sent, so an equip later in the same tick isn't undone on screen.
+    EquipLooks,
     /// Full HP and SP to the new maxima after a base level up: `SP_HP`/`SP_SP` for the parts
     /// it raised; nothing for a dead player.
     HealToMax,
@@ -352,6 +355,11 @@ impl MapInstance {
                     return;
                 };
                 self.emit_self(e, couple(offset, allocated, battle));
+            }
+            FollowUp::EquipLooks => {
+                for event in self.equip_look_events(e) {
+                    self.emit_aoi(e, false, event);
+                }
             }
             FollowUp::HealToMax => {
                 // rAthena `status_percent_heal(100, 100)`: nothing for the dead; each part is

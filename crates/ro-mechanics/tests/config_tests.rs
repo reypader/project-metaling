@@ -79,6 +79,11 @@ fn validation_rejects_out_of_range_values() {
         "hp_rate: 0\n",
         "min_hitrate: 101\n",
         "max_parameter: 5\n",
+        // HP/SP caps: 0 would clamp everyone to dead, and the save columns are `int`.
+        "max_hp: 0\n",
+        "max_sp: 2147483648\n",
+        "max_hp_lv99: 3000000000\n",
+        "max_hp_lv150: 0\n",
     ] {
         assert!(parse(bad).validate().is_err(), "{bad}");
     }

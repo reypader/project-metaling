@@ -68,8 +68,11 @@ fn stats_mut(status: &mut CharacterStatus) -> [&mut u16; 6] {
     ]
 }
 
+/// Status or skill points, capped at what their `smallint` columns hold so a save is never
+/// refused (Finish review m-2).
 fn points(value: u32) -> u16 {
-    u16::try_from(value).unwrap_or(u16::MAX)
+    const MAX_POINTS: u16 = i16::MAX.unsigned_abs();
+    u16::try_from(value).map_or(MAX_POINTS, |v| v.min(MAX_POINTS))
 }
 
 impl MapInstance {
@@ -244,7 +247,7 @@ impl MapInstance {
         status.job_level = to;
         status.job_exp = 0;
         status.skill_point = if to > level {
-            status.skill_point.saturating_add(to - level)
+            points(u32::from(status.skill_point) + u32::from(to - level))
         } else {
             status.skill_point.saturating_sub(level - to)
         };
@@ -387,9 +390,7 @@ impl MapInstance {
         self.mark_dirty(e, false);
 
         // Steps 10-12, after the recalc: the equip looks, the message, the save.
-        for event in self.equip_look_events(e) {
-            self.queue_followup(e, FollowUp::ToArea(event));
-        }
+        self.queue_followup(e, FollowUp::EquipLooks);
         let message = format!("Your job is now {name}.");
         self.queue_followup(e, FollowUp::ToSelf(chat_line(&message)));
         self.queue_followup(e, FollowUp::Save);
@@ -424,5 +425,14 @@ mod tests {
         for bad in ["", "0", "abc", "+"] {
             assert_eq!(level_argument(bad), None, "{bad:?}");
         }
+    }
+
+    /// Finish review m-2: points never outgrow their `smallint` columns.
+    #[test]
+    fn points_cap_at_the_column_range() {
+        assert_eq!(points(48), 48);
+        assert_eq!(points(32_767), 32_767);
+        assert_eq!(points(32_768), 32_767);
+        assert_eq!(points(u32::MAX), 32_767);
     }
 }
