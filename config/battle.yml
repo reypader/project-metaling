@@ -1,0 +1,67 @@
+# Metaling battle and player config (BATTLE_CONFIG). MIT: our own file.
+# Keys are rAthena's knob names; the values are rAthena's shipped defaults (facts), as
+# recorded in reference/catalog/mechanics/battle_config.md. Every key is optional: a key left
+# out keeps the default below. Unknown keys are an error.
+
+# Derived-stat enables (BL_* masks: PC 0x1, MOB 0x2, PET 0x4, HOM 0x8, MER 0x10, ...).
+enable_baseatk_renewal: 0x29F
+enable_critical: 0x11
+enable_perfect_flee: 0x1
+
+# HIT rate and the multi-attacker FLEE/DEF penalties (read by combat).
+min_hitrate: 5
+max_hitrate: 100
+agi_penalty_type: 1
+agi_penalty_target: 0x1
+agi_penalty_count: 3
+agi_penalty_num: 10
+vit_penalty_type: 1
+vit_penalty_target: 0x1
+vit_penalty_count: 3
+vit_penalty_num: 5
+weapon_defense_type: 0
+
+# ASPD caps in ASPD points (100..199): plain, 3rd (and 4th) classes, Kagerou/Oboro/Rebellion,
+# Summoner.
+max_aspd: 190
+max_third_aspd: 193
+max_extended_aspd: 193
+max_summoner_aspd: 193
+
+# MaxHP / MaxSP: rates in percent, then caps (HP by base level: below 100, below 151, above).
+hp_rate: 100
+sp_rate: 100
+max_hp_lv99: 330000
+max_hp_lv150: 660000
+max_hp: 1100000
+max_sp: 1000000
+max_ap: 1000
+
+# Weight: overweight thresholds in percent; cart capacity in 0.1 units.
+natural_heal_weight_rate: 70
+major_overweight_rate: 90
+max_cart_weight: 8000
+
+# Natural regen intervals (ms).
+natural_healhp_interval: 6000
+natural_healsp_interval: 8000
+natural_heal_skill_interval: 10000
+
+# Highest STR..LUK per class group, and the trait-stat cap of 4th classes.
+max_parameter: 99
+max_trans_parameter: 99
+max_third_parameter: 130
+max_third_trans_parameter: 130
+max_baby_parameter: 80
+max_baby_third_parameter: 117
+max_extended_parameter: 130
+max_summoner_parameter: 130
+max_fourth_parameter: 130
+max_trait_parameter: 110
+
+# Status points at base level 1, and level-up rules.
+start_status_points: 48
+use_statpoint_table: true
+multi_level_up: false
+multi_level_up_base: 0
+multi_level_up_job: 0

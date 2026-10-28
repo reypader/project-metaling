@@ -50,7 +50,14 @@ Like the spawn lists, the registries are imported offline into our own schema; `
 3. **Lookups:** `ItemDb` by id, by case-insensitive AegisName (unique) and by case-insensitive Name (lowest id wins); `MobDb` by id. Both use `std` hash maps over an id-sorted `Vec`.
 4. **Validation:** duplicate ids, duplicate AegisNames, unknown keys, bad headers; for mobs also the id ranges, at most 10 drops / 3 MVP drops, and rates in `1..=10000`.
 
-`Level`, `Hp` and `WalkSpeed` are imported but not wired into spawned mobs yet (`DEFERRED.md`). Scripts, jobs, prices, combat stats and `db/import` overlays are not imported.
+`Level`, `Hp` and `WalkSpeed` are imported but not wired into spawned mobs yet (`DEFERRED.md`). Scripts, prices, mob combat stats and `db/import` overlays are not imported.
+
+**Job and refine data** (`specs/stats/spec.md` §1.1–§1.2) follow the same pattern:
+
+* **Job data.** `tools/job-import` merges `db/re/job_{stats,aspd,exp,basepoints}.yml` per job id (later keys override earlier ones). It fills missing HP/SP table slots with the fallback formula, so the file always has dense `BaseHp`/`BaseSp` lists of `MaxBaseLevel` entries. It writes `JOB_DATA` v1 to `data/job/job_db.yml`, and `statpoint.yml` as `STATPOINT_DATA` v1.
+* **`JobDb::load_dir`** reads both files from `JOB_DATA_DIR`. It accumulates the sparse `BonusStats` into one row per job level, and lays the ASPD bases out as an array indexed by `WeaponType` (unlisted = 200). Lookups are by id and by case-insensitive `Name`. Every per-level accessor clamps its level to the table. Validation covers table lengths, bonus levels within `MaxJobLevel`, unique ids and names, and status-point rows 1, 2, 3, ...
+* **Refine data.** `tools/refine-import` keeps `Bonus`/`RandomBonus` per `(Armor|Weapon, item level)` as lists of 20 (cumulative per refine level, as in rAthena). It writes `REFINE_DATA` v1 to `data/refine/refine.yml`.
+* **`RefineDb::bonus(group, level, refine)`** clamps refine to 20 and returns zero for refine 0 or a missing row. It is loaded from `REFINE_DATA_DIR`.
 
 ### 2.3 Pipeline 3: Ahead-of-Time (AOT) Item Bonus Compiler
 

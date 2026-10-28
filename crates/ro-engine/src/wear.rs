@@ -8,8 +8,8 @@ use ro_db::{ItemData, ItemType};
 use crate::engine::MapInstance;
 use crate::entity::Entity;
 use crate::equipment::{
-    ammo_fits_weapon, equip_view, is_ranged, prepare_equip, Refusal, Wearer, EQI_ORDER, EQP_AMMO,
-    EQP_ARMS, EQP_HAND_L, EQP_HAND_R, EQP_SHOES, EQUIP_FAIL,
+    ammo_fits_weapon, check_equip, equip_view, is_ranged, prepare_equip, Refusal, Wearer,
+    EQI_ORDER, EQP_AMMO, EQP_ARMS, EQP_HAND_L, EQP_HAND_R, EQP_SHOES, EQUIP_FAIL,
 };
 use crate::inventory::{slot_of, wire_index};
 use crate::job::job_mapid;
@@ -35,31 +35,20 @@ const AMMO_ICON_MS: u32 = 9999;
 /// `0x013b` type: "ammunition equipped".
 const ACTION_FAILURE_AMMO_EQUIPPED: u16 = 3;
 
-/// How one item comes off (rAthena `pc_unequipitem` flags).
+/// How one item comes off (rAthena `pc_unequipitem` flags). Every unequip marks the player
+/// dirty; the tick's recalc pass sends one net diff (spec `specs/stats/spec.md` §2.3).
 #[derive(Debug, Clone, Copy)]
 struct Unequip {
-    /// Recalculate and push the status afterwards.
-    recalc: bool,
     /// A ranged weapon takes the worn ammo off with it.
     cascade: bool,
 }
 
 /// A take-off, an unequip-all entry, or a worn item dropped (rAthena flag 1).
-const TAKE_OFF: Unequip = Unequip {
-    recalc: true,
-    cascade: true,
-};
-/// Displaced by an equip (flag `1|2|4`): its own push, but the ammo waits for the new weapon
-/// (spec §2.2 step 14).
-const DISPLACED: Unequip = Unequip {
-    recalc: true,
-    cascade: false,
-};
-/// Ammo taken off by its weapon: only its `0x099a`; the weapon's push covers it.
-const CASCADED_AMMO: Unequip = Unequip {
-    recalc: false,
-    cascade: false,
-};
+const TAKE_OFF: Unequip = Unequip { cascade: true };
+/// Displaced by an equip (flag `1|2|4`): the ammo waits for the new weapon (spec §2.2 step 14).
+const DISPLACED: Unequip = Unequip { cascade: false };
+/// Ammo taken off by its weapon: only its `0x099a`.
+const CASCADED_AMMO: Unequip = Unequip { cascade: false };
 
 fn ammo_icon(gid: u32) -> ServerEvent {
     ServerEvent::StatusIconStarted {
@@ -77,7 +66,7 @@ fn is_ranged_weapon(data: &ItemData) -> bool {
 }
 
 impl MapInstance {
-    fn is_dead(&self, e: Entity) -> bool {
+    pub(crate) fn is_dead(&self, e: Entity) -> bool {
         self.world.dead_sit.get(e.index()) == Some(&DEAD)
     }
 
@@ -178,7 +167,7 @@ impl MapInstance {
         if mask & EQP_ARMS != 0 {
             self.drop_unfit_ammo(e);
         }
-        self.recalc(e);
+        self.mark_dirty(e, true);
     }
 
     /// `0x0983` (the ammo icon) and `0x013c`. The icon goes to the area on a live equip; at map
@@ -335,9 +324,120 @@ impl MapInstance {
                 self.unequip_slot(e, ammo, CASCADED_AMMO);
             }
         }
-        if how.recalc {
-            self.recalc(e);
+        self.mark_dirty(e, true);
+    }
+
+    /// The slots `e` wears, in `EQI` order, each once (a two-hander holds two positions).
+    fn worn_slots(&self, e: Entity) -> Vec<usize> {
+        let mut slots = Vec::new();
+        let Some(inventory) = self.world.inventories.get(e) else {
+            return slots;
+        };
+        for position in EQI_ORDER {
+            if let Some(slot) = inventory.worn_at(position) {
+                if !slots.contains(&slot) {
+                    slots.push(slot);
+                }
+            }
         }
+        slots
+    }
+
+    /// rAthena `pc_baselevelchanged` (spec `specs/stats/spec.md` §2.5): every worn item whose
+    /// `EquipLevelMax` is below the base level comes off, with its normal take-off packets.
+    pub(crate) fn unequip_over_level(&mut self, e: Entity) {
+        let Some(level) = self.world.players.get(e).map(|info| info.clevel) else {
+            return;
+        };
+        for slot in self.worn_slots(e) {
+            let over = self
+                .world
+                .inventories
+                .get(e)
+                .and_then(|inventory| inventory.get(slot))
+                .filter(|item| item.equip != 0)
+                .and_then(|item| self.items.get(item.item_id))
+                .is_some_and(|d| d.equip_level_max != 0 && level > d.equip_level_max);
+            if over {
+                self.unequip_slot(e, slot, TAKE_OFF);
+            }
+        }
+    }
+
+    /// `pc_jobchange` step 12 (spec `specs/stats/spec.md` §2.6): every worn item the current
+    /// class may not wear comes off, checked one at a time against what is still worn. A refusal
+    /// that carries a client message (ammo with no fitting weapon) sends it first, as
+    /// `pc_isequip` does.
+    pub(crate) fn unequip_unusable(&mut self, e: Entity) {
+        let Some(wearer) = self.world.players.get(e).map(|info| Wearer {
+            base_level: info.clevel,
+            sex: info.sex,
+            mapid: job_mapid(info.job),
+        }) else {
+            return;
+        };
+        for slot in self.worn_slots(e) {
+            let refusal = {
+                let Some(inventory) = self.world.inventories.get(e) else {
+                    return;
+                };
+                let entry = inventory.get(slot).filter(|item| item.equip != 0);
+                let Some((entry, data)) =
+                    entry.and_then(|entry| Some((entry, self.items.get(entry.item_id)?)))
+                else {
+                    continue;
+                };
+                let weapon_type = inventory.gear(&self.items).weapon_type();
+                check_equip(data, entry, &wearer, weapon_type).err()
+            };
+            match refusal {
+                None => {}
+                Some(Refusal::Message { msg_id }) => {
+                    self.emit_self(e, ServerEvent::ClientMessage { msg_id });
+                    self.unequip_slot(e, slot, TAKE_OFF);
+                }
+                Some(_) => self.unequip_slot(e, slot, TAKE_OFF),
+            }
+        }
+    }
+
+    /// rAthena `pc_equiplookall` as `0x01d7` events: the hands, the worn shoes' item id, the
+    /// head views and the robe, each with its current value.
+    pub(crate) fn equip_look_events(&self, e: Entity) -> Vec<ServerEvent> {
+        let gid = self.gid(e);
+        let looks = self
+            .world
+            .players
+            .get(e)
+            .map(|info| info.looks)
+            .unwrap_or_default();
+        let shoes = self
+            .world
+            .inventories
+            .get(e)
+            .and_then(|inventory| inventory.worn_at(EQP_SHOES))
+            .and_then(|slot| self.world.inventories.get(e)?.get(slot))
+            .map_or(0, |item| {
+                self.items
+                    .get(item.item_id)
+                    .map_or(item.item_id.0, ItemData::client_id)
+            });
+        [
+            (LOOK_WEAPON, looks.weapon, looks.shield),
+            (LOOK_SHOES, shoes, 0),
+            (LOOK_HEAD_BOTTOM, looks.head_bottom.into(), 0),
+            (LOOK_HEAD_TOP, looks.head_top.into(), 0),
+            (LOOK_HEAD_MID, looks.head_mid.into(), 0),
+            (LOOK_ROBE, looks.robe.into(), 0),
+        ]
+        .into_iter()
+        .map(|(look_type, value, value2)| ServerEvent::SpriteChanged {
+            gid,
+            look_type,
+            value,
+            value2,
+        })
+        .collect()
     }
 
     /// Recomputes `e`'s looks from the worn-slot table and stores them. Returns (before, after).
@@ -385,7 +485,7 @@ impl MapInstance {
     }
 
     /// `0x01d7` to the area including self.
-    fn send_look(&mut self, e: Entity, look_type: u8, value: u32, value2: u32) {
+    pub(crate) fn send_look(&mut self, e: Entity, look_type: u8, value: u32, value2: u32) {
         let gid = self.gid(e);
         self.emit_aoi(
             e,
@@ -462,7 +562,11 @@ mod tests {
     fn dead_wearer() -> MapInstance {
         let grid = Arc::new(MapGrid::all_walkable(100, 100).expect("dims"));
         let mut engine = MapInstance::new("prontera.gat", grid);
-        engine.set_registries(Arc::new(test_items()), Arc::new(MobDb::default()));
+        engine.set_registries(crate::Registries {
+            items: Arc::new(test_items()),
+            mobs: Arc::new(MobDb::default()),
+            ..Default::default()
+        });
         let mut worn = InventoryItem::new(ItemId(KNIFE), 1);
         worn.equip = EQP_HAND_R;
         let spare = InventoryItem::new(ItemId(KNIFE), 1);

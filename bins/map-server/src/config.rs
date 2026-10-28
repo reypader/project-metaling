@@ -2,6 +2,8 @@ use std::path::PathBuf;
 
 use clap::{error::ErrorKind, Parser};
 
+use crate::RegistryPaths;
+
 /// Configuration for `map-server` network ports and database connection.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MapConfig {
@@ -24,6 +26,15 @@ pub struct MapConfig {
     /// Directory holding the mob registry (`MOB_DATA_DIR`), normally `crates/ro-db/data/mob`.
     /// Unset: an empty registry.
     pub mob_data_dir: Option<PathBuf>,
+    /// Directory holding the job registry (`JOB_DATA_DIR`), normally `crates/ro-db/data/job`.
+    /// Required: the server refuses to start without it.
+    pub job_data_dir: Option<PathBuf>,
+    /// Directory holding the refine table (`REFINE_DATA_DIR`), normally
+    /// `crates/ro-db/data/refine`. Unset: no refine bonuses.
+    pub refine_data_dir: Option<PathBuf>,
+    /// Our battle config YAML (`BATTLE_CONFIG`), normally `config/battle.yml`. Unset: rAthena's
+    /// shipped defaults.
+    pub battle_config: Option<PathBuf>,
 }
 
 impl Default for MapConfig {
@@ -38,6 +49,9 @@ impl Default for MapConfig {
             mob_spawn_data_dir: None,
             item_data_dir: None,
             mob_data_dir: None,
+            job_data_dir: None,
+            refine_data_dir: None,
+            battle_config: None,
         }
     }
 }
@@ -85,6 +99,18 @@ struct MapCliArgs {
     /// Directory holding the mob registry (`mob_db.yml`).
     #[arg(long = "mob-data-dir")]
     mob_data_dir: Option<PathBuf>,
+
+    /// Directory holding the job registry (`job_db.yml`, `statpoint.yml`).
+    #[arg(long = "job-data-dir")]
+    job_data_dir: Option<PathBuf>,
+
+    /// Directory holding the refine table (`refine.yml`).
+    #[arg(long = "refine-data-dir")]
+    refine_data_dir: Option<PathBuf>,
+
+    /// Battle config YAML file.
+    #[arg(long = "battle-config")]
+    battle_config: Option<PathBuf>,
 }
 
 impl MapConfig {
@@ -148,6 +174,18 @@ impl MapConfig {
             .mob_data_dir
             .or_else(|| env("MOB_DATA_DIR").map(PathBuf::from));
 
+        let job_data_dir = parsed
+            .job_data_dir
+            .or_else(|| env("JOB_DATA_DIR").map(PathBuf::from));
+
+        let refine_data_dir = parsed
+            .refine_data_dir
+            .or_else(|| env("REFINE_DATA_DIR").map(PathBuf::from));
+
+        let battle_config = parsed
+            .battle_config
+            .or_else(|| env("BATTLE_CONFIG").map(PathBuf::from));
+
         Self {
             client_port,
             http_port,
@@ -158,11 +196,25 @@ impl MapConfig {
             mob_spawn_data_dir,
             item_data_dir,
             mob_data_dir,
+            job_data_dir,
+            refine_data_dir,
+            battle_config,
         }
     }
 
     pub fn from_env() -> Self {
         Self::from_args_and_env(std::env::args(), |key| std::env::var(key).ok())
+    }
+
+    /// The registry and battle-config sources for `load_registries`.
+    pub fn registry_paths(&self) -> RegistryPaths<'_> {
+        RegistryPaths {
+            items: self.item_data_dir.as_deref(),
+            mobs: self.mob_data_dir.as_deref(),
+            jobs: self.job_data_dir.as_deref(),
+            refine: self.refine_data_dir.as_deref(),
+            battle: self.battle_config.as_deref(),
+        }
     }
 }
 

@@ -15,21 +15,12 @@ pub(crate) const ADD_NO_SLOT: u8 = 4;
 pub(crate) const ADD_OVER_AMOUNT: u8 = 5;
 pub(crate) const ADD_STACK_LIMIT: u8 = 7;
 
-/// Base max weight of every job until per-job `MaxWeight` exists (0.1 units).
-const BASE_MAX_WEIGHT: u32 = 20_000;
-/// Max weight per point of STR.
-const MAX_WEIGHT_PER_STR: u32 = 300;
 /// Wire type of an item missing from the registry (Etc).
 const UNKNOWN_ITEM_TYPE: u8 = 3;
 /// `card[0]` markers: forged, created, pet egg.
 const CARD0_FORGE: u32 = 0x00FF;
 const CARD0_CREATE: u32 = 0x00FE;
 const CARD0_PET: u32 = 0x0100;
-
-/// `max_weight = 20000 + 300 × STR`.
-pub(crate) fn max_weight(str: u16) -> u32 {
-    BASE_MAX_WEIGHT + MAX_WEIGHT_PER_STR * u32::from(str)
-}
 
 /// One player's inventory component.
 #[derive(Debug, Clone)]
@@ -64,11 +55,12 @@ fn is_stackable(data: Option<&ItemData>) -> bool {
 
 impl PlayerInventory {
     /// Builds the component from a loaded or transferred inventory. Slots past
-    /// `INVENTORY_SLOTS` are dropped.
+    /// `INVENTORY_SLOTS` are dropped. `max_weight` comes from the status (job `MaxWeight` +
+    /// allocated STR × 300); the recalc keeps it current.
     pub(crate) fn new(
         inventory: CharacterInventory,
         char_id: CharId,
-        str: u16,
+        max_weight: u32,
         items: &ItemDb,
     ) -> Self {
         let mut slots = inventory.slots;
@@ -92,7 +84,7 @@ impl PlayerInventory {
             slots,
             worn,
             weight,
-            max_weight: max_weight(str),
+            max_weight,
             char_id,
             unique_item_counter: inventory.unique_item_counter,
             revision: 0,
@@ -105,6 +97,11 @@ impl PlayerInventory {
 
     pub(crate) fn max_weight(&self) -> u32 {
         self.max_weight
+    }
+
+    /// Set by the status recalc. Items already held stay, even over the new limit.
+    pub(crate) fn set_max_weight(&mut self, max_weight: u32) {
+        self.max_weight = max_weight;
     }
 
     pub(crate) fn revision(&self) -> u64 {
@@ -454,11 +451,12 @@ pub(crate) mod tests {
         .expect("valid test items")
     }
 
+    /// A Novice's max weight at `str` (job `MaxWeight` 20000 + 300 per STR).
     fn inv(str: u16) -> PlayerInventory {
         PlayerInventory::new(
             CharacterInventory::default(),
             CharId(150_000),
-            str,
+            20_000 + 300 * u32::from(str),
             &test_items(),
         )
     }
@@ -479,7 +477,7 @@ pub(crate) mod tests {
             slots,
             unique_item_counter: 0,
         };
-        let looks = PlayerInventory::new(inventory, CharId(150_000), 1, &items)
+        let looks = PlayerInventory::new(inventory, CharId(150_000), 20_300, &items)
             .gear(&items)
             .unit_looks();
         (looks.weapon, looks.shield)
@@ -510,7 +508,7 @@ pub(crate) mod tests {
             slots: vec![worn(1201, EQP_HAND_R), worn(1201, EQP_HAND_R)],
             unique_item_counter: 0,
         };
-        let inv = PlayerInventory::new(inventory, CharId(150_000), 1, &items);
+        let inv = PlayerInventory::new(inventory, CharId(150_000), 20_300, &items);
         assert_eq!(inv.worn_at(EQP_HAND_R), Some(0));
         let equips: Vec<u32> = inv.snapshot().items().map(|i| i.equip).collect();
         assert_eq!(equips, [EQP_HAND_R, 0]);
@@ -541,8 +539,12 @@ pub(crate) mod tests {
         assert_eq!(slots(&inv), vec![]);
 
         assert!(inv.add(&item(909), 29_000, &items).is_err(), "weight");
-        let mut light =
-            PlayerInventory::new(CharacterInventory::default(), CharId(1), 10_000, &items);
+        let mut light = PlayerInventory::new(
+            CharacterInventory::default(),
+            CharId(1),
+            20_000 + 300 * 10_000,
+            &items,
+        );
         assert_eq!(
             light.add(&item(909), 29_000, &items),
             Ok(Added {
@@ -689,11 +691,10 @@ pub(crate) mod tests {
         assert_eq!(inv.weight(), 20);
     }
 
-    /// ENG-INV-05: max weight from STR; unknown ids weigh 0, list as Etc and are kept.
+    /// ENG-INV-05: the max weight given; unknown ids weigh 0, list as Etc and are kept. (The max
+    /// weight formula is `ro_mechanics::calc_status`'s.)
     #[test]
     fn eng_inv_05_max_weight_and_unknown_ids() {
-        assert_eq!(max_weight(1), 20_300);
-        assert_eq!(max_weight(11), 23_300);
         let items = test_items();
         let stored = CharacterInventory {
             slots: vec![
@@ -702,7 +703,7 @@ pub(crate) mod tests {
             ],
             unique_item_counter: 5,
         };
-        let inv = PlayerInventory::new(stored.clone(), CharId(1), 11, &items);
+        let inv = PlayerInventory::new(stored.clone(), CharId(1), 23_300, &items);
         assert_eq!((inv.weight(), inv.max_weight()), (70, 23_300));
         let (normal, equip) = inv.list_entries(&items);
         assert!(equip.is_empty());

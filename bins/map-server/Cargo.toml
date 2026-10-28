@@ -8,6 +8,7 @@ ro-core.workspace = true
 ro-packets.workspace = true
 ro-engine.workspace = true
 ro-db.workspace = true
+ro-mechanics.workspace = true
 ro-persistence.workspace = true
 tokio.workspace = true
 tracing.workspace = true
@@ -17,6 +18,7 @@ tokio-util.workspace = true
 bytes.workspace = true
 anyhow.workspace = true
 clap.workspace = true
+serde-saphyr.workspace = true
 
 [dev-dependencies]
 async-trait.workspace = true

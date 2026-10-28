@@ -65,4 +65,14 @@ Order inside (`pc.cpp:12398-12525`): clear `equip_index` entries for the item's 
   * `SP_HP` appears only as a clamp push, when a `pc_resetstate` lowered MaxHP.
   * No heal and no `0x019b`.
   * The success message comes last.
-* Still not captured: an observer's view of the area `0x01d7` packets.
+* Observer's view of the area `0x01d7` packets: captured in capture 2 (below).
+
+**Capture 2** ([captures/attribute_sequence_2.txt](../captures/attribute_sequence_2.txt), write-up in [packets/status.md](../packets/status.md#capture-2-observer-stat-reset-failure-and-4th-class-jobs)). Applies to 20260219.
+
+* **Observer** (lines 532-556, 1204-1213, 1263-1288, 1349-1358): the area gets ten `0x01d7`: `LOOK_BASE`, `LOOK_HAIR`, `LOOK_CLOTHES_COLOR`, `LOOK_BODY2` (step 14), then the six `pc_equiplookall` looks (step 20), all in the order listed. The observer gets nothing else (no skill list, no status packets, no message).
+* **Trans points** (step 8): Novice High (4001) adds 52 (`SP_STATUSPOINT` 64 → 116, line 1214); Super Novice (23) from Novice High subtracts 52 (116 → 64, line 1264) with no reset because 64 points remained.
+* **Trait points** (step 10): Hyper Novice (4307) from Super Novice gives `SP_TRAITPOINT` 7 and the six trait `0x00be` (lines 1365-1371) but **no** `SP_STATUSPOINT` (Hyper Novice is not a primary 4th class). The order is step 9's six `0x00be`, then `SP_TRAITPOINT`, then the trait `0x00be`.
+* **Wrong name** (`@job supernovice`, line 1134): usage and job list as 59 `0x008e` lines, the failure message, nothing else sent, no state change.
+* **No forced unequip** (step 12) was exercised: the Tsurugi was off before the 4001/23/4307 changes. Merchant took it fine (equip at 611 after the Knight → Merchant change).
+* **MaxHP/MaxSP** after each job (diff only, no heal, no `0x00bd`): Merchant 2400/300 (B96), Novice High 82/20 (B6), Super Novice 65/16 (B6), 40/11 (B1), Hyper Novice 99/11 (B1). Derivations and the Hyper Novice data gap (no +2000/+4000 Super Novice HP in `job_db.yml`) are in [stats.md](./stats.md#capture-2-values).
+* **Hyper Novice stat bonus**: `0x0141` bonuses 11/11/10/10/10/10 at job level 1 (lines 1381-1386) are the `BonusStats` level-1 entry plus the Super Novice +10 rule (`status.cpp:4268`), which applies to the whole Super Novice line with `JOBL_THIRD`.

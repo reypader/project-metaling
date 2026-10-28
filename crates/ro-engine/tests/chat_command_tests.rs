@@ -65,7 +65,11 @@ fn engine() -> MapInstance {
     .expect("items");
     let grid = Arc::new(MapGrid::all_walkable(100, 100).expect("dims"));
     let mut engine = MapInstance::new("prontera.gat", grid);
-    engine.set_registries(Arc::new(items), Arc::new(MobDb::default()));
+    engine.set_registries(ro_engine::Registries {
+        items: Arc::new(items),
+        mobs: Arc::new(MobDb::default()),
+        ..Default::default()
+    });
     for (n, x, group) in [(GM, 50, 99), (NEAR, 60, 0), (FAR, 61, 0), (PLAYER, 51, 0)] {
         let spawn = CharacterSpawn {
             account_id: AccountId(2_000_000 + n),
@@ -131,7 +135,7 @@ fn added(events: &[ServerEvent]) -> Vec<(u16, u32, u16)> {
 
 fn items_of(engine: &MapInstance, n: u32) -> Vec<(u32, u16)> {
     engine
-        .inventory_snapshot(char_id(n))
+        .play_snapshot(char_id(n))
         .expect("inventory")
         .inventory
         .items()
@@ -301,10 +305,7 @@ fn eng_cmd_06_lists_amounts_unknown() {
     say(&mut e, GM, "@item Jellopy -3");
     say(&mut e, GM, "@item Jellopy 0");
     assert_eq!(
-        e.inventory_snapshot(char_id(GM))
-            .expect("inv")
-            .inventory
-            .slots[1]
+        e.play_snapshot(char_id(GM)).expect("inv").inventory.slots[1]
             .as_ref()
             .map(|i| i.amount),
         Some(4)

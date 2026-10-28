@@ -1,12 +1,13 @@
-//! PostgreSQL implementation of `InventoryRepository`.
+//! PostgreSQL implementation of `InventoryRepository`: the play state (progress, looks,
+//! inventory) a map-server loads and saves.
 
 use async_trait::async_trait;
 use sqlx::postgres::PgRow;
 use sqlx::query;
 
 use ro_core::{
-    CharId, CharacterInventory, CharacterLooks, CharacterStatus, InventoryItem, ItemId, ItemOption,
-    INVENTORY_SLOTS, ITEM_CARD_SLOTS, ITEM_OPTION_SLOTS,
+    CharId, CharacterInventory, CharacterLooks, CharacterProgress, CharacterStatus, InventoryItem,
+    ItemId, ItemOption, INVENTORY_SLOTS, ITEM_CARD_SLOTS, ITEM_OPTION_SLOTS,
 };
 
 use super::{get_col, map_sqlx_error};
@@ -48,8 +49,8 @@ const INSERT_ITEMS: &str = "INSERT INTO inventory (char_id, nameid, amount, equi
     expire_time, favorite, bound, unique_id, equip_switch, enchantgrade, ord) \
     ORDER BY t.ord";
 
-fn bad(col: &str, value: i64) -> RepositoryError {
-    RepositoryError::Internal(format!("inventory column '{col}' out of range: {value}"))
+fn bad(col: &str, value: impl std::fmt::Display) -> RepositoryError {
+    RepositoryError::Internal(format!("column '{col}' out of range: {value}"))
 }
 
 /// Reads an integer column stored wider than its Rust type.
@@ -70,6 +71,21 @@ fn int<T: TryFrom<i64>>(row: &PgRow, col: &str) -> Result<T, RepositoryError> {
 fn small<T: TryFrom<i64>>(row: &PgRow, col: &str) -> Result<T, RepositoryError> {
     let wide: i16 = get_col(row, col)?;
     narrow(col, i64::from(wide))
+}
+
+/// A value for a `SMALLINT` column; one that doesn't fit is refused, not wrapped.
+fn to_small(col: &str, value: u16) -> Result<i16, RepositoryError> {
+    i16::try_from(value).map_err(|_| bad(col, value))
+}
+
+/// A value for an `INT` column.
+fn to_int(col: &str, value: u32) -> Result<i32, RepositoryError> {
+    i32::try_from(value).map_err(|_| bad(col, value))
+}
+
+/// A value for a `BIGINT` column.
+fn to_big(col: &str, value: u64) -> Result<i64, RepositoryError> {
+    i64::try_from(value).map_err(|_| bad(col, value))
 }
 
 const CARD_COLS: [&str; ITEM_CARD_SLOTS] = ["card0", "card1", "card2", "card3"];
@@ -172,7 +188,7 @@ impl InventoryRepository for PostgresRepo {
             .await
             .map_err(map_sqlx_error)?;
         let Some(row) = query(
-            "SELECT c.str, c.agi, c.vit, c.int_stat, c.dex, c.luk, c.status_point, \
+            "SELECT c.str, c.agi, c.vit, c.int_stat, c.dex, c.luk, c.job_level, c.status_point, \
              c.skill_point, c.base_exp, c.job_exp, c.hp, c.max_hp, c.sp, c.max_sp, \
              c.unique_item_counter, a.group_id \
              FROM characters c JOIN accounts a ON a.account_id = c.account_id \
@@ -192,6 +208,7 @@ impl InventoryRepository for PostgresRepo {
             int: small(&row, "int_stat")?,
             dex: small(&row, "dex")?,
             luk: small(&row, "luk")?,
+            job_level: small(&row, "job_level")?,
             status_point: small(&row, "status_point")?,
             skill_point: small(&row, "skill_point")?,
             base_exp: big(&row, "base_exp")?,
@@ -232,11 +249,12 @@ impl InventoryRepository for PostgresRepo {
         }))
     }
 
-    async fn save_inventory(
+    async fn save_play_state(
         &self,
         char_id: CharId,
         inventory: &CharacterInventory,
         looks: &CharacterLooks,
+        progress: &CharacterProgress,
     ) -> Result<(), RepositoryError> {
         if inventory.slots.len() > INVENTORY_SLOTS {
             return Err(RepositoryError::Internal(format!(
@@ -250,10 +268,15 @@ impl InventoryRepository for PostgresRepo {
         // This UPDATE must stay first: its row lock on `characters` serializes concurrent saves
         // of one character. With the DELETE first, a second save could miss the first one's
         // inserted rows and both inventories would survive (`per_inv_03_concurrent_saves_serialize`).
+        let status = &progress.status;
         let updated = query(
             "UPDATE characters SET unique_item_counter = $1, weapon_type = $2, shield_view = $3, \
-             head_top_view = $4, head_mid_view = $5, head_bot_view = $6, robe_view = $7 \
-             WHERE char_id = $8",
+             head_top_view = $4, head_mid_view = $5, head_bot_view = $6, robe_view = $7, \
+             job_class = $8, base_level = $9, job_level = $10, base_exp = $11, job_exp = $12, \
+             str = $13, agi = $14, vit = $15, int_stat = $16, dex = $17, luk = $18, \
+             status_point = $19, skill_point = $20, hp = $21, max_hp = $22, sp = $23, \
+             max_sp = $24 \
+             WHERE char_id = $25",
         )
         .bind(i64::from(inventory.unique_item_counter))
         .bind(i32::from(looks.weapon_type))
@@ -262,6 +285,23 @@ impl InventoryRepository for PostgresRepo {
         .bind(i32::from(looks.head_mid))
         .bind(i32::from(looks.head_bottom))
         .bind(i32::from(looks.robe))
+        .bind(to_small("job_class", progress.job_class)?)
+        .bind(to_small("base_level", progress.base_level)?)
+        .bind(to_small("job_level", status.job_level)?)
+        .bind(to_big("base_exp", status.base_exp)?)
+        .bind(to_big("job_exp", status.job_exp)?)
+        .bind(to_small("str", status.str)?)
+        .bind(to_small("agi", status.agi)?)
+        .bind(to_small("vit", status.vit)?)
+        .bind(to_small("int_stat", status.int)?)
+        .bind(to_small("dex", status.dex)?)
+        .bind(to_small("luk", status.luk)?)
+        .bind(to_small("status_point", status.status_point)?)
+        .bind(to_small("skill_point", status.skill_point)?)
+        .bind(to_int("hp", status.hp)?)
+        .bind(to_int("max_hp", status.max_hp)?)
+        .bind(to_int("sp", status.sp)?)
+        .bind(to_int("max_sp", status.max_sp)?)
         .bind(char_id)
         .execute(&mut *tx)
         .await

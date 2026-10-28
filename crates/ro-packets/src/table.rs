@@ -207,7 +207,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0198 => Some(Fixed(8)),
         0x0199 => Some(Fixed(4)),
         0x019a => Some(Fixed(14)),
-        0x019b => Some(Fixed(10)), // ZC_NOTIFY_EFFECT (PF-21)
+        0x019b => Some(Fixed(10)), // ZC_NOTIFY_EFFECT (PF-21, specs/stats)
         0x019c => Some(Dynamic),
         0x019d => Some(Fixed(6)),
         0x019f => Some(Fixed(6)),

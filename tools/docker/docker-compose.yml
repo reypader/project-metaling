@@ -1,4 +1,9 @@
 # Docker Compose configuration for local development infrastructure.
+#
+# The explicit project name matters: rAthena's compose file also lives in a `docker` directory,
+# so without it both default to project "docker" and starting one recreates (removes) the
+# other's db container.
+name: metaling
 
 services:
   db:

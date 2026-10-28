@@ -1,5 +1,6 @@
 //! Public chat and GM commands (spec `specs/items/spec.md` §2.7; catalog `packets/chat.md`,
-//! `mechanics/atcommands.md`). Reply wording is our own.
+//! `mechanics/atcommands.md`). Reply wording is our own. The level and job commands are in
+//! `level_command.rs`.
 
 use ro_core::{BroadcastScope, InventoryItem, ItemId, ScopedServerEvent, ServerEvent};
 use ro_db::{ItemData, ItemType};
@@ -64,7 +65,7 @@ impl MapInstance {
     }
 
     /// A system line to `e` (`0x008e`).
-    fn tell(&mut self, e: Entity, message: &str) {
+    pub(crate) fn tell(&mut self, e: Entity, message: &str) {
         self.emit_self(
             e,
             ServerEvent::SelfChat {
@@ -82,6 +83,12 @@ impl MapInstance {
         };
         match command.to_ascii_lowercase().as_str() {
             "item" => self.command_item(e, params),
+            "baselevelup" | "blvl" | "lvup" | "baselevel" | "baselvl" | "baselvup"
+            | "baselvlup" | "blevel" => self.command_base_level(e, params),
+            "joblevelup" | "jlvl" | "jlevel" | "joblevel" | "joblvl" | "joblvlup" | "joblvup" => {
+                self.command_job_level(e, params)
+            }
+            "jobchange" | "job" => self.command_job(e, params),
             _ => self.tell(e, &format!("Unknown command: @{command}")),
         }
     }

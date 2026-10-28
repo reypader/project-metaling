@@ -7,7 +7,7 @@ mod common;
 use std::time::Duration;
 
 use common::*;
-use map_server::{load_registries, MapServiceOptions};
+use map_server::{load_registries, MapServiceOptions, RegistryPaths};
 use ro_db::{MapNpcs, NpcKind, NpcSpawn, NpcState, WarpDest};
 use ro_packets::RawPacket;
 
@@ -214,11 +214,21 @@ async fn bin_item_05_drop_and_pickup_seen_by_observer() {
 /// BIN-ITEM-06: unset item/mob dirs give empty registries; a bad dir fails startup.
 #[tokio::test]
 async fn bin_item_06_registry_dirs() {
-    let empty = load_registries(None, None).expect("unset dirs are fine");
+    let empty = load_registries(RegistryPaths::default()).expect("unset dirs are fine");
     assert!(empty.items.is_empty() && empty.mobs.is_empty());
     let missing = std::env::temp_dir().join("metaling-no-such-item-dir");
-    assert!(load_registries(Some(&missing), None).is_err());
-    assert!(load_registries(None, Some(&missing)).is_err());
+    for paths in [
+        RegistryPaths {
+            items: Some(&missing),
+            ..RegistryPaths::default()
+        },
+        RegistryPaths {
+            mobs: Some(&missing),
+            ..RegistryPaths::default()
+        },
+    ] {
+        assert!(load_registries(paths).is_err());
+    }
 
     // A server with empty registries runs; an unknown stored item still lists as Etc.
     let repo = InMemoryRepo::seeded(&[(A, 100, 100)]);

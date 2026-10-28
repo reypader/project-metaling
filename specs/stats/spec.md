@@ -44,11 +44,9 @@ Out of scope (see §5):
 - **`reference/catalog/captures/attribute_sequence.txt`** (2026-10-26) gives:
   - status windows for a Novice, a Bard, a Swordman and a Knight, with ASPD steps and shield/refine deltas (catalog `mechanics/stats.md` "Captured status values");
   - the wire order of stat-up, `@blvl`/`@jlvl` up and down, and `@job`, including a forced unequip, trans/trait points and a level-cap reset (catalog `packets/status.md` "Captured stat-up, level and job sequences").
-- **Still source-only:**
-  - the stat-up failure ack (the client sends no request when it can't raise);
-  - the stat-reset branch of `@blvl -n`;
-  - the `elvmax` unequip;
-  - an observer's view of the area packets.
+- **`reference/catalog/captures/attribute_sequence_2.txt`** (2026-10-26, correct `0x00bc` framing) adds an observer, the stat-up failure ack, the `@blvl -n` stat-reset branch, the map-change `0x0141`s and Novice High / Super Novice / Hyper Novice windows (catalog `packets/status.md` "Capture 2", `mechanics/stats.md` "Capture 2 values").
+- **`reference/catalog/captures/attribute_sequence_3.txt`** (2026-10-27, observer) adds the `elvmax` unequip (head top and shoes, after the tail), the observer's view of `@blvl`/`@jlvl` (`0x019b` only) and Hyper Novice MaxHP/MaxSP at base 99-201, which match the generated data (catalog `packets/status.md` "Capture 3", `mechanics/stats.md` "Capture 3 Hyper Novice values").
+- **Still source-only:** a stat above 255 (the trailing `0x0141`).
 
 When this spec and the catalog disagree, the catalog wins and this spec gets fixed.
 
@@ -108,7 +106,8 @@ PostgreSQL characters (str..luk, points, levels, job_class, exp, hp/sp, max_hp/m
 - **A cross-map transfer** carries `BaseStats` with the spawn, as it does the inventory. The destination recomputes at arrival, synchronously, without a diff, as a login does.
 
 ### 2.2 Formulas (`ro-mechanics`, catalog `mechanics/stats.md`)
-- **Base primary** = job bonus row[job level] + allocated (+ base_bonus, 0 today). **Battle primary** = base (+ battle_bonus, 0 today). Super Novice +10 needs `die_counter`, which we don't have: deferred.
+- **Base primary** = job bonus row[job level] + allocated + base_bonus. **Battle primary** = base (+ battle_bonus, 0 today). The base layer's only source today is the **Super Novice rule**: +10 to all six for the Super Novice line (`mapid & SECONDMASK == SUPER_NOVICE`: Super Novice, Super Baby, their expanded forms, Hyper Novice) at job level ≥ 70 or with `JOBL_THIRD`, while `die_counter == 0`. Nobody dies yet, so the counter is always 0 (capture 2: Hyper Novice J1 `0x0141` bonuses 11/11/10/10/10/10).
+- **×1.25 MaxHP/MaxSP** for `JOBL_UPPER` or a *primary* 4th class (`pc_is_primary_fourth`: the 2-1/2-2 lines' 4th classes). Hyper Novice, Sky Emperor and Soul Ascetic carry `JOBL_FOURTH` but get no ×1.25 (capture 2: Hyper Novice MaxHP 99 = 90 × 1.11).
 - Status ATK (ranged weapons swap STR/DEX), weapon ATK (both hands' item ATK + refine `atk2`), status MATK, weapon MATK (+ refine except bows), soft DEF/MDEF (`float`), hard DEF (Σ item DEF + `(Σ refine bonus + 50)/100` over every worn Armor-type item), HIT, FLEE, CRIT (×2 with a katar), perfect dodge, renewal ASPD, MaxHP/MaxSP (table × VIT/INT %, ×1.25 for upper classes, Taekwon ranker excluded, config rate, level-bracket caps), max weight (job `MaxWeight` + **allocated** STR × 300).
 - **Refine** (catalog "Refine bonuses"): only `Refineable` items with refine > 0. Refine is clamped to 20. Weapon level picks the Weapon row, armor level the Armor row. Grade is ignored. Overrefine is stored per hand for combat but unused.
 - **Precision:** use the C type rAthena uses (`float` vs `double`) wherever truncation could differ. Tests pin the catalog's worked values.
@@ -132,12 +131,13 @@ PostgreSQL characters (str..luk, points, levels, job_class, exp, hp/sp, max_hp/m
   4. The follow-up queue (§2.1).
 - **One net diff per tick.** An equip whose displaced items each pushed in rAthena (captured interleave) now sends one diff after all the acks. This is a deliberate deviation (DESIGN.md §5.1). Rewrite the equipment engine tests that assert the interleave to expect the net diff, and keep their ack and look order.
 - **`Gear::hands` fix** (DEFERRED "Per-hand values"): a two-hander that holds only `HAND_L` counts as the right-hand weapon. ASPD reads the right weapon type, plus the shield or a quarter of a different left weapon.
-- **Login push:** `send_login_status_push` sends the real `0x0141` bonus. **`0x00bd`** sends real values. **Map change** (`changemap`, not first login) sends `0x0141` STR..LUK at actor init (catalog `packets/status.md` "Where the status packets sit", step 3).
+- **Login push:** `send_login_status_push` sends the real `0x0141` bonus. **`0x00bd`** sends real values. **Map change** (`changemap`, not first login) sends `0x0141` ×12 at actor init, STR..LUK then POW..CRT, after the unit entries and before the config group (catalog `packets/status.md` "Where the status packets sit", step 3; capture 2 lines 326-337).
+- **Not a stat-model gap (capture 2):** rAthena's late `SP_ASPD` after `0x0b8d` at login (Knight 270 → 230, Bard 420 → 410) is the recorder's Berserk Potion buff being restored. Status effects are out of scope (DESIGN.md §10); the unbuffed first value is the one this feature must match.
 
 ### 2.4 Stat-up (`0x00bb`, catalog `packets/status.md` "Stat-up request and acknowledgement")
 - Parse `CZ_STATUS_CHANGE` (`var:u16`, `amount:u8`) into a new `ClientIntent::RaiseStat { var, amount }`. The opcode and length already exist in `ro-packets`.
 - **Gate:** var must be 13..18 and amount > 0. Cap the amount to what the points and the job max allow. If that leaves nothing, fail.
-- **Failure:** `0x00bc` with ok 0 and value 0, nothing else, sent at once (source-only: the client never sent a failing request in the capture).
+- **Failure:** `0x00bc` with ok 0 and value 0, nothing else, sent at once (capture 2 lines 986-987: INT +99 at the cap).
 - **Success:** apply the raise and mark dirty. Queue the follow-ups: `0x00be` with `SP_USTR + offset` and the next-point cost, `0x00b0` `SP_STATUSPOINT`, `0x00bc` with ok 1 and `min(stat, 255)`, and a trailing `0x0141` if the stat is above 255. On the wire (captured, lines 157-162):
   1. The tick's recalc pushes: `SP_MAXWEIGHT` first for STR, the stat's `0x0141`, then the changed derived values.
   2. `0x00be`.
@@ -152,26 +152,30 @@ PostgreSQL characters (str..luk, points, levels, job_class, exp, hp/sp, max_hp/m
 - **Group 99 only**, as with `@item`. For anyone else the line is ordinary chat.
 - **Argument:** a non-numeric, empty or 0 argument sends our own usage line.
 - **Messages** are our own wording: raised, lowered, can't go higher, can't go lower.
-- **The base tail** (both directions): `SP_STATUSPOINT`, `SP_TRAITPOINT` (always 0 here), `SP_BASELEVEL`, then `0x0acb` `SP_BASEEXP` (0) and `SP_NEXTBASEEXP`. NEXTBASEEXP stays the placeholder until exp tables exist.
+- **The base tail** (both directions): `SP_STATUSPOINT`, `SP_TRAITPOINT` (always 0 here; rAthena sends the running trait total, e.g. 7 for a Hyper Novice, capture 3; trait points are out of scope), `SP_BASELEVEL`, then `0x0acb` `SP_BASEEXP` (0) and `SP_NEXTBASEEXP`. NEXTBASEEXP stays the placeholder until exp tables exist.
 - **`@blvl +n`:**
   - Clamp to the job's `MaxBaseLevel`. Already at max is a failure.
   - Add the `statpoint` deltas for each step. Set `base_exp = 0`.
-  - Run the `elvmax` check, then mark dirty.
-  - Queue the follow-ups: a full heal to the **new** max (pushes `SP_HP`, `SP_SP`), `0x019b` effect 0 to the area, the message, then the base tail.
-  - Captured order (lines 401-423): diff, `SP_HP`, `SP_SP`, `0x019b`, message, tail.
+  - Mark dirty.
+  - Queue the follow-ups: a full heal to the **new** max (pushes `SP_HP`, `SP_SP`), `0x019b` effect 0 to the area, the message, the base tail, then the `elvmax` check.
+  - Captured order (lines 401-423; capture 3 lines 825-881): diff, `SP_HP`, `SP_SP`, `0x019b`, message, tail, then any `elvmax` unequip. The observer gets only `0x019b` and the unequip's look.
 - **`@blvl −n`:**
   - Clamp to `base_level − 1`. Already at level 1 is a failure.
   - Send the message at once.
-  - If unspent points are less than the removal, first reset stats: all stats to 1, `status_point` = table[old level]. Push `0x00be` ×6 and `SP_STATUSPOINT` at once; the `0x0141`s come from the diff. rAthena's reset also runs its own recalc and sends stale `0x0141`s first; with one recalc per tick we skip those.
+  - If unspent points are less than the removal, first reset stats: all stats to 1, `status_point` = table[old level]. Push `0x00be` ×6 (and the six trait costs, 0), `SP_STATUSPOINT` and `SP_TRAITPOINT` at once, **then** the message; the `0x0141`s come from the diff. rAthena's reset also sends stale `0x0141` ×12 first and runs its own recalc before the message (capture 2 lines 464-527, 1023-1104); with one recalc per tick we skip both and its diff folds into the tick's.
+  - Otherwise send the message at once.
   - Subtract, floor at 0, and mark dirty. Queue the base tail. No heal, no effect.
-  - Captured order (lines 679-703): message, clamp pushes, diff, tail.
-- **`elvmax` check:** every worn item whose `EquipLevelMax` is non-zero and below the base level is force-unequipped through the `wear.rs` unequip path (looks, `0x099a`, ammo cascade), with its packets sent at once. `EquipLevelMin` is not rechecked.
+  - Captured order without a reset (capture 1 lines 679-703, capture 2 1314-1337): message, clamp pushes, diff, tail.
+- **`elvmax` check:** every worn item whose `EquipLevelMax` is non-zero and below the base level is force-unequipped through the `wear.rs` unequip path (hand and shoe looks, `0x099a`, head looks, ammo cascade). `EquipLevelMin` is not rechecked.
+  - **It runs last** (capture 3): rAthena calls `pc_baselevelchanged` after the tail, so it is a follow-up queued after the tail, and its packets are the command's last. Per slot, as `pc_unequipitem` sends them: shoes `LOOK_SHOES` then `0x099a` (lines 880-881); head top `0x099a` then `LOOK_HEAD_TOP` (848-849). The observer gets the look only.
+  - rAthena recalcs inside that unequip. Ours marks dirty from the follow-up, so a diff it causes goes out next tick (the pass doesn't re-run a player in the same tick). The captured items have no stat effect, so neither sent one.
+  - Only `@blvl +n` checks; rAthena also checks on level down, where nothing can come off.
 - **`@jlvl ±n`:**
   - Clamp to `MaxJobLevel`, or to 1.
   - Skill points += n. On a decrease, floor at 0. There are no skills to reset, so skip `pc_resetskill`.
   - Set `job_exp = 0`.
   - Send at once: `0x019b` effect 1 to the area (increase only), the message, `SP_JOBLEVEL`, `0x0acb` `SP_JOBEXP` and `SP_NEXTJOBEXP`, then `SP_SKILLPOINT`. Then mark dirty. No heal, no follow-ups.
-  - Captured order: up (lines 428-450) effect, message, the four pushes, diff; down (705-718) message, the four pushes, clamp pushes, diff.
+  - Captured order: up (lines 428-450) effect, message, the four pushes, diff; down (705-718) message, the four pushes, clamp pushes, diff. The observer gets only `0x019b` effect 1 (capture 3 line 931). rAthena also sends `0x0a24` achievement updates after the effect (out of scope).
 
 ### 2.6 `@job <id|name>` (catalog `mechanics/job_change.md`, minimal step set)
 - **Group 99.** The argument is a job id or a case-insensitive name from `JobDb`.
@@ -210,10 +214,10 @@ PostgreSQL characters (str..luk, points, levels, job_class, exp, hp/sp, max_hp/m
   - the party update.
 
 ### 2.7 Persistence
-- Add one repository call that saves the character's progress in one transaction: str..luk, `status_point`, `skill_point`, `base_level`, `job_level`, `job_class`, `base_exp`, `job_exp`, `hp`, `sp`, `max_hp`, `max_sp`. **Prefer extending the existing ordered save** (the logout/autosave writer that runs `save_inventory`) so the status and the inventory go in the same transaction. That closes DEFERRED's "position and inventory in two transactions" gap for these fields.
+- One repository call saves the character's progress in one transaction: str..luk, `status_point`, `skill_point`, `base_level`, `job_level`, `job_class`, `base_exp`, `job_exp`, `hp`, `sp`, `max_hp`, `max_sp`. **Done by extending the existing ordered save:** `save_inventory` became `save_play_state(char_id, inventory, looks, progress)` (`ro_core::CharacterProgress`), so the status and the inventory go in the same transaction. The engine's `InventorySnapshot` became `PlaySnapshot` (with `progress`); the map-server's recent-write record keeps the progress too, so a re-entry racing the write gets it. Autosave writes when the inventory revision **or** the progress changed.
 - **When it saves:** logout, autosave and map transfer (as today for the inventory), plus an **immediate save after `@job`** (rAthena `chrif_save`).
 - **What the map-server reads:** a status snapshot from the engine (like `inventory_snapshot`; a clone only on save).
-- **Load:** `PlayState` / `CharacterSpawn` gain `job_level`. The `characters` columns already exist, so there's no schema change.
+- **Load:** `CharacterStatus` gains `job_level` (so `PlayState`, `CharacterSpawn` and `MapTransfer` carry it; ruling in M3). The `characters` columns already exist, so there's no schema change.
 
 ## 3. Scenarios
 
@@ -236,14 +240,15 @@ PostgreSQL characters (str..luk, points, levels, job_class, exp, hp/sp, max_hp/m
 | ENG-STAT-03 | A katar pushes CRITICAL ×2. A bow pushes ATK1 (DEX-based). Shield on/off pushes ASPD. |
 | ENG-STAT-04 | A change that drops MaxHP below current HP clamps HP: `SP_HP` before the diff, then the diff's `MAXHP` … `HP` (captured double send). |
 | ENG-STAT-05 | Stat-up success order (captured): the diff (`SP_MAXWEIGHT` first for STR, the stat's `0x0141`, derived), then `0x00be`, `SP_STATUSPOINT`, `0x00bc` ok. Failure: only `0x00bc` ok 0. An over-affordable amount raises as many as possible. Refused at the cap. A LUK raise re-sends `FLEE2`/`CRITICAL` even when the shown values don't change. |
-| ENG-STAT-06 | `@blvl 10` on a level-1 Novice (captured order): diff, `SP_HP`, `SP_SP` (full heal to the new max), `0x019b` effect 0, message, `SP_STATUSPOINT`, `SP_TRAITPOINT`, `SP_BASELEVEL`, exp pushes; an `elvmax` item comes off. `@blvl -5`: message, clamp pushes, diff, tail; with too few unspent points, stats reset first. |
-| ENG-STAT-07 | `@jlvl` up: effect 1, message, `SP_JOBLEVEL`, exp pushes, `SP_SKILLPOINT`, then the diff. Down: message, pushes, clamp, diff; no effect, no heal. |
+| ENG-STAT-06 | `@blvl 10` on a level-1 Novice (captured order): diff, `SP_HP`, `SP_SP` (full heal to the new max), `0x019b` effect 0, message, `SP_STATUSPOINT`, `SP_TRAITPOINT`, `SP_BASELEVEL`, exp pushes; an `elvmax` item comes off after the tail (shoes: look then `0x099a`; head top: `0x099a` then look), and an observer gets only `0x019b` and the look. `@blvl -5`: message, clamp pushes, diff, tail; with too few unspent points, stats reset first. |
+| ENG-STAT-07 | `@jlvl` up: effect 1 (an observer gets only this), message, `SP_JOBLEVEL`, exp pushes, `SP_SKILLPOINT`, then the diff. Down: message, pushes, clamp, diff; no effect, no heal. |
 | ENG-STAT-08 | `@job` Novice → Swordman wearing a Swordman-incompatible item (captured order): `0x00be` ×6, job-level pushes, the item's look(s) + `0x099a`, `LOOK_BASE`/`HAIR`/`CLOTHES_COLOR`/`BODY2` to the area, `0x010f`, `SP_MAXWEIGHT` + diff, the equip looks, message; a save is requested. A base level above the new job's max is capped with a stat reset. `@job` to the same job or an unknown name: our message, no change. |
-| ENG-STAT-09 | Login: `Status` computed at spawn. The login push and `0x00bd` carry real values (Novice: ASPD 440). A cross-map warp recomputes without a diff push. Map change sends `0x0141` ×6 at actor init. |
+| ENG-STAT-09 | Login: `Status` computed at spawn. The login push and `0x00bd` carry real values (Novice: ASPD 440). A cross-map warp recomputes without a diff push. Map change sends `0x0141` ×12 at actor init. |
 | ENG-STAT-10 | Determinism: equip, then stat-up in the same tick: one recalc, and both changes are in its diff. The stat-up follow-ups come after the diff. |
-| ENG-STAT-11 | The shipped job and refine data (read from `crates/ro-db/data/`) reproduce the captured status windows of MECH-01 end to end, through the engine's mapping into `calc_status`. |
+| ENG-STAT-11 | The shipped job and refine data (read from `crates/ro-db/data/`) reproduce the captured status windows of MECH-01 end to end, through the engine's mapping into `calc_status`, and capture 2's Hyper Novice (Super Novice +10, no ×1.25, MaxHP 99, amotion 420). |
 | PKT-STAT-01 | `0x00bb` parses into `RaiseStat`; a truncated frame drops the session (existing framing rules). |
-| BIN-STAT-01 | Stat-up then relog: stats and points persist. `@job` saves immediately (DB-backed test). |
+| BIN-STAT-01 | Stat-up then relog: stats and points persist. `@job` saves immediately (in-memory repo, like the other BIN tests; the Postgres write is PER-STAT-01). |
+| PER-STAT-01 | `save_play_state` writes the progress (job, levels, exp, stats, points, HP/SP) with the inventory in one transaction, and `load_play_state` / the summary read it back. |
 | BIN-STAT-02 | `BATTLE_CONFIG` pointing at a bad file fails startup with the path; unset uses the defaults. |
 
 ## 4. Licensing
@@ -263,11 +268,9 @@ PostgreSQL characters (str..luk, points, levels, job_class, exp, hp/sp, max_hp/m
   - the party class update;
   - the `@job` upper/baby flag argument.
 - `@jlvl` negative: `pc_resetskill` (no skills yet).
-- Super Novice +10 stats (`die_counter`), Taekwon ranker HP ×3, enchant grade, overrefine damage (combat).
+- `die_counter` (the Super Novice +10 assumes no deaths), Taekwon ranker HP ×3, enchant grade, overrefine damage (combat).
+- Restoring saved status effects at login (capture 2's late `SP_ASPD` is a Berserk Potion buff).
 - Exp tables, so NEXTBASEEXP/NEXTJOBEXP stay placeholders. Exp gain and natural level-up.
 - Natural regen, overweight statuses, trait stats and AP.
-- Captures still missing:
-  - an observer watching `@job` and `@blvl` (area looks and effect);
-  - the `@blvl -n` stat-reset branch;
-  - an `elvmax` unequip;
-  - a stat-up failure ack.
+- Captures still missing: a stat above 255.
+- Achievement updates (`0x0a24`) after level effects, and the `0x0446` quest marker refresh at a level change (capture 3).

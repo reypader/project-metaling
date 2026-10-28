@@ -1,5 +1,5 @@
-//! Character status packet encoders: `0x0acb`, `0x00bd`, `0x0141`, `0x013a`, `0x00be`, and the
-//! status icon `0x0983`.
+//! Character status packet encoders: `0x0acb`, `0x00bd`, `0x0141`, `0x013a`, `0x00be`, the
+//! stat-up ack `0x00bc`, the level-up effect `0x019b` and the status icon `0x0983`.
 //! Layouts: `reference/catalog/packets/status.md`.
 
 use bytes::{BufMut, Bytes, BytesMut};
@@ -76,6 +76,25 @@ pub fn encode_zc_status_change(var_id: u16, value: u8) -> Bytes {
     buf.put_u16_le(PacketOpcode::ZC_STATUS_CHANGE.raw());
     buf.put_u16_le(var_id);
     buf.put_u8(value);
+    buf.freeze()
+}
+
+/// Encodes `ZC_STATUS_CHANGE_ACK` (0x00bc): `var:u16, ok:u8, value:u8`, 6 bytes.
+pub fn encode_zc_status_change_ack(var_id: u16, ok: bool, value: u8) -> Bytes {
+    let mut buf = BytesMut::with_capacity(6);
+    buf.put_u16_le(PacketOpcode::ZC_STATUS_CHANGE_ACK.raw());
+    buf.put_u16_le(var_id);
+    buf.put_u8(u8::from(ok));
+    buf.put_u8(value);
+    buf.freeze()
+}
+
+/// Encodes `ZC_NOTIFY_EFFECT` (0x019b): `gid:u32, effect:u32`, 10 bytes.
+pub fn encode_zc_notify_effect(gid: u32, effect: u32) -> Bytes {
+    let mut buf = BytesMut::with_capacity(10);
+    buf.put_u16_le(PacketOpcode::ZC_NOTIFY_EFFECT.raw());
+    buf.put_u32_le(gid);
+    buf.put_u32_le(effect);
     buf.freeze()
 }
 

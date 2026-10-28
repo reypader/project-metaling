@@ -91,5 +91,6 @@ pub use settings::{
 };
 pub use status::{
     encode_zc_attack_range, encode_zc_couplestatus, encode_zc_longlongpar_change,
-    encode_zc_msg_state_change3, encode_zc_status, encode_zc_status_change,
+    encode_zc_msg_state_change3, encode_zc_notify_effect, encode_zc_status,
+    encode_zc_status_change, encode_zc_status_change_ack,
 };

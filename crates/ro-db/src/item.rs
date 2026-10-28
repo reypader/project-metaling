@@ -79,7 +79,9 @@ impl ItemType {
 
 /// A weapon's `SubType` (rAthena `W_*`). Items that aren't weapons, and weapons without a
 /// `SubType`, are `Fist`.
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(
+    Debug, Clone, Copy, Default, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,
+)]
 pub enum WeaponType {
     #[default]
     Fist,

@@ -14,11 +14,12 @@ use tokio::net::{TcpListener, TcpStream};
 use tokio_util::codec::Decoder;
 
 use map_server::{
-    handle_client_session, MapData, MapDataLoader, MapServiceHandle, MapServiceOptions, Registries,
+    handle_client_session, MapData, MapDataLoader, MapServiceHandle, MapServiceOptions,
 };
 use ro_core::{
-    AccountId, CharId, CharacterInventory, CharacterLooks, CharacterSummary,
-    CreateCharacterRequest, InventoryItem, ItemId, MapPosition, Sex, TARGET_PACKETVER,
+    AccountId, CharId, CharacterInventory, CharacterLooks, CharacterProgress, CharacterStatus,
+    CharacterSummary, CreateCharacterRequest, InventoryItem, ItemId, MapPosition, Sex,
+    TARGET_PACKETVER,
 };
 use ro_db::{CellType, MapGrid, MapMobSpawns, MapNpcs};
 use ro_packets::{
@@ -42,11 +43,13 @@ pub fn char_id(n: u32) -> u32 {
 #[derive(Default)]
 pub struct InMemoryRepo {
     chars: Mutex<HashMap<CharId, CharacterSummary>>,
-    /// Simulated latency of `update_position` and `save_inventory` (a slow database).
+    /// Simulated latency of `update_position` and `save_play_state` (a slow database).
     persist_delay: Mutex<Duration>,
     /// Stored inventories, account groups and STR by character.
     inventories: Mutex<HashMap<CharId, CharacterInventory>>,
     groups: Mutex<HashMap<CharId, i32>>,
+    /// Stored stats, points, exp and HP/SP (job and base level live in `chars`).
+    statuses: Mutex<HashMap<CharId, CharacterStatus>>,
     /// Every inventory save, in order.
     pub inventory_saves: Mutex<Vec<(CharId, CharacterInventory)>>,
 }
@@ -133,6 +136,29 @@ impl InMemoryRepo {
             .unwrap()
             .get(&CharId(char_id(n)))
             .map(|c| c.looks)
+    }
+
+    /// The stored progress of character `n` (what the next login loads).
+    pub fn stored_progress(&self, n: u32) -> Option<CharacterProgress> {
+        let id = CharId(char_id(n));
+        let (job_class, base_level) = self
+            .chars
+            .lock()
+            .unwrap()
+            .get(&id)
+            .map(|c| (c.job_class, c.base_level))?;
+        let status = self
+            .statuses
+            .lock()
+            .unwrap()
+            .get(&id)
+            .copied()
+            .unwrap_or_default();
+        Some(CharacterProgress {
+            job_class,
+            base_level,
+            status,
+        })
     }
 
     pub fn stored(&self, n: u32) -> Option<(String, MapPosition)> {
@@ -222,7 +248,13 @@ impl InventoryRepository for InMemoryRepo {
             return Ok(None);
         }
         Ok(Some(PlayState {
-            status: Default::default(),
+            status: self
+                .statuses
+                .lock()
+                .unwrap()
+                .get(&id)
+                .copied()
+                .unwrap_or_default(),
             group_id: self.groups.lock().unwrap().get(&id).copied().unwrap_or(0),
             inventory: self
                 .inventories
@@ -234,11 +266,12 @@ impl InventoryRepository for InMemoryRepo {
         }))
     }
 
-    async fn save_inventory(
+    async fn save_play_state(
         &self,
         id: CharId,
         inventory: &CharacterInventory,
         looks: &CharacterLooks,
+        progress: &CharacterProgress,
     ) -> Result<(), RepositoryError> {
         let delay = *self.persist_delay.lock().unwrap();
         if !delay.is_zero() {
@@ -254,10 +287,14 @@ impl InventoryRepository for InMemoryRepo {
             .unwrap()
             .push((id, inventory.clone()));
         self.inventories.lock().unwrap().insert(id, compact);
-        // Like the database: the look columns are written with the inventory.
+        // Like the database: the look columns and the progress are written with the inventory.
         if let Some(c) = self.chars.lock().unwrap().get_mut(&id) {
             c.looks = *looks;
+            c.job_class = progress.job_class;
+            c.base_level = progress.base_level;
+            c.job_level = progress.status.job_level;
         }
+        self.statuses.lock().unwrap().insert(id, progress.status);
         Ok(())
     }
 }
@@ -299,15 +336,28 @@ pub fn maps_loader(maps: Vec<(&'static str, MapNpcs)>) -> MapDataLoader {
     })
 }
 
-/// The shipped item and mob registries (read from `crates/ro-db/data`, like the server does).
-pub fn test_registries() -> Registries {
-    static REGISTRIES: std::sync::OnceLock<Registries> = std::sync::OnceLock::new();
+/// The shipped item, mob, job and refine registries (read from `crates/ro-db/data`, like the
+/// server does) and the default battle config.
+pub fn test_registries() -> ro_engine::Registries {
+    static REGISTRIES: std::sync::OnceLock<ro_engine::Registries> = std::sync::OnceLock::new();
     REGISTRIES
         .get_or_init(|| {
             let data =
                 std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../crates/ro-db/data");
-            map_server::load_registries(Some(&data.join("item")), Some(&data.join("mob")))
-                .expect("shipped registries load")
+            let (items, mobs, jobs, refine) = (
+                data.join("item"),
+                data.join("mob"),
+                data.join("job"),
+                data.join("refine"),
+            );
+            map_server::load_registries(map_server::RegistryPaths {
+                items: Some(&items),
+                mobs: Some(&mobs),
+                jobs: Some(&jobs),
+                refine: Some(&refine),
+                battle: None,
+            })
+            .expect("shipped registries load")
         })
         .clone()
 }

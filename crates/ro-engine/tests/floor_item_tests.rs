@@ -114,7 +114,11 @@ impl World {
             assert!(grid.set(x, y, CellType::Wall));
         }
         let mut engine = MapInstance::new("prontera.gat", Arc::new(grid));
-        engine.set_registries(items(), Arc::new(MobDb::default()));
+        engine.set_registries(ro_engine::Registries {
+            items: items(),
+            mobs: Arc::new(MobDb::default()),
+            ..Default::default()
+        });
         Self { engine, now: 0 }
     }
 

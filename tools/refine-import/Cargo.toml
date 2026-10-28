@@ -1,0 +1,19 @@
+[package]
+name = "refine-import"
+version.workspace = true
+edition.workspace = true
+publish = false
+
+[[bin]]
+name = "refine-import"
+path = "src/main.rs"
+
+[dependencies]
+ro-db.workspace = true
+serde.workspace = true
+serde-saphyr.workspace = true
+clap = { workspace = true, features = ["derive", "env"] }
+anyhow.workspace = true
+
+[lints]
+workspace = true

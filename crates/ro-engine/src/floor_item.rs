@@ -365,7 +365,11 @@ mod tests {
     fn engine_with(capacity: u32) -> MapInstance {
         let grid = Arc::new(MapGrid::all_walkable(100, 100).expect("dims"));
         let mut engine = MapInstance::with_capacity("prontera.gat", grid, capacity);
-        engine.set_registries(Arc::new(test_items()), Arc::new(MobDb::default()));
+        engine.set_registries(crate::Registries {
+            items: Arc::new(test_items()),
+            mobs: Arc::new(MobDb::default()),
+            ..Default::default()
+        });
         engine
     }
 

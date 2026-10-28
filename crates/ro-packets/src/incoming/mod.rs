@@ -24,6 +24,7 @@
 //! - `CZ_REQUEST_CHAT` (0x00f3)
 //! - `CZ_REQ_WEAR_EQUIP` (0x0998), `CZ_REQ_TAKEOFF_EQUIP` (0x00ab),
 //!   `CZ_REQ_TAKEOFF_EQUIP_ALL` (0x0bf5)
+//! - `CZ_STATUS_CHANGE` (0x00bb)
 
 pub mod char;
 pub mod frame;
@@ -45,4 +46,5 @@ pub use map::{
     CzItemThrowPacket, CzNotifyActorInitPacket, CzReqDisconnectPacket, CzReqNamePacket,
     CzReqTakeoffEquipAllPacket, CzReqTakeoffEquipPacket, CzReqWearEquipPacket, CzRequestActPacket,
     CzRequestChatPacket, CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket,
+    CzStatusChangePacket,
 };

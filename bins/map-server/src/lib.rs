@@ -7,10 +7,10 @@ pub use claim::{Claim, MapRepository};
 
 pub use config::MapConfig;
 pub use service::{
-    is_valid_map_name, load_mob_spawns, load_npcs, load_registries, load_walkability,
-    map_data_loader, Entry, JoinSession, MapData, MapDataLoader, MapHandoff, MapServiceHandle,
-    MapServiceOptions, Registries, SessionControl, WorldCommand, AUTOSAVE_INTERVAL,
-    FALLBACK_MAP_SIZE, TICK_INTERVAL,
+    is_valid_map_name, load_battle_config, load_mob_spawns, load_npcs, load_registries,
+    load_walkability, map_data_loader, Entry, JoinSession, MapData, MapDataLoader, MapHandoff,
+    MapServiceHandle, MapServiceOptions, RegistryPaths, SessionControl, WorldCommand,
+    AUTOSAVE_INTERVAL, FALLBACK_MAP_SIZE, TICK_INTERVAL,
 };
 pub use session::handle_client_session;
 

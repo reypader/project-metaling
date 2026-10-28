@@ -10,12 +10,13 @@ use ro_db::{MobId, NpcState};
 use rustc_hash::FxHashMap;
 
 use crate::entity::{Entity, EntityAllocator};
+use crate::equipment::GearStatus;
 use crate::error::EngineError;
 use crate::inventory::PlayerInventory;
 use crate::movement::WalkingPath;
 use crate::sparse_set::SparseSet;
 use crate::spatial::SpatialGrid8x8;
-use crate::status::DerivedStatus;
+use crate::stats::FollowUp;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum EntityKind {
@@ -38,13 +39,24 @@ pub(crate) struct PlayerInfo {
     pub(crate) hair_style: u16,
     pub(crate) hair_color: u16,
     pub(crate) clevel: u16,
-    /// Allocated stats, points and exp, as loaded; STR also sets max weight.
+    /// Allocated stats, job level, points, exp and HP/SP (the persisted progress).
     pub(crate) status: CharacterStatus,
     /// Account permission group; 99 may use every GM command.
     pub(crate) group_id: i32,
-    /// The derived status as last pushed to the client (spec §2.10). Built at spawn from the
-    /// worn gear; `MapInstance::recalc` diffs against it.
-    pub(crate) derived: DerivedStatus,
+    /// The status snapshot committed last (spec `specs/stats/spec.md` §2.1): computed at spawn,
+    /// then by the tick's recalc pass, which diffs against it.
+    pub(crate) derived: ro_mechanics::Status,
+    /// The allocated STR..LUK `derived` was computed from: the diff sends a stat's `0x0141`
+    /// when its allocated base or its battle value changed.
+    pub(crate) allocated: [u16; 6],
+    /// The worn gear's part of the status, rebuilt only when an equip change marks it stale.
+    pub(crate) gear: GearStatus,
+    /// `stats::DIRTY` / `stats::STALE_GEAR` / `stats::LISTED`: what the tick's recalc pass owes
+    /// this player.
+    pub(crate) stat_flags: u8,
+    /// Packets and actions a flow queued for after this tick's recalc (spec §2.1 "Follow-up
+    /// queue"). Drained in Stage 4; the capacity is reused across ticks.
+    pub(crate) followups: Vec<FollowUp>,
     /// What other players see, as last sent (spec §2.1). Built at spawn and refreshed by every
     /// equip change; entry packets read it, never the inventory.
     pub(crate) looks: UnitLooks,
@@ -214,7 +226,11 @@ impl World {
                 clevel: spawn.base_level,
                 status: spawn.status,
                 group_id: spawn.group_id,
-                derived: DerivedStatus::default(),
+                derived: ro_mechanics::Status::default(),
+                allocated: [0; 6],
+                gear: GearStatus::default(),
+                stat_flags: 0,
+                followups: Vec::new(),
                 looks: UnitLooks::default(),
                 rewarp_count: 0,
                 connect_new: false,

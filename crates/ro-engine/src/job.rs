@@ -1,6 +1,9 @@
 //! Job identity: the client job id → rAthena mapid bits, and the item `Jobs` / `Classes` tests
 //! (spec `specs/equipment/spec.md` §2.1; catalog `mechanics/equipment.md` §3a). The table is
-//! data from the catalog. Stats will reuse it.
+//! data from the catalog. The status formulas read the class flags from it.
+
+use ro_core::Sex;
+use ro_mechanics::ClassFlags;
 
 /// Base-class number (`mapid & 0xff`).
 const BASE_MASK: u32 = 0xff;
@@ -20,6 +23,24 @@ const THIRD_MASK: u32 = 0xffff;
 /// Second-class mapids of the dual-wield lines.
 const MAPID_ASSASSIN: u32 = 0x106;
 const MAPID_KAGEROU_OBORO: u32 = 0x109;
+/// The first-class numbers of the six original lines (Swordman 1 .. Thief 6).
+const MAPID_SWORDMAN: u32 = 0x1;
+const MAPID_THIEF: u32 = 0x6;
+/// Mapids of the extended lines (Rebellion, Kagerou/Oboro), compared under `SECOND_MASK`, so
+/// Night Watch and Shinkiro/Shiranui count (catalog `mechanics/battle_config.md` §4, §8).
+const MAPID_REBELLION: u32 = 0x108;
+/// The Summoner line, under `BASE_MASK` (rAthena `MAPID_FIRSTMASK`; Spirit Handler `0x10a` is in it).
+const MAPID_SUMMONER: u32 = 0xa;
+/// Expanded jobs with trait stats but without the `JOBL_FOURTH` bit: Night Watch and
+/// Shinkiro/Shiranui (under `THIRD_MASK`), Spirit Handler (under `SECOND_MASK`).
+const MAPID_NIGHT_WATCH: u32 = 0x1108;
+const MAPID_SHINKIRO_SHIRANUI: u32 = 0x1109;
+const MAPID_SPIRIT_HANDLER: u32 = 0x10a;
+/// The Super Novice line under `SECOND_MASK` (Super Novice, Super Baby, their expanded forms,
+/// Hyper Novice).
+const MAPID_SUPER_NOVICE: u32 = 0x100;
+/// From this job level a Super Novice gets the +10 stats.
+const SUPER_NOVICE_BONUS_JOB_LEVEL: u16 = 70;
 /// Third-class mapids that need a Mado Gear or a cart for cannonballs.
 const MAPID_MECHANIC: u32 = 0x1105;
 const MAPID_GENETIC: u32 = 0x1205;
@@ -199,6 +220,61 @@ pub(crate) fn job_mapid(job: u16) -> u32 {
         .map_or(0, |i| JOB_MAPIDS[i].1)
 }
 
+/// `pc_mapid2jobid`'s sex pick (spec §2.6): the jobs that share a mapid are male/female pairs
+/// (Bard/Dancer, Kagerou/Oboro, ...), the male one first. Other jobs are returned unchanged.
+pub(crate) fn job_for_sex(job: u16, sex: Sex) -> u16 {
+    let Ok(i) = JOB_MAPIDS.binary_search_by_key(&job, |&(id, _)| id) else {
+        return job;
+    };
+    let mapid = JOB_MAPIDS[i].1;
+    let mut pair = JOB_MAPIDS
+        .iter()
+        .filter(|&&(_, m)| m == mapid)
+        .map(|&(id, _)| id);
+    let (Some(male), Some(female)) = (pair.next(), pair.next()) else {
+        return job;
+    };
+    match sex {
+        Sex::Female => female,
+        _ => male,
+    }
+}
+
+/// `pc_is_primary_fourth`:the twelve 4th classes of the 2-1 and 2-2 lines (Dragon Knight ..
+/// Shadow Cross, Imperial Guard .. Abyss Chaser). Hyper Novice, Sky Emperor and Soul Ascetic
+/// carry `JOBL_FOURTH` too but aren't primary (capture 2: Hyper Novice has no ×1.25 MaxHP).
+fn is_primary_fourth(mapid: u32) -> bool {
+    let base = mapid & BASE_MASK;
+    mapid & JOBL_FOURTH != 0
+        && mapid & (JOBL_2_1 | JOBL_2_2) != 0
+        && (MAPID_SWORDMAN..=MAPID_THIEF).contains(&base)
+}
+
+/// What the status formulas need to know about a job's class (catalog
+/// `mechanics/battle_config.md` "pc_is_trait_job" and the max-parameter order).
+pub(crate) fn class_flags(mapid: u32) -> ClassFlags {
+    let third_line = mapid & THIRD_MASK;
+    ClassFlags {
+        upper: mapid & JOBL_UPPER != 0,
+        baby: mapid & JOBL_BABY != 0,
+        third: mapid & JOBL_THIRD != 0,
+        fourth: is_primary_fourth(mapid),
+        trait_job: mapid & JOBL_FOURTH != 0
+            || matches!(third_line, MAPID_NIGHT_WATCH | MAPID_SHINKIRO_SHIRANUI)
+            || mapid & SECOND_MASK == MAPID_SPIRIT_HANDLER,
+        summoner: mapid & BASE_MASK == MAPID_SUMMONER,
+        extended: matches!(mapid & SECOND_MASK, MAPID_REBELLION | MAPID_KAGEROU_OBORO),
+    }
+}
+
+/// rAthena's Super Novice rule: all six stats +10 for the Super Novice line at job level 70 or
+/// in a third/fourth form, while the character has never died (`die_counter == 0`; catalog
+/// `mechanics/stats.md` "Hyper Novice"). Nobody dies yet, so the counter is always 0.
+pub(crate) fn super_novice_bonus(mapid: u32, job_level: u16) -> bool {
+    mapid & SECOND_MASK == MAPID_SUPER_NOVICE
+        && (job_level >= SUPER_NOVICE_BONUS_JOB_LEVEL || mapid & JOBL_THIRD != 0)
+}
+
 /// The item `Jobs` test: the bit of the base class in the set of the job's branch.
 pub(crate) fn job_can_use(jobs: &[u64; 3], mapid: u32) -> bool {
     let index = if mapid & JOBL_2_1 != 0 {
@@ -258,6 +334,26 @@ mod tests {
         assert!(JOB_MAPIDS.windows(2).all(|w| w[0].0 < w[1].0));
     }
 
+    /// Spec §2.6: the sex picks the job of a shared mapid; no mapid is shared by more than two.
+    #[test]
+    fn job_for_sex_swaps_the_pairs() {
+        for (job, male, female) in [
+            (19, 19, 20),
+            (20, 19, 20),
+            (4212, 4211, 4212),
+            (4305, 4304, 4305),
+        ] {
+            assert_eq!(job_for_sex(job, Sex::Male), male, "{job}");
+            assert_eq!(job_for_sex(job, Sex::Female), female, "{job}");
+        }
+        assert_eq!(job_for_sex(1, Sex::Female), 1);
+        assert_eq!(job_for_sex(65_000, Sex::Female), 65_000, "no mapid");
+        for &(_, mapid) in &JOB_MAPIDS {
+            let shared = JOB_MAPIDS.iter().filter(|&&(_, m)| m == mapid).count();
+            assert!(shared <= 2, "{mapid:#x}");
+        }
+    }
+
     #[test]
     fn mapids_follow_the_catalog() {
         assert_eq!(job_mapid(0), 0);
@@ -314,6 +410,57 @@ mod tests {
         assert!(class_can_use(ITEMJ_THIRD_BABY, job_mapid(4096)));
         assert!(class_can_use(ITEMJ_FOURTH, job_mapid(4252)));
         assert!(!class_can_use(ITEMJ_THIRD, job_mapid(4252)));
+    }
+
+    #[test]
+    fn class_flags_follow_the_mapid() {
+        let flags = |job| class_flags(job_mapid(job));
+        assert_eq!(flags(0), ClassFlags::default(), "Novice");
+        assert!(flags(4008).upper && !flags(4008).third, "Lord Knight");
+        assert!(flags(4054).third && !flags(4054).upper, "Rune Knight");
+        let shadow_cross = flags(4254);
+        assert!(shadow_cross.third && shadow_cross.fourth && shadow_cross.trait_job);
+        assert!(
+            flags(4252).fourth && flags(4263).fourth,
+            "Dragon Knight, Troubadour"
+        );
+        for not_primary in [4302, 4303, 4307] {
+            assert!(
+                !flags(not_primary).fourth,
+                "job {not_primary} is not a primary 4th"
+            );
+        }
+        for expanded in [4304, 4305, 4306, 4307, 4308] {
+            assert!(flags(expanded).trait_job, "job {expanded}");
+        }
+        assert!(
+            !flags(4190).trait_job,
+            "Super Novice (expanded) has no traits"
+        );
+        assert!(flags(4023).baby, "Baby Novice");
+        assert!(flags(4218).summoner && flags(4220).summoner);
+        // The cap selectors use FIRSTMASK for Summoner and SECONDMASK for the extended lines
+        // (catalog `mechanics/battle_config.md` §4, §8).
+        assert!(
+            flags(4308).summoner,
+            "Spirit Handler: 0x10a & 0xff = Summoner"
+        );
+        assert!(flags(4211).extended && flags(4215).extended && flags(4223).extended);
+        assert!(
+            flags(4304).extended && flags(4306).extended,
+            "Shinkiro and Night Watch: 0x1109/0x1108 & 0xfff"
+        );
+        assert!(flags(4304).third, "the ASPD cap tests third first");
+    }
+
+    #[test]
+    fn super_novice_bonus_needs_job_70_or_an_expanded_form() {
+        let bonus = |job, level| super_novice_bonus(job_mapid(job), level);
+        assert!(!bonus(23, 69) && bonus(23, 70), "Super Novice");
+        assert!(bonus(4307, 1), "Hyper Novice, captured at job level 1");
+        assert!(bonus(4190, 1), "Super Novice (expanded)");
+        assert!(bonus(4045, 70), "Super Baby");
+        assert!(!bonus(0, 99) && !bonus(4001, 70), "Novice, High Novice");
     }
 
     #[test]

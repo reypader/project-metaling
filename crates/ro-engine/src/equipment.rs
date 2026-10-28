@@ -3,7 +3,9 @@
 //! `mechanics/equipment.md` §1, §3, §3a, §5).
 
 use ro_core::{CharacterLooks, InventoryItem, ItemId, Sex, UnitLooks};
-use ro_db::{AmmoType, Gender, ItemData, ItemDb, ItemType, WeaponType};
+use ro_db::{
+    AmmoType, Gender, ItemData, ItemDb, ItemType, RefineBonus, RefineDb, RefineGroup, WeaponType,
+};
 
 use crate::job::{class_can_use, dual_wields, is_genetic, is_mechanic, job_can_use};
 
@@ -282,14 +284,32 @@ impl<'a> Gear<'a> {
     }
 }
 
-/// The gear part of the status (spec §2.10): weapon ATK and MATK of both hands, hard DEF of
-/// every worn item once (ammo skipped), and the attack range.
+/// One hand's weapon as the status reads it (spec `specs/stats/spec.md` §2.2).
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub(crate) struct WeaponGear {
+    pub(crate) weapon_type: WeaponType,
+    /// Item ATK and MATK.
+    pub(crate) atk: u32,
+    pub(crate) matk: u32,
+    /// Refine table entry (1/100 units); zero unrefined or not `Refineable`.
+    pub(crate) refine: RefineBonus,
+}
+
+/// The gear part of the status: per-hand weapons, shield, hard DEF of every worn item once (ammo
+/// skipped), the armor refine sum and the attack range. Rebuilt only on a gear change.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub(crate) struct GearStatus {
-    pub(crate) atk2: u32,
-    /// Weapon MATK, the window's right side (`SP_MATK1`).
-    pub(crate) matk: u32,
+    /// The right-hand weapon. A two-hander that holds only the left hand so far counts here, as
+    /// in rAthena (DEFERRED "Per-hand values").
+    pub(crate) right: Option<WeaponGear>,
+    /// A second, different weapon in the left hand (dual wield).
+    pub(crate) left: Option<WeaponGear>,
+    /// Armor in the left hand.
+    pub(crate) shield: bool,
+    /// Σ item `Defense`.
     pub(crate) hard_def: u32,
+    /// Σ refine `Bonus` (1/100) over every worn, refined, `Refineable` armor.
+    pub(crate) armor_refine: u32,
     pub(crate) range: u16,
 }
 
@@ -297,22 +317,55 @@ pub(crate) struct GearStatus {
 const BARE_HAND_RANGE: u16 = 1;
 
 impl Gear<'_> {
-    /// Reads the worn-slot table, so mid-displacement it counts the new item in the positions
-    /// it holds so far. Each item counts once.
-    pub(crate) fn gear_status(&self) -> GearStatus {
+    /// The hands as the status reads them: like `hands`, but a two-hander holding only
+    /// `HAND_L` is the right-hand weapon.
+    fn status_hands(&self) -> (Held<'_>, Held<'_>) {
         let (right, left) = self.hands();
-        let weapons = [right, left].into_iter().filter_map(|hand| {
-            hand.and_then(|(_, item)| self.data(item.item_id))
-                .filter(|d| d.item_type == ItemType::Weapon)
+        let two_hander = left.is_some_and(|(_, item)| {
+            self.data(item.item_id).is_some_and(|d| {
+                d.item_type == ItemType::Weapon && d.locations & EQP_ARMS == EQP_ARMS
+            })
         });
+        if right.is_none() && two_hander {
+            (left, None)
+        } else {
+            (right, left)
+        }
+    }
+
+    fn weapon_gear(&self, hand: Held<'_>, refine: &RefineDb) -> Option<WeaponGear> {
+        let (_, item) = hand?;
+        let data = self
+            .data(item.item_id)
+            .filter(|d| d.item_type == ItemType::Weapon)?;
+        Some(WeaponGear {
+            weapon_type: data.weapon_type,
+            atk: data.attack,
+            matk: data.magic_attack,
+            refine: item_refine(data, item, RefineGroup::Weapon, data.weapon_level, refine),
+        })
+    }
+
+    /// Reads the worn-slot table. Each item counts once.
+    pub(crate) fn gear_status(&self, refine: &RefineDb) -> GearStatus {
+        let (right, left) = self.status_hands();
+        let shield = left
+            .and_then(|(_, item)| self.data(item.item_id))
+            .is_some_and(|d| d.item_type == ItemType::Armor);
         let mut status = GearStatus {
+            right: self.weapon_gear(right, refine),
+            left: self.weapon_gear(left, refine),
+            shield,
             range: BARE_HAND_RANGE,
             ..GearStatus::default()
         };
-        for weapon in weapons {
-            status.atk2 = status.atk2.saturating_add(weapon.attack);
-            status.matk = status.matk.saturating_add(weapon.magic_attack);
-            status.range = status.range.max(weapon.range.into());
+        for weapon in [right, left].into_iter().flatten() {
+            if let Some(d) = self
+                .data(weapon.1.item_id)
+                .filter(|d| d.item_type == ItemType::Weapon)
+            {
+                status.range = status.range.max(d.range.into());
+            }
         }
         // Slots are below 128 (`INVENTORY_SLOTS` is 100).
         let mut counted = 0u128;
@@ -324,16 +377,36 @@ impl Gear<'_> {
                 continue;
             }
             counted |= 1 << slot;
-            let defense = self
+            let Some((item, data)) = self
                 .slots
                 .get(usize::from(slot))
                 .and_then(Option::as_ref)
-                .and_then(|item| self.data(item.item_id))
-                .map_or(0, |d| d.defense);
-            status.hard_def = status.hard_def.saturating_add(defense);
+                .and_then(|item| self.data(item.item_id).map(|d| (item, d)))
+            else {
+                continue;
+            };
+            status.hard_def = status.hard_def.saturating_add(data.defense);
+            if data.item_type == ItemType::Armor {
+                let bonus = item_refine(data, item, RefineGroup::Armor, data.armor_level, refine);
+                status.armor_refine = status.armor_refine.saturating_add(bonus.bonus);
+            }
         }
         status
     }
+}
+
+/// The refine bonus of a worn item: only `Refineable` items refined above 0 get one.
+fn item_refine(
+    data: &ItemData,
+    item: &InventoryItem,
+    group: RefineGroup,
+    level: u8,
+    refine: &RefineDb,
+) -> RefineBonus {
+    if !data.refineable || item.refine == 0 {
+        return RefineBonus::default();
+    }
+    refine.bonus(group, level, item.refine)
 }
 
 fn saturate(v: u32) -> u16 {
@@ -530,7 +603,10 @@ mod tests {
     use super::*;
     use crate::job::job_mapid;
     use ro_core::{InventoryItem, ItemId, Sex};
-    use ro_db::{AmmoType, Gender, ItemData, ItemDb, ItemType, WeaponType};
+    use ro_db::{
+        AmmoType, Gender, ItemData, ItemDb, ItemType, RefineBonus, RefineDb, RefineGroup,
+        WeaponType,
+    };
 
     const KNIFE: u32 = 1201;
     const DAMASCUS: u32 = 1222;
@@ -1026,27 +1102,45 @@ mod tests {
         assert_eq!(unit.head_top, 16);
     }
 
+    fn atk(status: &GearStatus) -> u32 {
+        [status.right, status.left]
+            .iter()
+            .flatten()
+            .map(|w| w.atk)
+            .sum()
+    }
+
     /// Spec §2.10, with the capture-3 values: both hands' ATK, a two-hander once (also while it
-    /// holds only the left hand), DEF per item once, ammo skipped.
+    /// holds only the left hand, where it is the right-hand weapon), DEF per item once, ammo
+    /// skipped.
     #[test]
     fn gear_status_counts_each_item_once() {
         let db = db();
+        let refine = RefineDb::default();
         let status = |worn: &[(u32, u32)]| {
             let s = slots(worn);
             let w = WornSlots::from_slots(&s);
-            Gear::new(&w, &s, &db).gear_status()
+            Gear::new(&w, &s, &db).gear_status(&refine)
         };
         assert_eq!(status(&[]).range, 1);
+        assert_eq!(status(&[]).right, None, "bare hands");
+        let dual = status(&[(KNIFE, EQP_HAND_R), (DAMASCUS, EQP_HAND_L)]);
+        assert_eq!(atk(&dual), 135);
+        assert_eq!(dual.left.map(|w| w.atk), Some(118));
+        assert!(!dual.shield);
         assert_eq!(
-            status(&[(KNIFE, EQP_HAND_R), (DAMASCUS, EQP_HAND_L)]).atk2,
-            135
-        );
-        assert_eq!(
-            status(&[(TSURUGI, EQP_HAND_R), (DAMASCUS, EQP_HAND_L)]).atk2,
+            atk(&status(&[(TSURUGI, EQP_HAND_R), (DAMASCUS, EQP_HAND_L)])),
             248
         );
-        assert_eq!(status(&[(JUR, EQP_ARMS)]).atk2, 125);
-        assert_eq!(status(&[(JUR, EQP_HAND_L)]).atk2, 125);
+        let jur = status(&[(JUR, EQP_ARMS)]);
+        assert_eq!((atk(&jur), jur.left), (125, None));
+        let mid = status(&[(JUR, EQP_HAND_L)]);
+        assert_eq!(
+            (mid.right.map(|w| w.weapon_type), mid.left),
+            (Some(WeaponType::Katar), None),
+            "a two-hander on HAND_L only is the right-hand weapon"
+        );
+        assert!(status(&[(KNIFE, EQP_HAND_R), (GUARD, EQP_HAND_L)]).shield);
         let mut db2 = db.get(ItemId(GOGGLES)).cloned().expect("goggles");
         db2.defense = 5;
         let mut guard = db.get(ItemId(GUARD)).cloned().expect("guard");
@@ -1062,11 +1156,78 @@ mod tests {
             (ARROW, EQP_AMMO),
         ]);
         let w = WornSlots::from_slots(&s);
-        assert_eq!(Gear::new(&w, &s, &db).gear_status().hard_def, 25);
+        assert_eq!(Gear::new(&w, &s, &db).gear_status(&refine).hard_def, 25);
         let s = slots(&[(BOW, EQP_ARMS)]);
         let w = WornSlots::from_slots(&s);
-        let bow_status = Gear::new(&w, &s, &db).gear_status();
-        assert_eq!((bow_status.atk2, bow_status.range), (15, 5));
+        let bow_status = Gear::new(&w, &s, &db).gear_status(&refine);
+        assert_eq!((atk(&bow_status), bow_status.range), (15, 5));
+    }
+
+    /// Refine bonuses: only `Refineable` items refined above 0, weapons by weapon level, armor
+    /// summed over every worn armor (spec §2.2 "Refine").
+    #[test]
+    fn gear_status_reads_the_refine_table() {
+        let mut knife = weapon(KNIFE, WeaponType::Dagger, EQP_HAND_R, 17);
+        knife.refineable = true;
+        knife.weapon_level = 1;
+        let mut hat = armor(HAT, EQP_HEAD_TOP, 16);
+        hat.refineable = true;
+        hat.armor_level = 1;
+        let mut guard = armor(GUARD, EQP_HAND_L, 1);
+        guard.refineable = true;
+        guard.armor_level = 1;
+        let mut goggles = armor(GOGGLES, EQP_HEAD_MID, 1);
+        goggles.armor_level = 1;
+        let mut items = vec![knife, hat, guard, goggles];
+        for d in &mut items {
+            d.aegis_name = format!("Item{}", d.id.0);
+        }
+        let db = ItemDb::from_items("refine", items).expect("loads");
+        // Cumulative per level, 20 levels.
+        let steps = |per: u32| (1..=20).map(|i| i * per).collect::<Vec<u32>>();
+        let row = |group, level, bonus: Vec<u32>, random_bonus: Vec<u32>| ro_db::RefineRow {
+            group,
+            level,
+            bonus,
+            random_bonus,
+        };
+        let refine = RefineDb::from_rows(
+            "refine",
+            vec![
+                row(RefineGroup::Armor, 1, steps(100), vec![]),
+                row(
+                    RefineGroup::Weapon,
+                    1,
+                    steps(200),
+                    steps(300).into_iter().map(|v| v - 300).collect(),
+                ),
+            ],
+        )
+        .expect("table");
+        let mut s = slots(&[
+            (KNIFE, EQP_HAND_R),
+            (HAT, EQP_HEAD_TOP),
+            (GUARD, EQP_HAND_L),
+            (GOGGLES, EQP_HEAD_MID),
+        ]);
+        for (slot, level) in [(0, 2), (1, 2), (2, 1), (3, 2)] {
+            if let Some(item) = s[slot].as_mut() {
+                item.refine = level;
+            }
+        }
+        let w = WornSlots::from_slots(&s);
+        let status = Gear::new(&w, &s, &db).gear_status(&refine);
+        assert_eq!(
+            status.right.map(|w| w.refine),
+            Some(RefineBonus {
+                bonus: 400,
+                random_bonus: 300
+            })
+        );
+        assert_eq!(
+            status.armor_refine, 300,
+            "hat +2 and guard +1; goggles aren't refineable"
+        );
     }
 
     #[test]

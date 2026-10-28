@@ -1,8 +1,9 @@
 //! `MapInstance`: one map's simulation, and its lifecycle/tick API.
 //!
-//! `step_tick` order: drain intents FIFO (the last move per entity per tick wins) -> plan
-//! paths -> advance every due step (AoI diff per step, pending redirect repath at step end)
-//! -> return the events. Rules: spec `specs/engine-foundation/spec.md` §0.
+//! `step_tick` order: expire floor items -> advance every due step (AoI diff per step, pending
+//! redirect repath at step end) -> drain intents FIFO (the last move per entity per tick wins)
+//! -> plan paths -> the stat pass (recalc of dirty players, then their follow-ups) -> return the
+//! events. Rules: spec `specs/engine-foundation/spec.md` §0, `specs/stats/spec.md` §2.1.
 
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
@@ -13,7 +14,10 @@ use ro_core::{
     gat_map_name, BroadcastScope, CharId, CharacterSpawn, ClientIntent, InventoryItem, MapPosition,
     ScopedServerEvent, ServerEvent, SessionIntent, Sex, UnitAppearance, UnitLooks, UnitObjectType,
 };
-use ro_db::{CellType, ItemDb, MapGrid, MapNpcs, MobDb, NpcKind, NpcSpawn, NpcState};
+use ro_db::{
+    CellType, ItemDb, JobDb, MapGrid, MapNpcs, MobDb, NpcKind, NpcSpawn, NpcState, RefineDb,
+};
+use ro_mechanics::BattleConfig;
 use smallvec::SmallVec;
 use tracing::{debug, warn};
 
@@ -32,7 +36,7 @@ const ACTION_ATTACK_REPEAT: u8 = 7;
 use crate::mob::SpawnGroup;
 use crate::rng::SplitMix64;
 use crate::settings::Arrival;
-use crate::warp::{CellBits, InventorySnapshot, MapTransfer};
+use crate::warp::{CellBits, MapTransfer, PlaySnapshot};
 use crate::world::{NpcInfo, WarpTrigger, World};
 
 /// Default entity capacity of one map instance.
@@ -107,6 +111,24 @@ pub struct MapInstance {
     /// Global registries shared by every instance (empty until `set_registries`).
     pub(crate) items: Arc<ItemDb>,
     pub(crate) mob_db: Arc<MobDb>,
+    pub(crate) jobs: Arc<JobDb>,
+    pub(crate) refine: Arc<RefineDb>,
+    pub(crate) battle: Arc<BattleConfig>,
+    /// Players the tick's stat pass owes a recalc or follow-ups, in marking order (each once;
+    /// `PlayerInfo::stat_flags` has `LISTED`). Reused across ticks.
+    pub(crate) stat_queue: Vec<Entity>,
+    /// Characters a flow asked to save right away (`@job`); the map-server drains them.
+    pub(crate) save_requests: Vec<CharId>,
+}
+
+/// The read-only data every map instance shares (`MapInstance::set_registries`).
+#[derive(Debug, Clone, Default)]
+pub struct Registries {
+    pub items: Arc<ItemDb>,
+    pub mobs: Arc<MobDb>,
+    pub jobs: Arc<JobDb>,
+    pub refine: Arc<RefineDb>,
+    pub battle: Arc<BattleConfig>,
 }
 
 /// rAthena direction of a one-cell step (0 N, 1 NW, 2 W, 3 SW, 4 S, 5 SE, 6 E, 7 NE; y+ is north).
@@ -162,14 +184,22 @@ impl MapInstance {
             next_floor_id: MIN_FLOOR_ID,
             items: Arc::new(ItemDb::default()),
             mob_db: Arc::new(MobDb::default()),
+            jobs: Arc::new(JobDb::default()),
+            refine: Arc::new(RefineDb::default()),
+            battle: Arc::new(BattleConfig::default()),
+            stat_queue: Vec::new(),
+            save_requests: Vec::new(),
         }
     }
 
-    /// Shares the global item and mob registries with this instance. Call before spawning
-    /// characters: inventory weights are computed at spawn.
-    pub fn set_registries(&mut self, items: Arc<ItemDb>, mob_db: Arc<MobDb>) {
-        self.items = items;
-        self.mob_db = mob_db;
+    /// Shares the global registries with this instance. Call before spawning characters:
+    /// weights and the status are computed at spawn.
+    pub fn set_registries(&mut self, registries: Registries) {
+        self.items = registries.items;
+        self.mob_db = registries.mobs;
+        self.jobs = registries.jobs;
+        self.refine = registries.refine;
+        self.battle = registries.battle;
     }
 
     /// Whether the character currently has a walk in progress.
@@ -412,6 +442,7 @@ impl MapInstance {
             ClientIntent::EquipItem { index, position } => self.equip_item(e, index, position),
             ClientIntent::UnequipItem { index } => self.unequip_item(e, index),
             ClientIntent::UnequipAll { location } => self.unequip_all(e, location),
+            ClientIntent::RaiseStat { var, amount } => self.raise_stat(e, var, amount),
             ClientIntent::BlockingPlayCancel => self.emit_self(e, ServerEvent::LoadConfirmed),
             other => debug!(map = %self.map_name, intent = ?other, "intent not handled by engine"),
         }
@@ -485,14 +516,14 @@ impl MapInstance {
             info.changemap = true;
         }
         let inventory = mem::take(&mut spawn.inventory);
-        let inventory =
-            PlayerInventory::new(inventory, spawn.char_id, spawn.status.str, &self.items);
+        // The status sets the max weight right below.
+        let inventory = PlayerInventory::new(inventory, spawn.char_id, 0, &self.items);
         let looks = inventory.gear(&self.items).unit_looks();
         self.world.inventories.insert(e, inventory);
         if let Some(info) = self.world.players.get_mut(e) {
             info.looks = looks;
         }
-        self.init_derived(e);
+        self.init_status(e);
         Ok(e)
     }
 
@@ -895,16 +926,16 @@ impl MapInstance {
         Ok(self.give_item_to(e, item))
     }
 
-    /// A copy of the character's inventory and char-select looks for saving.
-    pub fn inventory_snapshot(&self, char_id: CharId) -> Option<InventorySnapshot> {
+    /// A copy of what a save writes: the inventory, the char-select looks of the worn gear and
+    /// the progress.
+    pub fn play_snapshot(&self, char_id: CharId) -> Option<PlaySnapshot> {
+        let progress = self.progress_snapshot(char_id)?;
         let e = self.world.entity_by_char(char_id)?;
-        self.world
-            .inventories
-            .get(e)
-            .map(|inventory| InventorySnapshot {
-                inventory: inventory.snapshot(),
-                looks: inventory.gear(&self.items).character_looks(),
-            })
+        self.world.inventories.get(e).map(|inventory| PlaySnapshot {
+            inventory: inventory.snapshot(),
+            looks: inventory.gear(&self.items).character_looks(),
+            progress,
+        })
     }
 
     /// Changes whenever the character's inventory changes (0 after spawn). The map-server
@@ -912,6 +943,11 @@ impl MapInstance {
     pub fn inventory_revision(&self, char_id: CharId) -> Option<u64> {
         let e = self.world.entity_by_char(char_id)?;
         self.world.inventories.get(e).map(PlayerInventory::revision)
+    }
+
+    /// Moves the characters flows asked to save right away (`@job`) into `out`.
+    pub fn drain_save_requests(&mut self, out: &mut Vec<CharId>) {
+        out.append(&mut self.save_requests);
     }
 
     /// Current and max weight (0.1 units).
@@ -1032,6 +1068,8 @@ impl MapInstance {
         }
         self.intents = batch;
         self.plan_moves(now_ms);
+        // Stages 3 and 4: one recalc per dirty player, after every mutation of the tick.
+        self.run_stat_pass();
         out.append(&mut self.events);
         Ok(())
     }

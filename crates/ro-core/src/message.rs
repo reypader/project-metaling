@@ -128,6 +128,11 @@ pub enum ClientIntent {
     UnequipAll {
         location: u32,
     },
+    /// `0x00bb`: raise stat `var` (`SP_STR` 13 .. `SP_LUK` 18) by `amount` points.
+    RaiseStat {
+        var: u16,
+        amount: u8,
+    },
 }
 
 impl fmt::Debug for ClientIntent {
@@ -266,6 +271,11 @@ impl fmt::Debug for ClientIntent {
             Self::UnequipAll { location } => f
                 .debug_struct("UnequipAll")
                 .field("location", location)
+                .finish(),
+            Self::RaiseStat { var, amount } => f
+                .debug_struct("RaiseStat")
+                .field("var", var)
+                .field("amount", amount)
                 .finish(),
         }
     }
@@ -701,6 +711,18 @@ pub enum ServerEvent {
         total_ms: u32,
         remain_ms: i32,
         values: [i32; 3],
+    },
+    /// `0x00bc`: the reply to `RaiseStat`. On success `value` is the new stat, capped at 255; a
+    /// failure sends `ok: false` and 0.
+    StatusChangeAck {
+        var_id: u16,
+        ok: bool,
+        value: u8,
+    },
+    /// `0x019b`: play effect `effect` on unit `gid` (0 base level up, 1 job level up).
+    SpecialEffect {
+        gid: u32,
+        effect: u32,
     },
 }
 

@@ -9,13 +9,16 @@ use std::{
     time::{Duration, Instant},
 };
 
+use anyhow::{anyhow, Context};
 use bytes::{Bytes, BytesMut};
 use ro_core::{
-    bare_map_name, gat_map_name, AccountId, BroadcastScope, CharId, CharacterSpawn, ClientIntent,
-    MapPosition, ScopedServerEvent, ServerEvent, SessionId, SessionIntent, TARGET_PACKETVER,
+    bare_map_name, gat_map_name, AccountId, BroadcastScope, CharId, CharacterProgress,
+    CharacterSpawn, ClientIntent, MapPosition, ScopedServerEvent, ServerEvent, SessionId,
+    SessionIntent, TARGET_PACKETVER,
 };
-use ro_db::{ItemDb, MapGrid, MapMobSpawns, MapNpcs, MobDb, NpcKind};
-use ro_engine::{EngineError, InventorySnapshot, MapInstance, MapTransfer};
+use ro_db::{ItemDb, JobDb, MapGrid, MapMobSpawns, MapNpcs, MobDb, NpcKind, RefineDb};
+use ro_engine::{EngineError, MapInstance, MapTransfer, PlaySnapshot, Registries};
+use ro_mechanics::BattleConfig;
 use ro_packets::{EventEncoder, Phase0EventEncoder};
 use tokio::sync::{mpsc, oneshot};
 use tracing::{debug, error, info, warn};
@@ -32,13 +35,6 @@ const MAX_COMMANDS_PER_WAKE: usize = 256;
 pub const AUTOSAVE_INTERVAL: Duration = Duration::from_secs(300);
 /// How often a map actor looks for due autosaves.
 const AUTOSAVE_CHECK_MS: u64 = 1000;
-
-/// The global registries every map shares (loaded once at startup).
-#[derive(Clone, Default)]
-pub struct Registries {
-    pub items: Arc<ItemDb>,
-    pub mobs: Arc<MobDb>,
-}
 
 /// Static data a map world starts with.
 #[derive(Clone)]
@@ -119,31 +115,81 @@ pub fn load_mob_spawns(mob_spawn_data_dir: Option<&Path>, map_name: &str) -> Arc
     }
 }
 
-/// Loads the item and mob registries (spec §0). An unset directory warns and gives an empty
-/// registry; a set directory with a missing or bad file is an error (startup fails).
-pub fn load_registries(
-    item_data_dir: Option<&Path>,
-    mob_data_dir: Option<&Path>,
-) -> Result<Registries, ro_db::DbLoadError> {
-    let items = match item_data_dir {
+/// Where `load_registries` reads from (`MapConfig::registry_paths`). Every source is optional
+/// here; `main` refuses to start without the job data.
+#[derive(Debug, Clone, Copy, Default)]
+pub struct RegistryPaths<'a> {
+    pub items: Option<&'a Path>,
+    pub mobs: Option<&'a Path>,
+    pub jobs: Option<&'a Path>,
+    pub refine: Option<&'a Path>,
+    pub battle: Option<&'a Path>,
+}
+
+/// Loads the item, mob, job and refine registries and the battle config (specs
+/// `specs/items/spec.md` §0, `specs/stats/spec.md` §1). An unset source warns and gives an
+/// empty registry (the battle config: rAthena's shipped defaults); a set one that is missing or
+/// bad is an error naming the path (startup fails).
+pub fn load_registries(paths: RegistryPaths<'_>) -> anyhow::Result<Registries> {
+    let items = match paths.items {
         Some(dir) => ItemDb::load_dir(dir)?,
         None => {
             warn!("ITEM_DATA_DIR not set; the item registry is empty");
             ItemDb::default()
         }
     };
-    let mobs = match mob_data_dir {
+    let mobs = match paths.mobs {
         Some(dir) => MobDb::load_dir(dir)?,
         None => {
             warn!("MOB_DATA_DIR not set; the mob registry is empty");
             MobDb::default()
         }
     };
-    info!("Registries: {} items, {} mobs", items.len(), mobs.len());
+    let jobs = match paths.jobs {
+        Some(dir) => JobDb::load_dir(dir)?,
+        None => {
+            warn!("JOB_DATA_DIR not set; the job registry is empty");
+            JobDb::default()
+        }
+    };
+    let refine = match paths.refine {
+        Some(dir) => RefineDb::load_dir(dir)?,
+        None => {
+            warn!("REFINE_DATA_DIR not set; refines give no bonus");
+            RefineDb::default()
+        }
+    };
+    let battle = load_battle_config(paths.battle)?;
+    info!(
+        "Registries: {} items, {} mobs, {} jobs",
+        items.len(),
+        mobs.len(),
+        jobs.len()
+    );
     Ok(Registries {
         items: Arc::new(items),
         mobs: Arc::new(mobs),
+        jobs: Arc::new(jobs),
+        refine: Arc::new(refine),
+        battle: Arc::new(battle),
     })
+}
+
+/// Reads our battle config YAML (`config/battle.yml`). Every key is optional; an unknown key or
+/// an out-of-range value is an error naming the file. Unset: rAthena's shipped defaults.
+pub fn load_battle_config(path: Option<&Path>) -> anyhow::Result<BattleConfig> {
+    let Some(path) = path else {
+        info!("BATTLE_CONFIG not set; using rAthena's shipped defaults");
+        return Ok(BattleConfig::default());
+    };
+    let text = std::fs::read_to_string(path)
+        .with_context(|| format!("reading BATTLE_CONFIG {}", path.display()))?;
+    let config: BattleConfig = serde_saphyr::from_str(&text)
+        .with_context(|| format!("parsing BATTLE_CONFIG {}", path.display()))?;
+    config
+        .validate()
+        .map_err(|reason| anyhow!("BATTLE_CONFIG {}: {reason}", path.display()))?;
+    Ok(config)
 }
 
 /// Loader reading `.gat` files from `map_data_dir`, NPC lists from `npc_data_dir` and mob
@@ -429,10 +475,10 @@ impl MapServiceHandle {
             );
             return None;
         };
-        // Read the recent position and inventory before the database: once they are gone,
+        // Read the recent position and play state before the database: once they are gone,
         // their writes have landed.
         let recent = self.shared.recent_position(char_id);
-        let recent_inventory = self.shared.recent_inventory(char_id);
+        let recent_play = self.shared.recent_play(char_id);
         let pending = self.read_transfers().get(&char_id).cloned();
         let character = match self.char_repo.find_by_id(char_id).await {
             Ok(Some(character)) => character,
@@ -491,7 +537,13 @@ impl MapServiceHandle {
         spawn.pos = pos;
         spawn.status = play.status;
         spawn.group_id = play.group_id;
-        spawn.inventory = recent_inventory.unwrap_or(play.inventory);
+        spawn.inventory = play.inventory;
+        if let Some(recent) = recent_play {
+            spawn.inventory = recent.inventory;
+            spawn.job_class = recent.progress.job_class;
+            spawn.base_level = recent.progress.base_level;
+            spawn.status = recent.progress.status;
+        }
         Some((self.get_or_spawn_world(&map_name), spawn, claim))
     }
 
@@ -582,6 +634,8 @@ struct Session {
     /// Inventory revision of the last save (the engine starts every spawn at 0, which is what
     /// the database or the hand-off already holds).
     saved_revision: u64,
+    /// The progress as last saved or loaded: autosave also writes when it changed.
+    saved_progress: CharacterProgress,
     /// When this session's next autosave is due (actor clock, ms).
     next_autosave_ms: u64,
     /// Released (with the last position set on it) when the session is dropped.
@@ -611,6 +665,8 @@ struct MapWorldActor {
     aoi: Vec<CharId>,
     evict: Vec<SessionId>,
     transfers: Vec<MapTransfer>,
+    /// Characters a flow asked to save now (`@job`), reused across ticks.
+    save_requests: Vec<CharId>,
     autosave_interval_ms: u64,
     next_autosave_check_ms: u64,
 }
@@ -629,7 +685,7 @@ impl MapWorldActor {
     fn new(map_name: String, data: MapData, started: Instant, options: MapServiceOptions) -> Self {
         let map_size = (data.grid.width(), data.grid.height());
         let mut engine = MapInstance::new(map_name.clone(), data.grid);
-        engine.set_registries(data.registries.items, data.registries.mobs);
+        engine.set_registries(data.registries);
         // NPCs first: they take the low unit ids, like rAthena's load order.
         let npcs = engine.spawn_npcs(&data.npcs);
         let mobs = engine.spawn_mobs(&data.mobs);
@@ -650,6 +706,7 @@ impl MapWorldActor {
             aoi: Vec::new(),
             evict: Vec::new(),
             transfers: Vec::new(),
+            save_requests: Vec::new(),
             autosave_interval_ms: u64::try_from(options.autosave_interval.as_millis())
                 .unwrap_or(u64::MAX),
             next_autosave_check_ms: 0,
@@ -702,9 +759,10 @@ impl MapWorldActor {
                 .and_then(|id| self.sessions.get_mut(id))
             {
                 session.claim.set_last(&self.map_name, transfer.from_pos);
-                session.claim.save_inventory(InventorySnapshot {
+                session.claim.save_play(PlaySnapshot {
                     inventory: transfer.spawn.inventory.clone(),
                     looks: transfer.looks,
+                    progress: transfer.spawn.progress(),
                 });
             }
         }
@@ -714,6 +772,7 @@ impl MapWorldActor {
             self.hand_off(transfer);
         }
         self.transfers = transfers;
+        self.save_requested();
         self.events = events;
         if now >= self.next_autosave_check_ms {
             self.next_autosave_check_ms = now + AUTOSAVE_CHECK_MS;
@@ -721,23 +780,54 @@ impl MapWorldActor {
         }
     }
 
-    /// Saves the inventory of every session whose autosave is due and whose inventory changed
-    /// since its last save.
+    /// Saves the play state of every session whose autosave is due and whose inventory or
+    /// progress changed since its last save.
     fn autosave(&mut self, now: u64) {
         for session in self.sessions.values_mut() {
             if now < session.next_autosave_ms {
                 continue;
             }
             session.next_autosave_ms = now.saturating_add(self.autosave_interval_ms);
-            let Some(revision) = self.engine.inventory_revision(session.char_id) else {
+            let (Some(revision), Some(progress)) = (
+                self.engine.inventory_revision(session.char_id),
+                self.engine.progress_snapshot(session.char_id),
+            ) else {
                 continue;
             };
-            if revision == session.saved_revision {
+            if revision == session.saved_revision && progress == session.saved_progress {
                 continue;
             }
-            if let Some(snapshot) = self.engine.inventory_snapshot(session.char_id) {
-                session.claim.save_inventory(snapshot);
-                session.saved_revision = revision;
+            Self::save_session(&self.engine, session);
+        }
+    }
+
+    /// Queues `session`'s play state now and records what was saved.
+    fn save_session(engine: &MapInstance, session: &mut Session) {
+        let (Some(revision), Some(snapshot)) = (
+            engine.inventory_revision(session.char_id),
+            engine.play_snapshot(session.char_id),
+        ) else {
+            return;
+        };
+        session.saved_progress = snapshot.progress;
+        session.claim.save_play(snapshot);
+        session.saved_revision = revision;
+    }
+
+    /// Saves the characters a flow asked to save now (`@job`; specs `specs/stats/spec.md`
+    /// §2.7), once each. One that warped out this tick is skipped: its hand-off already saved
+    /// it, after the flow ran.
+    fn save_requested(&mut self) {
+        self.engine.drain_save_requests(&mut self.save_requests);
+        self.save_requests.sort_unstable_by_key(|c| c.0);
+        self.save_requests.dedup();
+        for char_id in self.save_requests.drain(..) {
+            if let Some(session) = self
+                .by_char
+                .get(&char_id)
+                .and_then(|id| self.sessions.get_mut(id))
+            {
+                Self::save_session(&self.engine, session);
             }
         }
     }
@@ -872,6 +962,7 @@ impl MapWorldActor {
                 char_id,
                 name,
                 saved_revision: 0,
+                saved_progress: self.engine.progress_snapshot(char_id).unwrap_or_default(),
                 next_autosave_ms: now.saturating_add(self.autosave_interval_ms),
                 claim,
                 outbound_tx,
@@ -1051,8 +1142,8 @@ impl MapWorldActor {
             None => Vec::new(),
             Some(pos) => {
                 claim.set_last(&self.map_name, pos);
-                if let Some(snapshot) = self.engine.inventory_snapshot(char_id) {
-                    claim.set_inventory(snapshot);
+                if let Some(snapshot) = self.engine.play_snapshot(char_id) {
+                    claim.set_play(snapshot);
                 }
                 self.engine.remove_character(char_id).unwrap_or_else(|err| {
                     warn!(
@@ -1320,7 +1411,7 @@ mod tests {
             Some(("prontera.gat".to_string(), at(50, 50)))
         );
         assert_eq!(
-            shared.recent_inventory(CHAR),
+            shared.recent_play(CHAR).map(|r| r.inventory),
             Some(crate::claim::tests::potions(7)),
             "the inventory that left with the warp is saved even though the hand-off never ran"
         );

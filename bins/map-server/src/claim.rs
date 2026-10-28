@@ -2,9 +2,9 @@
 //! `specs/items/spec.md` §2.8).
 //!
 //! Each online character has exactly one `Claim`. Dropping it is the only release: it records
-//! the last known position (and inventory) for a fast re-entry, queues the database writes, and
+//! the last known position (and play state) for a fast re-entry, queues the database writes, and
 //! only then frees the character. One writer task runs every write in queue order, so a
-//! character's position and inventory writes never reorder.
+//! character's position and play-state writes never reorder.
 
 use std::{
     collections::{HashMap, HashSet},
@@ -15,8 +15,8 @@ use std::{
     time::Duration,
 };
 
-use ro_core::{CharId, CharacterInventory, MapPosition};
-use ro_engine::InventorySnapshot;
+use ro_core::{CharId, CharacterInventory, CharacterProgress, MapPosition};
+use ro_engine::PlaySnapshot;
 use ro_persistence::{CharacterRepository, InventoryRepository, RepositoryError};
 use tokio::sync::mpsc;
 use tracing::{error, warn};
@@ -48,8 +48,8 @@ pub(crate) enum WriteKind {
         map: String,
         pos: MapPosition,
     },
-    /// The inventory and the look columns, in one transaction.
-    Inventory(InventorySnapshot),
+    /// The progress, the look columns and the inventory, in one transaction.
+    Play(PlaySnapshot),
 }
 
 /// One queued database write.
@@ -60,18 +60,26 @@ pub(crate) struct Write {
     pub(crate) seq: u64,
 }
 
+/// The part of a play-state write a re-entry needs before it lands (the looks are rebuilt from
+/// the worn gear).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct RecentPlay {
+    pub(crate) inventory: CharacterInventory,
+    pub(crate) progress: CharacterProgress,
+}
+
 /// Writes not yet landed, by kind.
 #[derive(Default)]
 struct RecentWrites {
     positions: RecentMap<(String, MapPosition)>,
-    inventories: RecentMap<CharacterInventory>,
+    plays: RecentMap<RecentPlay>,
 }
 
 impl RecentWrites {
     fn clone_handles(&self) -> Self {
         Self {
             positions: Arc::clone(&self.positions),
-            inventories: Arc::clone(&self.inventories),
+            plays: Arc::clone(&self.plays),
         }
     }
 
@@ -81,7 +89,7 @@ impl RecentWrites {
             WriteKind::Position { .. } => lock(&self.positions)
                 .get(&write.char_id)
                 .is_some_and(|r| r.seq == write.seq),
-            WriteKind::Inventory(_) => lock(&self.inventories)
+            WriteKind::Play(_) => lock(&self.plays)
                 .get(&write.char_id)
                 .is_some_and(|r| r.seq == write.seq),
         }
@@ -99,8 +107,8 @@ impl RecentWrites {
                     recent.remove(&write.char_id);
                 }
             }
-            WriteKind::Inventory(_) => {
-                let mut recent = lock(&self.inventories);
+            WriteKind::Play(_) => {
+                let mut recent = lock(&self.plays);
                 if recent
                     .get(&write.char_id)
                     .is_some_and(|r| r.seq == write.seq)
@@ -116,7 +124,7 @@ impl RecentWrites {
 pub(crate) struct SharedState {
     /// Characters claimed by an entering or joined session, on any map.
     online: Mutex<HashSet<CharId>>,
-    /// Last position and inventory of characters whose write hasn't landed yet.
+    /// Last position and play state of characters whose write hasn't landed yet.
     recent: RecentWrites,
     next_seq: AtomicU64,
     writer_tx: mpsc::UnboundedSender<Write>,
@@ -147,7 +155,7 @@ impl SharedState {
             shared: Arc::clone(self),
             char_id,
             last: None,
-            inventory: None,
+            play: None,
         })
     }
 
@@ -168,9 +176,9 @@ impl SharedState {
             .map(|r| r.value.clone())
     }
 
-    /// The newest inventory of `char_id` whose write hasn't landed yet.
-    pub(crate) fn recent_inventory(&self, char_id: CharId) -> Option<CharacterInventory> {
-        lock(&self.recent.inventories)
+    /// The newest inventory and progress of `char_id` whose write hasn't landed yet.
+    pub(crate) fn recent_play(&self, char_id: CharId) -> Option<RecentPlay> {
+        lock(&self.recent.plays)
             .get(&char_id)
             .map(|r| r.value.clone())
     }
@@ -194,18 +202,21 @@ impl SharedState {
         self.queue(char_id, WriteKind::Position { map, pos }, seq);
     }
 
-    /// Records the inventory for a re-entry that races the write, then queues the write. A
-    /// re-entry rebuilds the looks from the worn gear, so only the inventory is kept.
-    pub(crate) fn persist_inventory(&self, char_id: CharId, snapshot: InventorySnapshot) {
+    /// Records the inventory and progress for a re-entry that races the write, then queues the
+    /// write. A re-entry rebuilds the looks from the worn gear, so they aren't kept.
+    pub(crate) fn persist_play(&self, char_id: CharId, snapshot: PlaySnapshot) {
         let seq = self.next_seq.fetch_add(1, Ordering::Relaxed);
-        lock(&self.recent.inventories).insert(
+        lock(&self.recent.plays).insert(
             char_id,
             Recent {
-                value: snapshot.inventory.clone(),
+                value: RecentPlay {
+                    inventory: snapshot.inventory.clone(),
+                    progress: snapshot.progress,
+                },
                 seq,
             },
         );
-        self.queue(char_id, WriteKind::Inventory(snapshot), seq);
+        self.queue(char_id, WriteKind::Play(snapshot), seq);
     }
 }
 
@@ -216,9 +227,14 @@ const RETRY_MAX: Duration = Duration::from_secs(5);
 async fn apply(repo: &dyn MapRepository, write: &Write) -> Result<(), RepositoryError> {
     match &write.kind {
         WriteKind::Position { map, pos } => repo.update_position(write.char_id, map, *pos).await,
-        WriteKind::Inventory(snapshot) => {
-            repo.save_inventory(write.char_id, &snapshot.inventory, &snapshot.looks)
-                .await
+        WriteKind::Play(snapshot) => {
+            repo.save_play_state(
+                write.char_id,
+                &snapshot.inventory,
+                &snapshot.looks,
+                &snapshot.progress,
+            )
+            .await
         }
     }
 }
@@ -270,13 +286,14 @@ async fn run_writer(
 }
 
 /// One character's entry in the online set. It moves with the session (into the map actor,
-/// and between maps on a warp); dropping it persists `last` and then `inventory` (if set) and
+/// and between maps on a warp); dropping it persists `last` and then `play` (if set) and
 /// releases.
 pub struct Claim {
     shared: Arc<SharedState>,
     char_id: CharId,
     last: Option<(String, MapPosition)>,
-    inventory: Option<InventorySnapshot>,
+    /// Boxed: only the drop path reads it, and it keeps `Claim` (moved with every join) small.
+    play: Option<Box<PlaySnapshot>>,
 }
 
 impl Claim {
@@ -289,14 +306,14 @@ impl Claim {
         self.last = Some((map.to_string(), pos));
     }
 
-    /// Records the inventory, written after the position when the claim drops.
-    pub(crate) fn set_inventory(&mut self, snapshot: InventorySnapshot) {
-        self.inventory = Some(snapshot);
+    /// Records the play state, written after the position when the claim drops.
+    pub(crate) fn set_play(&mut self, snapshot: PlaySnapshot) {
+        self.play = Some(Box::new(snapshot));
     }
 
-    /// Queues an inventory write now (map change, autosave); the claim stays held.
-    pub(crate) fn save_inventory(&self, snapshot: InventorySnapshot) {
-        self.shared.persist_inventory(self.char_id, snapshot);
+    /// Queues a play-state write now (map change, autosave, `@job`); the claim stays held.
+    pub(crate) fn save_play(&self, snapshot: PlaySnapshot) {
+        self.shared.persist_play(self.char_id, snapshot);
     }
 }
 
@@ -306,8 +323,8 @@ impl Drop for Claim {
         if let Some((map, pos)) = self.last.take() {
             self.shared.persist(self.char_id, map, pos);
         }
-        if let Some(snapshot) = self.inventory.take() {
-            self.shared.persist_inventory(self.char_id, snapshot);
+        if let Some(snapshot) = self.play.take() {
+            self.shared.persist_play(self.char_id, *snapshot);
         }
         self.shared.release(self.char_id);
     }
@@ -479,11 +496,12 @@ pub(crate) mod tests {
             }))
         }
 
-        async fn save_inventory(
+        async fn save_play_state(
             &self,
             char_id: CharId,
             inventory: &CharacterInventory,
             looks: &CharacterLooks,
+            _progress: &CharacterProgress,
         ) -> Result<(), RepositoryError> {
             self.gate.acquire().await.expect("gate open").forget();
             if let Some(err) = lock(&self.inventory_error).clone() {
@@ -504,10 +522,11 @@ pub(crate) mod tests {
     }
 
     /// `potions(n)` with bare looks, as the engine would snapshot it.
-    pub(crate) fn snapshot(n: u16) -> InventorySnapshot {
-        InventorySnapshot {
+    pub(crate) fn snapshot(n: u16) -> PlaySnapshot {
+        PlaySnapshot {
             inventory: potions(n),
             looks: CharacterLooks::default(),
+            progress: CharacterProgress::default(),
         }
     }
 
@@ -639,7 +658,7 @@ pub(crate) mod tests {
     fn bin_item_drop_writes_position_then_inventory() {
         let (state, mut rx) = state();
         let mut claim = state.claim(CHAR).expect("claim");
-        claim.set_inventory(snapshot(3));
+        claim.set_play(snapshot(3));
         claim.set_last("prontera.gat", at(1, 2));
         drop(claim);
         assert!(matches!(
@@ -648,9 +667,12 @@ pub(crate) mod tests {
         ));
         assert_eq!(
             rx.try_recv().expect("second").kind,
-            WriteKind::Inventory(snapshot(3))
+            WriteKind::Play(snapshot(3))
         );
-        assert_eq!(state.recent_inventory(CHAR), Some(potions(3)));
+        assert_eq!(
+            state.recent_play(CHAR).map(|r| r.inventory),
+            Some(potions(3))
+        );
     }
 
     /// Only `Unavailable` is retried: a write that can't succeed doesn't stall the queue.
@@ -659,28 +681,28 @@ pub(crate) mod tests {
         let repo = FakeRepo::new(true);
         *lock(&repo.inventory_error) = Some(RepositoryError::Internal("too many rows".into()));
         let state = SharedState::new(repo.clone());
-        state.persist_inventory(CHAR, snapshot(1));
+        state.persist_play(CHAR, snapshot(1));
         state.persist(CHAR, "geffen.gat".into(), at(3, 3));
         assert!(
             eventually(|| repo.writes().len() == 1).await,
             "the position behind it lands"
         );
         assert_eq!(
-            state.recent_inventory(CHAR),
+            state.recent_play(CHAR).map(|r| r.inventory),
             Some(potions(1)),
             "the dropped inventory stays for a re-entry in this process"
         );
 
         *lock(&repo.inventory_error) = Some(RepositoryError::NotFound);
-        state.persist_inventory(CHAR, snapshot(2));
+        state.persist_play(CHAR, snapshot(2));
         assert!(
-            eventually(|| state.recent_inventory(CHAR).is_none()).await,
+            eventually(|| state.recent_play(CHAR).is_none()).await,
             "a deleted character's write is done"
         );
 
         *lock(&repo.inventory_error) = None;
-        state.persist_inventory(CHAR, snapshot(4));
-        assert!(eventually(|| state.recent_inventory(CHAR).is_none()).await);
+        state.persist_play(CHAR, snapshot(4));
+        assert!(eventually(|| state.recent_play(CHAR).is_none()).await);
         assert_eq!(
             lock(&repo.inventory_saves).last(),
             Some(&(CHAR, potions(4)))
@@ -698,14 +720,15 @@ pub(crate) mod tests {
             head_top: 5,
             ..CharacterLooks::default()
         };
-        state.persist_inventory(
+        state.persist_play(
             CHAR,
-            InventorySnapshot {
+            PlaySnapshot {
                 inventory: potions(1),
                 looks,
+                progress: CharacterProgress::default(),
             },
         );
-        assert!(eventually(|| state.recent_inventory(CHAR).is_none()).await);
+        assert!(eventually(|| state.recent_play(CHAR).is_none()).await);
         assert_eq!(lock(&repo.looks).get(&CHAR), Some(&looks));
     }
 }

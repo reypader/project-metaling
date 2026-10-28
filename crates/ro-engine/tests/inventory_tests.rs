@@ -83,7 +83,11 @@ fn spawn_data(n: u32, x: u16, y: u16, inventory: CharacterInventory) -> Characte
 fn instance(npcs: Vec<NpcSpawn>) -> MapInstance {
     let grid = Arc::new(MapGrid::all_walkable(100, 100).expect("dims"));
     let mut engine = MapInstance::new("prontera.gat", grid);
-    engine.set_registries(items(), Arc::new(MobDb::default()));
+    engine.set_registries(ro_engine::Registries {
+        items: items(),
+        mobs: Arc::new(MobDb::default()),
+        ..Default::default()
+    });
     engine.spawn_npcs(&MapNpcs { npcs });
     engine
 }
@@ -268,10 +272,7 @@ fn eng_inv_06_warp_carries_inventory() {
         from.give_item(char_id(A), &InventoryItem::new(ItemId(909), 1)),
         Ok(0)
     );
-    let before = from
-        .inventory_snapshot(char_id(A))
-        .expect("snapshot")
-        .inventory;
+    let before = from.play_snapshot(char_id(A)).expect("snapshot").inventory;
     assert_eq!(
         before.slots[1].as_ref().map(|i| i.item_id),
         Some(ItemId(909))
@@ -294,13 +295,13 @@ fn eng_inv_06_warp_carries_inventory() {
     from.drain_transfers(&mut transfers);
     let transfer = transfers.pop().expect("warped");
     assert_eq!(transfer.spawn.inventory, before, "moved into the transfer");
-    assert_eq!(from.inventory_snapshot(char_id(A)), None);
+    assert_eq!(from.play_snapshot(char_id(A)), None);
 
     let mut to = instance(vec![]);
     to.enter_by_warp(transfer.spawn, transfer.dest, transfer.rewarp_count, 600)
         .expect("arrives");
     assert_eq!(
-        to.inventory_snapshot(char_id(A)).map(|s| s.inventory),
+        to.play_snapshot(char_id(A)).map(|s| s.inventory),
         Some(before)
     );
     assert_eq!(to.weight(char_id(A)), Some((5 * 70 + 400 + 10, 23_300)));

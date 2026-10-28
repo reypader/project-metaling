@@ -62,6 +62,13 @@ const SP_MATK1: u16 = 43;
 const SP_MATK2: u16 = 44;
 const SP_DEF1: u16 = 45;
 const SP_DEF2: u16 = 46;
+const SP_CRITICAL: u16 = 52;
+
+/// Soft DEF (`SP_DEF1`) of the test characters: base level 10, VIT 1, AGI 1 (`(10 + 1) / 2 +
+/// 1 / 5`, truncated). Hard DEF changes send it with `SP_DEF2`.
+const SOFT_DEF: i32 = 5;
+/// Status MATK (`SP_MATK2`) at base level 10 with INT/DEX/LUK 1.
+const STATUS_MATK: i32 = 3;
 
 /// `LOOK_*` types.
 const LOOK_WEAPON: u8 = 2;
@@ -190,7 +197,11 @@ fn spawn_data(n: u32, inventory: Vec<Option<InventoryItem>>) -> CharacterSpawn {
 fn instance() -> MapInstance {
     let grid = Arc::new(MapGrid::all_walkable(100, 100).expect("dims"));
     let mut engine = MapInstance::new("prontera.gat", grid);
-    engine.set_registries(items(), Arc::new(MobDb::default()));
+    engine.set_registries(ro_engine::Registries {
+        items: items(),
+        mobs: Arc::new(MobDb::default()),
+        ..Default::default()
+    });
     engine
 }
 
@@ -389,7 +400,7 @@ fn eng_stat_02_login_push_and_window_carry_gear_values() {
 }
 
 /// ENG-STAT-02 (MATK, capture 4): a Rod's `MagicAttack` is the weapon side, `SP_MATK1` and the
-/// window's `matk_bonus`; the status side stays 0 until stats.
+/// window's `matk_bonus`; the status side is the INT/DEX/LUK/level formula.
 #[test]
 fn eng_stat_02_weapon_matk_is_the_matk1_side() {
     let mut engine = instance();
@@ -398,9 +409,9 @@ fn eng_stat_02_weapon_matk_is_the_matk1_side() {
         .expect("spawn");
     let burst = self_events(burst, A);
     assert_eq!(param_of(&burst, SP_MATK1), Some(30));
-    assert_eq!(param_of(&burst, SP_MATK2), Some(0));
+    assert_eq!(param_of(&burst, SP_MATK2), Some(STATUS_MATK));
     let window = window(&self_events(actor_init(&mut engine, A, 10), A));
-    assert_eq!((window.matk_bonus, window.matk), (30, 0));
+    assert_eq!((window.matk_bonus, window.matk), (30, STATUS_MATK as i16));
 }
 
 /// ENG-EQ-11 (status part): spawning with worn gear builds the gear status from the masks:
@@ -417,7 +428,7 @@ fn eng_eq_11_spawn_builds_gear_status_from_the_masks() {
     let burst = self_events(burst, A);
     assert_eq!(param_of(&burst, SP_ATK2), Some(15), "the bow counts once");
     assert_eq!(param_of(&burst, SP_DEF2), Some(2));
-    assert_eq!(param_of(&burst, SP_DEF1), Some(0));
+    assert_eq!(param_of(&burst, SP_DEF1), Some(SOFT_DEF));
     assert_eq!(attack_ranges(&burst), vec![5]);
 
     let init = self_events(actor_init(&mut engine, A, 10), A);
@@ -494,11 +505,10 @@ fn eng_eq_03_captured_swap() {
         vec![
             hands(0, 0),
             off(2, EQP_HAND_R),
-            param(SP_ATK2, 0),
             ack(3, EQP_HAND_R, 0),
             hands(KNIFE, 0),
-            param(SP_ATK2, 17),
-        ]
+        ],
+        "one net diff at the end of the tick: a Knife for a Knife changes nothing"
     );
     assert_eq!(seen_by(&out, B), vec![hands(0, 0), hands(KNIFE, 0)]);
 
@@ -508,10 +518,8 @@ fn eng_eq_03_captured_swap() {
         vec![
             hands(0, 0),
             off(3, EQP_HAND_R),
-            param(SP_ATK2, 0),
             ack(2, EQP_HAND_R, 0),
             hands(KNIFE, 0),
-            param(SP_ATK2, 17),
         ]
     );
 }
@@ -530,17 +538,17 @@ fn eng_eq_04_two_hander_over_knife_and_guard() {
         vec![
             hands(KNIFE, 0),
             off(3, EQP_HAND_L),
-            param(SP_DEF1, 0),
-            param(SP_DEF2, 0),
             hands(0, BOW),
             off(2, EQP_HAND_R),
-            param(SP_ATK2, 15),
-            range(5),
             ack(4, EQP_ARMS, 0),
             hands(BOW, 0),
             hands(BOW, 0),
+            param(SP_DEF1, SOFT_DEF),
+            param(SP_DEF2, 0),
+            param(SP_ATK2, 15),
+            range(5),
         ],
-        "no push after the bow's ack: it already counted"
+        "acks and looks as captured, then one net diff (ENG-STAT-02)"
     );
     assert_eq!(
         seen_by(&out, B),
@@ -571,12 +579,12 @@ fn eng_eq_05_goggles_over_a_hat() {
         vec![
             off(2, EQP_HEAD_TOP),
             look(LOOK_HEAD_TOP, 0, 0),
-            param(SP_DEF1, 0),
-            param(SP_DEF2, 5),
             ack(3, EQP_HEAD_TOP | EQP_HEAD_MID, 1),
             look(LOOK_HEAD_TOP, 1, 0),
+            param(SP_DEF1, SOFT_DEF),
+            param(SP_DEF2, 5),
         ],
-        "only LOOK_HEAD_TOP, and no push after the ack"
+        "only LOOK_HEAD_TOP; the net diff after the ack"
     );
     assert_eq!(
         seen_by(&out, B),
@@ -593,7 +601,7 @@ fn eng_eq_05_garment_and_shoes() {
         vec![
             ack(2, EQP_GARMENT, 2),
             look(LOOK_ROBE, 2, 0),
-            param(SP_DEF1, 0),
+            param(SP_DEF1, SOFT_DEF),
             param(SP_DEF2, 20),
         ]
     );
@@ -603,7 +611,7 @@ fn eng_eq_05_garment_and_shoes() {
         vec![
             off(2, EQP_GARMENT),
             look(LOOK_ROBE, 0, 0),
-            param(SP_DEF1, 0),
+            param(SP_DEF1, SOFT_DEF),
             param(SP_DEF2, 0),
         ]
     );
@@ -614,7 +622,7 @@ fn eng_eq_05_garment_and_shoes() {
         vec![
             ack(3, EQP_SHOES, 0),
             look(LOOK_SHOES, SHOES, 0),
-            param(SP_DEF1, 0),
+            param(SP_DEF1, SOFT_DEF),
             param(SP_DEF2, 10),
         ],
         "LOOK_SHOES carries the item id"
@@ -625,7 +633,7 @@ fn eng_eq_05_garment_and_shoes() {
         vec![
             look(LOOK_SHOES, 0, 0),
             off(3, EQP_SHOES),
-            param(SP_DEF1, 0),
+            param(SP_DEF1, SOFT_DEF),
             param(SP_DEF2, 0),
         ],
         "the shoes look comes before the ack"
@@ -656,9 +664,9 @@ fn eng_eq_05_costume_top_over_normal_tops() {
             off(5, EQP_HEAD_LOW),
             look(LOOK_HEAD_BOTTOM, 0, 0),
             off(2, EQP_HEAD_TOP),
-            param(SP_DEF1, 0),
-            param(SP_DEF2, 4),
             ack(4, EQP_HELM, 326),
+            param(SP_DEF1, SOFT_DEF),
+            param(SP_DEF2, 4),
         ],
         "the costume covers the top: no LOOK_HEAD_TOP either way"
     );
@@ -676,11 +684,9 @@ fn eng_eq_05_costume_top_over_normal_tops() {
         vec![
             off(4, EQP_HELM),
             look(LOOK_HEAD_TOP, 0, 0),
-            param(SP_DEF1, 0),
-            param(SP_DEF2, 0),
             ack(2, EQP_HEAD_TOP, 67),
             look(LOOK_HEAD_TOP, 67, 0),
-            param(SP_DEF1, 0),
+            param(SP_DEF1, SOFT_DEF),
             param(SP_DEF2, 14),
         ],
         "a low + mid + top headgear sends only LOOK_HEAD_TOP when it comes off"
@@ -721,8 +727,8 @@ fn eng_eq_05_helm_over_three_headgears() {
         .collect();
     assert_eq!(
         pushes,
-        vec![param(SP_DEF2, 6), param(SP_DEF2, 4)],
-        "the Flu Mask changes nothing; later pushes count the Cap"
+        vec![param(SP_DEF2, 4)],
+        "one net diff: Hat 2 + Glass 0 + Mask 0 → Cap 4"
     );
 }
 
@@ -801,21 +807,17 @@ fn eng_eq_08_unequip_all() {
         vec![
             off(5, EQP_GARMENT),
             look(LOOK_ROBE, 0, 0),
-            param(SP_DEF1, 0),
-            param(SP_DEF2, 22),
             off(4, EQP_HEAD_TOP),
-            param(SP_DEF1, 0),
-            param(SP_DEF2, 20),
             hands(KNIFE, 0),
             off(3, EQP_HAND_L),
-            param(SP_DEF1, 0),
-            param(SP_DEF2, 0),
             hands(0, 0),
             off(2, EQP_HAND_R),
-            param(SP_ATK2, 0),
             ServerEvent::UnequipAllAck { failed: false },
+            param(SP_DEF1, SOFT_DEF),
+            param(SP_DEF2, 0),
+            param(SP_ATK2, 0),
         ],
-        "the costume stays, and still covers the Hat's look"
+        "the costume stays, and still covers the Hat's look; one diff for all four items"
     );
     let out = unequip_all(&mut engine, UNEQUIP_ALL_COSTUME);
     assert_eq!(
@@ -835,9 +837,9 @@ fn eng_eq_08_unequip_all() {
             hands(0, 0),
             hands(0, 0),
             off(2, EQP_ARMS),
+            ServerEvent::UnequipAllAck { failed: false },
             param(SP_ATK2, 0),
             range(1),
-            ServerEvent::UnequipAllAck { failed: false },
         ]
     );
 }
@@ -883,7 +885,6 @@ fn eng_eq_13_dual_wield() {
         vec![
             hands(0, DAMASCUS),
             off(2, EQP_HAND_R),
-            param(SP_ATK2, 118),
             ack(4, EQP_HAND_R, 0),
             hands(GLADIUS, DAMASCUS),
             param(SP_ATK2, 223),
@@ -895,14 +896,15 @@ fn eng_eq_13_dual_wield() {
         vec![
             hands(GLADIUS, 0),
             off(3, EQP_HAND_L),
-            param(SP_ATK2, 105),
             hands(0, JUR),
             off(4, EQP_HAND_R),
-            param(SP_ATK2, 125),
             ack(5, EQP_ARMS, 0),
             hands(JUR, 0),
             hands(JUR, 0),
-        ]
+            param(SP_ATK2, 125),
+            param(SP_CRITICAL, 2),
+        ],
+        "a katar doubles CRITICAL (ENG-STAT-03)"
     );
 }
 
@@ -917,7 +919,7 @@ fn eng_stat_01_rod_pushes_the_matk_pair() {
             ack(2, EQP_HAND_R, 0),
             hands(ROD, 0),
             param(SP_ATK2, 15),
-            param(SP_MATK2, 0),
+            param(SP_MATK2, STATUS_MATK),
             param(SP_MATK1, 30),
         ]
     );
@@ -1030,12 +1032,11 @@ fn eng_eq_09_weapon_change_cascades_when_the_ammo_no_longer_fits() {
             hands(0, 0),
             hands(0, 0),
             off(2, EQP_ARMS),
-            param(SP_ATK2, 0),
-            range(1),
             ack(4, EQP_HAND_R, 0),
             hands(KNIFE, 0),
             off(3, EQP_AMMO),
             param(SP_ATK2, 17),
+            range(1),
         ]
     );
 
@@ -1062,9 +1063,9 @@ fn eng_eq_08_unequip_all_removes_arrows_once() {
             hands(0, 0),
             off(2, EQP_ARMS),
             off(3, EQP_AMMO),
+            ServerEvent::UnequipAllAck { failed: false },
             param(SP_ATK2, 0),
             range(1),
-            ServerEvent::UnequipAllAck { failed: false },
         ]
     );
 }
@@ -1139,14 +1140,14 @@ fn eng_eq_10_dropping_worn_items() {
             param(0, -1),
             hands(0, 0),
             off(2, EQP_HAND_R),
-            param(SP_ATK2, 0),
             param(24, 10_000),
             ServerEvent::ItemThrown {
                 index: 2,
                 amount: 1
             },
+            param(SP_ATK2, 0),
         ],
-        "0x0add, then the unequip, then SP_WEIGHT and 0x00af"
+        "0x0add, then the unequip, then SP_WEIGHT and 0x00af; the diff at the end of the tick"
     );
     assert!(
         seen_by(&out, B).contains(&hands(0, 0)),

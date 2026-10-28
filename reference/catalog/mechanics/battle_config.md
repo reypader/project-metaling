@@ -61,12 +61,14 @@ cfg = (AMOTION_ZERO_ASPD - cfg * AMOTION_INTERVAL) * AMOTION_DIVIDER_PC
 ```
 So 190 -> 400, 193 -> 340 (stored as doubled amotion). `MIN_ASPD` = 8000 (`status.hpp:43-44`) is a constant, not config.
 
-| Knob | conf | Default (compiled = shipped) | Class selector (`pc_maxaspd`, `pc.cpp:15254-15257`) |
+| Knob | conf | Default (compiled = shipped) | Class selector (`pc_maxaspd`, `pc.cpp:15251-15258`, one nested ternary, tested in this order: third, extended, summoner, else) |
 | :--- | :--- | :--- | :--- |
 | `max_aspd` | `player.conf:80` | 190 (`:8400`) | Fallback: everything else |
 | `max_third_aspd` | `player.conf:83` | 193 (`:8401`) | `class_ & JOBL_THIRD` (checked first) |
-| `max_extended_aspd` | `player.conf:86` | 193 (`:8747`) | `MAPID_SECONDMASK` is Kagerou/Oboro or Rebellion |
-| `max_summoner_aspd` | `player.conf:89` | 193 (`:8402`) | `MAPID_FIRSTMASK == MAPID_SUMMONER` |
+| `max_extended_aspd` | `player.conf:86` | 193 (`:8747`) | `(class_ & MAPID_SECONDMASK) == MAPID_KAGEROUOBORO` or `== MAPID_REBELLION` (SECONDMASK = 0xfff) |
+| `max_summoner_aspd` | `player.conf:89` | 193 (`:8402`) | `(class_ & MAPID_FIRSTMASK) == MAPID_SUMMONER` (FIRSTMASK = 0xff, SUMMONER = 0x0a) |
+
+ASPD cap per expanded class (all 193 shipped, but the knob differs): Summoner/Doram 0x0a -> summoner; Spirit Handler 0x10a -> summoner (`0x10a & 0xff == 0x0a`; no JOBL_THIRD; SECONDMASK gives 0x10a, not Rebellion/Kagerou); Night Watch 0x1108 and Shinkiro/Shiranui 0x1109 -> `max_third_aspd` (they carry JOBL_THIRD 0x1000, tested first, so the extended branch is never reached for them even though `0x1108 & 0xfff == MAPID_REBELLION`); Rebellion 0x108, Kagerou/Oboro 0x109 -> extended. Mask constants: `map.hpp:99-102`; JOBL_2_1 0x100, JOBL_THIRD 0x1000, JOBL_FOURTH 0x10000 (`map.hpp:84-96`).
 
 Used: `status.cpp:4618-4620` (base) and `:6415` (final): `amotion = clamp(amotion, pc_maxaspd(sd)/2, MIN_ASPD/2)`, i.e. lower clamp `2000 - maxaspd*10`. Applies in renewal (the renewal ASPD path is the one that uses them). Note: the chain only tests JOBL_THIRD, extended, summoner; 4th-job classes carry `JOBL_THIRD` in their mapid (e.g. Shadow Cross `0x11106`), so they use `max_third_aspd`. **Captured:** a Shadow Cross reached amotion 80 (below the 190 floor of 100; [captures/attribute_sequence.txt](../captures/attribute_sequence.txt) line 4243), consistent with the 193 cap. Mob/non-PC ASPD uses constants `MAX_ASPD_NOPC` instead (`status.cpp:5099`).
 
@@ -108,19 +110,25 @@ See [stats.md](./stats.md#hp--sp-natural-regeneration) for how the 500 ms tick a
 
 ## 8. Max stats (per class group) and stat-up rules
 
-`max_*_parameter` knobs are copied into each job's `max_param[STR..LUK]` once at job DB load (`pc.cpp:14338-14390`), only when the job entry in `db/re/job_stats.yml` has `max_param == 0` for that stat (explicit per-job YAML values win). Runtime reads go through `pc_maxparameter(sd, param)` = `job->max_param[param]` (`pc.cpp:15234-15244`). Selection order (first match wins; `pc.cpp:14342-14376`):
+`max_*_parameter` knobs are copied into each job's `max_param[STR..LUK]` once at job DB load (`pc.cpp:14338-14390`), only when the job entry in `db/re/job_stats.yml` has `max_param == 0` for that stat (explicit per-job YAML values win). Runtime reads go through `pc_maxparameter(sd, param)` = `job->max_param[param]` (`pc.cpp:15234-15244`). Selection order (first match wins; `pc.cpp:14342-14376`, a `do { ... } while(false)` chain inside `JobDatabase::loadingFinished`, `pc.cpp:14268`; `class_` is the job's mapid). Row 0 is the initial value; each later row `break`s:
 
 | Order | Condition | Knob | conf line | Compiled | Shipped |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | 0 | else (default) | `max_parameter` | `player.conf:114` | 99 | 99 |
-| 1 | Baby and Third | `max_baby_third_parameter` | `:119` | 108 | **117** |
-| 2 | Baby | `max_baby_parameter` | `:118` | 80 | 80 |
-| 3 | Summoner | `max_summoner_parameter` | `:121` | 120 | **130** |
-| 4 | Kagerou/Oboro/Rebellion | `max_extended_parameter` | `:120` | 125 | **130** |
-| 5 | `pc_is_trait_job` (4th job) | `max_fourth_parameter` | `:122` | 135 | **130** |
-| 6 | Third and (Upper or primary 4th) | `max_third_trans_parameter` | `:117` | 135 | **130** |
-| 7 | Third | `max_third_parameter` | `:116` | 135 | **130** |
-| 8 | Upper (transcendent) | `max_trans_parameter` | `:115` | 99 | 99 |
+| 1 | `JOBL_BABY` and `JOBL_THIRD` (baby tested first) | `max_baby_third_parameter` | `:119` | 108 | **117** |
+| 2 | `JOBL_BABY` | `max_baby_parameter` | `:118` | 80 | 80 |
+| 3 | `(class_ & MAPID_FIRSTMASK) == MAPID_SUMMONER` (0xff mask, value 0x0a; also catches Spirit Handler 0x10a) | `max_summoner_parameter` | `:121` | 120 | **130** |
+| 4 | `(class_ & MAPID_SECONDMASK) == MAPID_KAGEROUOBORO` or `== MAPID_REBELLION` (0xfff mask; also catches Night Watch 0x1108 and Shinkiro/Shiranui 0x1109) | `max_extended_parameter` | `:120` | 125 | **130** |
+| 5 | `pc_is_trait_job(class_)` (reached only by classes not caught by rows 1-4) | `max_fourth_parameter` | `:122` | 135 | **130** |
+| 6 | `class_ & JOBL_THIRD`, and (`class_ & JOBL_UPPER` or `pc_is_primary_fourth`) | `max_third_trans_parameter` | `:117` | 135 | **130** |
+| 7 | `class_ & JOBL_THIRD` | `max_third_parameter` | `:116` | 135 | **130** |
+| 8 | `class_ & JOBL_UPPER` | `max_trans_parameter` | `:115` | 99 | 99 |
+
+`pc_is_trait_job` detail (macro, `src/map/pc.hpp:1760`; expands `pc_is_primary_fourth` `:1740-1742` OR `pc_is_upper_expanded_second` `:1751-1754`; mapid values from `src/map/map.hpp:92-102,195-265`; applies to 20260219 renewal). It is NOT "JOBL_FOURTH bit only"; it is an explicit mapid whitelist:
+- Primary 4th, masked with `MAPID_FOURTHMASK` (0xfffff): range Dragon Knight 0x11101 .. Shadow Cross 0x11106 (4-1), and Imperial Guard .. Abyss Chaser (4-2, `JOBL_FOURTH|MAPID_ROYAL_GUARD` upward, excluding Soul Ascetic, the last 4-2 entry).
+- Upper expanded 2nd: Hyper Novice 0x11100, Sky Emperor 0x11107 and Soul Ascetic (all carry JOBL_FOURTH 0x10000, matched via FOURTHMASK); plus the 3rd-level lines WITHOUT the FOURTH bit: Night Watch 0x1108 and Shinkiro/Shiranui 0x1109 (matched via `MAPID_THIRDMASK` 0xffff), and Spirit Handler 0x10a (matched via `MAPID_SECONDMASK` 0xfff).
+- So Hyper Novice, Sky Emperor, Soul Ascetic are all JOBL_FOURTH and covered. Not trait jobs: Super Novice Expanded 0x1100, Star Emperor 0x1107, Soul Reaper, Rebellion 0x108, Kagerou/Oboro 0x109, Summoner (these are `pc_is_upper_expanded_first`, `:1745-1748`, a different macro).
+- Cap selection (`pc.cpp:14342-14376`): the trait-job test is row 5, evaluated only after the Summoner (FIRSTMASK 0xff) and Rebellion/Kagerou/Oboro (SECONDMASK 0xfff) tests. Those masks are wide enough to catch some of the `pc_is_upper_expanded_second` classes first, so their base-stat (STR..LUK) caps are NOT `max_fourth_parameter`: **Spirit Handler 0x10a -> `max_summoner_parameter`** (FIRSTMASK match), **Night Watch 0x1108 and Shinkiro/Shiranui 0x1109 -> `max_extended_parameter`** (SECONDMASK match to Rebellion 0x108 / Kagerou 0x109). Hyper Novice, Sky Emperor, Soul Ascetic and the primary 4th jobs do reach row 5 and get `max_fourth_parameter` (this wins before the `JOBL_THIRD` / `max_third_trans_parameter` rows). Trait stats (POW..CRT) are decided separately afterwards (`pc.cpp:14393-14397`) by `pc_is_trait_job` alone, so Spirit Handler, Night Watch and Shinkiro/Shiranui DO get `max_trait_parameter` (they are trait jobs) while keeping the summoner/extended base cap. (Shipped values: summoner 130 = extended 130 = fourth 130, so the difference is only visible if a knob is changed.) Job-change effect: grants `trait_points_job_change` (`pc.cpp:9365`); `pc_is_primary_fourth` (not the whole trait set) grants the transcendent status points (`pc.cpp:9360`). Runtime `pc_maxparameter` just returns `job->max_param[param]` (`pc.cpp:15234-15244`).
 
 Trait stats (POW STA WIS SPL CON CRT, `PARAM_POW..`): `max_trait_parameter` (`player.conf:310`, compiled 100, **shipped 110**) for trait jobs, else 0 (`pc.cpp:14393-14401`). All `max_*_parameter` range 10..SHRT_MAX. The Marionette buff caps ally stats with plain `max_parameter` (`status.cpp:11407`).
 

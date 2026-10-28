@@ -8,7 +8,8 @@ use crate::item::CharacterInventory;
 /// Default walk speed in ms per orthogonal cell (rAthena `DEFAULT_WALK_SPEED`).
 pub const DEFAULT_WALK_SPEED: u16 = 150;
 
-/// Allocated stats, unspent points, exp and HP/SP of a character (the `characters` row).
+/// Allocated stats, job level, unspent points, exp and HP/SP of a character (the `characters`
+/// row). The base level is `CharacterSpawn::base_level`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct CharacterStatus {
     pub str: u16,
@@ -17,6 +18,7 @@ pub struct CharacterStatus {
     pub int: u16,
     pub dex: u16,
     pub luk: u16,
+    pub job_level: u16,
     pub status_point: u16,
     pub skill_point: u16,
     pub base_exp: u64,
@@ -28,7 +30,7 @@ pub struct CharacterStatus {
 }
 
 impl Default for CharacterStatus {
-    /// A fresh novice: every stat 1, 48 status points (rAthena `start_status_points`) and the
+    /// A fresh novice: every stat 1, job level 1, 48 status points (rAthena `start_status_points`) and the
     /// schema's default HP/SP (40/11).
     fn default() -> Self {
         Self {
@@ -38,6 +40,7 @@ impl Default for CharacterStatus {
             int: 1,
             dex: 1,
             luk: 1,
+            job_level: 1,
             status_point: 48,
             skill_point: 0,
             base_exp: 0,
@@ -46,6 +49,38 @@ impl Default for CharacterStatus {
             max_hp: 40,
             sp: 11,
             max_sp: 11,
+        }
+    }
+}
+
+/// The persisted progress the stat flows change (specs `specs/stats/spec.md` §2.7): the map
+/// engine produces it, the map-server saves it with the inventory.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct CharacterProgress {
+    pub job_class: u16,
+    pub base_level: u16,
+    /// Allocated stats, job level, points, exp and HP/SP.
+    pub status: CharacterStatus,
+}
+
+impl Default for CharacterProgress {
+    /// A fresh base-level-1 Novice.
+    fn default() -> Self {
+        Self {
+            job_class: 0,
+            base_level: 1,
+            status: CharacterStatus::default(),
+        }
+    }
+}
+
+impl CharacterSpawn {
+    /// The progress part, for saving.
+    pub fn progress(&self) -> CharacterProgress {
+        CharacterProgress {
+            job_class: self.job_class,
+            base_level: self.base_level,
+            status: self.status,
         }
     }
 }

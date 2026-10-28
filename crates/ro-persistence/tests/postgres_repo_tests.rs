@@ -828,7 +828,8 @@ async fn test_persist_schema_002_connection_error_handling() {
 // ---- Inventory (spec PER-INV-01..04) ----
 
 use ro_core::{
-    CharacterInventory, CharacterLooks, CharacterStatus, InventoryItem, ItemId, ItemOption,
+    CharacterInventory, CharacterLooks, CharacterProgress, CharacterStatus, InventoryItem, ItemId,
+    ItemOption,
 };
 use ro_persistence::InventoryRepository;
 
@@ -899,9 +900,14 @@ async fn per_inv_01_round_trip_keeps_every_field() {
         slots: vec![Some(full_item()), Some(InventoryItem::new(ItemId(501), 5))],
         unique_item_counter: 7,
     };
-    repo.save_inventory(char_id, &inventory, &CharacterLooks::default())
-        .await
-        .expect("saves");
+    repo.save_play_state(
+        char_id,
+        &inventory,
+        &CharacterLooks::default(),
+        &CharacterProgress::default(),
+    )
+    .await
+    .expect("saves");
     let state = repo
         .load_play_state(char_id)
         .await
@@ -928,9 +934,14 @@ async fn per_inv_02_holes_compact() {
         ],
         unique_item_counter: 0,
     };
-    repo.save_inventory(char_id, &inventory, &CharacterLooks::default())
-        .await
-        .expect("saves");
+    repo.save_play_state(
+        char_id,
+        &inventory,
+        &CharacterLooks::default(),
+        &CharacterProgress::default(),
+    )
+    .await
+    .expect("saves");
     let loaded = repo
         .load_play_state(char_id)
         .await
@@ -948,16 +959,26 @@ async fn per_inv_03_save_replaces_rows() {
         slots: vec![Some(InventoryItem::new(ItemId(909), 1)); 4],
         unique_item_counter: 3,
     };
-    repo.save_inventory(char_id, &first, &CharacterLooks::default())
-        .await
-        .expect("saves");
+    repo.save_play_state(
+        char_id,
+        &first,
+        &CharacterLooks::default(),
+        &CharacterProgress::default(),
+    )
+    .await
+    .expect("saves");
     let second = CharacterInventory {
         slots: vec![Some(InventoryItem::new(ItemId(501), 2))],
         unique_item_counter: 9,
     };
-    repo.save_inventory(char_id, &second, &CharacterLooks::default())
-        .await
-        .expect("saves");
+    repo.save_play_state(
+        char_id,
+        &second,
+        &CharacterLooks::default(),
+        &CharacterProgress::default(),
+    )
+    .await
+    .expect("saves");
     let loaded = repo
         .load_play_state(char_id)
         .await
@@ -970,9 +991,14 @@ async fn per_inv_03_save_replaces_rows() {
         slots: Vec::new(),
         unique_item_counter: 9,
     };
-    repo.save_inventory(char_id, &empty, &CharacterLooks::default())
-        .await
-        .expect("saves");
+    repo.save_play_state(
+        char_id,
+        &empty,
+        &CharacterLooks::default(),
+        &CharacterProgress::default(),
+    )
+    .await
+    .expect("saves");
     let loaded = repo
         .load_play_state(char_id)
         .await
@@ -981,8 +1007,13 @@ async fn per_inv_03_save_replaces_rows() {
     assert_eq!(loaded.inventory, empty);
 
     assert_eq!(
-        repo.save_inventory(CharId(u32::MAX >> 1), &second, &CharacterLooks::default())
-            .await,
+        repo.save_play_state(
+            CharId(u32::MAX >> 1),
+            &second,
+            &CharacterLooks::default(),
+            &CharacterProgress::default()
+        )
+        .await,
         Err(RepositoryError::NotFound),
         "unknown character"
     );
@@ -993,21 +1024,34 @@ async fn per_inv_03_save_replaces_rows() {
 #[tokio::test]
 async fn per_inv_04_play_state_and_cascade() {
     let (repo, _acc, char_id) = inventory_fixture(99).await;
-    sqlx::query(
-        "UPDATE characters SET str = 11, agi = 12, vit = 13, int_stat = 14, dex = 15, luk = 16, \
-         status_point = 7, skill_point = 3, base_exp = 5000000000, job_exp = 42, \
-         hp = 31, max_hp = 45, sp = 9, max_sp = 12 \
-         WHERE char_id = $1",
-    )
-    .bind(char_id.0 as i32)
-    .execute(repo.pool())
-    .await
-    .expect("status update");
+    let status = CharacterStatus {
+        str: 11,
+        agi: 12,
+        vit: 13,
+        int: 14,
+        dex: 15,
+        luk: 16,
+        job_level: 8,
+        status_point: 7,
+        skill_point: 3,
+        base_exp: 5_000_000_000,
+        job_exp: 42,
+        hp: 31,
+        max_hp: 45,
+        sp: 9,
+        max_sp: 12,
+    };
+    let progress = CharacterProgress {
+        job_class: 4307,
+        base_level: 150,
+        status,
+    };
     let inventory = CharacterInventory {
         slots: vec![Some(InventoryItem::new(ItemId(909), 1))],
         unique_item_counter: 1,
     };
-    repo.save_inventory(char_id, &inventory, &CharacterLooks::default())
+    // PER-STAT-01: the progress saves with the inventory and loads back.
+    repo.save_play_state(char_id, &inventory, &CharacterLooks::default(), &progress)
         .await
         .expect("saves");
     let state = repo
@@ -1015,25 +1059,12 @@ async fn per_inv_04_play_state_and_cascade() {
         .await
         .expect("loads")
         .expect("exists");
-    assert_eq!(
-        state.status,
-        CharacterStatus {
-            str: 11,
-            agi: 12,
-            vit: 13,
-            int: 14,
-            dex: 15,
-            luk: 16,
-            status_point: 7,
-            skill_point: 3,
-            base_exp: 5_000_000_000,
-            job_exp: 42,
-            hp: 31,
-            max_hp: 45,
-            sp: 9,
-            max_sp: 12,
-        }
-    );
+    assert_eq!(state.status, status);
+    let summary = CharacterRepository::find_by_id(&repo, char_id)
+        .await
+        .expect("query")
+        .expect("exists");
+    assert_eq!((summary.job_class, summary.base_level), (4307, 150));
     assert_eq!(state.group_id, 99);
 
     sqlx::query("DELETE FROM characters WHERE char_id = $1")
@@ -1073,16 +1104,26 @@ async fn per_inv_02_over_capacity_is_refused() {
         slots: vec![Some(InventoryItem::new(ItemId(909), 1)); 100],
         unique_item_counter: 0,
     };
-    repo.save_inventory(char_id, &full, &CharacterLooks::default())
-        .await
-        .expect("100 fits");
+    repo.save_play_state(
+        char_id,
+        &full,
+        &CharacterLooks::default(),
+        &CharacterProgress::default(),
+    )
+    .await
+    .expect("100 fits");
     let too_many = CharacterInventory {
         slots: vec![Some(InventoryItem::new(ItemId(909), 1)); 101],
         unique_item_counter: 0,
     };
     assert!(matches!(
-        repo.save_inventory(char_id, &too_many, &CharacterLooks::default())
-            .await,
+        repo.save_play_state(
+            char_id,
+            &too_many,
+            &CharacterLooks::default(),
+            &CharacterProgress::default()
+        )
+        .await,
         Err(RepositoryError::Internal(_))
     ));
     sqlx::query("INSERT INTO inventory (char_id, nameid, amount) VALUES ($1, 909, 1)")
@@ -1109,10 +1150,11 @@ async fn per_inv_03_concurrent_saves_serialize() {
         unique_item_counter: 2,
     };
     let bare = CharacterLooks::default();
+    let progress = CharacterProgress::default();
     for _ in 0..10 {
         let (ra, rb) = tokio::join!(
-            repo.save_inventory(char_id, &a, &bare),
-            repo.save_inventory(char_id, &b, &bare)
+            repo.save_play_state(char_id, &a, &bare, &progress),
+            repo.save_play_state(char_id, &b, &bare, &progress)
         );
         ra.expect("save a");
         rb.expect("save b");
@@ -1128,7 +1170,7 @@ async fn per_inv_03_concurrent_saves_serialize() {
 
 // ---- Equipment looks (spec PER-EQ-01..02) ----
 
-/// PER-EQ-01: `save_inventory` writes the look columns with the inventory, and every summary
+/// PER-EQ-01: `save_play_state` writes the look columns with the inventory, and every summary
 /// query returns them. A new character starts bare.
 #[tokio::test]
 async fn per_eq_01_looks_saved_with_inventory() {
@@ -1151,7 +1193,7 @@ async fn per_eq_01_looks_saved_with_inventory() {
         slots: vec![Some(InventoryItem::new(ItemId(1201), 1))],
         unique_item_counter: 1,
     };
-    repo.save_inventory(char_id, &inventory, &looks)
+    repo.save_play_state(char_id, &inventory, &looks, &CharacterProgress::default())
         .await
         .expect("saves");
 
@@ -1176,7 +1218,12 @@ async fn per_eq_01_looks_saved_with_inventory() {
         unique_item_counter: 0,
     };
     assert!(repo
-        .save_inventory(char_id, &too_many, &CharacterLooks::default())
+        .save_play_state(
+            char_id,
+            &too_many,
+            &CharacterLooks::default(),
+            &CharacterProgress::default()
+        )
         .await
         .is_err());
     let after = CharacterRepository::find_by_id(&repo, char_id)

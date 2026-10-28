@@ -15,6 +15,8 @@ members = [
     "tools/npc-import",
     "tools/item-import",
     "tools/mob-import",
+    "tools/job-import",
+    "tools/refine-import",
 ]
 
 [workspace.package]

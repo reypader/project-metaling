@@ -185,6 +185,7 @@ impl PacketOpcode {
     pub const CZ_CHANGE_MAPTYPE: Self = Self(0x0198);
     pub const ZC_NOTIFY_MAPPROPERTY: Self = Self(0x0199);
     pub const ZC_NOTIFY_RANKING: Self = Self(0x019a);
+    pub const ZC_NOTIFY_EFFECT: Self = Self(0x019b);
     pub const CZ_LOCALBROADCAST: Self = Self(0x019c);
     pub const CZ_CHANGE_EFFECTSTATE: Self = Self(0x019d);
     pub const CZ_TRYCAPTURE_MONSTER: Self = Self(0x019f);
@@ -1207,6 +1208,7 @@ impl PacketOpcode {
             0x0198 => Some("CZ_CHANGE_MAPTYPE"),
             0x0199 => Some("ZC_NOTIFY_MAPPROPERTY"),
             0x019a => Some("ZC_NOTIFY_RANKING"),
+            0x019b => Some("ZC_NOTIFY_EFFECT"),
             0x019c => Some("CZ_LOCALBROADCAST"),
             0x019d => Some("CZ_CHANGE_EFFECTSTATE"),
             0x019f => Some("CZ_TRYCAPTURE_MONSTER"),

@@ -6,6 +6,7 @@ edition.workspace = true
 [dependencies]
 ro-core.workspace = true
 ro-db.workspace = true
+ro-mechanics.workspace = true
 thiserror.workspace = true
 tracing.workspace = true
 smallvec.workspace = true

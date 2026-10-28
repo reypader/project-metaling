@@ -46,7 +46,7 @@ const MAP_FLAGS_DEFAULT: u32 = 0x0600;
 
 /// NV_BASIC (Basic Skill) at level 0, the one skill rAthena always lists for a fresh novice. Sent
 /// to everyone until characters have a skill tree.
-fn nv_basic() -> SkillInfo {
+pub(crate) fn nv_basic() -> SkillInfo {
     SkillInfo {
         id: 1,
         inf: 0,
@@ -132,7 +132,8 @@ impl MapInstance {
     }
 
     /// Sends the settings group once per entry, after the unit entries: on a login the skill
-    /// list, both hotkey banks and the status block, then on a login or cross-map arrival the
+    /// list, both hotkey banks and the status block (on a cross-map arrival only the `0x0141`s
+    /// instead), then on a login or cross-map arrival the
     /// party, equipment window and config flags and the reputation list. A same-map warp sends nothing.
     pub(crate) fn send_entry_settings(&mut self, e: Entity) {
         let Some(info) = self.world.players.get_mut(e) else {
@@ -150,6 +151,9 @@ impl MapInstance {
             self.emit_self(e, ServerEvent::ShortcutKeyList { tab: 0 });
             self.emit_self(e, ServerEvent::ShortcutKeyList { tab: 1 });
             self.send_initial_status(e);
+        } else if changemap {
+            // A cross-map arrival: the stats again, no status window (spec `specs/stats` §2.3).
+            self.send_map_change_stats(e);
         }
         if changemap {
             self.emit_self(

@@ -20,7 +20,8 @@ Spec: `specs/stats/spec.md`. Design: `crates/ro-engine/DESIGN.md` §5 (revised t
 
 ### Git state at hand-off
 - M0 (DESIGN.md, catalog, this spec and plan) is committed on its own as "Stats: M0 design, catalog, spec and plan" (`3e03ebb`; CLAUDE.md allows M0 docs on their own). M1 onwards stays uncommitted until Finish; generated data may commit early (items precedent).
-- **Pre-capture proxy fix (2026-10-25, after M0, uncommitted unless the user committed it to build the proxy elsewhere):** `0x00bc` `ZC_STATUS_CHANGE_ACK` Fixed(6) in `crates/ro-packets/src/table.rs`, its name in `opcode.rs`, and test `stats_stat_up_rows` in `tests/framing_tests.rs`. Without it a stat-up capture misframes. It counts as part of M4's table work. If it was committed separately, start the Finish reviewer diff from before that commit.
+- The `0x00bc` proxy framing fix is committed on its own (`5317367` "Proxy: frame ZC_STATUS_CHANGE_ACK"). Everything else since `3e03ebb`/`1ec97c0` (M1-M6 code, regenerated `crates/ro-db/data/{job,refine}/`, captures 2-3 and their catalog write-ups, spec fixes, `config/battle.yml`, the compose `name: metaling` and the CLAUDE.md crate-graph/DB-command edits) is **uncommitted** on `main`. The Finish reviewer diff is `git diff HEAD` plus untracked files.
+- **Ledger:** `.superpowers/sdd/plan/progress.md` (git-ignored) holds every `Ruling:` line and the M3 review outcome. Read it at session start; the final message at Finish lists its rulings and deferred minors.
 
 ### Captures (recorded 2026-10-26, processed in session A)
 `reference/catalog/captures/attribute_sequence.txt` is redacted (PIN, `0x008e`, `0x01c3`) and written up:
@@ -83,15 +84,45 @@ The spec was fixed where the capture disagreed. What it settled:
 - **Job names in `@job`** come from `JobDb` (`Name` field from the importer's `e_job` table). Mounted and dummy ids are refused (catalog deny list).
 - **Data regeneration:** pass an expanded path to `--rathena` (`$RATHENA_PATH` may hold `~`). Never hand-edit generated files.
 - **Never paste rAthena message text**; use our own wording.
-- **DB tests:** the metaling and rAthena compose files share project "docker"; `up -d db` replaces a running `rathena-db`. Ask the user first if `rathena-*` containers are up.
+- **DB tests:** fixed 2026-10-27. The metaling compose file now names its project `metaling`, so `up -d db` no longer touches rAthena's containers. Before that, the shared project "docker" made it remove `rathena-db`.
+
+### Capture 3 (recorded and processed 2026-10-27, session C)
+`attribute_sequence_3.txt` is redacted and written up (catalog `packets/status.md` "Capture 3", `atcommands.md`, `stats.md` "Capture 3 Hyper Novice values", INDEX, captures README). No buffs were active. What it settled:
+- **`elvmax` unequip runs last**, after the base tail (`pc_baselevelchanged` ends the command). Per slot it's the existing `wear.rs` order: shoes look then `0x099a`; head top `0x099a` then look. Spec §2.5 now queues the check as a follow-up after the tail. Its own diff (if the item had stats) goes out next tick: the pass doesn't re-run a player listed by its own follow-up. The recorder clamped at Novice 99, so the unequips happened on a Hyper Novice at 100 and 101.
+- **Observer:** `@blvl` gives it `0x080e` (party HP bar, out of scope) and `0x019b` effect 0; `@jlvl` only `0x019b` effect 1; an unequip only the `0x01d7`.
+- **Hyper Novice MaxHP/MaxSP match** the generated data and the formula (no ×1.25, +10 stats) at B99 J1, B99 J52, B150, B201. No data change.
+- Out of scope, now in spec §5: `0x0a24` achievements after level effects; `0x0446` quest marker at a level change; `SP_TRAITPOINT` is the running trait total in rAthena (we send 0).
+
+### Start of session D: Finish (next: 2026-10-28)
+Session C finished M4-M6 and stopped at the Finish boundary. Everything after `5317367` is uncommitted on `main`.
+1. **Read** this whole file, the ledger (`.superpowers/sdd/plan/progress.md`; its session-C lines hold every ruling since M4), spec §2 and §5, and `DEFERRED.md`. Run `git status` and check it matches "Git state" above.
+2. **DB:** `docker compose -f tools/docker/docker-compose.yml up -d db`. It is safe beside rAthena now (the compose file names its project `metaling`). Baseline: full `./verify.sh` was 754/754 and `--smoke` ok at the end of session C; rerun it before reviewing.
+3. **Reviewer** (one `reviewer` agent, CLAUDE.md "Review once per feature"):
+   - Diff: `git diff HEAD` plus the untracked files (`git status --porcelain | grep '^??'`). Pass `specs/stats/spec.md` and this plan.
+   - Tell it to skip the bodies of the generated files under `crates/ro-db/data/{job,refine}/` (check only their headers and the `NOTICE.md` sections) and the redacted captures under `reference/catalog/captures/`.
+   - M3 already had an early review (ledger "M3 review"). Point the reviewer at those settled points so it doesn't re-raise them, and name the risky parts added since: the Stage 4 follow-up queue re-listing a player (`stats.rs` `settle_stats`/`run_stat_pass`); `FollowUp::ToArea` events built at flow time (`@job`'s equip looks could go stale if another flow changes gear in the same tick); the `elvmax` unequip's diff landing next tick; the save path (`PlaySnapshot`, `RecentPlay`, autosave on revision **or** progress, `save_requested` dedupe after the hand-offs, the boxed `Claim.play`); `save_play_state` column ranges in one transaction; `@job`'s step order and the sex pick (`job::job_for_sex`).
+   - Apply its fixes with the `receiving-code-review` rigor (verify each claim first), with tests, `./verify.sh` green.
+4. **Docs:**
+   - `crates/ro-engine/DESIGN.md` §1a ("not implemented" list: stats now are), plus §5/§9.6/§9.7 against what landed (the follow-up queue, `LevelGearCheck`, the next-tick `elvmax` diff).
+   - `crates/ro-db/DESIGN.md` (job/refine registries, from M1; check it's current).
+   - `crates/ro-persistence/DESIGN.md` (`save_play_state`; done in M6, check it).
+   - `DEFERRED.md`:
+     - Add a "stats" section from spec §5 and the ledger's deferred minors: M-3 (`status_diff` allocates two Vecs per recalc), M-7 (`DISPLACED` == `CASCADED_AMMO`), flow-time `ToArea` events, the next-tick `elvmax` diff, `LOOK_CLOTHES_COLOR` always 0, the `@job` ammo-refusal `0x0291` being source-only, and two `elvmax` items coming off in one command (not captured).
+     - Remove the equipment section's "Needs the stats feature" bullets that landed, and the map-entry-settings placeholders that landed (listed in the Finish item below).
+     - The M1 Hyper Novice caveat is **resolved** (capture 3 matched the data); don't add it.
+5. `./verify.sh --smoke`.
+6. **Commit** once: the whole plan, after the reviewer's fixes (CLAUDE.md "Commit once per plan"). Suggested subject: "Stats: job/refine data, formulas, stat model, stat-up, @blvl/@jlvl/@job, persistence". The final message lists the ledger's rulings and the deferred minors.
+7. **Then hand the manual check to the user** (the Finish item below; the user records it). Anything it turns up is a fix in its own commit.
+
+Housekeeping the user knows about: rAthena is stopped and its `rathena-db` container was removed (volume `docker_rathenadb` intact; rAthena's compose recreates it). `docker_metalingdb` is an old unused volume.
 
 ## Session split (recommended)
 | Session | Milestones | Why this cut |
 | :--- | :--- | :--- |
 | **A: data and formulas** | M1, M2 | Leaf crates only (importers, ro-db, ro-mechanics). Pure and fully unit-testable; no engine context needed. |
 | **B: engine model** | M3 | The core change: tick order, `Status`, dirty set, diff, the equipment-test rewrite. Needs a fresh context and the DESIGN.md sections. |
-| **C: flows and wiring** | M4, M5, M6 | Stat-up, GM commands, persistence and map-server wiring build on M3's API. |
-| **D: finish** | Finish | Reviewer over the full diff (fresh context), fixes, DEFERRED, smoke, manual check, commit. |
+| **C: flows and wiring** | M4, M5, M6 | Stat-up, GM commands, persistence and map-server wiring build on M3's API. Done 2026-10-27 (capture 3 processed first). |
+| **D: finish** | Finish | Reviewer over the full diff (fresh context), fixes, docs, DEFERRED, smoke, commit; then the user's manual check. Starts 2026-10-28; see "Start of session D". |
 
 If a session runs short, cut at a milestone boundary; never mid-milestone.
 
@@ -129,26 +160,46 @@ Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
   - Input view structs (no `ro-db` dependency), `BattleConfig` (serde, shipped defaults, ASPD conversion, max-param selection by a class-group enum the engine supplies), bonus-slot types (`BonusSlot`, `BonusTotals`) with zero sources, `calc_status` (base → battle primary → every secondary of spec §2.2), refine application, stat cost and cap. `config/battle.yml` with every default written out.
   - MECH-01..06. Add `ro-mechanics` deps (serde) and `ro-engine → ro-mechanics`.
   - `Status` keeps `cri` and `flee2` in rAthena's 1/10 units (the diff compares them; the push divides by 10).
-- [ ] **M3 engine stat model and tick order** *(session B)*
+- [x] **M3 engine stat model and tick order** *(session B, done 2026-10-26)*
+  - Done: `crates/ro-engine/src/stats.rs` (new) + `status.rs` rewrite. `PlayerInfo.derived: ro_mechanics::Status`, `PlayerInfo.gear: GearStatus` (cached, rebuilt when `STALE_GEAR`), `stat_flags`, `followups: Vec<FollowUp>`; `MapInstance::stat_queue`, `save_requests`. `ro_engine::Registries { items, mobs, jobs, refine, battle }` replaces the map-server's struct; `set_registries(Registries)`. The map-server still fills only items/mobs (`..Registries::default()`): M6 loads the rest.
+  - **API for M4/M5:** `self.mark_dirty(e, gear: bool)`, `self.queue_followup(e, FollowUp::{ToSelf(ev), ToArea(ev), HealToMax, Save})` (remove the two `#[allow(dead_code)]` in `stats.rs` once a flow uses them), `MapInstance::drain_save_requests(&mut Vec<CharId>)` (public; the map-server must call it, M6). Base level is `PlayerInfo.clevel`, job level `PlayerInfo.status.job_level` (**`job_level` lives in `CharacterStatus`**, ruling; `CharacterSpawn`/`MapTransfer` carry it through `status`, and `load_play_state` already selects it). Status points/costs: `BattleConfig::max_stat(&class_flags(job_mapid(job)))`, `next_stat_cost`, `raise_stat` (ro-mechanics). `status_window(&status, &derived, cap)`.
+  - Behaviour: per listed player `SP_MAXWEIGHT` (if changed), clamp pushes, `status_diff`, follow-ups. Spawn/arrival: `init_status` (clamps HP/SP silently). Cross-map warp: `settle_stats(e)` before the vanish; logout drops. Map change: `0x0141` ×12 (capture 2). A job missing from `JobDb` keeps saved MaxHP/MaxSP, MaxWeight 20000, ASPD bases 200.
+  - Capture 2 (`attribute_sequence_2.txt`) was redacted and catalogued this session; spec fixed (map change ×12, failure ack captured, `@blvl -n` reset order, Super Novice +10, primary-4th ×1.25). `ClassFlags.fourth` now means `pc_is_primary_fourth`. Super Novice +10 is in (`job::super_novice_bonus`, die_counter assumed 0). `tools/job-import` gained the Super Novice line HP adjustment; `job_db.yml` regenerated (the M1 Hyper Novice caveat is resolved).
+  - Tests: `stats_tests.rs` (ENG-STAT-02, -03, -09, -11 incl. Hyper Novice), `stats.rs` unit tests (ENG-STAT-04, -10, warp flush, logout drop), `status.rs` (ENG-STAT-01), `job.rs` (class flags, SN bonus), `equipment.rs` (per-hand gear, refine). Equipment/settings tests rewritten to one net diff (a Knife over a Knife now sends no push).
+  - **Early review done** (no Critical; fixes applied: map-server fmt, `0x0141` also on an allocated change, Summoner/extended masks per `battle_config.md` §4/§8, `HealToMax` pushes only the raised parts and skips the dead). **Carry into M4–M6:**
+    - M4: `FollowUp::ToSelf` is built at flow time; the trailing `0x0141` for a stat > 255 needs the post-recalc bonus, so add a send-time variant (e.g. `FollowUp::CoupleStat(offset)` reading `info.derived`). Unreachable with the shipped caps (≤ 130).
+    - M5: the stat-reset's `0x0141`s now come from the diff even when a battle value is unchanged (allocated compared too). The heal follows `status_heal` (catalog `atcommands.md` "Heal pushes after the level-up").
+    - M6: `Registries.battle` is `Arc<ro_mechanics::BattleConfig>`, so the map-server needs a `ro-mechanics` dependency: update CLAUDE.md's crate graph ("map adds db + engine") with the user, or re-export. Make a missing `JOB_DATA_DIR` a startup error (production has an empty `JobDb` until then). The `drain_save_requests` consumer must dedupe and tolerate a character already handed off (a warp flushes `Save`).
+    - Deferred minors: `status_diff` allocates two Vecs per recalc (dirty players only); `DISPLACED` and `CASCADED_AMMO` in `wear.rs` are now identical.
+  - The late login `SP_ASPD` push in both captures (Knight 270 → 230, Bard 420 → 410) is the recorder's Berserk Potion buff (user, 2026-10-26): a status effect, out of scope. Our values match the unbuffed first push. **DB tests not run in session B** (rAthena containers were up); M6 must run them.
   - `job_level` in `CharacterSpawn` and `PlayerInfo`; `GearStatus` per hand + the `hands()` fix; the `Status` snapshot replaces `DerivedStatus`; the dirty set; `recalc` → mark dirty; the recalc pass + Stage 4 follow-ups (clamp, heal-to-max hook) in `step_tick`; extended `derived_diff` (MAXHP/MAXSP/HP/SP, `0x0141` bonus); job-based max weight + `SP_MAXWEIGHT` push; login push / `0x00bd` real values; `0x0141` ×6 at a changemap actor init; synchronous compute at spawn and transfer arrival.
   - `set_registries` gains `JobDb`, `RefineDb`, `BattleConfig`.
   - Rewrite the equipment tests' push expectations to the single net diff (ENG-STAT-02).
   - The per-player **follow-up queue** (spec §2.1): typed entries (ready packet, heal-to-max, save request), drained in Stage 4 after that player's diff. The Stage 3 order is `SP_MAXWEIGHT`, clamp pushes, diff. M4 and M5 queue their trailing pushes here; this is how the captured orders come out. DESIGN.md §5 gets a line on it, and §9.6/§9.7 (which still say "clamps push from Stage 4" and "stat-up acks sent in the flow") change to the captured order.
   - ENG-STAT-01..04, ENG-STAT-09, ENG-STAT-10, ENG-STAT-11 (shipped data reproduces the captured windows). DESIGN.md §1a.
   - **Early review?** Yes, one `reviewer` pass on M3 alone: later milestones build on the tick-order change and the shared status state in the map-server (CLAUDE.md's early-review rule).
-- [ ] **M4 stat-up** *(session C)*
+- [x] **M4 stat-up** *(session C, done 2026-10-27)*
+  - Done: `ClientIntent::RaiseStat`, `ServerEvent::{StatusChangeAck, SpecialEffect}` (`0x00bc`, `0x019b`; `PacketOpcode::ZC_NOTIFY_EFFECT` added), `CzStatusChangePacket` (the amount is unsigned: captured `0xe7` = 231 honoured; catalog line fixed). Engine `stat_up.rs` (`raise_stat`), `FollowUp::CoupleStat(offset)` (send-time `0x0141` for a stat > 255, review M-1). `status.rs` exports `SP_STATUSPOINT`, `SP_STR`, `SP_LUK`, `SP_USTR`, `couple`, `param`, `battle_stats`; `wear.rs` `is_dead` is `pub(crate)`.
+  - Tests: PKT-STAT-01 (`ro-packets/tests/status_codec_tests.rs`), ENG-STAT-05 (`stats_tests.rs` order/over-affordable/LUK/failures; `stat_up.rs` dead, > 255, two raises in a tick).
   - ro-core `ClientIntent::RaiseStat`, `0x00bc` and `0x019b` events if missing; ro-packets `0x00bb` decoder, `0x00bc`/`0x019b` encoders (+ table rows). PKT-STAT-01.
   - Engine flow per spec §2.4. ENG-STAT-05.
-- [ ] **M5 GM commands** *(session C)*
+- [x] **M5 GM commands** *(session C, done 2026-10-27)*
+  - Done: `level_command.rs` (`@blvl`/`@jlvl`/`@job` with the catalog aliases, our wording), `FollowUp::LevelGearCheck` (the `elvmax` check runs after the base tail, capture 3), `wear.rs` `unequip_over_level` / `unequip_unusable` (the `pc_isequip` re-check; an ammo refusal sends its `0x0291` first, as `pc_isequip` does) / `equip_look_events` (`pc_equiplookall`; shoes carry the worn item id, captured), `job::job_for_sex` (every shared mapid is a male/female pair, male = lower id), public `MapInstance::progress_snapshot` + `ro_engine::ProgressSnapshot` (job, base level, `CharacterStatus`) for M6's save. All `#[allow(dead_code)]` on `FollowUp` are gone.
+  - Tests: `tests/level_command_tests.rs` ENG-STAT-06..08 (10 tests, two observers' views, mutation-checked: `elvmax` before the tail and a dropped `Save` both fail), `job.rs` sex-pair test, `level_command.rs` argument test.
+  - Choices (ledger): `LOOK_CLOTHES_COLOR` is 0 (no cloth colour stored yet; rAthena sent 0 in the captures too). A missing `JobDb` entry refuses `@blvl`/`@jlvl` with our message. `@job` takes a `u16` id or the whole argument as a name; a 5-digit non-job number is "no job matches".
   - `@blvl`/`@jlvl` (aliases from catalog `atcommands.md`), `@job`/`@jobchange` per spec §2.5–§2.6, with the `elvmax` and `pc_isequip` re-checks through the `wear.rs` unequip path, looks to the area, the heal follow-up. The engine signals "save now" after `@job` (e.g. a flag the map-server drains, like `drain_transfers`).
   - ENG-STAT-06..08.
-- [ ] **M6 persistence and map-server wiring** *(session C)*
+- [x] **M6 persistence and map-server wiring** *(session C, done 2026-10-27)*
+  - User answers: rAthena stopped for the DB; the map-server depends on `ro-mechanics` directly (a re-export would break "one import path per item"); CLAUDE.md's crate graph updated.
+  - Done: `ro_core::CharacterProgress` (+ `CharacterSpawn::progress()`); `InventoryRepository::save_inventory` → `save_play_state(char_id, inventory, looks, progress)` (one transaction; too-wide values refused); engine `InventorySnapshot` → `PlaySnapshot { inventory, looks, progress }`, `inventory_snapshot` → `play_snapshot`, `progress_snapshot -> CharacterProgress` (the M5 `ProgressSnapshot` is gone). Map-server: `WriteKind::Play`, `RecentPlay` (a re-entry racing the write gets the progress too), `Claim::{set_play, save_play}` (the claim's snapshot is boxed: clippy `large_enum_variant` on `WorldCommand`), autosave on inventory revision **or** progress change, `save_requested()` after the hand-offs (sorted + deduped; a character that warped out is skipped since its hand-off saved it). `MapConfig` `JOB_DATA_DIR`/`REFINE_DATA_DIR`/`BATTLE_CONFIG` (+ CLI flags, `registry_paths()`), `load_registries(RegistryPaths)` → `anyhow::Result`, `load_battle_config` (unknown key / bad YAML / out of range → error with the path), `main` refuses to start without `JOB_DATA_DIR`. `run_metaling_servers.sh` sets the three. ro-persistence DESIGN.md updated.
+  - Tests: PER-STAT-01 (`per_inv_04` now saves the progress through `save_play_state`), BIN-STAT-01 ×2 (relog keeps STR/points; `@job` saves while online, once), BIN-STAT-02. Mutation-checked: no save drain, and a play snapshot without the status, each fail. Full `./verify.sh` with the DB: 754/754; `--smoke` ok (148 jobs loaded).
   - Repository: load `job_level`; save the progress fields with the inventory in one transaction (extend the ordered writer); immediate save after `@job`. `ro-persistence/DESIGN.md`.
   - `MapConfig`: `JOB_DATA_DIR`, `REFINE_DATA_DIR`, `BATTLE_CONFIG`; load at startup (bad config → error with path); `run_metaling_servers.sh`.
   - BIN-STAT-01, BIN-STAT-02.
 - [ ] **Finish** *(session D)*
+  - Session C ended here (2026-10-27). The metaling DB is up as container `metaling-db`. The compose file now names its project `metaling` (user, 2026-10-27), so CLAUDE.md's `up -d db` is safe beside rAthena. rAthena is stopped and its `rathena-db` **container** was removed by an accidental compose recreate (volume `docker_rathenadb` intact): the user recreates it from rAthena's compose.
   - `reviewer` over `git diff HEAD` plus untracked files (or from the M0 commit if data was committed early); apply its fixes.
   - `DESIGN.md` for ro-engine (§1a), ro-db, ro-persistence. `DEFERRED.md`: a "stats" section from spec §5; remove the equipment section's "Needs the stats feature" bullets that landed (ASPD, status ATK/MATK, soft DEF/MDEF, HIT/FLEE/CRIT, MaxHP/SP, per-hand values, refine, job re-check, `@job`) and the map-entry-settings placeholders that landed (derived stats 0, stat cap 99, stat-up and `0x0141` map change).
   - `./verify.sh --smoke`.
-  - **Manual client check:** a fresh Novice's status window (ATK, MATK, DEF, MDEF, HIT, FLEE, CRIT, ASPD 156, HP/SP); stat-ups (window and weight update); relog keeps them; `@blvl 50` (full heal, effect, points), `@jlvl 10` (job bonus shows as `+`), `@job swordman` with a non-Swordman item worn (comes off; body changes); equip a Knife +10 / Guard (one diff, client fine with the order); compare the window with the same character on rAthena through `tools/proxy` if possible, and record that capture under `reference/catalog/captures/` (it would be the first status-window capture).
-  - Commit.
+  - Commit (CLAUDE.md: the plan is complete before the user's manual check; what the check finds are fixes in their own commits).
+  - **Manual client check (the user, after the commit):** a fresh Novice's status window (ATK, MATK, DEF, MDEF, HIT, FLEE, CRIT, ASPD 156, HP/SP); stat-ups (window and weight update); relog keeps them; `@blvl 50` (full heal, effect, points), `@jlvl 10` (job bonus shows as `+`), `@job swordman` with a non-Swordman item worn (comes off; body changes); equip a Knife +10 / Guard (one diff, client fine with the order); record this metaling session through `tools/proxy` and diff its packet orders against captures 1-3 (stat-up, `@blvl ±n` with an `elvmax` item, `@jlvl ±n` with an observer, `@job` with an unusable item and a level cap). No new rAthena capture is needed (decided 2026-10-27): captures 1-3 cover every flow; only a stat above 255 is uncaptured, and it's unreachable with the shipped caps.

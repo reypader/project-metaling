@@ -263,7 +263,7 @@ Source: [captures/attribute_sequence.txt](../captures/attribute_sequence.txt) (f
 | 681-695 | B6 J10, allocated STR 3, AGI 4, INT 12 (others 1) | 590 | 6 / 17 | 20 / 0 | 5 / 10 | 15 / 0 | 183 | 111 / 1 | 1 | 66 / 18 | 20900 |
 | 45-72, 110 | Bard B99 J1 (above) | 470 | 38 / 142 | 27 / 0 | 52 / 60 | 28 / 0 | 285 | 209 / 1 | 2 | 4096 / 630 | 30300 |
 | 1729-1747 | Swordman B37 J1, allocated STR 13, AGI 21, VIT 17, INT 19, DEX 29, LUK 16, Knife + Cotton Shirt | 470 | 33 / 17 | 47 / 0 | 31 / 10 (not pushed) | 37 / 0 | 246 | 161 / 2 | 6 | 834 / 99 | 31900 |
-| 4576-4602, 4632 | Knight B99 J1, allocated STR 99, AGI 99, VIT 1 (+1), INT 1, DEX 9, LUK 1, bare-handed, Cotton Shirt | 270 | 125 / 0 | 26 / 0 | 70 / 10 | 27 / 0 | 283 | 298 / 1 | 2 | 8137 / 310 | 57700 |
+| 4576-4602, 4632 | Knight B99 J1, allocated STR 99, AGI 99, VIT 1 (+1), INT 1, DEX 9, LUK 1, bare-handed, Cotton Shirt | 270 (unbuffed; a late push at line 4669 shows 230 with the recorder's Berserk Potion active, see [capture 2](#capture-2-values)) | 125 / 0 | 26 / 0 | 70 / 10 | 27 / 0 | 283 | 298 / 1 | 2 | 8137 / 310 | 57700 |
 
 **ASPD steps** (Novice B11-B26, job 10 bonus +1, Knife; values are battle AGI/DEX). Each matches `P = (int)(196 + sqrt(DEX²/5 + AGI²/2)/4) − 55`:
 
@@ -302,6 +302,57 @@ All four are exact. This confirms the fallback formula and the 4th-class ×1.25.
 * Novice 48 → 85 at B11, 67 at B26 after spending.
 * Bard B99 with 56 points spent shows 1217 (1273 − 56).
 * The Knight reset at B99 gives 1273.
+
+## Capture 2 values
+
+Source: [captures/attribute_sequence_2.txt](../captures/attribute_sequence_2.txt) (rAthena `d4b8e7b`, `PACKETVER 20260219`; file lines). Packet orders: [../packets/status.md](../packets/status.md#capture-2-observer-stat-reset-failure-and-4th-class-jobs). Values are the pushed ones (the `0x00bd` window is sent only at login).
+
+| Lines | State | MaxHP / MaxSP | amotion | Check |
+| :--- | :--- | :--- | ---: | :--- |
+| 68-69, 136 | Knight B99, STR 99, AGI 99, VIT 1 (+1), DEX 9 | 8137 / 310 | 270, then 230 (late push, line 136: Berserk Potion buff) | `7978 × 1.02`, `307 × 1.01` |
+| 508-519 | same, B96, all stats 1 after the reset | 7671 / 300 | 440 (499) | `7521 × 1.02`, `298 × 1.01` |
+| 563 | Merchant B96, all 1 | 2400 / 300 | 440 | `2377 × 1.01`, `298 × 1.01` |
+| 614-616 | Merchant B96 + Tsurugi (item 1119, from the `0x0b41` at line 599) | - | 560 | `SP_ATK2` push 130 |
+| 1076-1077 | Merchant B96 after `@blevel -90`'s reset, then B6 at 1095-1096 | 2400 / 300, then 73 / 28 | 560 | B6: tables 73 and 28 |
+| 1231-1232 | Novice High (4001) B6, all 1 | 82 / 20 | - | `65 × 1.01 × 1.25`, `16 × 1.01 × 1.25` |
+| 1295-1296 | Super Novice (23) B6 | 65 / 16 | - | tables 65 and 16, ×1.01 |
+| 1328-1329 | Super Novice B1 | 40 / 11 | - | `40 × 1.01`, `11 × 1.01` |
+| 1387-1399 | Hyper Novice (4307) B1 J1, all allocated 1 | 99 / 11 | 420 | see below |
+| 1501 | Hyper Novice with INT 18 | 99 / 12 | - | `10 × 1.28` |
+
+Row checks use the `job_db.yml` tables (`BaseHp`, `BaseSp`) and `status_calc_maxhp_pc` (`status.cpp:3508-3556`): `table[level-1] × (1 + battle_vit/100)`, then ×1.25 for `JOBL_UPPER` or a primary 4th class, truncated once. Every pushed MaxHP/MaxSP value in the table reproduces exactly.
+
+**Hyper Novice (4307).** Three things apply, none of which the earlier notes covered together:
+
+* **No ×1.25.** `pc_is_primary_fourth` (`pc.hpp:1740-1742`) covers Dragon Knight..Shadow Cross and Imperial Guard..Abyss Chaser only. Hyper Novice has no `JOBL_UPPER` flag either. Captured: MaxHP 99 = `floor(90 × 1.11)`, not 124.
+* **All stats +10** from the Super Novice rule (`status.cpp:4268-4276`): `class_ & MAPID_SECONDMASK == MAPID_SUPER_NOVICE`, and `job_level >= 70` **or `JOBL_THIRD`** (Hyper Novice's mapid is `JOBL_FOURTH | MAPID_SUPER_NOVICE_E`, `map.hpp:252`), and `die_counter == 0`. Captured at job level 1: `0x0141` STR and AGI bonus 11 (10 + the `BonusStats` level-1 STR+1, AGI+1), VIT/INT/DEX/LUK bonus 10 (lines 1381-1386). Plain Super Novice at job level 1 gets only STR+1 (line 1293). The +10 also feeds VIT/INT in the MaxHP/MaxSP product above.
+* **Super Novice HP adjustment applies.** `JobDatabase::calc_basehp` (`pc.cpp:13706-13745`) adds +2000 at base level >= 99 and +2000 at >= 150 when `(mapid & MAPID_SECONDMASK) == MAPID_SUPER_NOVICE`, which includes Hyper Novice, Super Novice E and Super Baby. The adjustment sits in the **fallback** calc, which fills every level whose table entry is 0 (`pc.cpp:14288-14296`); Hyper Novice has no explicit `BaseHp`/`BaseSp`, so it takes the fallback with `HpFactor` 38, `HpIncrease` 5584, `SpFactor` 6, `SpIncrease` 40 (`job_stats.yml:7522-7530`). The capture covers only B1 (90 and 10, which match both the fallback and `job_db.yml`). **Gap found by reading, not by capture (resolved: data regenerated, confirmed by [capture 3](#capture-3-hyper-novice-values)):** `crates/ro-db/data/job/job_db.yml` Hyper_Novice `BaseHp` has no +2000/+4000 (level 99 gives 7445, rAthena gives 9445; level 150 gives 12716, rAthena gives 16716; SN-line rows 23 and Super_Novice_E do have them: 2530 at 99, 4785 at 150 for E). `BaseSp` matches the fallback exactly. SP has no such adjustment.
+
+**Stat points.** `statpoint.yml` totals again: B99 1273, B96 1207, B6 64, B1 48. Trans grant +52 (Novice High, line 1214); Hyper Novice grants none.
+
+## Capture 3 Hyper Novice values
+
+Source: [captures/attribute_sequence_3.txt](../captures/attribute_sequence_3.txt) (file lines; applies to 20260219). Packet orders: [../packets/status.md](../packets/status.md#capture-3-elvmax-unequip-hyper-novice-jlvl-observer). Hyper Novice (4307) with no equipment bonus. `0x0141` VIT is type 15 and INT type 16 (not `0x31`/`0x32`, which are `SP_HIT`/`SP_FLEE1`). The stat sums below are base 1 plus the captured bonus.
+
+| Lines | State | VIT bonus / INT bonus | MaxHP / MaxSP | Check (`job_db.yml` lines 13428-13429) |
+| :--- | :--- | :--- | :--- | :--- |
+| 667-668, 683-684 (and 796-797, 812-813) | B99 J1 | 10 / 10 (VIT 11, INT 11) | 10483 / 385 | `9445 × 1.11 = 10483.95`, `347 × 1.11 = 385.2` |
+| 834-835 | B100 J1 | same | 10588 / 392 | `9539 × 1.11`, `354 × 1.11` |
+| 868-869 | B101 J1 | same | 10691 / 399 | `9632 × 1.11`, `360 × 1.11` |
+| 944-945, 960-961 | B99 J52 | 16 / 20 (VIT 17, INT 21) | 11050 / 419 | `9445 × 1.17 = 11050.65`, `347 × 1.21 = 419.9` |
+| 1009-1010 | B150 J52 | same | 19557 / 908 | `16716 × 1.17 = 19557.7`, `751 × 1.21 = 908.7` |
+| 1043-1045 | B201 J52 | same | 26879 / 1585, `SP_MAXAP` 200 | `22974 × 1.17 = 26879.6`, `1310 × 1.21 = 1585.1` |
+| 532-533 (Swordman, for contrast) | B99 J1 | 0 / 0 | 4038 / 210 | `3999 × 1.01`, `208 × 1.01` |
+
+Findings:
+
+* **Every pushed MaxHP/MaxSP matches** the formula in [MaxHP / MaxSP](#maxhp--maxsp): table value × (1 + stat/100), truncated once, **no ×1.25** for Hyper Novice at any level (1 to 201), and the Super Novice +2000 (B99) / +4000 (B150) HP is in the table value (9445 and 16716).
+* **The generated data is now correct.** The gap noted under [Capture 2 values](#capture-2-values) (7445 / 12716) no longer exists: `crates/ro-db/data/job/job_db.yml` Hyper_Novice `BaseHp` has 9445 at level 99, 9539 at 100, 9632 at 101, 16716 at 150 and 22974 at 201. `BaseSp` has 347, 354, 360, 751 and 1310 at the same levels, all matching the capture.
+* **+10 all stats confirmed at J1 and J52.** J1 bonus: STR 11, AGI 11, VIT/INT/DEX/LUK 10 (lines 665-670). J52: STR 20, AGI 15, VIT 16, INT 20, DEX 15, LUK 16 (942-947), which is the `BonusStats` sums through level 52 (STR 10, AGI 5, VIT 6, INT 10, DEX 5, LUK 6) plus 10. Trait bonus at J52: POW 9, STA 4, WIS 4, SPL 8, CON 8, CRT 3 (962-967), exactly the `BonusStats` sums. `SP_PATK`..`SP_CRATE` there: 4, 3, 9, 9, 3, 1 (968-973).
+* **Trait points:** `@job 4307` grants 7 (lines 643, 778), shown by every level tail (`SP_TRAITPOINT` 7 at B100, B101, B150) and 10 at B201 (the first `TraitPoints` entry in `db/re/statpoint.yml` is 3, at base 201). `@job 1` away clears them to 0 (709).
+* **Status points** in the tails: 1295 (B100), 1318 (B101), 2545 (B150), 4099 (B201), all `statpoint.yml` totals; no 4th-class bonus.
+* **ASPD** (amotion) 570 at J1, 560 at J52 (AGI 12 to 16). Hyper Novice at B99 was not captured with a weapon.
+* **Generated data:** nothing here contradicts `job_db.yml`. Stale text: the "Gap found by reading" sentence in the Hyper Novice bullet under Capture 2 is resolved by the above.
 
 ## Open questions
 

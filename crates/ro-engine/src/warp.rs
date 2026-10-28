@@ -3,7 +3,9 @@
 
 use std::sync::Arc;
 
-use ro_core::{CharacterInventory, CharacterLooks, CharacterSpawn, MapPosition, ServerEvent};
+use ro_core::{
+    CharacterInventory, CharacterLooks, CharacterProgress, CharacterSpawn, MapPosition, ServerEvent,
+};
 use ro_db::NpcState;
 use tracing::warn;
 
@@ -35,12 +37,15 @@ pub struct MapTransfer {
     pub looks: CharacterLooks,
 }
 
-/// What the map-server saves for an online character (`MapInstance::inventory_snapshot`).
+/// What the map-server saves for an online character (`MapInstance::play_snapshot`), in one
+/// transaction.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct InventorySnapshot {
+pub struct PlaySnapshot {
     pub inventory: CharacterInventory,
     /// Char-select looks of the worn gear (written to the character's look columns).
     pub looks: CharacterLooks,
+    /// Job, levels, stats, points, exp and HP/SP.
+    pub progress: CharacterProgress,
 }
 
 /// One bit per map cell.
@@ -179,6 +184,9 @@ impl MapInstance {
     /// Vanish to the AoI, despawn, and queue a `MapTransfer`. No `0x0091` from here: the
     /// destination sends it once the cell is resolved.
     fn warp_cross_map(&mut self, e: Entity, trigger: &WarpTrigger) {
+        // Whatever this tick still owes the player goes out before it leaves (rAthena pushes
+        // inline, so the client has it before the map change).
+        self.settle_stats(e);
         let Some(info) = self.world.players.get(e) else {
             return;
         };
@@ -212,10 +220,15 @@ impl MapInstance {
             warn!(map = %self.map_name, char_id = ?spawn.char_id, "warp despawn failed: {err}");
             // The player stays here: give the inventory back.
             if self.world.entities.is_alive(e) {
+                let max_weight = self
+                    .world
+                    .players
+                    .get(e)
+                    .map_or(0, |info| info.derived.max_weight);
                 let inventory = crate::inventory::PlayerInventory::new(
                     spawn.inventory,
                     spawn.char_id,
-                    spawn.status.str,
+                    max_weight,
                     &self.items,
                 );
                 self.world.inventories.insert(e, inventory);

@@ -171,7 +171,7 @@ fn login_part(
     part.push(ServerEvent::AttackRange { range: 1 });
     part.push(ServerEvent::ParameterChanged {
         var_id: 53,
-        value: 0,
+        value: i32::from(window.aspd),
     });
     for var_id in 219..=224 {
         part.push(ServerEvent::CoupleStatus {
@@ -189,14 +189,44 @@ fn login_part(
     part
 }
 
-/// The window of a fresh character: every stat 1 (cost 2), 48 status points.
-fn fresh_window() -> StatusWindow {
+/// The `0x00bd` `n` got. The derived values are the stats feature's (ENG-STAT-09/11 check
+/// them); these tests check the order and the loaded fields.
+fn sent_window(events: &[ScopedServerEvent], n: u32) -> StatusWindow {
+    settings(events, n)
+        .into_iter()
+        .find_map(|e| match e {
+            ServerEvent::StatusWindow { status } => Some(status),
+            _ => None,
+        })
+        .expect("0x00bd sent")
+}
+
+/// The window of a fresh character: every stat 1 (cost 2), 48 status points; the derived values
+/// from `sent`.
+fn fresh_window(sent: StatusWindow) -> StatusWindow {
     StatusWindow {
         status_point: 48,
         stats: [1; 6],
         costs: [2; 6],
-        ..StatusWindow::default()
+        ..sent
     }
+}
+
+/// A map change's `0x0141` ×12: STR..LUK of a fresh character, then POW..CRT (capture 2 lines
+/// 326-337).
+fn map_change_stats() -> Vec<ServerEvent> {
+    (13..=18)
+        .map(|var_id| ServerEvent::CoupleStatus {
+            var_id,
+            base: 1,
+            bonus: 0,
+        })
+        .chain((219..=224).map(|var_id| ServerEvent::CoupleStatus {
+            var_id,
+            base: 0,
+            bonus: 0,
+        }))
+        .collect()
 }
 
 fn changemap_part() -> Vec<ServerEvent> {
@@ -228,7 +258,7 @@ fn eng_set_01_login_sends_the_settings_group_once() {
         .expect("spawn A");
     let events = push_tick(&mut engine, A, ClientIntent::NotifyActorInit, 20);
 
-    let mut expected = login_part(fresh_window(), 0, 0, 0);
+    let mut expected = login_part(fresh_window(sent_window(&events, A)), 0, 0, 0);
     expected.extend(changemap_part());
     assert_eq!(settings(&events, A), expected);
 
@@ -258,10 +288,12 @@ fn eng_set_02_cross_map_arrival_sends_only_the_changemap_part() {
         .enter_by_warp(spawn_data(A, 0, 0), (100, 100), 0, 0)
         .expect("arrive");
     let events = push_tick(&mut engine, A, ClientIntent::NotifyActorInit, 20);
+    let mut expected = map_change_stats();
+    expected.extend(changemap_part());
     assert_eq!(
         settings(&events, A),
-        changemap_part(),
-        "no skill list, hotkeys or status block"
+        expected,
+        "the stats again, but no skill list, hotkeys or status block"
     );
 }
 
@@ -363,7 +395,7 @@ fn eng_set_06_status_block_carries_the_loaded_status() {
         stats: [9, 11, 50, 98, 99, 1],
         // 2 + (s-1)/10 below the cap of 99, 0 at it.
         costs: [2, 3, 6, 11, 0, 2],
-        ..StatusWindow::default()
+        ..sent_window(&events, A)
     };
     let mut expected = login_part(window, 1234, 56, 3);
     expected.extend(changemap_part());
@@ -395,6 +427,16 @@ fn eng_set_07_login_burst_before_the_first_actor_init() {
         "{burst:#?}"
     );
     let events: Vec<ServerEvent> = burst.into_iter().map(|e| e.event).collect();
+    let derived = [49, 50, 53, 41, 45, 46, 42, 51, 52, 44, 43, 48, 47];
+    let events: Vec<ServerEvent> = events
+        .into_iter()
+        .map(|e| match e {
+            ServerEvent::ParameterChanged { var_id, .. } if derived.contains(&var_id) => {
+                param(var_id, 0)
+            }
+            other => other,
+        })
+        .collect();
 
     let mut expected = vec![
         ServerEvent::SelfChat {
@@ -414,7 +456,8 @@ fn eng_set_07_login_burst_before_the_first_actor_init() {
             bonus: 0,
         });
     }
-    for var_id in [49, 50, 53, 41, 45, 46, 42, 51, 52, 44, 43, 48, 47] {
+    // The derived values are the stats feature's (ENG-STAT-09); here only their order.
+    for var_id in derived {
         expected.push(param(var_id, 0));
     }
     expected.extend([

@@ -36,11 +36,13 @@ async fn main() -> anyhow::Result<()> {
         .init_schema()
         .await
         .context("Failed to initialize the database schema")?;
-    let registries = load_registries(
-        config.item_data_dir.as_deref(),
-        config.mob_data_dir.as_deref(),
-    )
-    .context("Failed to load the item/mob registries")?;
+    if config.job_data_dir.is_none() {
+        anyhow::bail!(
+            "JOB_DATA_DIR is not set; the job data (crates/ro-db/data/job) is required for stats"
+        );
+    }
+    let registries = load_registries(config.registry_paths())
+        .context("Failed to load the registries or the battle config")?;
     let service_handle = MapServiceHandle::new(
         char_repo,
         map_data_loader(

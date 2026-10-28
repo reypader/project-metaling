@@ -867,6 +867,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
 
 [[package]]
+name = "job-import"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "ro-db",
+ "serde",
+ "serde-saphyr",
+]
+
+[[package]]
 name = "lazy_static"
 version = "1.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -959,8 +970,10 @@ dependencies = [
  "ro-core",
  "ro-db",
  "ro-engine",
+ "ro-mechanics",
  "ro-packets",
  "ro-persistence",
+ "serde-saphyr",
  "sqlx",
  "tokio",
  "tokio-util",
@@ -1286,6 +1299,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "refine-import"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "ro-db",
+ "serde",
+ "serde-saphyr",
+]
+
+[[package]]
 name = "regex-automata"
 version = "0.4.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1326,6 +1350,7 @@ version = "0.1.0"
 dependencies = [
  "ro-core",
  "ro-db",
+ "ro-mechanics",
  "rustc-hash",
  "smallvec",
  "thiserror",
@@ -1335,6 +1360,10 @@ dependencies = [
 [[package]]
 name = "ro-mechanics"
 version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde-saphyr",
+]
 
 [[package]]
 name = "ro-packets"

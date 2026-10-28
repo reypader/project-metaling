@@ -89,7 +89,11 @@ fn engine(walls: &[(u16, u16)]) -> MapInstance {
     )
     .expect("mobs");
     let mut engine = MapInstance::new("prontera.gat", Arc::new(grid));
-    engine.set_registries(Arc::new(items), Arc::new(mobs));
+    engine.set_registries(ro_engine::Registries {
+        items: Arc::new(items),
+        mobs: Arc::new(mobs),
+        ..Default::default()
+    });
     engine
 }
 

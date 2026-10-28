@@ -37,7 +37,8 @@ use super::settings::{
 };
 use super::status::{
     encode_zc_attack_range, encode_zc_couplestatus, encode_zc_longlongpar_change,
-    encode_zc_msg_state_change3, encode_zc_status, encode_zc_status_change,
+    encode_zc_msg_state_change3, encode_zc_notify_effect, encode_zc_status,
+    encode_zc_status_change, encode_zc_status_change_ack,
 };
 
 /// `ZC_NOTIFY_ACT` types for sit down / stand up (`e_damage_type`).
@@ -356,6 +357,12 @@ impl EventEncoder for ModernEventEncoder {
             } => Ok(encode_zc_msg_state_change3(
                 *efst, *gid, *state, *total_ms, *remain_ms, *values,
             )),
+            ServerEvent::StatusChangeAck { var_id, ok, value } => {
+                Ok(encode_zc_status_change_ack(*var_id, *ok, *value))
+            }
+            ServerEvent::SpecialEffect { gid, effect } => {
+                Ok(encode_zc_notify_effect(*gid, *effect))
+            }
         }
     }
 }
@@ -424,6 +431,8 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
             | PacketOpcode::ZC_COUPLESTATUS
             | PacketOpcode::ZC_ATTACK_RANGE
             | PacketOpcode::ZC_STATUS_CHANGE
+            | PacketOpcode::ZC_STATUS_CHANGE_ACK
+            | PacketOpcode::ZC_NOTIFY_EFFECT
             | PacketOpcode::ZC_SPRITE_CHANGE2
             | PacketOpcode::ZC_NOTIFY_MAPPROPERTY2
             | PacketOpcode::ZC_NOTIFY_UNREADMAIL
