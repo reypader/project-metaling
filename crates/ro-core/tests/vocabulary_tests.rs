@@ -26,6 +26,7 @@ fn summary() -> CharacterSummary {
         },
         delete_date: None,
         looks: CharacterLooks::default(),
+        select_stats: Default::default(),
     }
 }
 

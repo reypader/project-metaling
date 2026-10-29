@@ -628,8 +628,9 @@ fn eng_stat_08_job_change_order() {
     );
 }
 
-/// ENG-STAT-08: a base level above the new job's max is capped with a stat reset and the base
-/// tail, sent before the costs.
+/// ENG-STAT-08: a base level above the new job's max is capped with a stat reset (its pushes,
+/// for the new class: trait costs 0) and the base tail, sent before the costs (traits spec
+/// §2.7; leaving Hyper Novice then resets again, ENG-TRAIT-06).
 #[test]
 fn eng_stat_08_job_change_caps_the_base_level() {
     let status = CharacterStatus {
@@ -639,7 +640,25 @@ fn eng_stat_08_job_change_caps_the_base_level() {
     };
     let mut w = World::new(HYPER_NOVICE, 150, status, Vec::new());
     let (a, _) = w.command("job 1");
-    assert_eq!(a[..5], base_tail(jobs().status_points(99), 99)[..], "{a:?}");
+    let points = jobs().status_points(99);
+    let mut reset: Vec<ServerEvent> = (0..6)
+        .map(|i| ServerEvent::StatusCost {
+            var_id: SP_USTR + i,
+            value: 2,
+        })
+        .collect();
+    reset.extend((0..6).map(|i| ServerEvent::StatusCost {
+        var_id: SP_UPOW + i,
+        value: 0,
+    }));
+    reset.push(p(SP_STATUSPOINT, points as i32));
+    reset.push(p(SP_TRAITPOINT, 0));
+    assert_eq!(a[..reset.len()], reset[..], "{a:?}");
+    assert_eq!(
+        a[reset.len()..reset.len() + 5],
+        base_tail(points, 99)[..],
+        "{a:?}"
+    );
     let progress = w.progress();
     assert_eq!((progress.base_level, progress.status.str), (99, 1));
     assert_eq!(

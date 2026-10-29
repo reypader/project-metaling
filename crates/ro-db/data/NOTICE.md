@@ -114,23 +114,28 @@ dataset is regenerated from a different commit, update its section.
 - **Source:** rAthena commit `d4b8e7b8f16061cc2496d377ac8f777ce72a4f39`. `db/re/job_stats.yml`,
   `db/re/job_aspd.yml`, `db/re/job_exp.yml`, `db/re/job_basepoints.yml` and
   `db/re/statpoint.yml`.
-- **Modified on 2026-10-26 by `tools/job-import`:** converted to our own schemas (`JOB_DATA`
-  version 1, `STATPOINT_DATA` version 1). The conversion:
+- **Modified on 2026-10-26 by `tools/job-import`** (regenerated 2026-10-29 for trait points and
+  AP): converted to our own schemas (`JOB_DATA` version 2, `STATPOINT_DATA` version 2). The
+  conversion:
   - merges the four job files per job id in rAthena's load order: a later key overrides an
     earlier one, and an absent key keeps it. Job names resolve to `e_job` ids. Mounted and
     dummy variants with no class mapping (`Knight2`, `Rune_Knight2`, ...) are skipped;
   - keeps `MaxWeight` (default 20000), `MaxBaseLevel` / `MaxJobLevel` (default 275), the sparse
     `BonusStats` (trait keys included), `BaseASPD` (weapon names become `WeaponType` names, and
-    `Shield` becomes `ShieldAspd`), and `BaseHp` / `BaseSp` as dense lists of `MaxBaseLevel`
-    entries;
+    `Shield` becomes `ShieldAspd`), and `BaseHp` / `BaseSp` / `BaseAp` as dense lists of
+    `MaxBaseLevel` entries;
   - fills every HP/SP slot the tables omit (all levels of the 4th classes, levels 1-98 of the
     3rd classes, a few unused jobs) with rAthena's fallback formula from `HpFactor` /
     `HpIncrease` / `SpFactor` / `SpIncrease`, including its Super Novice line HP adjustment
     (+2000 from base level 99 and +2000 more from 150; it matters for Hyper Novice, regenerated
     2026-10-26). Those four keys are then dropped;
-  - drops the exp tables, `BaseAp` / AP fields, `MaxStats` (empty) and `AlternateOutfits`
-    (`job_outfits.yml` is not read);
-  - keeps `Level` and `Points` from `statpoint.yml` and drops `TraitPoints`.
+  - fills every AP slot the `BaseAp` table omits or sets to 0 with rAthena's AP fallback formula
+    from `ApFactor` / `ApIncrease` (200 from base level 200 for every job, added 2026-10-29).
+    Those two keys are then dropped, and a job whose AP table is all zero has no `BaseAp`;
+  - drops the exp tables, `MaxStats` (empty) and `AlternateOutfits` (`job_outfits.yml` is not
+    read);
+  - keeps `Level`, `Points` and `TraitPoints` from `statpoint.yml` (`TraitPoints` since
+    2026-10-29; omitted where it is 0).
 - **Regenerate** (pass an expanded path):
 
   ```bash

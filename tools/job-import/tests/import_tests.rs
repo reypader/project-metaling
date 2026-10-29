@@ -23,6 +23,8 @@ const STATS: &str = "  - Jobs:
     HpIncrease: 5398
     SpFactor: 7
     SpIncrease: 4
+    ApFactor: 50
+    ApIncrease: 300
     BonusStats:
       - Level: 1
         Pow: 1
@@ -73,6 +75,14 @@ const EXP: &str = "  - Jobs:
     MaxBaseLevel: 170
     MaxJobLevel: 2
   - Jobs:
+      Rune_Knight: true
+    MaxBaseLevel: 201
+    MaxJobLevel: 1
+  - Jobs:
+      Dragon_Knight: true
+    MaxBaseLevel: 202
+    MaxJobLevel: 1
+  - Jobs:
       Novice: false
     MaxBaseLevel: 1
 ";
@@ -106,6 +116,13 @@ const POINTS: &str = "  - Jobs:
     BaseAp:
       - Level: 1
         Ap: 1
+  - Jobs:
+      Dragon_Knight: true
+    BaseAp:
+      - Level: 200
+        Ap: 0
+      - Level: 201
+        Ap: 250
 ";
 
 const STATPOINT: &str = "  - Level: 1
@@ -113,6 +130,9 @@ const STATPOINT: &str = "  - Level: 1
   - Level: 2
     Points: 51
     TraitPoints: 0
+  - Level: 3
+    Points: 54
+    TraitPoints: 3
 ";
 
 fn run() -> Converted {
@@ -139,7 +159,7 @@ fn names_resolve_to_ids_and_keep_the_file_spelling() {
     let ids: Vec<u16> = out.jobs.iter().map(|j| j.id).collect();
     assert_eq!(
         ids,
-        vec![0, 7, 4001, 4254, 4307],
+        vec![0, 7, 4001, 4054, 4252, 4254, 4307],
         "sorted by id; Knight2 has no id"
     );
     assert_eq!(job(&out, 4001).name, "Novice_High");
@@ -256,10 +276,43 @@ fn super_novice_line_fallback_hp_adjustment() {
 }
 
 #[test]
-fn status_points_drop_trait_points() {
+fn status_points_keep_trait_points() {
     let out = run();
-    let rows: Vec<(u16, u32)> = out.points.iter().map(|r| (r.level, r.points)).collect();
-    assert_eq!(rows, vec![(1, 48), (2, 51)]);
+    let rows: Vec<(u16, u32, u32)> = out
+        .points
+        .iter()
+        .map(|r| (r.level, r.points, r.trait_points))
+        .collect();
+    assert_eq!(rows, vec![(1, 48, 0), (2, 51, 0), (3, 54, 3)]);
+}
+
+/// The AP table is `BaseAp` where it has a non-zero value, else rAthena's fallback (catalog
+/// `mechanics/trait_stats.md` §2): 200 from base level 200, plus `floor(lv * ApIncrease / 100)`,
+/// plus `round(ApFactor / 100 * i)` for i = 2..=lv. The fallback has no job guard.
+#[test]
+fn ap_tables_from_base_ap_and_the_fallback_formula() {
+    let out = run();
+    // ApFactor 50, ApIncrease 300, no BaseAp. Level 3: 9 + round(1.0) + round(1.5) = 12.
+    // Level 170: 510 + (1 + 2 * (2 + ... + 85)) = 510 + 7309.
+    let cross = job(&out, 4254);
+    assert_eq!(cross.base_ap.len(), 170);
+    assert_eq!(cross.base_ap[..3], [3, 7, 12]);
+    assert_eq!(cross.base_ap[169], 7819);
+    // No AP keys: 0 below 200, then the constant 200.
+    let rune = job(&out, 4054);
+    assert_eq!(rune.base_ap.len(), 201);
+    assert_eq!(
+        (rune.base_ap[198], rune.base_ap[199], rune.base_ap[200]),
+        (0, 200, 200)
+    );
+    // A BaseAp of 0 falls back too; a non-zero one wins.
+    let dk = job(&out, 4252);
+    assert_eq!(dk.base_ap[199..], [200, 250, 200]);
+    // Only the given slot is non-zero: the table is kept.
+    assert_eq!(job(&out, 7).base_ap, vec![1, 0, 0]);
+    // All zero: omitted.
+    assert!(job(&out, 0).base_ap.is_empty());
+    assert!(job(&out, 4307).base_ap.is_empty(), "max base level 151");
 }
 
 #[test]

@@ -1,5 +1,5 @@
 //! Stat-point costs (renewal `RENEWAL_STAT`; catalog `mechanics/stats.md` "Cost to raise one
-//! stat").
+//! stat") and trait-point costs (catalog `mechanics/trait_stats.md` §4).
 
 /// Points to raise a stat currently at `low` by one (`PC_STATUS_POINT_COST`).
 pub fn stat_cost(low: u16) -> u32 {
@@ -41,4 +41,22 @@ pub fn raise_stat(current: u16, requested: u16, points: u32, cap: u16) -> StatRa
         stat += 1;
     }
     raise
+}
+
+/// The next-point trait cost sent in `0x00be` `SP_U<trait>`: 1 below `cap`, else 0 (always 0
+/// for a non-trait job, whose cap is 0).
+pub fn next_trait_cost(current: u16, cap: u16) -> u8 {
+    u8::from(current < cap)
+}
+
+/// Raises a trait at `current` by up to `requested`, one point per level, stopping at `cap` or
+/// when `points` run out. Zero when nothing can be raised.
+pub fn raise_trait(current: u16, requested: u16, points: u32, cap: u16) -> StatRaise {
+    let room = cap.saturating_sub(current);
+    let affordable = u16::try_from(points).unwrap_or(u16::MAX);
+    let amount = requested.min(room).min(affordable);
+    StatRaise {
+        amount,
+        cost: u32::from(amount),
+    }
 }

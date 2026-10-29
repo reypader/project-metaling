@@ -328,6 +328,7 @@ fn summary(looks: CharacterLooks) -> CharacterSummary {
         },
         delete_date: None,
         looks,
+        select_stats: Default::default(),
     }
 }
 

@@ -55,14 +55,55 @@ impl Primary {
     }
 }
 
+/// The six trait stats, POW..CRT in this order everywhere.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub struct Traits {
+    pub pow: i32,
+    pub sta: i32,
+    pub wis: i32,
+    pub spl: i32,
+    pub con: i32,
+    pub crt: i32,
+}
+
+impl Traits {
+    fn plus(self, other: Traits) -> Traits {
+        Traits {
+            pow: self.pow + other.pow,
+            sta: self.sta + other.sta,
+            wis: self.wis + other.wis,
+            spl: self.spl + other.spl,
+            con: self.con + other.con,
+            crt: self.crt + other.crt,
+        }
+    }
+
+    /// rAthena keeps each trait in `0..=65535`.
+    fn clamped(self) -> Traits {
+        let c = |v: i32| v.clamp(0, i32::from(u16::MAX));
+        Traits {
+            pow: c(self.pow),
+            sta: c(self.sta),
+            wis: c(self.wis),
+            spl: c(self.spl),
+            con: c(self.con),
+            crt: c(self.crt),
+        }
+    }
+}
+
 /// The job's data at the character's levels, mapped from `ro_db::Job` by the engine.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct JobRow {
     /// Cumulative job-level bonus at the current job level.
     pub bonus: Primary,
+    /// The same bonus for POW..CRT.
+    pub trait_bonus: Traits,
     /// The base HP/SP table at the current base level.
     pub base_hp: u32,
     pub base_sp: u32,
+    /// The base AP table at the current base level.
+    pub base_ap: u32,
     pub max_weight: u32,
     /// The job's ASPD base for a shield.
     pub shield_aspd: u16,
@@ -144,6 +185,8 @@ pub struct GearInput {
 pub struct StatusInputs<'a> {
     /// Allocated STR..LUK (the DB columns).
     pub allocated: Primary,
+    /// Allocated POW..CRT (the DB columns).
+    pub traits: Traits,
     pub base_level: u16,
     pub job: JobRow,
     pub class: ClassFlags,
@@ -162,6 +205,10 @@ pub struct Status {
     pub base: Primary,
     /// Base + status effects. `0x0141` sends `bonus = battle - allocated`.
     pub battle: Primary,
+    /// Job trait bonus + allocated POW..CRT (no item or SC sources yet).
+    pub trait_base: Traits,
+    /// `trait_base` + status effects (none yet).
+    pub trait_battle: Traits,
     /// Status ATK (`SP_ATK1`).
     pub batk: i32,
     /// Weapon ATK with refine, plus equipment ATK (`SP_ATK2`).
@@ -188,6 +235,14 @@ pub struct Status {
     pub amotion: i32,
     pub max_hp: u32,
     pub max_sp: u32,
+    /// Trait-derived values (`SP_PATK`..`SP_CRATE`), each `0..=32767`. Combat reads them later.
+    pub patk: i32,
+    pub smatk: i32,
+    pub res: i32,
+    pub mres: i32,
+    pub hplus: i32,
+    pub crate_: i32,
+    pub max_ap: u32,
     pub max_weight: u32,
     pub range: u16,
     /// Overrefine per hand (right, left): `RandomBonus / 100`, for combat.
@@ -230,6 +285,16 @@ pub fn calc_status(inputs: &StatusInputs<'_>, config: &BattleConfig) -> Status {
         .plus(Primary::from_bonus(base_bonus))
         .clamped();
     let battle = base.plus(Primary::from_bonus(battle_bonus)).clamped();
+    let trait_base = inputs.job.trait_bonus.plus(inputs.traits).clamped();
+    let trait_battle = trait_base;
+    let Traits {
+        pow,
+        sta,
+        wis,
+        spl,
+        con,
+        crt,
+    } = trait_battle;
     let level = i32::from(inputs.base_level);
     let Primary {
         str,
@@ -243,7 +308,7 @@ pub fn calc_status(inputs: &StatusInputs<'_>, config: &BattleConfig) -> Status {
     let ranged = gear.right.class.is_ranged();
     let batk = if config.enable_baseatk_renewal & BL_PC != 0 {
         let (main, other) = if ranged { (dex, str) } else { (str, dex) };
-        (main * 10 + other * 10 / 5 + luk * 10 / 3 + level * 10 / 4) / 10
+        (main * 10 + other * 10 / 5 + luk * 10 / 3 + level * 10 / 4) / 10 + 5 * pow
     } else {
         0
     } + flat(BonusSlot::BaseAtk);
@@ -274,8 +339,15 @@ pub fn calc_status(inputs: &StatusInputs<'_>, config: &BattleConfig) -> Status {
     let hard_def = gear.item_def + refine_def + flat(BonusSlot::Def);
     let hard_mdef = gear.item_mdef + flat(BonusSlot::Mdef);
 
-    let hit = (flat(BonusSlot::Hit) + level + dex + luk / 3 + 175).clamp(1, SHORT_MAX);
-    let flee = (flat(BonusSlot::Flee) + level + agi + luk / 5 + 100).clamp(1, SHORT_MAX);
+    let hit = (flat(BonusSlot::Hit) + level + dex + luk / 3 + 175 + 2 * con).clamp(1, SHORT_MAX);
+    let flee = (flat(BonusSlot::Flee) + level + agi + luk / 5 + 100 + 2 * con).clamp(1, SHORT_MAX);
+    let derived = |value: i32| value.clamp(0, SHORT_MAX);
+    let patk = derived(pow / 3 + con / 5);
+    let smatk = derived(spl / 3 + con / 5);
+    let res = derived(sta + (sta / 3) * 5);
+    let mres = derived(wis + (wis / 3) * 5);
+    let hplus = derived(crt);
+    let crate_ = derived(crt / 3);
     let cri = if config.enable_critical & BL_PC != 0 {
         let cri = (flat(BonusSlot::Critical) * 10 + level / 10 + 10 + 3 * luk).clamp(1, SHORT_MAX);
         if gear.right.class == WeaponClass::Katar {
@@ -315,6 +387,8 @@ pub fn calc_status(inputs: &StatusInputs<'_>, config: &BattleConfig) -> Status {
     )
     .min(config.max_sp.max(1));
 
+    let max_ap = max_ap(inputs.job.base_ap, config);
+
     let allocated_str = u32::try_from(inputs.allocated.str.max(0)).unwrap_or(0);
     let weight_bonus = flat(BonusSlot::MaxWeight);
     let max_weight =
@@ -324,6 +398,8 @@ pub fn calc_status(inputs: &StatusInputs<'_>, config: &BattleConfig) -> Status {
     Status {
         base,
         battle,
+        trait_base,
+        trait_battle,
         batk,
         watk,
         status_matk,
@@ -339,6 +415,13 @@ pub fn calc_status(inputs: &StatusInputs<'_>, config: &BattleConfig) -> Status {
         amotion,
         max_hp,
         max_sp,
+        patk,
+        smatk,
+        res,
+        mres,
+        hplus,
+        crate_,
+        max_ap,
         max_weight,
         range: gear.range.saturating_add(range_bonus),
         overrefine,
@@ -385,6 +468,17 @@ fn max_pool(table: u32, stat: i32, class_factor: bool, flat: i32, rate: u32) -> 
         (f64::from(rate) * (f64::from(value) / 100.0)) as u32
     }
     .max(1)
+}
+
+/// MaxAP: the table value (no bonuses yet), then the `ap_rate` percentage, capped at `max_ap`
+/// (catalog `mechanics/trait_stats.md` §2).
+fn max_ap(base_ap: u32, config: &BattleConfig) -> u32 {
+    let value = if config.ap_rate == 100 {
+        base_ap
+    } else {
+        (f64::from(config.ap_rate) * (f64::from(base_ap) / 100.0)) as u32
+    };
+    value.min(config.max_ap)
 }
 
 fn hp_cap(base_level: u16, config: &BattleConfig) -> u32 {

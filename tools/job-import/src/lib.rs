@@ -35,6 +35,10 @@ const DEFAULT_SP_INCREASE: u32 = 100;
 /// The constant term of the fallback HP and SP formulas.
 const FALLBACK_HP_BASE: u32 = 35;
 const FALLBACK_SP_BASE: u32 = 10;
+/// The fallback base AP is this constant from `FALLBACK_AP_LEVEL` on, for every job (catalog
+/// `mechanics/trait_stats.md` §2).
+const FALLBACK_AP_BASE: u32 = 200;
+const FALLBACK_AP_LEVEL: u16 = 200;
 /// The Super Novice line (`mapid & MAPID_SECONDMASK == MAPID_SUPER_NOVICE`: Super Novice, Super
 /// Baby, their expanded forms and Hyper Novice). rAthena's fallback base HP adds
 /// `SUPER_NOVICE_HP_STEP` from base level 99 and again from 150 for them (catalog
@@ -114,6 +118,7 @@ pub fn convert(job_sources: &[(&str, &str)], statpoint: &str) -> anyhow::Result<
         .map(|row| StatPointRow {
             level: row.level,
             points: row.points,
+            trait_points: row.trait_points,
         })
         .collect();
     Ok(Converted {
@@ -132,9 +137,9 @@ pub fn render_jobs(jobs: &[JobData], rathena_commit: &str) -> anyhow::Result<Str
             rathena_commit,
             &JOB_SOURCES.join(", "),
             "merged per job id (later files override earlier keys), reduced to max weight, max \
-             levels, job-level stat bonuses, ASPD bases and base HP/SP; missing HP/SP table \
-             slots filled with rAthena's fallback formula (with its Super Novice line HP \
-             adjustment); exp tables, AP and outfits dropped"
+             levels, job-level stat bonuses, ASPD bases and base HP/SP/AP; missing HP/SP/AP \
+             table slots filled with rAthena's fallback formulas (with its Super Novice line HP \
+             adjustment), all-zero AP tables omitted; exp tables and outfits dropped"
         )
     ))
 }
@@ -144,7 +149,11 @@ pub fn render_status_points(rows: &[StatPointRow], rathena_commit: &str) -> anyh
     let yaml = JobDb::status_points_to_yaml(rows)?;
     Ok(format!(
         "{}{yaml}",
-        attribution(rathena_commit, STATPOINT_SOURCE, "trait points dropped")
+        attribution(
+            rathena_commit,
+            STATPOINT_SOURCE,
+            "reformatted, zero trait points omitted"
+        )
     ))
 }
 
@@ -195,8 +204,7 @@ fn parse_body<T: serde::de::DeserializeOwned>(text: &str) -> anyhow::Result<Vec<
     Ok(file.body)
 }
 
-/// One entry of any job file. Keys this importer doesn't use (exp tables, AP, outfits) are
-/// ignored.
+/// One entry of any job file. Keys this importer doesn't use (exp tables, outfits) are ignored.
 #[derive(Debug, Default, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 struct RawEntry {
@@ -207,6 +215,8 @@ struct RawEntry {
     hp_increase: Option<u32>,
     sp_factor: Option<u32>,
     sp_increase: Option<u32>,
+    ap_factor: Option<u32>,
+    ap_increase: Option<u32>,
     bonus_stats: Option<Vec<JobBonusEntry>>,
     #[serde(rename = "BaseASPD")]
     base_aspd: Option<BTreeMap<String, u16>>,
@@ -214,6 +224,7 @@ struct RawEntry {
     max_job_level: Option<u16>,
     base_hp: Option<Vec<RawHp>>,
     base_sp: Option<Vec<RawSp>>,
+    base_ap: Option<Vec<RawAp>>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -232,9 +243,18 @@ struct RawSp {
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "PascalCase")]
+struct RawAp {
+    level: u16,
+    ap: u32,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "PascalCase")]
 struct RawStatPoint {
     level: u16,
     points: u32,
+    #[serde(default)]
+    trait_points: u32,
 }
 
 /// One job's keys merged over every entry naming it.
@@ -246,6 +266,8 @@ struct Acc {
     hp_increase: Option<u32>,
     sp_factor: Option<u32>,
     sp_increase: Option<u32>,
+    ap_factor: Option<u32>,
+    ap_increase: Option<u32>,
     bonus: BTreeMap<u16, JobBonusEntry>,
     aspd: BTreeMap<WeaponType, u16>,
     shield_aspd: Option<u16>,
@@ -253,6 +275,7 @@ struct Acc {
     max_job_level: Option<u16>,
     hp: BTreeMap<u16, u32>,
     sp: BTreeMap<u16, u32>,
+    ap: BTreeMap<u16, u32>,
 }
 
 impl Acc {
@@ -269,6 +292,8 @@ impl Acc {
         take(&mut self.hp_increase, entry.hp_increase);
         take(&mut self.sp_factor, entry.sp_factor);
         take(&mut self.sp_increase, entry.sp_increase);
+        take(&mut self.ap_factor, entry.ap_factor);
+        take(&mut self.ap_increase, entry.ap_increase);
         take(&mut self.max_base_level, entry.max_base_level);
         take(&mut self.max_job_level, entry.max_job_level);
         for gain in entry.bonus_stats.iter().flatten() {
@@ -296,6 +321,9 @@ impl Acc {
         }
         for row in entry.base_sp.iter().flatten() {
             self.sp.insert(row.level, row.sp);
+        }
+        for row in entry.base_ap.iter().flatten() {
+            self.ap.insert(row.level, row.ap);
         }
     }
 
@@ -329,6 +357,19 @@ impl Acc {
         let (base_sp, sp_filled) = table(&self.sp, max_base_level, |level| {
             fallback(level, FALLBACK_SP_BASE, sp_factor, sp_increase)
         });
+        let ap_factor = self.ap_factor.unwrap_or(0);
+        let ap_increase = self.ap_increase.unwrap_or(0);
+        let (mut base_ap, _) = table(&self.ap, max_base_level, |level| {
+            let base = if level >= FALLBACK_AP_LEVEL {
+                FALLBACK_AP_BASE
+            } else {
+                0
+            };
+            fallback(level, base, ap_factor, ap_increase)
+        });
+        if base_ap.iter().all(|&ap| ap == 0) {
+            base_ap.clear();
+        }
         if hp_filled > 0 || sp_filled > 0 {
             report
                 .fallback
@@ -350,6 +391,7 @@ impl Acc {
             shield_aspd: self.shield_aspd,
             base_hp,
             base_sp,
+            base_ap,
         }
     }
 }
@@ -377,7 +419,8 @@ fn table(given: &BTreeMap<u16, u32>, max: u16, fallback: impl Fn(u16) -> u32) ->
     (values, filled)
 }
 
-/// rAthena's base HP/SP when a table slot is missing (catalog mechanics/stats.md):
+/// rAthena's base HP/SP/AP when a table slot is missing (catalog mechanics/stats.md,
+/// mechanics/trait_stats.md §2):
 /// `base + floor(level * increase / 100) + sum over i = 2..=level of round(factor / 100 * i)`.
 fn fallback(level: u16, base: u32, factor: u32, increase: u32) -> u32 {
     let per_level = f64::from(factor) / 100.0;

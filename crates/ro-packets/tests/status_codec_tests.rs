@@ -90,3 +90,29 @@ fn pkt_stat_01_encodes_the_ack_and_the_effect() {
         );
     }
 }
+
+/// PKT-TRAIT-01: `0x0b24` parses into `RaiseTrait` (captured `db 00 01 00`, `rathena_traits_sequence.txt`
+/// line 488); a negative amount parses and the engine drops it; a truncated frame is an error,
+/// which drops the session.
+#[test]
+fn pkt_trait_01_decodes_the_trait_up_request() {
+    for (payload, var, amount) in [
+        (&[0xdb, 0x00, 0x01, 0x00][..], 219, 1),
+        (&[0xdf, 0x00, 0x05, 0x00][..], 223, 5),
+        (&[0xdb, 0x00, 0xff, 0xff][..], 219, -1),
+    ] {
+        assert_eq!(
+            decode(0x0b24, payload).expect("decodes"),
+            DecodedFrame::Intent(ClientIntent::RaiseTrait { var, amount }),
+            "{payload:02x?}"
+        );
+    }
+    assert!(matches!(
+        decode(0x0b24, &[0xdb, 0x00, 0x01]),
+        Err(PacketCodecError::TruncatedPayload { .. })
+    ));
+    assert_eq!(
+        lookup_packet_length(PacketOpcode(0x0b24), TARGET_PACKETVER),
+        Some(PacketLength::Fixed(6))
+    );
+}

@@ -17,9 +17,9 @@ use map_server::{
     handle_client_session, MapData, MapDataLoader, MapServiceHandle, MapServiceOptions,
 };
 use ro_core::{
-    AccountId, CharId, CharacterInventory, CharacterLooks, CharacterProgress, CharacterStatus,
-    CharacterSummary, CreateCharacterRequest, InventoryItem, ItemId, MapPosition, Sex,
-    TARGET_PACKETVER,
+    AccountId, CharId, CharacterInventory, CharacterLooks, CharacterProgress, CharacterSelectStats,
+    CharacterStatus, CharacterSummary, CreateCharacterRequest, InventoryItem, ItemId, MapPosition,
+    Sex, TARGET_PACKETVER,
 };
 use ro_db::{CellType, MapGrid, MapMobSpawns, MapNpcs};
 use ro_packets::{
@@ -82,6 +82,7 @@ impl InMemoryRepo {
                     last_pos: MapPosition { x, y, dir: 0 },
                     delete_date: None,
                     looks: CharacterLooks::default(),
+                    select_stats: Default::default(),
                 },
             );
         }
@@ -136,6 +137,17 @@ impl InMemoryRepo {
             .unwrap()
             .get(&CharId(char_id(n)))
             .map(|c| c.looks)
+    }
+
+    /// Stores `progress` for character `n`, as a save would.
+    pub fn set_progress(&self, n: u32, progress: CharacterProgress) {
+        let id = CharId(char_id(n));
+        if let Some(c) = self.chars.lock().unwrap().get_mut(&id) {
+            c.job_class = progress.job_class;
+            c.base_level = progress.base_level;
+            c.job_level = progress.status.job_level;
+        }
+        self.statuses.lock().unwrap().insert(id, progress.status);
     }
 
     /// The stored progress of character `n` (what the next login loads).
@@ -293,6 +305,20 @@ impl InventoryRepository for InMemoryRepo {
             c.job_class = progress.job_class;
             c.base_level = progress.base_level;
             c.job_level = progress.status.job_level;
+            let status = &progress.status;
+            c.select_stats = CharacterSelectStats {
+                base_exp: status.base_exp,
+                job_exp: status.job_exp,
+                hp: status.hp,
+                max_hp: status.max_hp,
+                sp: status.sp,
+                max_sp: status.max_sp,
+                status_point: status.status_point,
+                skill_point: status.skill_point,
+                stats: [
+                    status.str, status.agi, status.vit, status.int, status.dex, status.luk,
+                ],
+            };
         }
         self.statuses.lock().unwrap().insert(id, progress.status);
         Ok(())

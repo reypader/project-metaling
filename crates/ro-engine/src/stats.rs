@@ -4,7 +4,8 @@
 //!
 //! Flows never recalculate. They mark the player dirty (`mark_dirty`) and queue what rAthena
 //! sends after its recalc (`queue_followup`). At the end of the tick each listed player gets, in
-//! order: `SP_MAXWEIGHT` if it changed, the HP/SP clamp pushes, the diff, then its follow-ups.
+//! order: `SP_MAXWEIGHT` if it changed, the HP/SP/AP clamp pushes, the diff, then its
+//! follow-ups.
 
 use std::mem;
 
@@ -12,7 +13,7 @@ use ro_core::{CharId, CharacterProgress, ServerEvent};
 use ro_db::{Job, WeaponType, DEFAULT_ASPD_BASE};
 use ro_mechanics::{
     calc_status, BonusSlot, BonusTotals, GearInput, HandInput, JobRow, Primary, RefineInput,
-    Status, StatusInputs, WeaponClass,
+    Status, StatusInputs, Traits, WeaponClass,
 };
 use tracing::warn;
 
@@ -20,7 +21,10 @@ use crate::engine::{MapInstance, SP_MAXWEIGHT};
 use crate::entity::Entity;
 use crate::equipment::{GearStatus, WeaponGear};
 use crate::job::{class_flags, job_mapid, super_novice_bonus};
-use crate::status::{battle_stats, couple, status_diff, SP_HP, SP_SP};
+use crate::status::{
+    allocated_stats, battle_stats, battle_traits, couple, status_diff, Persisted, SP_AP, SP_HP,
+    SP_SP,
+};
 
 /// `PlayerInfo::stat_flags`: a recalc is due.
 pub(crate) const DIRTY: u8 = 0x1;
@@ -49,8 +53,9 @@ pub(crate) enum FollowUp {
     ToSelf(ServerEvent),
     /// A packet for the player's area, the player included, resolved when it is sent.
     ToArea(ServerEvent),
-    /// `0x0141` for STR..LUK `offset` from the snapshot this tick's recalc committed: a stat
-    /// above 255 after its stat-up ack (which carries only 255).
+    /// `0x0141` for allocated stat `index` (0..6 STR..LUK, 6..12 POW..CRT) from the snapshot
+    /// this tick's recalc committed: a stat above 255 after its stat-up or trait-up ack (which
+    /// carries only 255).
     CoupleStat(u16),
     /// Every equip look to the area (`@job`, rAthena `pc_equiplookall`), each slot's view read
     /// when it is sent, so an equip later in the same tick isn't undone on screen.
@@ -129,8 +134,17 @@ fn job_row(job: Option<&Job>, job_level: u16, base_level: u16) -> JobRow {
             dex: bonus.dex.into(),
             luk: bonus.luk.into(),
         },
+        trait_bonus: Traits {
+            pow: bonus.pow.into(),
+            sta: bonus.sta.into(),
+            wis: bonus.wis.into(),
+            spl: bonus.spl.into(),
+            con: bonus.con.into(),
+            crt: bonus.crt.into(),
+        },
         base_hp: job.base_hp(base_level),
         base_sp: job.base_sp(base_level),
+        base_ap: job.base_ap(base_level),
         max_weight: job.max_weight,
         shield_aspd: job.shield_aspd(),
     }
@@ -187,6 +201,15 @@ impl MapInstance {
             dex: status.dex.into(),
             luk: status.luk.into(),
         };
+        let [pow, sta, wis, spl, con, crt] = status.traits.map(i32::from);
+        let traits = Traits {
+            pow,
+            sta,
+            wis,
+            spl,
+            con,
+            crt,
+        };
         let gear = gear_input(job, &info.gear);
         let mapid = job_mapid(info.job);
         // The base layer's only source until item bonuses and passives: the class extra.
@@ -199,6 +222,7 @@ impl MapInstance {
         let none = BonusTotals::default();
         let inputs = StatusInputs {
             allocated,
+            traits,
             base_level: info.clevel,
             job: job_row(job, status.job_level, info.clevel),
             class: class_flags(mapid),
@@ -228,7 +252,8 @@ impl MapInstance {
     }
 
     /// Spawn and cross-map arrival: compute and store the status with nothing to diff against
-    /// (spec §2.1). HP/SP above the new maxima are clamped silently; the login push sends them.
+    /// (spec §2.1). HP/SP/AP above the new maxima are clamped silently; the login push sends
+    /// them.
     pub(crate) fn init_status(&mut self, e: Entity) {
         self.rebuild_gear(e);
         let Some(computed) = self.compute_status(e) else {
@@ -253,9 +278,8 @@ impl MapInstance {
         status.max_sp = computed.max_sp;
         status.hp = status.hp.min(computed.max_hp);
         status.sp = status.sp.min(computed.max_sp);
-        info.allocated = [
-            status.str, status.agi, status.vit, status.int, status.dex, status.luk,
-        ];
+        status.ap = status.ap.min(computed.max_ap);
+        info.allocated = allocated_stats(status);
         info.derived = computed;
     }
 
@@ -296,7 +320,8 @@ impl MapInstance {
     }
 
     /// rAthena `status_calc_pc` at tick end: recompute, push `SP_MAXWEIGHT`, the clamps and the
-    /// diff in the captured order (spec §2.3), store.
+    /// diff in the captured order (spec §2.3), store. The AP clamp (traits spec §2.3) is pushed
+    /// with the HP/SP ones.
     fn recalc(&mut self, e: Entity, stale_gear: bool) {
         if stale_gear {
             self.rebuild_gear(e);
@@ -314,28 +339,38 @@ impl MapInstance {
         };
         let old = mem::replace(&mut info.derived, new);
         let status = &mut info.status;
-        let old_vitals = (status.hp, status.sp);
+        let (old_hp, old_sp, old_ap) = (status.hp, status.sp, status.ap);
         status.max_hp = new.max_hp;
         status.max_sp = new.max_sp;
         status.hp = status.hp.min(new.max_hp);
         status.sp = status.sp.min(new.max_sp);
-        let new_vitals = (status.hp, status.sp);
-        let allocated = [
-            status.str, status.agi, status.vit, status.int, status.dex, status.luk,
-        ];
-        let old_allocated = mem::replace(&mut info.allocated, allocated);
+        status.ap = status.ap.min(new.max_ap);
+        let now = Persisted {
+            allocated: allocated_stats(status),
+            hp: status.hp,
+            sp: status.sp,
+            ap: status.ap,
+        };
+        let before = Persisted {
+            allocated: mem::replace(&mut info.allocated, now.allocated),
+            hp: old_hp,
+            sp: old_sp,
+            ap: old_ap,
+        };
 
         if max_weight_changed {
             self.emit_weight(e, SP_MAXWEIGHT, new.max_weight);
         }
-        if new_vitals.0 != old_vitals.0 {
-            self.emit_param(e, SP_HP, new_vitals.0);
+        for (var_id, old_value, new_value) in [
+            (SP_HP, before.hp, now.hp),
+            (SP_SP, before.sp, now.sp),
+            (SP_AP, before.ap, now.ap),
+        ] {
+            if new_value != old_value {
+                self.emit_param(e, var_id, new_value);
+            }
         }
-        if new_vitals.1 != old_vitals.1 {
-            self.emit_param(e, SP_SP, new_vitals.1);
-        }
-        let allocated = (&old_allocated, &allocated);
-        for event in status_diff(&old, &new, allocated, old_vitals, new_vitals) {
+        for event in status_diff(&old, &new, (&before, &now)) {
             self.emit_self(e, event);
         }
     }
@@ -344,17 +379,19 @@ impl MapInstance {
         match followup {
             FollowUp::ToSelf(event) => self.emit_self(e, event),
             FollowUp::ToArea(event) => self.emit_aoi(e, false, event),
-            FollowUp::CoupleStat(offset) => {
+            FollowUp::CoupleStat(index) => {
                 let Some(info) = self.world.players.get(e) else {
                     return;
                 };
-                let i = usize::from(offset);
-                let battle = battle_stats(&info.derived);
-                let (Some(&allocated), Some(&battle)) = (info.allocated.get(i), battle.get(i))
+                let i = usize::from(index);
+                let mut battle = battle_stats(&info.derived)
+                    .into_iter()
+                    .chain(battle_traits(&info.derived));
+                let (Some(&allocated), Some(battle)) = (info.allocated.get(i), battle.nth(i))
                 else {
                     return;
                 };
-                self.emit_self(e, couple(offset, allocated, battle));
+                self.emit_self(e, couple(index, allocated, battle));
             }
             FollowUp::EquipLooks => {
                 for event in self.equip_look_events(e) {

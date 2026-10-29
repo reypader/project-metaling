@@ -8,8 +8,8 @@ use crate::item::CharacterInventory;
 /// Default walk speed in ms per orthogonal cell (rAthena `DEFAULT_WALK_SPEED`).
 pub const DEFAULT_WALK_SPEED: u16 = 150;
 
-/// Allocated stats, job level, unspent points, exp and HP/SP of a character (the `characters`
-/// row). The base level is `CharacterSpawn::base_level`.
+/// Allocated stats and traits, job level, unspent points, exp and HP/SP/AP of a character (the
+/// `characters` row). The base level is `CharacterSpawn::base_level`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct CharacterStatus {
     pub str: u16,
@@ -27,6 +27,12 @@ pub struct CharacterStatus {
     pub max_hp: u32,
     pub sp: u32,
     pub max_sp: u32,
+    /// Allocated POW, STA, WIS, SPL, CON, CRT, in this order everywhere.
+    pub traits: [u16; 6],
+    /// Unspent trait points.
+    pub trait_point: u16,
+    /// Current AP (MaxAP is derived, not stored).
+    pub ap: u32,
 }
 
 impl Default for CharacterStatus {
@@ -49,6 +55,9 @@ impl Default for CharacterStatus {
             max_hp: 40,
             sp: 11,
             max_sp: 11,
+            traits: [0; 6],
+            trait_point: 0,
+            ap: 0,
         }
     }
 }
@@ -59,7 +68,7 @@ impl Default for CharacterStatus {
 pub struct CharacterProgress {
     pub job_class: u16,
     pub base_level: u16,
-    /// Allocated stats, job level, points, exp and HP/SP.
+    /// Allocated stats and traits, job level, points, exp and HP/SP/AP.
     pub status: CharacterStatus,
 }
 

@@ -195,6 +195,8 @@ PostgreSQL characters (str..luk, points, levels, job_class, exp, hp/sp, max_hp/m
      - Send the base tail (§2.5) at once.
 
      rAthena resets first and runs a recalc inside the reset (captured, lines 4352-4440). We run one recalc at tick end, so the reset's own `0x0141`s and diff fold into step 9.
+
+     *Superseded by `specs/traits/spec.md` §2.6–§2.7 (2026-10-29):* the reset is now the full `pc_resetstate` and sends its immediate pushes (`0x00be` ×12, `SP_STATUSPOINT`, `SP_TRAITPOINT`), as captured. ENG-STAT-08 was updated to match.
   4. `0x00be` ×6 (`SP_USTR..SP_ULUK`) with the costs against the new cap.
   5. `SP_JOBLEVEL` and the job exp vars.
   6. **Re-check every worn item** with the existing `pc_isequip` subset against the new job. Force-unequip each failure through the `wear.rs` path. That sends the weapon, shield and shoes looks (a two-hander sends `LOOK_WEAPON` once per hand slot, captured lines 3719-3721), then `0x099a`, then the ammo cascade.
@@ -210,7 +212,7 @@ PostgreSQL characters (str..luk, points, levels, job_class, exp, hp/sp, max_hp/m
   - class-change level vars;
   - the skill tree, and skill deletes (`0x0441`);
   - option stripping;
-  - transcendent ±52 and trait +7 point grants, and the stat resets they can trigger (captured at lines 2238, 2619 and 3697);
+  - transcendent ±52 and trait +7 point grants, and the stat resets they can trigger (captured at lines 2238, 2619 and 3697; landed in `specs/traits/`);
   - the party update.
 
 ### 2.7 Persistence
@@ -264,7 +266,7 @@ PostgreSQL characters (str..luk, points, levels, job_class, exp, hp/sp, max_hp/m
   - class-change level vars;
   - the skill tree and skill deletes (`0x0441`; the `0x010f` re-send itself is done);
   - option stripping (cart, falcon, peco, mado, homunculus);
-  - transcendent (±52) and trait (+7) point grants, and their stat resets;
+  - transcendent (±52) and trait (+7) point grants, and their stat resets (landed in `specs/traits/`);
   - the party class update;
   - the `@job` upper/baby flag argument.
 - `@jlvl` negative: `pc_resetskill` (no skills yet).

@@ -26,7 +26,9 @@ fn mech_06_defaults_are_the_shipped_values() {
         (330_000, 660_000, 1_100_000)
     );
     assert_eq!(c.max_sp, 1_000_000, "shipped, not the compiled 32500");
-    assert_eq!(c.max_ap, 1000);
+    assert_eq!((c.max_ap, c.ap_rate), (1000, 100));
+    assert_eq!(c.transcendent_status_points, 52);
+    assert_eq!(c.trait_points_job_change, 7);
     assert_eq!(c.natural_heal_weight_rate, 70);
     assert_eq!(c.major_overweight_rate, 90);
     assert_eq!(c.max_baby_third_parameter, 117);
@@ -84,6 +86,12 @@ fn validation_rejects_out_of_range_values() {
         "max_sp: 2147483648\n",
         "max_hp_lv99: 3000000000\n",
         "max_hp_lv150: 0\n",
+        // rAthena's floor for max_ap.
+        "max_ap: 99\n",
+        "ap_rate: 0\n",
+        // Point grants go into `smallint` pools.
+        "transcendent_status_points: 32768\n",
+        "trait_points_job_change: 4294967295\n",
     ] {
         assert!(parse(bad).validate().is_err(), "{bad}");
     }
@@ -101,6 +109,9 @@ fn shipped_battle_yml_equals_the_defaults() {
         "max_third_aspd:",
         "start_status_points:",
         "max_trait_parameter:",
+        "ap_rate:",
+        "transcendent_status_points:",
+        "trait_points_job_change:",
     ] {
         assert!(text.contains(key), "config/battle.yml lists {key}");
     }

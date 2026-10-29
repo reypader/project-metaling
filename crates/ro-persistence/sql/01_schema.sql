@@ -105,6 +105,32 @@ BEGIN
     END IF;
 END $$;
 
+-- Trait stats (POW..CRT), the trait-point pool and current AP (specs/traits §2.9). MaxAP is
+-- derived at load, so it isn't stored.
+DO $$
+DECLARE
+    col RECORD;
+BEGIN
+    FOR col IN
+        SELECT * FROM (VALUES
+            ('pow', 'SMALLINT'), ('sta', 'SMALLINT'), ('wis', 'SMALLINT'),
+            ('spl', 'SMALLINT'), ('con', 'SMALLINT'), ('crt', 'SMALLINT'),
+            ('trait_point', 'INTEGER'), ('ap', 'INTEGER')
+        ) AS t(name, sql_type)
+    LOOP
+        IF NOT EXISTS (
+            SELECT 1 FROM information_schema.columns
+            WHERE table_schema = current_schema()
+              AND table_name = 'characters' AND column_name = col.name
+        ) THEN
+            EXECUTE format(
+                'ALTER TABLE characters ADD COLUMN %I %s NOT NULL DEFAULT 0',
+                col.name, col.sql_type
+            );
+        END IF;
+    END LOOP;
+END $$;
+
 -- One row per inventory item. Rows load in id order, so slots compact on load.
 -- u32 fields are BIGINT; unique_id (u64) is stored bit-cast into BIGINT.
 CREATE TABLE IF NOT EXISTS inventory (

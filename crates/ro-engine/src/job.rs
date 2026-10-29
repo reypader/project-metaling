@@ -329,6 +329,46 @@ pub(crate) fn is_genetic(mapid: u32) -> bool {
 mod tests {
     use super::*;
 
+    /// `trait_job` matches catalog `mechanics/trait_stats.md` §1 "Trait job set" for every
+    /// shipped job: the primary 4th classes, Hyper Novice, Sky Emperor, Soul Ascetic, Night
+    /// Watch, Shinkiro/Shiranui and Spirit Handler.
+    #[test]
+    fn trait_job_matches_the_catalog_set() {
+        let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../ro-db/data/job");
+        let jobs = ro_db::JobDb::load_dir(&dir).expect("shipped job data");
+        let trait_jobs = [
+            "Dragon_Knight",
+            "Meister",
+            "Shadow_Cross",
+            "Arch_Mage",
+            "Cardinal",
+            "Windhawk",
+            "Imperial_Guard",
+            "Biolo",
+            "Abyss_Chaser",
+            "Elemental_Master",
+            "Inquisitor",
+            "Troubadour",
+            "Trouvere",
+            "Hyper_Novice",
+            "Sky_Emperor",
+            "Soul_Ascetic",
+            "Night_Watch",
+            "Shinkiro",
+            "Shiranui",
+            "Spirit_Handler",
+        ];
+        let wrong: Vec<(&str, bool)> = jobs
+            .iter()
+            .map(|job| (job.name.as_str(), class_flags(job_mapid(job.id)).trait_job))
+            .filter(|(name, flag)| *flag != trait_jobs.contains(name))
+            .collect();
+        assert!(wrong.is_empty(), "(job, trait_job) disagreeing: {wrong:?}");
+        for name in trait_jobs {
+            assert!(jobs.by_name(name).is_some(), "{name} is shipped");
+        }
+    }
+
     #[test]
     fn table_is_sorted_and_unique() {
         assert!(JOB_MAPIDS.windows(2).all(|w| w[0].0 < w[1].0));

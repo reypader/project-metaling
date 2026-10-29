@@ -46,9 +46,9 @@ pub(crate) struct PlayerInfo {
     /// The status snapshot committed last (spec `specs/stats/spec.md` §2.1): computed at spawn,
     /// then by the tick's recalc pass, which diffs against it.
     pub(crate) derived: ro_mechanics::Status,
-    /// The allocated STR..LUK `derived` was computed from: the diff sends a stat's `0x0141`
-    /// when its allocated base or its battle value changed.
-    pub(crate) allocated: [u16; 6],
+    /// The allocated STR..LUK then POW..CRT `derived` was computed from: the diff sends a
+    /// stat's `0x0141` when its allocated base or its battle value changed.
+    pub(crate) allocated: [u16; 12],
     /// The worn gear's part of the status, rebuilt only when an equip change marks it stale.
     pub(crate) gear: GearStatus,
     /// `stats::DIRTY` / `stats::STALE_GEAR` / `stats::LISTED`: what the tick's recalc pass owes
@@ -227,7 +227,7 @@ impl World {
                 status: spawn.status,
                 group_id: spawn.group_id,
                 derived: ro_mechanics::Status::default(),
-                allocated: [0; 6],
+                allocated: [0; 12],
                 gear: GearStatus::default(),
                 stat_flags: 0,
                 followups: Vec::new(),

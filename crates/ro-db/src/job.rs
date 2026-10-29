@@ -1,6 +1,6 @@
 //! Job registry (`JOB_DATA`, from `tools/job-import`): per-job max weight, max levels, job-level
-//! stat bonuses, ASPD bases and base HP/SP tables, plus the cumulative status-point table
-//! (`STATPOINT_DATA`).
+//! stat bonuses, ASPD bases and base HP/SP/AP tables, plus the cumulative status- and
+//! trait-point table (`STATPOINT_DATA`).
 
 use std::collections::{BTreeMap, HashMap};
 use std::path::Path;
@@ -11,10 +11,10 @@ use crate::yaml::Schema;
 use crate::{DbLoadError, WeaponType};
 
 pub const JOB_DATA_TYPE: &str = "JOB_DATA";
-pub const JOB_DATA_VERSION: u32 = 1;
+pub const JOB_DATA_VERSION: u32 = 2;
 pub const JOB_DATA_FILE: &str = "job_db.yml";
 pub const STATPOINT_DATA_TYPE: &str = "STATPOINT_DATA";
-pub const STATPOINT_DATA_VERSION: u32 = 1;
+pub const STATPOINT_DATA_VERSION: u32 = 2;
 pub const STATPOINT_DATA_FILE: &str = "statpoint.yml";
 
 const JOB_SCHEMA: Schema = Schema {
@@ -109,14 +109,24 @@ pub struct JobData {
     pub base_hp: Vec<u32>,
     #[serde(serialize_with = "flow_list")]
     pub base_sp: Vec<u32>,
+    /// Base AP at base level `i + 1`: empty (all zero) or exactly `max_base_level` entries.
+    #[serde(
+        default,
+        skip_serializing_if = "Vec::is_empty",
+        serialize_with = "flow_list"
+    )]
+    pub base_ap: Vec<u32>,
 }
 
-/// One `statpoint.yml` row: cumulative status points at base level `level`.
+/// One `statpoint.yml` row: cumulative status and trait points at base level `level`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase", deny_unknown_fields)]
 pub struct StatPointRow {
     pub level: u16,
     pub points: u32,
+    /// Absent below base level 201.
+    #[serde(default, skip_serializing_if = "is_zero_u32")]
+    pub trait_points: u32,
 }
 
 /// A loaded job, with its job bonus accumulated per job level.
@@ -133,6 +143,8 @@ pub struct Job {
     shield_aspd: u16,
     base_hp: Vec<u32>,
     base_sp: Vec<u32>,
+    /// Empty when the job has no AP at any level.
+    base_ap: Vec<u32>,
 }
 
 impl Job {
@@ -148,6 +160,11 @@ impl Job {
 
     pub fn base_sp(&self, base_level: u16) -> u32 {
         clamped(&self.base_sp, base_level).copied().unwrap_or(0)
+    }
+
+    /// Base AP (the MaxAP before bonuses) at `base_level`; 0 if the job has no AP table.
+    pub fn base_ap(&self, base_level: u16) -> u32 {
+        clamped(&self.base_ap, base_level).copied().unwrap_or(0)
     }
 
     pub fn aspd_base(&self, weapon: WeaponType) -> u16 {
@@ -171,6 +188,8 @@ pub struct JobDb {
     by_name: HashMap<String, usize>,
     /// Index `base_level - 1`.
     status_points: Vec<u32>,
+    /// Index `base_level - 1`.
+    trait_points: Vec<u32>,
 }
 
 impl JobDb {
@@ -194,8 +213,9 @@ impl JobDb {
     }
 
     /// Builds the registry. Ids and names (case-insensitive) must be unique, the HP/SP tables
-    /// must have `max_base_level` entries, bonus levels must be within `1..=max_job_level`, and
-    /// the status-point rows must run 1, 2, 3, ... `path` is only a label for errors.
+    /// must have `max_base_level` entries (the AP table may be empty), bonus levels must be
+    /// within `1..=max_job_level`, and the status-point rows must run 1, 2, 3, ... `path` is
+    /// only a label for errors.
     pub fn from_parts(
         path: &str,
         mut jobs: Vec<JobData>,
@@ -207,6 +227,7 @@ impl JobDb {
             by_id: HashMap::with_capacity(jobs.len()),
             by_name: HashMap::with_capacity(jobs.len()),
             status_points: Vec::with_capacity(points.len()),
+            trait_points: Vec::with_capacity(points.len()),
         };
         for data in jobs {
             let index = db.jobs.len();
@@ -237,6 +258,7 @@ impl JobDb {
                 ));
             }
             db.status_points.push(row.points);
+            db.trait_points.push(row.trait_points);
         }
         if db.status_points.is_empty() {
             return Err(schema_error(path, "empty status point table".into()));
@@ -270,6 +292,13 @@ impl JobDb {
             .unwrap_or(0)
     }
 
+    /// Cumulative trait points at `base_level` (clamped to the table; 0 below 201).
+    pub fn trait_points(&self, base_level: u16) -> u32 {
+        clamped(&self.trait_points, base_level)
+            .copied()
+            .unwrap_or(0)
+    }
+
     /// Jobs in id order.
     pub fn iter(&self) -> impl Iterator<Item = &Job> {
         self.jobs.iter()
@@ -294,8 +323,12 @@ fn build_job(path: &str, data: JobData) -> Result<Job, DbLoadError> {
             format!("{label}: max levels must be at least 1"),
         ));
     }
-    for (table, values) in [("BaseHp", &data.base_hp), ("BaseSp", &data.base_sp)] {
-        if values.len() != max_base {
+    for (table, values) in [
+        ("BaseHp", &data.base_hp),
+        ("BaseSp", &data.base_sp),
+        ("BaseAp", &data.base_ap),
+    ] {
+        if values.len() != max_base && !(table == "BaseAp" && values.is_empty()) {
             return Err(schema_error(
                 path,
                 format!(
@@ -341,6 +374,7 @@ fn build_job(path: &str, data: JobData) -> Result<Job, DbLoadError> {
         shield_aspd: data.shield_aspd.unwrap_or(DEFAULT_ASPD_BASE),
         base_hp: data.base_hp,
         base_sp: data.base_sp,
+        base_ap: data.base_ap,
     })
 }
 
@@ -368,6 +402,10 @@ fn schema_error(path: &str, message: String) -> DbLoadError {
 }
 
 fn is_zero(value: &i16) -> bool {
+    *value == 0
+}
+
+fn is_zero_u32(value: &u32) -> bool {
     *value == 0
 }
 

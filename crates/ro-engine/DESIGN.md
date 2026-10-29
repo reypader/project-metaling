@@ -555,7 +555,7 @@ pub enum ServerEventPayload {
 
 ## 9. Stats: Sources, Modifiers & Recalculation
 
-> **Status:** design settled with the user on 2026-10-25. The core player part is planned in `specs/stats/` (job data, every derived stat, refine, stat-up, `@blvl`/`@jlvl`/`@job`); item bonuses, passive skills, status effects (§10) and damage (§11) are later plans that plug into the same model. rAthena is the behavioural reference (catalog `mechanics/stats.md`, `packets/status.md`, `db/job_stats.md`, `db/refine.md`, `mechanics/battle_config.md`); the structure is ours.
+> **Status:** design settled with the user on 2026-10-25. The core player part is planned in `specs/stats/` (job data, every derived stat, refine, stat-up, `@blvl`/`@jlvl`/`@job`), and trait stats, AP, the stat-point grants and `pc_resetstate` in `specs/traits/`; item bonuses, passive skills, status effects (§10) and damage (§11) are later plans that plug into the same model. rAthena is the behavioural reference (catalog `mechanics/stats.md`, `packets/status.md`, `db/job_stats.md`, `db/refine.md`, `mechanics/battle_config.md`); the structure is ours.
 
 ### 9.1 Why not rAthena's shape, and why not the old Tier 2 sketch
 rAthena's `status_calc_pc` rebuilds a player's whole status from zero on every change, then `status_calc_bl_main` layers status effects on top per `SCB_*` flag, and pushes a diff. Its layers are not clean "flat + percent" tiers:
@@ -569,8 +569,8 @@ So the earlier `equip_mods` / `status_mods` "flat + %" tiers are dropped. What w
 ### 9.2 Inputs (all read-only at runtime)
 | Input | Where it comes from | Holds |
 | :--- | :--- | :--- |
-| `BaseStats` (component) | players: `characters` row via `CharacterSpawn` (persisted); mobs: `MobDb` row at spawn | allocated STR..LUK (and traits later), base/job level, job id, status/skill points |
-| Job row | `ro_db::JobDb` ← `tools/job-import` ← rAthena `job_stats`/`job_basepoints`/`job_aspd`/`job_exp`/`statpoint` (GPL data under `crates/ro-db/data/job/`) | cumulative job-level bonus row, base HP/SP tables, ASPD base per weapon + shield, MaxWeight, max levels, status-point table |
+| `BaseStats` (component) | players: `characters` row via `CharacterSpawn` (persisted); mobs: `MobDb` row at spawn | allocated STR..LUK and POW..CRT, base/job level, job id, status/trait/skill points, current AP (persisted; MaxAP is derived) |
+| Job row | `ro_db::JobDb` ← `tools/job-import` ← rAthena `job_stats`/`job_basepoints`/`job_aspd`/`job_exp`/`statpoint` (GPL data under `crates/ro-db/data/job/`) | cumulative job-level bonus row (stats and traits), base HP/SP/AP tables, ASPD base per weapon + shield, MaxWeight, max levels, status- and trait-point tables |
 | Refine table | `ro_db::RefineDb` ← `tools/refine-import` (GPL data under `crates/ro-db/data/refine/`) | cumulative bonus (1/100) and overrefine per group, item level and refine |
 | `GearStatus` (component) | worn items (`ItemDb` fields + instance refine) | per-hand weapon records (`atk`, `atk2` refine, `matk`, `wlv`, `overrefine`, `range`, weapon type), hard DEF and hard MDEF, ammo |
 | `base_bonus: BonusTotals` | Σ modifiers of gear bonuses, cards, combos, passive skills | named slots (§9.3) |
@@ -609,6 +609,9 @@ Each slot has an **aggregation rule**: most `Sum`, some `Max`/`Min` (rAthena tak
 | MaxHP / MaxSP | job base table[level] × (1 + battle VIT/INT %) × class factor + **equipment-only** VIT/INT flat + flat slots, then each % pool in order, then config rate and caps |
 | Regen amounts, speed | battle VIT/INT + MaxHP/SP; base speed + `SpeedRate` (Max/Min aggregation) |
 | `StateFlags` | OR of the behaviour flags of active statuses (§10) |
+| Traits (POW..CRT) | job trait bonus row + allocated (base), + battle slots later; cap `max_trait_parameter` for a trait job, else 0. Battle POW adds 5 × POW to `batk`, battle CON adds 2 × CON to HIT and FLEE |
+| PATK, SMATK, RES, MRES, HPLUS, CRATE | battle traits only, integer division (`specs/traits/spec.md` §2.2). Nothing consumes them until damage (§11) |
+| MaxAP | job `base_ap`[level] × `ap_rate`, capped at `max_ap`. No trait-job guard: 3rd classes get the fallback table from B200, as in rAthena |
 
 **Precision:** where rAthena computes in `float` or `double` and truncates once, `ro-mechanics` uses the same C type, because the truncation edge differs (soft DEF/MDEF, the ASPD square root, the MaxHP percentages). Tests pin the catalog's worked values (bare level-1 Novice: ASPD 156, amotion 440).
 
@@ -622,7 +625,7 @@ Each slot has an **aggregation rule**: most `Sum`, some `Max`/`Min` (rAthena tak
 The expensive part, summing the modifiers of 10+ items and their cards, runs only when its source changes. A recalc is otherwise pure arithmetic over a few cached arrays. Each actor is marked at most once per tick, so unequip-all of N items costs one rebuild.
 
 ### 9.6 Pushes
-After Stage 3 computes the new `Status`, the diff against the stored snapshot emits one packet per changed field in rAthena's fixed order (catalog `packets/status.md` "Recalculation pushes"): `0x0141` STR..LUK, HIT, FLEE1, ASPD, SPEED, ATK1, DEF1/DEF2 (hard), ATK2, DEF2/DEF1 (soft), FLEE2, CRITICAL, MATK2/MATK1, MDEF1/MDEF2, MDEF2/MDEF1, ATTACKRANGE (`0x013a`), MAXHP, MAXSP, HP, SP, then the trait values. `SP_WEIGHT`/`SP_MAXWEIGHT` are their own pushes when they change. **Captured order per player** (`specs/stats/spec.md` §2.3): `SP_MAXWEIGHT` if changed, then the HP/SP clamp pushes (`SP_HP`/`SP_SP` when a lower max cut them), then the diff (which sends the clamped field again after MAXHP/MAXSP), then the player's follow-ups. Mobs have no push: their HP bar (`0x0977`) belongs to combat.
+After Stage 3 computes the new `Status`, the diff against the stored snapshot emits one packet per changed field in rAthena's fixed order (catalog `packets/status.md` "Recalculation pushes"): `0x0141` STR..LUK, HIT, FLEE1, ASPD, SPEED, ATK1, DEF1/DEF2 (hard), ATK2, DEF2/DEF1 (soft), FLEE2, CRITICAL, MATK2/MATK1, MDEF1/MDEF2, MDEF2/MDEF1, ATTACKRANGE (`0x013a`), MAXHP, MAXSP, HP, SP, then the trait block: `0x0141` POW..CRT, PATK, SMATK, RES, MRES, HPLUS, CRATE, MAXAP, AP (`specs/traits/spec.md` §2.3). A `0x0141` goes out when the battle value **or** the allocated value changed. `SP_WEIGHT`/`SP_MAXWEIGHT` are their own pushes when they change. **Captured order per player** (`specs/stats/spec.md` §2.3): `SP_MAXWEIGHT` if changed, then the HP/SP/AP clamp pushes (`SP_HP`/`SP_SP`/`SP_AP` when a lower max cut them), then the diff (which sends the clamped field again after MAXHP/MAXSP), then the player's follow-ups. Mobs have no push: their HP bar (`0x0977`) belongs to combat.
 
 ### 9.7 Where each subsystem enters
 | Change | Stage it happens in | Marks | Follow-up (Stage 4) |
@@ -630,10 +633,14 @@ After Stage 3 computes the new `Status`, the diff against the stored snapshot em
 | Equip / unequip / refine | 1 (intent) | dirty + `GEAR` | clamp HP/SP if the max dropped |
 | Stat-up (`0x00bb`) | 1 (intent; failure `0x00bc` at once) | dirty | queued: `0x00be`, `SP_STATUSPOINT`, `0x00bc` (after the diff, as captured) |
 | Base level up (exp, `@blvl`) | 1/2 | dirty | full heal to the **new** MaxHP/MaxSP (positive base change only), effect, the level tail; then `LevelGearCheck` unequips `elvmax` items (their own diff next tick) |
+| Trait-up (`0x0b24`) | 1 (intent; failure `0x00bc` at once, negative amount dropped silently) | dirty | queued: `0x00be` `SP_U<trait>`, `SP_TRAITPOINT`, `0x00bc` (value = allocated) |
 | Job level / job change | 1/2 | dirty (+ `PASSIVES` once skills exist); `@job` force-unequips in the flow (each unequip marks `GEAR`) | clamp; `@job` queues its looks (area), `0x010f` and `Save` |
+| Stat reset (`pc_resetstate`: `@streset`, `@blvl −n`, `@job`) | 1 | dirty | none of its own: the `0x00be` ×12, `SP_STATUSPOINT`, `SP_TRAITPOINT` go out at once, the derived values come from the diff; `@streset` queues its message |
 | Passive skill learned | 1 | dirty + `PASSIVES` | — |
 | Status start / end / expiry | 2 (expiry is a Stage 1 timer feeding Stage 2) | dirty + `STATUSES` | clamp |
 | Damage, heal, drain | 1 (`HitResolved`) | not dirty (vitals only) | fold, clamp, death |
+
+**`pc_resetstate`** (`reset_stats` in `src/level_command.rs`) reads the class and level **in effect when it runs**: status points = table + 52 (`transcendent_status_points`) for an upper or primary 4th class, trait points = table + 7 (`trait_points_job_change`) for a trait job, stats to 1, traits to 0. `@blvl −n` runs it when either pool can't pay for the levels removed. **`@job` grant steps** (`specs/traits/spec.md` §2.7), in order: the level-cap reset and base tail; ±52 when entering or leaving "upper or primary 4th" (leaving with < 52 points resets instead); `0x00be` ×6; then +7 trait points into a trait job, or, leaving one, zero the pool (allocated traits stay and count with a cap of 0) or reset when < 7. Because each reset already sees the new class, B195 Dragon Knight → Knight resets twice (captured); each reset sends its own immediate pushes, and the derived diff comes once at tick end.
 
 ### 9.8 Item bonuses (future plan)
 * The item importer **compiles** the common unconditional script lines (`bonus bStr,1;`, `bonus2 bAddRace,RC_DemiHuman,5;`, `bonus bMaxHPrate,5;`, ...) into a declarative `Bonuses:` list on the item. The engine only sums data; no VM runs inside the recalc.

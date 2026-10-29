@@ -19,12 +19,12 @@ pub use coords::{
 pub use incoming::{
     decode_frame, parse_sex, read_fixed_string, CaLoginPacket, ChCharListReqPacket,
     ChDeleteChar3CancelPacket, ChDeleteChar3ReservedPacket, ChEnterPacket, ChMakeCharPacket,
-    ChSelectCharPacket, CzBlockingPlayCancelPacket, CzChangeDirectionPacket, CzEnterPacket,
-    CzItemPickupPacket, CzItemThrowPacket, CzNotifyActorInitPacket, CzReqDisconnectPacket,
-    CzReqNamePacket, CzReqTakeoffEquipAllPacket, CzReqTakeoffEquipPacket, CzReqWearEquipPacket,
-    CzRequestActPacket, CzRequestChatPacket, CzRequestMovePacket, CzRequestTimePacket,
-    CzRestartPacket, CzStatusChangePacket, DecodedFrame, ModernIntentParser, Phase0IntentParser,
-    PingPacket, RathenaIntentParser,
+    ChSelectCharPacket, CzAdvancedStatusChangePacket, CzBlockingPlayCancelPacket,
+    CzChangeDirectionPacket, CzEnterPacket, CzItemPickupPacket, CzItemThrowPacket,
+    CzNotifyActorInitPacket, CzReqDisconnectPacket, CzReqNamePacket, CzReqTakeoffEquipAllPacket,
+    CzReqTakeoffEquipPacket, CzReqWearEquipPacket, CzRequestActPacket, CzRequestChatPacket,
+    CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket, CzStatusChangePacket, DecodedFrame,
+    ModernIntentParser, Phase0IntentParser, PingPacket, RathenaIntentParser,
 };
 pub use opcode::PacketOpcode;
 pub use outgoing::{

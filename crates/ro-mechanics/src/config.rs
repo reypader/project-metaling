@@ -9,6 +9,9 @@ use crate::ClassFlags;
 /// `BL_PC` in the `enable_*` masks.
 pub(crate) const BL_PC: u32 = 0x1;
 
+/// rAthena's lowest accepted `max_ap`.
+const MIN_MAX_AP: u32 = 100;
+
 /// rAthena's `AMOTION_ZERO_ASPD` and `AMOTION_INTERVAL`: ASPD `a` is amotion `2000 - a * 10`.
 const AMOTION_ZERO_ASPD: u32 = 2000;
 const AMOTION_INTERVAL: u32 = 10;
@@ -45,6 +48,7 @@ pub struct BattleConfig {
     pub max_hp: u32,
     pub max_sp: u32,
     pub max_ap: u32,
+    pub ap_rate: u32,
     // Weight.
     pub natural_heal_weight_rate: u32,
     pub major_overweight_rate: u32,
@@ -64,6 +68,10 @@ pub struct BattleConfig {
     pub max_summoner_parameter: u16,
     pub max_fourth_parameter: u16,
     pub max_trait_parameter: u16,
+    // Stat-point grants on a job change: into an upper or primary 4th class, and into a trait
+    // job (trait points).
+    pub transcendent_status_points: u32,
+    pub trait_points_job_change: u32,
     // Status points and level-up (`start_status_points` is in `inter_athena.conf` there).
     pub start_status_points: u32,
     pub use_statpoint_table: bool,
@@ -100,6 +108,7 @@ impl Default for BattleConfig {
             max_hp: 1_100_000,
             max_sp: 1_000_000,
             max_ap: 1000,
+            ap_rate: 100,
             natural_heal_weight_rate: 70,
             major_overweight_rate: 90,
             max_cart_weight: 8000,
@@ -116,6 +125,8 @@ impl Default for BattleConfig {
             max_summoner_parameter: 130,
             max_fourth_parameter: 130,
             max_trait_parameter: 110,
+            transcendent_status_points: 52,
+            trait_points_job_change: 7,
             start_status_points: 48,
             use_statpoint_table: true,
             multi_level_up: false,
@@ -141,12 +152,14 @@ impl BattleConfig {
         range("max_summoner_aspd", self.max_summoner_aspd, 100, 199)?;
         range("hp_rate", self.hp_rate, 1, u32::MAX)?;
         range("sp_rate", self.sp_rate, 1, u32::MAX)?;
+        range("ap_rate", self.ap_rate, 1, u32::MAX)?;
         // MaxHP/MaxSP are saved to `int` columns, and a 0 cap would clamp every player to dead.
         let int = i32::MAX.unsigned_abs();
         range("max_hp_lv99", self.max_hp_lv99, 1, int)?;
         range("max_hp_lv150", self.max_hp_lv150, 1, int)?;
         range("max_hp", self.max_hp, 1, int)?;
         range("max_sp", self.max_sp, 1, int)?;
+        range("max_ap", self.max_ap, MIN_MAX_AP, int)?;
         range("min_hitrate", self.min_hitrate, 0, 100)?;
         range("max_hitrate", self.max_hitrate, 0, 100)?;
         let short = u32::from(i16::MAX.unsigned_abs());
@@ -164,6 +177,19 @@ impl BattleConfig {
         ] {
             range(name, u32::from(value), 10, short)?;
         }
+        // Added to the point pools, which are saved to `smallint` columns.
+        range(
+            "transcendent_status_points",
+            self.transcendent_status_points,
+            0,
+            short,
+        )?;
+        range(
+            "trait_points_job_change",
+            self.trait_points_job_change,
+            0,
+            short,
+        )?;
         Ok(())
     }
 
@@ -187,6 +213,15 @@ impl BattleConfig {
             self.max_trans_parameter
         } else {
             self.max_parameter
+        }
+    }
+
+    /// The highest POW..CRT a class may allocate: `max_trait_parameter` for a trait job, else 0.
+    pub fn max_trait(&self, class: &ClassFlags) -> u16 {
+        if class.trait_job {
+            self.max_trait_parameter
+        } else {
+            0
         }
     }
 

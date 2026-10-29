@@ -443,6 +443,7 @@ impl MapInstance {
             ClientIntent::UnequipItem { index } => self.unequip_item(e, index),
             ClientIntent::UnequipAll { location } => self.unequip_all(e, location),
             ClientIntent::RaiseStat { var, amount } => self.raise_stat(e, var, amount),
+            ClientIntent::RaiseTrait { var, amount } => self.raise_trait(e, var, amount),
             ClientIntent::BlockingPlayCancel => self.emit_self(e, ServerEvent::LoadConfirmed),
             other => debug!(map = %self.map_name, intent = ?other, "intent not handled by engine"),
         }

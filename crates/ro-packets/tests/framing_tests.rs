@@ -352,6 +352,7 @@ fn test_event_encoder_integration() {
             },
             delete_date: None,
             looks: CharacterLooks::default(),
+            select_stats: Default::default(),
         }],
     };
     let bytes = encoder.encode_event(&event, ver).unwrap();
@@ -389,6 +390,7 @@ fn test_event_encoder_integration() {
             },
             delete_date: None,
             looks: CharacterLooks::default(),
+            select_stats: Default::default(),
         }],
     };
     let page_bytes = encoder.encode_event(&page_event, ver).unwrap();

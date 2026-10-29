@@ -9,7 +9,8 @@ use sqlx::{query, Error as SqlxError, Transaction};
 use crate::RepositoryError;
 use crate::{CancelDeleteOutcome, CharacterRepository, CreateCharacterError, DeleteReserveOutcome};
 use ro_core::{
-    AccountId, CharId, CharacterLooks, CharacterSummary, CreateCharacterRequest, MapPosition, Sex,
+    AccountId, CharId, CharacterLooks, CharacterSelectStats, CharacterSummary,
+    CreateCharacterRequest, MapPosition, Sex,
 };
 
 use super::{get_col, map_sex, map_sqlx_error, sex_to_i16, PostgresRepo};
@@ -19,7 +20,9 @@ macro_rules! summary_columns {
     () => {
         "char_id, account_id, slot, name, sex, job_class, base_level, job_level, \
          hair_style, hair_color, last_map, last_x, last_y, last_dir, delete_date, \
-         weapon_type, shield_view, head_top_view, head_mid_view, head_bot_view, robe_view"
+         weapon_type, shield_view, head_top_view, head_mid_view, head_bot_view, robe_view, \
+         base_exp, job_exp, hp, max_hp, sp, max_sp, status_point, skill_point, \
+         str, agi, vit, int_stat, dex, luk"
     };
 }
 
@@ -130,6 +133,41 @@ pub(crate) fn map_db_create_error(err: SqlxError) -> CreateCharacterError {
     }
 }
 
+/// The select-screen status values of a summary row. Like the looks, an out-of-range value (a
+/// hand-edited row) shows as 0 rather than failing the whole list.
+fn select_stats(row: &PgRow) -> Result<CharacterSelectStats, RepositoryError> {
+    let big = |col: &str| -> Result<u64, RepositoryError> {
+        let v: i64 = get_col(row, col)?;
+        Ok(u64::try_from(v).unwrap_or(0))
+    };
+    let int = |col: &str| -> Result<u32, RepositoryError> {
+        let v: i32 = get_col(row, col)?;
+        Ok(u32::try_from(v).unwrap_or(0))
+    };
+    let small = |col: &str| -> Result<u16, RepositoryError> {
+        let v: i16 = get_col(row, col)?;
+        Ok(u16::try_from(v).unwrap_or(0))
+    };
+    Ok(CharacterSelectStats {
+        base_exp: big("base_exp")?,
+        job_exp: big("job_exp")?,
+        hp: int("hp")?,
+        max_hp: int("max_hp")?,
+        sp: int("sp")?,
+        max_sp: int("max_sp")?,
+        status_point: small("status_point")?,
+        skill_point: small("skill_point")?,
+        stats: [
+            small("str")?,
+            small("agi")?,
+            small("vit")?,
+            small("int_stat")?,
+            small("dex")?,
+            small("luk")?,
+        ],
+    })
+}
+
 /// Maps a database row to a `CharacterSummary` model using the row extraction helper.
 pub(crate) fn row_to_character_summary(row: &PgRow) -> Result<CharacterSummary, RepositoryError> {
     let char_id: i32 = get_col(row, "char_id")?;
@@ -180,6 +218,7 @@ pub(crate) fn row_to_character_summary(row: &PgRow) -> Result<CharacterSummary, 
         },
         delete_date: delete_date.map(|t| t as u64),
         looks,
+        select_stats: select_stats(row)?,
     })
 }
 

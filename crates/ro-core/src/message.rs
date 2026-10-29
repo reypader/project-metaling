@@ -133,6 +133,12 @@ pub enum ClientIntent {
         var: u16,
         amount: u8,
     },
+    /// `0x0b24`: raise trait `var` (`SP_POW` 219 .. `SP_CRT` 224) by `amount` trait points. The
+    /// amount is signed on the wire; the engine drops a negative one.
+    RaiseTrait {
+        var: u16,
+        amount: i16,
+    },
 }
 
 impl fmt::Debug for ClientIntent {
@@ -274,6 +280,11 @@ impl fmt::Debug for ClientIntent {
                 .finish(),
             Self::RaiseStat { var, amount } => f
                 .debug_struct("RaiseStat")
+                .field("var", var)
+                .field("amount", amount)
+                .finish(),
+            Self::RaiseTrait { var, amount } => f
+                .debug_struct("RaiseTrait")
                 .field("var", var)
                 .field("amount", amount)
                 .finish(),

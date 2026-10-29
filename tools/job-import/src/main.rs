@@ -29,6 +29,14 @@ fn main() -> anyhow::Result<()> {
         println!("  {source}: {read} entries");
     }
     println!("jobs: {}", converted.jobs.len());
+    println!(
+        "jobs with an AP table: {}",
+        converted
+            .jobs
+            .iter()
+            .filter(|job| !job.base_ap.is_empty())
+            .count()
+    );
     println!("status point rows: {}", converted.points.len());
     println!(
         "skipped names without an id ({}): {}",

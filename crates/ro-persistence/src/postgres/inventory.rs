@@ -190,6 +190,7 @@ impl InventoryRepository for PostgresRepo {
         let Some(row) = query(
             "SELECT c.str, c.agi, c.vit, c.int_stat, c.dex, c.luk, c.job_level, c.status_point, \
              c.skill_point, c.base_exp, c.job_exp, c.hp, c.max_hp, c.sp, c.max_sp, \
+             c.pow, c.sta, c.wis, c.spl, c.con, c.crt, c.trait_point, c.ap, \
              c.unique_item_counter, a.group_id \
              FROM characters c JOIN accounts a ON a.account_id = c.account_id \
              WHERE c.char_id = $1",
@@ -217,6 +218,17 @@ impl InventoryRepository for PostgresRepo {
             max_hp: int(&row, "max_hp")?,
             sp: int(&row, "sp")?,
             max_sp: int(&row, "max_sp")?,
+            traits: [
+                small(&row, "pow")?,
+                small(&row, "sta")?,
+                small(&row, "wis")?,
+                small(&row, "spl")?,
+                small(&row, "con")?,
+                small(&row, "crt")?,
+            ],
+            trait_point: int(&row, "trait_point")?,
+            // Kept over logout (`keep_ap_on_logout`); the spawn clamps it to MaxAP.
+            ap: int(&row, "ap")?,
         };
         let unique_item_counter = big(&row, "unique_item_counter")?;
         let group_id: i32 = get_col(&row, "group_id")?;
@@ -275,8 +287,9 @@ impl InventoryRepository for PostgresRepo {
              job_class = $8, base_level = $9, job_level = $10, base_exp = $11, job_exp = $12, \
              str = $13, agi = $14, vit = $15, int_stat = $16, dex = $17, luk = $18, \
              status_point = $19, skill_point = $20, hp = $21, max_hp = $22, sp = $23, \
-             max_sp = $24 \
-             WHERE char_id = $25",
+             max_sp = $24, pow = $25, sta = $26, wis = $27, spl = $28, con = $29, crt = $30, \
+             trait_point = $31, ap = $32 \
+             WHERE char_id = $33",
         )
         .bind(i64::from(inventory.unique_item_counter))
         .bind(i32::from(looks.weapon_type))
@@ -302,6 +315,14 @@ impl InventoryRepository for PostgresRepo {
         .bind(to_int("max_hp", status.max_hp)?)
         .bind(to_int("sp", status.sp)?)
         .bind(to_int("max_sp", status.max_sp)?)
+        .bind(to_small("pow", status.traits[0])?)
+        .bind(to_small("sta", status.traits[1])?)
+        .bind(to_small("wis", status.traits[2])?)
+        .bind(to_small("spl", status.traits[3])?)
+        .bind(to_small("con", status.traits[4])?)
+        .bind(to_small("crt", status.traits[5])?)
+        .bind(i32::from(status.trait_point))
+        .bind(to_int("ap", status.ap)?)
         .bind(char_id)
         .execute(&mut *tx)
         .await

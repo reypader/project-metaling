@@ -5,7 +5,7 @@
 
 use ro_mechanics::{
     calc_status, BattleConfig, BonusTotals, ClassFlags, GearInput, HandInput, JobRow, Primary,
-    RefineInput, Status, StatusInputs, WeaponClass,
+    RefineInput, Status, StatusInputs, Traits, WeaponClass,
 };
 
 fn primary(str: i32, agi: i32, vit: i32, int: i32, dex: i32, luk: i32) -> Primary {
@@ -47,6 +47,7 @@ impl Case {
         calc_status(
             &StatusInputs {
                 allocated: self.allocated,
+                traits: Traits::default(),
                 base_level: self.base_level,
                 job: self.job,
                 class: self.class,
@@ -70,6 +71,7 @@ fn novice(base_level: u16, base_hp: u32, base_sp: u32, bonus: Primary, allocated
             base_sp,
             max_weight: 20000,
             shield_aspd: 10,
+            ..JobRow::default()
         },
         class: ClassFlags::default(),
         gear: GearInput {
@@ -145,6 +147,7 @@ fn mech_01_captured_swordman_and_knight() {
             base_sp: 84,
             max_weight: 28000,
             shield_aspd: 5,
+            ..JobRow::default()
         },
         class: ClassFlags::default(),
         gear: GearInput {
@@ -168,6 +171,7 @@ fn mech_01_captured_swordman_and_knight() {
             base_sp: 307,
             max_weight: 28000,
             shield_aspd: 5,
+            ..JobRow::default()
         },
         class: ClassFlags::default(),
         gear: GearInput {
@@ -197,6 +201,7 @@ fn mech_01_captured_bard() {
             base_sp: 604,
             max_weight: 27000,
             shield_aspd: 7,
+            ..JobRow::default()
         },
         class: ClassFlags::default(),
         gear: GearInput {
@@ -301,6 +306,7 @@ fn swordman_b48(gear: GearInput) -> Status {
             base_sp: 106,
             max_weight: 28000,
             shield_aspd: 5,
+            ..JobRow::default()
         },
         class: ClassFlags::default(),
         gear,
@@ -360,6 +366,7 @@ fn mech_03_aspd() {
                 base_sp: 10,
                 max_weight: 20000,
                 shield_aspd: 5,
+                ..JobRow::default()
             },
             class,
             gear: GearInput {
@@ -408,6 +415,7 @@ fn mech_04_max_hp_sp() {
         base_sp,
         max_weight: 28000,
         shield_aspd: 5,
+        ..JobRow::default()
     };
     let run = |allocated, base_level, job, class| {
         Case {
@@ -471,6 +479,7 @@ fn mech_04_max_hp_sp() {
     let halved = calc_status(
         &StatusInputs {
             allocated: all(1),
+            traits: Traits::default(),
             base_level: 1,
             job: job(1000, 10),
             class: ClassFlags::default(),
@@ -496,6 +505,7 @@ fn bonus_layers() {
     let status = calc_status(
         &StatusInputs {
             allocated: case.allocated,
+            traits: Traits::default(),
             base_level: case.base_level,
             job: case.job,
             class: case.class,

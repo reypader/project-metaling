@@ -584,6 +584,7 @@ mod tests {
                 },
                 delete_date: None,
                 looks: CharacterLooks::default(),
+                select_stats: Default::default(),
             }],
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();
@@ -634,6 +635,7 @@ mod tests {
                 },
                 delete_date: None,
                 looks: CharacterLooks::default(),
+                select_stats: Default::default(),
             }],
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();
@@ -661,6 +663,7 @@ mod tests {
                 },
                 delete_date: None,
                 looks: CharacterLooks::default(),
+                select_stats: Default::default(),
             },
         };
         let bytes = encoder.encode_event(&event, ver).unwrap();

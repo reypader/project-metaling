@@ -31,14 +31,13 @@ Out of scope (see §5):
   - the login block;
   - char select.
 - Earlier captures: `attribute_sequence_2.txt` (Novice High +52 / Super Novice −52, Hyper Novice +7) and `attribute_sequence_3.txt` (Hyper Novice J52 trait bonuses and PATK..CRATE 4/3/9/9/3/1, MAXAP 200 at B201).
+- **`reference/catalog/captures/rathena_trait_sequence_2.txt`** (2026-10-29, follow-up). It covers MaxAP 200 on a non-trait job at B200, trait job → trait job, SPL/WIS and real SMATK/MRES, two more forced double resets, and a login with non-zero WIS/SPL/MaxAP. Written up in catalog `packets/status.md` "Capture: traits 2".
 - **Still source-only:**
   - the `0x0b24` failure form. The client blocks the request at 0 points (user, 2026-10-29), so the reply only matters against a modified client;
   - amount > 1;
-  - leaving a trait job with ≥ 7 unspent trait points;
+  - leaving a trait job with ≥ 7 unspent trait points (attempted twice; the level-cap reset ran first both times);
   - the trait cap (110);
-  - SMATK/MRES with real SPL/WIS;
-  - AP > 0;
-  - trait job → trait job.
+  - AP > 0 (not yet captured; `@healap` at B200+ can set it).
 
 When this spec and the catalog disagree, the catalog wins and this spec gets fixed.
 
@@ -48,12 +47,12 @@ When this spec and the catalog disagree, the catalog wins and this spec gets fix
 
 `tools/job-import` already reads every source file this feature needs. It stops dropping two things:
 - **`statpoint.yml` `TraitPoints`**: kept as an optional cumulative column (`trait_points`, absent = 0) beside `points`.
-- **AP:** `job_basepoints.yml` `BaseAp` plus the `ApFactor`/`ApIncrease` fallback from `job_stats.yml`. Each job gets a full `base_ap` table (one value per base level up to `MaxBaseLevel`), fallback-filled with `calc_baseap` (catalog `trait_stats.md` §2) wherever the source has no entry or a 0, exactly as the HP/SP tables are filled today. Jobs whose table is all zero may omit it.
+- **AP:** `job_basepoints.yml` `BaseAp` plus the `ApFactor`/`ApIncrease` fallback from `job_stats.yml`. Each job gets a full `base_ap` table (one value per base level up to `MaxBaseLevel`), fallback-filled with `calc_baseap` (catalog `trait_stats.md` §2) wherever the source has no entry or a 0, exactly as the HP/SP tables are filled today. Jobs whose table is all zero may omit it. The fallback has no job guard (verified 2026-10-29), so every job that reaches B200, 3rd classes included, gets 200 there.
 
 Regenerate `crates/ro-db/data/job/` and update its headers and the `NOTICE.md` job section ("Modified": trait points kept; AP tables fallback-filled). The data format version goes up by one, and `ro-db` rejects the old version.
 
 ## 1. Data API (`ro-db`)
-- `StatPointRow` gains `trait_points`. `JobDb::trait_points(base_level) -> u32` reads the cumulative table, with 0 below 201 and past the table.
+- `StatPointRow` gains `trait_points`. `JobDb::trait_points(base_level) -> u32` reads the cumulative table, with 0 below 201. Past the table it reads the last row, like `status_points` (session A ruling: a 0 would turn a level-up delta negative; no level passes 275 in play).
 - `Job::base_ap(base_level) -> u32`, with 0 if the job has no table.
 - `JobBonus` already carries pow..crt (`crates/ro-db/src/job.rs:50-60`); nothing changes.
 
@@ -111,7 +110,7 @@ Regenerate `crates/ro-db/data/job/` and update its headers and the `NOTICE.md` j
   4. `0x00be` `SP_UPOW..SP_UCRT` with the next-point costs.
 
   Captured 1451-1471. `SP_AP` is sent even at 0.
-- **Pre-ready login push** (`send_login_status_push`): rAthena's pre-`0x007d` diff carries only non-zero trait values (POW, then PATK at 1401-1402). Append the trait couples and trait-derived values to the end of our push, non-zero only, in diff order.
+- **Pre-ready login push** (`send_login_status_push`): rAthena's pre-`0x007d` diff carries only non-zero trait values (POW, then PATK at 1401-1402, then `WEIGHT` at 1403). Insert the trait couples, trait-derived values, MaxAP and AP after `SP` and before `WEIGHT`, non-zero only, in diff order.
 - **Map change** (`send_map_change_stats`): the trait `0x0141` ×6 carry real values.
 - **`0x00be` trait costs** everywhere they are sent today as 0 (`reset_stats`, `@job`) carry the real next-point cost.
 
@@ -132,7 +131,7 @@ Regenerate `crates/ro-db/data/job/` and update its headers and the `NOTICE.md` j
   - `0x00be` `SP_UPOW + n` with the next-point cost;
   - `0x00b0` `SP_TRAITPOINT`;
   - `0x00bc` ok 1, `sp` = var, `value` = `min(allocated, 255)`. The value is the allocated stat, not including the job bonus (captured).
-  - The trailing `0x0141` for a value over 255 can't happen with a cap of 110. Skip it, and note this in a comment.
+  - The trailing `0x0141` for a value over 255, as for stat-up. The shipped cap (110) never reaches it, but `max_trait_parameter` may be configured up to 32767 (session B, 2026-10-29: implemented rather than skipped).
 - **Wire order** (captured 488-493):
   1. the tick's diff (derived first, the trait's `0x0141`, trait-derived);
   2. `0x00be`;
@@ -215,7 +214,7 @@ From B99 (1185-1249) it is −52, `0x00be` ×6, one reset, then the job pushes. 
   - rAthena keeps `max_ap`. We don't need it, because char select doesn't show AP.
 - **`save_play_state`** writes the new fields in the same transaction. **`load_play_state`** reads them.
 - AP is loaded at login (`keep_ap_on_logout` is yes; we don't add the knob) and clamped to MaxAP silently at spawn, as HP/SP are today.
-- **`CharacterSummary`** (`crates/ro-core/src/ids.rs:30`) gains `base_exp`, `job_exp`, `hp`, `max_hp`, `sp`, `max_sp`, `status_point`, `skill_point` and `stats: [u16; 6]`. `summary_columns!` selects them.
+- **`CharacterSummary`** (`crates/ro-core/src/ids.rs:30`) gains `select_stats: CharacterSelectStats`, which holds `base_exp`, `job_exp`, `hp`, `max_hp`, `sp`, `max_sp`, `status_point`, `skill_point` and `stats: [u16; 6]` (grouped so the many summary literals take `Default::default()`). `summary_columns!` selects them.
 - **`encode_character_info`** sends them:
   - `exp` and `jobexp` as i64;
   - `jobpoint` = `status_point` capped at 32767;
@@ -232,7 +231,7 @@ From B99 (1185-1249) it is −52, `0x00be` ×6, one reset, then the job pushes. 
 | ID | Scenario |
 | :--- | :--- |
 | DB-TRAIT-01 | Regenerated `job/*.yml` loads and keeps the GPL header. `trait_points`: B200 0, B201 3, B205 19, B210 38, B275 matches the source total. `status_points` unchanged. |
-| DB-TRAIT-02 | `base_ap`: Dragon Knight B199 0, B200 200, B275 200. A job with only `ApFactor`/`ApIncrease` matches `calc_baseap` on a hand-computed level. Non-trait jobs return 0. |
+| DB-TRAIT-02 | `base_ap`: Dragon Knight B199 0, B200 200, B275 200. A job with only `ApFactor`/`ApIncrease` matches `calc_baseap` on a hand-computed level. Jobs below B200 return 0; a 3rd class at B200 (Rune Knight) returns 200, as in rAthena. |
 | MECH-TRAIT-01 | Captured DK values (catalog `trait_stats.md` §7): batk +5 per POW (B200 57, B205 POW 4 73), HIT/FLEE +2 per CON (B205 CON 4: 389/314), PATK 1 at POW 3, RES 1,2,8,9,10,16,17 for STA 1..7, HPLUS = CRT, CRATE 1..5 at CRT 3..15. |
 | MECH-TRAIT-02 | Capture 3 Hyper Novice J52 (job bonus only): POW..CRT bonus 9/4/4/8/8/3 gives PATK..CRATE 4/3/9/9/3/1. SMATK and MRES formulas on hand values (SPL 9 / WIS 6). |
 | MECH-TRAIT-03 | MaxAP: 200 at B200+ for a DK, 0 at B199; `ap_rate` 50 halves it; `max_ap` 150 caps it. |
@@ -267,7 +266,5 @@ From B99 (1185-1249) it is −52, `0x00be` ×6, one reset, then the job pushes. 
   - the `0x0b24` failure form (the client blocks 0-point requests, so it can't be captured);
   - amount > 1;
   - trait job → non-trait job with ≥ 7 unspent;
-  - trait job → trait job;
   - the trait cap;
-  - SMATK/MRES;
   - AP > 0.

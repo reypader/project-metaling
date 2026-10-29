@@ -3,6 +3,33 @@
 Items consciously left out of finished work, with enough context to pick them up later.
 Remove an item when it lands. Newest feature first.
 
+## traits (branch `main`, plan `specs/traits/plan.md`)
+
+Spec: `specs/traits/spec.md` §5. Trait stats POW..CRT with `0x0b24`, trait points, PATK..CRATE, MaxAP and
+AP, the real status pushes, the full `pc_resetstate` with its +52/+7 grants, `@blvl` trait-point deltas,
+`@job`'s ±52 and +7 steps (the captured double reset), `@streset`, persistence and real char-select values
+are in.
+
+### Still to verify by hand
+- **Manual client check** (plan "Finish"): `@job 4252`, trait +, B200 MaxAP, `@blvl -10`, `@streset`,
+  `@job 7`, relog, char select. Then a metaling capture compared with `rathena_traits_sequence.txt`.
+- Not captured, so source-only: the `0x0b24` failure form (the client blocks 0-point requests), amount > 1,
+  trait job → non-trait job with ≥ 7 unspent, the trait cap, and AP > 0 (`@healap` isn't implemented).
+
+### Modifier sources and mechanics
+- Item, card and SC trait/AP bonuses (`bPow..bCrt`, `bMaxAP`, `bMaxAPrate`, SC_BENEDICTUM,
+  SC_MARINE_FESTIVAL).
+- AP grant and spend (4th-job skills), AP regen, AP loss on death and on VS maps (`loose_ap_on_death`,
+  `loose_ap_on_map`), and `keep_ap_on_logout` off (fixed on today).
+- The damage consumers of PATK/SMATK/RES/MRES/HPLUS/CRATE (`crates/ro-engine/DESIGN.md` §11) and 4th-job
+  skill ratios.
+- Refine P.ATK/S.MATK (weapon level 5) and RES/MRES (armor level 2) bonuses (catalog `stats.md` "Refine
+  bonuses").
+
+### Fidelity
+- rAthena's stale `0x0141` ×12 at the start of every reset is skipped (same ruling as stats). Our reset's
+  derived values come from the tick's single diff.
+
 ## stats (branch `main`, plan `specs/stats/plan.md`)
 
 Spec: `specs/stats/spec.md` §5. Job and refine data, every derived stat from job, level, allocated stats and
@@ -14,9 +41,6 @@ gear (ATK/MATK/DEF/MDEF only), the tick's recalc pass with the follow-up queue, 
   (`reference/catalog/captures/metaling_attribute_sequence.txt`, 2026-10-28) matched captures 1-3 in every
   flow, apart from documented deviations. Still worth checking by eye in the client: an equip of a Knife +10
   or Guard (one net diff) and the status window after `@jlvl` (job bonus shown as `+`).
-- Char select (`0x0b72`, `crates/ro-packets/src/outgoing/char.rs`) still sends placeholder HP/SP
-  (100/100/50/50) and 0 skill points. The real values are saved now; the char server doesn't load or send
-  them yet.
 - Not captured: a stat above 255 (unreachable with the shipped caps of 130 or less; `FollowUp::CoupleStat`
   covers it from the source), two `elvmax` items coming off in one command, and `@job`'s ammo refusal
   `0x0291` before the forced unequip (source reading only).
@@ -30,13 +54,11 @@ gear (ATK/MATK/DEF/MDEF only), the tick's recalc pass with the follow-up queue, 
 - `die_counter` (the Super Novice +10 assumes no deaths), Taekwon ranker HP ×3, enchant grade, overrefine
   damage.
 - Exp tables (NEXTBASEEXP/NEXTJOBEXP stay placeholders), exp gain and natural level-up.
-- Natural regen, overweight statuses, trait stats and AP. `SP_TRAITPOINT` is sent as 0; rAthena sends the
-  running trait total.
+- Natural regen, overweight statuses.
 
 ### GM commands
 - `@job`: class-change level vars; the skill tree and skill deletes (`0x0441`; the `0x010f` re-send is
-  done); option stripping (cart, falcon, peco, mado, homunculus); transcendent (±52) and trait (+7) point
-  grants and their stat resets; the party class update; the upper/baby flag argument.
+  done); option stripping (cart, falcon, peco, mado, homunculus); the party class update; the upper/baby flag argument.
 - `@jlvl` negative: `pc_resetskill` (no skills yet).
 - Level effects not sent: achievement updates (`0x0a24`), the `0x0446` quest marker refresh, and the
   observer's party HP bar `0x080e` (capture 3).
@@ -125,7 +147,6 @@ login-time `0x0091`, and every entry starts with `0x01d7` and sends `0x099b`.
   NV_BASIC level 0, upgradable.
 - Status block placeholders (`crates/ro-engine/src/status.rs`):
   - NEXTBASEEXP/NEXTJOBEXP are the max-level constants until exp tables are imported.
-  - Trait stats, their costs and AP are 0.
 - Reputation points (always 0) and the reputation types list (fixed 1–4 in `ro-packets`).
 
 ## items (branch `main`, plan `specs/items/plan.md`)

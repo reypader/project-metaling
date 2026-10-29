@@ -4,10 +4,11 @@
 //! `packets/status.md`, `packets/settings.md`; spec `specs/stats/spec.md` §2.3.
 //!
 //! The values come from the `ro_mechanics::Status` snapshot (`stats.rs` computes it). There are
-//! no exp tables yet, so next exp is rAthena's max-level value.
+//! no exp tables yet, so next exp is rAthena's max-level value. Trait stats and AP follow
+//! `specs/traits/spec.md` §2.3.
 
 use ro_core::{CharacterStatus, ServerEvent, StatusWindow};
-use ro_mechanics::{next_stat_cost, Status};
+use ro_mechanics::{next_stat_cost, next_trait_cost, Status};
 
 use crate::engine::{MapInstance, SP_MAXWEIGHT, SP_WEIGHT};
 use crate::entity::Entity;
@@ -44,9 +45,12 @@ const SP_FLEE1: u16 = 50;
 const SP_FLEE2: u16 = 51;
 const SP_CRITICAL: u16 = 52;
 const SP_ASPD: u16 = 53;
-const SP_POW: u16 = 219;
-/// `SP_PATK`..`SP_CRATE`, `SP_TRAITPOINT`, `SP_AP`, `SP_MAXAP`: sent as `0x00b0` in this order.
-const TRAIT_PARAMS: [u16; 9] = [225, 226, 227, 228, 229, 230, 231, 232, 233];
+pub(crate) const SP_POW: u16 = 219;
+pub(crate) const SP_CRT: u16 = 224;
+/// `SP_PATK`..`SP_CRATE`: the trait-derived values, sent as `0x00b0` in this order.
+const SP_PATK: u16 = 225;
+pub(crate) const SP_AP: u16 = 232;
+const SP_MAXAP: u16 = 233;
 pub(crate) const SP_UPOW: u16 = 247;
 /// The derived `0x00b0` vars of the pre-entry push, in captured order: HIT, FLEE1, ASPD, ATK1,
 /// DEF1, DEF2, ATK2, FLEE2, CRITICAL, MATK2, MATK1, MDEF2, MDEF1. rAthena sends DEF2/DEF1 a
@@ -68,6 +72,7 @@ const PUSH_DERIVED_PARAMS: [u16; 13] = [
 ];
 /// STR..LUK and POW..CRT.
 const STAT_COUNT: u16 = 6;
+const STATS: usize = STAT_COUNT as usize;
 
 /// `pc_nextbaseexp` / `pc_nextjobexp` at max level (`MAX_LEVEL_BASE_EXP`, `MAX_LEVEL_JOB_EXP`).
 /// Sent until exp tables exist: never 0, so the client's exp bar can't divide by 0.
@@ -99,10 +104,59 @@ pub(crate) fn battle_stats(status: &Status) -> [i32; 6] {
     [b.str, b.agi, b.vit, b.int, b.dex, b.luk]
 }
 
-/// `0x0141` for STR..LUK `offset`: `base` is the allocated stat, `bonus` battle − allocated.
-pub(crate) fn couple(offset: u16, allocated: u16, battle: i32) -> ServerEvent {
+/// POW..CRT after every layer.
+pub(crate) fn battle_traits(status: &Status) -> [i32; 6] {
+    let t = status.trait_battle;
+    [t.pow, t.sta, t.wis, t.spl, t.con, t.crt]
+}
+
+/// PATK, SMATK, RES, MRES, HPLUS, CRATE: the values of `SP_PATK + i`.
+fn trait_values(status: &Status) -> [i32; 6] {
+    [
+        status.patk,
+        status.smatk,
+        status.res,
+        status.mres,
+        status.hplus,
+        status.crate_,
+    ]
+}
+
+/// What a recalc compares besides the snapshot: the allocated STR..LUK then POW..CRT, and HP,
+/// SP and AP after the clamp.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub(crate) struct Persisted {
+    pub(crate) allocated: [u16; 12],
+    pub(crate) hp: u32,
+    pub(crate) sp: u32,
+    pub(crate) ap: u32,
+}
+
+/// The allocated STR..LUK then POW..CRT.
+pub(crate) fn allocated_stats(status: &CharacterStatus) -> [u16; 12] {
+    let [str, agi, vit, int, dex, luk] = stats(status);
+    let [pow, sta, wis, spl, con, crt] = status.traits;
+    [str, agi, vit, int, dex, luk, pow, sta, wis, spl, con, crt]
+}
+
+/// `0x0141` for allocated stat `index` (0..6 STR..LUK, 6..12 POW..CRT, as in
+/// `allocated_stats`): `base` is the allocated stat, `bonus` battle − allocated.
+pub(crate) fn couple(index: u16, allocated: u16, battle: i32) -> ServerEvent {
+    let var_id = match index.checked_sub(STAT_COUNT) {
+        Some(offset) => SP_POW + offset,
+        None => SP_STR + index,
+    };
+    couple_var(var_id, allocated, battle)
+}
+
+/// `0x0141` for POW..CRT `offset`, likewise.
+fn trait_couple(offset: u16, allocated: u16, battle: i32) -> ServerEvent {
+    couple(STAT_COUNT + offset, allocated, battle)
+}
+
+fn couple_var(var_id: u16, allocated: u16, battle: i32) -> ServerEvent {
     ServerEvent::CoupleStatus {
-        var_id: u32::from(SP_STR + offset),
+        var_id: u32::from(var_id),
         base: i32::from(allocated),
         bonus: battle - i32::from(allocated),
     }
@@ -116,23 +170,22 @@ pub(crate) fn param(var_id: u16, value: u32) -> ServerEvent {
 }
 
 /// The recalculation push from `old` to `new`: one packet per changed field, in rAthena's
-/// order (catalog `packets/status.md` "Recalculation pushes"; spec §2.3). `allocated` is
-/// STR..LUK before and after, `vitals` HP and SP before and after the clamp. A stat's `0x0141`
-/// goes out when its battle value or its allocated base changed (a reset can keep the battle
-/// value, and the window must still show the new base). Fields compare in rAthena's
-/// internal units, so `cri`/`flee2` (1/10) re-send on any change. A hard DEF change sends DEF1
-/// then DEF2, a soft one DEF2 then DEF1; MATK and MDEF likewise. SPEED and the trait values
-/// don't change yet.
+/// order (catalog `packets/status.md` "Recalculation pushes"; spec §2.3 of `specs/stats` and
+/// `specs/traits`). `persisted` holds the allocated stats and HP/SP/AP before and after the
+/// clamp. A stat's `0x0141` goes out when its battle value or its allocated base changed (a
+/// reset can keep the battle value, and the window must still show the new base); POW..CRT
+/// likewise, after `SP`. Fields compare in rAthena's internal units, so `cri`/`flee2` (1/10)
+/// re-send on any change. A hard DEF change sends DEF1 then DEF2, a soft one DEF2 then DEF1;
+/// MATK and MDEF likewise. SPEED doesn't change yet.
 pub(crate) fn status_diff(
     old: &Status,
     new: &Status,
-    allocated: (&[u16; 6], &[u16; 6]),
-    old_vitals: (u32, u32),
-    new_vitals: (u32, u32),
+    persisted: (&Persisted, &Persisted),
 ) -> Vec<ServerEvent> {
     let mut events = Vec::new();
     let (old_battle, new_battle) = (battle_stats(old), battle_stats(new));
-    let (old_allocated, new_allocated) = allocated;
+    let (old_p, new_p) = persisted;
+    let (old_allocated, new_allocated) = (&old_p.allocated, &new_p.allocated);
     for offset in 0..STAT_COUNT {
         let i = usize::from(offset);
         if old_battle[i] != new_battle[i] || old_allocated[i] != new_allocated[i] {
@@ -173,8 +226,33 @@ pub(crate) fn status_diff(
     for (changed, var_id, value) in [
         (old.max_hp != new.max_hp, SP_MAXHP, new.max_hp),
         (old.max_sp != new.max_sp, SP_MAXSP, new.max_sp),
-        (old_vitals.0 != new_vitals.0, SP_HP, new_vitals.0),
-        (old_vitals.1 != new_vitals.1, SP_SP, new_vitals.1),
+        (old_p.hp != new_p.hp, SP_HP, new_p.hp),
+        (old_p.sp != new_p.sp, SP_SP, new_p.sp),
+    ] {
+        if changed {
+            events.push(param(var_id, value));
+        }
+    }
+    let (old_traits, new_traits) = (battle_traits(old), battle_traits(new));
+    for (offset, i) in (0..STAT_COUNT).zip(0..STATS) {
+        let (old_base, new_base) = (old_allocated[STATS + i], new_allocated[STATS + i]);
+        if old_traits[i] != new_traits[i] || old_base != new_base {
+            events.push(trait_couple(offset, new_base, new_traits[i]));
+        }
+    }
+    for ((var_id, old_value), new_value) in
+        (SP_PATK..).zip(trait_values(old)).zip(trait_values(new))
+    {
+        if old_value != new_value {
+            events.push(ServerEvent::ParameterChanged {
+                var_id,
+                value: new_value,
+            });
+        }
+    }
+    for (changed, var_id, value) in [
+        (old.max_ap != new.max_ap, SP_MAXAP, new.max_ap),
+        (old_p.ap != new_p.ap, SP_AP, new_p.ap),
     ] {
         if changed {
             events.push(param(var_id, value));
@@ -212,6 +290,16 @@ pub(crate) fn status_window(status: &CharacterStatus, derived: &Status, cap: u16
         matk_bonus: short(derived.weapon_matk),
         matk: short(derived.status_matk),
     }
+}
+
+/// `0x00be` `SP_UPOW..SP_UCRT`: the next-point cost of each allocated trait against `cap`.
+pub(crate) fn trait_costs(traits: &[u16; 6], cap: u16) -> impl Iterator<Item = ServerEvent> + '_ {
+    (0..STAT_COUNT)
+        .zip(traits)
+        .map(move |(offset, &value)| ServerEvent::StatusCost {
+            var_id: SP_UPOW + offset,
+            value: next_trait_cost(value, cap),
+        })
 }
 
 fn exp(value: u64) -> i64 {
@@ -256,7 +344,31 @@ impl MapInstance {
         ] {
             self.emit_self(e, param(var_id, value));
         }
+        self.send_nonzero_trait_values(e, &status, &derived);
         self.emit_weight(e, SP_WEIGHT, weight);
+    }
+
+    /// The trait part of rAthena's pre-entry diff against zero (captured
+    /// `rathena_traits_sequence.txt` 1401-1403): the non-zero POW..CRT, PATK..CRATE, MaxAP and
+    /// AP, in diff order.
+    fn send_nonzero_trait_values(&mut self, e: Entity, status: &CharacterStatus, derived: &Status) {
+        for (offset, (&allocated, battle)) in
+            (0..STAT_COUNT).zip(status.traits.iter().zip(battle_traits(derived)))
+        {
+            if battle != 0 || allocated != 0 {
+                self.emit_self(e, trait_couple(offset, allocated, battle));
+            }
+        }
+        for (var_id, value) in (SP_PATK..).zip(trait_values(derived)) {
+            if value != 0 {
+                self.emit_self(e, ServerEvent::ParameterChanged { var_id, value });
+            }
+        }
+        for (var_id, value) in [(SP_MAXAP, derived.max_ap), (SP_AP, status.ap)] {
+            if value != 0 {
+                self.emit_self(e, param(var_id, value));
+            }
+        }
     }
 
     /// `0x0141` for STR..LUK with the real bonus (battle − allocated).
@@ -268,17 +380,12 @@ impl MapInstance {
         }
     }
 
-    /// `0x0141` for POW..CRT: always 0 until trait stats exist.
-    fn send_trait_couples(&mut self, e: Entity) {
-        for offset in 0..STAT_COUNT {
-            self.emit_self(
-                e,
-                ServerEvent::CoupleStatus {
-                    var_id: u32::from(SP_POW + offset),
-                    base: 0,
-                    bonus: 0,
-                },
-            );
+    /// `0x0141` for POW..CRT with the real bonus (battle − allocated).
+    fn send_trait_couples(&mut self, e: Entity, status: &CharacterStatus, derived: &Status) {
+        for (offset, (&allocated, battle)) in
+            (0..STAT_COUNT).zip(status.traits.iter().zip(battle_traits(derived)))
+        {
+            self.emit_self(e, trait_couple(offset, allocated, battle));
         }
     }
 
@@ -295,7 +402,7 @@ impl MapInstance {
             return;
         };
         self.send_couple_stats(e, &status, &derived);
-        self.send_trait_couples(e);
+        self.send_trait_couples(e, &status, &derived);
     }
 
     /// Sends the exp vars, skill points and the status window with its follow-ups, in rAthena
@@ -319,7 +426,8 @@ impl MapInstance {
         }
         self.emit_self(e, param(SP_SKILLPOINT, u32::from(status.skill_point)));
 
-        let cap = self.battle.max_stat(&class_flags(job_mapid(job)));
+        let class = class_flags(job_mapid(job));
+        let cap = self.battle.max_stat(&class);
         let window = status_window(&status, &derived, cap);
         self.emit_self(e, ServerEvent::StatusWindow { status: window });
         self.send_couple_stats(e, &status, &derived);
@@ -336,18 +444,19 @@ impl MapInstance {
                 value: derived.amotion,
             },
         );
-        self.send_trait_couples(e);
-        for var_id in TRAIT_PARAMS {
-            self.emit_self(e, ServerEvent::ParameterChanged { var_id, value: 0 });
+        self.send_trait_couples(e, &status, &derived);
+        for (var_id, value) in (SP_PATK..).zip(trait_values(&derived)) {
+            self.emit_self(e, ServerEvent::ParameterChanged { var_id, value });
         }
-        for offset in 0..STAT_COUNT {
-            self.emit_self(
-                e,
-                ServerEvent::StatusCost {
-                    var_id: SP_UPOW + offset,
-                    value: 0,
-                },
-            );
+        for (var_id, value) in [
+            (SP_TRAITPOINT, u32::from(status.trait_point)),
+            (SP_AP, status.ap),
+            (SP_MAXAP, derived.max_ap),
+        ] {
+            self.emit_self(e, param(var_id, value));
+        }
+        for event in trait_costs(&status.traits, self.battle.max_trait(&class)) {
+            self.emit_self(e, event);
         }
     }
 }
@@ -355,14 +464,27 @@ impl MapInstance {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ro_mechanics::Primary;
+    use ro_mechanics::{Primary, Traits};
 
     fn p(var_id: u16, value: i32) -> ServerEvent {
         ServerEvent::ParameterChanged { var_id, value }
     }
 
+    /// STR..LUK allocated 1, no traits, HP/SP/AP `vitals`.
+    fn persisted(vitals: (u32, u32, u32)) -> Persisted {
+        let mut allocated = [0; 12];
+        allocated[..6].fill(1);
+        Persisted {
+            allocated,
+            hp: vitals.0,
+            sp: vitals.1,
+            ap: vitals.2,
+        }
+    }
+
     fn diff(old: &Status, new: &Status) -> Vec<ServerEvent> {
-        status_diff(old, new, (&[1; 6], &[1; 6]), (0, 0), (0, 0))
+        let same = persisted((0, 0, 0));
+        status_diff(old, new, (&same, &same))
     }
 
     /// ENG-STAT-01: only changed fields are pushed, in the catalog order.
@@ -408,7 +530,7 @@ mod tests {
             ..old
         };
         assert_eq!(
-            status_diff(&old, &all, (&[1; 6], &[1; 6]), (0, 0), (14, 15)),
+            status_diff(&old, &all, (&persisted((0, 0, 0)), &persisted((14, 15, 0)))),
             vec![
                 p(49, 1),
                 p(50, 2),
@@ -462,14 +584,10 @@ mod tests {
             flee2: 13,
             ..old
         };
+        let mut more_luk = persisted((40, 11, 0));
+        more_luk.allocated[5] = 2;
         assert_eq!(
-            status_diff(
-                &old,
-                &new,
-                (&[1, 1, 1, 1, 1, 1], &[1, 1, 1, 1, 1, 2]),
-                (40, 11),
-                (40, 11)
-            ),
+            status_diff(&old, &new, (&persisted((40, 11, 0)), &more_luk)),
             vec![
                 ServerEvent::CoupleStatus {
                     var_id: 18,
@@ -481,6 +599,66 @@ mod tests {
             ],
             "shown values unchanged, both re-sent"
         );
+    }
+
+    /// ENG-STAT-01 with traits (traits spec §2.3): after `SP` come the changed POW..CRT
+    /// `0x0141`s (allocated or battle), then PATK..CRATE, then `MAXAP` and `AP`.
+    #[test]
+    fn eng_stat_01_trait_block_after_sp() {
+        let old = Status {
+            trait_battle: Traits {
+                pow: 1,
+                ..Traits::default()
+            },
+            ..Status::default()
+        };
+        let new = Status {
+            hit: 5,
+            max_sp: 9,
+            trait_battle: Traits {
+                pow: 2,
+                con: 4,
+                ..old.trait_battle
+            },
+            patk: 1,
+            smatk: 2,
+            res: 3,
+            mres: 4,
+            hplus: 5,
+            crate_: 6,
+            max_ap: 200,
+            ..old
+        };
+        let before = persisted((10, 10, 0));
+        let mut after = persisted((10, 20, 30));
+        after.allocated[6] = 1; // POW
+        after.allocated[10] = 4; // CON
+        after.allocated[11] = 3; // CRT: allocated changed, battle (0) the same
+        let couple = |var_id, base, bonus| ServerEvent::CoupleStatus {
+            var_id,
+            base,
+            bonus,
+        };
+        assert_eq!(
+            status_diff(&old, &new, (&before, &after)),
+            vec![
+                p(49, 5),
+                p(8, 9),
+                p(7, 20),
+                couple(219, 1, 1),
+                couple(223, 4, 0),
+                couple(224, 3, -3),
+                p(225, 1),
+                p(226, 2),
+                p(227, 3),
+                p(228, 4),
+                p(229, 5),
+                p(230, 6),
+                p(233, 200),
+                p(232, 30),
+            ]
+        );
+        assert!(diff(&new, &new).is_empty());
     }
 
     #[test]

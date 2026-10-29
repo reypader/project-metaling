@@ -8,31 +8,47 @@ use ro_core::{CharId, CharacterSummary};
 
 use crate::outgoing::helpers::write_fixed_string;
 
+/// The `CHARACTER_INFO` cap of points, SP and MaxSP (catalog `packets/char.md` "Status fields in
+/// `CHARACTER_INFO`").
+const SHORT_CAP: u32 = 32_767;
+/// The cap of each STR..LUK byte.
+const STAT_CAP: u16 = 255;
+
+fn capped_short(value: u32) -> i16 {
+    i16::try_from(value.min(SHORT_CAP)).unwrap_or(i16::MAX)
+}
+
+fn exp(value: u64) -> i64 {
+    i64::try_from(value).unwrap_or(i64::MAX)
+}
+
 /// Serializes a single `CharacterSummary` into the 175-byte `CHARACTER_INFO` binary struct
-/// according to rAthena `PACKETVER_RE_NUM = 20211103`.
+/// according to rAthena `PACKETVER_RE_NUM = 20211103`. The status values are the last saved
+/// ones; there are no trait or AP fields.
 pub fn encode_character_info(buf: &mut BytesMut, c: &CharacterSummary) {
+    let st = &c.select_stats;
     buf.put_u32_le(c.char_id.0); // GID
-    buf.put_i64_le(0); // exp (int64 for >= 20170830)
+    buf.put_i64_le(exp(st.base_exp)); // exp (int64 for >= 20170830)
     buf.put_i32_le(0); // money
-    buf.put_i64_le(0); // jobexp (int64 for >= 20170830)
+    buf.put_i64_le(exp(st.job_exp)); // jobexp (int64 for >= 20170830)
     buf.put_i32_le(c.job_level as i32); // joblevel
     buf.put_i32_le(0); // bodystate
     buf.put_i32_le(0); // healthstate
     buf.put_i32_le(0); // effectstate
     buf.put_i32_le(0); // virtue
     buf.put_i32_le(0); // honor
-    buf.put_i16_le(0); // jobpoint
-    buf.put_i64_le(100); // hp (int64 for >= 20211103)
-    buf.put_i64_le(100); // maxhp (int64 for >= 20211103)
-    buf.put_i64_le(50); // sp (int64 for >= 20211103)
-    buf.put_i64_le(50); // maxsp (int64 for >= 20211103)
+    buf.put_i16_le(capped_short(st.status_point.into())); // jobpoint: status points
+    buf.put_i64_le(st.hp.into()); // hp (int64 for >= 20211103, uncapped)
+    buf.put_i64_le(st.max_hp.into()); // maxhp
+    buf.put_i64_le(capped_short(st.sp).into()); // sp (int64, but capped at 32767)
+    buf.put_i64_le(capped_short(st.max_sp).into()); // maxsp, likewise
     buf.put_i16_le(150); // speed
     buf.put_i16_le(c.job_class as i16); // job
     buf.put_i16_le(c.hair_style as i16); // head
     buf.put_i16_le(c.job_class as i16); // body: the client draws the body sprite from it (= job)
     buf.put_i16_le(c.looks.weapon_type as i16); // weapon: the W_* type, not an item id
     buf.put_i16_le(c.base_level as i16); // level
-    buf.put_i16_le(0); // sppoint
+    buf.put_i16_le(capped_short(st.skill_point.into())); // sppoint: skill points
     buf.put_u16_le(c.looks.head_bottom); // accessory
     buf.put_i16_le(c.looks.shield as i16); // shield: the left armor's View
     buf.put_u16_le(c.looks.head_top); // accessory2
@@ -40,12 +56,9 @@ pub fn encode_character_info(buf: &mut BytesMut, c: &CharacterSummary) {
     buf.put_i16_le(c.hair_color as i16); // headpalette
     buf.put_i16_le(0); // bodypalette
     buf.put_slice(&write_fixed_string::<24>(&c.name)); // name
-    buf.put_u8(1); // Str
-    buf.put_u8(1); // Agi
-    buf.put_u8(1); // Vit
-    buf.put_u8(1); // Int
-    buf.put_u8(1); // Dex
-    buf.put_u8(1); // Luk
+    for stat in st.stats {
+        buf.put_u8(u8::try_from(stat.min(STAT_CAP)).unwrap_or(u8::MAX)); // Str..Luk, allocated
+    }
     buf.put_u8(c.slot); // CharNum
     buf.put_u8(c.hair_color as u8); // hairColor
     buf.put_i16_le(0); // bIsChangedCharName
@@ -296,6 +309,7 @@ mod tests {
             },
             delete_date: Some(delete_ts),
             looks: CharacterLooks::default(),
+            select_stats: Default::default(),
         };
 
         let mut buf = BytesMut::new();
@@ -338,6 +352,7 @@ mod tests {
             },
             delete_date: None,
             looks: CharacterLooks::default(),
+            select_stats: Default::default(),
         };
         let chars = vec![make_char(0), make_char(1), make_char(2)];
         let bytes = encode_hc_ack_charinfo_per_page(&chars).unwrap();
@@ -382,6 +397,7 @@ mod tests {
             },
             delete_date: None,
             looks: CharacterLooks::default(),
+            select_stats: Default::default(),
         };
         let dummy_chars = vec![dummy_char; 375];
         let res_char_list = encode_hc_accept_enter(9, 0, 0, &dummy_chars);

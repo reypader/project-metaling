@@ -828,8 +828,8 @@ async fn test_persist_schema_002_connection_error_handling() {
 // ---- Inventory (spec PER-INV-01..04) ----
 
 use ro_core::{
-    CharacterInventory, CharacterLooks, CharacterProgress, CharacterStatus, InventoryItem, ItemId,
-    ItemOption,
+    CharacterInventory, CharacterLooks, CharacterProgress, CharacterSelectStats, CharacterStatus,
+    InventoryItem, ItemId, ItemOption,
 };
 use ro_persistence::InventoryRepository;
 
@@ -1040,6 +1040,7 @@ async fn per_inv_04_play_state_and_cascade() {
         max_hp: 45,
         sp: 9,
         max_sp: 12,
+        ..CharacterStatus::default()
     };
     let progress = CharacterProgress {
         job_class: 4307,
@@ -1305,6 +1306,148 @@ async fn per_eq_02_schema_migrates_look_columns() {
     assert_eq!(old[0].looks.weapon_type, 7);
     assert_eq!(old[0].looks.head_top, 16);
     assert_eq!(old[0].looks.robe, 0);
+
+    repo.pool().close().await;
+    sqlx::query(&format!("DROP SCHEMA {schema} CASCADE"))
+        .execute(main.pool())
+        .await
+        .expect("schema dropped");
+}
+
+/// PER-TRAIT-01 (`specs/traits` §2.9): the trait columns, `trait_point` and AP save with the play
+/// state and load back; the summary carries the select-screen values (HP/SP, max, points,
+/// STR..LUK, exp).
+#[tokio::test]
+async fn per_trait_01_traits_and_select_values_round_trip() {
+    let (repo, _acc, char_id) = inventory_fixture(0).await;
+    let status = CharacterStatus {
+        str: 21,
+        agi: 22,
+        vit: 23,
+        int: 24,
+        dex: 25,
+        luk: 26,
+        status_point: 1325,
+        skill_point: 11,
+        base_exp: 6_000_000_000,
+        job_exp: 77,
+        hp: 8251,
+        max_hp: 11_575,
+        sp: 315,
+        max_sp: 467,
+        traits: [1, 2, 3, 4, 5, 110],
+        trait_point: 19,
+        ap: 150,
+        ..CharacterStatus::default()
+    };
+    let progress = CharacterProgress {
+        job_class: 4252,
+        base_level: 205,
+        status,
+    };
+    repo.save_play_state(
+        char_id,
+        &CharacterInventory::default(),
+        &CharacterLooks::default(),
+        &progress,
+    )
+    .await
+    .expect("saves");
+    let state = repo
+        .load_play_state(char_id)
+        .await
+        .expect("loads")
+        .expect("exists");
+    assert_eq!(state.status, status);
+    let summary = CharacterRepository::find_by_id(&repo, char_id)
+        .await
+        .expect("query")
+        .expect("exists");
+    assert_eq!(
+        summary.select_stats,
+        CharacterSelectStats {
+            base_exp: 6_000_000_000,
+            job_exp: 77,
+            hp: 8251,
+            max_hp: 11_575,
+            sp: 315,
+            max_sp: 467,
+            status_point: 1325,
+            skill_point: 11,
+            stats: [21, 22, 23, 24, 25, 26],
+        }
+    );
+}
+
+/// PER-TRAIT-01: a database from before traits gains the eight columns, defaulting to 0, and
+/// the pass stays idempotent. Runs in its own Postgres schema, as PER-EQ-02.
+#[tokio::test]
+async fn per_trait_01_schema_adds_trait_columns() {
+    use sqlx::postgres::{PgConnectOptions, PgPoolOptions};
+    use std::str::FromStr;
+
+    const TRAIT_COLUMNS: [&str; 8] = [
+        "pow",
+        "sta",
+        "wis",
+        "spl",
+        "con",
+        "crt",
+        "trait_point",
+        "ap",
+    ];
+    let main = get_repo().await;
+    let schema = format!("per_trait_01_{}", next_account_id().0);
+    sqlx::query(&format!("CREATE SCHEMA {schema}"))
+        .execute(main.pool())
+        .await
+        .expect("schema created");
+    let options = PgConnectOptions::from_str(&test_db_url())
+        .expect("db url")
+        .options([("search_path", schema.as_str())]);
+    let pool = PgPoolOptions::new()
+        .max_connections(1)
+        .connect_with(options)
+        .await
+        .expect("connects");
+    let repo = PostgresRepo::new(pool);
+
+    repo.init_schema().await.expect("fresh schema");
+    sqlx::raw_sql(&format!(
+        "ALTER TABLE characters DROP COLUMN {}; \
+         INSERT INTO accounts (account_id, username, password_hash) VALUES (2000000, 'old', 'x'); \
+         INSERT INTO characters (account_id, slot, name, sex) VALUES (2000000, 0, 'Old', 1);",
+        TRAIT_COLUMNS.join(", DROP COLUMN ")
+    ))
+    .execute(repo.pool())
+    .await
+    .expect("old layout");
+
+    repo.init_schema().await.expect("migrates");
+    repo.init_schema()
+        .await
+        .expect("idempotent after migration");
+    let cols = character_columns(&main, &schema).await;
+    for col in TRAIT_COLUMNS {
+        assert!(cols.iter().any(|c| c == col), "{col}: {cols:?}");
+    }
+    let old = repo
+        .list_by_account(AccountId(2_000_000))
+        .await
+        .expect("lists");
+    let state = repo
+        .load_play_state(old[0].char_id)
+        .await
+        .expect("loads")
+        .expect("exists");
+    assert_eq!(
+        (
+            state.status.traits,
+            state.status.trait_point,
+            state.status.ap
+        ),
+        ([0; 6], 0, 0)
+    );
 
     repo.pool().close().await;
     sqlx::query(&format!("DROP SCHEMA {schema} CASCADE"))

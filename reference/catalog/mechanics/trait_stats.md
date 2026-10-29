@@ -29,10 +29,14 @@ Caps: `max_param[POW..CRT] = battle_config.max_trait_parameter` for trait jobs, 
 ## 2. MaxAP
 
 ```
-base_ap[L]  (L = max(base_level,1) - 1 index)   from job_stats.yml BaseAp, else calc_baseap(level):
+base_ap[L]  (L = max(base_level,1) - 1 index)   from job_basepoints.yml BaseAp (only parsed under HP_SP_TABLES, defined at config/core.hpp:49), else calc_baseap(level):
     calc_baseap(lv) = (lv >= 200 ? 200 : 0) + floor(lv * ApIncrease/100)
                       + sum_{i=2..lv} floor(ApFactor/100 * i + 0.5)
     (a BaseAp entry of 0 also falls back to the formula; ApFactor/ApIncrease default 0)   pc.cpp:13791-13807, 14296-14308
+    The fallback is NOT job-guarded: every job in job_db gets it, for levels 1..MaxBaseLevel (the job argument is only used for ApFactor/ApIncrease; an unused mapid local exists).
+    So a non-trait job (e.g. Rune Knight, no BaseAp, ApFactor=ApIncrease=0) has base_ap 0 below lv 200 and 200 at lv >= 200.
+    job_basepoints.yml:19264-19290 BaseAp group (Level 200..275, each Ap 200, to line ~19442) lists 4th/trait jobs only: Dragon_Knight(2), Arch_Mage, Windhawk(2), Cardinal, Meister(2), Shadow_Cross, Imperial_Guard(2), Elemental_Master, Troubadour, Trouvere, Inquisitor, Biolo, Abyss_Chaser, Hyper_Novice, Sky_Emperor(2), Soul_Ascetic, Night_Watch, Shinkiro, Shiranui, Spirit_Handler -- i.e. the same values the formula yields.
+    status_calc_maxap_pc (status.cpp:3611) has no trait-job guard (only job==null -> 1), and the callers at status.cpp:4374 / 6494 are unguarded: non-trait jobs can have max_ap 200 at base lv >= 200.
 max_ap = base_ap + bMaxAP(fix)
 max_ap += max_ap*bMaxAPrate_equip/100 + max_ap*bMaxAPrate_item/100     (both computed from the same pre-bonus value)
 max_ap += int64(max_ap * rate_bonus/100);  floor at 0                  status.cpp:3611-3650
@@ -90,10 +94,19 @@ Source-only predictions above held; nothing contradicted. Formulas checked again
 | RES | STA 1..7 = 1, 2, 8, 9, 10, 16, 17 (STA + STA/3*5) |
 | HPLUS / CRATE | HPLUS = CRT (1..17); CRATE 1, 2, 3, 4, 5 at CRT 3, 6, 9, 12, 15 |
 | MaxAP | 0 at B99/B195 (Knight and DK), 200 at B200, B201, B205 (`BaseAp` 200 from level 200); `AP` 0 throughout |
-| Not exercised | SMATK, MRES (SPL/WIS never raised), trait cap (110), AP > 0, `keep_ap_on_logout` |
+| SMATK / MRES | [rathena_trait_sequence_2.txt](../captures/rathena_trait_sequence_2.txt): SMATK 1 at SPL 3; MRES 1, 2 at WIS 1, 2; with the J60 bonus SMATK 4 (SPL 10, CON 7) and MRES 10 (WIS 5) |
+| MaxAP, non-trait job | [rathena_trait_sequence_2.txt](../captures/rathena_trait_sequence_2.txt): Rune Knight T has MaxAP 200 at B200 and 0 at B190 (no job guard) |
+| Trait job → trait job | [rathena_trait_sequence_2.txt](../captures/rathena_trait_sequence_2.txt): DK ↔ Meister sends no point pushes, and the allocated traits carry over |
+| Not exercised | trait cap (110), AP > 0 (`@heal` has no AP argument; `@healap` does it), `keep_ap_on_logout`, leaving a trait job with ≥ 7 unspent points (the level-cap reset always ran first) |
 
 * Trait points: 201..205 totals 3, 6, 9, 12, 19 (`statpoint.yml`), so B201 pushes 3, B205 pushes 19 (+16). The pool pushed in every level tail is the running total; `SP_TRAITPOINT` is 7 at B200 (no trait points before 201).
 * Status points: B200/B201/B205 = 4151 (4099 + 52 trans points); B195 = 3980 (3928 + 52). After `@blvl -10`: 4151 - (4099 - 3928) = 3980.
 * `@blvl -n` reset trigger is the trait pool alone (`trait_point` 2 < `remove_trait` 19, status points sufficient); the reset runs before the level change, then the pool drops by the table delta (26 - 19 = 7).
 * `pc_traitstatusup` ack `value` = allocated stat; `bonus` in the trait `0x0141` = job bonus (POW 1 at J1). Order within the diff: derived values (`ATK1`, `HIT`, `FLEE1`) before the trait's `0x0141`; trait-derived (`PATK`, `RES`, `HPLUS`, `CRATE`) after it.
 * DK at B99 J1: MaxHP 11575, MaxSP 467 (after the Knight's 8137/310); ASPD 540; weight 45300.
+
+## Clamp order, trait-job exit, getting AP > 0 (rAthena d4b8e7b8f, renewal, applies to 20260219)
+
+* Recalc clamp push order (`status.cpp`): `status_calc_pc_` runs `status_calc_weight` first (4650): `SP_WEIGHT` (3694, only if weight changed) then `SP_MAXWEIGHT` (3696, only if max changed). Then `status_calc_bl_main`: HP clamp push `SP_HP` (6217), SP clamp `SP_SP` (6235), AP clamp `SP_AP` (6505), all three before any diff packet. Then the diff block in `status_calc_bl_` (6577-6691) runs in fixed order (STR..LUK, HIT, FLEE, ASPD, ..., `SP_MAXHP` 6656, `SP_MAXSP` 6658, `SP_HP` 6660, `SP_SP` 6662, POW..CRT, PATK, SMATK, RES, MRES, HPLUS, CRATE, `SP_MAXAP` 6689, `SP_AP` 6691). HP/SP/AP are compared against the pre-recalc values, so each clamped value is pushed a second time in the diff block (HP, SP, AP duplicates). First diff packet = first changed field in that order (a stat or derived value if any changed, else `SP_MAXHP`).
+* Leaving a trait job (`pc.cpp` 10915-10975, `pc_jobchange`), order: [level-cap reset block, if base level > new max: `pc_resetstate`, STATUSPOINT, TRAITPOINT, BASELEVEL, BASEEXP, NEXTBASEEXP] -> transcendent +/-52 `SP_STATUSPOINT` (only when upper-class-ness changes; or `pc_resetstate` if points < 52) -> `SP_USTR`,`UAGI`,`UVIT`,`UINT`,`UDEX`,`ULUK` (the 6 `0x00be`) -> trait block -> `SP_JOBLEVEL`,`JOBEXP`,`NEXTJOBEXP`. Trait block when `trait_point >= trait_points_job_change` (7): `trait_point = 0`, push `SP_TRAITPOINT`, `SP_UPOW`, `SP_USTA`, `SP_UWIS`, `SP_USPL`, `SP_UCON`, `SP_UCRT` (7 pushes, 6 `0x00be`-class cost pushes after the pool). Allocated `pow..crt` are NOT zeroed there; the `SP_U<trait>` values are the cost computed with the new class's max (0), per the catalog. If `trait_point < 7`, the block instead calls `pc_resetstate` (no explicit pushes in the branch). Entering a trait job adds `trait_points_job_change` and pushes the same 7.
+* AP > 0 for a capture: `@healap [<AP>]` (`atcommand.cpp` 1429-1454, `conf/atcommands.yml:549`; no arg = full heal, negative = remove, msgs 821-823) is the easiest, GM level 1 `healap` group entry permitting. It is clamped by `status_heal` to `max_ap - ap` (`status.cpp` 1858), so it only works when MaxAP > 0, i.e. at base level >= 200 (capture: MaxAP 200 at B200, 0 at B190). So: `@blvl` to 200, then `@healap`. Script: `healap <ap>{,<char_id>};` (`script.cpp` 6024, `doc/script_commands.txt:4593`), same clamp. `setparam`/`set Ap, n` (`SP_AP`, `pc.cpp` 10518) clamps to `[0, max_ap]` and pushes nothing; `set MaxAp, n` (`pc.cpp` 10521, clamp `[1, battle max_ap 1000]`) only edits `battle_status.max_ap`, which the next MAXAP recalc overwrites, and then the AP clamp push fires (useful to capture the AP clamp). `bonus bMaxAP,n` (`pc.cpp` 3922) adds fixed MaxAP at any level; no item in `db/re/item_db_*.yml` uses `bMaxAP` or `healap` (grep found none), so there is no consumable.

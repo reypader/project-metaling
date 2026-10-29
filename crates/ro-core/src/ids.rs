@@ -42,6 +42,23 @@ pub struct CharacterSummary {
     pub last_pos: MapPosition,
     pub delete_date: Option<u64>,
     pub looks: CharacterLooks,
+    pub select_stats: CharacterSelectStats,
+}
+
+/// The status values the char-select screen shows (`CHARACTER_INFO`): the last saved ones, not
+/// recomputed. No traits or AP: the entry has no fields for them.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CharacterSelectStats {
+    pub base_exp: u64,
+    pub job_exp: u64,
+    pub hp: u32,
+    pub max_hp: u32,
+    pub sp: u32,
+    pub max_sp: u32,
+    pub status_point: u16,
+    pub skill_point: u16,
+    /// Allocated STR..LUK, without the job bonus.
+    pub stats: [u16; 6],
 }
 
 /// The worn gear the char-select screen shows (the `characters` look columns). Not the same as

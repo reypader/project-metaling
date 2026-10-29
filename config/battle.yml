@@ -35,6 +35,9 @@ max_hp_lv99: 330000
 max_hp_lv150: 660000
 max_hp: 1100000
 max_sp: 1000000
+
+# MaxAP: rate in percent, then the cap.
+ap_rate: 100
 max_ap: 1000
 
 # Weight: overweight thresholds in percent; cart capacity in 0.1 units.
@@ -58,6 +61,11 @@ max_extended_parameter: 130
 max_summoner_parameter: 130
 max_fourth_parameter: 130
 max_trait_parameter: 110
+
+# Stat points granted on a job change into an upper or primary 4th class, and trait points into
+# a trait job (taken back, or a stat reset, on the way out).
+transcendent_status_points: 52
+trait_points_job_change: 7
 
 # Status points at base level 1, and level-up rules.
 start_status_points: 48

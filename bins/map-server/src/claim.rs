@@ -390,6 +390,7 @@ pub(crate) mod tests {
                 last_pos: at(100, 100),
                 delete_date: None,
                 looks: CharacterLooks::default(),
+                select_stats: Default::default(),
             };
             let permits = if open_gate { Semaphore::MAX_PERMITS } else { 0 };
             Arc::new(Self {

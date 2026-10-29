@@ -89,6 +89,7 @@ impl MapInstance {
                 self.command_job_level(e, params)
             }
             "jobchange" | "job" => self.command_job(e, params),
+            "resetstat" | "streset" => self.command_reset_stats(e),
             _ => self.tell(e, &format!("Unknown command: @{command}")),
         }
     }

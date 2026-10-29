@@ -8,7 +8,7 @@ use ro_db::{DbLoadError, JobBonus, JobDb, WeaponType, JOB_DATA_FILE, STATPOINT_D
 const JOBS: &str = r"
 Header:
   Type: JOB_DATA
-  Version: 1
+  Version: 2
 Body:
   - Id: 0
     Name: Novice
@@ -38,19 +38,22 @@ Body:
         Pow: 3
     BaseHp: [40, 48]
     BaseSp: [13, 15]
+    BaseAp: [0, 200]
 ";
 
 const POINTS: &str = r"
 Header:
   Type: STATPOINT_DATA
-  Version: 1
+  Version: 2
 Body:
   - Level: 1
     Points: 48
   - Level: 2
     Points: 51
+    TraitPoints: 3
   - Level: 3
     Points: 54
+    TraitPoints: 10
 ";
 
 fn db() -> JobDb {
@@ -169,6 +172,53 @@ fn status_points_are_cumulative_by_base_level() {
         54,
         "past the table reads the last row"
     );
+}
+
+#[test]
+fn trait_points_are_cumulative_and_optional() {
+    let db = db();
+    assert_eq!(db.trait_points(1), 0, "an absent TraitPoints is 0");
+    assert_eq!(db.trait_points(2), 3);
+    assert_eq!(db.trait_points(3), 10);
+    assert_eq!(db.trait_points(0), 0, "level 0 reads as 1");
+    assert_eq!(
+        db.trait_points(300),
+        10,
+        "past the table reads the last row"
+    );
+}
+
+#[test]
+fn base_ap_by_base_level() {
+    let db = db();
+    let knight = db.get(7).expect("Knight");
+    assert_eq!((knight.base_ap(1), knight.base_ap(2)), (0, 200));
+    assert_eq!(knight.base_ap(9), 200, "clamped to MaxBaseLevel");
+    let novice = db.get(0).expect("Novice");
+    assert_eq!(novice.base_ap(3), 0, "no BaseAp table");
+}
+
+#[test]
+fn rejects_an_ap_table_of_the_wrong_length() {
+    let text = JOBS.replace("BaseAp: [0, 200]", "BaseAp: [0]");
+    let jobs = JobDb::parse_jobs("jobs", &text).expect("parse");
+    let points = JobDb::parse_status_points("points", POINTS).expect("parse");
+    let message = schema_error(JobDb::from_parts("x", jobs, &points));
+    assert!(message.contains("BaseAp"), "{message}");
+}
+
+#[test]
+fn rejects_the_previous_data_version() {
+    let old = JOBS.replace("Version: 2", "Version: 1");
+    assert!(matches!(
+        JobDb::parse_jobs("jobs", &old),
+        Err(DbLoadError::Schema { .. })
+    ));
+    let old = POINTS.replace("Version: 2", "Version: 1");
+    assert!(matches!(
+        JobDb::parse_status_points("points", &old),
+        Err(DbLoadError::Schema { .. })
+    ));
 }
 
 #[test]
@@ -371,4 +421,39 @@ fn db_job_05_rows_behind_the_capture_vectors() {
     assert_eq!(db.get(19).expect("Bard").max_weight, 27000);
     assert_eq!(db.by_name("lord_knight").map(|j| j.id), Some(4008));
     assert_eq!(db.by_name("Dragon_Knight").map(|j| j.id), Some(4252));
+}
+
+/// DB-TRAIT-01: the cumulative trait points (catalog `db/exp_tables.md`, corrected 2026-10-29:
+/// 3, 6, 9, 12, 19 for B201..205); the status points are unchanged.
+#[test]
+fn db_trait_01_trait_points() {
+    let db = shipped();
+    assert_eq!(db.trait_points(200), 0);
+    assert_eq!(db.trait_points(201), 3);
+    assert_eq!(db.trait_points(205), 19);
+    assert_eq!(db.trait_points(210), 38);
+    assert_eq!(db.trait_points(275), 285, "the source total");
+    assert_eq!(db.trait_points(99), 0);
+    assert_eq!((db.status_points(200), db.status_points(205)), (4099, 4099));
+}
+
+/// DB-TRAIT-02: base AP is 200 from base level 200 and 0 below it. rAthena's fallback has no
+/// job guard, so a 3rd class at B200 gets 200 too (catalog `trait_stats.md` §2).
+#[test]
+fn db_trait_02_base_ap() {
+    let db = shipped();
+    let dk = db.by_name("dragon_knight").expect("Dragon Knight");
+    assert_eq!(dk.base_ap(199), 0);
+    assert_eq!(dk.base_ap(200), 200);
+    assert_eq!(dk.base_ap(275), 200);
+    assert_eq!(
+        db.by_name("hyper_novice")
+            .expect("Hyper Novice")
+            .base_ap(201),
+        200
+    );
+    let rune = db.by_name("rune_knight").expect("Rune Knight");
+    assert_eq!((rune.base_ap(199), rune.base_ap(200)), (0, 200));
+    assert_eq!(db.by_name("knight").expect("Knight").base_ap(99), 0);
+    assert_eq!(db.by_name("novice").expect("Novice").base_ap(99), 0);
 }
