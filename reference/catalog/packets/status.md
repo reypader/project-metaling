@@ -135,6 +135,16 @@ On failure (type out of 13..18, `increase <= 0`, increase capped to affordable/m
 
 Trait stats: `CZ_ADVANCED_STATUS_CHANGE` `0x0b24` (`var:i16` in `SP_POW`..`SP_CRT` = 219-224, `amount:i16`) goes to `pc_traitstatusup` (`pc.cpp:9034+`; same sequence with `SP_UPOW`+offset, `SP_TRAITPOINT`, then ack): 1 trait point per stat point, fails with the same `0x00bc` (`ok=0`) form. Only trait jobs (4th classes) have a non-zero max (see stats.md).
 
+### Trait stat-up (0x0b24)
+
+Source: `clif.cpp:12742-12752`, `pc.cpp:9034-9085`, `clif.cpp:4291-4300` (applies at 20260219). Details and validation order in [../mechanics/trait_stats.md](../mechanics/trait_stats.md#4-pc_traitstatusup).
+
+* Request: `0x0b24 <var:i16 219..224> <amount:i16>`. Negative amount: debug log, nothing sent. The handler calls `pc_traitstatusup(var, amount)` with the raw amount; amount > 1 is allowed and is capped to `min(amount, affordable, max - current)` (1 point per stat point), not rejected.
+* Success order: recalc diff (the stat's own `0x0141` plus changed PATK/SMATK/RES/MRES/HPLUS/CRATE/HIT/FLEE as applicable, then MAXAP/AP if changed), `0x00be` `SP_UPOW..SP_UCRT` (247-252, `SP_UPOW + n`) with the next-point cost (1, or 0 at max), `0x00b0` `SP_TRAITPOINT`, `0x00bc` ack `ok=1` `value=min(new,255)`, `0x0141` again if new > 255.
+* Failure: only `0x00bc` with `ok=0`, `value=0`, `sp` = the requested var. Failures: var outside 219..224, amount <= 0, nothing affordable, over the job max (0 for non-trait jobs), no trait points.
+* Differs from `pc_statusup` only in the pool (`SP_TRAITPOINT` vs `SP_STATUSPOINT`), the cost var, cost 1 flat, and no achievement update.
+* **Captured** (success path, amount 1 only): [Capture: traits](#capture-traits-rathena_traits_sequencetxt). Failure form and amount > 1 are still source-only.
+
 ## Recalculation pushes
 
 `status_calc_pc` = `status_calc_bl_(sd, all SCB flags, opt)` (`status.hpp:3684`). `status_calc_bl_` (`status.cpp:6525-6700`) snapshots the battle status, recomputes, then sends one update per field that CHANGED, in this fixed order (renewal):
@@ -333,6 +343,35 @@ Values (actor `#6`). **B100 (826-849):** diff `HIT` 289, `FLEE1` 214, `CRITICAL`
 * `SP_TRAITPOINT` in the tail is the running total (7 from the job change; 10 at B201, +3 from the trait table).
 * `SP_STATUSPOINT` at 100/101/150/201 is 1295 / 1318 / 2545 / 4099, the `statpoint.yml` totals.
 * Over-the-cap `@blevel +n` (465) sends one `+1` (98 → 99), the normal order, one message.
+
+## Capture: traits (rathena_traits_sequence.txt)
+
+Source: [captures/rathena_traits_sequence.txt](../captures/rathena_traits_sequence.txt) (rAthena `d4b8e7b`, `PROXY_FULL_PAYLOAD=1`, 2026-10-29; file line = proxy `#` + 10, verified; applies to 20260219). Payloads omit the opcode (and the length field of variable frames). Actor `#6` (relog `#8`) = acct 2000000 `skillsandtraits2`, char 150011, slot 8, **a Knight (job 7) B1 J1** at the start, not a Novice; observer `#3` = acct 2000001 `skillsandtraits` (Knight B1), online throughout. Both in `prontera`. Ignore `0x080e` (HP bar, also sent to the actor). Proxy: all 45 `0x00bc`, 39 `0x0b24` and 6 `0x00bb` frame correctly (`0x0b24` is only labelled KNOWN/UNIMPLEMENTED); the only odd rows are the AID echo (`0x8480`/`0x8481`, payload `1e 00`) and the PIN tail, as before.
+
+**What was done** (differs from the script): `@blvl 199` on the Knight clamps to B99 (304-332; again at 345: two messages only), `@job 4252` from Knight (352-399), `@blvl -199` to B1 (403-429), `@blvl 199` to B200 (436-474), POW x3 + CON x4 (488-542, 7 -> 0), `@blvl 1`/`4` to B201/B205 (551-600), CRT x17 (609-716, 19 -> 2), `@blvl -10` (720-782), POW/STA/POW/POW + six `0x00bb` (791-858), `@streset` (870-922), POW x2 (939-951), `@job 7` (956-1073), `@job 4252` (1078-1130), STA x7 (1137-1183), `@job 7` (1185-1249), `@job 4252` (1269-1319), POW x2 (1321-1333), restart (1335-1341), char select `#7`, relog `#8` (1366-1488), second restart, char select `#9`, quit. **Not exercised:** `+` with 0 trait points (no `0x0b24` was sent at 0; all 45 acks are `ok=1`), amount > 1 (the client always sent 1), a trait stat at its cap, SPL/WIS, `@job` out of a trait job with >= 7 unspent points, AP > 0.
+
+**Trait stat-up** (39 requests; `var:i16, amount:i16` = `db 00 01 00` for POW). Order confirmed: (1) recalc diff with the derived values first, then the trait's own `0x0141` (`base` = allocated, `bonus` = job bonus), then the trait-derived values after it; (2) `0x00be` `SP_U<trait>` = 1; (3) `SP_TRAITPOINT` (-1); (4) `0x00bc` `ok=1`, `value` = new **allocated** value (not including the job bonus). Per trait:
+
+* POW: `ATK1` (+5), `POW`, `PATK` only when it changes (POW 489-493, 494-500; PATK at total POW 3).
+* CON: `HIT` (+2), `FLEE1` (+2), `CON` (516-521).
+* STA: `STA`, `RES` (1141-1145).
+* CRT: `CRT`, `HPLUS` (+1 each), `CRATE` at CRT 3/6/9/12/15 (609-716).
+
+**Level tails** (DK, TRAITPT at the tail): B200 (436-474): diff 439-451 ends `MAXHP` 32014, `MAXSP` 1825, **`MAXAP` 200** (451, before the heal), then the heal, `0x019b`, 12 x `0x0a24`, message, `SP_STATUSPOINT` 4151, `SP_TRAITPOINT` 7 (no trait points at 200), `SP_BASELEVEL`, exp pair, `0x0446`. B201 (551-569): no `MAXAP` (still 200), tail `SP_TRAITPOINT` 3. B205 (577-600): tail 19 (+16 = 3+3+3+7: the table totals are 3, 6, 9, 12, 19 for B201..B205). `SP_AP` is never pushed by a level change.
+
+**`@blvl -10` from B205 with 2 trait points** (720-782): reset because `trait_point` 2 < 19 to remove (status points were enough). Order: `0x0141` x12 (721-734, STR..LUK then POW..CRT; base 1/0, `bonus` = old battle value - new base: POW 4, CON 4, CRT 17), `0x00be` x12 (735-746), `SP_STATUSPOINT` 4151 (= 4099 + 52), `SP_TRAITPOINT` 26 (= 19 + 7), the reset's recalc (749-757: `HIT` -8, `FLEE1` -8, `ATK1` -15, then POW/CON/CRT with the corrected bonus, `PATK`, `HPLUS`, `CRATE` 0), the message (758), HP/SP clamp (759-761), the level diff (762-777, ends `MAXAP` **0** after `SP`), tail `SP_STATUSPOINT` 3980, `SP_TRAITPOINT` 7 (26 - 19), `SP_BASELEVEL` 195.
+
+**`@streset`** at B195 (870-922): `0x0141` x12 (871-882), `0x00be` x12 (883-894; traits 1), `SP_STATUSPOINT` 3980 (= 3928 + 52), `SP_TRAITPOINT` 7 (table 0 + 7), clamp `SP_HP`, `SP_SP` (897-899), diff (900-921: only changed `0x0141`, POW/STA with corrected bonus, `PATK`, `RES`), message. No `SP_AP`, no `MAXAP` push (200 unchanged).
+
+**`@job`**. Into DK from Knight (352-399, 1078-1125, 1269-1316): `SP_STATUSPOINT` +52 (1273 -> 1325), `0x00be` x6 (2), `SP_TRAITPOINT` 7, `0x00be` x6 trait (1), then the usual tail; diff has `STR` +1, `POW` bonus 1 (job level 1), `ATK1` +6.
+Out of DK to Knight with fewer than 7 unspent trait points (**forced reset**; the >= 7 branch was not hit):
+
+* From B195 (956-1073): the level cap fires first. Reset #1 (962-1019) runs with the **new class already set**, so trait costs are 0 and pools are `SP_STATUSPOINT` 1273, `SP_TRAITPOINT` 0 (no +52, no +7); then `SP_STATUSPOINT`, `SP_TRAITPOINT`, `SP_BASELEVEL` 99, exp pair (1020-1024); the -52 push (`SP_STATUSPOINT` 1221, 1025) and `0x00be` x6; the 0 trait points are < 7, so reset #2 (1032-1057) runs, back to 1273 / 0; then `SP_JOBLEVEL`.. looks, `0x010f`, `0x0446`, message.
+* From B99 (1185-1249): `SP_STATUSPOINT` 1273 (-52), `0x00be` x6, one reset (1193-1218: stale bonus POW 1, STA 7), recalc (1219-1234), then job pushes.
+
+**Login** (`#8`, 1366-1471): pre-ready diff (1374-1403) pushes only non-zero values (`POW` 2/+1, `PATK` 1 at 1401-1402). After `0x00bd`: `0x0141` STR..LUK, `0x013a`, `ASPD`, `0x0141` POW..CRT (1451-1456), `PATK, SMATK, RES, MRES, HPLUS, CRATE` (1457-1462), **`SP_TRAITPOINT` 5, `SP_AP` 0, `SP_MAXAP` 0** (1463-1465, B99), `0x00be` `SP_UPOW..UCRT` = 1 (1466-1471). Trait stats and the pool survive the relog. Non-trait chars get the same block with zeros (118-138).
+
+**Observer `#3`**: never sees stat-ups, resets or trait pushes. `@blvl +n`: `0x080e`, `0x019b` effect 0 (318-321, 437-438, 553-555, 578-579). `@blvl -n`, `@streset`: `0x080e` only (404-405, 727-729, 923-924). `@job`: ten `0x01d7` (374-391, 960-976, 1079-1088); `LOOK_BASE`/`LOOK_BODY2` carry 4252 or 7. Actor restart: `0x0080` type 2 (1342); relog: `0x09fe` (1415).
 
 ## Open points
 

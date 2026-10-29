@@ -223,6 +223,10 @@ The check order is: baby first, then Summoner, extended, trait/4th, 3rd (trans s
 * Stat reset (`pc_resetstate`): `status_point = table_point(base_level)` (plus `transcendent_status_points` for Rebirthed/high classes, `pc.cpp:9358-9366`), all stats back to 1.
 * `pc_statusup` gate: point total available, per-step cost, class max; request count capped to what is affordable ([../packets/status.md](../packets/status.md#stat-up-request-and-acknowledgement)).
 
+## Trait stats and AP
+
+Full write-up in [trait_stats.md](./trait_stats.md) (split to keep this file under 400 lines): every POW..CRT effect (`batk +5*POW`, HIT/FLEE `+2*CON`, PATK, SMATK, RES, MRES, HPLUS, CRATE; nothing on MaxHP/MaxSP/ASPD/CRIT/DEF), job `BonusStats`, MaxAP formula and clamp/push rules, trait points (level-up, `pc_resetstate`, job change), `pc_traitstatusup`, SQL columns.
+
 ## Refine bonuses (weapon ATK, weapon MATK, armor DEF)
 
 Source: `rathena` `d4b8e7b8f`, `status_calc_pc_sub` equipment loop `src/map/status.cpp:3908-4096`, `battle.cpp:2402-2420,2443-2495`; data in [../db/refine.md](../db/refine.md). Applies to 20260219 (renewal). `R` = item refine (clamped to 20), `B(R)` = the cumulative `Bonus` for that item's group/level at refine R (1/100 units; 0 if R = 0, item not `Refineable`, or no entry).

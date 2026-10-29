@@ -126,3 +126,10 @@ Common tail: `job_exp = 0`; `clif_updatestatus`: `SP_JOBLEVEL`, `SP_JOBEXP (0x0a
 ## rust-ro (MIT, secondary) 
 
 `rust-ro/server/src/server/request_handler/chat.rs` only treats a message as a command if it starts with `"<CharName> : @"` (fixed symbol, TODO configurable) and dispatches to `atcommand.rs`, which has `item`, `go`, `warp`, `blvl`, `jlvl`, `heal`, `speed`, `reload`, etc. (line 61 `"item" =>`, `handle_item` line 202). No group/permission check was observed. Useful only as a feature checklist.
+
+## @resetstat / @streset / @reset (stat side)
+
+Source: `conf/atcommands.yml:1220-1222` (command `resetstat`, alias `streset`), `atcommand.cpp:9648-9656`, `atcommand.cpp:7666-7673`, messages `conf/msg_conf/map_msg.conf` ids 206-208; applies at 20260219.
+
+* `@resetstat` / `@streset`: `pc_resetstate(sd)` then `clif_displaymessage` msg id **207** (name arg). `@reset`: `pc_resetstate` + `pc_resetskill(sd,1)`, msg id **208**. `@resetskill`/`@skreset`: skills only, msg 206. No arguments, no failure case.
+* `pc_resetstate` effects and push order (stats 1/0, status and trait pools from the tables, +`trait_points_job_change` for trait jobs, +`transcendent_status_points` for upper/4th): [trait_stats.md#3-trait-points](./trait_stats.md#3-trait-points). The message is sent last, after the reset's own recalc diff.

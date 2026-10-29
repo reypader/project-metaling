@@ -76,6 +76,29 @@ Target client version: `PACKETVER = 20260219`. Packet entries are sorted by asce
 * **Widths:** weapon/shield are 16-bit here even though the map entry packets use 32-bit at this packetver. Item ids above 32767 would not fit; the char-select field is a type/view, not an item id.
 * **Character-select weapon sprite (settled 2026-10-25):** rAthena sends the `W_*` type here, never an item id. [`captures/equip_sequence_2.txt`](../captures/equip_sequence_2.txt) lines 1157 and 1309: a Knife gives `weapon` = 1 (`W_DAGGER`); Goggles (top + mid) give `accessory2` = 1 and `accessory3` = 0; a Bravery Bag gives `robePalette` = 2. The client doesn't draw the weapon or shield on the select screen; it draws them only in combat stance (user report), so a missing weapon there is expected. Headgear does show. More in [equipment.md](./equipment.md#char-select-capture-2-lines-1157-1309).
 
+### Status fields in `CHARACTER_INFO` (sources, `char.cpp:1774-1870`)
+
+Source `char_mmo_char_tobuf` (`src/char/char.cpp`, line numbers as in the provenance above); applies at 20260219. All come from the `char` table row loaded into `mmo_charstatus`:
+
+| Entry field | Column | Transform |
+| :--- | :--- | :--- |
+| `jobpoint` (48) | `status_point` | `min(.., 32767)` |
+| `hp` / `maxhp` (50/58) | `hp` / `max_hp` | i64 field, **not** capped at 20260219 (`PACKETVER >= 20081217`) |
+| `sp` / `maxsp` (66/74) | `sp` / `max_sp` | i64 field but `min(.., 32767)` |
+| `sppoint` (94) | `skill_point` | `min(.., 32767)` |
+| `Str..Luk` (132-137) | `str agi vit int dex luk` | `min(.., 255)` each (base allocation, no job bonus) |
+
+There are **no trait, AP or trait-point fields** in `CHARACTER_INFO` (**captured**: entries are 175 bytes, `0x006b` 548 payload bytes = 23 header + 3 x 175 and 1598 = 23 + 9 x 175, `0x0b72` payload 1575 = 9 x 175 for [rathena_traits_sequence.txt](../captures/rathena_traits_sequence.txt), see below); `pow..crt`, `ap`, `max_ap`, `trait_point` are only in the char table and in the map-server load. The values shown on the select screen are the last saved ones (see the save triggers below), not recomputed; `max_hp`/`max_sp`/`max_ap` are written by the map-server on save (`status.cpp:4374`). Trait columns and save: [../mechanics/trait_stats.md](../mechanics/trait_stats.md#5-persistence).
+
+### Captured select-screen values (rathena_traits_sequence.txt)
+
+Source: [captures/rathena_traits_sequence.txt](../captures/rathena_traits_sequence.txt) (rAthena `d4b8e7b`, 20260219, file lines = proxy `#` + 10; payload excludes opcode and the length field, so `0x006b` entries start at payload byte 23 and `0x0b72` at byte 0; the client sends `0x09a1` five times and gets five identical `0x0b72` pages, each followed by an empty `0x0b72`).
+
+* Actor (char 150011, slot 8) at first select (160, 169): Knight B1 J1, `jobpoint` 48, `sppoint` 11, HP 40/40, SP 13/13, Str..Luk 1 each, `job` = `body` = 7, `exp`/`jobexp` 0.
+* After DK, resets and POW x2 (select at 1346/1355; last map pushes `SP_HP` 8251 at 1337, `SP_SP` 315 at 1339): `job` = `body` = 4252, `level` 99, `joblevel` 1, `jobpoint` **1325** (= `status_point`, the unspent pool), `sppoint` 11, HP 8251 / maxhp 11575, SP 315 / maxsp 467, Str..Luk 1 each (the reset zeroed allocations). The POW 2 / trait pool 5 are **not** in the entry. Values are the last saved ones (the restart saves first).
+* After a second relog and restart (1497/1506): HP 8308, SP 320 (the regen pushes at 1485/1488 before the restart), the rest identical. So the select screen shows HP/SP as of the restart, not recomputed.
+* The observer's own entry (17, 26): Knight B1, `joblevel` 21, `sppoint` 21, HP 42/42, SP 13/13.
+
 ### Where the `char` table columns come from and when they are written
 
 * Columns `weapon`, `shield`, `head_top`, `head_mid`, `head_bottom`, `robe` (`smallint unsigned`) are written by the char-server UPDATE in `char_mmo_char_tosql` (`char.cpp:~280-330`, columns at 310 and 323), only when the incoming `mmo_charstatus` differs from the cached copy in any compared field (the condition includes each of these six, `char.cpp:293-296`).

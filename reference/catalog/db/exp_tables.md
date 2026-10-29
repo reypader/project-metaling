@@ -54,7 +54,7 @@ Source: `db/re/statpoint.yml`, 659 lines, `Type: STATPOINT_DB`, `Version: 2`.
 
 * Fields: `Level`, `Points` (cumulative status points granted from base level 1 up to and including `Level`), optional `TraitPoints` (cumulative trait points, only present from level 201). 275 rows (levels 1-275).
 * Points granted on a level-up from L to L+1 are `Points[L+1] - Points[L]` (`PlayerStatPointDatabase::pc_gets_status_point`, `pc.cpp:8755-8765`); `0` if the table does not increase. Same for trait points (`pc_gets_trait_point`, 0 below level 201).
-* Samples: L1 = 48 (also the starting status-point budget used by stat reset), L2 = 51, L3 = 54, L4 = 57, L5 = 60, L6 = 64, L10 = 80, L99 = 1273, L100 = 1295, L175 = 3278, L176 = 3309, L200 = 4099, L201..L275 = 4099 (flat: no more status points above 200). `TraitPoints`: L201 = 3, L202 = 6, L203 = 9 (+3 per level), L275 = 285.
+* Samples: L1 = 48 (also the starting status-point budget used by stat reset), L2 = 51, L3 = 54, L4 = 57, L5 = 60, L6 = 64, L10 = 80, L99 = 1273, L100 = 1295, L175 = 3278, L176 = 3309, L200 = 4099, L201..L275 = 4099 (flat: no more status points above 200). `TraitPoints`: L201 = 3, L202 = 6, L203 = 9, L204 = 12, L205 = 19, L206 = 22 (+3 per level, +7 on every fifth level: L210 = 38; confirmed by capture: B205 pool 19), L275 = 285.
 * `use_statpoint_table` / `use_traitpoint_table` (`exp.conf`, default yes) choose table vs formula for resets and level-up; the table path is the one documented here.
 * Skill points: no table. +1 `skill_point` per job level gained (`pc_checkjoblevelup`, `pc.cpp:8332`). There is no skill-point grant on base level-up.
 
