@@ -32,7 +32,7 @@ Out of scope (see §5):
   - char select.
 - Earlier captures: `attribute_sequence_2.txt` (Novice High +52 / Super Novice −52, Hyper Novice +7) and `attribute_sequence_3.txt` (Hyper Novice J52 trait bonuses and PATK..CRATE 4/3/9/9/3/1, MAXAP 200 at B201).
 - **Still source-only:**
-  - the `0x0b24` failure form;
+  - the `0x0b24` failure form. The client blocks the request at 0 points (user, 2026-10-29), so the reply only matters against a modified client;
   - amount > 1;
   - leaving a trait job with ≥ 7 unspent trait points;
   - the trait cap (110);
@@ -125,7 +125,7 @@ Regenerate `crates/ro-db/data/job/` and update its headers and the `NOTICE.md` j
   - nothing affordable;
   - the result would exceed the cap.
 
-  This form is source-only, because the client never sent a refusable request.
+  This form is source-only. The client blocks the request itself at 0 points (user, 2026-10-29), so the reply only guards against a modified client. It is tested but can't be captured.
 - **Refused while dead,** as for stat-up (our ruling).
 - **Amount > 1** is capped to `min(amount, trait_point, cap − current)`, not rejected (source-only; the client always sent 1).
 - **Success:** apply, take the points and mark dirty. Then queue the follow-ups, which mirror `raise_stat`:
@@ -264,7 +264,7 @@ From B99 (1185-1249) it is −52, `0x00be` ×6, one reset, then the job pushes. 
 - Refine P.ATK/S.MATK (weapon level 5) and RES/MRES (armor level 2) bonuses (catalog `stats.md` "Refine bonuses").
 - rAthena's stale `0x0141` ×12 at the start of every reset (skipped by ruling, as in stats).
 - Still uncaptured, so source-only:
-  - the `0x0b24` failure form;
+  - the `0x0b24` failure form (the client blocks 0-point requests, so it can't be captured);
   - amount > 1;
   - trait job → non-trait job with ≥ 7 unspent;
   - trait job → trait job;

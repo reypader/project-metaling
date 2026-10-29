@@ -150,7 +150,7 @@ Proxy quirks: no misframes of `0x010f`/`0x0b20`/`0x0acb` (unlike the older setti
 | Actor login (fresh Novice) | 265-320 (#6; list at 312) | `0x010f` 41 bytes = NV_BASIC lv 0 `upFlag 1` (inf 0, sp 0, range2 0), then `0x0b20` x2, `0x0acb` x4, `SP_SKILLPOINT 0`, `0x00bd` |
 | 1 `@jlvl 9` | 443-465 | msg `0x008e`, `SP_JOBLEVEL 10`, `0x0acb` x2, `SP_SKILLPOINT 9`, stat diffs; **no `0x010f`**. Observer gets `0x019b` (job-level-up effect, type 1) at 444 |
 | 1 NV_BASIC x9 | req 472-480 (same ms) -> 481-507 | 9 x [`0x010e`, `SP_SKILLPOINT` 8..0, `0x010f` 41]. Lv 9: `0x010e` upFlag 0, list `NV_BASIC 9/upFlag 0`. Real Novice: tree unchanged, so **no extra pre-list at lv 9** |
-| 1 "once more at max" | none | **No `0x0112` was sent**: the client blocks the request (also for the "0 points" click in step 2). Refusal at max / 0 points is therefore unobserved |
+| 1 "once more at max" | none | **No `0x0112` was sent**: the client blocks the request at max level and at 0 points (also the "0 points" click in step 2; confirmed client-side by the user, 2026-10-29). The server refusal there only matters for a modified client and cannot be captured |
 | 2 `@job 1` | 512-569 | `0x00be` x6, `SP_JOBLEVEL 1`, `0x0acb` x2, `0x01d7` x4, **one** `0x010f` (189: ids 1(lv 9),2,4,5,6) at 536, `SP_MAXWEIGHT`, stat/look diffs, `0x0a24` x8, `0x008e`. No `0x0441`, no `SP_SKILLPOINT`. Observer: `0x01d7` look changes 513-522 |
 | 2 `@jlvl 9` | 572-589 | `SP_JOBLEVEL 10`, `SP_SKILLPOINT 9`; no list |
 | 2 spend | SM_SWORD 594; BASH x5 607-611; PROVOKE x3 633-635 | see 10.3. Total 9 points -> `SP_SKILLPOINT 0` at 643 |
@@ -220,7 +220,7 @@ Confirmed: reply order (section 2), silent refusals, pre-list for tree-growing p
 
 ## 11. Open questions (remaining after `rathena_skills_sequence.txt`)
 
-* Refusal of `0x0112` at 0 points / at max level / on a hidden id with 0 points (the client never sent one here; send a raw packet or patch the client). Hidden-id refusal with free points is captured (10.3).
+* Refusal of `0x0112` at 0 points / at max level: **not capturable**, the client blocks both (user, 2026-10-29); the server refusal only guards against a modified client. Hidden ids are sent and silently refused both with free points (10.3) and at 0 points (`equip_sequence_4.txt`, section 4).
 * `@jlvl -n` reset where the visible tree does NOT shrink (stale-list case), e.g. only NV_BASIC-dependent skills.
 * Whether hidden levels survive a job detour without a relog (e.g. `@job 2` then straight `@job 7`). Relog loss is captured (10.6).
 * Exact `change_level_2nd` threshold (18 spent expected for the observer's case; only 17 tested). Reaching 18 should reveal 55 etc.

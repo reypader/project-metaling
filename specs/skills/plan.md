@@ -25,7 +25,7 @@ Line anchors below are from `0e0baab` (before traits). Re-grep them, because tra
   - **Sessions:** actor `#6` (relog `#8`), observer `#5`. The `0x00f3` chat payloads are empty in the proxy output, so the commands were identified by their effects.
   - **Write-up:** catalog `mechanics/skills.md` §10, with the step map in §10.1.
   - **Extra steps the user took:** `@jlvl 2` at 1020-1035, and the observer's `@job 7` / `@jlvl 20`.
-  - **The client never sends `0x0112`** at 0 points or at max level, so those refusals are source-only.
+  - **The client blocks `0x0112`** at 0 points and at max level (user, 2026-10-29). The server's silent refusal there only guards against a modified client. Test it, but there is nothing to capture. Hidden ids at 0 points are still sent and get no reply (`equip_sequence_4.txt` 2114-2153).
 - **`equip_sequence_4.txt`** (session `#3`, Archer → Dancer) has more skill-ups and the Dancer → Assassin `0x0441` form. See catalog `mechanics/skills.md` §4, which uses the capture's own line labels.
 - **The catalog corrects some earlier source-only notes:**
   - job changes don't always send `0x0441`;

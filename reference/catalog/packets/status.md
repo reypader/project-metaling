@@ -143,7 +143,7 @@ Source: `clif.cpp:12742-12752`, `pc.cpp:9034-9085`, `clif.cpp:4291-4300` (applie
 * Success order: recalc diff (the stat's own `0x0141` plus changed PATK/SMATK/RES/MRES/HPLUS/CRATE/HIT/FLEE as applicable, then MAXAP/AP if changed), `0x00be` `SP_UPOW..SP_UCRT` (247-252, `SP_UPOW + n`) with the next-point cost (1, or 0 at max), `0x00b0` `SP_TRAITPOINT`, `0x00bc` ack `ok=1` `value=min(new,255)`, `0x0141` again if new > 255.
 * Failure: only `0x00bc` with `ok=0`, `value=0`, `sp` = the requested var. Failures: var outside 219..224, amount <= 0, nothing affordable, over the job max (0 for non-trait jobs), no trait points.
 * Differs from `pc_statusup` only in the pool (`SP_TRAITPOINT` vs `SP_STATUSPOINT`), the cost var, cost 1 flat, and no achievement update.
-* **Captured** (success path, amount 1 only): [Capture: traits](#capture-traits-rathena_traits_sequencetxt). Failure form and amount > 1 are still source-only.
+* **Captured** (success path, amount 1 only): [Capture: traits](#capture-traits-rathena_traits_sequencetxt). Failure form and amount > 1 are still source-only; the client blocks a trait-up at 0 points (user, 2026-10-29), so the failure reply cannot be captured with the stock client.
 
 ## Recalculation pushes
 

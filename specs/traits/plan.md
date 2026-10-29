@@ -27,7 +27,7 @@ The **skills** feature (`specs/skills/`) was planned in the same session and is 
 - **`@blvl -10` at B205 with 2 trait points:** the reset is triggered by the trait pool alone. After the reset: status 4151 (4099 + 52), trait 26 (19 + 7). After the subtraction: 3980 and 7.
 - **`@job` out of DK with < 7 trait points:** a **double reset**, because the first reset already uses the new (non-trait) class.
 - **Login block:** `SP_TRAITPOINT`, `SP_AP`, `SP_MAXAP`, then `SP_U*`. `SP_AP` is sent even at 0.
-- **Not captured** (so source-only, from catalog `trait_stats.md` §3–§4): the `0x0b24` failure (the client never sent a refusable request), amount > 1, leaving a trait job with ≥ 7 unspent, trait job → trait job, the cap, SPL/WIS, AP > 0.
+- **Not captured** (so source-only, from catalog `trait_stats.md` §3–§4): the `0x0b24` failure (the client blocks the request at 0 points, user 2026-10-29; the reply only guards against a modified client), amount > 1, leaving a trait job with ≥ 7 unspent, trait job → trait job, the cap, SPL/WIS, AP > 0.
 
 ### Catalog fact corrected in M0
 `db/exp_tables.md` claimed `TraitPoints` were "+3 per level". The capture and the source show 3, 6, 9, 12, **19** (+7 at every fifth level). Use the generated table, not a formula.

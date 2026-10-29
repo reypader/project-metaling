@@ -64,7 +64,7 @@ Out of scope (see §5):
 
   `equip_sequence_4.txt` (Archer/Dancer skill-ups, Dancer → Assassin `0x0441`) adds to it.
 - **Still source-only:**
-  - `0x0112` refusal at 0 points, at max, or for a hidden id with 0 points (the client never sends one);
+  - `0x0112` refusal at max level. The client blocks the request at 0 points and at max (user, 2026-10-29), so these refusals only guard against a modified client. Hidden ids at 0 points *are* sent and get no reply (`equip_sequence_4.txt` 2114-2153);
   - `@jlvl −n` when the visible tree does not shrink;
   - whether hidden levels survive a job detour without a save;
   - the exact `change_level_2nd` threshold of 18 (17 was tested);
@@ -298,7 +298,6 @@ The Taekwon Ranker early return and the option stripping are out of scope.
 - **The two-pass job-change list** with `0x0441` (Dancer → Assassin, Rune Knight → Shadow Cross): we send one final list.
 - **Skill hotkeys** (`0x0b20` naming skills).
 - **Still uncaptured:**
-  - refusals at 0 points or at max;
   - the stale-list `@jlvl −n`;
   - hidden levels across a detour without a save;
   - the `change_level_2nd` threshold of 18;
