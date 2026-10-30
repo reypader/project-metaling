@@ -1,0 +1,20 @@
+[package]
+name = "skill-import"
+version.workspace = true
+edition.workspace = true
+publish = false
+
+[[bin]]
+name = "skill-import"
+path = "src/main.rs"
+
+[dependencies]
+ro-db.workspace = true
+job-import = { path = "../job-import" }
+serde.workspace = true
+serde-saphyr.workspace = true
+clap = { workspace = true, features = ["derive", "env"] }
+anyhow.workspace = true
+
+[lints]
+workspace = true

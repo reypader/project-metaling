@@ -9,8 +9,8 @@ use ro_core::{
     ClientIntent, MapPosition, ScopedServerEvent, ServerEvent, SessionId, SessionIntent, Sex,
     SkillInfo, StatusWindow,
 };
-use ro_db::{MapGrid, MapNpcs, NpcKind, NpcSpawn, NpcState, WarpDest};
-use ro_engine::MapInstance;
+use ro_db::{MapGrid, MapNpcs, NpcKind, NpcSpawn, NpcState, SkillDb, SkillTreeDb, WarpDest};
+use ro_engine::{MapInstance, Registries};
 
 const MAP: &str = "prontera.gat";
 const A: u32 = 1;
@@ -44,6 +44,9 @@ fn spawn_data(n: u32, x: u16, y: u16) -> CharacterSpawn {
         status: Default::default(),
         group_id: 0,
         inventory: Default::default(),
+        skills: Vec::new(),
+        hidden_skills: Vec::new(),
+        change_level: [0; 3],
     }
 }
 
@@ -73,6 +76,15 @@ fn same_map_warp(at: (u16, u16), dest: (u16, u16)) -> NpcSpawn {
 fn instance(npcs: Vec<NpcSpawn>) -> MapInstance {
     let grid = MapGrid::all_walkable(200, 200).expect("valid dims");
     let mut engine = MapInstance::new(MAP, Arc::new(grid));
+    // The shipped skill data: a fresh Novice's list is NV_BASIC at level 0 (skills spec §2.4).
+    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../ro-db/data/skill");
+    let skills = SkillDb::load_dir(&dir).expect("shipped skill data");
+    let skill_tree = SkillTreeDb::load_dir(&dir, &skills).expect("shipped skill trees");
+    engine.set_registries(Registries {
+        skills: Arc::new(skills),
+        skill_tree: Arc::new(skill_tree),
+        ..Registries::default()
+    });
     engine.spawn_npcs(&MapNpcs { npcs });
     engine
 }

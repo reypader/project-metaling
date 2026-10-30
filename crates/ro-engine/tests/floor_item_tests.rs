@@ -99,6 +99,9 @@ fn spawn_data(
             slots,
             unique_item_counter: 0,
         },
+        skills: Vec::new(),
+        hidden_skills: Vec::new(),
+        change_level: [0; 3],
     }
 }
 

@@ -105,6 +105,7 @@ impl PacketOpcode {
     pub const ZC_ADD_MEMBER_TO_GROUP: Self = Self(0x0104);
     pub const CZ_REQUEST_CHAT_PARTY: Self = Self(0x0108);
     pub const ZC_NOTIFY_CHAT_PARTY: Self = Self(0x0109);
+    pub const ZC_SKILLINFO_UPDATE: Self = Self(0x010e);
     pub const ZC_SKILLINFO_LIST: Self = Self(0x010f);
     pub const CZ_UPGRADE_SKILLLEVEL: Self = Self(0x0112);
     pub const CZ_USE_SKILL_TO_POS_0X0113: Self = Self(0x0113);
@@ -618,6 +619,7 @@ impl PacketOpcode {
     pub const CZ_USE_ITEM2: Self = Self(0x0439);
     pub const ZC_SKILL_POSTDELAY_LIST: Self = Self(0x043e);
     pub const ZC_MSG_STATE_CHANGE2: Self = Self(0x043f);
+    pub const ZC_SKILLINFO_DELETE: Self = Self(0x0441);
     pub const CZ_SKILL_SELECT_RESPONSE: Self = Self(0x0443);
     pub const ZC_SIMPLE_CASH_POINT_ITEMLIST: Self = Self(0x0444);
     pub const CZ_SIMPLE_BUY_CASH_POINT_ITEM: Self = Self(0x0445);
@@ -1128,6 +1130,7 @@ impl PacketOpcode {
             0x0104 => Some("ZC_ADD_MEMBER_TO_GROUP"),
             0x0108 => Some("CZ_REQUEST_CHAT_PARTY"),
             0x0109 => Some("ZC_NOTIFY_CHAT_PARTY"),
+            0x010e => Some("ZC_SKILLINFO_UPDATE"),
             0x010f => Some("ZC_SKILLINFO_LIST"),
             0x0112 => Some("CZ_UPGRADE_SKILLLEVEL"),
             0x0113 => Some("CZ_USE_SKILL_TO_POS_0X0113"),
@@ -1641,6 +1644,7 @@ impl PacketOpcode {
             0x0439 => Some("CZ_USE_ITEM2"),
             0x043e => Some("ZC_SKILL_POSTDELAY_LIST"),
             0x043f => Some("ZC_MSG_STATE_CHANGE2"),
+            0x0441 => Some("ZC_SKILLINFO_DELETE"),
             0x0443 => Some("CZ_SKILL_SELECT_RESPONSE"),
             0x0444 => Some("ZC_SIMPLE_CASH_POINT_ITEMLIST"),
             0x0445 => Some("CZ_SIMPLE_BUY_CASH_POINT_ITEM"),

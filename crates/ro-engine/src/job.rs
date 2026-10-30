@@ -6,19 +6,21 @@ use ro_core::Sex;
 use ro_mechanics::ClassFlags;
 
 /// Base-class number (`mapid & 0xff`).
-const BASE_MASK: u32 = 0xff;
+pub(crate) const BASE_MASK: u32 = 0xff;
 /// 2-1 and 2-2 branch bits.
 const JOBL_2_1: u32 = 0x100;
 const JOBL_2_2: u32 = 0x200;
+/// Either branch bit: a 2nd class (or a Super Novice).
+pub(crate) const JOBL_2: u32 = JOBL_2_1 | JOBL_2_2;
 /// Third class (also set on fourth classes).
-const JOBL_THIRD: u32 = 0x1000;
-const JOBL_FOURTH: u32 = 0x1_0000;
-const JOBL_UPPER: u32 = 0x10_0000;
-const JOBL_BABY: u32 = 0x20_0000;
+pub(crate) const JOBL_THIRD: u32 = 0x1000;
+pub(crate) const JOBL_FOURTH: u32 = 0x1_0000;
+pub(crate) const JOBL_UPPER: u32 = 0x10_0000;
+pub(crate) const JOBL_BABY: u32 = 0x20_0000;
 /// Base class plus branch (rAthena `MAPID_SECONDMASK`).
-const SECOND_MASK: u32 = 0xfff;
+pub(crate) const SECOND_MASK: u32 = 0xfff;
 /// Base class, branch and third bit (rAthena `MAPID_THIRDMASK`).
-const THIRD_MASK: u32 = 0xffff;
+pub(crate) const THIRD_MASK: u32 = 0xffff;
 
 /// Second-class mapids of the dual-wield lines.
 const MAPID_ASSASSIN: u32 = 0x106;
@@ -30,7 +32,7 @@ const MAPID_THIEF: u32 = 0x6;
 /// Night Watch and Shinkiro/Shiranui count (catalog `mechanics/battle_config.md` §4, §8).
 const MAPID_REBELLION: u32 = 0x108;
 /// The Summoner line, under `BASE_MASK` (rAthena `MAPID_FIRSTMASK`; Spirit Handler `0x10a` is in it).
-const MAPID_SUMMONER: u32 = 0xa;
+pub(crate) const MAPID_SUMMONER: u32 = 0xa;
 /// Expanded jobs with trait stats but without the `JOBL_FOURTH` bit: Night Watch and
 /// Shinkiro/Shiranui (under `THIRD_MASK`), Spirit Handler (under `SECOND_MASK`).
 const MAPID_NIGHT_WATCH: u32 = 0x1108;
@@ -38,7 +40,7 @@ const MAPID_SHINKIRO_SHIRANUI: u32 = 0x1109;
 const MAPID_SPIRIT_HANDLER: u32 = 0x10a;
 /// The Super Novice line under `SECOND_MASK` (Super Novice, Super Baby, their expanded forms,
 /// Hyper Novice).
-const MAPID_SUPER_NOVICE: u32 = 0x100;
+pub(crate) const MAPID_SUPER_NOVICE: u32 = 0x100;
 /// From this job level a Super Novice gets the +10 stats.
 const SUPER_NOVICE_BONUS_JOB_LEVEL: u16 = 70;
 /// Third-class mapids that need a Mado Gear or a cart for cannonballs.
@@ -220,6 +222,13 @@ pub(crate) fn job_mapid(job: u16) -> u32 {
         .map_or(0, |i| JOB_MAPIDS[i].1)
 }
 
+/// rAthena `pc_mapid2jobid`: the job with `mapid`, the female one of a male/female pair for a
+/// female character. `None` when no job has that mapid.
+pub(crate) fn mapid_job(mapid: u32, sex: Sex) -> Option<u16> {
+    let (job, _) = JOB_MAPIDS.iter().find(|&&(_, m)| m == mapid)?;
+    Some(job_for_sex(*job, sex))
+}
+
 /// `pc_mapid2jobid`'s sex pick (spec §2.6): the jobs that share a mapid are male/female pairs
 /// (Bard/Dancer, Kagerou/Oboro, ...), the male one first. Other jobs are returned unchanged.
 pub(crate) fn job_for_sex(job: u16, sex: Sex) -> u16 {
@@ -243,7 +252,7 @@ pub(crate) fn job_for_sex(job: u16, sex: Sex) -> u16 {
 /// `pc_is_primary_fourth`:the twelve 4th classes of the 2-1 and 2-2 lines (Dragon Knight ..
 /// Shadow Cross, Imperial Guard .. Abyss Chaser). Hyper Novice, Sky Emperor and Soul Ascetic
 /// carry `JOBL_FOURTH` too but aren't primary (capture 2: Hyper Novice has no ×1.25 MaxHP).
-fn is_primary_fourth(mapid: u32) -> bool {
+pub(crate) fn is_primary_fourth(mapid: u32) -> bool {
     let base = mapid & BASE_MASK;
     mapid & JOBL_FOURTH != 0
         && mapid & (JOBL_2_1 | JOBL_2_2) != 0

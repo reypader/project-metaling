@@ -59,6 +59,11 @@ Like the spawn lists, the registries are imported offline into our own schema; `
 * **Refine data.** `tools/refine-import` keeps `Bonus`/`RandomBonus` per `(Armor|Weapon, item level)` as lists of 20 (cumulative per refine level, as in rAthena). It writes `REFINE_DATA` v1 to `data/refine/refine.yml`.
 * **`RefineDb::bonus(group, level, refine)`** clamps refine to 20 and returns zero for refine 0 or a missing row. It is loaded from `REFINE_DATA_DIR`.
 
+**Skill data** (`specs/skills/spec.md` §0–§1) does rAthena's load-time work in the importer, so the runtime only reads:
+
+* **Import.** `tools/skill-import` reads `db/re/skill_db.yml` and `db/re/skill_tree.yml`. It expands the per-level lists with rAthena's rule (catalog `db/skills.md` "List form expansion") and resolves tree inheritance (flat `Inherit`, `Exclude`, child wins, later parent wins, `MaxLevel: 0` removes). It writes `SKILL_DATA` v1 to `data/skill/skill_db.yml`: only the skills some tree lists or requires, with the learn-only fields. It writes `SKILL_TREE_DATA` v1 to `data/skill/skill_tree.yml`: one resolved tree per job id, sorted by skill id. The job id table is shared with `tools/job-import`.
+* **`SkillDb::load_dir` / `SkillTreeDb::load_dir`** read both files from `SKILL_DATA_DIR` (required by the map-server). `SkillDb` is an id-sorted `Vec` (binary search) with a case-insensitive name map; `sp(level)` / `range(level)` read 0 at level 0 and clamp above `MaxLevel`. `SkillTreeDb::tree(job)` is a slice sorted by skill id, empty for a job with no tree. `max_level(job, skill, &SkillDb)` is rAthena's `skill_tree_get_max`: the tree entry's max, else the skill's. Loading checks the trees against the registry: known skills, `MaxLevel` and requirement levels within the skill's max, ascending ids, unique jobs.
+
 ### 2.3 Pipeline 3: Ahead-of-Time (AOT) Item Bonus Compiler
 
 In legacy rAthena, every equipped item's `Script` block (e.g., `bonus bStr,1; bonus bMaxHP,100;`) is compiled into Athena Script bytecode and executed inside the script VM every time `status_calc_pc()` recalculates player stats.

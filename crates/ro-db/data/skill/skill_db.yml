@@ -1,0 +1,6224 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, db/re/skill_db.yml, db/re/skill_tree.yml.
+# Modified: trimmed to learn-only fields, per-level arrays expanded, tree inheritance resolved, names resolved to ids, by tools/skill-import. Do not edit by hand.
+# See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
+%YAML 1.2
+---
+Header:
+  Type: SKILL_DATA
+  Version: 1
+Body:
+- Id: 1
+  Name: NV_BASIC
+  MaxLevel: 9
+- Id: 2
+  Name: SM_SWORD
+  MaxLevel: 10
+- Id: 3
+  Name: SM_TWOHAND
+  MaxLevel: 10
+- Id: 4
+  Name: SM_RECOVERY
+  MaxLevel: 10
+- Id: 5
+  Name: SM_BASH
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [8, 8, 8, 8, 8, 15, 15, 15, 15, 15]
+  Range: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+- Id: 6
+  Name: SM_PROVOKE
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 7
+  Name: SM_MAGNUM
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
+- Id: 8
+  Name: SM_ENDURE
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+- Id: 9
+  Name: MG_SRECOVERY
+  MaxLevel: 10
+- Id: 10
+  Name: MG_SIGHT
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+- Id: 11
+  Name: MG_NAPALMBEAT
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [9, 9, 9, 12, 12, 12, 15, 15, 15, 18]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 12
+  Name: MG_SAFETYWALL
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [30, 30, 30, 35, 35, 35, 40, 40, 40, 40]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 13
+  Name: MG_SOULSTRIKE
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [18, 14, 24, 20, 30, 26, 36, 32, 42, 38]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 14
+  Name: MG_COLDBOLT
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 15
+  Name: MG_FROSTDIVER
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [25, 24, 23, 22, 21, 20, 19, 18, 17, 16]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 16
+  Name: MG_STONECURSE
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [25, 24, 23, 22, 21, 20, 19, 18, 17, 16]
+  Range: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+- Id: 17
+  Name: MG_FIREBALL
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [25, 25, 25, 25, 25, 25, 25, 25, 25, 25]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 18
+  Name: MG_FIREWALL
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 19
+  Name: MG_FIREBOLT
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 20
+  Name: MG_LIGHTNINGBOLT
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 21
+  Name: MG_THUNDERSTORM
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [29, 34, 39, 44, 49, 54, 59, 64, 69, 74]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 22
+  Name: AL_DP
+  MaxLevel: 10
+- Id: 23
+  Name: AL_DEMONBANE
+  MaxLevel: 10
+- Id: 24
+  Name: AL_RUWACH
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+- Id: 25
+  Name: AL_PNEUMA
+  MaxLevel: 1
+  TargetType: 2
+  SpCost: [10]
+  Range: [9]
+- Id: 26
+  Name: AL_TELEPORT
+  MaxLevel: 2
+  TargetType: 4
+  SpCost: [10, 9]
+- Id: 27
+  Name: AL_WARP
+  MaxLevel: 4
+  TargetType: 2
+  SpCost: [35, 32, 29, 26]
+  Range: [9, 9, 9, 9]
+- Id: 28
+  Name: AL_HEAL
+  MaxLevel: 10
+  TargetType: 16
+  SpCost: [13, 16, 19, 22, 25, 28, 31, 34, 37, 40]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 29
+  Name: AL_INCAGI
+  MaxLevel: 10
+  TargetType: 16
+  SpCost: [18, 21, 24, 27, 30, 33, 36, 39, 42, 45]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 30
+  Name: AL_DECAGI
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [15, 17, 19, 21, 23, 25, 27, 29, 31, 33]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 31
+  Name: AL_HOLYWATER
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+- Id: 32
+  Name: AL_CRUCIS
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [35, 35, 35, 35, 35, 35, 35, 35, 35, 35]
+- Id: 33
+  Name: AL_ANGELUS
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [23, 26, 29, 32, 35, 38, 41, 44, 47, 50]
+- Id: 34
+  Name: AL_BLESSING
+  MaxLevel: 10
+  TargetType: 16
+  SpCost: [28, 32, 36, 40, 44, 48, 52, 56, 60, 64]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 35
+  Name: AL_CURE
+  MaxLevel: 1
+  TargetType: 16
+  SpCost: [15]
+  Range: [9]
+- Id: 36
+  Name: MC_INCCARRY
+  MaxLevel: 10
+- Id: 37
+  Name: MC_DISCOUNT
+  MaxLevel: 10
+- Id: 38
+  Name: MC_OVERCHARGE
+  MaxLevel: 10
+- Id: 39
+  Name: MC_PUSHCART
+  MaxLevel: 10
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 40
+  Name: MC_IDENTIFY
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+  Range: [1]
+- Id: 41
+  Name: MC_VENDING
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 42
+  Name: MC_MAMMONITE
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+  Range: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+- Id: 43
+  Name: AC_OWL
+  MaxLevel: 10
+- Id: 44
+  Name: AC_VULTURE
+  MaxLevel: 10
+- Id: 45
+  Name: AC_CONCENTRATION
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [25, 30, 35, 40, 45, 50, 55, 60, 65, 70]
+- Id: 46
+  Name: AC_DOUBLE
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [12, 12, 12, 12, 12, 12, 12, 12, 12, 12]
+  Range: [-9, -9, -9, -9, -9, -9, -9, -9, -9, -9]
+  Flags:
+    AlterRangeVulture: true
+- Id: 47
+  Name: AC_SHOWER
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [15, 15, 15, 15, 15, 15, 15, 15, 15, 15]
+  Range: [-9, -9, -9, -9, -9, -9, -9, -9, -9, -9]
+  Flags:
+    AlterRangeVulture: true
+- Id: 48
+  Name: TF_DOUBLE
+  MaxLevel: 10
+  Range: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+- Id: 49
+  Name: TF_MISS
+  MaxLevel: 10
+- Id: 50
+  Name: TF_STEAL
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 51
+  Name: TF_HIDING
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 52
+  Name: TF_POISON
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [12, 12, 12, 12, 12, 12, 12, 12, 12, 12]
+  Range: [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2]
+- Id: 53
+  Name: TF_DETOXIFY
+  MaxLevel: 1
+  TargetType: 16
+  SpCost: [10]
+  Range: [9]
+- Id: 54
+  Name: ALL_RESURRECTION
+  MaxLevel: 4
+  TargetType: 16
+  SpCost: [60, 60, 60, 60]
+  Range: [9, 9, 9, 9]
+- Id: 55
+  Name: KN_SPEARMASTERY
+  MaxLevel: 10
+- Id: 56
+  Name: KN_PIERCE
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+  Range: [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2]
+- Id: 57
+  Name: KN_BRANDISHSPEAR
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [24, 24, 24, 24, 24, 24, 24, 24, 24, 24]
+  Range: [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2]
+- Id: 58
+  Name: KN_SPEARSTAB
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+  Range: [-4, -4, -4, -4, -4, -4, -4, -4, -4, -4]
+- Id: 59
+  Name: KN_SPEARBOOMERANG
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [10, 10, 10, 10, 10]
+  Range: [3, 5, 7, 9, 11]
+- Id: 60
+  Name: KN_TWOHANDQUICKEN
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [14, 18, 22, 26, 30, 34, 38, 42, 46, 50]
+- Id: 61
+  Name: KN_AUTOCOUNTER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [3, 3, 3, 3, 3]
+- Id: 62
+  Name: KN_BOWLINGBASH
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+  Range: [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2]
+- Id: 63
+  Name: KN_RIDING
+  MaxLevel: 1
+- Id: 64
+  Name: KN_CAVALIERMASTERY
+  MaxLevel: 5
+- Id: 65
+  Name: PR_MACEMASTERY
+  MaxLevel: 10
+- Id: 66
+  Name: PR_IMPOSITIO
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [59, 62, 65, 68, 71]
+- Id: 67
+  Name: PR_SUFFRAGIUM
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [8, 8, 8]
+- Id: 68
+  Name: PR_ASPERSIO
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [14, 18, 22, 26, 30]
+  Range: [9, 9, 9, 9, 9]
+- Id: 69
+  Name: PR_BENEDICTIO
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [20, 20, 20, 20, 20]
+  Range: [9, 9, 9, 9, 9]
+- Id: 70
+  Name: PR_SANCTUARY
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [15, 18, 21, 24, 27, 30, 33, 36, 39, 42]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 71
+  Name: PR_SLOWPOISON
+  MaxLevel: 4
+  TargetType: 16
+  SpCost: [6, 8, 10, 12]
+  Range: [9, 9, 9, 9]
+- Id: 72
+  Name: PR_STRECOVERY
+  MaxLevel: 1
+  TargetType: 16
+  SpCost: [5]
+  Range: [9]
+- Id: 73
+  Name: PR_KYRIE
+  MaxLevel: 10
+  TargetType: 16
+  SpCost: [20, 20, 20, 25, 25, 25, 30, 30, 30, 35]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 74
+  Name: PR_MAGNIFICAT
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 40, 40, 40, 40]
+- Id: 75
+  Name: PR_GLORIA
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [20, 20, 20, 20, 20]
+- Id: 76
+  Name: PR_LEXDIVINA
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [20, 20, 20, 20, 20, 18, 16, 14, 12, 10]
+  Range: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+- Id: 77
+  Name: PR_TURNUNDEAD
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
+  Range: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+- Id: 78
+  Name: PR_LEXAETERNA
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [10]
+  Range: [9]
+- Id: 79
+  Name: PR_MAGNUS
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [40, 42, 44, 46, 48, 50, 52, 54, 56, 58]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 80
+  Name: WZ_FIREPILLAR
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [75, 75, 75, 75, 75, 75, 75, 75, 75, 75]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 81
+  Name: WZ_SIGHTRASHER
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [35, 37, 39, 41, 43, 45, 47, 49, 51, 53]
+- Id: 83
+  Name: WZ_METEOR
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [20, 24, 30, 34, 40, 44, 50, 54, 60, 64]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 84
+  Name: WZ_JUPITEL
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [20, 23, 26, 29, 32, 35, 38, 41, 44, 47]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 85
+  Name: WZ_VERMILION
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [60, 64, 68, 72, 76, 80, 84, 88, 92, 96]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 86
+  Name: WZ_WATERBALL
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [15, 20, 20, 25, 25]
+  Range: [9, 9, 9, 9, 9]
+- Id: 87
+  Name: WZ_ICEWALL
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 88
+  Name: WZ_FROSTNOVA
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [45, 43, 41, 39, 37, 35, 33, 31, 29, 27]
+- Id: 89
+  Name: WZ_STORMGUST
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [78, 78, 78, 78, 78, 78, 78, 78, 78, 78]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 90
+  Name: WZ_EARTHSPIKE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [14, 18, 22, 26, 30]
+  Range: [9, 9, 9, 9, 9]
+- Id: 91
+  Name: WZ_HEAVENDRIVE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [28, 32, 36, 40, 44]
+  Range: [9, 9, 9, 9, 9]
+- Id: 92
+  Name: WZ_QUAGMIRE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [5, 10, 15, 20, 25]
+  Range: [9, 9, 9, 9, 9]
+- Id: 93
+  Name: WZ_ESTIMATION
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [10]
+  Range: [9]
+- Id: 94
+  Name: BS_IRON
+  MaxLevel: 5
+- Id: 95
+  Name: BS_STEEL
+  MaxLevel: 5
+- Id: 96
+  Name: BS_ENCHANTEDSTONE
+  MaxLevel: 5
+- Id: 97
+  Name: BS_ORIDEOCON
+  MaxLevel: 5
+- Id: 98
+  Name: BS_DAGGER
+  MaxLevel: 3
+- Id: 99
+  Name: BS_SWORD
+  MaxLevel: 3
+- Id: 100
+  Name: BS_TWOHANDSWORD
+  MaxLevel: 3
+- Id: 101
+  Name: BS_AXE
+  MaxLevel: 3
+- Id: 102
+  Name: BS_MACE
+  MaxLevel: 3
+- Id: 103
+  Name: BS_KNUCKLE
+  MaxLevel: 3
+- Id: 104
+  Name: BS_SPEAR
+  MaxLevel: 3
+- Id: 105
+  Name: BS_HILTBINDING
+  MaxLevel: 1
+- Id: 106
+  Name: BS_FINDINGORE
+  MaxLevel: 1
+- Id: 107
+  Name: BS_WEAPONRESEARCH
+  MaxLevel: 10
+- Id: 108
+  Name: BS_REPAIRWEAPON
+  MaxLevel: 1
+  TargetType: 16
+  SpCost: [30]
+  Range: [2]
+- Id: 109
+  Name: BS_SKINTEMPER
+  MaxLevel: 5
+- Id: 110
+  Name: BS_HAMMERFALL
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [10, 10, 10, 10, 10]
+  Range: [1, 1, 1, 1, 1]
+- Id: 111
+  Name: BS_ADRENALINE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [20, 23, 26, 29, 32]
+- Id: 112
+  Name: BS_WEAPONPERFECT
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [18, 16, 14, 12, 10]
+- Id: 113
+  Name: BS_OVERTHRUST
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [18, 16, 14, 12, 10]
+- Id: 114
+  Name: BS_MAXIMIZE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [10, 10, 10, 10, 10]
+- Id: 115
+  Name: HT_SKIDTRAP
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [10, 10, 10, 10, 10]
+  Range: [3, 3, 3, 3, 3]
+- Id: 116
+  Name: HT_LANDMINE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [10, 10, 10, 10, 10]
+  Range: [3, 3, 3, 3, 3]
+  Flags:
+    AlterRangeResearchTrap: true
+- Id: 117
+  Name: HT_ANKLESNARE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [12, 12, 12, 12, 12]
+  Range: [3, 3, 3, 3, 3]
+- Id: 118
+  Name: HT_SHOCKWAVE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [45, 45, 45, 45, 45]
+  Range: [3, 3, 3, 3, 3]
+- Id: 119
+  Name: HT_SANDMAN
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [12, 12, 12, 12, 12]
+  Range: [3, 3, 3, 3, 3]
+- Id: 120
+  Name: HT_FLASHER
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [12, 12, 12, 12, 12]
+  Range: [3, 3, 3, 3, 3]
+- Id: 121
+  Name: HT_FREEZINGTRAP
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [10, 10, 10, 10, 10]
+  Range: [3, 3, 3, 3, 3]
+  Flags:
+    AlterRangeResearchTrap: true
+- Id: 122
+  Name: HT_BLASTMINE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [10, 10, 10, 10, 10]
+  Range: [3, 3, 3, 3, 3]
+  Flags:
+    AlterRangeResearchTrap: true
+- Id: 123
+  Name: HT_CLAYMORETRAP
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [15, 15, 15, 15, 15]
+  Range: [3, 3, 3, 3, 3]
+  Flags:
+    AlterRangeResearchTrap: true
+- Id: 124
+  Name: HT_REMOVETRAP
+  MaxLevel: 1
+  TargetType: 32
+  SpCost: [5]
+  Range: [2]
+- Id: 125
+  Name: HT_TALKIEBOX
+  MaxLevel: 1
+  TargetType: 2
+  SpCost: [1]
+  Range: [3]
+- Id: 126
+  Name: HT_BEASTBANE
+  MaxLevel: 10
+- Id: 127
+  Name: HT_FALCON
+  MaxLevel: 1
+- Id: 128
+  Name: HT_STEELCROW
+  MaxLevel: 10
+- Id: 129
+  Name: HT_BLITZBEAT
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [10, 13, 16, 19, 22]
+  Range: [5, 5, 5, 5, 5]
+  Flags:
+    AlterRangeVulture: true
+- Id: 130
+  Name: HT_DETECTING
+  MaxLevel: 4
+  TargetType: 2
+  SpCost: [8, 8, 8, 8]
+  Range: [3, 5, 7, 9]
+- Id: 131
+  Name: HT_SPRINGTRAP
+  MaxLevel: 5
+  TargetType: 32
+  SpCost: [10, 10, 10, 10, 10]
+  Range: [4, 5, 6, 7, 8]
+- Id: 132
+  Name: AS_RIGHT
+  MaxLevel: 5
+- Id: 133
+  Name: AS_LEFT
+  MaxLevel: 5
+- Id: 134
+  Name: AS_KATAR
+  MaxLevel: 10
+- Id: 135
+  Name: AS_CLOAKING
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [15, 15, 15, 15, 15, 15, 15, 15, 15, 15]
+- Id: 136
+  Name: AS_SONICBLOW
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [16, 18, 20, 22, 24, 26, 28, 30, 32, 34]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 137
+  Name: AS_GRIMTOOTH
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [3, 3, 3, 3, 3]
+  Range: [3, 4, 5, 6, 7]
+- Id: 138
+  Name: AS_ENCHANTPOISON
+  MaxLevel: 10
+  TargetType: 16
+  SpCost: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 139
+  Name: AS_POISONREACT
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [25, 30, 35, 40, 45, 50, 55, 60, 45, 45]
+- Id: 140
+  Name: AS_VENOMDUST
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
+  Range: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+- Id: 141
+  Name: AS_SPLASHER
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 142
+  Name: NV_FIRSTAID
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [3]
+  Flags:
+    Quest: true
+- Id: 143
+  Name: NV_TRICKDEAD
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [5]
+  Flags:
+    Quest: true
+- Id: 144
+  Name: SM_MOVINGRECOVERY
+  MaxLevel: 1
+  Flags:
+    Quest: true
+- Id: 145
+  Name: SM_FATALBLOW
+  MaxLevel: 1
+  Flags:
+    Quest: true
+- Id: 146
+  Name: SM_AUTOBERSERK
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [1]
+  Flags:
+    Quest: true
+- Id: 147
+  Name: AC_MAKINGARROW
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+  Flags:
+    Quest: true
+- Id: 148
+  Name: AC_CHARGEARROW
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [15]
+  Range: [-9]
+  Flags:
+    Quest: true
+    AlterRangeVulture: true
+- Id: 149
+  Name: TF_SPRINKLESAND
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [9]
+  Range: [1]
+  Flags:
+    Quest: true
+- Id: 150
+  Name: TF_BACKSLIDING
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [7]
+  Flags:
+    Quest: true
+- Id: 151
+  Name: TF_PICKSTONE
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [2]
+  Flags:
+    Quest: true
+- Id: 152
+  Name: TF_THROWSTONE
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [2]
+  Range: [7]
+  Flags:
+    Quest: true
+- Id: 153
+  Name: MC_CARTREVOLUTION
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [12]
+  Range: [1]
+  Flags:
+    Quest: true
+- Id: 154
+  Name: MC_CHANGECART
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [40]
+  Flags:
+    Quest: true
+- Id: 155
+  Name: MC_LOUD
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [8]
+  Flags:
+    Quest: true
+- Id: 156
+  Name: AL_HOLYLIGHT
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [15]
+  Range: [9]
+  Flags:
+    Quest: true
+- Id: 157
+  Name: MG_ENERGYCOAT
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [30]
+  Flags:
+    Quest: true
+- Id: 210
+  Name: RG_SNATCHER
+  MaxLevel: 10
+- Id: 211
+  Name: RG_STEALCOIN
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [15, 15, 15, 15, 15, 15, 15, 15, 15, 15]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 212
+  Name: RG_BACKSTAP
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [16, 16, 16, 16, 16, 16, 16, 16, 16, 16]
+  Range: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+- Id: 213
+  Name: RG_TUNNELDRIVE
+  MaxLevel: 5
+- Id: 214
+  Name: RG_RAID
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [15, 15, 15, 15, 15]
+- Id: 215
+  Name: RG_STRIPWEAPON
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [17, 19, 21, 23, 25]
+  Range: [1, 1, 1, 1, 1]
+- Id: 216
+  Name: RG_STRIPSHIELD
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [12, 14, 16, 18, 20]
+  Range: [1, 1, 1, 1, 1]
+- Id: 217
+  Name: RG_STRIPARMOR
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [17, 19, 21, 23, 25]
+  Range: [1, 1, 1, 1, 1]
+- Id: 218
+  Name: RG_STRIPHELM
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [12, 14, 16, 18, 20]
+  Range: [1, 1, 1, 1, 1]
+- Id: 219
+  Name: RG_INTIMIDATE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [13, 16, 19, 22, 25]
+  Range: [1, 1, 1, 1, 1]
+- Id: 220
+  Name: RG_GRAFFITI
+  MaxLevel: 1
+  TargetType: 2
+  SpCost: [15]
+  Range: [1]
+- Id: 221
+  Name: RG_FLAGGRAFFITI
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [10, 10, 10, 10, 10]
+- Id: 222
+  Name: RG_CLEANER
+  MaxLevel: 1
+  TargetType: 2
+  SpCost: [5]
+  Range: [1]
+- Id: 223
+  Name: RG_GANGSTER
+  MaxLevel: 1
+- Id: 224
+  Name: RG_COMPULSION
+  MaxLevel: 5
+- Id: 225
+  Name: RG_PLAGIARISM
+  MaxLevel: 10
+- Id: 226
+  Name: AM_AXEMASTERY
+  MaxLevel: 10
+- Id: 227
+  Name: AM_LEARNINGPOTION
+  MaxLevel: 10
+- Id: 228
+  Name: AM_PHARMACY
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+- Id: 229
+  Name: AM_DEMONSTRATION
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [10, 10, 10, 10, 10]
+  Range: [9, 9, 9, 9, 9]
+- Id: 230
+  Name: AM_ACIDTERROR
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [15, 15, 15, 15, 15]
+  Range: [9, 9, 9, 9, 9]
+- Id: 231
+  Name: AM_POTIONPITCHER
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [1, 1, 1, 1, 1]
+  Range: [9, 9, 9, 9, 9]
+- Id: 232
+  Name: AM_CANNIBALIZE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [20, 20, 20, 20, 20]
+  Range: [4, 4, 4, 4, 4]
+- Id: 233
+  Name: AM_SPHEREMINE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [10, 10, 10, 10, 10]
+  Range: [1, 1, 1, 1, 1]
+- Id: 234
+  Name: AM_CP_WEAPON
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [30, 30, 30, 30, 30]
+  Range: [1, 1, 1, 1, 1]
+- Id: 235
+  Name: AM_CP_SHIELD
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [25, 25, 25, 25, 25]
+  Range: [1, 1, 1, 1, 1]
+- Id: 236
+  Name: AM_CP_ARMOR
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [25, 25, 25, 25, 25]
+  Range: [1, 1, 1, 1, 1]
+- Id: 237
+  Name: AM_CP_HELM
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [20, 20, 20, 20, 20]
+  Range: [1, 1, 1, 1, 1]
+- Id: 238
+  Name: AM_BIOETHICS
+  MaxLevel: 1
+  Flags:
+    Quest: true
+- Id: 243
+  Name: AM_CALLHOMUN
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+- Id: 244
+  Name: AM_REST
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [50]
+- Id: 247
+  Name: AM_RESURRECTHOMUN
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [74, 68, 62, 56, 50]
+- Id: 248
+  Name: CR_TRUST
+  MaxLevel: 10
+- Id: 249
+  Name: CR_AUTOGUARD
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+- Id: 250
+  Name: CR_SHIELDCHARGE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [10, 10, 10, 10, 10]
+  Range: [3, 3, 3, 3, 3]
+- Id: 251
+  Name: CR_SHIELDBOOMERANG
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [12, 12, 12, 12, 12]
+  Range: [3, 5, 7, 9, 11]
+- Id: 252
+  Name: CR_REFLECTSHIELD
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [35, 40, 45, 50, 55, 60, 65, 70, 75, 80]
+- Id: 253
+  Name: CR_HOLYCROSS
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  Range: [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2]
+- Id: 254
+  Name: CR_GRANDCROSS
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [37, 44, 51, 58, 65, 72, 79, 86, 93, 100]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 255
+  Name: CR_DEVOTION
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [25, 25, 25, 25, 25]
+  Range: [7, 8, 9, 10, 11]
+- Id: 256
+  Name: CR_PROVIDENCE
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [30, 30, 30, 30, 30]
+  Range: [9, 9, 9, 9, 9]
+- Id: 257
+  Name: CR_DEFENDER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [30, 30, 30, 30, 30]
+- Id: 258
+  Name: CR_SPEARQUICKEN
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [24, 28, 32, 36, 40, 44, 48, 52, 56, 60]
+- Id: 259
+  Name: MO_IRONHAND
+  MaxLevel: 10
+- Id: 260
+  Name: MO_SPIRITSRECOVERY
+  MaxLevel: 5
+- Id: 261
+  Name: MO_CALLSPIRITS
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [8, 8, 8, 8, 8]
+- Id: 262
+  Name: MO_ABSORBSPIRITS
+  MaxLevel: 1
+  TargetType: 16
+  SpCost: [5]
+  Range: [9]
+- Id: 263
+  Name: MO_TRIPLEATTACK
+  MaxLevel: 10
+  Range: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+- Id: 264
+  Name: MO_BODYRELOCATION
+  MaxLevel: 1
+  TargetType: 2
+  SpCost: [14]
+  Range: [18]
+- Id: 265
+  Name: MO_DODGE
+  MaxLevel: 10
+- Id: 266
+  Name: MO_INVESTIGATE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [10, 14, 17, 19, 20]
+  Range: [2, 2, 2, 2, 2]
+- Id: 267
+  Name: MO_FINGEROFFENSIVE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [12, 16, 20, 24, 28]
+  Range: [9, 9, 9, 9, 9]
+- Id: 268
+  Name: MO_STEELBODY
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [200, 200, 200, 200, 200]
+- Id: 269
+  Name: MO_BLADESTOP
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [10, 10, 10, 10, 10]
+- Id: 270
+  Name: MO_EXPLOSIONSPIRITS
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [15, 15, 15, 15, 15]
+- Id: 271
+  Name: MO_EXTREMITYFIST
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [1, 1, 1, 1, 1]
+  Range: [-2, -2, -2, -2, -2]
+- Id: 272
+  Name: MO_CHAINCOMBO
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [5, 6, 7, 8, 9]
+  Range: [-2, -2, -2, -2, -2]
+- Id: 273
+  Name: MO_COMBOFINISH
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [3, 4, 5, 6, 7]
+  Range: [-2, -2, -2, -2, -2]
+- Id: 274
+  Name: SA_ADVANCEDBOOK
+  MaxLevel: 10
+- Id: 275
+  Name: SA_CASTCANCEL
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [2, 2, 2, 2, 2]
+- Id: 276
+  Name: SA_MAGICROD
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [2, 2, 2, 2, 2]
+- Id: 277
+  Name: SA_SPELLBREAKER
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [10, 10, 10, 10, 10]
+  Range: [9, 9, 9, 9, 9]
+- Id: 278
+  Name: SA_FREECAST
+  MaxLevel: 10
+- Id: 279
+  Name: SA_AUTOSPELL
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [35, 35, 35, 35, 35, 35, 35, 35, 35, 35]
+- Id: 280
+  Name: SA_FLAMELAUNCHER
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [40, 40, 40, 40, 40]
+  Range: [9, 9, 9, 9, 9]
+- Id: 281
+  Name: SA_FROSTWEAPON
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [40, 40, 40, 40, 40]
+  Range: [9, 9, 9, 9, 9]
+- Id: 282
+  Name: SA_LIGHTNINGLOADER
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [40, 40, 40, 40, 40]
+  Range: [9, 9, 9, 9, 9]
+- Id: 283
+  Name: SA_SEISMICWEAPON
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [40, 40, 40, 40, 40]
+  Range: [9, 9, 9, 9, 9]
+- Id: 284
+  Name: SA_DRAGONOLOGY
+  MaxLevel: 5
+- Id: 285
+  Name: SA_VOLCANO
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [48, 46, 44, 42, 40]
+  Range: [2, 2, 2, 2, 2]
+- Id: 286
+  Name: SA_DELUGE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [48, 46, 44, 42, 40]
+  Range: [2, 2, 2, 2, 2]
+- Id: 287
+  Name: SA_VIOLENTGALE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [48, 46, 44, 42, 40]
+  Range: [2, 2, 2, 2, 2]
+- Id: 288
+  Name: SA_LANDPROTECTOR
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [66, 62, 58, 54, 50]
+  Range: [2, 2, 2, 2, 2]
+- Id: 289
+  Name: SA_DISPELL
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [1, 1, 1, 1, 1]
+  Range: [9, 9, 9, 9, 9]
+- Id: 290
+  Name: SA_ABRACADABRA
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50]
+- Id: 304
+  Name: BD_ADAPTATION
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+- Id: 305
+  Name: BD_ENCORE
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [1]
+- Id: 306
+  Name: BD_LULLABY
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [40]
+- Id: 307
+  Name: BD_RICHMANKIM
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [62, 68, 74, 80, 86]
+- Id: 308
+  Name: BD_ETERNALCHAOS
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [120]
+- Id: 309
+  Name: BD_DRUMBATTLEFIELD
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [50, 54, 58, 62, 66]
+- Id: 310
+  Name: BD_RINGNIBELUNGEN
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [64, 60, 56, 52, 48]
+- Id: 311
+  Name: BD_ROKISWEIL
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [180]
+- Id: 312
+  Name: BD_INTOABYSS
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [70]
+- Id: 313
+  Name: BD_SIEGFRIED
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 44, 48, 52, 56]
+- Id: 315
+  Name: BA_MUSICALLESSON
+  MaxLevel: 10
+- Id: 316
+  Name: BA_MUSICALSTRIKE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [12, 12, 12, 12, 12]
+  Range: [9, 9, 9, 9, 9]
+- Id: 317
+  Name: BA_DISSONANCE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [35, 38, 41, 44, 47]
+- Id: 318
+  Name: BA_FROSTJOKER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [12, 14, 16, 18, 20]
+- Id: 319
+  Name: BA_WHISTLE
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [22, 24, 26, 28, 30, 32, 34, 36, 38, 40]
+- Id: 320
+  Name: BA_ASSASSINCROSS
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [40, 45, 50, 55, 60, 65, 70, 75, 80, 85]
+- Id: 321
+  Name: BA_POEMBRAGI
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [65, 70, 75, 80, 85, 90, 95, 100, 105, 110]
+- Id: 322
+  Name: BA_APPLEIDUN
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [40, 45, 50, 55, 60, 65, 70, 75, 80, 85]
+- Id: 323
+  Name: DC_DANCINGLESSON
+  MaxLevel: 10
+- Id: 324
+  Name: DC_THROWARROW
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [12, 12, 12, 12, 12]
+  Range: [9, 9, 9, 9, 9]
+- Id: 325
+  Name: DC_UGLYDANCE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [23, 26, 29, 32, 35]
+- Id: 326
+  Name: DC_SCREAM
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [12, 14, 16, 18, 20]
+- Id: 327
+  Name: DC_HUMMING
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [33, 36, 39, 42, 45, 48, 51, 54, 57, 60]
+- Id: 328
+  Name: DC_DONTFORGETME
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [38, 41, 44, 47, 50, 53, 56, 59, 62, 65]
+- Id: 329
+  Name: DC_FORTUNEKISS
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [40, 45, 50, 55, 60, 65, 70, 75, 80, 85]
+- Id: 330
+  Name: DC_SERVICEFORYOU
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [60, 63, 66, 69, 72, 75, 78, 81, 84, 87]
+- Id: 355
+  Name: LK_AURABLADE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [18, 26, 34, 42, 50]
+- Id: 356
+  Name: LK_PARRYING
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50]
+- Id: 357
+  Name: LK_CONCENTRATION
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [14, 18, 22, 26, 30]
+- Id: 358
+  Name: LK_TENSIONRELAX
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [15]
+- Id: 359
+  Name: LK_BERSERK
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [200]
+- Id: 361
+  Name: HP_ASSUMPTIO
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [20, 30, 40, 50, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 362
+  Name: HP_BASILICA
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 50, 60, 70, 80]
+- Id: 363
+  Name: HP_MEDITATIO
+  MaxLevel: 10
+- Id: 364
+  Name: HW_SOULDRAIN
+  MaxLevel: 10
+- Id: 365
+  Name: HW_MAGICCRASHER
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [8]
+  Range: [9]
+- Id: 366
+  Name: HW_MAGICPOWER
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [35, 40, 45, 50, 55, 60, 65, 70, 75, 80]
+- Id: 367
+  Name: PA_PRESSURE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [30, 35, 40, 45, 50]
+  Range: [9, 9, 9, 9, 9]
+- Id: 368
+  Name: PA_SACRIFICE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [100, 100, 100, 100, 100]
+- Id: 369
+  Name: PA_GOSPEL
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [80, 80, 80, 80, 80, 100, 100, 100, 100, 100]
+- Id: 370
+  Name: CH_PALMSTRIKE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [2, 4, 6, 8, 10]
+  Range: [-2, -2, -2, -2, -2]
+- Id: 371
+  Name: CH_TIGERFIST
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [4, 6, 8, 10, 12]
+  Range: [-2, -2, -2, -2, -2]
+- Id: 372
+  Name: CH_CHAINCRUSH
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [4, 6, 8, 10, 12, 14, 16, 18, 20, 22]
+  Range: [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2]
+- Id: 373
+  Name: PF_HPCONVERSION
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [1, 2, 3, 4, 5]
+- Id: 374
+  Name: PF_SOULCHANGE
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [5]
+  Range: [9]
+- Id: 375
+  Name: PF_SOULBURN
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [80, 90, 100, 110, 120]
+  Range: [9, 9, 9, 9, 9]
+- Id: 376
+  Name: ASC_KATAR
+  MaxLevel: 5
+- Id: 378
+  Name: ASC_EDP
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [60, 70, 80, 90, 100]
+- Id: 379
+  Name: ASC_BREAKER
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
+  Range: [4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+- Id: 380
+  Name: SN_SIGHT
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [20, 20, 25, 25, 30, 30, 35, 35, 40, 40]
+- Id: 381
+  Name: SN_FALCONASSAULT
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [30, 34, 38, 42, 46]
+  Range: [9, 9, 9, 9, 9]
+- Id: 382
+  Name: SN_SHARPSHOOTING
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [16, 18, 20, 22, 24]
+  Range: [11, 11, 11, 11, 11]
+- Id: 383
+  Name: SN_WINDWALK
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [46, 52, 58, 64, 70, 76, 82, 88, 94, 100]
+- Id: 384
+  Name: WS_MELTDOWN
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [50, 50, 60, 60, 70, 70, 80, 80, 90, 90]
+- Id: 387
+  Name: WS_CARTBOOST
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [20]
+- Id: 389
+  Name: ST_CHASEWALK
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [10, 10, 10, 10, 10]
+- Id: 390
+  Name: ST_REJECTSWORD
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [10, 15, 20, 25, 30]
+- Id: 394
+  Name: CG_ARROWVULCAN
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 395
+  Name: CG_MOONLIT
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [30, 40, 50, 60, 70]
+- Id: 396
+  Name: CG_MARIONETTE
+  MaxLevel: 1
+  TargetType: 16
+  SpCost: [100]
+  Range: [7]
+- Id: 397
+  Name: LK_SPIRALPIERCE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [18, 21, 24, 27, 30]
+  Range: [4, 4, 4, 4, 4]
+- Id: 398
+  Name: LK_HEADCRUSH
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [23, 23, 23, 23, 23]
+  Range: [4, 4, 4, 4, 4]
+- Id: 399
+  Name: LK_JOINTBEAT
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [12, 12, 14, 14, 16, 16, 18, 18, 20, 20]
+  Range: [4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+- Id: 400
+  Name: HW_NAPALMVULCAN
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [30, 40, 50, 60, 70]
+  Range: [9, 9, 9, 9, 9]
+- Id: 401
+  Name: CH_SOULCOLLECT
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [20]
+- Id: 402
+  Name: PF_MINDBREAKER
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [12, 15, 18, 21, 24]
+  Range: [9, 9, 9, 9, 9]
+- Id: 403
+  Name: PF_MEMORIZE
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [1]
+- Id: 404
+  Name: PF_FOGWALL
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [25, 25, 25, 25, 25]
+  Range: [9, 9, 9, 9, 9]
+- Id: 405
+  Name: PF_SPIDERWEB
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [30]
+  Range: [9]
+- Id: 406
+  Name: ASC_METEORASSAULT
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [10, 12, 14, 16, 18, 20, 22, 24, 26, 28]
+- Id: 407
+  Name: ASC_CDP
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [50]
+- Id: 408
+  Name: WE_BABY
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [1]
+  Range: [9]
+  Flags:
+    Wedding: true
+- Id: 409
+  Name: WE_CALLPARENT
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [1]
+  Range: [9]
+  Flags:
+    Wedding: true
+- Id: 410
+  Name: WE_CALLBABY
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [1]
+  Range: [9]
+  Flags:
+    Wedding: true
+- Id: 411
+  Name: TK_RUN
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [100, 90, 80, 70, 60, 50, 40, 30, 20, 10]
+- Id: 412
+  Name: TK_READYSTORM
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [1]
+- Id: 413
+  Name: TK_STORMKICK
+  MaxLevel: 7
+  TargetType: 4
+  SpCost: [14, 12, 10, 8, 6, 4, 2]
+  Range: [-2, -2, -2, -2, -2, -2, -2]
+- Id: 414
+  Name: TK_READYDOWN
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [1]
+- Id: 415
+  Name: TK_DOWNKICK
+  MaxLevel: 7
+  TargetType: 4
+  SpCost: [14, 12, 10, 8, 6, 4, 2]
+  Range: [-2, -2, -2, -2, -2, -2, -2]
+- Id: 416
+  Name: TK_READYTURN
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [1]
+- Id: 417
+  Name: TK_TURNKICK
+  MaxLevel: 7
+  TargetType: 4
+  SpCost: [14, 12, 10, 8, 6, 4, 2]
+  Range: [-2, -2, -2, -2, -2, -2, -2]
+- Id: 418
+  Name: TK_READYCOUNTER
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [1]
+- Id: 419
+  Name: TK_COUNTER
+  MaxLevel: 7
+  TargetType: 4
+  SpCost: [14, 12, 10, 8, 6, 4, 2]
+  Range: [-2, -2, -2, -2, -2, -2, -2]
+- Id: 420
+  Name: TK_DODGE
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [1]
+- Id: 421
+  Name: TK_JUMPKICK
+  MaxLevel: 7
+  TargetType: 1
+  SpCost: [70, 60, 50, 40, 30, 20, 10]
+  Range: [9, 9, 9, 9, 9, 9, 9]
+- Id: 422
+  Name: TK_HPTIME
+  MaxLevel: 10
+- Id: 423
+  Name: TK_SPTIME
+  MaxLevel: 10
+- Id: 424
+  Name: TK_POWER
+  MaxLevel: 5
+- Id: 425
+  Name: TK_SEVENWIND
+  MaxLevel: 7
+  TargetType: 4
+  SpCost: [20, 20, 20, 20, 50, 50, 50]
+- Id: 426
+  Name: TK_HIGHJUMP
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [50, 50, 50, 50, 50]
+- Id: 427
+  Name: SG_FEEL
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [100, 100, 100]
+- Id: 428
+  Name: SG_SUN_WARM
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [20, 20, 20]
+  Range: [1, 1, 1]
+- Id: 429
+  Name: SG_MOON_WARM
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [20, 20, 20]
+  Range: [1, 1, 1]
+- Id: 430
+  Name: SG_STAR_WARM
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [10, 10, 10]
+  Range: [1, 1, 1]
+- Id: 431
+  Name: SG_SUN_COMFORT
+  MaxLevel: 4
+  TargetType: 4
+  SpCost: [70, 60, 50, 40]
+- Id: 432
+  Name: SG_MOON_COMFORT
+  MaxLevel: 4
+  TargetType: 4
+  SpCost: [70, 60, 50, 40]
+- Id: 433
+  Name: SG_STAR_COMFORT
+  MaxLevel: 4
+  TargetType: 4
+  SpCost: [70, 60, 50, 40]
+- Id: 434
+  Name: SG_HATE
+  MaxLevel: 3
+  TargetType: 1
+  SpCost: [100, 100, 100]
+  Range: [9, 9, 9]
+- Id: 435
+  Name: SG_SUN_ANGER
+  MaxLevel: 3
+- Id: 436
+  Name: SG_MOON_ANGER
+  MaxLevel: 3
+- Id: 437
+  Name: SG_STAR_ANGER
+  MaxLevel: 3
+- Id: 438
+  Name: SG_SUN_BLESS
+  MaxLevel: 5
+- Id: 439
+  Name: SG_MOON_BLESS
+  MaxLevel: 5
+- Id: 440
+  Name: SG_STAR_BLESS
+  MaxLevel: 5
+- Id: 441
+  Name: SG_DEVIL
+  MaxLevel: 10
+- Id: 442
+  Name: SG_FRIEND
+  MaxLevel: 3
+- Id: 443
+  Name: SG_KNOWLEDGE
+  MaxLevel: 10
+- Id: 444
+  Name: SG_FUSION
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [100]
+- Id: 445
+  Name: SL_ALCHEMIST
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [460, 360, 260, 160, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 446
+  Name: AM_BERSERKPITCHER
+  MaxLevel: 1
+  TargetType: 16
+  SpCost: [10]
+  Range: [9]
+  Flags:
+    Spirit: true
+- Id: 447
+  Name: SL_MONK
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [460, 360, 260, 160, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 448
+  Name: SL_STAR
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [460, 360, 260, 160, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 449
+  Name: SL_SAGE
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [460, 360, 260, 160, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 450
+  Name: SL_CRUSADER
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [460, 360, 260, 160, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 451
+  Name: SL_SUPERNOVICE
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [460, 360, 260, 160, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 452
+  Name: SL_KNIGHT
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [460, 360, 260, 160, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 453
+  Name: SL_WIZARD
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [460, 360, 260, 160, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 454
+  Name: SL_PRIEST
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [460, 360, 260, 160, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 455
+  Name: SL_BARDDANCER
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [460, 360, 260, 160, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 456
+  Name: SL_ROGUE
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [460, 360, 260, 160, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 457
+  Name: SL_ASSASIN
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [460, 360, 260, 160, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 458
+  Name: SL_BLACKSMITH
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [460, 360, 260, 160, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 459
+  Name: BS_ADRENALINE2
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [64]
+  Flags:
+    Spirit: true
+- Id: 460
+  Name: SL_HUNTER
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [460, 360, 260, 160, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 461
+  Name: SL_SOULLINKER
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [460, 360, 260, 160, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 462
+  Name: SL_KAIZEL
+  MaxLevel: 7
+  TargetType: 16
+  SpCost: [120, 110, 100, 90, 80, 70, 60]
+  Range: [9, 9, 9, 9, 9, 9, 9]
+- Id: 463
+  Name: SL_KAAHI
+  MaxLevel: 7
+  TargetType: 16
+  SpCost: [30, 30, 30, 30, 30, 30, 30]
+  Range: [9, 9, 9, 9, 9, 9, 9]
+- Id: 464
+  Name: SL_KAUPE
+  MaxLevel: 3
+  TargetType: 16
+  SpCost: [20, 30, 40]
+  Range: [9, 9, 9]
+- Id: 465
+  Name: SL_KAITE
+  MaxLevel: 7
+  TargetType: 16
+  SpCost: [70, 70, 70, 70, 70, 70, 70]
+  Range: [9, 9, 9, 9, 9, 9, 9]
+- Id: 466
+  Name: SL_KAINA
+  MaxLevel: 7
+- Id: 467
+  Name: SL_STIN
+  MaxLevel: 7
+  TargetType: 1
+  SpCost: [18, 20, 22, 24, 26, 28, 30]
+  Range: [9, 9, 9, 9, 9, 9, 9]
+- Id: 468
+  Name: SL_STUN
+  MaxLevel: 7
+  TargetType: 1
+  SpCost: [18, 20, 22, 24, 26, 28, 30]
+  Range: [9, 9, 9, 9, 9, 9, 9]
+- Id: 469
+  Name: SL_SMA
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [8, 16, 24, 32, 40, 48, 56, 64, 72, 80]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 470
+  Name: SL_SWOO
+  MaxLevel: 7
+  TargetType: 1
+  SpCost: [75, 65, 55, 45, 35, 25, 15]
+  Range: [9, 9, 9, 9, 9, 9, 9]
+- Id: 471
+  Name: SL_SKE
+  MaxLevel: 3
+  TargetType: 1
+  SpCost: [45, 30, 15]
+  Range: [9, 9, 9]
+- Id: 472
+  Name: SL_SKA
+  MaxLevel: 3
+  TargetType: 1
+  SpCost: [100, 80, 60]
+  Range: [9, 9, 9]
+- Id: 475
+  Name: ST_PRESERVE
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [30]
+- Id: 476
+  Name: ST_FULLSTRIP
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [22, 24, 26, 28, 30]
+  Range: [1, 1, 1, 1, 1]
+- Id: 477
+  Name: WS_WEAPONREFINE
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
+- Id: 478
+  Name: CR_SLIMPITCHER
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
+  Range: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+- Id: 479
+  Name: CR_FULLPROTECTION
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [40, 40, 40, 40, 40]
+  Range: [1, 1, 1, 1, 1]
+- Id: 480
+  Name: PA_SHIELDCHAIN
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [28, 31, 34, 37, 40]
+  Range: [7, 7, 9, 9, 11]
+- Id: 481
+  Name: HP_MANARECHARGE
+  MaxLevel: 5
+- Id: 482
+  Name: PF_DOUBLECASTING
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 45, 50, 55, 60]
+- Id: 483
+  Name: HW_GANBANTEIN
+  MaxLevel: 1
+  TargetType: 2
+  SpCost: [40]
+  Range: [18]
+- Id: 484
+  Name: HW_GRAVITATION
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [60, 70, 80, 90, 100]
+  Range: [18, 18, 18, 18, 18]
+- Id: 485
+  Name: WS_CARTTERMINATION
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [15, 15, 15, 15, 15, 15, 15, 15, 15, 15]
+  Range: [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2]
+- Id: 486
+  Name: WS_OVERTHRUSTMAX
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [15, 15, 15, 15, 15]
+- Id: 488
+  Name: CG_HERMODE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [20, 30, 40, 50, 60]
+- Id: 489
+  Name: CG_TAROTCARD
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 40, 40, 40, 40]
+  Range: [9, 9, 9, 9, 9]
+- Id: 490
+  Name: CR_ACIDDEMONSTRATION
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 493
+  Name: TK_MISSION
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+- Id: 494
+  Name: SL_HIGH
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [460, 360, 260, 160, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 495
+  Name: KN_ONEHAND
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [100]
+  Flags:
+    Spirit: true
+- Id: 496
+  Name: AM_TWILIGHT1
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [200]
+  Flags:
+    Spirit: true
+- Id: 497
+  Name: AM_TWILIGHT2
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [200]
+  Flags:
+    Spirit: true
+- Id: 498
+  Name: AM_TWILIGHT3
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [200]
+  Flags:
+    Spirit: true
+- Id: 499
+  Name: HT_POWER
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [12]
+  Range: [-9]
+  Flags:
+    Spirit: true
+    AlterRangeVulture: true
+- Id: 500
+  Name: GS_GLITTERING
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [2, 2, 2, 2, 2]
+- Id: 501
+  Name: GS_FLING
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [10]
+  Range: [9]
+- Id: 502
+  Name: GS_TRIPLEACTION
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [20]
+  Range: [-9]
+- Id: 503
+  Name: GS_BULLSEYE
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [30]
+  Range: [-9]
+- Id: 504
+  Name: GS_MADNESSCANCEL
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [30]
+- Id: 505
+  Name: GS_ADJUSTMENT
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [15]
+- Id: 506
+  Name: GS_INCREASING
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [30]
+- Id: 507
+  Name: GS_MAGICALBULLET
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [7]
+- Id: 508
+  Name: GS_CRACKER
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [10]
+  Range: [-9]
+- Id: 509
+  Name: GS_SINGLEACTION
+  MaxLevel: 10
+- Id: 510
+  Name: GS_SNAKEEYE
+  MaxLevel: 10
+- Id: 511
+  Name: GS_CHAINACTION
+  MaxLevel: 10
+  Range: [-9, -9, -9, -9, -9, -9, -9, -9, -9, -9]
+- Id: 512
+  Name: GS_TRACKING
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
+  Range: [-9, -9, -9, -9, -9, -9, -9, -9, -9, -9]
+- Id: 513
+  Name: GS_DISARM
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [15, 20, 25, 30, 35]
+  Range: [-9, -9, -9, -9, -9]
+- Id: 514
+  Name: GS_PIERCINGSHOT
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [11, 12, 13, 14, 15]
+  Range: [-9, -9, -9, -9, -9]
+  Flags:
+    AlterRangeSnakeEye: true
+- Id: 515
+  Name: GS_RAPIDSHOWER
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [22, 24, 26, 28, 30, 32, 34, 36, 38, 40]
+  Range: [-9, -9, -9, -9, -9, -9, -9, -9, -9, -9]
+  Flags:
+    AlterRangeSnakeEye: true
+- Id: 516
+  Name: GS_DESPERADO
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [32, 34, 36, 38, 40, 42, 44, 46, 48, 50]
+  Range: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+- Id: 517
+  Name: GS_GATLINGFEVER
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [30, 32, 34, 36, 38, 40, 42, 44, 46, 48]
+- Id: 518
+  Name: GS_DUST
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
+  Range: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+- Id: 519
+  Name: GS_FULLBUSTER
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [20, 25, 30, 35, 40, 45, 50, 55, 60, 65]
+  Range: [-9, -9, -9, -9, -9, -9, -9, -9, -9, -9]
+  Flags:
+    AlterRangeSnakeEye: true
+- Id: 520
+  Name: GS_SPREADATTACK
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [13, 16, 19, 22, 25, 28, 31, 34, 37, 40]
+  Range: [-9, -9, -9, -9, -9, -9, -9, -9, -9, -9]
+  Flags:
+    AlterRangeSnakeEye: true
+- Id: 521
+  Name: GS_GROUNDDRIFT
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
+  Range: [-9, -9, -9, -9, -9, -9, -9, -9, -9, -9]
+  Flags:
+    AlterRangeSnakeEye: true
+- Id: 522
+  Name: NJ_TOBIDOUGU
+  MaxLevel: 10
+- Id: 523
+  Name: NJ_SYURIKEN
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 524
+  Name: NJ_KUNAI
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [10, 10, 10, 10, 10]
+  Range: [9, 9, 9, 9, 9]
+- Id: 525
+  Name: NJ_HUUMA
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [15, 20, 25, 30, 35]
+  Range: [9, 9, 9, 9, 9]
+- Id: 526
+  Name: NJ_ZENYNAGE
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 527
+  Name: NJ_TATAMIGAESHI
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [15, 15, 15, 15, 15]
+- Id: 528
+  Name: NJ_KASUMIKIRI
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+  Range: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+- Id: 529
+  Name: NJ_SHADOWJUMP
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [10, 10, 10, 10, 10]
+  Range: [6, 7, 8, 9, 10]
+- Id: 530
+  Name: NJ_KIRIKAGE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [10, 11, 12, 13, 14]
+  Range: [6, 7, 8, 9, 10]
+  Flags:
+    AlterRangeShadowJump: true
+- Id: 531
+  Name: NJ_UTSUSEMI
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [12, 15, 18, 21, 24]
+- Id: 532
+  Name: NJ_BUNSINJYUTSU
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [30, 32, 34, 36, 38, 40, 42, 44, 46, 48]
+- Id: 533
+  Name: NJ_NINPOU
+  MaxLevel: 10
+- Id: 534
+  Name: NJ_KOUENKA
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 535
+  Name: NJ_KAENSIN
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [25, 25, 25, 25, 25, 25, 25, 25, 25, 25]
+- Id: 536
+  Name: NJ_BAKUENRYU
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [20, 25, 30, 35, 40]
+  Range: [9, 9, 9, 9, 9]
+- Id: 537
+  Name: NJ_HYOUSENSOU
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [15, 18, 21, 24, 27, 30, 33, 36, 39, 42]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 538
+  Name: NJ_SUITON
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [15, 18, 21, 24, 27, 30, 33, 36, 39, 42]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 539
+  Name: NJ_HYOUSYOURAKU
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 45, 50, 55, 60]
+- Id: 540
+  Name: NJ_HUUJIN
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 541
+  Name: NJ_RAIGEKISAI
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [16, 20, 24, 28, 32]
+  Range: [9, 9, 9, 9, 9]
+- Id: 542
+  Name: NJ_KAMAITACHI
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [24, 28, 32, 36, 40]
+  Range: [5, 6, 7, 8, 9]
+- Id: 543
+  Name: NJ_NEN
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [20, 30, 40, 50, 60]
+- Id: 544
+  Name: NJ_ISSEN
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
+  Range: [-5, -5, -5, -5, -5, -5, -5, -5, -5, -5]
+- Id: 1001
+  Name: KN_CHARGEATK
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [40]
+  Range: [14]
+  Flags:
+    Quest: true
+- Id: 1002
+  Name: CR_SHRINK
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [100]
+  Flags:
+    Quest: true
+- Id: 1003
+  Name: AS_SONICACCEL
+  MaxLevel: 1
+  Flags:
+    Quest: true
+- Id: 1004
+  Name: AS_VENOMKNIFE
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [35]
+  Range: [9]
+  Flags:
+    Quest: true
+- Id: 1005
+  Name: RG_CLOSECONFINE
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [40]
+  Range: [1]
+  Flags:
+    Quest: true
+- Id: 1006
+  Name: WZ_SIGHTBLASTER
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [80]
+  Flags:
+    Quest: true
+- Id: 1007
+  Name: SA_CREATECON
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [30]
+  Flags:
+    Quest: true
+- Id: 1008
+  Name: SA_ELEMENTWATER
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [30]
+  Range: [9]
+  Flags:
+    Quest: true
+- Id: 1009
+  Name: HT_PHANTASMIC
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [50]
+  Range: [-9]
+  Flags:
+    Quest: true
+- Id: 1010
+  Name: BA_PANGVOICE
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [40]
+  Range: [9]
+  Flags:
+    Quest: true
+- Id: 1011
+  Name: DC_WINKCHARM
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [40]
+  Range: [9]
+  Flags:
+    Quest: true
+- Id: 1012
+  Name: BS_UNFAIRLYTRICK
+  MaxLevel: 1
+  Flags:
+    Quest: true
+- Id: 1013
+  Name: BS_GREED
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+  Flags:
+    Quest: true
+- Id: 1014
+  Name: PR_REDEMPTIO
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [800]
+  Flags:
+    Quest: true
+- Id: 1015
+  Name: MO_KITRANSLATION
+  MaxLevel: 1
+  TargetType: 16
+  SpCost: [40]
+  Range: [9]
+  Flags:
+    Quest: true
+- Id: 1016
+  Name: MO_BALKYOUNG
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [40]
+  Range: [-1]
+  Flags:
+    Quest: true
+- Id: 1017
+  Name: SA_ELEMENTGROUND
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [30]
+  Range: [9]
+  Flags:
+    Quest: true
+- Id: 1018
+  Name: SA_ELEMENTFIRE
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [30]
+  Range: [9]
+  Flags:
+    Quest: true
+- Id: 1019
+  Name: SA_ELEMENTWIND
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [30]
+  Range: [9]
+  Flags:
+    Quest: true
+- Id: 2001
+  Name: RK_ENCHANTBLADE
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [34, 38, 42, 46, 50, 54, 58, 62, 66, 70]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 2002
+  Name: RK_SONICWAVE
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [33, 36, 39, 42, 45, 48, 51, 54, 57, 60]
+  Range: [7, 7, 8, 8, 9, 9, 10, 10, 11, 11]
+- Id: 2003
+  Name: RK_DEATHBOUND
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [50, 60, 65, 70, 75, 80, 85, 90, 95, 100]
+- Id: 2004
+  Name: RK_HUNDREDSPEAR
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [60, 60, 60, 60, 60, 60, 60, 60, 60, 60]
+  Range: [7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+- Id: 2005
+  Name: RK_WINDCUTTER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [23, 26, 29, 32, 35]
+- Id: 2006
+  Name: RK_IGNITIONBREAK
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [35, 40, 45, 50, 55]
+- Id: 2007
+  Name: RK_DRAGONTRAINING
+  MaxLevel: 5
+- Id: 2008
+  Name: RK_DRAGONBREATH
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [30, 35, 40, 45, 50, 55, 60, 65, 70, 75]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 2009
+  Name: RK_DRAGONHOWLING
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [30, 30, 30, 30, 30]
+- Id: 2010
+  Name: RK_RUNEMASTERY
+  MaxLevel: 10
+- Id: 2020
+  Name: RK_PHANTOMTHRUST
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [15, 18, 21, 24, 27]
+  Range: [5, 6, 7, 8, 9]
+- Id: 2021
+  Name: GC_VENOMIMPRESS
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [12, 16, 20, 24, 28]
+  Range: [10, 10, 10, 10, 10]
+- Id: 2022
+  Name: GC_CROSSIMPACT
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 40, 40, 40, 40]
+  Range: [7, 7, 7, 7, 7]
+- Id: 2023
+  Name: GC_DARKILLUSION
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 40, 40, 40, 40]
+  Range: [5, 6, 7, 8, 9]
+- Id: 2024
+  Name: GC_RESEARCHNEWPOISON
+  MaxLevel: 10
+- Id: 2025
+  Name: GC_CREATENEWPOISON
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+- Id: 2026
+  Name: GC_ANTIDOTE
+  MaxLevel: 1
+  TargetType: 16
+  SpCost: [10]
+  Range: [5]
+- Id: 2027
+  Name: GC_POISONINGWEAPON
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [20, 24, 28, 32, 36]
+- Id: 2028
+  Name: GC_WEAPONBLOCKING
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 36, 32, 28, 24]
+- Id: 2029
+  Name: GC_COUNTERSLASH
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [5, 8, 11, 14, 17, 19, 21, 23, 25, 27]
+- Id: 2030
+  Name: GC_WEAPONCRUSH
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [20, 20, 20, 20, 20]
+  Range: [-2, -2, -2, -2, -2]
+- Id: 2031
+  Name: GC_VENOMPRESSURE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [30, 40, 50, 60, 70]
+  Range: [1, 1, 1, 1, 1]
+- Id: 2032
+  Name: GC_POISONSMOKE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [40, 40, 40, 40, 40]
+  Range: [5, 5, 5, 5, 5]
+- Id: 2033
+  Name: GC_CLOAKINGEXCEED
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [45, 45, 45, 45, 45]
+- Id: 2034
+  Name: GC_PHANTOMMENACE
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [30]
+- Id: 2035
+  Name: GC_HALLUCINATIONWALK
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [100, 100, 100, 100, 100]
+- Id: 2036
+  Name: GC_ROLLINGCUTTER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [5, 5, 5, 5, 5]
+- Id: 2037
+  Name: GC_CROSSRIPPERSLASHER
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [20, 24, 28, 32, 36]
+  Range: [9, 10, 11, 12, 13]
+- Id: 2038
+  Name: AB_JUDEX
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [20, 23, 26, 29, 32, 34, 36, 38, 40, 42]
+  Range: [11, 11, 11, 11, 11, 11, 11, 11, 11, 11]
+- Id: 2039
+  Name: AB_ANCILLA
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [30]
+- Id: 2040
+  Name: AB_ADORAMUS
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [22, 28, 34, 40, 46, 52, 58, 64, 70, 76]
+  Range: [11, 11, 11, 11, 11, 11, 11, 11, 11, 11]
+- Id: 2041
+  Name: AB_CLEMENTIA
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [280, 320, 360]
+- Id: 2042
+  Name: AB_CANTO
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [200, 220, 240]
+- Id: 2043
+  Name: AB_CHEAL
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [200, 220, 240]
+- Id: 2044
+  Name: AB_EPICLESIS
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [300, 300, 300, 300, 300]
+  Range: [11, 11, 11, 11, 11]
+- Id: 2045
+  Name: AB_PRAEFATIO
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [90, 100, 110, 120, 130, 140, 150, 160, 170, 180]
+- Id: 2046
+  Name: AB_ORATIO
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [35, 38, 41, 44, 47, 50, 53, 56, 59, 62]
+- Id: 2047
+  Name: AB_LAUDAAGNUS
+  MaxLevel: 4
+  TargetType: 4
+  SpCost: [50, 60, 70, 80]
+- Id: 2048
+  Name: AB_LAUDARAMUS
+  MaxLevel: 4
+  TargetType: 4
+  SpCost: [50, 60, 70, 80]
+- Id: 2050
+  Name: AB_RENOVATIO
+  MaxLevel: 4
+  TargetType: 4
+  SpCost: [240, 280, 320, 360]
+  Range: [11, 11, 11, 11]
+- Id: 2051
+  Name: AB_HIGHNESSHEAL
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [70, 100, 130, 160, 190]
+  Range: [11, 11, 11, 11, 11]
+- Id: 2052
+  Name: AB_CLEARANCE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [54, 60, 66, 72, 78]
+  Range: [11, 11, 11, 11, 11]
+- Id: 2053
+  Name: AB_EXPIATIO
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [35, 40, 45, 50, 55]
+  Range: [11, 11, 11, 11, 11]
+- Id: 2054
+  Name: AB_DUPLELIGHT
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
+- Id: 2057
+  Name: AB_SILENTIUM
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [64, 68, 72, 76, 80]
+- Id: 2201
+  Name: WL_WHITEIMPRISON
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [50, 55, 60, 65, 70]
+  Range: [11, 11, 11, 11, 11]
+  Flags:
+    AlterRangeRadius: true
+- Id: 2202
+  Name: WL_SOULEXPANSION
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [30, 35, 40, 45, 50]
+  Range: [11, 11, 11, 11, 11]
+  Flags:
+    AlterRangeRadius: true
+- Id: 2203
+  Name: WL_FROSTMISTY
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [40, 48, 56, 64, 72]
+  Range: [11, 11, 11, 11, 11]
+  Flags:
+    AlterRangeRadius: true
+- Id: 2204
+  Name: WL_JACKFROST
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [50, 60, 70, 80, 90]
+  Range: [11, 11, 11, 11, 11]
+- Id: 2205
+  Name: WL_MARSHOFABYSS
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 42, 44, 46, 48]
+  Range: [11, 11, 11, 11, 11]
+  Flags:
+    AlterRangeRadius: true
+- Id: 2206
+  Name: WL_RECOGNIZEDSPELL
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [100, 120, 140, 160, 180]
+- Id: 2207
+  Name: WL_SIENNAEXECRATE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [32, 34, 36, 38, 40]
+  Range: [7, 7, 7, 7, 7]
+  Flags:
+    AlterRangeRadius: true
+- Id: 2208
+  Name: WL_RADIUS
+  MaxLevel: 3
+- Id: 2209
+  Name: WL_STASIS
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [50, 60, 70, 80, 90]
+- Id: 2210
+  Name: WL_DRAINLIFE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [20, 24, 28, 32, 36]
+  Range: [11, 11, 11, 11, 11]
+  Flags:
+    AlterRangeRadius: true
+- Id: 2211
+  Name: WL_CRIMSONROCK
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [60, 70, 80, 90, 100]
+  Range: [11, 11, 11, 11, 11]
+  Flags:
+    AlterRangeRadius: true
+- Id: 2212
+  Name: WL_HELLINFERNO
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [64, 70, 76, 82, 88]
+  Range: [11, 11, 11, 11, 11]
+  Flags:
+    AlterRangeRadius: true
+- Id: 2213
+  Name: WL_COMET
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [70, 90, 110, 130, 150]
+  Range: [11, 11, 11, 11, 11]
+  Flags:
+    AlterRangeRadius: true
+- Id: 2214
+  Name: WL_CHAINLIGHTNING
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [80, 90, 100, 110, 120]
+  Range: [11, 11, 11, 11, 11]
+  Flags:
+    AlterRangeRadius: true
+- Id: 2216
+  Name: WL_EARTHSTRAIN
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [70, 78, 86, 94, 102]
+  Range: [6, 6, 6, 6, 6]
+- Id: 2217
+  Name: WL_TETRAVORTEX
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [120, 150, 180, 210, 240, 200, 240, 280, 320, 360]
+  Range: [11, 11, 11, 11, 11, 11, 11, 11, 11, 11]
+  Flags:
+    AlterRangeRadius: true
+- Id: 2222
+  Name: WL_SUMMONFB
+  MaxLevel: 2
+  TargetType: 4
+  SpCost: [10, 12]
+- Id: 2223
+  Name: WL_SUMMONBL
+  MaxLevel: 2
+  TargetType: 4
+  SpCost: [10, 12]
+- Id: 2224
+  Name: WL_SUMMONWB
+  MaxLevel: 2
+  TargetType: 4
+  SpCost: [10, 12]
+- Id: 2229
+  Name: WL_SUMMONSTONE
+  MaxLevel: 2
+  TargetType: 4
+  SpCost: [10, 12]
+- Id: 2230
+  Name: WL_RELEASE
+  MaxLevel: 2
+  TargetType: 1
+  SpCost: [3, 20]
+  Range: [11, 11]
+  Flags:
+    AlterRangeRadius: true
+- Id: 2231
+  Name: WL_READING_SB
+  MaxLevel: 1
+- Id: 2232
+  Name: WL_FREEZE_SP
+  MaxLevel: 10
+- Id: 2233
+  Name: RA_ARROWSTORM
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [24, 28, 32, 36, 40, 44, 48, 52, 56, 60]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+  Flags:
+    AlterRangeVulture: true
+- Id: 2234
+  Name: RA_FEARBREEZE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [55, 60, 65, 70, 75]
+- Id: 2235
+  Name: RA_RANGERMAIN
+  MaxLevel: 10
+- Id: 2236
+  Name: RA_AIMEDBOLT
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+  Flags:
+    AlterRangeVulture: true
+- Id: 2237
+  Name: RA_DETONATOR
+  MaxLevel: 1
+  TargetType: 2
+  SpCost: [15]
+  Range: [9]
+- Id: 2238
+  Name: RA_ELECTRICSHOCKER
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [35, 35, 35, 35, 35]
+  Range: [3, 3, 3, 3, 3]
+- Id: 2239
+  Name: RA_CLUSTERBOMB
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [20, 20, 20, 20, 20]
+  Range: [3, 3, 3, 3, 3]
+  Flags:
+    AlterRangeResearchTrap: true
+- Id: 2240
+  Name: RA_WUGMASTERY
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [5]
+- Id: 2241
+  Name: RA_WUGRIDER
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [2, 2, 2]
+- Id: 2242
+  Name: RA_WUGDASH
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [4]
+- Id: 2243
+  Name: RA_WUGSTRIKE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [20, 22, 24, 26, 28]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2244
+  Name: RA_WUGBITE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 42, 44, 46, 48]
+  Range: [9, 9, 9, 9, 9]
+  Flags:
+    AlterRangeVulture: true
+- Id: 2245
+  Name: RA_TOOTHOFWUG
+  MaxLevel: 10
+- Id: 2246
+  Name: RA_SENSITIVEKEEN
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [12, 12, 12, 12, 12]
+- Id: 2247
+  Name: RA_CAMOUFLAGE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 40, 40, 40, 40]
+- Id: 2248
+  Name: RA_RESEARCHTRAP
+  MaxLevel: 10
+- Id: 2249
+  Name: RA_MAGENTATRAP
+  MaxLevel: 1
+  TargetType: 2
+  SpCost: [10]
+  Range: [3]
+- Id: 2250
+  Name: RA_COBALTTRAP
+  MaxLevel: 1
+  TargetType: 2
+  SpCost: [10]
+  Range: [3]
+- Id: 2251
+  Name: RA_MAIZETRAP
+  MaxLevel: 1
+  TargetType: 2
+  SpCost: [10]
+  Range: [3]
+- Id: 2252
+  Name: RA_VERDURETRAP
+  MaxLevel: 1
+  TargetType: 2
+  SpCost: [10]
+  Range: [3]
+- Id: 2253
+  Name: RA_FIRINGTRAP
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [10, 10, 10, 10, 10]
+  Range: [3, 3, 3, 3, 3]
+  Flags:
+    AlterRangeResearchTrap: true
+- Id: 2254
+  Name: RA_ICEBOUNDTRAP
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [10, 10, 10, 10, 10]
+  Range: [3, 3, 3, 3, 3]
+  Flags:
+    AlterRangeResearchTrap: true
+- Id: 2255
+  Name: NC_MADOLICENCE
+  MaxLevel: 5
+- Id: 2256
+  Name: NC_BOOSTKNUCKLE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [5, 10, 15, 20, 25]
+  Range: [11, 11, 11, 11, 11]
+- Id: 2257
+  Name: NC_PILEBUNKER
+  MaxLevel: 3
+  TargetType: 1
+  SpCost: [50, 50, 50]
+  Range: [3, 3, 3]
+- Id: 2258
+  Name: NC_VULCANARM
+  MaxLevel: 3
+  TargetType: 1
+  SpCost: [9, 12, 15]
+  Range: [13, 13, 13]
+- Id: 2259
+  Name: NC_FLAMELAUNCHER
+  MaxLevel: 3
+  TargetType: 1
+  SpCost: [20, 20, 20]
+  Range: [5, 5, 5]
+- Id: 2260
+  Name: NC_COLDSLOWER
+  MaxLevel: 3
+  TargetType: 2
+  SpCost: [20, 20, 20]
+  Range: [7, 7, 7]
+- Id: 2261
+  Name: NC_ARMSCANNON
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 45, 50, 55, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2262
+  Name: NC_ACCELERATION
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [20, 40, 60]
+- Id: 2263
+  Name: NC_HOVERING
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [25]
+- Id: 2264
+  Name: NC_F_SIDESLIDE
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [5]
+- Id: 2265
+  Name: NC_B_SIDESLIDE
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [5]
+- Id: 2266
+  Name: NC_MAINFRAME
+  MaxLevel: 4
+- Id: 2267
+  Name: NC_SELFDESTRUCTION
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [200, 200, 200]
+- Id: 2268
+  Name: NC_SHAPESHIFT
+  MaxLevel: 4
+  TargetType: 4
+  SpCost: [100, 100, 100, 100]
+- Id: 2269
+  Name: NC_EMERGENCYCOOL
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [20]
+- Id: 2270
+  Name: NC_INFRAREDSCAN
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [45]
+- Id: 2271
+  Name: NC_ANALYZE
+  MaxLevel: 3
+  TargetType: 1
+  SpCost: [30, 30, 30]
+  Range: [9, 9, 9]
+- Id: 2272
+  Name: NC_MAGNETICFIELD
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [60, 70, 80]
+- Id: 2273
+  Name: NC_NEUTRALBARRIER
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [80, 90, 100]
+- Id: 2274
+  Name: NC_STEALTHFIELD
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [80, 100, 120]
+- Id: 2275
+  Name: NC_REPAIR
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [25, 30, 35, 40, 45]
+  Range: [5, 6, 7, 8, 9]
+- Id: 2276
+  Name: NC_TRAININGAXE
+  MaxLevel: 10
+- Id: 2277
+  Name: NC_RESEARCHFE
+  MaxLevel: 5
+- Id: 2278
+  Name: NC_AXEBOOMERANG
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [25, 30, 35, 40, 45]
+  Range: [5, 6, 7, 8, 9]
+- Id: 2279
+  Name: NC_POWERSWING
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [20, 22, 24, 26, 28, 30, 32, 34, 36, 38]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 2280
+  Name: NC_AXETORNADO
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [45, 45, 45, 45, 45]
+- Id: 2281
+  Name: NC_SILVERSNIPER
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [25, 30, 35, 40, 45]
+  Range: [2, 2, 2, 2, 2]
+- Id: 2282
+  Name: NC_MAGICDECOY
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [40, 45, 50, 55, 60]
+  Range: [2, 2, 2, 2, 2]
+- Id: 2283
+  Name: NC_DISJOINT
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [15]
+  Range: [5]
+- Id: 2284
+  Name: SC_FATALMENACE
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [10, 14, 18, 22, 26, 30, 34, 38, 42, 46]
+  Range: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+- Id: 2285
+  Name: SC_REPRODUCE
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [40, 45, 50, 55, 60, 65, 70, 75, 80, 85]
+- Id: 2286
+  Name: SC_AUTOSHADOWSPELL
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [40, 45, 50, 55, 60, 65, 70, 75, 80, 85]
+- Id: 2287
+  Name: SC_SHADOWFORM
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 50, 60, 70, 80]
+  Range: [5, 5, 5, 5, 5]
+- Id: 2288
+  Name: SC_TRIANGLESHOT
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [22, 24, 26, 28, 30, 32, 34, 36, 38, 40]
+  Range: [7, 7, 7, 9, 9, 9, 9, 11, 11, 11]
+- Id: 2289
+  Name: SC_BODYPAINT
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [10, 15, 20, 25, 30]
+- Id: 2290
+  Name: SC_INVISIBILITY
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [100, 100, 100, 100, 100]
+- Id: 2291
+  Name: SC_DEADLYINFECT
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 44, 48, 52, 56]
+- Id: 2292
+  Name: SC_ENERVATION
+  MaxLevel: 3
+  TargetType: 1
+  SpCost: [30, 40, 50]
+  Range: [3, 3, 3]
+- Id: 2293
+  Name: SC_GROOMY
+  MaxLevel: 3
+  TargetType: 1
+  SpCost: [30, 40, 50]
+  Range: [3, 3, 3]
+- Id: 2294
+  Name: SC_IGNORANCE
+  MaxLevel: 3
+  TargetType: 1
+  SpCost: [30, 40, 50]
+  Range: [3, 3, 3]
+- Id: 2295
+  Name: SC_LAZINESS
+  MaxLevel: 3
+  TargetType: 1
+  SpCost: [30, 40, 50]
+  Range: [3, 3, 3]
+- Id: 2296
+  Name: SC_UNLUCKY
+  MaxLevel: 3
+  TargetType: 1
+  SpCost: [30, 40, 50]
+  Range: [3, 3, 3]
+- Id: 2297
+  Name: SC_WEAKNESS
+  MaxLevel: 3
+  TargetType: 1
+  SpCost: [30, 40, 50]
+  Range: [3, 3, 3]
+- Id: 2298
+  Name: SC_STRIPACCESSARY
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [15, 18, 21, 24, 27]
+  Range: [3, 3, 3, 3, 3]
+- Id: 2299
+  Name: SC_MANHOLE
+  MaxLevel: 3
+  TargetType: 2
+  SpCost: [20, 25, 30]
+  Range: [7, 7, 7]
+- Id: 2300
+  Name: SC_DIMENSIONDOOR
+  MaxLevel: 3
+  TargetType: 2
+  SpCost: [30, 36, 42]
+  Range: [7, 7, 7]
+- Id: 2301
+  Name: SC_CHAOSPANIC
+  MaxLevel: 3
+  TargetType: 2
+  SpCost: [30, 36, 42]
+  Range: [7, 7, 7]
+- Id: 2302
+  Name: SC_MAELSTROM
+  MaxLevel: 3
+  TargetType: 2
+  SpCost: [50, 55, 60]
+  Range: [7, 7, 7]
+- Id: 2303
+  Name: SC_BLOODYLUST
+  MaxLevel: 3
+  TargetType: 2
+  SpCost: [60, 70, 80]
+  Range: [7, 7, 7]
+- Id: 2304
+  Name: SC_FEINTBOMB
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [24, 28, 32, 36, 40, 44, 48, 52, 56, 60]
+- Id: 2307
+  Name: LG_CANNONSPEAR
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [30, 35, 40, 45, 50]
+  Range: [7, 7, 7, 7, 7]
+- Id: 2308
+  Name: LG_BANISHINGPOINT
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [20, 22, 24, 26, 28, 30, 32, 34, 36, 38]
+  Range: [7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+- Id: 2309
+  Name: LG_TRAMPLE
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [30, 45, 60]
+- Id: 2310
+  Name: LG_SHIELDPRESS
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [10, 12, 14, 16, 18, 20, 22, 24, 26, 28]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 2311
+  Name: LG_REFLECTDAMAGE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [60, 70, 80, 90, 100]
+- Id: 2312
+  Name: LG_PINPOINTATTACK
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [50, 50, 50, 50, 50]
+  Range: [5, 5, 5, 5, 5]
+- Id: 2313
+  Name: LG_FORCEOFVANGUARD
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [30, 30, 30, 30, 30]
+- Id: 2314
+  Name: LG_RAGEBURST
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [150]
+  Range: [1]
+- Id: 2315
+  Name: LG_SHIELDSPELL
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [50, 50, 50]
+- Id: 2316
+  Name: LG_EXEEDBREAK
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [20, 32, 44, 56, 68]
+- Id: 2317
+  Name: LG_OVERBRAND
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [20, 30, 40, 50, 60]
+  Range: [2, 2, 2, 2, 2]
+- Id: 2318
+  Name: LG_PRESTIGE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [75, 80, 85, 90, 95]
+- Id: 2319
+  Name: LG_BANDING
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [30, 36, 42, 48, 54]
+- Id: 2320
+  Name: LG_MOONSLASHER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [20, 24, 28, 32, 36]
+- Id: 2321
+  Name: LG_RAYOFGENESIS
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [45, 50, 55, 60, 65, 70, 75, 80, 85, 90]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 2322
+  Name: LG_PIETY
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [40, 45, 50, 55, 60]
+- Id: 2323
+  Name: LG_EARTHDRIVE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [52, 60, 68, 76, 84]
+- Id: 2324
+  Name: LG_HESPERUSLIT
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [37, 44, 51, 58, 65]
+  Range: [3, 3, 3, 3, 3]
+- Id: 2325
+  Name: LG_INSPIRATION
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [80, 90, 100, 110, 120]
+- Id: 2326
+  Name: SR_DRAGONCOMBO
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  Range: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+- Id: 2327
+  Name: SR_SKYNETBLOW
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [12, 14, 16, 18, 20]
+  Range: [1, 1, 1, 1, 1]
+- Id: 2328
+  Name: SR_EARTHSHAKER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [36, 40, 44, 48, 52]
+  Range: [1, 1, 1, 1, 1]
+- Id: 2329
+  Name: SR_FALLENEMPIRE
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [18, 21, 24, 27, 30, 33, 36, 39, 42, 45]
+  Range: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+- Id: 2330
+  Name: SR_TIGERCANNON
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [30, 35, 40, 45, 50, 55, 60, 65, 70, 75]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 2332
+  Name: SR_RAMPAGEBLASTER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [100, 100, 100, 100, 100]
+  Range: [1, 1, 1, 1, 1]
+- Id: 2333
+  Name: SR_CRESCENTELBOW
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [80, 80, 80, 80, 80]
+  Range: [1, 1, 1, 1, 1]
+- Id: 2334
+  Name: SR_CURSEDCIRCLE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 60, 80, 100, 120]
+  Range: [1, 1, 1, 1, 1]
+- Id: 2335
+  Name: SR_LIGHTNINGWALK
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [80, 70, 60, 50, 40]
+  Range: [1, 1, 1, 1, 1]
+- Id: 2336
+  Name: SR_KNUCKLEARROW
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+  Range: [7, 7, 8, 8, 9, 9, 10, 10, 11, 11]
+- Id: 2337
+  Name: SR_WINDMILL
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [45]
+  Range: [1]
+- Id: 2338
+  Name: SR_RAISINGDRAGON
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [120, 120, 120, 120, 120, 120, 120, 120, 120, 120]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 2340
+  Name: SR_ASSIMILATEPOWER
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+  Range: [1]
+- Id: 2341
+  Name: SR_POWERVELOCITY
+  MaxLevel: 1
+  TargetType: 16
+  SpCost: [50]
+  Range: [3]
+- Id: 2343
+  Name: SR_GATEOFHELL
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
+  Range: [7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+- Id: 2344
+  Name: SR_GENTLETOUCH_QUIET
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [20, 25, 30, 35, 40]
+  Range: [2, 2, 2, 2, 2]
+- Id: 2345
+  Name: SR_GENTLETOUCH_CURE
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [40, 50, 60, 70, 80]
+  Range: [2, 2, 2, 2, 2]
+- Id: 2346
+  Name: SR_GENTLETOUCH_ENERGYGAIN
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 50, 60, 70, 80]
+  Range: [1, 1, 1, 1, 1]
+- Id: 2347
+  Name: SR_GENTLETOUCH_CHANGE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 50, 60, 70, 80]
+  Range: [2, 2, 2, 2, 2]
+- Id: 2348
+  Name: SR_GENTLETOUCH_REVITALIZE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 50, 60, 70, 80]
+  Range: [2, 2, 2, 2, 2]
+- Id: 2350
+  Name: WA_SWING_DANCE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [96, 112, 128, 144, 160]
+- Id: 2351
+  Name: WA_SYMPHONY_OF_LOVER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [60, 69, 78, 87, 96]
+- Id: 2352
+  Name: WA_MOONLIT_SERENADE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [84, 96, 108, 120, 134]
+- Id: 2381
+  Name: MI_RUSH_WINDMILL
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [82, 88, 94, 100, 106]
+- Id: 2382
+  Name: MI_ECHOSONG
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [86, 92, 98, 104, 110]
+- Id: 2383
+  Name: MI_HARMONIZE
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [70, 75, 80, 85, 90]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2412
+  Name: WM_LESSON
+  MaxLevel: 10
+- Id: 2413
+  Name: WM_METALICSOUND
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [62, 64, 66, 68, 70, 72, 74, 76, 78, 80]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 2414
+  Name: WM_REVERBERATION
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [56, 62, 68, 74, 80]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2418
+  Name: WM_SEVERE_RAINSTORM
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [80, 90, 100, 110, 120]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2419
+  Name: WM_POEMOFNETHERWORLD
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [12, 16, 20, 24, 28]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2420
+  Name: WM_VOICEOFSIREN
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [48, 56, 64, 72, 80]
+- Id: 2421
+  Name: WM_DEADHILLHERE
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [50, 53, 56, 59, 62]
+  Range: [7, 7, 7, 7, 7]
+- Id: 2422
+  Name: WM_LULLABY_DEEPSLEEP
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [80, 90, 100, 110, 120]
+- Id: 2423
+  Name: WM_SIRCLEOFNATURE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [42, 46, 50, 54, 58]
+- Id: 2424
+  Name: WM_RANDOMIZESPELL
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 45, 50, 55, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2425
+  Name: WM_GLOOMYDAY
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [60, 75, 90, 105, 120]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2426
+  Name: WM_GREAT_ECHO
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [80, 90, 100, 110, 120]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2427
+  Name: WM_SONG_OF_MANA
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [120, 140, 160, 180, 200]
+- Id: 2428
+  Name: WM_DANCE_WITH_WUG
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [120, 140, 160, 180, 200]
+- Id: 2429
+  Name: WM_SOUND_OF_DESTRUCTION
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [50, 60, 70, 80, 90]
+- Id: 2430
+  Name: WM_SATURDAY_NIGHT_FEVER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [150, 160, 170, 180, 190]
+- Id: 2431
+  Name: WM_LERADS_DEW
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [120, 130, 140, 150, 160]
+- Id: 2432
+  Name: WM_MELODYOFSINK
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [120, 130, 140, 150, 160]
+- Id: 2433
+  Name: WM_BEYOND_OF_WARCRY
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [120, 130, 140, 150, 160]
+- Id: 2434
+  Name: WM_UNLIMITED_HUMMING_VOICE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [120, 130, 140, 150, 160]
+- Id: 2443
+  Name: SO_FIREWALK
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [30, 34, 38, 42, 46]
+- Id: 2444
+  Name: SO_ELECTRICWALK
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [30, 34, 38, 42, 46]
+- Id: 2445
+  Name: SO_SPELLFIST
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [40, 44, 48, 52, 56, 60, 64, 68, 72, 76]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 2446
+  Name: SO_EARTHGRAVE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [62, 70, 78, 86, 94]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2447
+  Name: SO_DIAMONDDUST
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [50, 56, 62, 68, 74]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2448
+  Name: SO_POISON_BUSTER
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [70, 90, 110, 130, 150]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2449
+  Name: SO_PSYCHIC_WAVE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [48, 56, 64, 70, 78]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2450
+  Name: SO_CLOUD_KILL
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [48, 56, 64, 70, 78]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2451
+  Name: SO_STRIKING
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [50, 55, 60, 65, 70]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2452
+  Name: SO_WARMER
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [40, 52, 64, 76, 88]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2453
+  Name: SO_VACUUM_EXTREME
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [34, 42, 50, 58, 66]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2454
+  Name: SO_VARETYR_SPEAR
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [65, 70, 75, 80, 85, 90, 95, 100, 105, 110]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 2455
+  Name: SO_ARRULLO
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [30, 35, 40, 45, 50]
+  Range: [7, 7, 7, 7, 9]
+- Id: 2456
+  Name: SO_EL_CONTROL
+  MaxLevel: 4
+  TargetType: 4
+  SpCost: [10, 10, 10, 10]
+- Id: 2457
+  Name: SO_SUMMON_AGNI
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [100, 150, 200]
+- Id: 2458
+  Name: SO_SUMMON_AQUA
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [100, 150, 200]
+- Id: 2459
+  Name: SO_SUMMON_VENTUS
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [100, 150, 200]
+- Id: 2460
+  Name: SO_SUMMON_TERA
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [100, 150, 200]
+- Id: 2461
+  Name: SO_EL_ACTION
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [50]
+  Range: [5]
+- Id: 2462
+  Name: SO_EL_ANALYSIS
+  MaxLevel: 2
+  TargetType: 4
+  SpCost: [10, 20]
+- Id: 2463
+  Name: SO_EL_SYMPATHY
+  MaxLevel: 5
+- Id: 2464
+  Name: SO_EL_CURE
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+- Id: 2465
+  Name: SO_FIRE_INSIGNIA
+  MaxLevel: 3
+  TargetType: 2
+  SpCost: [22, 30, 38]
+  Range: [9, 9, 9]
+- Id: 2466
+  Name: SO_WATER_INSIGNIA
+  MaxLevel: 3
+  TargetType: 2
+  SpCost: [22, 30, 38]
+  Range: [9, 9, 9]
+- Id: 2467
+  Name: SO_WIND_INSIGNIA
+  MaxLevel: 3
+  TargetType: 2
+  SpCost: [22, 30, 38]
+  Range: [9, 9, 9]
+- Id: 2468
+  Name: SO_EARTH_INSIGNIA
+  MaxLevel: 3
+  TargetType: 2
+  SpCost: [22, 30, 38]
+  Range: [9, 9, 9]
+- Id: 2474
+  Name: GN_TRAINING_SWORD
+  MaxLevel: 5
+- Id: 2475
+  Name: GN_REMODELING_CART
+  MaxLevel: 5
+- Id: 2476
+  Name: GN_CART_TORNADO
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 2477
+  Name: GN_CARTCANNON
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 42, 46, 48, 50]
+  Range: [7, 8, 9, 10, 11]
+- Id: 2478
+  Name: GN_CARTBOOST
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [20, 24, 28, 32, 36]
+- Id: 2479
+  Name: GN_THORNS_TRAP
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [22, 26, 30, 34, 38]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2480
+  Name: GN_BLOOD_SUCKER
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [50, 55, 60, 65, 70]
+  Range: [11, 11, 11, 11, 11]
+- Id: 2481
+  Name: GN_SPORE_EXPLOSION
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [48, 52, 56, 60, 64, 68, 72, 76, 80, 84]
+  Range: [11, 11, 11, 11, 11, 11, 11, 11, 11, 11]
+- Id: 2482
+  Name: GN_WALLOFTHORN
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [40, 50, 60, 70, 80]
+  Range: [11, 11, 11, 11, 11]
+- Id: 2483
+  Name: GN_CRAZYWEED
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [24, 28, 32, 36, 40, 44, 48, 52, 56, 60]
+  Range: [11, 11, 11, 11, 11, 11, 11, 11, 11, 11]
+- Id: 2485
+  Name: GN_DEMONIC_FIRE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [24, 28, 32, 36, 40]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2486
+  Name: GN_FIRE_EXPANSION
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [30, 35, 40, 45, 50]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2490
+  Name: GN_HELLS_PLANT
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 45, 50, 55, 60]
+- Id: 2492
+  Name: GN_MANDRAGORA
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 45, 50, 55, 60]
+- Id: 2494
+  Name: GN_CHANGEMATERIAL
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [5]
+- Id: 2495
+  Name: GN_MIX_COOKING
+  MaxLevel: 2
+  TargetType: 4
+  SpCost: [5, 40]
+- Id: 2497
+  Name: GN_S_PHARMACY
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [12, 12, 12, 12, 12, 12, 12, 12, 12, 12]
+- Id: 2515
+  Name: AB_SECRAMENT
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [100, 120, 140, 160, 180]
+  Range: [11, 11, 11, 11, 11]
+- Id: 2517
+  Name: SR_HOWLINGOFLION
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [70, 70, 70, 70, 70]
+- Id: 2518
+  Name: SR_RIDEINLIGHTNING
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [25, 30, 35, 40, 45]
+  Range: [11, 11, 11, 11, 11]
+- Id: 2535
+  Name: ALL_BUYING_STORE
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [30]
+  Flags:
+    Quest: true
+- Id: 2544
+  Name: MC_CARTDECORATE
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [40]
+  Flags:
+    Quest: true
+- Id: 2552
+  Name: RL_RICHS_COIN
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+- Id: 2553
+  Name: RL_MASS_SPIRAL
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 44, 48, 52, 56]
+  Range: [-15, -15, -15, -15, -15]
+- Id: 2554
+  Name: RL_BANISHING_BUSTER
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [55, 57, 59, 61, 63, 65, 67, 69, 71, 73]
+  Range: [-9, -9, -9, -9, -9, -9, -9, -9, -9, -9]
+- Id: 2555
+  Name: RL_B_TRAP
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [30, 32, 34, 36, 38]
+  Range: [3, 4, 4, 5, 5]
+- Id: 2556
+  Name: RL_FLICKER
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [2]
+- Id: 2557
+  Name: RL_S_STORM
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [50, 55, 60, 65, 70]
+  Range: [-9, -9, -9, -9, -9]
+- Id: 2558
+  Name: RL_E_CHAIN
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [45, 45, 45, 45, 45, 45, 45, 45, 45, 45]
+- Id: 2559
+  Name: RL_QD_SHOT
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [5]
+  Range: [-9]
+- Id: 2560
+  Name: RL_C_MARKER
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [10]
+  Range: [-11]
+- Id: 2561
+  Name: RL_FIREDANCE
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [13, 16, 19, 22, 25, 28, 31, 34, 37, 40]
+- Id: 2562
+  Name: RL_H_MINE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [45, 50, 55, 60, 65]
+  Range: [-7, -8, -9, -10, -11]
+- Id: 2563
+  Name: RL_P_ALTER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [20, 24, 28, 32, 36]
+- Id: 2564
+  Name: RL_FALLEN_ANGEL
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [10, 10, 10, 10, 10]
+  Range: [-9, -9, -9, -9, -9]
+- Id: 2565
+  Name: RL_R_TRIP
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [43, 46, 49, 52, 55, 58, 61, 64, 67, 70]
+- Id: 2566
+  Name: RL_D_TAIL
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
+  Range: [11, 11, 11, 11, 11, 11, 11, 11, 11, 11]
+- Id: 2567
+  Name: RL_FIRE_RAIN
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [70, 70, 70, 70, 70]
+  Range: [3, 3, 3, 3, 3]
+- Id: 2568
+  Name: RL_HEAT_BARREL
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [30, 30, 30, 30, 30]
+- Id: 2569
+  Name: RL_AM_BLAST
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [80, 84, 88, 92, 96]
+  Range: [-15, -15, -15, -15, -15]
+- Id: 2570
+  Name: RL_SLUGSHOT
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [80, 84, 88, 92, 96]
+  Range: [-9, -9, -9, -9, -9]
+- Id: 2571
+  Name: RL_HAMMER_OF_GOD
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [37, 39, 41, 43, 45, 47, 49, 51, 53, 55]
+  Range: [11, 11, 11, 11, 11, 11, 11, 11, 11, 11]
+- Id: 2574
+  Name: SJ_LIGHTOFMOON
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 40, 40, 40, 40]
+- Id: 2575
+  Name: SJ_LUNARSTANCE
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [10, 10, 10]
+- Id: 2576
+  Name: SJ_FULLMOONKICK
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [30, 35, 40, 45, 50, 55, 60, 65, 70, 75]
+- Id: 2577
+  Name: SJ_LIGHTOFSTAR
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 40, 40, 40, 40]
+- Id: 2578
+  Name: SJ_STARSTANCE
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [10, 10, 10]
+- Id: 2579
+  Name: SJ_NEWMOONKICK
+  MaxLevel: 7
+  TargetType: 4
+  SpCost: [20, 25, 30, 35, 40, 45, 50]
+- Id: 2580
+  Name: SJ_FLASHKICK
+  MaxLevel: 7
+  TargetType: 1
+  SpCost: [45, 40, 35, 30, 25, 20, 15]
+  Range: [1, 1, 1, 1, 1, 1, 1]
+- Id: 2581
+  Name: SJ_STAREMPEROR
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [70, 75, 80, 85, 90]
+- Id: 2582
+  Name: SJ_NOVAEXPLOSING
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [60, 65, 70, 75, 80]
+  Range: [3, 3, 3, 3, 3]
+- Id: 2583
+  Name: SJ_UNIVERSESTANCE
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [10, 10, 10]
+- Id: 2584
+  Name: SJ_FALLINGSTAR
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [40, 45, 50, 55, 60, 65, 70, 75, 80, 85]
+- Id: 2585
+  Name: SJ_GRAVITYCONTROL
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [80]
+  Range: [9]
+- Id: 2586
+  Name: SJ_BOOKOFDIMENSION
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 40, 40, 40, 40]
+- Id: 2587
+  Name: SJ_BOOKOFCREATINGSTAR
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [50, 55, 60, 65, 70]
+  Range: [7, 7, 7, 7, 7]
+- Id: 2588
+  Name: SJ_DOCUMENT
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [60, 60, 60]
+- Id: 2589
+  Name: SJ_PURIFY
+  MaxLevel: 1
+- Id: 2590
+  Name: SJ_LIGHTOFSUN
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 40, 40, 40, 40]
+- Id: 2591
+  Name: SJ_SUNSTANCE
+  MaxLevel: 3
+  TargetType: 4
+  SpCost: [10, 10, 10]
+- Id: 2592
+  Name: SJ_SOLARBURST
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [34, 37, 40, 43, 46, 49, 52, 55, 58, 61]
+- Id: 2593
+  Name: SJ_PROMINENCEKICK
+  MaxLevel: 7
+  TargetType: 1
+  SpCost: [20, 20, 20, 20, 20, 20, 20]
+  Range: [1, 1, 1, 1, 1, 1, 1]
+- Id: 2596
+  Name: SP_SOULGOLEM
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [250, 200, 150, 100, 50]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2597
+  Name: SP_SOULSHADOW
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [250, 200, 150, 100, 50]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2598
+  Name: SP_SOULFALCON
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [250, 200, 150, 100, 50]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2599
+  Name: SP_SOULFAIRY
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [250, 200, 150, 100, 50]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2600
+  Name: SP_CURSEEXPLOSION
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [50, 55, 60, 65, 70, 75, 80, 85, 90, 95]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 2601
+  Name: SP_SOULCURSE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [70, 70, 70, 70, 70]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2602
+  Name: SP_SPA
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [52, 56, 60, 64, 68, 72, 76, 80, 84, 88]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 2603
+  Name: SP_SHA
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [18, 20, 22, 24, 26]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2604
+  Name: SP_SWHOO
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [66, 70, 74, 78, 82, 86, 90, 94, 98, 102]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 2605
+  Name: SP_SOULUNITY
+  MaxLevel: 7
+  TargetType: 4
+  SpCost: [44, 46, 48, 50, 52, 54, 56]
+  Range: [11, 11, 11, 11, 11, 11, 11]
+- Id: 2606
+  Name: SP_SOULDIVISION
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [36, 40, 44, 48, 52]
+  Range: [9, 9, 9, 9, 9]
+- Id: 2607
+  Name: SP_SOULREAPER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [42, 44, 46, 48, 50]
+- Id: 2608
+  Name: SP_SOULREVOLVE
+  MaxLevel: 3
+  TargetType: 16
+  SpCost: [50, 100, 150]
+  Range: [9, 9, 9]
+- Id: 2609
+  Name: SP_SOULCOLLECT
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [100, 100, 100, 100, 100]
+- Id: 2610
+  Name: SP_SOULEXPLOSION
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [30, 60, 90, 120, 150]
+  Range: [7, 7, 7, 7, 7]
+- Id: 2611
+  Name: SP_SOULENERGY
+  MaxLevel: 5
+- Id: 2612
+  Name: SP_KAUTE
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [24, 30, 36, 42, 48]
+  Range: [7, 7, 7, 7, 7]
+- Id: 3001
+  Name: KO_YAMIKUMO
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+- Id: 3002
+  Name: KO_RIGHT
+  MaxLevel: 5
+- Id: 3003
+  Name: KO_LEFT
+  MaxLevel: 5
+- Id: 3004
+  Name: KO_JYUMONJIKIRI
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [10, 12, 14, 16, 18, 20, 22, 24, 26, 28]
+  Range: [4, 4, 4, 5, 5, 5, 6, 6, 6, 7]
+- Id: 3005
+  Name: KO_SETSUDAN
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [12, 16, 20, 24, 28]
+  Range: [2, 2, 2, 2, 2]
+- Id: 3006
+  Name: KO_BAKURETSU
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [5, 6, 7, 8, 9]
+  Range: [7, 8, 9, 10, 11]
+- Id: 3007
+  Name: KO_HAPPOKUNAI
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [12, 14, 16, 18, 20]
+- Id: 3008
+  Name: KO_MUCHANAGE
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50]
+  Range: [11, 11, 11, 11, 11, 11, 11, 11, 11, 11]
+- Id: 3009
+  Name: KO_HUUMARANKA
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [22, 24, 26, 28, 30, 32, 34, 36, 38, 40]
+  Range: [11, 11, 11, 11, 11, 11, 11, 11, 11, 11]
+- Id: 3010
+  Name: KO_MAKIBISHI
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [9, 12, 15, 18, 21]
+  Range: [3, 3, 3, 3, 3]
+- Id: 3011
+  Name: KO_MEIKYOUSISUI
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [100, 100, 100, 100, 100]
+- Id: 3012
+  Name: KO_ZANZOU
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 44, 48, 52, 56]
+- Id: 3013
+  Name: KO_KYOUGAKU
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 44, 48, 52, 56]
+  Range: [5, 5, 5, 5, 5]
+- Id: 3014
+  Name: KO_JYUSATSU
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 44, 48, 52, 56]
+  Range: [5, 5, 5, 5, 5]
+- Id: 3015
+  Name: KO_KAHU_ENTEN
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [20]
+- Id: 3016
+  Name: KO_HYOUHU_HUBUKI
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [20]
+- Id: 3017
+  Name: KO_KAZEHU_SEIRAN
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [20]
+- Id: 3018
+  Name: KO_DOHU_KOUKAI
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [20]
+- Id: 3019
+  Name: KO_KAIHOU
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [10]
+  Range: [11]
+- Id: 3020
+  Name: KO_ZENKAI
+  MaxLevel: 1
+  TargetType: 2
+  SpCost: [30]
+  Range: [7]
+- Id: 3021
+  Name: KO_GENWAKU
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [40, 44, 48, 52, 56]
+  Range: [5, 6, 7, 8, 9]
+- Id: 3022
+  Name: KO_IZAYOI
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [70, 75, 80, 85, 90]
+- Id: 3023
+  Name: KG_KAGEHUMI
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [25, 30, 35, 40, 45]
+- Id: 3024
+  Name: KG_KYOMU
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [50, 50, 50, 50, 50]
+  Range: [7, 7, 7, 7, 7]
+- Id: 3025
+  Name: KG_KAGEMUSYA
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [60, 65, 70, 75, 80]
+  Range: [7, 7, 7, 7, 7]
+- Id: 3026
+  Name: OB_ZANGETSU
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [60, 70, 80, 90, 100]
+  Range: [7, 7, 7, 7, 7]
+- Id: 3027
+  Name: OB_OBOROGENSOU
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [55, 60, 65, 70, 75]
+  Range: [7, 7, 7, 7, 7]
+- Id: 3029
+  Name: OB_AKAITSUKI
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [20, 30, 40, 50, 60]
+  Range: [7, 7, 7, 7, 7]
+- Id: 5001
+  Name: GC_DARKCROW
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [22, 34, 46, 58, 70]
+  Range: [1, 1, 1, 1, 1]
+- Id: 5002
+  Name: RA_UNLIMIT
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [100, 120, 140, 160, 180]
+- Id: 5003
+  Name: GN_ILLUSIONDOPING
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [60, 70, 80, 90, 100]
+  Range: [7, 7, 7, 7, 7]
+- Id: 5004
+  Name: RK_DRAGONBREATH_WATER
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [30, 35, 40, 45, 50, 55, 60, 65, 70, 75]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5006
+  Name: NC_MAGMA_ERUPTION
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [60, 70, 80, 90, 100]
+  Range: [1, 1, 1, 1, 1]
+- Id: 5007
+  Name: WM_FRIGG_SONG
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [200, 230, 260, 290, 320]
+- Id: 5008
+  Name: SO_ELEMENTAL_SHIELD
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [120, 120, 120, 120, 120]
+- Id: 5009
+  Name: SR_FLASHCOMBO
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [65, 65, 65, 65, 65]
+  Range: [1, 1, 1, 1, 1]
+- Id: 5010
+  Name: SC_ESCAPE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [30, 26, 22, 18, 14]
+- Id: 5011
+  Name: AB_OFFERTORIUM
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [30, 60, 90, 120, 150]
+- Id: 5012
+  Name: WL_TELEKINESIS_INTENSE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [100, 150, 200, 250, 300]
+- Id: 5013
+  Name: LG_KINGS_GRACE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [200, 180, 160, 140, 120]
+- Id: 5014
+  Name: ALL_FULL_THROTTLE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [1, 1, 1, 1, 1]
+- Id: 5018
+  Name: SU_BASIC_SKILL
+  MaxLevel: 1
+- Id: 5019
+  Name: SU_BITE
+  MaxLevel: 1
+  TargetType: 1
+  SpCost: [10]
+  Range: [2]
+- Id: 5020
+  Name: SU_HIDE
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+- Id: 5021
+  Name: SU_SCRATCH
+  MaxLevel: 3
+  TargetType: 1
+  SpCost: [20, 25, 30]
+  Range: [2, 2, 2]
+- Id: 5022
+  Name: SU_STOOP
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+- Id: 5023
+  Name: SU_LOPE
+  MaxLevel: 3
+  TargetType: 2
+  SpCost: [30, 30, 30]
+  Range: [6, 10, 14]
+- Id: 5024
+  Name: SU_SPRITEMABLE
+  MaxLevel: 1
+- Id: 5025
+  Name: SU_POWEROFLAND
+  MaxLevel: 1
+- Id: 5026
+  Name: SU_SV_STEMSPEAR
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 40, 40, 40, 40]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5027
+  Name: SU_CN_POWDERING
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 36, 32, 28, 24]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5028
+  Name: SU_CN_METEOR
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [20, 35, 50, 65, 80]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5029
+  Name: SU_SV_ROOTTWIST
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [10, 12, 14, 16, 18]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5031
+  Name: SU_POWEROFLIFE
+  MaxLevel: 1
+- Id: 5032
+  Name: SU_SCAROFTAROU
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [10, 12, 14, 16, 18]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5033
+  Name: SU_PICKYPECK
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [10, 12, 14, 16, 18]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5035
+  Name: SU_ARCLOUSEDASH
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [12, 14, 16, 18, 20]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5036
+  Name: SU_LUNATICCARROTBEAT
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [15, 20, 25, 30, 35]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5037
+  Name: SU_POWEROFSEA
+  MaxLevel: 1
+- Id: 5038
+  Name: SU_TUNABELLY
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [20, 30, 40, 50, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5039
+  Name: SU_TUNAPARTY
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [20, 30, 40, 50, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5040
+  Name: SU_BUNCHOFSHRIMP
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [44, 48, 52, 56, 60]
+- Id: 5041
+  Name: SU_FRESHSHRIMP
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [22, 24, 26, 28, 30]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5044
+  Name: SU_SOULATTACK
+  MaxLevel: 1
+  Range: [14]
+- Id: 5045
+  Name: SU_POWEROFFLOCK
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [50, 50, 50, 50, 50]
+- Id: 5046
+  Name: SU_SVG_SPIRIT
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [60, 60, 60, 60, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5047
+  Name: SU_HISS
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [50, 46, 42, 38, 34]
+- Id: 5048
+  Name: SU_NYANGGRASS
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [50, 48, 46, 44, 42]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5049
+  Name: SU_GROOMING
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [15, 15, 15, 15, 15]
+- Id: 5050
+  Name: SU_PURRING
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [70, 65, 60, 55, 50]
+- Id: 5051
+  Name: SU_SHRIMPARTY
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [100, 90, 80, 70, 60]
+- Id: 5052
+  Name: SU_SPIRITOFLIFE
+  MaxLevel: 1
+- Id: 5053
+  Name: SU_MEOWMEOW
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [100, 90, 80, 70, 60]
+- Id: 5054
+  Name: SU_SPIRITOFLAND
+  MaxLevel: 1
+- Id: 5055
+  Name: SU_CHATTERING
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [50, 45, 40, 35, 30]
+- Id: 5056
+  Name: SU_SPIRITOFSEA
+  MaxLevel: 1
+- Id: 5065
+  Name: WE_CHEERUP
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [50]
+  Range: [1]
+  Flags:
+    Wedding: true
+- Id: 5068
+  Name: CG_SPECIALSINGER
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [1]
+  Range: [1]
+- Id: 5072
+  Name: AB_VITUPERATUM
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [144, 120, 106, 92, 78]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5073
+  Name: AB_CONVENIO
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [70]
+- Id: 5075
+  Name: NV_BREAKTHROUGH
+  MaxLevel: 5
+- Id: 5076
+  Name: NV_HELPANGEL
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [1]
+- Id: 5077
+  Name: NV_TRANSCENDENCE
+  MaxLevel: 5
+- Id: 5201
+  Name: DK_SERVANTWEAPON
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [30, 40, 50, 60, 70]
+- Id: 5203
+  Name: DK_SERVANT_W_SIGN
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [15, 15, 15, 15, 15]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5204
+  Name: DK_SERVANT_W_PHANTOM
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 40, 40, 40, 40]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5205
+  Name: DK_SERVANT_W_DEMOL
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [30, 35, 40, 45, 50]
+- Id: 5206
+  Name: DK_CHARGINGPIERCE
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [25, 30, 35, 40, 45, 50, 55, 60, 65, 70]
+- Id: 5207
+  Name: DK_TWOHANDDEF
+  MaxLevel: 10
+- Id: 5208
+  Name: DK_HACKANDSLASHER
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [36, 40, 44, 48, 52, 56, 60, 64, 68, 72]
+  Range: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+- Id: 5210
+  Name: DK_DRAGONIC_AURA
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
+  Range: [7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+- Id: 5211
+  Name: DK_MADNESS_CRUSHER
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [27, 34, 41, 48, 55]
+  Range: [7, 7, 7, 7, 7]
+- Id: 5212
+  Name: DK_VIGOR
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
+- Id: 5213
+  Name: DK_STORMSLASH
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [35, 40, 45, 50, 55]
+  Range: [2, 2, 2, 2, 2]
+- Id: 5214
+  Name: AG_DEADLY_PROJECTION
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [70, 75, 80, 85, 90]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5215
+  Name: AG_DESTRUCTIVE_HURRICANE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [170, 174, 178, 182, 186]
+- Id: 5216
+  Name: AG_RAIN_OF_CRYSTAL
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [85, 95, 105, 115, 125]
+- Id: 5217
+  Name: AG_MYSTERY_ILLUSION
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [78, 86, 94, 102, 110]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5218
+  Name: AG_VIOLENT_QUAKE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [110, 114, 118, 122, 126]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5220
+  Name: AG_SOUL_VC_STRIKE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [90, 95, 100, 105, 110]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5221
+  Name: AG_STRANTUM_TREMOR
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [74, 79, 84, 89, 94]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5222
+  Name: AG_ALL_BLOOM
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [94, 102, 110, 118, 126]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5225
+  Name: AG_CRYSTAL_IMPACT
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [170, 174, 178, 182, 186]
+- Id: 5227
+  Name: AG_TORNADO_STORM
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [78, 82, 86, 90, 94]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5228
+  Name: AG_TWOHANDSTAFF
+  MaxLevel: 10
+- Id: 5229
+  Name: AG_FLORAL_FLARE_ROAD
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [70, 76, 82, 88, 94]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5230
+  Name: AG_ASTRAL_STRIKE
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [130, 130, 130, 130, 130, 130, 130, 130, 130, 130]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5232
+  Name: AG_CLIMAX
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [60, 60, 60, 60, 60]
+- Id: 5233
+  Name: AG_ROCK_DOWN
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [72, 76, 80, 84, 88]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5234
+  Name: AG_STORM_CANNON
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [79, 79, 82, 85, 88]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5235
+  Name: AG_CRIMSON_ARROW
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [74, 78, 82, 86, 90]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5237
+  Name: AG_FROZEN_SLASH
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [103, 106, 109, 112, 115]
+- Id: 5238
+  Name: IQ_POWERFUL_FAITH
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [54, 58, 62, 66, 70]
+- Id: 5239
+  Name: IQ_FIRM_FAITH
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [54, 58, 62, 66, 70]
+- Id: 5240
+  Name: IQ_WILL_OF_FAITH
+  MaxLevel: 10
+- Id: 5241
+  Name: IQ_OLEUM_SANCTUM
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [45, 55, 65, 75, 85]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5242
+  Name: IQ_SINCERE_FAITH
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [54, 58, 62, 66, 70]
+- Id: 5243
+  Name: IQ_MASSIVE_F_BLASTER
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5244
+  Name: IQ_EXPOSION_BLASTER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [105, 110, 115, 120, 125]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5245
+  Name: IQ_FIRST_BRAND
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [46, 50, 54, 58, 62]
+  Range: [3, 3, 3, 3, 3]
+- Id: 5246
+  Name: IQ_FIRST_FAITH_POWER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [60, 60, 60, 60, 60]
+- Id: 5247
+  Name: IQ_JUDGE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [60, 60, 60, 60, 60]
+- Id: 5248
+  Name: IQ_SECOND_FLAME
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [51, 57, 63, 69, 75]
+  Range: [3, 3, 3, 3, 3]
+- Id: 5249
+  Name: IQ_SECOND_FAITH
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [41, 47, 53, 59, 65]
+  Range: [3, 3, 3, 3, 3]
+- Id: 5250
+  Name: IQ_SECOND_JUDGEMENT
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [50, 55, 60, 65, 70]
+  Range: [3, 3, 3, 3, 3]
+- Id: 5251
+  Name: IQ_THIRD_PUNISH
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [56, 62, 68, 74, 80]
+  Range: [3, 3, 3, 3, 3]
+- Id: 5252
+  Name: IQ_THIRD_FLAME_BOMB
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [74, 78, 82, 86, 90]
+  Range: [3, 3, 3, 3, 3]
+- Id: 5253
+  Name: IQ_THIRD_CONSECRATION
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [65, 70, 75, 80, 85]
+  Range: [3, 3, 3, 3, 3]
+- Id: 5254
+  Name: IQ_THIRD_EXOR_FLAME
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [60, 60, 60, 60, 60]
+- Id: 5255
+  Name: IG_GUARD_STANCE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [50, 50, 50, 50, 50]
+- Id: 5256
+  Name: IG_GUARDIAN_SHIELD
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [60, 60, 60, 60, 60]
+- Id: 5257
+  Name: IG_REBOUND_SHIELD
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [60, 60, 60, 60, 60]
+- Id: 5258
+  Name: IG_SHIELD_MASTERY
+  MaxLevel: 10
+- Id: 5259
+  Name: IG_SPEAR_SWORD_M
+  MaxLevel: 10
+- Id: 5260
+  Name: IG_ATTACK_STANCE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [50, 50, 50, 50, 50]
+- Id: 5261
+  Name: IG_ULTIMATE_SACRIFICE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [120, 120, 120, 120, 120]
+- Id: 5262
+  Name: IG_HOLY_SHIELD
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [60, 60, 60, 60, 60]
+- Id: 5263
+  Name: IG_GRAND_JUDGEMENT
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [51, 54, 57, 60, 63, 66, 69, 72, 75, 78]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5264
+  Name: IG_JUDGEMENT_CROSS
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [60, 65, 70, 75, 80, 85, 90, 95, 100, 105]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5265
+  Name: IG_SHIELD_SHOOTING
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 45, 50, 55, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5266
+  Name: IG_OVERSLASH
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [38, 41, 44, 47, 50, 53, 56, 59, 62, 65]
+  Range: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+- Id: 5267
+  Name: IG_CROSS_RAIN
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [67, 70, 73, 76, 79, 82, 85, 88, 91, 94]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5268
+  Name: CD_REPARATIO
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [120, 120, 120, 120, 120]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5269
+  Name: CD_MEDIALE_VOTUM
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [30, 40, 50, 60, 70]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5270
+  Name: CD_MACE_BOOK_M
+  MaxLevel: 10
+- Id: 5271
+  Name: CD_ARGUTUS_VITA
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [30, 45, 60, 75, 90]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5272
+  Name: CD_ARGUTUS_TELUM
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [30, 45, 60, 75, 90]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5273
+  Name: CD_ARBITRIUM
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [107, 109, 111, 113, 115, 117, 119, 121, 123, 125]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5275
+  Name: CD_PRESENS_ACIES
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [30, 45, 60, 75, 90]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5276
+  Name: CD_FIDUS_ANIMUS
+  MaxLevel: 10
+- Id: 5277
+  Name: CD_EFFLIGO
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [75, 75, 75, 75, 75, 75, 75, 75, 75, 75]
+  Range: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+- Id: 5278
+  Name: CD_COMPETENTIA
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [60, 60, 60, 60, 60]
+- Id: 5279
+  Name: CD_PNEUMATICUS_PROCELLA
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [150, 150, 150, 150, 150, 150, 150, 150, 150, 150]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5280
+  Name: CD_DILECTIO_HEAL
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [50, 55, 60, 65, 70]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5281
+  Name: CD_RELIGIO
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [70, 75, 80, 85, 90]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5282
+  Name: CD_BENEDICTUM
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [70, 75, 80, 85, 90]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5283
+  Name: CD_PETITIO
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [38, 41, 44, 47, 50, 53, 56, 59, 62, 65]
+  Range: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+- Id: 5284
+  Name: CD_FRAMEN
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [80, 83, 86, 89, 92]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5285
+  Name: SHC_SHADOW_EXCEED
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
+- Id: 5286
+  Name: SHC_DANCING_KNIFE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 45, 50, 55, 60]
+- Id: 5287
+  Name: SHC_SAVAGE_IMPACT
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [45, 48, 51, 54, 57, 60, 63, 66, 69, 72]
+  Range: [7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+- Id: 5288
+  Name: SHC_SHADOW_SENSE
+  MaxLevel: 10
+- Id: 5289
+  Name: SHC_ETERNAL_SLASH
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [60, 60, 60, 60, 60]
+  Range: [3, 3, 3, 3, 3]
+- Id: 5290
+  Name: SHC_POTENT_VENOM
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
+- Id: 5291
+  Name: SHC_SHADOW_STAB
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 45, 50, 55, 60]
+  Range: [2, 2, 2, 2, 2]
+- Id: 5292
+  Name: SHC_IMPACT_CRATER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [53, 56, 59, 62, 65]
+- Id: 5293
+  Name: SHC_ENCHANTING_SHADOW
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [30, 40, 50, 60, 70]
+- Id: 5294
+  Name: SHC_FATAL_SHADOW_CROW
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [150, 150, 150, 150, 150, 150, 150, 150, 150, 150]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5295
+  Name: MT_AXE_STOMP
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [45, 55, 65, 75, 85]
+- Id: 5296
+  Name: MT_RUSH_QUAKE
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [150, 150, 150, 150, 150, 150, 150, 150, 150, 150]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5297
+  Name: MT_M_MACHINE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [30, 40, 50, 60, 70]
+- Id: 5298
+  Name: MT_A_MACHINE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [60, 63, 66, 69, 72]
+  Range: [7, 7, 7, 7, 7]
+- Id: 5299
+  Name: MT_D_MACHINE
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [43, 46, 49, 52, 55]
+  Range: [1, 1, 1, 1, 1]
+- Id: 5300
+  Name: MT_TWOAXEDEF
+  MaxLevel: 10
+- Id: 5301
+  Name: MT_ABR_M
+  MaxLevel: 10
+- Id: 5302
+  Name: MT_SUMMON_ABR_BATTLE_WARIOR
+  MaxLevel: 4
+  TargetType: 4
+  SpCost: [30, 40, 50, 60]
+- Id: 5303
+  Name: MT_SUMMON_ABR_DUAL_CANNON
+  MaxLevel: 4
+  TargetType: 4
+  SpCost: [30, 40, 50, 60]
+- Id: 5304
+  Name: MT_SUMMON_ABR_MOTHER_NET
+  MaxLevel: 4
+  TargetType: 4
+  SpCost: [30, 40, 50, 60]
+- Id: 5305
+  Name: MT_SUMMON_ABR_INFINITY
+  MaxLevel: 4
+  TargetType: 4
+  SpCost: [30, 40, 50, 60]
+- Id: 5311
+  Name: ABC_DAGGER_AND_BOW_M
+  MaxLevel: 10
+- Id: 5312
+  Name: ABC_MAGIC_SWORD_M
+  MaxLevel: 10
+- Id: 5313
+  Name: ABC_STRIP_SHADOW
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [29, 33, 37, 41, 45]
+  Range: [1, 1, 1, 1, 1]
+- Id: 5314
+  Name: ABC_ABYSS_DAGGER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [60, 64, 68, 72, 76]
+- Id: 5315
+  Name: ABC_UNLUCKY_RUSH
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [30, 35, 40, 45, 50]
+  Range: [7, 7, 7, 7, 7]
+- Id: 5316
+  Name: ABC_CHAIN_REACTION_SHOT
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [35, 45, 55, 65, 75]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5317
+  Name: ABC_FROM_THE_ABYSS
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [40, 50, 60, 70, 80]
+- Id: 5318
+  Name: ABC_ABYSS_SLAYER
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
+- Id: 5319
+  Name: ABC_ABYSS_STRIKE
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [125, 125, 125, 125, 125, 125, 125, 125, 125, 125]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5320
+  Name: ABC_DEFT_STAB
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [45, 48, 51, 54, 57, 60, 63, 66, 69, 72]
+  Range: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+- Id: 5321
+  Name: ABC_ABYSS_SQUARE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [65, 75, 85, 95, 105]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5322
+  Name: ABC_FRENZY_SHOT
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [47, 49, 51, 53, 55, 57, 59, 61, 63, 65]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5323
+  Name: WH_ADVANCED_TRAP
+  MaxLevel: 5
+- Id: 5324
+  Name: WH_WIND_SIGN
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [100, 90, 80, 70, 60]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5325
+  Name: WH_NATUREFRIENDLY
+  MaxLevel: 5
+- Id: 5326
+  Name: WH_HAWKRUSH
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 44, 48, 52, 56]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5327
+  Name: WH_HAWK_M
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [5]
+- Id: 5328
+  Name: WH_CALAMITYGALE
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [300]
+- Id: 5329
+  Name: WH_HAWKBOOMERANG
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [80, 80, 80, 80, 80]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5330
+  Name: WH_GALESTORM
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [93, 96, 99, 102, 105, 108, 111, 114, 117, 120]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5331
+  Name: WH_DEEPBLINDTRAP
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [68, 72, 76, 80, 84]
+  Range: [1, 1, 1, 1, 1]
+- Id: 5332
+  Name: WH_SOLIDTRAP
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [68, 72, 76, 80, 84]
+  Range: [1, 1, 1, 1, 1]
+- Id: 5333
+  Name: WH_SWIFTTRAP
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [68, 72, 76, 80, 84]
+  Range: [1, 1, 1, 1, 1]
+- Id: 5334
+  Name: WH_CRESCIVE_BOLT
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [47, 49, 51, 53, 55, 57, 59, 61, 63, 65]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5335
+  Name: WH_FLAMETRAP
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [68, 72, 76, 80, 84]
+  Range: [1, 1, 1, 1, 1]
+- Id: 5336
+  Name: BO_BIONIC_PHARMACY
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [30, 30, 30, 30, 30]
+- Id: 5337
+  Name: BO_BIONICS_M
+  MaxLevel: 10
+- Id: 5338
+  Name: BO_THE_WHOLE_PROTECTION
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [220, 260, 300, 340, 380]
+- Id: 5339
+  Name: BO_ADVANCE_PROTECTION
+  MaxLevel: 4
+  TargetType: 16
+  SpCost: [120, 130, 140, 150]
+  Range: [1, 1, 1, 1]
+- Id: 5340
+  Name: BO_ACIDIFIED_ZONE_WATER
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [51, 54, 57, 60, 63]
+  Range: [7, 7, 7, 7, 7]
+- Id: 5341
+  Name: BO_ACIDIFIED_ZONE_GROUND
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [51, 54, 57, 60, 63]
+  Range: [7, 7, 7, 7, 7]
+- Id: 5342
+  Name: BO_ACIDIFIED_ZONE_WIND
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [51, 54, 57, 60, 63]
+  Range: [7, 7, 7, 7, 7]
+- Id: 5343
+  Name: BO_ACIDIFIED_ZONE_FIRE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [51, 54, 57, 60, 63]
+  Range: [7, 7, 7, 7, 7]
+- Id: 5344
+  Name: BO_WOODENWARRIOR
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [100, 120, 140, 160, 180]
+- Id: 5345
+  Name: BO_WOODEN_FAIRY
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [120, 155, 180, 205, 230]
+- Id: 5346
+  Name: BO_CREEPER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [80, 96, 112, 128, 144]
+- Id: 5347
+  Name: BO_RESEARCHREPORT
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [60]
+- Id: 5348
+  Name: BO_HELLTREE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [100, 100, 100, 100, 100]
+- Id: 5349
+  Name: TR_STAGE_MANNER
+  MaxLevel: 5
+- Id: 5350
+  Name: TR_RETROSPECTION
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [1]
+- Id: 5351
+  Name: TR_MYSTIC_SYMPHONY
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [250]
+- Id: 5352
+  Name: TR_KVASIR_SONATA
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [300]
+- Id: 5353
+  Name: TR_ROSEBLOSSOM
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [70, 76, 82, 88, 94]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5355
+  Name: TR_RHYTHMSHOOTING
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [36, 40, 44, 48, 52]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5356
+  Name: TR_METALIC_FURY
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [70, 76, 82, 88, 94]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5357
+  Name: TR_SOUNDBLEND
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 50, 60, 70, 80]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5358
+  Name: TR_GEF_NOCTURN
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [120, 160, 200, 240, 280]
+- Id: 5359
+  Name: TR_ROKI_CAPRICCIO
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [120, 160, 200, 240, 280]
+- Id: 5360
+  Name: TR_AIN_RHAPSODY
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [120, 160, 200, 240, 280]
+- Id: 5361
+  Name: TR_MUSICAL_INTERLUDE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [171, 182, 193, 204, 215]
+- Id: 5362
+  Name: TR_JAWAII_SERENADE
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [140, 150, 160, 170, 180]
+- Id: 5363
+  Name: TR_NIPELHEIM_REQUIEM
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [120, 160, 200, 240, 280]
+- Id: 5364
+  Name: TR_PRON_MARCH
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [140, 150, 160, 170, 180]
+- Id: 5365
+  Name: EM_MAGIC_BOOK_M
+  MaxLevel: 10
+- Id: 5366
+  Name: EM_SPELL_ENCHANTING
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [43, 46, 49, 52, 55]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5367
+  Name: EM_ACTIVITY_BURN
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [30, 40, 50, 60, 70]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5368
+  Name: EM_INCREASING_ACTIVITY
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [30, 40, 50, 60, 70]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5369
+  Name: EM_DIAMOND_STORM
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [80, 84, 88, 92, 96]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5370
+  Name: EM_LIGHTNING_LAND
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [94, 98, 102, 106, 110]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5371
+  Name: EM_VENOM_SWAMP
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [92, 97, 102, 107, 112]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5372
+  Name: EM_CONFLAGRATION
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [97, 101, 105, 109, 113]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5373
+  Name: EM_TERRA_DRIVE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [80, 84, 88, 92, 96]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5374
+  Name: EM_ELEMENTAL_SPIRIT_M
+  MaxLevel: 10
+- Id: 5375
+  Name: EM_SUMMON_ELEMENTAL_ARDOR
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [100]
+- Id: 5376
+  Name: EM_SUMMON_ELEMENTAL_DILUVIO
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [100]
+- Id: 5377
+  Name: EM_SUMMON_ELEMENTAL_PROCELLA
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [100]
+- Id: 5378
+  Name: EM_SUMMON_ELEMENTAL_TERREMOTUS
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [100]
+- Id: 5379
+  Name: EM_SUMMON_ELEMENTAL_SERPENS
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [100]
+- Id: 5380
+  Name: EM_ELEMENTAL_BUSTER
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [140, 140, 140, 140, 140, 140, 140, 140, 140, 140]
+- Id: 5381
+  Name: EM_ELEMENTAL_VEIL
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [70, 75, 80, 85, 90]
+- Id: 5401
+  Name: NW_P_F_I
+  MaxLevel: 10
+- Id: 5402
+  Name: NW_GRENADE_MASTERY
+  MaxLevel: 10
+- Id: 5403
+  Name: NW_INTENSIVE_AIM
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+- Id: 5404
+  Name: NW_GRENADE_FRAGMENT
+  MaxLevel: 7
+  TargetType: 4
+  SpCost: [50, 50, 50, 50, 50, 50, 50]
+- Id: 5405
+  Name: NW_THE_VIGILANTE_AT_NIGHT
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [72, 76, 80, 84, 88]
+- Id: 5406
+  Name: NW_ONLY_ONE_BULLET
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [39, 43, 47, 51, 55]
+  Range: [-9, -9, -9, -9, -9]
+- Id: 5407
+  Name: NW_SPIRAL_SHOOTING
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [48, 53, 58, 63, 68]
+  Range: [-9, -9, -9, -9, -9]
+- Id: 5408
+  Name: NW_MAGAZINE_FOR_ONE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [42, 46, 50, 54, 58]
+  Range: [-9, -9, -9, -9, -9]
+- Id: 5409
+  Name: NW_WILD_FIRE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [51, 55, 59, 63, 67]
+  Range: [-9, -9, -9, -9, -9]
+- Id: 5410
+  Name: NW_BASIC_GRENADE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [36, 42, 48, 54, 60]
+  Range: [-9, -9, -9, -9, -9]
+- Id: 5411
+  Name: NW_HASTY_FIRE_IN_THE_HOLE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [50, 53, 56, 59, 62]
+  Range: [-9, -9, -9, -9, -9]
+- Id: 5412
+  Name: NW_GRENADES_DROPPING
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [60, 66, 72, 78, 84]
+  Range: [-9, -9, -9, -9, -9]
+- Id: 5413
+  Name: NW_AUTO_FIRING_LAUNCHER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [90, 100, 110, 120, 130]
+- Id: 5414
+  Name: NW_HIDDEN_CARD
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [150, 150, 150, 150, 150, 150, 150, 150, 150, 150]
+- Id: 5415
+  Name: NW_MISSION_BOMBARD
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
+  Range: [-9, -9, -9, -9, -9, -9, -9, -9, -9, -9]
+- Id: 5416
+  Name: SOA_TALISMAN_MASTERY
+  MaxLevel: 10
+- Id: 5417
+  Name: SOA_SOUL_MASTERY
+  MaxLevel: 10
+- Id: 5418
+  Name: SOA_TALISMAN_OF_PROTECTION
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [50, 55, 60, 65, 70]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5419
+  Name: SOA_TALISMAN_OF_WARRIOR
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [50, 55, 60, 65, 70]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5420
+  Name: SOA_TALISMAN_OF_MAGICIAN
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [50, 55, 60, 65, 70]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5421
+  Name: SOA_SOUL_GATHERING
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [70, 75, 80, 85, 90]
+- Id: 5422
+  Name: SOA_TOTEM_OF_TUTELARY
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [76, 92, 108, 124, 140]
+  Range: [11, 11, 11, 11, 11]
+- Id: 5423
+  Name: SOA_TALISMAN_OF_FIVE_ELEMENTS
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [50, 55, 60, 65, 70]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5424
+  Name: SOA_TALISMAN_OF_SOUL_STEALING
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [84, 84, 84, 84, 84]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5425
+  Name: SOA_EXORCISM_OF_MALICIOUS_SOUL
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [70, 80, 90, 100, 110]
+- Id: 5426
+  Name: SOA_TALISMAN_OF_BLUE_DRAGON
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [54, 58, 62, 66, 70]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5427
+  Name: SOA_TALISMAN_OF_WHITE_TIGER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [110, 112, 114, 116, 118]
+- Id: 5428
+  Name: SOA_TALISMAN_OF_RED_PHOENIX
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [72, 76, 80, 84, 88]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5429
+  Name: SOA_TALISMAN_OF_BLACK_TORTOISE
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [72, 77, 82, 87, 92]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5430
+  Name: SOA_TALISMAN_OF_FOUR_BEARING_GOD
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [86, 88, 90, 92, 94]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5431
+  Name: SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [120, 140, 160, 180, 200]
+  Range: [9, 9, 9, 9, 9]
+- Id: 5432
+  Name: SOA_SOUL_OF_HEAVEN_AND_EARTH
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [90, 100, 110, 120, 130, 140, 150, 160, 170, 180]
+  Range: [11, 11, 11, 11, 11, 11, 11, 11, 11, 11]
+- Id: 5433
+  Name: SH_MYSTICAL_CREATURE_MASTERY
+  MaxLevel: 10
+- Id: 5434
+  Name: SH_COMMUNE_WITH_CHUL_HO
+  MaxLevel: 1
+- Id: 5435
+  Name: SH_CHUL_HO_SONIC_CLAW
+  MaxLevel: 7
+  TargetType: 1
+  SpCost: [42, 44, 46, 48, 50, 52, 54]
+  Range: [-9, -9, -9, -9, -9, -9, -9]
+- Id: 5436
+  Name: SH_HOWLING_OF_CHUL_HO
+  MaxLevel: 7
+  TargetType: 4
+  SpCost: [72, 72, 72, 72, 72, 72, 72]
+  Range: [-9, -9, -9, -9, -9, -9, -9]
+- Id: 5437
+  Name: SH_HOGOGONG_STRIKE
+  MaxLevel: 7
+  TargetType: 4
+  SpCost: [67, 70, 73, 76, 79, 82, 85]
+  Range: [-9, -9, -9, -9, -9, -9, -9]
+- Id: 5438
+  Name: SH_COMMUNE_WITH_KI_SUL
+  MaxLevel: 1
+- Id: 5439
+  Name: SH_KI_SUL_WATER_SPRAYING
+  MaxLevel: 7
+  TargetType: 4
+  SpCost: [61, 65, 69, 73, 77, 81, 85]
+- Id: 5440
+  Name: SH_MARINE_FESTIVAL_OF_KI_SUL
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [80, 90, 100, 110, 120]
+- Id: 5441
+  Name: SH_SANDY_FESTIVAL_OF_KI_SUL
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [80, 90, 100, 110, 120]
+- Id: 5442
+  Name: SH_KI_SUL_RAMPAGE
+  MaxLevel: 7
+  TargetType: 4
+  SpCost: [90, 100, 110, 120, 130, 140, 150]
+- Id: 5443
+  Name: SH_COMMUNE_WITH_HYUN_ROK
+  MaxLevel: 1
+- Id: 5444
+  Name: SH_COLORS_OF_HYUN_ROK
+  MaxLevel: 7
+  TargetType: 4
+  SpCost: [90, 90, 90, 90, 90, 90, 90]
+- Id: 5445
+  Name: SH_HYUN_ROKS_BREEZE
+  MaxLevel: 7
+  TargetType: 2
+  SpCost: [58, 64, 70, 76, 82, 88, 94]
+  Range: [9, 9, 9, 9, 9, 9, 9]
+- Id: 5446
+  Name: SH_HYUN_ROK_CANNON
+  MaxLevel: 7
+  TargetType: 1
+  SpCost: [47, 50, 53, 56, 59, 62, 65]
+  Range: [-9, -9, -9, -9, -9, -9, -9]
+- Id: 5447
+  Name: SH_TEMPORARY_COMMUNION
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [100, 100, 100, 100, 100]
+- Id: 5448
+  Name: SH_BLESSING_OF_MYSTICAL_CREATURES
+  MaxLevel: 5
+  TargetType: 16
+  SpCost: [100, 100, 100, 100, 100]
+  Range: [-9, -9, -9, -9, -9]
+- Id: 5449
+  Name: HN_SELFSTUDY_TATICS
+  MaxLevel: 10
+- Id: 5450
+  Name: HN_SELFSTUDY_SOCERY
+  MaxLevel: 10
+- Id: 5451
+  Name: HN_DOUBLEBOWLINGBASH
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [38, 41, 44, 47, 50, 53, 56, 59, 62, 65]
+  Range: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+- Id: 5452
+  Name: HN_MEGA_SONIC_BLOW
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [42, 44, 46, 48, 50, 52, 54, 56, 58, 60]
+  Range: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+- Id: 5453
+  Name: HN_SHIELD_CHAIN_RUSH
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [35, 38, 41, 44, 47, 50, 53, 56, 59, 62]
+  Range: [7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+- Id: 5454
+  Name: HN_SPIRAL_PIERCE_MAX
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [37, 39, 41, 43, 45, 47, 49, 51, 53, 55]
+  Range: [7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+- Id: 5455
+  Name: HN_METEOR_STORM_BUSTER
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [74, 78, 82, 86, 90, 94, 98, 102, 106, 110]
+  Range: [-9, -9, -9, -9, -9, -9, -9, -9, -9, -9]
+- Id: 5456
+  Name: HN_JUPITEL_THUNDER_STORM
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [75, 80, 85, 90, 95, 100, 105, 110, 115, 120]
+  Range: [11, 11, 11, 11, 11, 11, 11, 11, 11, 11]
+- Id: 5457
+  Name: HN_JACK_FROST_NOVA
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [68, 71, 74, 77, 80, 83, 86, 89, 92, 95]
+  Range: [-9, -9, -9, -9, -9, -9, -9, -9, -9, -9]
+- Id: 5458
+  Name: HN_HELLS_DRIVE
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [88, 91, 94, 97, 100, 103, 106, 109, 112, 115]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 5459
+  Name: HN_GROUND_GRAVITATION
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [93, 96, 99, 102, 105, 108, 111, 114, 117, 120]
+  Range: [-9, -9, -9, -9, -9, -9, -9, -9, -9, -9]
+- Id: 5460
+  Name: HN_NAPALM_VULCAN_STRIKE
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [48, 51, 54, 57, 60, 63, 66, 69, 72, 75]
+  Range: [11, 11, 11, 11, 11, 11, 11, 11, 11, 11]
+- Id: 5461
+  Name: HN_BREAKINGLIMIT
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [150]
+- Id: 5462
+  Name: HN_RULEBREAK
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [150]
+- Id: 5463
+  Name: SKE_SKY_MASTERY
+  MaxLevel: 10
+- Id: 5464
+  Name: SKE_WAR_BOOK_MASTERY
+  MaxLevel: 10
+- Id: 5465
+  Name: SKE_RISING_SUN
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [60, 60, 60, 60, 60]
+  Range: [2, 2, 2, 2, 2]
+- Id: 5466
+  Name: SKE_NOON_BLAST
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [49, 53, 57, 61, 65]
+  Range: [2, 2, 2, 2, 2]
+- Id: 5467
+  Name: SKE_SUNSET_BLAST
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [46, 50, 54, 58, 62]
+  Range: [2, 2, 2, 2, 2]
+- Id: 5468
+  Name: SKE_RISING_MOON
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [64, 64, 64, 64, 64]
+  Range: [2, 2, 2, 2, 2]
+- Id: 5469
+  Name: SKE_MIDNIGHT_KICK
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [60, 62, 64, 66, 68]
+  Range: [1, 1, 1, 1, 1]
+- Id: 5470
+  Name: SKE_DAWN_BREAK
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [56, 58, 60, 62, 64]
+  Range: [1, 1, 1, 1, 1]
+- Id: 5471
+  Name: SKE_TWINKLING_GALAXY
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [124, 124, 124, 124, 124]
+  Range: [1, 1, 1, 1, 1]
+- Id: 5472
+  Name: SKE_STAR_BURST
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [54, 56, 58, 60, 62]
+  Range: [2, 2, 2, 2, 2]
+- Id: 5473
+  Name: SKE_STAR_CANNON
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [90, 95, 100, 105, 110]
+  Range: [1, 1, 1, 1, 1]
+- Id: 5474
+  Name: SKE_ALL_IN_THE_SKY
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [85, 85, 85, 85, 85, 85, 85, 85, 85, 85]
+  Range: [-9, -9, -9, -9, -9, -9, -9, -9, -9, -9]
+- Id: 5475
+  Name: SKE_ENCHANTING_SKY
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
+- Id: 5476
+  Name: SS_TOKEDASU
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [35, 35, 35, 35, 35]
+  Range: [5, 5, 5, 5, 5]
+- Id: 5477
+  Name: SS_SHIMIRU
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 40, 40, 40, 40]
+  Range: [11, 11, 11, 11, 11]
+- Id: 5478
+  Name: SS_AKUMUKESU
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [10]
+- Id: 5479
+  Name: SS_SHINKIROU
+  MaxLevel: 1
+  TargetType: 2
+  SpCost: [25]
+  Range: [5]
+- Id: 5480
+  Name: SS_KAGEGARI
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [33, 36, 39, 42, 45, 48, 51, 54, 57, 60]
+  Range: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+- Id: 5481
+  Name: SS_KAGENOMAI
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [37, 42, 47, 52, 57, 62, 67, 72, 77, 82]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 5482
+  Name: SS_KAGEGISSEN
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [36, 39, 42, 45, 48, 51, 54, 57, 60, 63]
+  Range: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+- Id: 5483
+  Name: SS_FUUMASHOUAKU
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [48, 52, 56, 60, 64, 68, 72, 76, 80, 84]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5484
+  Name: SS_FUUMAKOUCHIKU
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [29, 33, 37, 41, 45, 49, 53, 57, 61, 65]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5485
+  Name: SS_KUNAIWAIKYOKU
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [36, 38, 40, 42, 44, 46, 48, 50, 52, 54]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5486
+  Name: SS_KUNAIKAITEN
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [44, 52, 60, 68, 76]
+  Range: [1, 1, 1, 1, 1]
+- Id: 5487
+  Name: SS_KUNAIKUSSETSU
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [49, 52, 55, 58, 61, 64, 67, 70, 73, 76]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 5488
+  Name: SS_SEKIENHOU
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [53, 56, 59, 62, 65, 68, 71, 74, 77, 80]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5489
+  Name: SS_REIKETSUHOU
+  MaxLevel: 10
+  TargetType: 2
+  SpCost: [52, 56, 60, 64, 68, 72, 76, 80, 84, 88]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5490
+  Name: SS_RAIDENPOU
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [53, 56, 59, 62, 65, 68, 71, 74, 77, 80]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5491
+  Name: SS_KINRYUUHOU
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [47, 49, 51, 53, 55, 57, 59, 61, 63, 65]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 5492
+  Name: SS_ANTENPOU
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [40, 46, 52, 58, 64, 70, 76, 82, 88, 94]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 5493
+  Name: SS_KAGEAKUMU
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [70]
+  Range: [1]
+- Id: 5494
+  Name: SS_HITOUAKUMU
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [70]
+  Range: [1]
+- Id: 5495
+  Name: SS_ANKOKURYUUAKUMU
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [120]
+  Range: [1]
+- Id: 5499
+  Name: SS_FOUR_CHARM
+  MaxLevel: 1
+  TargetType: 4
+  SpCost: [90]
+  Range: [1]
+- Id: 5500
+  Name: NW_WILD_SHOT
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [60, 63, 66, 69, 72]
+  Range: [-9, -9, -9, -9, -9]
+- Id: 5501
+  Name: NW_MIDNIGHT_FALLEN
+  MaxLevel: 5
+  TargetType: 2
+  SpCost: [50, 55, 60, 65, 70]
+  Range: [-9, -9, -9, -9, -9]
+- Id: 5502
+  Name: SKE_SKY_SUN
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [72, 76, 80, 84, 88]
+  Range: [1, 1, 1, 1, 1]
+- Id: 5503
+  Name: SKE_SKY_MOON
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [56, 59, 62, 65, 68]
+  Range: [2, 2, 2, 2, 2]
+- Id: 5504
+  Name: SKE_STAR_LIGHT_KICK
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [52, 57, 62, 67, 72]
+  Range: [7, 7, 7, 7, 7]
+- Id: 5505
+  Name: HN_OVERCOMING_CRISIS
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [70, 73, 76, 79, 82]
+  Range: [1, 1, 1, 1, 1]
+- Id: 5506
+  Name: SH_CHUL_HO_BATTERING
+  MaxLevel: 7
+  TargetType: 1
+  SpCost: [64, 66, 68, 70, 72, 74, 76]
+  Range: [9, 9, 9, 9, 9, 9, 9]
+- Id: 5507
+  Name: SH_HYUN_ROK_SPIRIT_POWER
+  MaxLevel: 7
+  TargetType: 1
+  SpCost: [70, 73, 76, 79, 82, 85, 88]
+  Range: [9, 9, 9, 9, 9, 9, 9]
+- Id: 6001
+  Name: DK_DRAGONIC_BREATH
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [61, 64, 67, 70, 73, 76, 79, 82, 85, 88]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 6002
+  Name: MT_SPARK_BLASTER
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [48, 52, 56, 60, 64, 68, 72, 76, 80, 84]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 6003
+  Name: MT_TRIPLE_LASER
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [40, 45, 50, 55, 60]
+  Range: [11, 11, 11, 11, 11]
+- Id: 6004
+  Name: MT_MIGHTY_SMASH
+  MaxLevel: 10
+  TargetType: 4
+  SpCost: [68, 71, 74, 77, 80, 83, 86, 89, 92, 95]
+  Range: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+- Id: 6005
+  Name: BO_EXPLOSIVE_POWDER
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [69, 76, 83, 90, 97]
+- Id: 6006
+  Name: BO_MAYHEMIC_THORNS
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [68, 70, 72, 74, 76, 78, 80, 82, 84, 86]
+  Range: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+- Id: 6502
+  Name: DK_DRAGONIC_PIERCE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [45, 50, 55, 60, 65]
+  Range: [7, 7, 7, 7, 7]
+- Id: 6503
+  Name: IG_RADIANT_SPEAR
+  MaxLevel: 10
+  TargetType: 1
+  SpCost: [67, 69, 71, 73, 75, 77, 79, 81, 83, 85]
+  Range: [7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+- Id: 6504
+  Name: IG_IMPERIAL_CROSS
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [49, 53, 57, 61, 65]
+  Range: [2, 2, 2, 2, 2]
+- Id: 6505
+  Name: IG_IMPERIAL_PRESSURE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [89, 93, 97, 101, 105]
+  Range: [9, 9, 9, 9, 9]
+- Id: 6506
+  Name: MT_RUSH_STRIKE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [85, 80, 75, 70, 65]
+  Range: [7, 7, 7, 7, 7]
+- Id: 6507
+  Name: MT_POWERFUL_SWING
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [57, 59, 61, 63, 65]
+  Range: [2, 2, 2, 2, 2]
+- Id: 6508
+  Name: MT_ENERGY_CANNONADE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [58, 64, 70, 76, 82]
+  Range: [9, 9, 9, 9, 9]
+- Id: 6509
+  Name: BO_MYSTERY_POWDER
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [82, 82, 82, 82, 82]
+  Range: [3, 3, 3, 3, 3]
+- Id: 6510
+  Name: BO_DUST_EXPLOSION
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [64, 67, 70, 73, 76]
+  Range: [3, 3, 3, 3, 3]
+- Id: 6511
+  Name: SHC_CROSS_SLASH
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [58, 63, 68, 73, 78]
+  Range: [3, 3, 3, 3, 3]
+- Id: 6512
+  Name: ABC_HIT_AND_SLIDING
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [43, 46, 49, 52, 55]
+  Range: [2, 2, 2, 2, 2]
+- Id: 6513
+  Name: ABC_CHASING_BREAK
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [62, 66, 70, 74, 78]
+  Range: [7, 7, 7, 7, 7]
+- Id: 6514
+  Name: ABC_CHASING_SHOT
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [85, 90, 95, 100, 105]
+  Range: [7, 7, 7, 7, 7]
+- Id: 6515
+  Name: ABC_ABYSS_FLAME
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [82, 86, 90, 94, 98]
+  Range: [9, 9, 9, 9, 9]
+- Id: 6516
+  Name: AG_ENERGY_CONVERSION
+  MaxLevel: 5
+  TargetType: 4
+  SpCost: [10, 10, 10, 10, 10]
+- Id: 6517
+  Name: EM_PSYCHIC_STREAM
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [77, 84, 91, 98, 105]
+  Range: [9, 9, 9, 9, 9]
+- Id: 6518
+  Name: CD_DIVINUS_FLOS
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [99, 103, 107, 111, 115]
+  Range: [9, 9, 9, 9, 9]
+- Id: 6519
+  Name: IQ_BLAZING_FLAME_BLAST
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [54, 58, 62, 66, 68]
+  Range: [7, 7, 7, 7, 7]
+- Id: 6520
+  Name: WH_WILD_WALK
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [63, 66, 69, 72, 75]
+  Range: [11, 11, 11, 11, 11]
+- Id: 6521
+  Name: TR_RHYTHMICAL_WAVE
+  MaxLevel: 5
+  TargetType: 1
+  SpCost: [56, 62, 68, 74, 80]
+  Range: [9, 9, 9, 9, 9]

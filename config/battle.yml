@@ -73,3 +73,11 @@ use_statpoint_table: true
 multi_level_up: false
 multi_level_up_base: 0
 multi_level_up_job: 0
+
+# The skill tree: every tree skill visible with no checks; points needed in the previous class
+# before the next class's skills appear; quest skills learnable with points; a skill reset also
+# wiping quest skills.
+player_skillfree: false
+player_skillup_limit: true
+quest_skill_learn: false
+quest_skill_reset: false

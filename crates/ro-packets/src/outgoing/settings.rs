@@ -52,6 +52,33 @@ pub fn encode_zc_skillinfo_list(skills: &[SkillInfo]) -> Bytes {
     buf.freeze()
 }
 
+/// Encodes `ZC_SKILLINFO_UPDATE` (0x010e): `id:u16, level:u16, sp:u16, range:u16, upFlag:u8`,
+/// 11 bytes.
+pub fn encode_zc_skillinfo_update(
+    id: u16,
+    level: u16,
+    sp: u16,
+    range: u16,
+    upgradable: bool,
+) -> Bytes {
+    let mut buf = BytesMut::with_capacity(11);
+    buf.put_u16_le(PacketOpcode::ZC_SKILLINFO_UPDATE.raw());
+    buf.put_u16_le(id);
+    buf.put_u16_le(level);
+    buf.put_u16_le(sp);
+    buf.put_u16_le(range);
+    buf.put_u8(u8::from(upgradable));
+    buf.freeze()
+}
+
+/// Encodes `ZC_SKILLINFO_DELETE` (0x0441): `id:u16`, 4 bytes.
+pub fn encode_zc_skillinfo_delete(id: u16) -> Bytes {
+    let mut buf = BytesMut::with_capacity(4);
+    buf.put_u16_le(PacketOpcode::ZC_SKILLINFO_DELETE.raw());
+    buf.put_u16_le(id);
+    buf.freeze()
+}
+
 /// Encodes `ZC_SHORTCUT_KEY_LIST_V4` (0x0b20) for hotkey bank `tab` with every slot empty and no row
 /// shift: 271 bytes.
 pub fn encode_zc_shortcut_key_list_empty(tab: u8) -> Bytes {

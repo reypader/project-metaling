@@ -70,6 +70,9 @@ pub struct CharacterProgress {
     pub base_level: u16,
     /// Allocated stats and traits, job level, points, exp and HP/SP/AP.
     pub status: CharacterStatus,
+    /// The job level at the change into the 2nd, 3rd and 4th class (rAthena's
+    /// `JOBCHANGE2ND/3RD/4TH` char vars); 0 = unset (specs `specs/skills/spec.md` §2.1).
+    pub change_level: [u16; 3],
 }
 
 impl Default for CharacterProgress {
@@ -79,6 +82,7 @@ impl Default for CharacterProgress {
             job_class: 0,
             base_level: 1,
             status: CharacterStatus::default(),
+            change_level: [0; 3],
         }
     }
 }
@@ -90,8 +94,47 @@ impl CharacterSpawn {
             job_class: self.job_class,
             base_level: self.base_level,
             status: self.status,
+            change_level: self.change_level,
         }
     }
+}
+
+/// How a character has a skill (rAthena `e_skill_flag`, the persisted values only).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum SkillFlag {
+    /// Learned with skill points (0).
+    #[default]
+    Permanent,
+    /// Granted by a script, outside the tree (3).
+    Granted,
+}
+
+impl SkillFlag {
+    /// The `flag` column value.
+    pub fn code(self) -> u8 {
+        match self {
+            Self::Permanent => 0,
+            Self::Granted => 3,
+        }
+    }
+
+    /// The flag of a `flag` column value: 3 is `Granted`, anything else `Permanent` (rAthena's
+    /// load rule).
+    pub fn from_code(code: u8) -> Self {
+        if code == 3 {
+            Self::Granted
+        } else {
+            Self::Permanent
+        }
+    }
+}
+
+/// One persisted skill row: a skill the character has at `level` > 0.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct LearnedSkill {
+    pub id: u16,
+    pub level: u8,
+    pub flag: SkillFlag,
 }
 
 /// Snapshot the map-server builds from a `CharacterSummary` plus the session to spawn a character.
@@ -113,6 +156,13 @@ pub struct CharacterSpawn {
     /// Account permission group; 99 may use every GM command.
     pub group_id: i32,
     pub inventory: CharacterInventory,
+    /// The learned skills the client saw (the stored rows), sorted by id.
+    pub skills: Vec<LearnedSkill>,
+    /// Levels a class change hid, carried by a cross-map transfer (they count for nothing and
+    /// are not saved; spec `specs/skills/spec.md` §2.4). Empty at login.
+    pub hidden_skills: Vec<LearnedSkill>,
+    /// See `CharacterProgress::change_level`.
+    pub change_level: [u16; 3],
 }
 
 impl CharacterSpawn {
@@ -135,6 +185,9 @@ impl CharacterSpawn {
             status: CharacterStatus::default(),
             group_id: 0,
             inventory: CharacterInventory::default(),
+            skills: Vec::new(),
+            hidden_skills: Vec::new(),
+            change_level: [0; 3],
         }
     }
 }

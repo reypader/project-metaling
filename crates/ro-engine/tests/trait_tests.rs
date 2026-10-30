@@ -110,6 +110,9 @@ fn spawn(job: u16, base_level: u16, status: CharacterStatus) -> CharacterSpawn {
         status,
         group_id: 99,
         inventory: CharacterInventory::default(),
+        skills: Vec::new(),
+        hidden_skills: Vec::new(),
+        change_level: [0; 3],
     }
 }
 

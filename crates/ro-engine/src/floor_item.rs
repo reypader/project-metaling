@@ -395,6 +395,9 @@ mod tests {
                 slots: vec![Some(InventoryItem::new(ItemId(501), 5))],
                 unique_item_counter: 0,
             },
+            skills: Vec::new(),
+            hidden_skills: Vec::new(),
+            change_level: [0; 3],
         };
         engine.spawn_character(spawn, 0).expect("spawn");
         send(engine, n, ClientIntent::NotifyActorInit, 0);

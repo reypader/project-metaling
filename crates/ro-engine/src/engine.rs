@@ -16,6 +16,7 @@ use ro_core::{
 };
 use ro_db::{
     CellType, ItemDb, JobDb, MapGrid, MapNpcs, MobDb, NpcKind, NpcSpawn, NpcState, RefineDb,
+    SkillDb, SkillTreeDb,
 };
 use ro_mechanics::BattleConfig;
 use smallvec::SmallVec;
@@ -113,6 +114,8 @@ pub struct MapInstance {
     pub(crate) mob_db: Arc<MobDb>,
     pub(crate) jobs: Arc<JobDb>,
     pub(crate) refine: Arc<RefineDb>,
+    pub(crate) skills: Arc<SkillDb>,
+    pub(crate) skill_tree: Arc<SkillTreeDb>,
     pub(crate) battle: Arc<BattleConfig>,
     /// Players the tick's stat pass owes a recalc or follow-ups, in marking order (each once;
     /// `PlayerInfo::stat_flags` has `LISTED`). Reused across ticks.
@@ -128,6 +131,8 @@ pub struct Registries {
     pub mobs: Arc<MobDb>,
     pub jobs: Arc<JobDb>,
     pub refine: Arc<RefineDb>,
+    pub skills: Arc<SkillDb>,
+    pub skill_tree: Arc<SkillTreeDb>,
     pub battle: Arc<BattleConfig>,
 }
 
@@ -186,6 +191,8 @@ impl MapInstance {
             mob_db: Arc::new(MobDb::default()),
             jobs: Arc::new(JobDb::default()),
             refine: Arc::new(RefineDb::default()),
+            skills: Arc::new(SkillDb::default()),
+            skill_tree: Arc::new(SkillTreeDb::default()),
             battle: Arc::new(BattleConfig::default()),
             stat_queue: Vec::new(),
             save_requests: Vec::new(),
@@ -199,6 +206,8 @@ impl MapInstance {
         self.mob_db = registries.mobs;
         self.jobs = registries.jobs;
         self.refine = registries.refine;
+        self.skills = registries.skills;
+        self.skill_tree = registries.skill_tree;
         self.battle = registries.battle;
     }
 
@@ -444,6 +453,7 @@ impl MapInstance {
             ClientIntent::UnequipAll { location } => self.unequip_all(e, location),
             ClientIntent::RaiseStat { var, amount } => self.raise_stat(e, var, amount),
             ClientIntent::RaiseTrait { var, amount } => self.raise_trait(e, var, amount),
+            ClientIntent::UpgradeSkill { id } => self.upgrade_skill(e, id),
             ClientIntent::BlockingPlayCancel => self.emit_self(e, ServerEvent::LoadConfirmed),
             other => debug!(map = %self.map_name, intent = ?other, "intent not handled by engine"),
         }
@@ -525,6 +535,8 @@ impl MapInstance {
             info.looks = looks;
         }
         self.init_status(e);
+        // The visible tree, silently: the login list or a later diff sends it.
+        self.refresh_skills(e);
         Ok(e)
     }
 
@@ -932,11 +944,20 @@ impl MapInstance {
     pub fn play_snapshot(&self, char_id: CharId) -> Option<PlaySnapshot> {
         let progress = self.progress_snapshot(char_id)?;
         let e = self.world.entity_by_char(char_id)?;
+        let skills = self.world.players.get(e)?.skills.saved_rows();
         self.world.inventories.get(e).map(|inventory| PlaySnapshot {
             inventory: inventory.snapshot(),
             looks: inventory.gear(&self.items).character_looks(),
             progress,
+            skills,
         })
+    }
+
+    /// Changes whenever the character's saved skill rows may have changed (0 after spawn). The
+    /// map-server compares it with the revision it last saved.
+    pub fn skills_revision(&self, char_id: CharId) -> Option<u32> {
+        let e = self.world.entity_by_char(char_id)?;
+        self.world.players.get(e).map(|info| info.skills.revision())
     }
 
     /// Changes whenever the character's inventory changes (0 after spawn). The map-server

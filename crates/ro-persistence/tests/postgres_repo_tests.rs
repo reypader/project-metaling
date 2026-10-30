@@ -905,6 +905,7 @@ async fn per_inv_01_round_trip_keeps_every_field() {
         &inventory,
         &CharacterLooks::default(),
         &CharacterProgress::default(),
+        &[],
     )
     .await
     .expect("saves");
@@ -939,6 +940,7 @@ async fn per_inv_02_holes_compact() {
         &inventory,
         &CharacterLooks::default(),
         &CharacterProgress::default(),
+        &[],
     )
     .await
     .expect("saves");
@@ -964,6 +966,7 @@ async fn per_inv_03_save_replaces_rows() {
         &first,
         &CharacterLooks::default(),
         &CharacterProgress::default(),
+        &[],
     )
     .await
     .expect("saves");
@@ -976,6 +979,7 @@ async fn per_inv_03_save_replaces_rows() {
         &second,
         &CharacterLooks::default(),
         &CharacterProgress::default(),
+        &[],
     )
     .await
     .expect("saves");
@@ -996,6 +1000,7 @@ async fn per_inv_03_save_replaces_rows() {
         &empty,
         &CharacterLooks::default(),
         &CharacterProgress::default(),
+        &[],
     )
     .await
     .expect("saves");
@@ -1011,7 +1016,8 @@ async fn per_inv_03_save_replaces_rows() {
             CharId(u32::MAX >> 1),
             &second,
             &CharacterLooks::default(),
-            &CharacterProgress::default()
+            &CharacterProgress::default(),
+            &[]
         )
         .await,
         Err(RepositoryError::NotFound),
@@ -1046,15 +1052,22 @@ async fn per_inv_04_play_state_and_cascade() {
         job_class: 4307,
         base_level: 150,
         status,
+        change_level: [0; 3],
     };
     let inventory = CharacterInventory {
         slots: vec![Some(InventoryItem::new(ItemId(909), 1))],
         unique_item_counter: 1,
     };
     // PER-STAT-01: the progress saves with the inventory and loads back.
-    repo.save_play_state(char_id, &inventory, &CharacterLooks::default(), &progress)
-        .await
-        .expect("saves");
+    repo.save_play_state(
+        char_id,
+        &inventory,
+        &CharacterLooks::default(),
+        &progress,
+        &[],
+    )
+    .await
+    .expect("saves");
     let state = repo
         .load_play_state(char_id)
         .await
@@ -1110,6 +1123,7 @@ async fn per_inv_02_over_capacity_is_refused() {
         &full,
         &CharacterLooks::default(),
         &CharacterProgress::default(),
+        &[],
     )
     .await
     .expect("100 fits");
@@ -1122,7 +1136,8 @@ async fn per_inv_02_over_capacity_is_refused() {
             char_id,
             &too_many,
             &CharacterLooks::default(),
-            &CharacterProgress::default()
+            &CharacterProgress::default(),
+            &[]
         )
         .await,
         Err(RepositoryError::Internal(_))
@@ -1154,8 +1169,8 @@ async fn per_inv_03_concurrent_saves_serialize() {
     let progress = CharacterProgress::default();
     for _ in 0..10 {
         let (ra, rb) = tokio::join!(
-            repo.save_play_state(char_id, &a, &bare, &progress),
-            repo.save_play_state(char_id, &b, &bare, &progress)
+            repo.save_play_state(char_id, &a, &bare, &progress, &[]),
+            repo.save_play_state(char_id, &b, &bare, &progress, &[])
         );
         ra.expect("save a");
         rb.expect("save b");
@@ -1194,9 +1209,15 @@ async fn per_eq_01_looks_saved_with_inventory() {
         slots: vec![Some(InventoryItem::new(ItemId(1201), 1))],
         unique_item_counter: 1,
     };
-    repo.save_play_state(char_id, &inventory, &looks, &CharacterProgress::default())
-        .await
-        .expect("saves");
+    repo.save_play_state(
+        char_id,
+        &inventory,
+        &looks,
+        &CharacterProgress::default(),
+        &[],
+    )
+    .await
+    .expect("saves");
 
     let by_id = CharacterRepository::find_by_id(&repo, char_id)
         .await
@@ -1223,7 +1244,8 @@ async fn per_eq_01_looks_saved_with_inventory() {
             char_id,
             &too_many,
             &CharacterLooks::default(),
-            &CharacterProgress::default()
+            &CharacterProgress::default(),
+            &[]
         )
         .await
         .is_err());
@@ -1344,12 +1366,14 @@ async fn per_trait_01_traits_and_select_values_round_trip() {
         job_class: 4252,
         base_level: 205,
         status,
+        change_level: [0; 3],
     };
     repo.save_play_state(
         char_id,
         &CharacterInventory::default(),
         &CharacterLooks::default(),
         &progress,
+        &[],
     )
     .await
     .expect("saves");
@@ -1454,4 +1478,89 @@ async fn per_trait_01_schema_adds_trait_columns() {
         .execute(main.pool())
         .await
         .expect("schema dropped");
+}
+
+/// PER-SKILL-01 (`specs/skills` §2.9): the skill rows (levels above 0 only) and the class-change
+/// levels save in the play-state transaction and load back; a later save rewrites the rows.
+#[tokio::test]
+async fn per_skill_01_skills_and_change_levels_round_trip() {
+    use ro_core::{LearnedSkill, SkillFlag};
+    let skill = |id, level, flag| LearnedSkill { id, level, flag };
+    let (repo, _acc, char_id) = inventory_fixture(0).await;
+    let progress = CharacterProgress {
+        job_class: 7,
+        base_level: 50,
+        status: CharacterStatus::default(),
+        change_level: [45, 0, 0],
+    };
+    let first = [
+        skill(1, 9, SkillFlag::Permanent),
+        skill(2, 10, SkillFlag::Permanent),
+        skill(3, 0, SkillFlag::Permanent),
+        skill(142, 1, SkillFlag::Granted),
+    ];
+    repo.save_play_state(
+        char_id,
+        &CharacterInventory::default(),
+        &CharacterLooks::default(),
+        &progress,
+        &first,
+    )
+    .await
+    .expect("saves");
+    let state = repo
+        .load_play_state(char_id)
+        .await
+        .expect("loads")
+        .expect("exists");
+    assert_eq!(
+        state.skills,
+        [
+            skill(1, 9, SkillFlag::Permanent),
+            skill(2, 10, SkillFlag::Permanent),
+            skill(142, 1, SkillFlag::Granted),
+        ],
+        "level 0 is not a row; ordered by id"
+    );
+    assert_eq!(state.change_level, [45, 0, 0]);
+
+    // A later save replaces the rows (Knight levels gone after a job change).
+    let progress = CharacterProgress {
+        job_class: 2,
+        change_level: [45, 50, 1],
+        ..progress
+    };
+    repo.save_play_state(
+        char_id,
+        &CharacterInventory::default(),
+        &CharacterLooks::default(),
+        &progress,
+        &[skill(1, 9, SkillFlag::Permanent)],
+    )
+    .await
+    .expect("saves again");
+    let state = repo
+        .load_play_state(char_id)
+        .await
+        .expect("loads")
+        .expect("exists");
+    assert_eq!(state.skills, [skill(1, 9, SkillFlag::Permanent)]);
+    assert_eq!(state.change_level, [45, 50, 1]);
+
+    // No rows at all.
+    repo.save_play_state(
+        char_id,
+        &CharacterInventory::default(),
+        &CharacterLooks::default(),
+        &progress,
+        &[],
+    )
+    .await
+    .expect("saves empty");
+    let state = repo
+        .load_play_state(char_id)
+        .await
+        .expect("loads")
+        .expect("exists");
+    assert!(state.skills.is_empty());
 }

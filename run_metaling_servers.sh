@@ -28,6 +28,7 @@ export ITEM_DATA_DIR="${ITEM_DATA_DIR:-$WORKSPACE_ROOT/crates/ro-db/data/item}"
 export MOB_DATA_DIR="${MOB_DATA_DIR:-$WORKSPACE_ROOT/crates/ro-db/data/mob}"
 export JOB_DATA_DIR="${JOB_DATA_DIR:-$WORKSPACE_ROOT/crates/ro-db/data/job}"
 export REFINE_DATA_DIR="${REFINE_DATA_DIR:-$WORKSPACE_ROOT/crates/ro-db/data/refine}"
+export SKILL_DATA_DIR="${SKILL_DATA_DIR:-$WORKSPACE_ROOT/crates/ro-db/data/skill}"
 # Our own battle config (MIT); rAthena's shipped defaults written out.
 export BATTLE_CONFIG="${BATTLE_CONFIG:-$WORKSPACE_ROOT/config/battle.yml}"
 

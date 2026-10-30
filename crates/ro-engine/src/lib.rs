@@ -15,6 +15,7 @@ pub(crate) mod movement;
 pub(crate) mod path;
 mod rng;
 mod settings;
+mod skills;
 pub(crate) mod sparse_set;
 pub(crate) mod spatial;
 mod stat_up;

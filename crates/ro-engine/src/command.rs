@@ -90,6 +90,9 @@ impl MapInstance {
             }
             "jobchange" | "job" => self.command_job(e, params),
             "resetstat" | "streset" => self.command_reset_stats(e),
+            "resetskill" | "skreset" => self.command_reset_skills(e),
+            "reset" => self.command_reset_all(e),
+            "allskill" | "allskills" | "skillall" | "skillsall" => self.command_all_skills(e),
             _ => self.tell(e, &format!("Unknown command: @{command}")),
         }
     }

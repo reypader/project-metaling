@@ -621,6 +621,7 @@ Each slot has an **aggregation rule**: most `Sum`, some `Max`/`Min` (rAthena tak
 * `PASSIVES`: skill learned or reset, or a weapon change for weapon-conditional passives → rebuild the passive part of `base_bonus`.
 * `STATUSES`: a status started, ended or changed its vals → rebuild `battle_bonus` and `StateFlags`.
 * No bit, only dirty: allocated stats, levels or job changed → the cached sums are still valid, only `calc_status` runs.
+* `SKILLS` (implemented, `stats::SKILLS`; `specs/skills` §2.6): base or job level changed, or a skill reset → the pass recomputes the visible skill tree. If it changed, it sends `0x0441` for each id that left the list (ascending) and one `0x010f`, after `SP_MAXWEIGHT` and before the clamps and the diff, as rAthena's tree diff inside `status_calc_pc`. It can be set without `DIRTY` (then only the tree re-check runs). Skill-up and `@allskill` compute the tree inline instead, so the pass finds no change. `@job` sends its inline first pass at step 8 and marks `SKILLS`, so the pass sends rAthena's second pass (deletes and list) when it differs.
 
 The expensive part, summing the modifiers of 10+ items and their cards, runs only when its source changes. A recalc is otherwise pure arithmetic over a few cached arrays. Each actor is marked at most once per tick, so unequip-all of N items costs one rebuild.
 
@@ -634,9 +635,9 @@ After Stage 3 computes the new `Status`, the diff against the stored snapshot em
 | Stat-up (`0x00bb`) | 1 (intent; failure `0x00bc` at once) | dirty | queued: `0x00be`, `SP_STATUSPOINT`, `0x00bc` (after the diff, as captured) |
 | Base level up (exp, `@blvl`) | 1/2 | dirty | full heal to the **new** MaxHP/MaxSP (positive base change only), effect, the level tail; then `LevelGearCheck` unequips `elvmax` items (their own diff next tick) |
 | Trait-up (`0x0b24`) | 1 (intent; failure `0x00bc` at once, negative amount dropped silently) | dirty | queued: `0x00be` `SP_U<trait>`, `SP_TRAITPOINT`, `0x00bc` (value = allocated) |
-| Job level / job change | 1/2 | dirty (+ `PASSIVES` once skills exist); `@job` force-unequips in the flow (each unequip marks `GEAR`) | clamp; `@job` queues its looks (area), `0x010f` and `Save` |
+| Job level / job change | 1/2 | dirty + `SKILLS`; `@job` also sends its first-pass `0x010f` at step 8, and force-unequips in the flow (each unequip marks `GEAR`) | clamp; `@job` queues its looks (area), message and `Save` |
 | Stat reset (`pc_resetstate`: `@streset`, `@blvl −n`, `@job`) | 1 | dirty | none of its own: the `0x00be` ×12, `SP_STATUSPOINT`, `SP_TRAITPOINT` go out at once, the derived values come from the diff; `@streset` queues its message |
-| Passive skill learned | 1 | dirty + `PASSIVES` | — |
+| Passive skill learned | 1 | dirty + `PASSIVES` (once passives give bonuses; today the skill-up only re-checks the tree inline) | — |
 | Status start / end / expiry | 2 (expiry is a Stage 1 timer feeding Stage 2) | dirty + `STATUSES` | clamp |
 | Damage, heal, drain | 1 (`HitResolved`) | not dirty (vitals only) | fold, clamp, death |
 
@@ -649,7 +650,9 @@ After Stage 3 computes the new `Status`, the diff against the stored snapshot em
 * Cards merge their compiled bonuses into the carrier item's source. Combos are matched against the worn set when the `GEAR` sum is rebuilt.
 * `EquipScript` / `UnEquipScript` are one-shot events to the scripting VM (Stage 2), not modifiers.
 
-### 9.9 Skills (future plan)
+### 9.9 Skills
+* **Learned set (implemented, `specs/skills`; `src/skills.rs`):** each player has a `SkillSet`, a small id-sorted `Vec` of `{id, level, flag, visible}`. `compute_visible` is rAthena's `pc_calc_skilltree`: the tree job (the `player_skillup_limit` downgrade, on the mapid), then a fixed point over that job's resolved tree from `SkillTreeDb`. Hidden slots with a level (from a previous class) stay in memory, count for nothing and aren't saved. Skill effects are placeholders: no casting, no passive bonuses, no `NV_BASIC` gates. The learned set is what the passive sums and casting below will read.
+* **Ordering note for passives:** rAthena recalculates on a passive skill-up and sends that stat diff (and a changed tree's deletes and list) *before* `0x010e`. Today the skill-up sends the tree change inline. Once passives give bonuses, the skill-up must mark `PASSIVES` and the diff must still precede `0x010e`, which the end-of-tick pass doesn't do. That is a known deviation to settle then (`DEFERRED.md`).
 * **Passive skills** (Owl's Eye DEX+lv, Dragonology INT, Cavalier Mastery's ASPD restore) are modifier sources in the base layer, from a passive-skill table keyed by `(skill, level)` plus an optional weapon-type condition.
 * **Weapon masteries** that add ATK only on hit (Sword Mastery) go to `CombatBonus`, not the status.
 * **Active buffs** are status effects (§10). **Offensive skills** are damage contexts (§11) with a skill ratio.

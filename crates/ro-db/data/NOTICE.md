@@ -157,3 +157,29 @@ dataset is regenerated from a different commit, update its section.
   ```bash
   cargo run -p refine-import -- --rathena "$RATHENA_PATH" --out crates/ro-db/data/refine
   ```
+
+## Skill database and trees (`skill/skill_db.yml`, `skill/skill_tree.yml`)
+
+- **Source:** rAthena commit `d4b8e7b8f16061cc2496d377ac8f777ce72a4f39`. `db/re/skill_db.yml` and
+  `db/re/skill_tree.yml`. The job files (`db/re/job_*.yml`) are read only for each job's max base
+  and job level.
+- **Modified on 2026-10-29 by `tools/skill-import`:** converted to our own schemas (`SKILL_DATA`
+  version 1, `SKILL_TREE_DATA` version 1). The conversion:
+  - keeps only the skills some job tree lists or requires, with `Id`, `Name`, `MaxLevel`, the
+    `TargetType` as rAthena's numeric code, the per-level `SpCost` and `Range`, and the flags
+    `IsQuest`, `IsWedding`, `IsSpirit`, `IsNpc`, `IsGuild` and `AlterRange*` (renamed without
+    the `Is` prefix). Every other key is dropped;
+  - expands the per-level lists with rAthena's load-time rule (linear extrapolation or repeat
+    of the last value) and cuts them to `MaxLevel` entries. A list that is 0 at every level is
+    omitted;
+  - resolves tree inheritance the way rAthena does at load time (flat `Inherit`, `Exclude`d
+    entries not passed down, the job's own entry wins, a later parent wins, `MaxLevel: 0`
+    removes), merges repeated entries, caps `MaxLevel` to the skill's and `BaseLevel` /
+    `JobLevel` to the job's max levels, and drops level-0 requirements;
+  - turns job and skill names into ids (`Supernovice` is Super Novice). Mounted and dummy jobs
+    with no class mapping (`Knight2`, ...) are skipped. Each tree is sorted by skill id.
+- **Regenerate** (pass an expanded path):
+
+  ```bash
+  cargo run -p skill-import -- --rathena "$RATHENA_PATH" --out crates/ro-db/data/skill
+  ```

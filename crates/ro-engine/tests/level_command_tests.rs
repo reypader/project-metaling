@@ -226,6 +226,9 @@ impl World {
                 slots,
                 unique_item_counter: 0,
             },
+            skills: Vec::new(),
+            hidden_skills: Vec::new(),
+            change_level: [0; 3],
         };
         self.engine.spawn_character(spawn, 0).expect("spawn");
         self.tick(&[(n, ClientIntent::NotifyActorInit)]);

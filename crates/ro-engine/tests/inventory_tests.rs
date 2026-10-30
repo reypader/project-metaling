@@ -77,6 +77,9 @@ fn spawn_data(n: u32, x: u16, y: u16, inventory: CharacterInventory) -> Characte
         },
         group_id: 0,
         inventory,
+        skills: Vec::new(),
+        hidden_skills: Vec::new(),
+        change_level: [0; 3],
     }
 }
 

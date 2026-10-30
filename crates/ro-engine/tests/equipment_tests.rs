@@ -191,6 +191,9 @@ fn spawn_data(n: u32, inventory: Vec<Option<InventoryItem>>) -> CharacterSpawn {
             slots: inventory,
             unique_item_counter: 0,
         },
+        skills: Vec::new(),
+        hidden_skills: Vec::new(),
+        change_level: [0; 3],
     }
 }
 

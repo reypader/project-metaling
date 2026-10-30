@@ -1,9 +1,7 @@
 //! Map-entry settings and the load confirm (spec `specs/map-entry-settings/spec.md`; catalog
 //! `packets/settings.md`). Defaults only: nothing is saved yet.
 
-use std::sync::Arc;
-
-use ro_core::{AchievementSummary, ServerEvent, SkillInfo};
+use ro_core::{AchievementSummary, ServerEvent};
 
 use crate::engine::MapInstance;
 use crate::entity::Entity;
@@ -43,20 +41,6 @@ const NATURAL_HEAL_WEIGHT_RATE: u32 = 70;
 /// and SUNMOONSTAR_MIRACLE (bit 10), which rAthena sets unless a mapflag forbids them.
 const MAP_PROPERTY_NOTHING: u16 = 0;
 const MAP_FLAGS_DEFAULT: u32 = 0x0600;
-
-/// NV_BASIC (Basic Skill) at level 0, the one skill rAthena always lists for a fresh novice. Sent
-/// to everyone until characters have a skill tree.
-pub(crate) fn nv_basic() -> SkillInfo {
-    SkillInfo {
-        id: 1,
-        inf: 0,
-        level: 0,
-        sp: 0,
-        range: 0,
-        name: Arc::from("NV_BASIC"),
-        upgradable: true,
-    }
-}
 
 impl MapInstance {
     /// What a login gets between `0x0201` and the client's first `0x007d`, in rAthena order
@@ -132,7 +116,7 @@ impl MapInstance {
     }
 
     /// Sends the settings group once per entry, after the unit entries: on a login the skill
-    /// list, both hotkey banks and the status block (on a cross-map arrival only the `0x0141`s
+    /// list (spec `specs/skills/spec.md` §2.4), both hotkey banks and the status block (on a cross-map arrival only the `0x0141`s
     /// instead), then on a login or cross-map arrival the
     /// party, equipment window and config flags and the reputation list. A same-map warp sends nothing.
     pub(crate) fn send_entry_settings(&mut self, e: Entity) {
@@ -142,12 +126,7 @@ impl MapInstance {
         let connect_new = std::mem::take(&mut info.connect_new);
         let changemap = std::mem::take(&mut info.changemap);
         if connect_new {
-            self.emit_self(
-                e,
-                ServerEvent::SkillList {
-                    skills: vec![nv_basic()],
-                },
-            );
+            self.send_skill_list(e);
             self.emit_self(e, ServerEvent::ShortcutKeyList { tab: 0 });
             self.emit_self(e, ServerEvent::ShortcutKeyList { tab: 1 });
             self.send_initial_status(e);

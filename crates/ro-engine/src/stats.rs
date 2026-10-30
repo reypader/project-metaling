@@ -32,6 +32,9 @@ pub(crate) const DIRTY: u8 = 0x1;
 pub(crate) const STALE_GEAR: u8 = 0x2;
 /// The player is in `MapInstance::stat_queue`.
 const LISTED: u8 = 0x4;
+/// The visible skill tree must be re-checked (skills spec §2.6): a changed set sends its
+/// deletes and list after `SP_MAXWEIGHT`, before the clamps and the diff.
+pub(crate) const SKILLS: u8 = 0x8;
 
 /// rAthena's `MaxWeight` for a job without its own (catalog `db/job_stats.md`).
 const DEFAULT_MAX_WEIGHT: u32 = 20_000;
@@ -159,6 +162,7 @@ impl MapInstance {
             job_class: info.job,
             base_level: info.clevel,
             status: info.status,
+            change_level: info.change_level,
         })
     }
 
@@ -167,6 +171,12 @@ impl MapInstance {
     pub(crate) fn mark_dirty(&mut self, e: Entity, gear: bool) {
         let flags = if gear { DIRTY | STALE_GEAR } else { DIRTY };
         self.list_for_pass(e, flags);
+    }
+
+    /// A change that can move `e`'s visible skills (levels, skill levels): the tick's pass
+    /// re-checks the tree once (rAthena runs it inside `status_calc_pc`).
+    pub(crate) fn mark_skills_dirty(&mut self, e: Entity) {
+        self.list_for_pass(e, SKILLS);
     }
 
     /// Queues `followup` for after `e`'s recalc in this tick's pass.
@@ -303,7 +313,9 @@ impl MapInstance {
         };
         let flags = mem::take(&mut info.stat_flags);
         if flags & DIRTY != 0 {
-            self.recalc(e, flags & STALE_GEAR != 0);
+            self.recalc(e, flags & STALE_GEAR != 0, flags & SKILLS != 0);
+        } else if flags & SKILLS != 0 {
+            self.send_tree_diff(e);
         }
         let Some(info) = self.world.players.get_mut(e) else {
             return;
@@ -319,10 +331,10 @@ impl MapInstance {
         }
     }
 
-    /// rAthena `status_calc_pc` at tick end: recompute, push `SP_MAXWEIGHT`, the clamps and the
-    /// diff in the captured order (spec §2.3), store. The AP clamp (traits spec §2.3) is pushed
-    /// with the HP/SP ones.
-    fn recalc(&mut self, e: Entity, stale_gear: bool) {
+    /// rAthena `status_calc_pc` at tick end: recompute, push `SP_MAXWEIGHT`, the tree diff (when
+    /// `skills`; skills spec §2.6), the clamps and the diff in the captured order (spec §2.3),
+    /// store. The AP clamp (traits spec §2.3) is pushed with the HP/SP ones.
+    fn recalc(&mut self, e: Entity, stale_gear: bool, skills: bool) {
         if stale_gear {
             self.rebuild_gear(e);
         }
@@ -360,6 +372,9 @@ impl MapInstance {
 
         if max_weight_changed {
             self.emit_weight(e, SP_MAXWEIGHT, new.max_weight);
+        }
+        if skills {
+            self.send_tree_diff(e);
         }
         for (var_id, old_value, new_value) in [
             (SP_HP, before.hp, now.hp),
@@ -493,6 +508,9 @@ mod tests {
                 ..CharacterStatus::default()
             },
             group_id: 0,
+            skills: Vec::new(),
+            hidden_skills: Vec::new(),
+            change_level: [0; 3],
             inventory: Default::default(),
         };
         engine.spawn_character(spawn, 0).expect("spawn");

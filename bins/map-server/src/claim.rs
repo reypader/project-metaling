@@ -15,7 +15,7 @@ use std::{
     time::Duration,
 };
 
-use ro_core::{CharId, CharacterInventory, CharacterProgress, MapPosition};
+use ro_core::{CharId, CharacterInventory, CharacterProgress, LearnedSkill, MapPosition};
 use ro_engine::PlaySnapshot;
 use ro_persistence::{CharacterRepository, InventoryRepository, RepositoryError};
 use tokio::sync::mpsc;
@@ -66,6 +66,7 @@ pub(crate) struct Write {
 pub(crate) struct RecentPlay {
     pub(crate) inventory: CharacterInventory,
     pub(crate) progress: CharacterProgress,
+    pub(crate) skills: Vec<LearnedSkill>,
 }
 
 /// Writes not yet landed, by kind.
@@ -202,8 +203,8 @@ impl SharedState {
         self.queue(char_id, WriteKind::Position { map, pos }, seq);
     }
 
-    /// Records the inventory and progress for a re-entry that races the write, then queues the
-    /// write. A re-entry rebuilds the looks from the worn gear, so they aren't kept.
+    /// Records the inventory, progress and skills for a re-entry that races the write, then
+    /// queues the write. A re-entry rebuilds the looks from the worn gear, so they aren't kept.
     pub(crate) fn persist_play(&self, char_id: CharId, snapshot: PlaySnapshot) {
         let seq = self.next_seq.fetch_add(1, Ordering::Relaxed);
         lock(&self.recent.plays).insert(
@@ -212,6 +213,7 @@ impl SharedState {
                 value: RecentPlay {
                     inventory: snapshot.inventory.clone(),
                     progress: snapshot.progress,
+                    skills: snapshot.skills.clone(),
                 },
                 seq,
             },
@@ -233,6 +235,7 @@ async fn apply(repo: &dyn MapRepository, write: &Write) -> Result<(), Repository
                 &snapshot.inventory,
                 &snapshot.looks,
                 &snapshot.progress,
+                &snapshot.skills,
             )
             .await
         }
@@ -494,6 +497,8 @@ pub(crate) mod tests {
                     .get(&char_id)
                     .cloned()
                     .unwrap_or_default(),
+                skills: Vec::new(),
+                change_level: [0; 3],
             }))
         }
 
@@ -503,6 +508,7 @@ pub(crate) mod tests {
             inventory: &CharacterInventory,
             looks: &CharacterLooks,
             _progress: &CharacterProgress,
+            _skills: &[LearnedSkill],
         ) -> Result<(), RepositoryError> {
             self.gate.acquire().await.expect("gate open").forget();
             if let Some(err) = lock(&self.inventory_error).clone() {
@@ -528,6 +534,7 @@ pub(crate) mod tests {
             inventory: potions(n),
             looks: CharacterLooks::default(),
             progress: CharacterProgress::default(),
+            skills: Vec::new(),
         }
     }
 
@@ -727,6 +734,7 @@ pub(crate) mod tests {
                 inventory: potions(1),
                 looks,
                 progress: CharacterProgress::default(),
+                skills: Vec::new(),
             },
         );
         assert!(eventually(|| state.recent_play(CHAR).is_none()).await);

@@ -14,6 +14,7 @@ use crate::equipment::GearStatus;
 use crate::error::EngineError;
 use crate::inventory::PlayerInventory;
 use crate::movement::WalkingPath;
+use crate::skills::SkillSet;
 use crate::sparse_set::SparseSet;
 use crate::spatial::SpatialGrid8x8;
 use crate::stats::FollowUp;
@@ -51,7 +52,7 @@ pub(crate) struct PlayerInfo {
     pub(crate) allocated: [u16; 12],
     /// The worn gear's part of the status, rebuilt only when an equip change marks it stale.
     pub(crate) gear: GearStatus,
-    /// `stats::DIRTY` / `stats::STALE_GEAR` / `stats::LISTED`: what the tick's recalc pass owes
+    /// `stats::DIRTY` / `STALE_GEAR` / `SKILLS` / `LISTED`: what the tick's recalc pass owes
     /// this player.
     pub(crate) stat_flags: u8,
     /// Packets and actions a flow queued for after this tick's recalc (spec §2.1 "Follow-up
@@ -68,6 +69,10 @@ pub(crate) struct PlayerInfo {
     /// Arrived from login or another map (rAthena `changemap`): the next actor init sends the
     /// config flags and reputation list. Not set by a same-map warp.
     pub(crate) changemap: bool,
+    /// Learned and visible skills (spec `specs/skills/spec.md` §2.1).
+    pub(crate) skills: SkillSet,
+    /// The job level at each class change (2nd, 3rd, 4th); 0 = unset.
+    pub(crate) change_level: [u16; 3],
 }
 
 /// Static appearance and identity of an NPC entity (warps included).
@@ -235,6 +240,8 @@ impl World {
                 rewarp_count: 0,
                 connect_new: false,
                 changemap: false,
+                skills: SkillSet::from_spawn(&spawn.skills, &spawn.hidden_skills),
+                change_level: spawn.change_level,
             },
         );
         self.char_to_entity.insert(spawn.char_id, entity);
@@ -411,6 +418,9 @@ mod tests {
             status: Default::default(),
             group_id: 0,
             inventory: Default::default(),
+            skills: Vec::new(),
+            hidden_skills: Vec::new(),
+            change_level: [0; 3],
         }
     }
 

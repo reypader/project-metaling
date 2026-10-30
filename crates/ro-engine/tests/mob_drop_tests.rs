@@ -137,6 +137,9 @@ fn enter_events(engine: &mut MapInstance, n: u32, (x, y): (u16, u16)) -> Vec<Sco
         status: Default::default(),
         group_id: 0,
         inventory: Default::default(),
+        skills: Vec::new(),
+        hidden_skills: Vec::new(),
+        change_level: [0; 3],
     };
     engine.spawn_character(spawn, 0).expect("spawn");
     send(engine, n, ClientIntent::NotifyActorInit, 0)

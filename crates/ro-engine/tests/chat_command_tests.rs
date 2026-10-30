@@ -85,6 +85,9 @@ fn engine() -> MapInstance {
             status: Default::default(),
             group_id: group,
             inventory: Default::default(),
+            skills: Vec::new(),
+            hidden_skills: Vec::new(),
+            change_level: [0; 3],
         };
         engine.spawn_character(spawn, 0).expect("spawn");
         send(&mut engine, n, ClientIntent::NotifyActorInit);

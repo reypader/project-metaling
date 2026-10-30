@@ -33,7 +33,8 @@ use super::settings::{
     encode_zc_ach_update_totals, encode_zc_config, encode_zc_config_notify,
     encode_zc_friends_list_empty, encode_zc_load_confirm, encode_zc_notify_mapproperty2,
     encode_zc_notify_unreadmail, encode_zc_overweight_percent, encode_zc_party_config,
-    encode_zc_repute_info_default, encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_list,
+    encode_zc_repute_info_default, encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_delete,
+    encode_zc_skillinfo_list, encode_zc_skillinfo_update,
 };
 use super::status::{
     encode_zc_attack_range, encode_zc_couplestatus, encode_zc_longlongpar_change,
@@ -291,6 +292,20 @@ impl EventEncoder for ModernEventEncoder {
             ServerEvent::SelfChat { text } => Ok(encode_zc_notify_playerchat(text)),
             ServerEvent::FriendsList => Ok(encode_zc_friends_list_empty()),
             ServerEvent::SkillList { skills } => Ok(encode_zc_skillinfo_list(skills)),
+            ServerEvent::SkillUpdate {
+                id,
+                level,
+                sp,
+                range,
+                upgradable,
+            } => Ok(encode_zc_skillinfo_update(
+                *id,
+                *level,
+                *sp,
+                *range,
+                *upgradable,
+            )),
+            ServerEvent::SkillDelete { id } => Ok(encode_zc_skillinfo_delete(*id)),
             ServerEvent::LongLongParameterChanged { var_id, value } => {
                 Ok(encode_zc_longlongpar_change(*var_id, *value))
             }
@@ -420,6 +435,8 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
             | PacketOpcode::ZC_NOTIFY_PLAYERCHAT
             | PacketOpcode::ZC_FRIENDS_LIST
             | PacketOpcode::ZC_SKILLINFO_LIST
+            | PacketOpcode::ZC_SKILLINFO_UPDATE
+            | PacketOpcode::ZC_SKILLINFO_DELETE
             | PacketOpcode::ZC_SHORTCUT_KEY_LIST_V4
             | PacketOpcode::ZC_PARTY_CONFIG
             | PacketOpcode::ZC_CONFIG_NOTIFY

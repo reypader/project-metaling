@@ -98,7 +98,7 @@ pub async fn handle_client_session(
                 };
                 // A failed send drops the join: the claim releases and the sender closes.
                 if target_world_tx
-                    .send(WorldCommand::JoinSession(join))
+                    .send(WorldCommand::JoinSession(Box::new(join)))
                     .await
                     .is_err()
                 {
@@ -195,7 +195,7 @@ pub async fn handle_client_session(
                                 entry: Entry::Login,
                             };
                             if target_world_tx
-                                .send(WorldCommand::JoinSession(join))
+                                .send(WorldCommand::JoinSession(Box::new(join)))
                                 .await
                                 .is_err()
                             {

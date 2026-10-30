@@ -4,7 +4,8 @@
 use std::sync::Arc;
 
 use ro_core::{
-    CharacterInventory, CharacterLooks, CharacterProgress, CharacterSpawn, MapPosition, ServerEvent,
+    CharacterInventory, CharacterLooks, CharacterProgress, CharacterSpawn, LearnedSkill,
+    MapPosition, ServerEvent,
 };
 use ro_db::NpcState;
 use tracing::warn;
@@ -44,8 +45,10 @@ pub struct PlaySnapshot {
     pub inventory: CharacterInventory,
     /// Char-select looks of the worn gear (written to the character's look columns).
     pub looks: CharacterLooks,
-    /// Job, levels, stats, points, exp and HP/SP.
+    /// Job, levels, stats, points, exp, HP/SP and the class-change levels.
     pub progress: CharacterProgress,
+    /// The skill rows: visible skills with a level (hidden levels are not saved).
+    pub skills: Vec<LearnedSkill>,
 }
 
 /// One bit per map cell.
@@ -214,6 +217,9 @@ impl MapInstance {
             status: info.status,
             group_id: info.group_id,
             inventory,
+            skills: info.skills.saved_rows(),
+            hidden_skills: info.skills.hidden_rows(),
+            change_level: info.change_level,
         };
         let rewarp_count = info.rewarp_count;
         if let Err(err) = self.despawn_player(e, spawn.char_id, VANISH_OUT_OF_SIGHT) {
@@ -428,6 +434,9 @@ mod tests {
             status: Default::default(),
             group_id: 0,
             inventory: Default::default(),
+            skills: Vec::new(),
+            hidden_skills: Vec::new(),
+            change_level: [0; 3],
         };
         let e = engine.world.spawn_player(&spawn).expect("spawn");
         engine.world.show(e);

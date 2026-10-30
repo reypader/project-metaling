@@ -32,6 +32,9 @@ pub struct MapConfig {
     /// Directory holding the refine table (`REFINE_DATA_DIR`), normally
     /// `crates/ro-db/data/refine`. Unset: no refine bonuses.
     pub refine_data_dir: Option<PathBuf>,
+    /// Directory holding the skill registry and trees (`SKILL_DATA_DIR`), normally
+    /// `crates/ro-db/data/skill`. Required: the server refuses to start without it.
+    pub skill_data_dir: Option<PathBuf>,
     /// Our battle config YAML (`BATTLE_CONFIG`), normally `config/battle.yml`. Unset: rAthena's
     /// shipped defaults.
     pub battle_config: Option<PathBuf>,
@@ -51,6 +54,7 @@ impl Default for MapConfig {
             mob_data_dir: None,
             job_data_dir: None,
             refine_data_dir: None,
+            skill_data_dir: None,
             battle_config: None,
         }
     }
@@ -107,6 +111,10 @@ struct MapCliArgs {
     /// Directory holding the refine table (`refine.yml`).
     #[arg(long = "refine-data-dir")]
     refine_data_dir: Option<PathBuf>,
+
+    /// Directory holding the skill registry and trees (`skill_db.yml`, `skill_tree.yml`).
+    #[arg(long = "skill-data-dir")]
+    skill_data_dir: Option<PathBuf>,
 
     /// Battle config YAML file.
     #[arg(long = "battle-config")]
@@ -182,6 +190,10 @@ impl MapConfig {
             .refine_data_dir
             .or_else(|| env("REFINE_DATA_DIR").map(PathBuf::from));
 
+        let skill_data_dir = parsed
+            .skill_data_dir
+            .or_else(|| env("SKILL_DATA_DIR").map(PathBuf::from));
+
         let battle_config = parsed
             .battle_config
             .or_else(|| env("BATTLE_CONFIG").map(PathBuf::from));
@@ -198,6 +210,7 @@ impl MapConfig {
             mob_data_dir,
             job_data_dir,
             refine_data_dir,
+            skill_data_dir,
             battle_config,
         }
     }
@@ -213,8 +226,26 @@ impl MapConfig {
             mobs: self.mob_data_dir.as_deref(),
             jobs: self.job_data_dir.as_deref(),
             refine: self.refine_data_dir.as_deref(),
+            skills: self.skill_data_dir.as_deref(),
             battle: self.battle_config.as_deref(),
         }
+    }
+
+    /// Refuses a config without the data directories the server can't run without: the job
+    /// data (stats) and the skill data (the skill list).
+    pub fn check_required(&self) -> anyhow::Result<()> {
+        if self.job_data_dir.is_none() {
+            anyhow::bail!(
+                "JOB_DATA_DIR is not set; the job data (crates/ro-db/data/job) is required for stats"
+            );
+        }
+        if self.skill_data_dir.is_none() {
+            anyhow::bail!(
+                "SKILL_DATA_DIR is not set; the skill data (crates/ro-db/data/skill) is required \
+                 for the skill list"
+            );
+        }
+        Ok(())
     }
 }
 

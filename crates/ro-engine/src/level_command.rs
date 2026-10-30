@@ -13,8 +13,7 @@ use ro_mechanics::{next_stat_cost, ClassFlags};
 
 use crate::engine::MapInstance;
 use crate::entity::Entity;
-use crate::job::{class_flags, job_for_sex, job_mapid};
-use crate::settings::nv_basic;
+use crate::job::{class_flags, job_for_sex, job_mapid, JOBL_2, JOBL_FOURTH, JOBL_THIRD};
 use crate::stats::FollowUp;
 use crate::status::trait_costs;
 use crate::status::{
@@ -44,6 +43,21 @@ const MSG_JOB_AT_MIN: &str = "Your job level is already 1.";
 const MSG_NO_JOB_DATA: &str = "There is no job data for your job.";
 const MSG_SAME_JOB: &str = "You already have that job.";
 const MSG_STATS_RESET: &str = "Your stats have been reset.";
+
+/// Which class-change level a job change records (rAthena `pc_jobchange` step 1): into a 4th
+/// class the 4th, else into a 3rd class the 3rd, else when a 2nd-class bit appears the 2nd.
+fn change_level_slot(old: u32, new: u32) -> Option<usize> {
+    let gains = |bits: u32| new & bits != 0 && old & bits == 0;
+    if gains(JOBL_FOURTH) {
+        Some(2)
+    } else if gains(JOBL_THIRD) {
+        Some(1)
+    } else if gains(JOBL_2) {
+        Some(0)
+    } else {
+        None
+    }
+}
 
 /// `atoi` of the first word: `None` for nothing, a non-number or 0.
 fn level_argument(params: &str) -> Option<i32> {
@@ -147,6 +161,7 @@ impl MapInstance {
         let (status_point, trait_point) = (info.status.status_point, info.status.trait_point);
         let gid = self.gid(e);
         self.mark_dirty(e, false);
+        self.mark_skills_dirty(e);
         self.queue_followup(e, FollowUp::HealToMax);
         self.queue_followup(
             e,
@@ -189,6 +204,7 @@ impl MapInstance {
         let (status_point, trait_point) = (info.status.status_point, info.status.trait_point);
         self.tell(e, &format!("Your base level went down to {to}."));
         self.mark_dirty(e, false);
+        self.mark_skills_dirty(e);
         for event in base_tail(status_point, trait_point, to) {
             self.queue_followup(e, FollowUp::ToSelf(event));
         }
@@ -205,7 +221,7 @@ impl MapInstance {
     /// 4th class) and `trait_point` to the trait table (+7 for a trait job). The costs (stats,
     /// then traits), `SP_STATUSPOINT` and `SP_TRAITPOINT` go out at once; the `0x0141`s and the
     /// derived values come from the tick's diff (rAthena's stale `0x0141` ×12 is skipped).
-    fn reset_stats(&mut self, e: Entity) {
+    pub(crate) fn reset_stats(&mut self, e: Entity) {
         let Some(info) = self.world.players.get(e) else {
             return;
         };
@@ -252,9 +268,9 @@ impl MapInstance {
         self.emit_self(e, param(SP_TRAITPOINT, trait_point.into()));
     }
 
-    /// `@jlvl <n>` (spec §2.5): everything goes out at once, then the tick's diff. Up sends the
-    /// effect to the area first; down sends no effect. There are no skills to reset on a
-    /// decrease.
+    /// `@jlvl <n>` (spec §2.5): everything goes out at once, then the tick's tree re-check and
+    /// diff. Up sends the effect to the area first; down sends no effect, and resets the skills
+    /// when the free points can't cover the levels removed (skills spec §2.7).
     pub(crate) fn command_job_level(&mut self, e: Entity, params: &str) {
         let Some(n) = level_argument(params) else {
             return self.tell(e, MSG_JLVL_USAGE);
@@ -280,6 +296,17 @@ impl MapInstance {
                     .unwrap_or(u16::MAX)
                     .min(level - 1)
         };
+        // Down by more than the free points: the skills are reset first, silently (skills spec
+        // §2.7); the tick's tree re-check sends the deletes and the list.
+        if to < level
+            && self
+                .world
+                .players
+                .get(e)
+                .is_some_and(|info| info.status.skill_point < level - to)
+        {
+            self.reset_skills(e, false);
+        }
         let Some(info) = self.world.players.get_mut(e) else {
             return;
         };
@@ -309,6 +336,7 @@ impl MapInstance {
         self.send_job_level(e, to);
         self.emit_self(e, param(SP_SKILLPOINT, skill_point.into()));
         self.mark_dirty(e, false);
+        self.mark_skills_dirty(e);
     }
 
     /// `SP_JOBLEVEL`, `SP_JOBEXP` (0) and `SP_NEXTJOBEXP`.
@@ -363,11 +391,15 @@ impl MapInstance {
         }
         let (max_base, name) = (job.max_base_level, job.name.clone());
 
-        // Steps 1-3: the job, job level 1, and the base level cap with its reset and tail.
+        // Step 1: the class-change job level (skills spec §2.8). Steps 1-3: the job, job level
+        // 1, and the base level cap with its reset and tail.
         let capped = level > max_base;
         let Some(info) = self.world.players.get_mut(e) else {
             return;
         };
+        if let Some(slot) = change_level_slot(job_mapid(current), job_mapid(new_job)) {
+            info.change_level[slot] = info.status.job_level;
+        }
         info.job = new_job;
         info.status.job_level = 1;
         info.status.job_exp = 0;
@@ -437,14 +469,14 @@ impl MapInstance {
         ] {
             self.send_look(e, look_type, value, 0);
         }
-        // Step 8: the skill list again. Step 9: the tick's recalc.
-        self.emit_self(
-            e,
-            ServerEvent::SkillList {
-                skills: vec![nv_basic()],
-            },
-        );
+        // Step 8: the new class's skill list, counted on the old class's visible skills
+        // (rAthena's first pass). Step 9: the tick's recalc counts again on the new set; when
+        // that trims the tree it sends the deletes and a second list after `SP_MAXWEIGHT`
+        // (captured Dancer -> Assassin; skills spec §2.8).
+        self.refresh_skills(e);
+        self.send_skill_list(e);
         self.mark_dirty(e, false);
+        self.mark_skills_dirty(e);
 
         // Steps 10-12, after the recalc: the equip looks, the message, the save.
         self.queue_followup(e, FollowUp::EquipLooks);

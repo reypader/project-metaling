@@ -88,6 +88,9 @@ fn enter(engine: &mut MapInstance, x: u16, y: u16) -> Vec<ScopedServerEvent> {
         status: Default::default(),
         group_id: 0,
         inventory: Default::default(),
+        skills: Vec::new(),
+        hidden_skills: Vec::new(),
+        change_level: [0; 3],
     };
     engine.spawn_character(spawn, 0).expect("spawn");
     engine.push_intent(intent(A, ClientIntent::NotifyActorInit));

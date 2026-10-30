@@ -18,8 +18,8 @@ use map_server::{
 };
 use ro_core::{
     AccountId, CharId, CharacterInventory, CharacterLooks, CharacterProgress, CharacterSelectStats,
-    CharacterStatus, CharacterSummary, CreateCharacterRequest, InventoryItem, ItemId, MapPosition,
-    Sex, TARGET_PACKETVER,
+    CharacterStatus, CharacterSummary, CreateCharacterRequest, InventoryItem, ItemId, LearnedSkill,
+    MapPosition, Sex, TARGET_PACKETVER,
 };
 use ro_db::{CellType, MapGrid, MapMobSpawns, MapNpcs};
 use ro_packets::{
@@ -52,6 +52,9 @@ pub struct InMemoryRepo {
     statuses: Mutex<HashMap<CharId, CharacterStatus>>,
     /// Every inventory save, in order.
     pub inventory_saves: Mutex<Vec<(CharId, CharacterInventory)>>,
+    /// Stored skill rows and class-change levels by character.
+    skills: Mutex<HashMap<CharId, Vec<LearnedSkill>>>,
+    change_levels: Mutex<HashMap<CharId, [u16; 3]>>,
 }
 
 impl InMemoryRepo {
@@ -148,6 +151,10 @@ impl InMemoryRepo {
             c.job_level = progress.status.job_level;
         }
         self.statuses.lock().unwrap().insert(id, progress.status);
+        self.change_levels
+            .lock()
+            .unwrap()
+            .insert(id, progress.change_level);
     }
 
     /// The stored progress of character `n` (what the next login loads).
@@ -170,7 +177,29 @@ impl InMemoryRepo {
             job_class,
             base_level,
             status,
+            change_level: self
+                .change_levels
+                .lock()
+                .unwrap()
+                .get(&id)
+                .copied()
+                .unwrap_or_default(),
         })
+    }
+
+    /// The stored skill rows of character `n` (by raw char id).
+    pub fn stored_skills(&self, raw_char_id: u32) -> Vec<LearnedSkill> {
+        self.skills
+            .lock()
+            .unwrap()
+            .get(&CharId(raw_char_id))
+            .cloned()
+            .unwrap_or_default()
+    }
+
+    /// Seeds character `n`'s skill rows.
+    pub fn set_skills(&self, n: u32, rows: Vec<LearnedSkill>) {
+        self.skills.lock().unwrap().insert(CharId(char_id(n)), rows);
     }
 
     pub fn stored(&self, n: u32) -> Option<(String, MapPosition)> {
@@ -275,6 +304,14 @@ impl InventoryRepository for InMemoryRepo {
                 .get(&id)
                 .cloned()
                 .unwrap_or_default(),
+            skills: self.stored_skills(id.0),
+            change_level: self
+                .change_levels
+                .lock()
+                .unwrap()
+                .get(&id)
+                .copied()
+                .unwrap_or_default(),
         }))
     }
 
@@ -284,6 +321,7 @@ impl InventoryRepository for InMemoryRepo {
         inventory: &CharacterInventory,
         looks: &CharacterLooks,
         progress: &CharacterProgress,
+        skills: &[LearnedSkill],
     ) -> Result<(), RepositoryError> {
         let delay = *self.persist_delay.lock().unwrap();
         if !delay.is_zero() {
@@ -321,6 +359,13 @@ impl InventoryRepository for InMemoryRepo {
             };
         }
         self.statuses.lock().unwrap().insert(id, progress.status);
+        // Like the database: only levels above 0 are rows.
+        let rows = skills.iter().filter(|s| s.level > 0).copied().collect();
+        self.skills.lock().unwrap().insert(id, rows);
+        self.change_levels
+            .lock()
+            .unwrap()
+            .insert(id, progress.change_level);
         Ok(())
     }
 }
@@ -362,7 +407,7 @@ pub fn maps_loader(maps: Vec<(&'static str, MapNpcs)>) -> MapDataLoader {
     })
 }
 
-/// The shipped item, mob, job and refine registries (read from `crates/ro-db/data`, like the
+/// The shipped item, mob, job, refine and skill registries (read from `crates/ro-db/data`, like the
 /// server does) and the default battle config.
 pub fn test_registries() -> ro_engine::Registries {
     static REGISTRIES: std::sync::OnceLock<ro_engine::Registries> = std::sync::OnceLock::new();
@@ -370,17 +415,19 @@ pub fn test_registries() -> ro_engine::Registries {
         .get_or_init(|| {
             let data =
                 std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../crates/ro-db/data");
-            let (items, mobs, jobs, refine) = (
+            let (items, mobs, jobs, refine, skills) = (
                 data.join("item"),
                 data.join("mob"),
                 data.join("job"),
                 data.join("refine"),
+                data.join("skill"),
             );
             map_server::load_registries(map_server::RegistryPaths {
                 items: Some(&items),
                 mobs: Some(&mobs),
                 jobs: Some(&jobs),
                 refine: Some(&refine),
+                skills: Some(&skills),
                 battle: None,
             })
             .expect("shipped registries load")

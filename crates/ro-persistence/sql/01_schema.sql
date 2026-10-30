@@ -171,3 +171,32 @@ CREATE TABLE IF NOT EXISTS inventory (
 
 -- (char_id, id) serves the load's ORDER BY id without a sort.
 CREATE INDEX IF NOT EXISTS idx_inventory_char_id_id ON inventory(char_id, id);
+
+-- The job level at each class change (rAthena's jobchange_level char vars; specs/skills §2.9).
+DO $$
+DECLARE
+    col TEXT;
+BEGIN
+    FOREACH col IN ARRAY ARRAY['change_level_2nd', 'change_level_3rd', 'change_level_4th']
+    LOOP
+        IF NOT EXISTS (
+            SELECT 1 FROM information_schema.columns
+            WHERE table_schema = current_schema()
+              AND table_name = 'characters' AND column_name = col
+        ) THEN
+            EXECUTE format(
+                'ALTER TABLE characters ADD COLUMN %I SMALLINT NOT NULL DEFAULT 0', col
+            );
+        END IF;
+    END LOOP;
+END $$;
+
+-- Learned skills (specs/skills §2.9): one row per skill with a level; flag 0 learned with
+-- points, 3 granted by a script. Rewritten with each play-state save.
+CREATE TABLE IF NOT EXISTS character_skills (
+    char_id   INT NOT NULL REFERENCES characters(char_id) ON DELETE CASCADE,
+    skill_id  SMALLINT NOT NULL,
+    level     SMALLINT NOT NULL,
+    flag      SMALLINT NOT NULL DEFAULT 0,
+    PRIMARY KEY (char_id, skill_id)
+);

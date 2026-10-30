@@ -174,6 +174,9 @@ fn spawn(
             slots: inventory,
             unique_item_counter: 0,
         },
+        skills: Vec::new(),
+        hidden_skills: Vec::new(),
+        change_level: [0; 3],
     }
 }
 

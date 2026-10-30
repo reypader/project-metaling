@@ -61,7 +61,7 @@ Line anchors below are from `0e0baab` (before traits). Re-grep them, because tra
 - **Two different levels for the tree:** visibility uses the **effective** (normalised) job, while max level and `upFlag` use the **real** class.
 - **NV_BASIC is kept** on reset for non-Novices, and its 9 points still count toward `P`.
 - **Hidden levels** (a skill from a previous class) stay in memory and count toward nothing, because only visible slots count. They vanish at the next save. Don't save them, and don't drop them before the save (a quick job swap back shows them again; source-only).
-- **Inline recomputation** in skill-up, `@job` and `@allskill` must store the visible set, so Stage 3 finds no change and doesn't send a second list. Only the `SKILLS` dirty bit triggers Stage 3's diff.
+- **Inline recomputation** in skill-up and `@allskill` must store the visible set, so Stage 3 finds no change and doesn't send a second list. Only the `SKILLS` dirty bit triggers Stage 3's diff. `@job` is different (review fix): its inline pass is rAthena's first pass, and it also marks `SKILLS` so Stage 3 sends the second pass.
 - **Burst handling:** many `0x0112` arrive in one millisecond. Process them in order, each against the state the previous one left (captured 707-720). The client can request a skill unlocked by an earlier request in the same burst.
 - **The 0x010f entry `name` is 24 bytes,** NUL-padded, from the aegis name. Names longer than 23 bytes are cut (rAthena `safestrncpy`).
 - **Hot path:** the `SkillSet` is a small sorted `Vec`. Tree lookups go through `SkillTreeDb` slices. The visible-set computation should allocate at most once per call; it runs only on skill events, never per tick.
@@ -83,7 +83,7 @@ Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
 - [x] **M0 catalog, captures, spec, plan** (2026-10-28/29, with traits)
   - `metaling-explorer` wrote `db/skills.md` and `mechanics/skills.md`, plus additions to `packets/settings.md` and `yaml_schemas.md`. The user recorded `rathena_skills_sequence.txt`, and it was written up (`mechanics/skills.md` §10). INDEX and README rows were added.
   - This spec and plan. Committed with traits' M0. **User checkpoint.**
-- [ ] **M1 data: `tools/skill-import`, `ro-db` registries, config** *(session A)*
+- [x] **M1 data: `tools/skill-import`, `ro-db` registries, config** *(2026-10-29)*
   - A new crate `tools/skill-import` (workspace member, `[lints] workspace = true`, MIT-compatible deps). It reads `$RATHENA_PATH/db/re/skill_db.yml` and `skill_tree.yml` per spec §0. The rules it implements:
     - per-level expansion (catalog "List form expansion");
     - tree inheritance (catalog "Load-time inheritance");
@@ -95,7 +95,7 @@ Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
   - Generate `crates/ro-db/data/skill/`. Add a `NOTICE.md` "skill" section. Data may commit early, as with items.
   - `ro-db`: `SkillDb`, `SkillTreeDb`, `load_dir`, root re-exports. Add tests DB-SKILL-01..03 on the shipped files.
   - Map-server: `SKILL_DATA_DIR` (required), loaded into the engine registries. Update `run_metaling_servers.sh` and `crates/ro-db/DESIGN.md`. Add test BIN-SKILL-02.
-- [ ] **M2 engine model, visibility, list** *(session B)*
+- [x] **M2 engine model, visibility, list** *(2026-10-29)*
   - ro-core changes:
     - `SkillInfo` stays.
     - New `ServerEvent::SkillUpdate` (`0x010e`) and `SkillDelete` (`0x0441`), with their encoders (ro-packets) and `table.rs` rows if missing.
@@ -110,11 +110,11 @@ Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
   - Add the `SKILLS` dirty bit. In Stage 3, the tree diff (`0x0441`…, `0x010f`) goes after `SP_MAXWEIGHT` and before the clamps (spec §2.6). `@blvl` and `@jlvl` set the bit.
   - Tests: ENG-SKILL-01..04, ENG-SKILL-10, ENG-SKILL-11, and the existing `@job` / login tests updated from `nv_basic`.
   - **Early review** (optional, recommended): `reviewer` over M1–M2.
-- [ ] **M3 skill-up** *(session B)*
+- [x] **M3 skill-up** *(2026-10-30)*
   - `ClientIntent::UpgradeSkill { id }`, the `0x0112` decoder and dispatch.
   - The engine flow per spec §2.5: silent refusals, inline visibility, the passive pre-list, then `0x010e`, `SP_SKILLPOINT` and the list sent immediately.
   - Tests PKT-SKILL-01, ENG-SKILL-05, ENG-SKILL-06. Mutation-check the pre-list rule: always sending it, or never, must fail.
-- [ ] **M4 resets and `@allskill`** *(session C)*
+- [x] **M4 resets and `@allskill`** *(2026-10-30)*
   - `reset_skills` (spec §2.7).
   - `@jlvl −n` uses it with no send.
   - `@skreset` / `resetskill`.
@@ -122,13 +122,13 @@ Write tests first, named with spec IDs. Iterate with `./verify.sh -p <crate>`.
   - `@allskill` and its aliases (spec §2.8).
   - Messages are follow-ups.
   - Tests ENG-SKILL-07..09, with the captured line numbers in comments.
-- [ ] **M5 persistence** *(session C)*
+- [x] **M5 persistence** *(2026-10-30)*
   - Schema: the `character_skills` table and the `change_level_*` columns (spec §2.9).
   - `save_play_state` rewrites the rows when the skills revision changed. `load_play_state` returns the rows and change levels.
   - `PlaySnapshot.skills` and the revision; the recent-write record and transfer carry them. Autosave triggers on a skills revision change.
   - Update `crates/ro-persistence/DESIGN.md`.
   - Tests PER-SKILL-01 (DB up: `docker compose -f tools/docker/docker-compose.yml up -d db`) and BIN-SKILL-01.
-- [ ] **Finish** *(session D)*
+- [x] **Finish** *(2026-10-30; all milestones ran in one session at the user's request)*
   - `./verify.sh --smoke` green.
   - Run the `reviewer` over `git diff HEAD` plus untracked files (or from the data commit). Apply its fixes.
   - Docs: `crates/ro-engine/DESIGN.md` §9.5 (the `SKILLS` bit) and §9.9 (the learned set as input; the passive-diff ordering note); `crates/ro-db/DESIGN.md`; `crates/ro-persistence/DESIGN.md`.

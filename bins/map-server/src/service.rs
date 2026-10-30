@@ -16,7 +16,9 @@ use ro_core::{
     CharacterSpawn, ClientIntent, MapPosition, ScopedServerEvent, ServerEvent, SessionId,
     SessionIntent, TARGET_PACKETVER,
 };
-use ro_db::{ItemDb, JobDb, MapGrid, MapMobSpawns, MapNpcs, MobDb, NpcKind, RefineDb};
+use ro_db::{
+    ItemDb, JobDb, MapGrid, MapMobSpawns, MapNpcs, MobDb, NpcKind, RefineDb, SkillDb, SkillTreeDb,
+};
 use ro_engine::{EngineError, MapInstance, MapTransfer, PlaySnapshot, Registries};
 use ro_mechanics::BattleConfig;
 use ro_packets::{EventEncoder, Phase0EventEncoder};
@@ -123,10 +125,11 @@ pub struct RegistryPaths<'a> {
     pub mobs: Option<&'a Path>,
     pub jobs: Option<&'a Path>,
     pub refine: Option<&'a Path>,
+    pub skills: Option<&'a Path>,
     pub battle: Option<&'a Path>,
 }
 
-/// Loads the item, mob, job and refine registries and the battle config (specs
+/// Loads the item, mob, job, refine and skill registries and the battle config (specs
 /// `specs/items/spec.md` §0, `specs/stats/spec.md` §1). An unset source warns and gives an
 /// empty registry (the battle config: rAthena's shipped defaults); a set one that is missing or
 /// bad is an error naming the path (startup fails).
@@ -159,18 +162,32 @@ pub fn load_registries(paths: RegistryPaths<'_>) -> anyhow::Result<Registries> {
             RefineDb::default()
         }
     };
+    let (skills, skill_tree) = match paths.skills {
+        Some(dir) => {
+            let skills = SkillDb::load_dir(dir)?;
+            let tree = SkillTreeDb::load_dir(dir, &skills)?;
+            (skills, tree)
+        }
+        None => {
+            warn!("SKILL_DATA_DIR not set; the skill registry is empty");
+            (SkillDb::default(), SkillTreeDb::default())
+        }
+    };
     let battle = load_battle_config(paths.battle)?;
     info!(
-        "Registries: {} items, {} mobs, {} jobs",
+        "Registries: {} items, {} mobs, {} jobs, {} skills",
         items.len(),
         mobs.len(),
-        jobs.len()
+        jobs.len(),
+        skills.len()
     );
     Ok(Registries {
         items: Arc::new(items),
         mobs: Arc::new(mobs),
         jobs: Arc::new(jobs),
         refine: Arc::new(refine),
+        skills: Arc::new(skills),
+        skill_tree: Arc::new(skill_tree),
         battle: Arc::new(battle),
     })
 }
@@ -289,7 +306,8 @@ pub struct MapHandoff {
 
 /// Commands sent to a long-lived `MapWorldActor`.
 pub enum WorldCommand {
-    JoinSession(JoinSession),
+    // Boxed: a spawn (inventory, skills) dwarfs the other variants.
+    JoinSession(Box<JoinSession>),
     PlayerIntent(SessionIntent),
     LeaveSession {
         session_id: SessionId,
@@ -538,11 +556,15 @@ impl MapServiceHandle {
         spawn.status = play.status;
         spawn.group_id = play.group_id;
         spawn.inventory = play.inventory;
+        spawn.skills = play.skills;
+        spawn.change_level = play.change_level;
         if let Some(recent) = recent_play {
             spawn.inventory = recent.inventory;
             spawn.job_class = recent.progress.job_class;
             spawn.base_level = recent.progress.base_level;
             spawn.status = recent.progress.status;
+            spawn.change_level = recent.progress.change_level;
+            spawn.skills = recent.skills;
         }
         Some((self.get_or_spawn_world(&map_name), spawn, claim))
     }
@@ -636,6 +658,8 @@ struct Session {
     saved_revision: u64,
     /// The progress as last saved or loaded: autosave also writes when it changed.
     saved_progress: CharacterProgress,
+    /// Skills revision of the last save or of the spawn: autosave also writes when it changed.
+    saved_skills_revision: u32,
     /// When this session's next autosave is due (actor clock, ms).
     next_autosave_ms: u64,
     /// Released (with the last position set on it) when the session is dropped.
@@ -763,6 +787,7 @@ impl MapWorldActor {
                     inventory: transfer.spawn.inventory.clone(),
                     looks: transfer.looks,
                     progress: transfer.spawn.progress(),
+                    skills: transfer.spawn.skills.clone(),
                 });
             }
         }
@@ -788,13 +813,17 @@ impl MapWorldActor {
                 continue;
             }
             session.next_autosave_ms = now.saturating_add(self.autosave_interval_ms);
-            let (Some(revision), Some(progress)) = (
+            let (Some(revision), Some(progress), Some(skills)) = (
                 self.engine.inventory_revision(session.char_id),
                 self.engine.progress_snapshot(session.char_id),
+                self.engine.skills_revision(session.char_id),
             ) else {
                 continue;
             };
-            if revision == session.saved_revision && progress == session.saved_progress {
+            if revision == session.saved_revision
+                && progress == session.saved_progress
+                && skills == session.saved_skills_revision
+            {
                 continue;
             }
             Self::save_session(&self.engine, session);
@@ -803,13 +832,15 @@ impl MapWorldActor {
 
     /// Queues `session`'s play state now and records what was saved.
     fn save_session(engine: &MapInstance, session: &mut Session) {
-        let (Some(revision), Some(snapshot)) = (
+        let (Some(revision), Some(skills), Some(snapshot)) = (
             engine.inventory_revision(session.char_id),
+            engine.skills_revision(session.char_id),
             engine.play_snapshot(session.char_id),
         ) else {
             return;
         };
         session.saved_progress = snapshot.progress;
+        session.saved_skills_revision = skills;
         session.claim.save_play(snapshot);
         session.saved_revision = revision;
     }
@@ -874,7 +905,7 @@ impl MapWorldActor {
 
     fn handle_command(&mut self, cmd: WorldCommand) {
         match cmd {
-            WorldCommand::JoinSession(join) => self.join(join),
+            WorldCommand::JoinSession(join) => self.join(*join),
             WorldCommand::PlayerIntent(intent) => self.player_intent(intent),
             WorldCommand::LeaveSession { session_id } => {
                 self.detached.remove(&session_id);
@@ -963,6 +994,7 @@ impl MapWorldActor {
                 name,
                 saved_revision: 0,
                 saved_progress: self.engine.progress_snapshot(char_id).unwrap_or_default(),
+                saved_skills_revision: self.engine.skills_revision(char_id).unwrap_or_default(),
                 next_autosave_ms: now.saturating_add(self.autosave_interval_ms),
                 claim,
                 outbound_tx,
@@ -1433,6 +1465,9 @@ mod tests {
             status: Default::default(),
             group_id: 0,
             inventory: Default::default(),
+            skills: Vec::new(),
+            hidden_skills: Vec::new(),
+            change_level: [0; 3],
         }
     }
 

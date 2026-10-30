@@ -87,7 +87,8 @@ pub use settings::{
     encode_zc_ach_update_totals, encode_zc_config, encode_zc_config_notify,
     encode_zc_friends_list_empty, encode_zc_load_confirm, encode_zc_notify_mapproperty2,
     encode_zc_notify_unreadmail, encode_zc_overweight_percent, encode_zc_party_config,
-    encode_zc_repute_info_default, encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_list,
+    encode_zc_repute_info_default, encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_delete,
+    encode_zc_skillinfo_list, encode_zc_skillinfo_update,
 };
 pub use status::{
     encode_zc_attack_range, encode_zc_couplestatus, encode_zc_longlongpar_change,

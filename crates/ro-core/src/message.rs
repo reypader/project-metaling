@@ -139,6 +139,10 @@ pub enum ClientIntent {
         var: u16,
         amount: i16,
     },
+    /// `0x0112`: raise skill `id` by one level with a skill point.
+    UpgradeSkill {
+        id: u16,
+    },
 }
 
 impl fmt::Debug for ClientIntent {
@@ -288,6 +292,7 @@ impl fmt::Debug for ClientIntent {
                 .field("var", var)
                 .field("amount", amount)
                 .finish(),
+            Self::UpgradeSkill { id } => f.debug_struct("UpgradeSkill").field("id", id).finish(),
         }
     }
 }
@@ -614,6 +619,18 @@ pub enum ServerEvent {
     /// `0x010f`: the skill list.
     SkillList {
         skills: Vec<SkillInfo>,
+    },
+    /// `0x010e`: one skill's level, SP cost, range and level-up button after a skill-up.
+    SkillUpdate {
+        id: u16,
+        level: u16,
+        sp: u16,
+        range: u16,
+        upgradable: bool,
+    },
+    /// `0x0441`: a skill left the list.
+    SkillDelete {
+        id: u16,
     },
     /// `0x0acb`: a 64-bit status var (exp and next exp).
     LongLongParameterChanged {

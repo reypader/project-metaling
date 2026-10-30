@@ -199,6 +199,9 @@ mod tests {
             status,
             group_id: 0,
             inventory: Default::default(),
+            skills: Vec::new(),
+            hidden_skills: Vec::new(),
+            change_level: [0; 3],
         };
         engine.spawn_character(spawn, 0).expect("spawn");
         send(&mut engine, &[ClientIntent::NotifyActorInit]);

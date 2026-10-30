@@ -50,6 +50,7 @@ async fn bin_trait_01_trait_up_survives_relog() {
                 ap: 150,
                 ..CharacterStatus::default()
             },
+            change_level: [0; 3],
         },
     );
     let server = TestServer::start_with(repo, &[]).await;

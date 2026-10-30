@@ -1,5 +1,5 @@
 //! Static game data: map walkability grids (`.gat`), per-map NPC and mob spawn lists (YAML), and
-//! the item, mob, job and refine registries (YAML). Read-only at runtime.
+//! the item, mob, job, refine and skill registries (YAML). Read-only at runtime.
 
 mod cell;
 mod item;
@@ -9,6 +9,7 @@ mod mob;
 mod mob_spawn;
 mod npc;
 mod refine;
+mod skill;
 mod yaml;
 
 pub use cell::{CellType, DbLoadError, MapDataError};
@@ -33,4 +34,9 @@ pub use npc::{
 pub use refine::{
     RefineBonus, RefineDb, RefineGroup, RefineRow, MAX_REFINE, REFINE_DATA_FILE, REFINE_DATA_TYPE,
     REFINE_DATA_VERSION,
+};
+pub use skill::{
+    JobTree, SkillData, SkillDb, SkillFlags, SkillRequirement, SkillTreeDb, TreeEntry,
+    MAX_SKILL_LEVEL, SKILL_DATA_FILE, SKILL_DATA_TYPE, SKILL_DATA_VERSION, SKILL_TREE_DATA_FILE,
+    SKILL_TREE_DATA_TYPE, SKILL_TREE_DATA_VERSION,
 };

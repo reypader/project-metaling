@@ -7,11 +7,19 @@ use sqlx::query;
 
 use ro_core::{
     CharId, CharacterInventory, CharacterLooks, CharacterProgress, CharacterStatus, InventoryItem,
-    ItemId, ItemOption, INVENTORY_SLOTS, ITEM_CARD_SLOTS, ITEM_OPTION_SLOTS,
+    ItemId, ItemOption, LearnedSkill, SkillFlag, INVENTORY_SLOTS, ITEM_CARD_SLOTS,
+    ITEM_OPTION_SLOTS,
 };
 
 use super::{get_col, map_sqlx_error};
 use crate::{InventoryRepository, PlayState, PostgresRepo, RepositoryError};
+
+const SELECT_SKILLS: &str =
+    "SELECT skill_id, level, flag FROM character_skills WHERE char_id = $1 ORDER BY skill_id";
+
+/// One multi-row insert of the skill rows.
+const INSERT_SKILLS: &str = "INSERT INTO character_skills (char_id, skill_id, level, flag) \
+    SELECT $1, * FROM UNNEST($2::SMALLINT[], $3::SMALLINT[], $4::SMALLINT[])";
 
 const SELECT_ITEMS: &str = "SELECT nameid, amount, equip, identify, refine, attribute, \
     card0, card1, card2, card3, \
@@ -191,6 +199,7 @@ impl InventoryRepository for PostgresRepo {
             "SELECT c.str, c.agi, c.vit, c.int_stat, c.dex, c.luk, c.job_level, c.status_point, \
              c.skill_point, c.base_exp, c.job_exp, c.hp, c.max_hp, c.sp, c.max_sp, \
              c.pow, c.sta, c.wis, c.spl, c.con, c.crt, c.trait_point, c.ap, \
+             c.change_level_2nd, c.change_level_3rd, c.change_level_4th, \
              c.unique_item_counter, a.group_id \
              FROM characters c JOIN accounts a ON a.account_id = c.account_id \
              WHERE c.char_id = $1",
@@ -232,6 +241,26 @@ impl InventoryRepository for PostgresRepo {
         };
         let unique_item_counter = big(&row, "unique_item_counter")?;
         let group_id: i32 = get_col(&row, "group_id")?;
+        let change_level = [
+            small(&row, "change_level_2nd")?,
+            small(&row, "change_level_3rd")?,
+            small(&row, "change_level_4th")?,
+        ];
+        let skill_rows = query(SELECT_SKILLS)
+            .bind(char_id.0 as i32)
+            .fetch_all(&mut *tx)
+            .await
+            .map_err(map_sqlx_error)?;
+        let skills = skill_rows
+            .iter()
+            .map(|row| {
+                Ok(LearnedSkill {
+                    id: small(row, "skill_id")?,
+                    level: small(row, "level")?,
+                    flag: SkillFlag::from_code(small(row, "flag")?),
+                })
+            })
+            .collect::<Result<Vec<_>, RepositoryError>>()?;
 
         let rows = query(SELECT_ITEMS)
             .bind(char_id.0 as i32)
@@ -258,6 +287,8 @@ impl InventoryRepository for PostgresRepo {
                 slots,
                 unique_item_counter,
             },
+            skills,
+            change_level,
         }))
     }
 
@@ -267,6 +298,7 @@ impl InventoryRepository for PostgresRepo {
         inventory: &CharacterInventory,
         looks: &CharacterLooks,
         progress: &CharacterProgress,
+        skills: &[LearnedSkill],
     ) -> Result<(), RepositoryError> {
         if inventory.slots.len() > INVENTORY_SLOTS {
             return Err(RepositoryError::Internal(format!(
@@ -288,8 +320,9 @@ impl InventoryRepository for PostgresRepo {
              str = $13, agi = $14, vit = $15, int_stat = $16, dex = $17, luk = $18, \
              status_point = $19, skill_point = $20, hp = $21, max_hp = $22, sp = $23, \
              max_sp = $24, pow = $25, sta = $26, wis = $27, spl = $28, con = $29, crt = $30, \
-             trait_point = $31, ap = $32 \
-             WHERE char_id = $33",
+             trait_point = $31, ap = $32, change_level_2nd = $33, change_level_3rd = $34, \
+             change_level_4th = $35 \
+             WHERE char_id = $36",
         )
         .bind(i64::from(inventory.unique_item_counter))
         .bind(i32::from(looks.weapon_type))
@@ -323,6 +356,9 @@ impl InventoryRepository for PostgresRepo {
         .bind(to_small("crt", status.traits[5])?)
         .bind(i32::from(status.trait_point))
         .bind(to_int("ap", status.ap)?)
+        .bind(to_small("change_level_2nd", progress.change_level[0])?)
+        .bind(to_small("change_level_3rd", progress.change_level[1])?)
+        .bind(to_small("change_level_4th", progress.change_level[2])?)
         .bind(char_id)
         .execute(&mut *tx)
         .await
@@ -369,6 +405,29 @@ impl InventoryRepository for PostgresRepo {
                 .bind(cols.unique_id)
                 .bind(cols.equip_switch)
                 .bind(cols.enchantgrade)
+                .execute(&mut *tx)
+                .await
+                .map_err(map_sqlx_error)?;
+        }
+
+        query("DELETE FROM character_skills WHERE char_id = $1")
+            .bind(char_id)
+            .execute(&mut *tx)
+            .await
+            .map_err(map_sqlx_error)?;
+        let rows: Vec<&LearnedSkill> = skills.iter().filter(|s| s.level > 0).collect();
+        if !rows.is_empty() {
+            let ids = rows
+                .iter()
+                .map(|s| to_small("skill_id", s.id))
+                .collect::<Result<Vec<_>, _>>()?;
+            let levels: Vec<i16> = rows.iter().map(|s| i16::from(s.level)).collect();
+            let flags: Vec<i16> = rows.iter().map(|s| i16::from(s.flag.code())).collect();
+            query(INSERT_SKILLS)
+                .bind(char_id)
+                .bind(ids)
+                .bind(levels)
+                .bind(flags)
                 .execute(&mut *tx)
                 .await
                 .map_err(map_sqlx_error)?;

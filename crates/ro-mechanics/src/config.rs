@@ -78,6 +78,15 @@ pub struct BattleConfig {
     pub multi_level_up: bool,
     pub multi_level_up_base: u32,
     pub multi_level_up_job: u32,
+    // The skill tree (catalog `db/skills.md` "Battle config defaults"; `player.conf`).
+    /// Every tree skill is visible with no prerequisite or level checks.
+    pub player_skillfree: bool,
+    /// Points must be spent in the previous class before the next class's skills appear.
+    pub player_skillup_limit: bool,
+    /// Quest skills can be learned with skill points.
+    pub quest_skill_learn: bool,
+    /// A skill reset also wipes quest skills (with no refund).
+    pub quest_skill_reset: bool,
 }
 
 impl Default for BattleConfig {
@@ -132,6 +141,10 @@ impl Default for BattleConfig {
             multi_level_up: false,
             multi_level_up_base: 0,
             multi_level_up_job: 0,
+            player_skillfree: false,
+            player_skillup_limit: true,
+            quest_skill_learn: false,
+            quest_skill_reset: false,
         }
     }
 }

@@ -100,7 +100,7 @@ When this spec and the catalog disagree, the catalog wins and this spec gets fix
   - **Hidden slots with a level** (from a previous class) stay in memory until the next save drops them (§2.9; captured).
 - **`skill_point`** stays in `CharacterStatus`.
 - **`ro_core::CharacterProgress`** gains the class-change job levels `change_level: [u16; 3]` (2nd, 3rd, 4th; 0 = unset).
-- **`PlaySnapshot`** gains `skills: Vec<LearnedSkill>`: the persisted rows, so `(id, level, flag)` with level > 0 and visible. It also gains a skills revision, so autosave writes only when the skills changed.
+- **`PlaySnapshot`** gains `skills: Vec<LearnedSkill>`: the persisted rows, so `(id, level, flag)` with level > 0 and visible. The engine keeps a skills revision (`MapInstance::skills_revision`), bumped by every level change and by a learned level being hidden or shown again, so autosave writes when the skills changed.
 - **`BattleConfig`** gains the knobs `player_skillfree` (false), `player_skillup_limit` (true), `quest_skill_learn` (false) and `quest_skill_reset` (false), plus `config/battle.yml` (catalog `db/skills.md` "Battle config defaults").
 
 ### 2.2 Visible tree (catalog `db/skills.md` "Runtime", `mechanics/skills.md` §3)
@@ -150,7 +150,7 @@ The reduction works on the mapid: drop the 2nd/3rd/4th bits with the masks in `c
 ### 2.4 Login and map change
 - **At spawn**, compute the visible set synchronously, with no output. The login burst sends the real `0x010f` where `nv_basic()` is sent today (`crates/ro-engine/src/settings.rs:144-153`). `nv_basic()` is deleted.
 - **Map change** sends no list (as today; captured in earlier work).
-- **A cross-map transfer** carries the `SkillSet` (the persisted rows plus the hidden levels) and `change_level`.
+- **A cross-map transfer** carries the `SkillSet` and `change_level`: the persisted rows in `CharacterSpawn.skills` and the hidden levels in `CharacterSpawn.hidden_skills`. Stored rows load visible (rAthena's loaded `id != 0`), so the first tree computation counts them; hidden levels go in hidden and count for nothing (ruling 2026-10-29).
 
 ### 2.5 Skill-up (`0x0112`, catalog `mechanics/skills.md` §2, §10.3)
 - **Parse** `CZ_UPGRADE_SKILLLEVEL` (`skillId:u16`) into `ClientIntent::UpgradeSkill { id }`. The opcode and length already exist.
@@ -178,7 +178,7 @@ The reduction works on the mapid: drop the 2nd/3rd/4th bits with the masks in `c
 
 ### 2.6 Tree re-check in the recalc pass
 - **New dirty bit `SKILLS`** (DESIGN.md §9.5). Stage 3 recomputes the visible set for flagged players. If the set changed, it sends `0x0441` for each id that went from visible to hidden (ascending), then one `0x010f`. This goes after `SP_MAXWEIGHT` and before the HP/SP clamp pushes and the diff. It matches rAthena, whose tree diff sits inside `status_calc_pc` before the stat pushes (captured `@jlvl -5` 650-663; `equip_sequence_4` Dancer → Assassin 2608-2612).
-- **Set by:** `@blvl` (BaseLevel gates), `@jlvl` (JobLevel gates), and the resets (§2.7). `@job` and `@allskill` compute the set inline instead (§2.8), so the pass finds no change.
+- **Set by:** `@blvl` (BaseLevel gates), `@jlvl` (JobLevel gates), and the resets (§2.7). `@job` too, after its inline first pass (§2.8). `@allskill` computes the set inline instead, so the pass isn't needed.
 - **`@jlvl +n`** with an unlock therefore sends a list before the diff. That case is source-only (`mechanics/skills.md` §8).
 
 ### 2.7 Resets (catalog `mechanics/skills.md` §6, §10.5)
@@ -246,7 +246,7 @@ The Taekwon Ranker early return and the option stripping are out of scope.
   - **Step 8:** replace the `nv_basic()` re-send with the real list. Compute the visible set inline for the new class and send **one** `0x010f` at the same position (after the looks).
   - Skill levels and `skill_point` are untouched, and `SP_SKILLPOINT` is not sent. Skills outside the new tree become hidden but keep their level in memory.
   - Captured on Novice → Swordman → Knight → Mage → Knight: one list, no `0x0441`.
-  - rAthena's two-pass form ("list, `SP_MAXWEIGHT`, `0x0441`…, list") for some 2nd/3rd-class changes (Dancer → Assassin, Rune Knight → Shadow Cross) is a deliberate deviation: we send only the final list.
+  - rAthena's two-pass form ("list, `SP_MAXWEIGHT`, `0x0441`…, list") for some 2nd/3rd-class changes (Dancer → Assassin, Rune Knight → Shadow Cross) is reproduced (review fix, 2026-10-30): the step-8 list is counted on the old class's visible skills, and `@job` also marks `SKILLS`, so Stage 3 counts again on the new set and sends the deletes and the final list when it differs. For the captured single-list changes the second pass finds nothing.
 - **`@allskill`** (names `allskill`, `allskills`, `skillall`, `skillsall`; group 99):
   - Every entry of the **real** class's tree (not normalised) is set to its tree max. Quest skills (unless `quest_skill_learn`), wedding, spirit and `SG_DEVIL` are skipped.
   - `skill_point = 0`.
@@ -255,7 +255,7 @@ The Taekwon Ranker early return and the option stripping are out of scope.
 
 ### 2.9 Persistence (catalog `db/skills.md` "SQL table", `mechanics/skills.md` §8)
 - **Schema:** table `character_skills (char_id INTEGER REFERENCES characters ON DELETE CASCADE, skill_id SMALLINT, level SMALLINT, flag SMALLINT DEFAULT 0, PRIMARY KEY (char_id, skill_id))`. `characters` gains `change_level_2nd`, `change_level_3rd` and `change_level_4th` (SMALLINT, default 0). Both use the guarded pattern of `crates/ro-persistence/sql/01_schema.sql`.
-- **`save_play_state`** rewrites the character's skill rows (delete then insert) in the same transaction, only when the skills revision changed. It writes only visible slots with level > 0, flag 0 or 3. **Hidden levels are therefore lost at the next save** (captured: Knight levels gone after Mage + relog).
+- **`save_play_state`** rewrites the character's skill rows (delete then insert) in the same transaction, on every save (ruling 2026-10-30: the writer may drop a failed write once a newer one is queued, so skipping unchanged rows could lose a change; the revision only gates autosave). It writes only visible slots with level > 0, flag 0 or 3. **Hidden levels are therefore lost at the next save** (captured: Knight levels gone after Mage + relog).
 - **`load_play_state`** returns the rows and the change levels. Visibility is rebuilt at spawn.
 - **Saves happen** on autosave, logout and map transfer, and immediately after `@job` (existing). Skill-up and resets don't save.
 - **Char select `sppoint`** is already real (traits feature).
@@ -266,7 +266,7 @@ The Taekwon Ranker early return and the option stripping are out of scope.
 | :--- | :--- |
 | DB-SKILL-01 | Every committed `skill/*.yml` loads and starts with the GPL header and attribution. |
 | DB-SKILL-02 | `SkillDb`: NV_BASIC max 9 inf 0; SM_BASH inf 1, sp lv1..5 = 8, lv10 = 15, range 1; SM_PROVOKE sp 4..8 at lv1..5, 13 at lv10, range 9; SM_MAGNUM inf 4, sp 30; `by_name` is case-insensitive. NV_FIRSTAID is `quest`. |
-| DB-SKILL-03 | `SkillTreeDb`: Swordman tree has 1..8 with SM_TWOHAND requiring SM_SWORD 1, SM_MAGNUM requiring SM_BASH 5, SM_ENDURE requiring SM_PROVOKE 5; Knight inherits Novice+Swordman and adds 55..63 with KN_PIERCE requiring KN_SPEARMASTERY 1; Rune Knight has Novice+Swordman+Knight entries; Novice_High has no NV_TRICKDEAD from Novice (`Exclude`); Summoner has no WE_CALLBABY (`MaxLevel 0`); `max_level` falls back to the skill's. |
+| DB-SKILL-03 | `SkillTreeDb`: Swordman tree has 1..8 with SM_TWOHAND requiring SM_SWORD 1, SM_MAGNUM requiring SM_BASH 5, SM_ENDURE requiring SM_PROVOKE 5; Knight inherits Novice+Swordman and adds 55..63 with KN_PIERCE requiring KN_SPEARMASTERY 1; Rune Knight has Novice+Swordman+Knight entries; Swordman and Swordman_High have no NV_TRICKDEAD (Novice's and Novice_High's own entries are `Exclude`); Baby_Summoner has no WE_CALLBABY (inherited from Summoner, removed by `MaxLevel 0`); `max_level` falls back to the skill's. |
 | ENG-SKILL-01 | `compute_visible` on hand trees: prerequisites (chain resolved in one call), base/job gates, `skillfree`, quest/wedding filters, a learned quest skill stays visible. |
 | ENG-SKILL-02 | `skillup_limit`: a Swordman with NV_BASIC < 9 sees only NV_BASIC; at 9 the Swordman tree appears. A Knight with `change_level_2nd` 10 sees the Swordman tree until 18 points are spent (9 + 9), then the Knight tree. Unset `change_level_2nd` defaults to the 1st class's max job level. |
 | ENG-SKILL-03 | List building: ascending ids, level-0 entries with real `inf` and sp/range2 0, `upFlag` 0 only at the class's tree max, captured sp/range2 values (Bash, Provoke, Magnum, Endure), range2 bonus from Vulture's Eye on Double Strafe. |
@@ -295,7 +295,6 @@ The Taekwon Ranker early return and the option stripping are out of scope.
 - **`NV_BASIC` level gates:** sit, trade, emotes, chat rooms, party and so on.
 - **Quest/platinum skill grants** (NPC scripts, flag 3). Item-granted TEMPORARY skills and their `0x0441` on unequip (Bravery Bag). Plagiarism, guild and homunculus skills. Soul Linker spirit skills. Taekwon Ranker.
 - **Option stripping** on reset and job change. The Bard/Dancer change-sex reset. `@skpoint`.
-- **The two-pass job-change list** with `0x0441` (Dancer → Assassin, Rune Knight → Shadow Cross): we send one final list.
 - **Skill hotkeys** (`0x0b20` naming skills).
 - **Still uncaptured:**
   - the stale-list `@jlvl −n`;

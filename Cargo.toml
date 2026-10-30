@@ -17,6 +17,7 @@ members = [
     "tools/mob-import",
     "tools/job-import",
     "tools/refine-import",
+    "tools/skill-import",
 ]
 
 [workspace.package]

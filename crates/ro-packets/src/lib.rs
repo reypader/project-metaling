@@ -23,8 +23,9 @@ pub use incoming::{
     CzChangeDirectionPacket, CzEnterPacket, CzItemPickupPacket, CzItemThrowPacket,
     CzNotifyActorInitPacket, CzReqDisconnectPacket, CzReqNamePacket, CzReqTakeoffEquipAllPacket,
     CzReqTakeoffEquipPacket, CzReqWearEquipPacket, CzRequestActPacket, CzRequestChatPacket,
-    CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket, CzStatusChangePacket, DecodedFrame,
-    ModernIntentParser, Phase0IntentParser, PingPacket, RathenaIntentParser,
+    CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket, CzStatusChangePacket,
+    CzUpgradeSkillLevelPacket, DecodedFrame, ModernIntentParser, Phase0IntentParser, PingPacket,
+    RathenaIntentParser,
 };
 pub use opcode::PacketOpcode;
 pub use outgoing::{
@@ -50,8 +51,9 @@ pub use outgoing::{
     encode_zc_npcack_mapmove, encode_zc_overweight_percent, encode_zc_par_change,
     encode_zc_par_change_i32, encode_zc_party_config, encode_zc_repute_info_default,
     encode_zc_req_takeoff_equip_ack, encode_zc_req_wear_equip_ack, encode_zc_restart_ack,
-    encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_list, encode_zc_sprite_change2,
-    encode_zc_status, encode_zc_status_change, encode_zc_status_change_ack, encode_zc_stopmove,
+    encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_delete, encode_zc_skillinfo_list,
+    encode_zc_skillinfo_update, encode_zc_sprite_change2, encode_zc_status,
+    encode_zc_status_change, encode_zc_status_change_ack, encode_zc_stopmove,
     is_implemented_outbound_opcode, write_fixed_string, ActParams, CharServerEntry,
     ModernEventEncoder, Phase0EventEncoder, RathenaEventEncoder,
 };

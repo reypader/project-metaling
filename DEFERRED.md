@@ -3,6 +3,42 @@
 Items consciously left out of finished work, with enough context to pick them up later.
 Remove an item when it lands. Newest feature first.
 
+## skills (branch `main`, plan `specs/skills/plan.md`)
+
+Spec: `specs/skills/spec.md` §5. Learn only: skill data and resolved trees (`tools/skill-import`), the
+visible tree with the `skillup_limit` downgrade, skill-up (`0x0112` → `0x010e`, `SP_SKILLPOINT`, `0x010f`),
+the real login and `@job` lists, the class-change levels, the Stage 3 tree diff (`0x0441` + `0x010f`),
+`@skreset`, `@reset`, `@jlvl −n`, `@allskill` and persistence are in.
+
+### Still to verify by hand
+- **Manual client check** (plan "Finish"): a fresh Novice's Basic Skill to 9, `@job 1`, the Swordman
+  unlocks, `@jlvl -5`, `@skreset`, `@reset`, `@allskill`, `@job 7`, `@job 2` + relog + `@job 7`, char
+  select. Then a metaling capture compared with `rathena_skills_sequence.txt`.
+- Uncaptured, so source-only: `@jlvl −n` when the visible tree doesn't shrink (rAthena sends no list and
+  the client keeps stale levels; we match); hidden levels across a job detour without a save; the exact
+  `change_level_2nd` threshold of 18; `@skreset` as a Novice; `BaseLevel`/`JobLevel`-gated unlocks; the
+  `0x0112` refusals at 0 points and at max (the client blocks both).
+
+### Skill effects
+- Casting: the use-skill packets (`0x0113`/`0x0438`/`0x0af4`), SP/AP costs, cast time, delays, cooldowns,
+  effects (`crates/ro-engine/DESIGN.md` §10/§11).
+- Passive bonuses and weapon masteries (§9.9). When they land, a passive skill-up's stat diff must go out
+  *before* `0x010e`, as rAthena sends it from inside its recalc (§9.9 ordering note).
+- `NV_BASIC` level gates: sit, trade, emotes, chat rooms, party and so on.
+
+### Grants and other skill kinds
+- Quest/platinum skill grants (NPC scripts, flag 3). Item-granted TEMPORARY skills and their `0x0441` on
+  unequip (Bravery Bag). Plagiarism, guild and homunculus skills, Soul Linker spirit skills, Taekwon
+  Ranker (its early return in `pc_resetskill` and bonus skills).
+- `@skpoint`; the Bard/Dancer change-sex reset; option stripping on reset and job change.
+
+### Deviations
+- An active skill-up sends `0x0441` for slots its full re-check hid (only possible after a same-tick
+  reset). rAthena's active path only adds to the tree and never deletes.
+- Skill hotkeys (`0x0b20` naming skills) are not saved or sent.
+- The skill rows are rewritten on every play-state save, not only when they changed (the writer can drop
+  a superseded write; `crates/ro-persistence/DESIGN.md`).
+
 ## traits (branch `main`, plan `specs/traits/plan.md`)
 
 Spec: `specs/traits/spec.md` §5. Trait stats POW..CRT with `0x0b24`, trait points, PATK..CRATE, MaxAP and
@@ -57,9 +93,7 @@ gear (ATK/MATK/DEF/MDEF only), the tick's recalc pass with the follow-up queue, 
 - Natural regen, overweight statuses.
 
 ### GM commands
-- `@job`: class-change level vars; the skill tree and skill deletes (`0x0441`; the `0x010f` re-send is
-  done); option stripping (cart, falcon, peco, mado, homunculus); the party class update; the upper/baby flag argument.
-- `@jlvl` negative: `pc_resetskill` (no skills yet).
+- `@job`: option stripping (cart, falcon, peco, mado, homunculus); the party class update; the upper/baby flag argument.
 - Level effects not sent: achievement updates (`0x0a24`), the `0x0446` quest marker refresh, and the
   observer's party HP bar `0x080e` (capture 3).
 - `LOOK_CLOTHES_COLOR` is always 0 in `@job`'s looks: no cloth colour is stored yet, so a dyed character
@@ -143,8 +177,6 @@ login-time `0x0091`, and every entry starts with `0x01d7` and sends `0x099b`.
   nor `0x0ac4`, `0x082d` and `0x006b`.
 - Save and load hotkeys (`CZ_SHORTCUT_KEY_CHANGE*`, row shift) and the config toggles (`CZ_CONFIG`,
   `CZ_PARTY_CONFIG`, equipment window).
-- A real skill list (NV_BASIC's real level and job skills) with the skill tree. Today every character gets
-  NV_BASIC level 0, upgradable.
 - Status block placeholders (`crates/ro-engine/src/status.rs`):
   - NEXTBASEEXP/NEXTJOBEXP are the max-level constants until exp tables are imported.
 - Reputation points (always 0) and the reputation types list (fixed 1–4 in `ro-packets`).
