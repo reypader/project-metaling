@@ -77,7 +77,46 @@ Loop per level gained:
 3. `status_point += statpoint(base_level -> base_level+1)` = `Points[lv+1] - Points[lv]` from `statpoint.yml` (0 if not increasing); `trait_point +=` the analogous trait-point delta (renewal 4th-job classes; table only non-zero from base level 201). Then `base_level++`.
 4. If now at max base level: `base_exp = min(base_exp, 99999999)` and stop. Otherwise continue while `next(new level) > 0 && base_exp >= next`.
 
-After the loop, in order: pet level update if `pet_lv_rate`; self packets `SP_STATUSPOINT`, `SP_TRAITPOINT`, `SP_BASELEVEL` (`0x00b0`), `SP_BASEEXP`, `SP_NEXTBASEEXP` (`0x0acb`); `status_calc_pc(SCO_FORCE)` (full recalculation; max HP/SP etc. change and are sent by the recalc); `status_percent_heal(100, 100)` = FULL HP and SP unconditionally (no config switch); Super Novice / Taekwon angel buffs; `0x019b` effect 0 (AREA); `OnBaseLvUp`-style NPC event; party level notify (`party_send_levelup`); equipment `elvmax` check (unequips items whose max-level limit is now exceeded); quest-info refresh.
+After the loop, in order (all to SELF unless noted): pet level update if `pet_lv_rate`; then the tail `SP_STATUSPOINT`, `SP_TRAITPOINT`, `SP_BASELEVEL` (`0x00b0`), `SP_BASEEXP`, `SP_NEXTBASEEXP` (`0x0acb`); then `status_calc_pc(SCO_FORCE)`; then `status_percent_heal(100, 100)`; Super Novice / Taekwon angel buffs; `0x019b` effect 0 (AREA); NPC event `NPCE_BASELVUP` (always, no config switch); `party_send_levelup`; `pc_baselevelchanged`; achievements. Exact wire effect of each step is in the next section.
+
+### Natural base level-up: exact packet order
+
+Source: `pc.cpp:8266-8302`, `clif.cpp:3637-3911` (`clif_updatestatus`), `status.cpp:6558-6700` (`status_calc_bl_` diff), `status.cpp:1803-1895, 1905-1973` (`status_heal`, `status_percent_change`), `pc.cpp:10663-10682` (`pc_heal`), `clif.cpp:3535-3546, 8095-8144`, `party.cpp:1013-1040, 1075-1078`. Source-derived, then CONFIRMED by a real-client capture ([Capture: combat_sequence_1.txt](#capture-combat_sequence_1txt)); applies to 20260219.
+
+Per `pc_checkbaselevelup` (all level steps of one call are applied first, then ONE burst is sent, so a multi-level gain sends one set of packets with final values):
+
+1. `SP_STATUSPOINT` `0x00b0` (var 9), then `SP_TRAITPOINT` `0x00b0` (var 231), then `SP_BASELEVEL` `0x00b0` (var 11). Right after `SP_BASELEVEL`, if the player is in a party, `clif_updatestatus` sends `0x0abd` `ZC_NOTIFY_MEMBERINFO_TO_GROUPM` (`u16 op, u32 aid, u16 job, u16 level`, 10 bytes) to the whole party INCLUDING self (target `PARTY`; `clif.cpp:3887-3901, 8133-8144`). Solo: nothing.
+2. `SP_BASEEXP` `0x0acb` (var 1), `SP_NEXTBASEEXP` `0x0acb` (var 22). These carry the final values before the recalc runs.
+3. `status_calc_pc(SCO_FORCE)`: recomputes everything, then sends one `clif_updatestatus` per CHANGED value (old battle status vs new), in this fixed order (renewal): STR, AGI, VIT, INT, DEX, LUK as `0x0141` (only if the total changed; base stats do not change on level-up), `HIT`, `FLEE1`, `ASPD`, `SPEED`, `ATK1` (if `batk` changed), `DEF1` then `DEF2` (if `def` changed), `ATK2`, `DEF2` then `DEF1` (if `def2` changed), `FLEE2`, `CRITICAL`, `MATK2` then `MATK1` (if either changed), `MDEF1` then `MDEF2`, `MDEF2` then `MDEF1`, `ATTACKRANGE`, `MAXHP`, `MAXSP`, `HP`, `SP`, then the trait block (POW..CRT `0x0141`, `PATK`, `SMATK`, `RES`, `MRES`, `HPLUS`, `CRATE`, `MAXAP`, `AP`) each only if changed (`status.cpp:6576-6690`). Level-dependent renewal values: `HIT` and `FLEE1` (+1 per level), `DEF2` (level/2 term), `MDEF2` and `MATK` (level/4 terms), `ATK1` (batk), `MAXHP`, `MAXSP` (`status.cpp:2600-2670`). `SP_HP`/`SP_SP` in this diff fire only if the current HP/SP itself changed during the recalc (clamp to a lower max), which a level-up does not do. `clif_skillinfoblock` (`0x010f`) is sent first inside the recalc only if the skill table changed; base level does not change it. The recalc happens BEFORE the heal, so `MAXHP`/`MAXSP` carry the new max while `HP`/`SP` are still old.
+4. `status_percent_heal(100,100)` is `status_percent_change(nullptr, sd, -100, -100, -0, 0)` which calls `status_heal(sd, max_hp, max_sp, 0, 0)`; each amount is clamped to the missing amount and `pc_heal(flag 0)` runs, so it sends: `SP_HP` `0x00b0` (var 5, value = new max HP) only if HP was below the new max (this is the normal case, because max HP just grew), immediately followed by `clif_update_hp`, then `SP_SP` `0x00b0` (var 7) only if SP was below the new max. `clif_update_hp` (`clif.cpp:3539-3546`) sends `0x080e` `ZC_NOTIFY_HP_TO_GROUPM` (`aid, hp, maxhp`, `clif.cpp:8095`; 14 bytes) to the OTHER party members in the area (`PARTY_AREA_WOS`, self excluded) when the player is in a party (`party_hp_mode` 0 default), plus the HP-meter packet to GMs with `PC_PERM_VIEW_HPMETER` when the map has a viewer. In source a solo player with no GM nearby gets no `0x080e`, but the capture shows `0x080e` to the player and to non-party viewers after every `SP_HP` (see the capture section). If the player was already dead (HP 0) or both are already full, the heal sends nothing (can't be dead while killing; both-full happens only if max values did not grow).
+5. Super Novice (`MAPID_SUPER_NOVICE`) and Taekwon (first class) only: `sc_start` of the "angel" status effects (status-change packets, 120 s / 600 s); not for other classes.
+6. `0x019b` effect 0 (AREA, includes self).
+7. `NPCE_BASELVUP` NPC event (script-side effects only).
+8. `party_send_levelup` = `intif_party_changemap(sd, 1)`: a char-server round trip; when it returns, `party_recv_movemap` runs `clif_party_info` and sends the full party list to all online members (a few ms later, not in this burst's position).
+9. `pc_baselevelchanged`: for each equipped item whose `elvmax` is below the new level, `pc_unequipitem(..., 3)` (unequip packets, then a recalc diff), then `pc_show_questinfo` (quest-info icon packets for the new level).
+10. Achievement updates `0x0a24` (one pair of objectives per level gained; none if the player has no matching achievement).
+
+**Difference from the captured `@blevel`/`@blvl` order** ([../packets/status.md](../packets/status.md#captured-stat-up-level-and-job-sequences)): the command runs `calc diff`, heal (`SP_HP`, `SP_SP`), `0x019b`, achievements, message, THEN the tail (`SP_STATUSPOINT`, `SP_TRAITPOINT`, `SP_BASELEVEL`, `SP_BASEEXP` = 0, `SP_NEXTBASEEXP`), then `pc_baselevelchanged`. The natural path sends the tail FIRST, then the diff, heal and `0x019b`. It also differs by: no message (`msg 21`), `SP_BASEEXP` carries the leftover exp (not 0), `0x0abd` right after `SP_BASELEVEL`, angel buffs for Super Novice/Taekwon, `NPCE_BASELVUP` unconditional, `party_send_levelup` (delayed party info), the equip check after (not before) the achievements, and `0x0acc` follows at the end of `pc_gainexp`. The diff and heal packets themselves have the same shape (same fixed order, same changed-only rule). The command's `status_calc_pc` runs with the OLD client level, the natural one with the new level already sent, but both compute from the server's new `base_level`.
+
+### Natural job level-up: exact packet order
+
+Source: `pc.cpp:8328-8361`. Per call (one burst, final values):
+1. `SP_JOBLEVEL` `0x00b0` (var 55), `SP_JOBEXP` `0x0acb` (var 2), `SP_NEXTJOBEXP` `0x0acb` (var 23), `SP_SKILLPOINT` `0x00b0` (var 12).
+2. `status_calc_pc(SCO_FORCE)`: same fixed diff order as above, changed values only. A job level-up changes the job-bonus stats at some levels (`0x0141` for the stats whose total changed, trait block likewise). No heal follows, so there is no `SP_HP`/`SP_SP` unless a clamp happened. Often nothing is sent.
+3. `0x019b` effect 1 (AREA, includes self).
+4. Star Emperor / max job level with `SG_DEVIL`: permanent blind status-change packet (`EFST_DEVIL1`); `NPCE_JOBLVUP`; achievements `0x0a24`; `pc_show_questinfo`. No party notify, no `pc_baselevelchanged`.
+
+Difference from the captured `@jlevel` order: the command sends `0x019b`, achievements, message, THEN `SP_JOBLEVEL`, `SP_JOBEXP`, `SP_NEXTJOBEXP`, `SP_SKILLPOINT`, then the diff. The natural path sends the four pushes first, then the diff, then `0x019b` (the `@jlevel` capture has the effect before the pushes).
+
+### Same-kill base and job level-up (full order)
+
+`pc_gainexp` (`pc.cpp:8511-8530`) runs base first and then job, and each is one complete burst:
+1. Base burst, steps 1 to 10 of the base section (tail, `0x0abd` if partied, `SP_BASEEXP`/`SP_NEXTBASEEXP`, diff, `SP_HP`, [`0x080e`], `SP_SP`, `0x019b` effect 0, ...).
+2. Job burst: `SP_JOBLEVEL`, `SP_JOBEXP`, `SP_NEXTJOBEXP`, `SP_SKILLPOINT`, diff (usually empty after the base burst's recalc, apart from job-bonus changes), `0x019b` effect 1.
+3. `0x0acc` `ZC_NOTIFY_EXP2` base (var 1, amount = the gain after bonuses), then `0x0acc` job (var 2), each only if that gain was non-zero on entry (and showing 0 at max level). They come AFTER both bursts, last in the call.
+4. If `@showexp` is on, the `pc_gainexp_disp` chat line is after that.
+
+A kill with no level-up at all sends, in order: `SP_BASEEXP` `0x0acb`, `SP_JOBEXP` `0x0acb` (each only if that exp was gained, so a zero-exp side is skipped entirely), then the two `0x0acc`. A base-only level-up: base burst, then `SP_JOBEXP`, then both `0x0acc`. A job-only level-up: `SP_BASEEXP`, job burst, `0x0acc` x2. The kill's own packets (damage, mob vanish, drops) come before `pc_gainexp` is called from the mob death handler.
 
 ### Job level-up
 
@@ -97,4 +136,158 @@ Applies unless the class is Novice (`MAPID_SECONDMASK == NOVICE`), the player ha
 
 ## Persistence
 
-`char` columns (`sql-files/main.sql`, see [../db/sql_schemas.md](../db/sql_schemas.md)): `base_level`, `job_level` (smallint unsigned), `base_exp`, `job_exp` (bigint unsigned), `status_point`, `skill_point`, `trait_point` (int unsigned). All saved by the periodic/logout char save, not at level-up time.
+`char` columns (`sql-files/main.sql`, see [../db/sql_schemas.md](../db/sql_schemas.md)): `base_level`, `job_level` (smallint unsigned), `base_exp`, `job_exp` (bigint unsigned), `status_point`, `skill_point`, `trait_point` (int unsigned). Level-up and exp gain do not trigger a save: `pc_gainexp`, `pc_checkbaselevelup`, `pc_checkjoblevelup` call nothing in `chrif_save` and set no dirty flag (`pc.cpp:8244-8364, 8452-8535`). The values are written by `chrif_save` (`chrif.cpp:277`, which first runs `pc_makesavestatus`) only when:
+
+* the autosave timer fires: `pc_autosave` (`pc.cpp:13002-13040`) saves ONE player per tick (`CSAVE_INVENTORY|CSAVE_CART`), with the tick interval `autosave_time / (online + 1)` floored at `minsave_time` (`conf/map_athena.conf:91-96`: 300 s and 100 ms), so each player is saved about every `autosave_time` seconds (a 300 s cycle);
+* the player quits or changes map server (`map.cpp:2329` `map_quit`, `CSAVE_QUIT`; `chrif.cpp:520, 752`);
+* a `save_settings` event occurs (`conf/map_athena.conf:114` default 4095 = all: after trade, vending, storage close, pet, mail, auction, quest, bank, attendance; `CSAVE_NORMAL`);
+* a job change (`pc_jobchange`, `pc.cpp:11076`, `CSAVE_NORMAL`) and a few GM/autotrade paths (`atcommand.cpp:967, 6861`).
+
+Warps inside the same map-server, level-ups and kills do not save. A crash can lose up to one autosave interval of exp and levels. A new server should either mark the character dirty on level-up and save soon (a deliberate improvement) or follow the autosave plus logout model above.
+
+## Mob exp at load and spawn level
+
+Source: `mob.cpp:5072-5096` (`MobDatabase` loader), `mob.cpp:4940-4942`, `mob.cpp:3102-3103`, `mob.cpp:476-479`, `npc.cpp:5234, 5301-5315`, `status.cpp:2781-2793`, `pc.cpp:13325-13354`, `conf/battle/monster.conf:247-250`, `conf/battle/exp.conf:13-16`. Applies to 20260219.
+
+* `BaseExp`, `JobExp`, `MvpExp` from `mob_db.yml` are stored once at load as `min(max(exp * rate / 100.0, 0), INT64_MAX)` with `base_exp_rate`, `job_exp_rate`, `mvp_exp_rate` (all default 100, so the stored value equals the file value). Without the key the value is 0 (zero-initialised). No other load-time exp adjustment exists: no level scaling, no cap, no MVP-specific change. (A player-clone mob created by `mob_clone_spawn` gets base and job exp 1, `mob.cpp:4624-4625`.)
+* A mob with 0 base AND 0 job exp and no spawn is flagged at load (`mob.cpp:273`, a warning only).
+* Spawn-line level (`mob_name,<level>` in a `monster` script line, `npc.cpp:5234`): valid `1..275` (0 or above 275 is an error, `npc.cpp:5301`), stored as `spawn_data.level` (`npc.cpp:5314`), copied to `md->level` (`mob.cpp:478`). On spawn `status_calc_mob_` keeps `md->level` if it is 1..275 and differs from the DB level, otherwise resets it to the DB `Level` (`status.cpp:2782-2786`).
+* Effects of a custom level on exp: the DB exp VALUE does not change. Only (a) the renewal level-penalty difference uses `md->level`, not the DB level (`pc.cpp:13325-13354`: `diff = md->level - player base level`), and (b) when `mobs_level_up` is on (default `no`) the kill bonus gets `+ (md->level - db_level) * mobs_level_up_exp_rate` percent (default rate 1; `mob.cpp:3102-3103`) and the mob's base stats are recomputed for the higher level. With `mobs_level_up` off, a spawn-line level changes only the penalty difference (and level-keyed drop/zeny formulas that read `md->level`).
+
+## Capture: combat_sequence_1.txt
+
+Source: [../captures/combat_sequence_1.txt](../captures/combat_sequence_1.txt) (rAthena `d4b8e7b`, `PACKETVER 20260219`, real client; line numbers are FILE lines = proxy `#` + 10). Session `#3` = A (`combattest1`, fresh Novice, later `@job 3` Archer), `#6` = B (`combattest2`, fresh Novice, observer; attacker only in step 8). Not partied, so no `0x0abd`/party-info packets. Settles [PF-09](../../../PACKET_FINDINGS.md#pf-09) for solo play. Mob ids come from the spawn packets (`0x09fd/9fe/9ff`, `job` at payload byte 19): Poring 1002, Lunatic 1063, Pupa 1008, Marine Sphere 1142. Applies to 20260219.
+
+### Confirmed facts (summary)
+
+* Natural base level-up order is TAIL FIRST, then recalc diff, then heal, then `0x019b` effect 0, exactly as the source reading in "Natural base level-up: exact packet order". The natural job level-up is: four pushes, diff, `0x019b` effect 1. Double level-up = base burst, job burst (each with its own diff, so two diffs; the job one is often empty), then both `0x0acc`. All other predictions in those sections held.
+* `0x0acc` is the LAST exp packet of a kill (after every level-up burst); `0x0acb` BASEEXP/JOBEXP precede it. `0x0a24` achievement packets (kill-count objectives of the mob, nothing to do with levels) come after `0x0acc` and before the drops; absent for Pupa/Lunatic/Marine Sphere kills.
+* `multi_level_up` is off: a gain larger than the bar levels once and the leftover is clamped to (consumed bar - 1) (see the job table below).
+* Amounts equal mob_db exp times the renewal level-penalty rate, floored at each step (formulas below).
+* `0x0977` (mob HP, `u32 aid, u32 hp, u32 maxhp`, 12 bytes) with `hp = 0` is the first packet of the exp burst, but only for players in the mob's damage log (see "What the observer gets").
+* NOT contradicting but refining: the heal's `SP_HP` push is followed by `0x080e` (`aid, hp, maxhp`) that A itself receives although A is in no party (e.g. 1192, 2183); B receives A's `0x080e` for every A HP change as a non-party observer (e.g. 645, 3279). The earlier statement "a solo player gets no `0x080e`" (Natural base level-up step 4) is wrong in practice: the map-wide HP bar (`hpmeter_visible` path) is on. Same as [../packets/status.md](../packets/status.md#captured-stat-up-level-and-job-sequences) notes.
+
+### 1. Kill without level-up (A, file 1285-1296, Poring 150/40)
+
+| Line | Packet | Value |
+| ---: | :--- | :--- |
+| 1285 | `0x0977` MONHP | mob aid 110028067, hp 0, max 55 (kill tick, `.528`) |
+| 1286 | `0x0acb` BASEEXP (var 1) | 202 (running total) |
+| 1287 | `0x0acb` JOBEXP (var 2) | 67 |
+| 1288 | `0x0acc` | base, amount 150 (`aid=A, i64 150, var 1, exp_type 0`) |
+| 1289 | `0x0acc` | job, amount 40 (var 2) |
+| 1290 | `0x0a24` | achievement count update (Poring kills), noise |
+| 1291-1295 | `0x0add` x5 | drops, same ms |
+| 1296 | `0x0080` | mob vanish type 1, +251 ms (`.779`) |
+
+No `0x00b0`, no `0x019b`. A one-hit kill (2769-2774: `0x08c8` 104 dmg, then `0x0977` hp 0, `0x0acb` x2, `0x0acc` x2, `0x0add`, vanish +250 ms) has the same shape; with no earlier hits there is no preceding `0x0977`. Damage packets are sent at swing time; the HP is applied about 587 ms later (B's hits at 3096/3107/3128 produce `0x0977` 37/22/0 at +592/+587/+587 ms), so the kill tick is ~0.59 s after the killing blow's `0x08c8`.
+
+**What the observer (B, not in the damage log) gets** (686-708): only `0x08c8` swings, the drop `0x0add`, `0x0080` vanish (+250 ms) and, on a level-up, one `0x019b` (aid = A, effect 0/1 per level kind, 683/864/982 etc.). No `0x0977`, `0x0acb`, `0x0acc`, `0x00b0`, `0x0141`. A sees B's level-up the same way (`0x019b` aid 2000001, 3133). Every player in the damage log (A and B in step 8) gets `0x0977` hp 0 (3130 B, 3131 A) followed by their own exp burst; mid-fight `0x0977` (hp 37, 22) went only to the attacker whose hit applied (B).
+
+### 2. Level-up bursts, packet by packet (A)
+
+Natural JOB-only level-up (kill 1, Poring at job 1; file 686-700). All captured job-only ups share this shape; the diff content varies with the Novice job bonus:
+
+| Line | Packet | Value |
+| ---: | :--- | :--- |
+| 686 | `0x0977` | hp 0 |
+| 687 | `0x0acb` BASEEXP | 150 |
+| 688 | `0x00b0` JOBLEVEL (var 55) | 2 |
+| 689 | `0x0acb` JOBEXP | 9 (40 - 10 = 30, clamped to 10 - 1) |
+| 690 | `0x0acb` NEXTJOBEXP (var 23) | 18 |
+| 691 | `0x00b0` SKILLPOINT (var 12) | 1 |
+| 692-695 | diff | `0x0141` LUK `base 1, bonus 1`; `0x00b0` ATK1=2, FLEE2=1 (var 51), CRIT=1 (var 52) |
+| 696 | `0x019b` | aid A, effect 1 |
+| 697-698 | `0x0acc` x2 | 150 base, 40 job |
+| 699-700 | `0x0a24` x2 | achievements |
+| 701+ | `0x0add` | drops |
+
+No heal, no `0x080e`, no `0x0abd`. Job-bonus diffs seen: job 2 LUK (+ATK1, FLEE2, CRIT), job 3 DEX (`0x0141` then HIT; 857-858), job 4 none (987-991), job 5 AGI (+FLEE1; 1199-1200), job 6 VIT (+DEF2=10, DEF1=2; 1455-1457), job 7 none (2186-2190), job 8 STR (+ATK1; 2825-2826), job 9 INT (`0x0141`, MATK2, MDEF2, MDEF1; 3146-3152). Job-level skill points: SKILLPOINT is the new TOTAL (1, 2, 3, 4, 5, 6, 7, 8 across job 2-9).
+
+Natural BASE + JOB double level-up, base 1 to 2 and job 4 to 5 (Poring at 600/67 total; file 1179-1204):
+
+| Line | Packet | Value |
+| ---: | :--- | :--- |
+| 1179 | `0x0977` | hp 0 |
+| 1180 | `0x00b0` STATUSPOINT (var 9) | 51 (unspent total) |
+| 1181 | `0x00b0` TRAITPOINT (var 231) | 0 (sent even when 0) |
+| 1182 | `0x00b0` BASELEVEL (var 11) | 2 |
+| 1183 | `0x0acb` BASEEXP | 52 (600 - 548) |
+| 1184 | `0x0acb` NEXTBASEEXP (var 22) | 894 |
+| 1185-1190 | recalc diff | `0x00b0` HIT=179, FLEE1=103, MDEF2=0 (var 48), MDEF1=2 (var 47), MAXHP=45, MAXSP=12 |
+| 1191 | `0x00b0` SP_HP | 45 (new max) |
+| 1192 | `0x080e` | A 45/45 (to A, and to nearby non-party viewers) |
+| 1193 | `0x00b0` SP_SP | 12 |
+| 1194 | `0x019b` | aid A, effect 0 |
+| 1195 | `0x00b0` JOBLEVEL | 5 |
+| 1196-1197 | `0x0acb` | JOBEXP 27, NEXTJOBEXP 91 |
+| 1198 | `0x00b0` SKILLPOINT | 4 |
+| 1199-1200 | job diff | `0x0141` AGI `1+1`, `0x00b0` FLEE1=104 |
+| 1201 | `0x019b` | aid A, effect 1 |
+| 1202-1203 | `0x0acc` x2 | base 150, job 40 (last, after both bursts) |
+| 1204 | `0x0a24` | achievement |
+
+The second double (Lunatic, base 2 to 3, job 6 to 7; file 2170-2192) is identical: STATPOINT=5, TRAITPOINT=0, BASELEVEL=3, BASEEXP=58, NEXTBASEEXP=1486, diff HIT=193, FLEE1=105, MDEF2=0, MDEF1=5, MAXHP=51, MAXSP=13, `SP_HP`=51, `0x080e`, `SP_SP`=13, `0x019b` 0, JOBLEVEL=7, JOBEXP=45, NEXTJOBEXP=205, SKILLPOINT=6, NO job diff, `0x019b` 1, `0x0acc` 150 / 50. So: one diff per burst (two total); the base diff sends only changed values and the fixed order `HIT, FLEE1, MDEF2, MDEF1, MAXHP, MAXSP` (no ATK1/DEF/MATK change at those levels; HP/SP pushed by the diff are only the max values); heal comes after the diff and before `0x019b`; tail comes before the diff. HP and SP are both below the new max in all cases, so both pushes were sent. `0x0141` appears only for the job-bonus stat, never on a base level-up. No base-only level-up occurred in this capture (all base ups coincided with a job up), so "base burst alone, then `JOBEXP`, then `0x0acc`" stays source-derived.
+
+Differences from the captured `@blevel 10` (3352-3376): `@blevel` sends diff (HIT, FLEE1, ATK1, DEF2, DEF1, CRIT, MATK2, MATK1, MDEF2, MDEF1, MAXHP, MAXSP), `SP_HP`, `0x080e`, `SP_SP`, `0x019b` 0, THEN `STATPOINT`=46, `TRAITPOINT`=0, `BASELEVEL`=13 (relative: 3 + 10), `BASEEXP`=0, `NEXTBASEEXP`=6106 (the Lv13 bar). `@jlevel 10` (3387-3403): `0x019b` 1 first (3389), then `JOBLEVEL`=11 (relative), `JOBEXP`=0, `NEXTJOBEXP`=2680 (Archer bar for Lv11), `SKILLPOINT`=18, diff (`0x0141` STR `11+1`, INT `1+1`, DEX `14+1`, HIT, ATK1, MATK2, MATK1, MDEF2, MDEF1). Natural is the reverse of both: pushes first, effect last. Neither command sends `0x0acc`.
+
+### Job-exp leftover clamp (confirms `multi_level_up` off)
+
+| Kill | Job exp before | + gain | Bar consumed | Raw leftover | Sent JOBEXP |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| 1 (686) | 0 | 40 | 10 | 30 | 9 (clamped to bar - 1) |
+| 2 (851) | 9 | 40 | 18 | 31 | 17 (clamped) |
+| 3 (984) | 17 | 40 | 28 | 29 | 27 (clamped) |
+| 4 (1179) | 27 | 40 | 40 | 27 | 27 (below clamp 39, unchanged) |
+
+The clamp uses the bar just consumed (the pre-level bar). Bars match `job_exp.yml` (Novice job 1-9: 10, 18, 28, 40, 91, 151, 205, 268, 340; base 1-3: 548, 894, 1486; Archer job 1: 60, job 11: 2680; base 13: 6106).
+
+### 3. Max job level
+
+NOT exercised. A reached Novice job 9 (JOBEXP 11 of 340, 3136-3141) and then `@job 3` (job level 1, `JOBLEVEL`=1, `JOBEXP`=0, `NEXTJOBEXP`=60, 3222-3229; base level/exp untouched), so no kill happened at Novice job 10, and Archer (max 50) was at job 11. Whether `0x0acc` shows 0 / `JOBEXP` clamps at the max stays source-derived.
+
+### 4. Two attackers on one mob (step 8, Pupa 157/55, file 3087-3158)
+
+Hits (`0x08c8` damage field, offset 20): B 0 and 0 (3092-3095, two zero-damage swings; the first swing of an attack is a 0 in the solo kills too, 666/669), B 14 (3096), B 15 (3107), A 107 (3119, applied at +587 ms = the kill), B 14 (3128, sent before the kill applied, so never applied). Mob HP max 51 (37, 22, 0). The log holds the RAW 107 (not the 22 effective): `mob_log_damage` gets the unclamped damage (`mob.cpp:2778`, `status.cpp:1656`).
+
+Verification (`mob.cpp:3128-3160`): damage log A = 107, B = 29, total 136, `count = 2`:
+
+| | per = dmg/total | per x (1 + 25%) | base: floor(157 x per) | job: floor(55 x per) | level rate | sent |
+| :--- | ---: | ---: | ---: | ---: | :--- | :--- |
+| A (base Lv3, diff +1) | 0.78676 | 0.98346 | 154 | 54 | 100 | 154 / 54 (`0x0acc` 3156, 3158) |
+| B (base Lv1, diff +3) | 0.21324 | 0.26654 | 41 | 14 | 105 | 43 / 14 (`0x0acc` 3153, 3155) |
+
+So the formula and the 25% two-attacker bonus hold, the double is cast to an integer (truncated) BEFORE the penalty, and the penalty is then integer `x rate / 100` (41 x 105 / 100 = 43, 14 x 105 / 100 = 14). Rejected alternatives: B = 43 (all three hits) gives 58/19; effective damage (22/29) gives 84/116. Combined 197 base from a 157-exp mob (the bonus inflates the total). B's burst: `0x0acb` BASEEXP=43, JOBLEVEL=2, JOBEXP=4, NEXTJOBEXP=18, SKILLPOINT=1, `0x0141` LUK `1+1`, ATK1=2, FLEE2=1, CRIT=1, `0x019b` 1, `0x0acc` 43, `0x0acc` 14 (3132-3155); A's: BASEEXP=1311, JOBLEVEL=9, JOBEXP=11, NEXTJOBEXP=340, SKILLPOINT=8, `0x0141` INT `1+1`, MATK2=39, MATK1=0, MDEF2=0, MDEF1=6, `0x019b`, `0x0acc` 154 / 54 (3135-3158). Sessions interleave in the log by thread; read each session separately.
+
+### Exp amounts vs mob_db and level penalty
+
+`$RATHENA_PATH/db/re/mob_db.yml` (the project's `crates/ro-db/data/mob/mob_db.yml` drops exp fields): Poring Lv1 150/40, Lunatic Lv3 150/50, Pupa Lv4 157/55, Marine Sphere Lv51 426/373. `rate` from `level_penalty.yml` ([../db/exp_tables.md](../db/exp_tables.md#renewal-level-difference-exp-penalty)); `exp = trunc(db x per)` then `exp x rate / 100` integer.
+
+| Kill (file line) | Player base Lv | diff | rate | Expected | Sent |
+| :--- | ---: | ---: | ---: | :--- | :--- |
+| Poring (697-698, 1202, ...) | 1-2 | 0 / -1 | 100 | 150 / 40 | 150 / 40 |
+| Lunatic (2139-2140) | 2 | +1 | 100 | 150 / 50 | 150 / 50 |
+| Lunatic (2191-2192) | 2 (before ding) | +1 | 100 | 150 / 50 | 150 / 50 |
+| Pupa (2772-2773 ...) | 3 | +1 | 100 | 157 / 55 | 157 / 55 |
+| Pupa (3447-3448 ..., Archer) | 13 | -9 | 95 | 149 / 52 (149.15, 52.25) | 149 / 52 |
+| Marine Sphere (4116-4117, 4429-4430) | 13 | +38 | 40 | 170 / 149 (170.4, 149.2) | 170 / 149 |
+
+Running totals add up exactly (no exp lost or bonus): base 150, 300, 450, then level 2 with 52 after the 4th Poring, 202, 352, 502, 652, 802, level 3 with 58, then +157 each (215, 372, 529, 686, 843, 1000, 1157), +154 (1311); after `@blevel`/`@jlevel` both 0, then +149 x7 (149 ... 1043), +170 (1213), +170 (1383); job 9, 17, 27, 27 (lvl up 5), 67, 16 (lvl 6), 56, 96, 146, 45 (lvl 7), 100, 155, 5 (lvl 8), ..., 225, 11 (lvl 9), then Archer 52 ... 364, 513, 662. The Novice kills happened at base Lv1-3 against Lv1-4 mobs, so no penalty applied until the Archer part.
+
+### 5. Relog and persistence
+
+A sent `0x00b2` Restart type 1 (back to character select, 4639) then re-entered the char server (session `#7`, file 4644-4660); the capture ends without a map re-entry, so exp at map login after the relog is not captured. The char list (`0x006b` 4647 and `0x0b72` 4656-4660, 175-byte `CHARACTER_INFO` entries: `i64 exp` at entry offset 4, `i64 jobexp` at 16, `i32 joblevel` at 24, `i16 statpoint` at 48, `i16 level` at 92) shows A as: base exp 1383, job exp 662, job level 11, base level 13, class 3 (Archer), status points 46, HP 149/149, SP 36/36. These equal A's last in-game values (4427-4430 and 3372-3394), so exp and levels were saved on the logout-to-select (`CSAVE_QUIT`, as in "Persistence"). The fresh chars show exp 0/0, job level 1, base level 1, status points 48, HP 40/40, SP 11/11 (`0x0b6f` at 37 and 251).
+
+### 6. Fresh-char login burst (A, file 60-136)
+
+Exp-related part, in order: `0x0acb` BASEEXP=0 (102), NEXTBASEEXP=548 (103), JOBEXP=0 (104), NEXTJOBEXP=10 (105) (real Novice table values, not zero), then `0x00b0` SKILLPOINT=0 (106), then `0x00bd` (107). Preceding recalc diff (60-81): LUK `0x0141`, HIT=177, FLEE1=102, ASPD=590, ATK1=1, DEF1=1, DEF2=10, ATK2=17, DEF2=10, DEF1=1, FLEE2=1, CRIT=1, MATK2=1, MATK1=0, MDEF2=0, MDEF1=1, `0x013a`, MAXHP=40, MAXSP=11, HP=40, SP=11, WEIGHT=500. After `0x00bd`: `0x0141` STR..LUK (all `1+0`), `0x013a`, ASPD, trait block (`0x0141` 219-224, `0x00b0` 225-230, TRAITPOINT=0, 232, 233), `0x00be` 0x00f7-0x00fc.
+
+`0x00bd` payload (file 107, 44 bytes incl. opcode): `point` 48; STR/AGI/VIT/INT/DEX/LUK each `base 1, cost 2`; `attPower` 1 (batk), `refiningPower` 17, `max_matt` 0, `min_matt` 1, `itemdef` 1, `plusdef` 10, `mdef2` 1, `plusmdef` 0, `hit` 177, `flee` 102, `flee2` 1, `crit` 1, `aspd` 590, `plusASPD` 0. Layout: [../packets/status.md](../packets/status.md#0x00bd-zc_status). (`attPower`/`refiningPower` assignment follows that doc; the capture only fixes the values.)
+
+### Still open
+
+* Max job/base level behaviour (`0x0acc` amount, exp clamp): not captured.
+* Base-only level-up (no simultaneous job up): not captured (source order stands).
+* Party members: `0x0abd`, `0x080e` to others, delayed party info: no party in this capture.
+* Map re-entry exp values after relog (only the char-select copy was captured).
+* `@showexp` chat line and `0x0a24` objective details: ignored here.

@@ -18,12 +18,10 @@ Open questions and disagreements about wire packets for `PACKETVER = 20260219`. 
 | [PF-05](#pf-05) | Which client opcodes apply: shuffle block vs packetdb | Source conflict | Resolved from source; capture still wanted |
 | [PF-07](#pf-07) | `0x0b41` ZC_ITEM_PICKUP_ACK length 70 and the failure form | Struct only | Open |
 | [PF-08](#pf-08) | Inventory list and item ack layouts | Struct only | Open |
-| [PF-09](#pf-09) | Exp and level-up packets and their order | Struct only | Open |
 | [PF-10](#pf-10) | Status window packets (`0x00bd`, `0x0141`, `0x00be`, `0x00bc`) | Struct only | Open |
 | [PF-12](#pf-12) | Where HP, SP, zeny and levels come from at login | Behaviour | Open |
-| [PF-13](#pf-13) | Attack request and swing packet order | Behaviour | Open |
-| [PF-14](#pf-14) | Attack range: straight line reaches one cell further | Behaviour | Open |
-| [PF-15](#pf-15) | Mob kill timing: drops at +0 ms, vanish at +250 ms | Behaviour | Open |
+| [PF-13](#pf-13) | Attack request and swing packet order | Behaviour | Mostly confirmed (sit/stand target_id, canact re-click open) |
+| [PF-14](#pf-14) | Attack range: straight line reaches one cell further | Behaviour | Open (no clean sample in combat_sequence_1) |
 | [PF-16](#pf-16) | ASPD value on the wire is amotion | Behaviour | Open |
 | [PF-17](#pf-17) | `0x02c1` coloured message layout | Minor | Open |
 | [PF-19](#pf-19) | Server rules not settled by source (overweight attack, DEF clamps, regen weight rate) | Server rule | Open |
@@ -33,6 +31,8 @@ Open questions and disagreements about wire packets for `PACKETVER = 20260219`. 
 
 | Id | Topic | Resolved | By |
 | :--- | :--- | :--- | :--- |
+| [PF-15](#pf-15) | Mob kill timing: `0x0977` hp 0, exp, drops in the kill tick; vanish type 1 at about +250 ms | 2026-10-30 | `item_drop_pickup_sequence.txt`, `combat_sequence_1.txt`; [mechanics/combat.md](reference/catalog/mechanics/combat.md) §7, [mechanics/mobs.md](reference/catalog/mechanics/mobs.md#31-packet-order-for-one-normal-kill-single-player-loot-no-party-at-default-conf) |
+| [PF-09](#pf-09) | Exp and level-up packets and their order (natural base/job/double level-up, no-level-up kill, two-attacker share) | 2026-10-30 | `combat_sequence_1.txt`; [mechanics/experience.md#capture-combat_sequence_1txt](reference/catalog/mechanics/experience.md#capture-combat_sequence_1txt); residual items listed in PF-09 |
 | [PF-11](#pf-11) | Equip packets (`0x0998`, `0x0999`, `0x099a`, take-off, unequip-all, ammo, looks) | 2026-10-25 | `equip_sequence.txt`, `equip_sequence_2.txt`; [packets/equipment.md#captured-equip-sequences](reference/catalog/packets/equipment.md#captured-equip-sequences) |
 | [PF-18](#pf-18) | `MSI_WRONG_BULLET` is 2493 or 2494 | 2026-10-24 | `clif.hpp:599` branch read: 2493 at 20260219; `table.rs` rows for `0x0291`/`0x07e6`/`0x09cd` added (equipment M1, `pkt_eq_01_table_lengths`) |
 | [PF-01](#pf-01) | `0x01d7` ZC_SPRITE_CHANGE2: table says 11, source sends 15 | 2026-10-23 | `item_drop_pickup_sequence.txt`; `table.rs` fixed, test `pkt_item_01_table_lengths` |
@@ -160,14 +160,17 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 
 **Exp and level-up packets and their order**
 
-- **Status:** Open.
+- **Status:** Resolved 2026-10-30 by `combat_sequence_1.txt` (solo play). Residual, not captured: max base/job level behaviour, base-only level-up, party packets (`0x0abd`, `0x080e` to others, party info), map re-entry values after relog.
 - **Source:**
   - `0x0acc` ZC_NOTIFY_EXP2, 18 bytes: `u16 op, u32 AID, i64 amount, u16 var (1 base, 2 job), u16 exp_type (1 only for quest base exp)`. Sent to self.
   - `0x0acb` ZC_LONGLONGPAR_CHANGE, 12 bytes: `u16 op, u16 var, i64 value`, for BASEEXP 1, JOBEXP 2, NEXTBASEEXP 22, NEXTJOBEXP 23.
   - `0x019b` ZC_NOTIFY_EFFECT, 10 bytes, effect 0 = base level up, 1 = job level up, to `AREA` including the leveler.
-  - Base level-up order: STATUSPOINT, TRAITPOINT, BASELEVEL, BASEEXP, NEXTBASEEXP, then the stat recalc push, then the full heal, then `0x019b`.
-- **Unknown:** which HP/SP `0x00b0` updates the heal produces (from `status_calc_pc` and `status_percent_heal`, not traced).
-- **Resolve by:** a capture of killing a mob for exp, then a kill that levels up.
+  - Natural base level-up order (`pc_checkbaselevelup`): `STATUSPOINT`, `TRAITPOINT`, `BASELEVEL` (`0x00b0`; then `0x0abd` to the party incl. self if partied), `0x0acb` `BASEEXP` (leftover) and `NEXTBASEEXP`, then the `status_calc_pc` diff (changed values only: `HIT`, `FLEE1`, `ATK1`/`DEF`/`MATK`/`MDEF` pairs when changed, `MAXHP`, `MAXSP`), then the heal: `SP_HP` `0x00b0` (new max; plus `0x080e` to other party members in the area), `SP_SP` `0x00b0`, then `0x019b` effect 0. Each of `SP_HP`/`SP_SP` is sent only if the value was below the new max. This differs from the captured `@blevel`, which sends the diff, heal and `0x019b` BEFORE the tail (`BASEEXP` = 0).
+  - Natural job level-up: `JOBLEVEL`, `0x0acb` `JOBEXP`, `NEXTJOBEXP`, `SKILLPOINT`, diff (often empty), `0x019b` effect 1. No heal.
+  - Same-kill double level-up: whole base burst, whole job burst, then `0x0acc` base, `0x0acc` job last. A no-level-up kill: `0x0acb` `BASEEXP`, `0x0acb` `JOBEXP`, then both `0x0acc`.
+- **Unknown (narrowed):** the heal's HP/SP pushes are settled by source (above). Still unconfirmed on the wire: that the natural order really is tail-first, and what the delayed `clif_party_info` looks like after `party_send_levelup`.
+- **Captured (real client):** the source order held. Natural base level-up: `STATUSPOINT`, `TRAITPOINT`, `BASELEVEL`, `0x0acb` `BASEEXP`/`NEXTBASEEXP`, changed-only diff (`HIT, FLEE1, MDEF2, MDEF1, MAXHP, MAXSP` at Novice 1 to 3), `SP_HP`, `0x080e` (also to the player and to non-party viewers), `SP_SP`, `0x019b` effect 0. Job level-up: `JOBLEVEL`, `JOBEXP`, `NEXTJOBEXP`, `SKILLPOINT`, diff, `0x019b` effect 1. Double: both bursts (two diffs), then `0x0acc` base, `0x0acc` job, then `0x0a24`. No-level-up kill: `0x0977` hp 0, `0x0acb` BASEEXP, `0x0acb` JOBEXP, `0x0acc` x2. Observers get only `0x019b` on a level-up. Leftover exp is clamped to (consumed bar - 1). Two-attacker share and level-penalty amounts verified. Detail and line numbers: experience.md capture section.
+- **Resolve by:** done (see Status).
 - **Catalog:** [mechanics/experience.md#wire-packets](reference/catalog/mechanics/experience.md#wire-packets), [mechanics/experience.md#level-up](reference/catalog/mechanics/experience.md#level-up).
 
 ### PF-10
@@ -218,36 +221,41 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 
 **Attack request and swing packet order**
 
-- **Status:** Open.
-- **Source:**
-  - `0x0437` action 0 is a single swing and 7 is continuous. We assume a plain click sends 7.
-  - Every request first stops the current attack. A bad target fails silently.
-  - Out of range: the server sends `0x0139` and does not chase; the client walks and asks again.
-  - Source suggests `0x0088` (stop move) goes out twice before the first `0x08c8`.
-  - `0x08c8` goes to `AREA` around the target at swing time, with `src_speed` = attacker amotion and `dmg_speed` = target dmotion (0 on a miss). The HP change lands amotion ms later.
-- **Unknown:** the `target_id` the client puts in `0x0437` for sit and stand.
-- **Resolve by:** a capture of clicking a mob once, holding attack, clicking a mob out of range, and sitting.
+- **Status:** Mostly confirmed by capture on 2026-10-30 ([`combat_sequence_1.txt`](reference/catalog/captures/combat_sequence_1.txt), details in [auto_attack.md section 8](reference/catalog/mechanics/auto_attack.md#8-capture-combat_sequence_1txt-request-loop-range)). Still open: sit/stand `target_id`, and a re-request inside `canact_tick`.
+- **Confirmed:**
+  - The action byte is not always 7. Plain click: `7` with `/noctrl` on, `0` (one swing, no loop) with it off (lines 573 vs 1044, 1378, 1674). Ctrl click: `7` (1171, 1247). Held click: one `0x0437` `7`, no repeats, then `0x0118` on release 3453 ms later (1105, 1122). A click on the current target: `7` then `0x0118` 73-108 ms later, giving exactly one swing (1684/1688 and five more).
+  - The client does not repeat `0x0437` for a held click; the server loop swings every `adelay` = 2 x `amotion` (590 -> 1180 ms by `0x08c8` tick, 1112/1115/1118).
+  - Immediate swing: `0x0088` x2 (attacker cell, to attacker and observers), then `0x08c8`, 3-8 ms after the request (1684-1687). If the attacker's walk is still running when a step action fires: `0x0088` x3 (805 -> 809-816). Later loop swings: bare `0x08c8`.
+  - Deferred swing (request after `canact_tick`, before `attackabletime`): nothing at request time, then a bare `0x08c8` with no `0x0088` at exactly previous swing + `adelay` (1921/1923/1924; retarget too: 2943/2958/2960).
+  - `0x0977` goes to the attacker only at swing + `amotion` (588-600 ms), none on a miss. It still arrives after a `0x0118` (1838/1839).
+  - Out of range: `0x0139` is sent to the attacker only. After a request it is preceded by one `0x0088` (1248/1249); after a loop swing it arrives at the next `attackabletime` with no `0x0088` (949, 1927). The client answers with `0x035f` 3-14 ms later to the cell next to the target, then re-sends `0x0437`.
+  - For a far target the client walks first with `0x035f` and sends `0x0437` while still walking; the server never sends `0x0139` in those cases (570/573, 800/805, 929/933, 1163/1171).
+  - `0x0118` gets no reply. A ground click (`0x035f`) during a loop stops it with no packet back (623).
+- **Unknown:** the `target_id` the client puts in `0x0437` for sit and stand (not in this range); behaviour of a re-click inside `amotion + 100 ms` (the shortest re-request seen was 1025 ms after a swing, so `0x0110` was never triggered); what exactly makes the client pick `7` + `0x0118` over a single `0` (inferred: re-click on the locked target).
+- **Resolve by:** a capture re-clicking a target faster than 690 ms (amotion 590 + 100), and one with sit/stand.
 - **Catalog:** [mechanics/auto_attack.md](reference/catalog/mechanics/auto_attack.md), [packets/combat.md](reference/catalog/packets/combat.md).
 
 ### PF-14
 
 **Attack range reaches one cell further in a straight line**
 
-- **Status:** Open.
+- **Status:** Open (capture gave no clean sample).
 - **Source:** player range check is `floor(sqrt(dx² + dy²) - 0.1) <= range` (`check_distance_client`, `path.cpp:485-523`). With range 1, a target 2 cells away in a straight line is in range but `(2,1)` is not. The "one cell further" reading comes from a source comment. Line of sight is checked at distance 2 and above. Mobs use square (Chebyshev) distance instead.
-- **Resolve by:** a capture of attacking with bare hands from 2 cells away in a straight line. Does the client send `0x0437` without walking, and does the server's `0x08c8` follow?
-- **Catalog:** [mechanics/auto_attack.md#2-range-check-semantics](reference/catalog/mechanics/auto_attack.md#2-range-check-semantics).
+- **Capture** ([`combat_sequence_1.txt`](reference/catalog/captures/combat_sequence_1.txt)): range 1 targets at (3,2), (3,1) and (1,3) cells got `0x0139` with range field 1 (949, 1249, 1257), as the formula predicts. The "straight 2" and "(2,1)" attempts (1378, 1424) were requested while A was walking, so they were step actions (`range + 1`), and the swings came when A had stopped 1 cell from the Poring (1380-1382, 1429-1432). A swing at about (0,2) (940) hit a walking target, also `range + 1`. So the plain rule is untested.
+- **Resolve by:** attack with A standing still (not walking, no queued step action) and the target standing at exactly (2,0), then (2,1). Use a stationary target (a Training Dummy or a mob that cannot move) so the mob does not close in.
+- **Catalog:** [mechanics/auto_attack.md#84-pf-14-range-1-at-2-cells](reference/catalog/mechanics/auto_attack.md#84-pf-14-range-1-at-2-cells).
 
 ### PF-15
 
 **Mob kill timing**
 
-- **Status:** Confirmed by capture on 2026-10-23 ([`item_drop_pickup_sequence.txt`](reference/catalog/captures/item_drop_pickup_sequence.txt) lines 1106-1131).
+- **Status:** Confirmed by two captures (2026-10-23, 2026-10-30; the "resolve by" condition is met, resolved 2026-10-30). First: ([`item_drop_pickup_sequence.txt`](reference/catalog/captures/item_drop_pickup_sequence.txt) lines 1106-1131).
   - At 22.271 the killer gets `0x0977` hp 0, then the exp packets (`0x0acb`, `0x0acc`), then `0x0add`. The observer's `0x0add` goes out at 22.269, so it's the same server tick.
   - `0x0080` type 1 follows at 22.517 (+246 ms).
   - The `0x0add` cell is the mob's last `0x0088` stop cell (157,331).
   - Pickup order: `0x0b41`, `0x00b0` SP_WEIGHT, `0x08c8` type 1, `0x00a1`.
   - The client sent `0x0361` change direction right before `0x0362`, and observers got the matching `0x009c`.
+  - **Second capture (2026-10-30, [`combat_sequence_1.txt`](reference/catalog/captures/combat_sequence_1.txt), 27 kills, file lines):** same order in the same millisecond, `0x0977` hp 0, `0x0acb` base exp, `0x0acb` job exp, `0x0acc` x2 (types 1, 2), then one `0x0add` per drop (lines 3444-3450); a level-up kill puts its pushes between the exp packets and `0x0a24` x2 before the drops (686-702); a kill with no drop sends no `0x0add` (3478-3483). `0x0080` type 1 follows after **245-273 ms (median ~252)**, to the killer and observers alike, so "250 ms" is nominal. Drops are real (71 `0x0add` frames across both sessions) but we will not implement them. The kill's `0x0977` arrives at swing + amotion; mobs killed by another mob's skill (Marine Sphere self-destruct, 4102-4136) get the same +249 ms vanish.
 - **Source:**
   - On the killing blow `0x0977` carries hp 0. The mob leaves the block grid at once without a packet.
   - Drops are queued on a timer with a 0 ms delay by default and appear as `0x0add`.
