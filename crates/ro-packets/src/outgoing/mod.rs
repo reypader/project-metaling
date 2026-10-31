@@ -38,8 +38,10 @@
 //! - character status (0x0acb, 0x00bd, 0x0141, 0x013a, 0x00be)
 //! - the rest of the entry burst: 0x01d7, 0x099b, 0x09e7, 0x0a24, 0x0ade
 //! - equipment (0x0999, 0x099a, 0x0bae, 0x013c, 0x013b, 0x0291) and the status icon 0x0983
+//! - combat (0x0977, 0x0139, 0x0110, 0x0acc, 0x07fa; the swing 0x08c8 is in `map`)
 
 pub mod char;
+pub mod combat;
 pub mod encoder;
 pub mod equip;
 pub mod helpers;
@@ -54,6 +56,10 @@ pub use char::{
     encode_hc_accept_makechar, encode_hc_ack_charinfo_per_page, encode_hc_delete_char3_cancel,
     encode_hc_delete_char3_reserved, encode_hc_notify_zonesvr, encode_hc_refuse_enter,
     encode_hc_refuse_makechar,
+};
+pub use combat::{
+    encode_zc_ack_touseskill, encode_zc_attack_failure_for_distance,
+    encode_zc_delete_item_from_body, encode_zc_hp_info, encode_zc_notify_exp2,
 };
 pub use encoder::{
     is_implemented_outbound_opcode, ModernEventEncoder, Phase0EventEncoder, RathenaEventEncoder,

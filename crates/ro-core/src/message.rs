@@ -91,6 +91,8 @@ pub enum ClientIntent {
         target_id: u32,
         action_type: u8,
     },
+    /// `0x0118` `CZ_CANCEL_LOCKON`: stop the current attack. No reply.
+    CancelAttack,
     RequestEntityName {
         entity_id: u32,
     },
@@ -223,6 +225,7 @@ impl fmt::Debug for ClientIntent {
                 .finish(),
             Self::NotifyActorInit => write!(f, "NotifyActorInit"),
             Self::BlockingPlayCancel => write!(f, "BlockingPlayCancel"),
+            Self::CancelAttack => write!(f, "CancelAttack"),
             Self::RequestTime { client_tick } => f
                 .debug_struct("RequestTime")
                 .field("client_tick", client_tick)
@@ -425,6 +428,8 @@ pub struct UnitAppearance {
     /// byte (offset 68). It is NOT the wire `body_state` (`sc.opt1`, offset 15), which stays 0.
     pub dead_sit: u8,
     pub clevel: u16,
+    /// rAthena `bosstype`: 1 for a boss mob, 2 for an MVP, 0 otherwise.
+    pub is_boss: u8,
     /// rAthena `sc.option` (`effect_state`): `0x2` hidden, `0x4` cloaked NPCs.
     pub effect_state: i32,
     /// Worn gear; all 0 for NPCs and mobs.
@@ -751,6 +756,54 @@ pub enum ServerEvent {
     SpecialEffect {
         gid: u32,
         effect: u32,
+    },
+    /// `0x08c8` for an attack swing. `src_speed` is the attacker's amotion, `dmg_speed` the
+    /// target's dmotion (0 on a miss); `damage_type` 0 normal, 10 crit, 11 lucky dodge.
+    Damage {
+        source_id: u32,
+        target_id: u32,
+        tick: u32,
+        src_speed: i32,
+        dmg_speed: i32,
+        damage: i32,
+        div: u16,
+        damage_type: u8,
+        damage2: i32,
+    },
+    /// `0x0977` `ZC_HP_INFO`: a mob's HP bar, to its damage-log members.
+    MobHpBar {
+        gid: u32,
+        hp: u32,
+        max_hp: u32,
+    },
+    /// `0x0139` `ZC_ATTACK_FAILURE_FOR_DISTANCE`: the target at (`target_x`, `target_y`) is out
+    /// of `range` from the attacker at (`x`, `y`). The client walks closer.
+    AttackOutOfRange {
+        target_id: u32,
+        target_x: u16,
+        target_y: u16,
+        x: u16,
+        y: u16,
+        range: u16,
+    },
+    /// `0x0acc` `ZC_NOTIFY_EXP2`: `amount` of `var_id` exp (1 base, 2 job) was gained by the
+    /// player `gid` (its own account id). Always the normal (non-quest) exp type.
+    ExpGained {
+        gid: u32,
+        var_id: u16,
+        amount: i64,
+    },
+    /// `0x0110` `ZC_ACK_TOUSESKILL`: skill `skill_id` failed with `cause` (84 = needs bullets).
+    SkillFail {
+        skill_id: u16,
+        cause: u8,
+    },
+    /// `0x07fa` `ZC_DELETE_ITEM_FROM_BODY`: `amount` left wire `index`; `reason` 0 normal,
+    /// 1 used up by a skill or an attack (ammo).
+    ItemDeleted {
+        index: u16,
+        amount: u16,
+        reason: u16,
     },
 }
 

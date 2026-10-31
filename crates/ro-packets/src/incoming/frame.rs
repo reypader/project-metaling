@@ -11,11 +11,12 @@ use super::char::{
 };
 use super::login::CaLoginPacket;
 use super::map::{
-    CzAdvancedStatusChangePacket, CzBlockingPlayCancelPacket, CzChangeDirectionPacket,
-    CzEnterPacket, CzItemPickupPacket, CzItemThrowPacket, CzNotifyActorInitPacket,
-    CzReqDisconnectPacket, CzReqNamePacket, CzReqTakeoffEquipAllPacket, CzReqTakeoffEquipPacket,
-    CzReqWearEquipPacket, CzRequestActPacket, CzRequestChatPacket, CzRequestMovePacket,
-    CzRequestTimePacket, CzRestartPacket, CzStatusChangePacket, CzUpgradeSkillLevelPacket,
+    CzAdvancedStatusChangePacket, CzBlockingPlayCancelPacket, CzCancelLockonPacket,
+    CzChangeDirectionPacket, CzEnterPacket, CzItemPickupPacket, CzItemThrowPacket,
+    CzNotifyActorInitPacket, CzReqDisconnectPacket, CzReqNamePacket, CzReqTakeoffEquipAllPacket,
+    CzReqTakeoffEquipPacket, CzReqWearEquipPacket, CzRequestActPacket, CzRequestChatPacket,
+    CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket, CzStatusChangePacket,
+    CzUpgradeSkillLevelPacket,
 };
 
 /// Enumeration of all recognized decoded client frames across login, char, and map servers.
@@ -137,6 +138,10 @@ pub fn decode_frame(raw: &RawPacket, packetver: u32) -> Result<DecodedFrame, Pac
         }
         0x0112 => {
             let p = CzUpgradeSkillLevelPacket::decode(raw)?;
+            Ok(DecodedFrame::Intent(p.to_intent()))
+        }
+        0x0118 => {
+            let p = CzCancelLockonPacket::decode(raw)?;
             Ok(DecodedFrame::Intent(p.to_intent()))
         }
         _ => {

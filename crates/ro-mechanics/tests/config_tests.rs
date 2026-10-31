@@ -41,6 +41,12 @@ fn mech_06_defaults_are_the_shipped_values() {
     assert_eq!(c.start_status_points, 48);
     assert!(c.use_statpoint_table);
     assert!(!c.multi_level_up);
+    // Combat (catalog `auto_attack.md` §5.3, §6, `experience.md`, `packets/combat.md` 0x0110).
+    assert!(c.delay_battle_damage);
+    assert_eq!(c.arrow_decrement, 1);
+    assert_eq!((c.exp_bonus_attacker, c.exp_bonus_max_attacker), (25, 12));
+    assert!(c.monster_hp_bars_info);
+    assert_eq!(c.display_skill_fail, 2);
 }
 
 /// MECH-06: a partial file overrides only its keys; an unknown key is an error.
@@ -92,6 +98,8 @@ fn validation_rejects_out_of_range_values() {
         // Point grants go into `smallint` pools.
         "transcendent_status_points: 32768\n",
         "trait_points_job_change: 4294967295\n",
+        "arrow_decrement: 3\n",
+        "exp_bonus_max_attacker: 0\n",
     ] {
         assert!(parse(bad).validate().is_err(), "{bad}");
     }
@@ -112,6 +120,9 @@ fn shipped_battle_yml_equals_the_defaults() {
         "ap_rate:",
         "transcendent_status_points:",
         "trait_points_job_change:",
+        "arrow_decrement:",
+        "exp_bonus_max_attacker:",
+        "display_skill_fail:",
     ] {
         assert!(text.contains(key), "config/battle.yml lists {key}");
     }

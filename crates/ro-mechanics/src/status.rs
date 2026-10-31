@@ -126,7 +126,8 @@ pub enum WeaponClass {
 }
 
 impl WeaponClass {
-    fn is_ranged(self) -> bool {
+    /// DEX takes STR's place in status ATK and the weapon bonus, and ASPD uses `dex² / 7`.
+    pub fn is_ranged(self) -> bool {
         matches!(self, Self::Ranged | Self::Bow)
     }
 }
@@ -233,6 +234,10 @@ pub struct Status {
     pub cri: i32,
     /// `amotion`, as `SP_ASPD` sends it.
     pub amotion: i32,
+    /// ms between swings. Players: `2 × amotion`. Not pushed to the client.
+    pub adelay: i32,
+    /// The flinch time a hit on this unit shows (`0x08c8` `dmg_speed`). Not pushed.
+    pub dmotion: i32,
     pub max_hp: u32,
     pub max_sp: u32,
     /// Trait-derived values (`SP_PATK`..`SP_CRATE`), each `0..=32767`. Combat reads them later.
@@ -265,6 +270,10 @@ impl Status {
 const SHORT_MAX: i32 = i16::MAX as i32;
 /// `MIN_ASPD / 2`: the slowest amotion.
 const MAX_AMOTION: i32 = 4000;
+/// Player `dmotion`: `800 − 4 × AGI`, at least 400 (catalog `auto_attack.md` §3.2;
+/// `player_damage_delay_rate` 100).
+const PC_DMOTION_BASE: i32 = 800;
+const PC_DMOTION_MIN: i32 = 400;
 /// Above this ASPD base a weapon is treated as 200 (`min(base, 200)`).
 const ASPD_BASE_CAP: i32 = 200;
 /// Level brackets of the MaxHP caps.
@@ -368,6 +377,8 @@ pub fn calc_status(inputs: &StatusInputs<'_>, config: &BattleConfig) -> Status {
         amotion(inputs, ranged, agi, dex, flat(BonusSlot::AspdFixed)) + flat(BonusSlot::AspdAdd);
     let floor = to_i32(config.amotion_floor(&inputs.class));
     let amotion = amotion.clamp(floor, MAX_AMOTION);
+    let adelay = 2 * amotion;
+    let dmotion = (PC_DMOTION_BASE - agi * 4).clamp(PC_DMOTION_MIN, PC_DMOTION_BASE);
 
     let class_factor = inputs.class.upper || inputs.class.fourth;
     let max_hp = max_pool(
@@ -413,6 +424,8 @@ pub fn calc_status(inputs: &StatusInputs<'_>, config: &BattleConfig) -> Status {
         flee2,
         cri,
         amotion,
+        adelay,
+        dmotion,
         max_hp,
         max_sp,
         patk,

@@ -79,6 +79,7 @@ fn alice() -> UnitAppearance {
         speed: 112,
         dead_sit: 2,
         clevel: 42,
+        is_boss: 0,
         effect_state: 0,
         looks: UnitLooks::default(),
     }
@@ -560,6 +561,7 @@ fn kafra() -> UnitAppearance {
         speed: 200,
         dead_sit: 0,
         clevel: 0,
+        is_boss: 0,
         effect_state: 0x4,
         looks: UnitLooks::default(),
     }
@@ -649,6 +651,7 @@ fn poring() -> UnitAppearance {
         speed: 150,
         dead_sit: 0,
         clevel: 5,
+        is_boss: 2,
         effect_state: 0,
         looks: UnitLooks::default(),
     }
@@ -692,7 +695,7 @@ fn pkt_mob_01_mob_entry_fields() {
             (-1, -1),
             "full HP"
         );
-        assert_eq!(b[tail(81)], 0, "is_boss");
+        assert_eq!(b[tail(81)], 2, "is_boss: MVP");
         assert_eq!(
             str_at(&b, tail(84), 24),
             "Elusive Wraith Dead (Ni",

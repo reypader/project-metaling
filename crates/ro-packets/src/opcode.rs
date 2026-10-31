@@ -107,6 +107,7 @@ impl PacketOpcode {
     pub const ZC_NOTIFY_CHAT_PARTY: Self = Self(0x0109);
     pub const ZC_SKILLINFO_UPDATE: Self = Self(0x010e);
     pub const ZC_SKILLINFO_LIST: Self = Self(0x010f);
+    pub const ZC_ACK_TOUSESKILL: Self = Self(0x0110);
     pub const CZ_UPGRADE_SKILLLEVEL: Self = Self(0x0112);
     pub const CZ_USE_SKILL_TO_POS_0X0113: Self = Self(0x0113);
     pub const ZC_NOTIFY_SKILL: Self = Self(0x0114);
@@ -128,6 +129,7 @@ impl PacketOpcode {
     pub const CZ_PC_PURCHASE_ITEMLIST_FROMMC: Self = Self(0x0134);
     pub const ZC_ATTACK_RANGE: Self = Self(0x013a);
     pub const CZ_PKMODE_CHANGE: Self = Self(0x0138);
+    pub const ZC_ATTACK_FAILURE_FOR_DISTANCE: Self = Self(0x0139);
     pub const ZC_ACTION_FAILURE: Self = Self(0x013b);
     pub const ZC_EQUIP_ARROW: Self = Self(0x013c);
     pub const CZ_ITEM_CREATE: Self = Self(0x013f);
@@ -645,6 +647,7 @@ impl PacketOpcode {
     pub const PACKET_0X07F7: Self = Self(0x07f7);
     pub const PACKET_0X07F8: Self = Self(0x07f8);
     pub const PACKET_0X07F9: Self = Self(0x07f9);
+    pub const ZC_DELETE_ITEM_FROM_BODY: Self = Self(0x07fa);
     pub const ZC_CHANGE_GROUP_MASTER: Self = Self(0x07fc);
     pub const CZ_PC_PURCHASE_ITEMLIST_FROMMC2: Self = Self(0x0801);
     pub const CZ_PARTY_BOOKING_REGISTER_REQ: Self = Self(0x0802);
@@ -816,7 +819,7 @@ impl PacketOpcode {
     pub const CZ_GET_CHAR_NAME_REQUEST_0X096A: Self = Self(0x096a);
     pub const CZ_REQ_MERGE_ITEM: Self = Self(0x096e);
     pub const CZ_CANCEL_MERGE_ITEM: Self = Self(0x0974);
-    pub const PACKET_0X0977: Self = Self(0x0977);
+    pub const ZC_HP_INFO: Self = Self(0x0977);
     pub const CZ_REQWORLDINFO: Self = Self(0x0978);
     pub const PACKET_0X0979: Self = Self(0x0979);
     pub const ZC_ALL_QUEST_LIST2: Self = Self(0x097a);
@@ -954,7 +957,7 @@ impl PacketOpcode {
     pub const AC_ACCEPT_LOGIN: Self = Self(0x0ac4);
     pub const HC_NOTIFY_ZONESVR: Self = Self(0x0ac5);
     pub const ZC_LONGLONGPAR_CHANGE: Self = Self(0x0acb);
-    pub const PACKET_0X0ACC: Self = Self(0x0acc);
+    pub const ZC_NOTIFY_EXP2: Self = Self(0x0acc);
     pub const CZ_EQUIPSWITCH_REQUEST_SINGLE: Self = Self(0x0ace);
     pub const ZC_ITEM_FALL_ENTRY5: Self = Self(0x0add);
     pub const ZC_OVERWEIGHT_PERCENT: Self = Self(0x0ade);
@@ -1132,6 +1135,7 @@ impl PacketOpcode {
             0x0109 => Some("ZC_NOTIFY_CHAT_PARTY"),
             0x010e => Some("ZC_SKILLINFO_UPDATE"),
             0x010f => Some("ZC_SKILLINFO_LIST"),
+            0x0110 => Some("ZC_ACK_TOUSESKILL"),
             0x0112 => Some("CZ_UPGRADE_SKILLLEVEL"),
             0x0113 => Some("CZ_USE_SKILL_TO_POS_0X0113"),
             0x0114 => Some("ZC_NOTIFY_SKILL"),
@@ -1152,6 +1156,7 @@ impl PacketOpcode {
             0x0130 => Some("CZ_REQ_BUY_FROMMC"),
             0x0134 => Some("CZ_PC_PURCHASE_ITEMLIST_FROMMC"),
             0x0138 => Some("CZ_PKMODE_CHANGE"),
+            0x0139 => Some("ZC_ATTACK_FAILURE_FOR_DISTANCE"),
             0x013a => Some("ZC_ATTACK_RANGE"),
             0x013b => Some("ZC_ACTION_FAILURE"),
             0x013c => Some("ZC_EQUIP_ARROW"),
@@ -1670,6 +1675,7 @@ impl PacketOpcode {
             0x07f7 => Some("PACKET_0X07F7"),
             0x07f8 => Some("PACKET_0X07F8"),
             0x07f9 => Some("PACKET_0X07F9"),
+            0x07fa => Some("ZC_DELETE_ITEM_FROM_BODY"),
             0x07fc => Some("ZC_CHANGE_GROUP_MASTER"),
             0x0801 => Some("CZ_PC_PURCHASE_ITEMLIST_FROMMC2"),
             0x0802 => Some("CZ_PARTY_BOOKING_REGISTER_REQ"),
@@ -1841,7 +1847,7 @@ impl PacketOpcode {
             0x096a => Some("CZ_GET_CHAR_NAME_REQUEST_0X096A"),
             0x096e => Some("CZ_REQ_MERGE_ITEM"),
             0x0974 => Some("CZ_CANCEL_MERGE_ITEM"),
-            0x0977 => Some("PACKET_0X0977"),
+            0x0977 => Some("ZC_HP_INFO"),
             0x0978 => Some("CZ_REQWORLDINFO"),
             0x0979 => Some("PACKET_0X0979"),
             0x097a => Some("ZC_ALL_QUEST_LIST2"),
@@ -1979,7 +1985,7 @@ impl PacketOpcode {
             0x0ac4 => Some("AC_ACCEPT_LOGIN"),
             0x0ac5 => Some("HC_NOTIFY_ZONESVR"),
             0x0acb => Some("ZC_LONGLONGPAR_CHANGE"),
-            0x0acc => Some("PACKET_0X0ACC"),
+            0x0acc => Some("ZC_NOTIFY_EXP2"),
             0x0ace => Some("CZ_EQUIPSWITCH_REQUEST_SINGLE"),
             0x0add => Some("ZC_ITEM_FALL_ENTRY5"),
             0x0ade => Some("ZC_OVERWEIGHT_PERCENT"),

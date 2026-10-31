@@ -85,6 +85,21 @@ impl<T> SparseSet<T> {
         None
     }
 
+    /// The entity's value, inserting `T::default()` first when it has none.
+    pub(crate) fn entry(&mut self, entity: Entity) -> &mut T
+    where
+        T: Default,
+    {
+        let slot = match self.dense_index(entity) {
+            Some(slot) => slot,
+            None => {
+                self.insert(entity, T::default());
+                self.dense_data.len() - 1
+            }
+        };
+        &mut self.dense_data[slot]
+    }
+
     /// Swap-removes; the moved element's sparse entry is repointed. Missing is a no-op.
     pub(crate) fn remove(&mut self, entity: Entity) -> Option<T> {
         let slot = self.dense_index(entity)?;

@@ -81,3 +81,14 @@ player_skillfree: false
 player_skillup_limit: true
 quest_skill_learn: false
 quest_skill_reset: false
+
+# Combat: the HP change of a hit waits for the attacker's amotion; ammo spent per normal attack
+# (0 none; 1 and 2 one); the exp bonus percent per extra attacker of a kill and how many
+# attackers it counts; the mob HP bar for damage-log members; which skill failures are hidden
+# (bit 1 all, bit 2 the "skill interval" refusal of an early attack request).
+delay_battle_damage: true
+arrow_decrement: 1
+exp_bonus_attacker: 25
+exp_bonus_max_attacker: 12
+monster_hp_bars_info: true
+display_skill_fail: 2

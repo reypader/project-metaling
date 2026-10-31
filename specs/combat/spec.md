@@ -1,7 +1,8 @@
 # Specification: Combat (player auto-attack, normal-attack damage, mob death with exp and level-up)
 
 Status: **final for M0** (2026-10-30). Captures: `reference/catalog/captures/combat_sequence_1.txt` (this feature), with write-ups in catalog `auto_attack.md` §8, `combat.md` §7 and `experience.md` "Capture: combat_sequence_1.txt"; and `item_drop_pickup_sequence.txt` (an earlier kill).
-- **Source-only, not captured:** the re-click inside `canact` (silent drop), the straight-line +1 range (PF-14), a base-only level-up, exp at max job level, and the gun no-ammo `0x0110`.
+- **Also captured** in `combat_sequence_2.txt` (catalog `auto_attack.md` §8.6): the straight-line +1 range (PF-14, settled) and the gun no-ammo `0x0110` cause 84.
+- **Source-only, not captured:** the re-click inside `canact` (silent drop; the client seems to debounce fast clicks), a base-only level-up and exp at max job level.
 - Where the spec says "captured", the capture is the ground truth.
 
 Design: `crates/ro-engine/DESIGN.md` §5 (tick), §9 (status), §11 (damage). Catalog:
@@ -47,7 +48,6 @@ A mob hit also needs player HP pushes, death and respawn. None of that exists. T
 
 ### 0.2 `tools/job-import` (extend)
 - Read `db/re/job_exp.yml` and write the per-job base and job exp tables. Use the existing `job_ids.rs` table. The 27 mounted "2" names are skipped as today; catalog `db/exp_tables.md` "Lookup rule".
-- Read `db/re/level_penalty.yml` (type `Exp` only) and write it under `crates/ro-db/data/job/`.
 - Add headers and attribution, and update `NOTICE.md`.
 
 ## 1. Data API (`ro-db`, root re-exports)
@@ -57,7 +57,6 @@ A mob hit also needs player HP pushes, death and respawn. None of that exists. T
   - Level 0 gives 0.
   - At or above the class max, or for a job with no table, they return the constants 99_999_999 and 999_999_999.
   - A missing row gives 0, which stops the level-up loop.
-- `LevelPenaltyDb::exp_rate(diff: i32) -> u32`: the filled table (catalog `db/exp_tables.md`), with the difference clamped to ±274. The difference is mob level − player base level.
 
 ## 2. Behaviour
 
@@ -68,7 +67,7 @@ A mob hit also needs player HP pushes, death and respawn. None of that exists. T
   - Speed comes from `WalkSpeed`.
   - The `0x09fe` / `0x09ff` `is_boss` is 1 for `Class: Boss` and 2 for `Mvp`.
   - This closes the DEFERRED "mob_db stats" item.
-- **Stats:** a pure `ro_mechanics::calc_mob_status(&MobStatusInputs, &BattleConfig) -> Status` gives `hit`, `flee`, `flee2` = 0, `cri` = 0, `hard_def`, `soft_def` = `(L + vit)/2`, `res`, `amotion`, `adelay`, `dmotion`, and `battle` primaries (LUK for crit reduction). Catalog `combat.md` §1.1 has the formulas. They use the **db `Level`**: a spawn-line level changes only the level-penalty difference (`mobs_level_up` off).
+- **Stats:** a pure `ro_mechanics::calc_mob_status(&MobStatusInputs, &BattleConfig) -> Status` gives `hit`, `flee`, `flee2` = 0, `cri` = 0, `hard_def`, `soft_def` = `(L + vit)/2`, `res`, `amotion`, `adelay`, `dmotion`, and `battle` primaries (LUK for crit reduction). Catalog `combat.md` §1.1 has the formulas. They use the **db `Level`** (`mobs_level_up` off). In rAthena a spawn-line level changes only the level-penalty difference, which we don't apply (§2.9).
 - `MobInfo` stores the `Status`, the damage log, and a `dying` flag.
 - `ro_mechanics::Status` gains `adelay` and `dmotion`.
   - Player: `adelay = 2 × amotion`, `dmotion = clamp(800 − AGI × 4, 400, 800)`.
@@ -103,7 +102,7 @@ Other notes:
 - **The client chases, not the server** (captured): the client answers `0x0139` with a `0x035f` to a cell next to the target, then sends `0x0437` again while walking (a step action). For a far target it walks first and asks mid-walk, so the server rarely needs `0x0139`.
 - **In range but no line of sight:** the loop ends. No player chase, because `OFFICIAL_WALKPATH` is on.
   - Captured: a request that fails line of sight gets exactly one `0x0088` (from §2.2 step 7) and nothing else: no `0x0139`, no swing, no arrow spent.
-  - One captured case (`combat.md` §7, lines 4195-4199) failed although our map-less reconstruction says the line is clear. Recheck it against the real `prontera` `.gat` in M4.
+  - One captured case (`combat.md` §7, lines 4195-4199) failed although our map-less reconstruction says the line is clear. Two more single-`0x0088` requests are likely LOS refusals (proxy #4362 and #4374, `combat.md` §7.9). Recheck all three against the real `prontera` `.gat` in M4.
 
 ### 2.4 Attack loop
 - **Per-player state** (`AttackState`):
@@ -114,7 +113,7 @@ Other notes:
   - Stale entries are skipped by a generation check, like `floor_expiry`.
   - The heap is popped in `step_tick` after `advance_walkers` and before intents.
 - **Swing check** (catalog §3, in order):
-  1. Abort silently if the attacker or target is gone, dead or dying.
+  1. Abort silently if the attacker or target is gone, dead or dying, or if `path_search_long` with `CELL_CHKWALL` fails between them at any distance (rAthena's `OFFICIAL_WALKPATH` check, catalog `auto_attack.md` §3 step 2). So a target behind a wall is dropped silently even when it is also out of range.
   2. Run the range test (§2.3).
   3. If this came from the request path: `0x0088` again. This is captured: an immediate first swing is `0x0088` ×2 then `0x08c8` in the same ms, to the attacker and observers. A request that finds the target out of range sends one `0x0088` (step 7 of §2.2), then `0x0139`.
   4. If walking: stop with `0x0088`. A step action that fires mid-walk therefore sends three `0x0088` (captured).
@@ -194,8 +193,9 @@ No drops, no respawn, no event labels (§5).
 ### 2.9 Exp and level-up (catalog `experience.md`)
 - **Valid entries:** the player is online, on this map and alive. `count` = valid entries.
 - **Share:** `per = dmg / total_damage` (as `f64`, clamped to 1). With `count > 1`: `per += per × (min(count, 12) − 1) × 25 / 100`.
-- **Amount:** `exp = max(1, trunc(BaseExp × per))` for base, the same for job; a db exp of 0 stays 0. Then the level penalty in integer math, `exp × exp_rate(mob.level − base_level) / 100`, clamped to at least 1 when non-zero.
-  - Captured in step 8: A 107 and B 29 of 136 damage (the overkill counts) give A 154/54 and B 43/14 with B's 105 %.
+- **Amount:** `exp = max(1, trunc(BaseExp × per))` for base, the same for job; a db exp of 0 stays 0.
+  - **No level penalty** (user decision, 2026-10-30): full exp whatever the level difference. This is a deliberate deviation. rAthena's renewal `level_penalty.yml` scales it (catalog `db/exp_tables.md`), and the capture shows that (Archer on Pupa 95 %, on Marine Sphere 40 %).
+  - Captured in step 8: A 107 and B 29 of 136 damage (the overkill counts) give A 154/54 and B 43/14. Ours gives B 41/14, because rAthena applied B's 105 % penalty rate.
 - **`gain_exp`** (`pc_gainexp`, solo):
   - Record which of base and job were non-zero and whether each is at max level.
   - Clamp at max level.
@@ -236,10 +236,10 @@ Numbering is final once the capture is in. Each test names its ID.
 | :--- | :--- |
 | DB-CMB-01 | Every committed `mob/*.yml` and new `job/*.yml` file loads and has the GPL header and attribution. |
 | DB-CMB-02 | Poring 1002: Hp 55, BaseExp 150, JobExp 40, Defense 2, AttackMotion 672, DamageMotion 480, AttackDelay 1872, not IgnoreMelee. Green Plant 1080: IgnoreMelee. |
-| DB-CMB-03 | `next_base_exp(Novice, 1)` = 548, `(Novice, 99)` = 99_999_999; `next_job_exp` for Novice at 10 is the max constant; `exp_rate` at 0, +3, +16, +40, −6, −31, −300 matches the filled table. |
+| DB-CMB-03 | `next_base_exp(Novice, 1)` = 548, `(Novice, 99)` = 99_999_999; `next_job_exp` for Novice at 10 is the max constant. |
 | MECH-CMB-01 | `calc_mob_status(Poring)`: hit 157, flee 102, def2 1, dmotion 480, adelay 1872. |
 | MECH-CMB-02 | The worked skeleton (catalog `combat.md` §5) with fixed rolls: a miss, a hit, a crit (atkmax, ×1.4), DEF reduction and min 1, the infinite-defense 1. |
-| MECH-CMB-03 | Captured vectors (`combat.md` §7 table): Knife ATK1 1/2 vs Poring 12/14; ATK1 15 STR 11 vs Lunatic 42..43; ATK1 48/49 vs Pupa 104..105/106..107, crit 149; Bow + Arrow ATK1 53 DEX 15 vs Pupa 135..136, ATK1 20 → 72..73, ATK1 10 DEX 5 → 52..54; vs Marine Sphere 16..18. Every captured value falls in the computed range. The Dagger-vs-Medium (Poring) vectors are checked with `size_mod` 75 passed in, the rest with 100. A second test pins that the engine's default (100) gives 17..18 for the Knife vs Poring case: the known deviation. |
+| MECH-CMB-03 | Captured vectors (`combat.md` §7 table): Knife ATK1 1/2 vs Poring 12/14; ATK1 15 STR 11 vs Lunatic 42..43; ATK1 48/49 vs Pupa 104..105/106..107, crit 149; Bow + Arrow ATK1 53 DEX 15 vs Pupa 135..136, ATK1 20 → 72..73, ATK1 10 DEX 5 → 52..54; vs Marine Sphere 16..18. Every captured value falls in the computed range. The Dagger-vs-Medium (Poring) vectors are checked with `size_mod` 75 passed in, the rest with 100. A second test pins that the engine's default (100) gives 16..17 for the ATK1 1 Knife vs Poring case: the known deviation. |
 | MECH-CMB-04 | Ranged: DEX/STR swap for bow, whip and instrument; arrow ATK 25 into equip ATK, not varied. |
 | MECH-CMB-05 | `check_distance_client` table: range 1 hits (1,0), (1,1), (2,0); misses (2,1). `path_search_long` on a hand-written grid: a wall blocks, a cliff doesn't, asymmetric rounding, end cells untested. |
 | MECH-CMB-06 | Exp share: one attacker gets the whole share; two attackers at 70/30 get (0.7, 0.3) × 1.25; the cap at 12; the min 1. |
@@ -251,7 +251,7 @@ Numbering is final once the capture is in. Each test names its ID.
 | ENG-CMB-05 | Step action: a request while walking out of `range − 1` attacks half a step after the next step ends, with range + 1. |
 | ENG-CMB-06 | Bow with 2 arrows: the swings spend them in the captured packet order; the second takes the arrows off; the third swing sends `0x013b` 0 and stops. Gun without bullets: `0x0110` cause 84. |
 | ENG-CMB-07 | Kill: the killing hit sends `0x0977` hp 0, then the exp packets in the same tick; the mob leaves the grid at once (a new attack on it is silent); `0x0080` type 1 at +250 ms to the area; the gid is free after. Overkill is logged. |
-| ENG-CMB-08 | Exp: two attackers on one Poring, shares and the attacker bonus; one offline at death gets nothing and its share isn't redistributed; the level penalty at diff −31. |
+| ENG-CMB-08 | Exp: two attackers on one Poring, shares and the attacker bonus; one offline at death gets nothing and its share isn't redistributed; full exp at a level difference of −31 (no penalty). |
 | ENG-CMB-09 | Base level-up from a kill: the captured order; HP/SP full; `0x019b` 0 to the area; points granted; `SKILLS` re-check. Job level-up: order, +1 skill point, no heal. Both in one kill. Max job level: `0x0acc` amount 0. |
 | ENG-CMB-10 | Real `SP_NEXTBASEEXP` / `SP_NEXTJOBEXP` in the login burst, `@blvl`, `@jlvl` and `@job` (existing tests updated). |
 | BIN-CMB-01 | Over TCP: log in, attack an adjacent mob until death, and receive `0x08c8`, `0x0977`, the exp packets and `0x0080` type 1. |
@@ -273,9 +273,10 @@ Numbering is final once the capture is in. Each test names its ID.
 - **Respawn** (`delay1` / `delay2` rules, 1000 ms floor, `0x09fe` to the area), and **event labels** run at death.
 - **Drops** at death (`drop_mob_items` exists): owners from the damage log, `first_attack_loot_bonus`, after the exp packets.
 - **The size table** (`size_fix`: the base `db/size_fix.yml` merged with the renewal overlay, `combat.md` §3) and **the element table** (`attr_fix`, plus weapon and ammo element): both are 100 % today.
-  - The capture shows the size table matters, e.g. a Knife hits a Poring for 12 in rAthena and about 17 here.
+  - The capture shows the size table matters, e.g. a Knife hits a Poring for 12 in rAthena and 16-17 here.
   - Both need an import tool (rAthena db YAML), then the engine feeds `size_mod` / `attr_rate` from them. No formula change.
 - Dual wield and katar `damage2`, Double Attack and other passive procs, masteries, cards and item `bonus` rates, `CombatBonus` tables, status-effect modifiers.
+- **Not planned** (user decision): the renewal level-difference exp penalty.
 - MVP (`MvpExp`, `0x010c`/`0x010b`, MVP drops), party exp share and `0x0abd`/`0x080e`, KS protection, `pk_mode`, VIP, Rich Mankind and other exp bonuses, `max_exp_gain_rate`, `@showexp`.
 - Exit refusal within `prevent_logout` of attacking (the exit-game DEFERRED item), and the delayed removal on close.
 - Attacking NPCs (`npc_click`), hidden or cloaked targets, attack-blocking statuses, `pc_cant_act` states.

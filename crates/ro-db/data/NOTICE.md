@@ -92,10 +92,19 @@ dataset is regenerated from a different commit, update its section.
 ## Mob database (`mob/mob_db.yml`)
 
 - **Source:** rAthena commit `d4b8e7b8f16061cc2496d377ac8f777ce72a4f39`. `db/re/mob_db.yml`.
-- **Modified on 2026-10-23 by `tools/mob-import`:** converted to our own schema (`MOB_DATA`
-  version 1). The conversion:
-  - keeps only `Id`, `AegisName`, `Name`, `Level`, `Hp`, `WalkSpeed`, `Class`, the `Mvp` mode,
-    `Drops` and `MvpDrops`; every other stat, the AI and the skills are dropped;
+- **Modified on 2026-10-23 by `tools/mob-import`** (regenerated 2026-10-30 for combat):
+  converted to our own schema (`MOB_DATA` version 2). The conversion:
+  - keeps `Id`, `AegisName`, `Name`, `Level`, `Hp`, `BaseExp`, `JobExp`, `Attack`, `Defense`,
+    `Resistance`, `Str`..`Luk`, `AttackRange`, `Size`, `Race`, `Element`, `ElementLevel`,
+    `WalkSpeed`, `AttackDelay`, `AttackMotion`, `DamageMotion`, `Class`, `Drops` and `MvpDrops`;
+    the other stats (`Sp`, `MvpExp`, `Attack2`, magic defense and resistance, ranges, `DamageTaken`,
+    `ClientAttackMotion`, groups, titles) and the skills are dropped;
+  - turns `Ai`, `Modes` and the modes `Class` adds into one `Modes` list of mode names (since
+    2026-10-30; before, only the `Mvp` mode was kept as a flag);
+  - writes rAthena's defaults for missing combat fields (stats 1, `ElementLevel` 1,
+    `AttackDelay` / `AttackMotion` 100, the rest 0 or the first enum value), clamps `Defense` to
+    32767, `AttackMotion` to 1..=8000 and `AttackDelay` to 100..=8000, then raises
+    `AttackDelay` to at least `AttackMotion`. An invalid `ElementLevel` becomes 1;
   - resolves drop item AegisNames to item ids through the item database above (unknown items are
     skipped), places drops by `Index`, removes rate-0 drops, caps rates at 10000 and keeps at
     most 10 drops and 3 MVP drops;
@@ -109,14 +118,14 @@ dataset is regenerated from a different commit, update its section.
     --items crates/ro-db/data/item --out crates/ro-db/data/mob
   ```
 
-## Job database (`job/job_db.yml`, `job/statpoint.yml`)
+## Job database (`job/job_db.yml`, `job/statpoint.yml`, `job/job_exp.yml`)
 
 - **Source:** rAthena commit `d4b8e7b8f16061cc2496d377ac8f777ce72a4f39`. `db/re/job_stats.yml`,
   `db/re/job_aspd.yml`, `db/re/job_exp.yml`, `db/re/job_basepoints.yml` and
   `db/re/statpoint.yml`.
 - **Modified on 2026-10-26 by `tools/job-import`** (regenerated 2026-10-29 for trait points and
-  AP): converted to our own schemas (`JOB_DATA` version 2, `STATPOINT_DATA` version 2). The
-  conversion:
+  AP, 2026-10-30 for the exp tables): converted to our own schemas (`JOB_DATA` version 2,
+  `STATPOINT_DATA` version 2, `JOB_EXP_DATA` version 1). The conversion:
   - merges the four job files per job id in rAthena's load order: a later key overrides an
     earlier one, and an absent key keeps it. Job names resolve to `e_job` ids. Mounted and
     dummy variants with no class mapping (`Knight2`, `Rune_Knight2`, ...) are skipped;
@@ -132,8 +141,10 @@ dataset is regenerated from a different commit, update its section.
   - fills every AP slot the `BaseAp` table omits or sets to 0 with rAthena's AP fallback formula
     from `ApFactor` / `ApIncrease` (200 from base level 200 for every job, added 2026-10-29).
     Those two keys are then dropped, and a job whose AP table is all zero has no `BaseAp`;
-  - drops the exp tables, `MaxStats` (empty) and `AlternateOutfits` (`job_outfits.yml` is not
-    read);
+  - writes the `BaseExp` / `JobExp` tables of `job_exp.yml` to `job_exp.yml` (since 2026-10-30):
+    per job id, rows above the job's max level are dropped and missing rows become 0, job names
+    become ids, and jobs with identical tables are grouped into one entry;
+  - drops `MaxStats` (empty) and `AlternateOutfits` (`job_outfits.yml` is not read);
   - keeps `Level`, `Points` and `TraitPoints` from `statpoint.yml` (`TraitPoints` since
     2026-10-29; omitted where it is 0).
 - **Regenerate** (pass an expanded path):

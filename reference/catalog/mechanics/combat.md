@@ -294,17 +294,29 @@ See [mobs.md 3.1](./mobs.md#31-packet-order-for-one-normal-kill-single-player-lo
 
 ### 7.9 Line of sight ("obstruction", "not shooting")
 
-Map `prontera`. Cells from rust-ro's `prontera.mcache` (value 1 = wall); the only wall near the test is a 2x2 block at (145..146, 175..176); a longer wall at (134..138, 172..175). Algorithm = [movement_aoi.md 5](./movement_aoi.md#5-line-of-sight-path_search_long) (re-checked against `path.cpp:128-188`). Target Marine Sphere at (143,172) (its `0x09fe`/`0x09ff`).
+Map `prontera`, cells decoded from rAthena's **Renewal** map cache `db/re/map_cache.dat` (file = u32 size + u16 map count + 2 pad = 8-byte header; per map `name[12]`, i16 xs, i16 ys, i32 len, zlib stream of xs*ys raw `.gat` type bytes, row-major `y*xs+x`, `tool/mapcache.cpp:45-66,94-110`; prontera = 312x392; raw 1 = wall, 5 = shootable gap, `map.cpp:3280-3299`). **Do not use `db/map_cache.dat` or `db/pre-re/map_cache.dat` for this:** they hold the pre-renewal layout (identical bytes; the top-level file even names the map `pprontera`), and rust-ro's mcache matched it on the earlier 2x2-block check (the old claim of a 2x2 wall at (145..146,175..176) is the pre-re layout), where cases 1 and 3 below come out clear. Walls near the tests (renewal): a 2x3 block at (145..146, 174..176) (rust-ro's 2x2 (145..146,175..176) was the pre-re shape), a longer wall at (134..138, 172..175), and a cluster at (153..156, 172..176) incl. (154,174), (154..155,173), (153..156,176). Algorithm = [movement_aoi.md 5](./movement_aoi.md#5-line-of-sight-path_search_long) (re-checked against `path.cpp:128-188`). Target Marine Sphere at (143,172) (its `0x09fe`/`0x09ff`).
 
 | A position | Line | LOS by algorithm | Server reply to `0x0437` |
 | :--- | :--- | :--- | :--- |
 | (148,174), walking | 4468-4478 | clear | `0x0088` x3, `0x07fa`, weight, `0x08c8` (miss) |
-| (147,178) | 4487-4488, 4503-4505 | blocked by (145..146,175..176) | **one `0x0088` only** |
+| (147,178) | 4487-4488, 4503-4505 | blocked by (145,175) | **one `0x0088` only** |
 | (150,180) | 4512-4519 | blocked | one `0x0088` |
 | (148,182) | 4550-4551 | blocked | one `0x0088` |
 | (133,174) | 4590-4596 | blocked by (134..138,..) | one `0x0088` |
 
-So a request that fails the LOS test gets **exactly one `0x0088` (the `clif_fixpos` from `unit_attack`) and nothing else**: no `0x0139`, no `0x013b`, no `0x08c8`, no ammo use, and the attack loop is dropped (`unit_attack_timer_sub` returns 0). Compare: in range with clear LOS but no ammo = two or three `0x0088` then `0x013b`. Open: lines 4195-4199 (A (157,173), no ammo, Pupa 110028182 at (152,176)) also got a single `0x0088` and no `0x013b`; the algorithm says clear with rust-ro's cache, so either the real map cache has a wall on that line or another early exit applied.
+So a request that fails the LOS test gets **exactly one `0x0088` (the `clif_fixpos` from `unit_attack`) and nothing else**: no `0x0139`, no `0x013b`, no `0x08c8`, no ammo use, and the attack loop is dropped (`unit_attack_timer_sub` returns 0). Compare: in range with clear LOS but no ammo = two or three `0x0088` then `0x013b`. **Settled (2026-10-30, decoded `db/re/map_cache.dat`, scratch script not kept):** all seven single-`0x0088` requests (the 4 tabled + the 3 open ones) are LOS refusals, and the algorithm also gives clear for the (148,174) row: 8/8 agree with the capture. Cells tested (src to dst, swapped so x grows; raw value in brackets, 1 = wall):
+
+| Case | Client distance | Cells tested | Verdict |
+| :--- | :--- | :--- | :--- |
+| A (157,173) -> Pupa (152,176) (requests at proxy #4185 and #4188 = file lines 4195, 4198; both one `0x0088`, then A walked) | 5 | (153,175)[0], **(154,174)[1]** | blocked by (154,174) |
+| A (142,179) -> Sphere (148,172), proxy #4362 | 7 | (142,178)[0], (143,177)[0], (144,176)[0], **(145,175)[1]** | blocked by (145,175) |
+| A (141,178) -> Sphere (148,172), proxy #4374 | 7 | (142,177)[0], (143,176)[0], (144,175)[0], **(145,174)[1]** | blocked by (145,174) |
+| (148,174) -> (143,172) | 5 | (144,172), (145,172), (146,173), (147,173), all [0] | clear |
+| (147,178) / (150,180) -> (143,172) | 6 / 8 | (143,173)[0], (144,174)[0], **(145,175)[1]** | blocked |
+| (148,182) -> (143,172) | 10 | (143,173), (144,174), (144,175) [0], **(145,176)[1]** | blocked |
+| (133,174) -> (143,172) | 10 | **(134,173)[1]** | blocked |
+
+The earlier "line is clear" result came from the pre-renewal cells (`db/map_cache.dat`, `db/pre-re/map_cache.dat`: (154,174) and (145,174) are raw 0 there). Always use `db/re/` data. The Pupa request is within bow range (client distance 5 <= 5), and the LOS test (`unit_attack_timer_sub`, before the range check) fails first, so no `0x0139` is sent.
 
 ### 7.10 Marine Sphere ("oops")
 

@@ -1,8 +1,8 @@
 //! rAthena job files conversion (spec §1.1).
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use job_import::{convert, render_jobs, render_status_points, Converted};
-use ro_db::{JobBonus, JobBonusEntry, JobData, JobDb, WeaponType};
+use job_import::{convert, render_exp_tables, render_jobs, render_status_points, Converted};
+use ro_db::{ExpGroup, ExpKind, JobBonus, JobBonusEntry, JobData, JobDb, WeaponType};
 
 fn file(kind: &str, body: &str) -> String {
     format!("Header:\n  Type: {kind}\n  Version: 2\nBody:\n{body}")
@@ -67,6 +67,10 @@ const EXP: &str = "  - Jobs:
     JobExp:
       - Level: 1
         Exp: 10
+      - Level: 3
+        Exp: 30
+      - Level: 4
+        Exp: 99
   - Jobs:
       Knight: true
     MaxJobLevel: 2
@@ -320,7 +324,8 @@ fn rendered_files_carry_the_header_and_load() {
     let out = run();
     let jobs = render_jobs(&out.jobs, "abc123").expect("render jobs");
     let points = render_status_points(&out.points, "abc123").expect("render points");
-    for text in [&jobs, &points] {
+    let exp = render_exp_tables(&out.exp, "abc123").expect("render exp");
+    for text in [&jobs, &points, &exp] {
         assert!(text.starts_with("# SPDX-License-Identifier: GPL-3.0-only\n"));
         assert!(text.contains("commit abc123"));
         assert!(text.contains("tools/job-import"));
@@ -328,9 +333,34 @@ fn rendered_files_carry_the_header_and_load() {
     }
     let parsed = JobDb::parse_jobs("jobs", &jobs).expect("parses");
     let rows = JobDb::parse_status_points("points", &points).expect("parses");
-    let db = JobDb::from_parts("x", parsed, &rows).expect("loads");
+    let groups = JobDb::parse_exp_tables("exp", &exp).expect("parses");
+    let db = JobDb::from_parts("x", parsed, &rows)
+        .and_then(|db| db.with_exp_tables("exp", groups))
+        .expect("loads");
     assert_eq!(
         db.by_name("shadow_cross").map(|j| j.max_weight),
         Some(42000)
+    );
+    assert_eq!(db.next_job_exp(0, 1), 10);
+}
+
+#[test]
+fn exp_tables_group_jobs_with_the_same_table() {
+    let out = run();
+    assert_eq!(
+        out.exp,
+        vec![
+            ExpGroup {
+                kind: ExpKind::Base,
+                jobs: vec![0, 7],
+                exp: vec![548],
+            },
+            ExpGroup {
+                kind: ExpKind::Job,
+                jobs: vec![0],
+                exp: vec![10, 0, 30],
+            },
+        ],
+        "a missing row is 0; a row above the max level is skipped; jobs without rows get none"
     );
 }

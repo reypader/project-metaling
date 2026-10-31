@@ -3,7 +3,10 @@
 
 use std::path::Path;
 
-use ro_db::{DbLoadError, JobBonus, JobDb, WeaponType, JOB_DATA_FILE, STATPOINT_DATA_FILE};
+use ro_db::{
+    DbLoadError, JobBonus, JobDb, WeaponType, JOB_DATA_FILE, JOB_EXP_DATA_FILE,
+    NEXT_BASE_EXP_AT_MAX, NEXT_JOB_EXP_AT_MAX, STATPOINT_DATA_FILE,
+};
 
 const JOBS: &str = r"
 Header:
@@ -56,10 +59,26 @@ Body:
     TraitPoints: 10
 ";
 
+const EXP: &str = r"
+Header:
+  Type: JOB_EXP_DATA
+  Version: 1
+Body:
+  - Kind: Base
+    Jobs: [0, 7]
+    Exp: [548, 894]
+  - Kind: Job
+    Jobs: [0]
+    Exp: [10, 0, 30]
+";
+
 fn db() -> JobDb {
     let jobs = JobDb::parse_jobs("jobs", JOBS).expect("fixture jobs parse");
     let points = JobDb::parse_status_points("points", POINTS).expect("fixture points parse");
-    JobDb::from_parts("fixture", jobs, &points).expect("fixture builds")
+    let exp = JobDb::parse_exp_tables("exp", EXP).expect("fixture exp parses");
+    JobDb::from_parts("fixture", jobs, &points)
+        .and_then(|db| db.with_exp_tables("exp", exp))
+        .expect("fixture builds")
 }
 
 fn schema_error(result: Result<JobDb, DbLoadError>) -> String {
@@ -298,15 +317,52 @@ fn rejects_unknown_fields_and_wrong_headers() {
 }
 
 #[test]
-fn load_dir_needs_both_files() {
+fn load_dir_needs_all_three_files() {
     let dir = std::env::temp_dir().join(format!("ro-db-job-{}", std::process::id()));
     std::fs::create_dir_all(&dir).expect("temp dir");
     std::fs::write(dir.join(JOB_DATA_FILE), JOBS).expect("write jobs");
     assert!(matches!(JobDb::load_dir(&dir), Err(DbLoadError::Io { .. })));
     std::fs::write(dir.join(STATPOINT_DATA_FILE), POINTS).expect("write points");
-    let db = JobDb::load_dir(&dir).expect("both files load");
+    assert!(matches!(JobDb::load_dir(&dir), Err(DbLoadError::Io { .. })));
+    std::fs::write(dir.join(JOB_EXP_DATA_FILE), EXP).expect("write exp");
+    let db = JobDb::load_dir(&dir).expect("all files load");
     assert_eq!(db.len(), 2);
+    assert_eq!(db.next_base_exp(0, 1), 548);
     std::fs::remove_dir_all(&dir).expect("clean up");
+}
+
+#[test]
+fn next_exp_reads_the_row_of_the_current_level() {
+    let db = db();
+    assert_eq!(db.next_base_exp(0, 0), 0, "level 0");
+    assert_eq!(db.next_base_exp(0, 1), 548);
+    assert_eq!(db.next_base_exp(0, 2), 894);
+    assert_eq!(db.next_base_exp(0, 3), NEXT_BASE_EXP_AT_MAX, "at max");
+    assert_eq!(db.next_base_exp(0, 200), NEXT_BASE_EXP_AT_MAX);
+    assert_eq!(db.next_job_exp(0, 1), 10);
+    assert_eq!(db.next_job_exp(0, 2), 0, "a missing row stops the level-up");
+    assert_eq!(db.next_job_exp(0, 3), 30);
+    assert_eq!(db.next_job_exp(0, 4), NEXT_JOB_EXP_AT_MAX, "at max");
+    assert_eq!(db.next_base_exp(7, 1), 548, "groups share a table");
+    assert_eq!(db.next_base_exp(7, 2), NEXT_BASE_EXP_AT_MAX, "Knight max 2");
+    assert_eq!(db.next_job_exp(7, 1), NEXT_JOB_EXP_AT_MAX, "no job table");
+    assert_eq!(db.next_base_exp(99, 1), NEXT_BASE_EXP_AT_MAX, "unknown job");
+    assert_eq!(db.next_job_exp(99, 0), 0);
+}
+
+#[test]
+fn exp_tables_reject_unknown_and_repeated_jobs() {
+    let jobs = || JobDb::parse_jobs("jobs", JOBS).expect("parses");
+    let points = JobDb::parse_status_points("points", POINTS).expect("parses");
+    let base = || JobDb::from_parts("x", jobs(), &points).expect("builds");
+    let unknown = EXP.replace("Jobs: [0, 7]", "Jobs: [0, 8]");
+    let groups = JobDb::parse_exp_tables("exp", &unknown).expect("parses");
+    let message = schema_error(base().with_exp_tables("exp", groups));
+    assert!(message.contains("job 8"), "{message}");
+    let twice = EXP.replace("Kind: Job", "Kind: Base");
+    let groups = JobDb::parse_exp_tables("exp", &twice).expect("parses");
+    let message = schema_error(base().with_exp_tables("exp", groups));
+    assert!(message.contains("job 0"), "{message}");
 }
 
 fn shipped_dir() -> &'static Path {
@@ -456,4 +512,61 @@ fn db_trait_02_base_ap() {
     assert_eq!((rune.base_ap(199), rune.base_ap(200)), (0, 200));
     assert_eq!(db.by_name("knight").expect("Knight").base_ap(99), 0);
     assert_eq!(db.by_name("novice").expect("Novice").base_ap(99), 0);
+}
+
+/// DB-CMB-01 (job part): the new exp file loads and carries the header.
+#[test]
+fn db_cmb_01_shipped_exp_files_load() {
+    {
+        let path = shipped_dir().join(JOB_EXP_DATA_FILE);
+        let text = std::fs::read_to_string(&path)
+            .unwrap_or_else(|e| panic!("{} is committed: {e}", path.display()));
+        assert!(
+            text.starts_with("# SPDX-License-Identifier: GPL-3.0-only\n"),
+            "{} lacks the SPDX header",
+            path.display()
+        );
+        assert!(
+            text.contains("rAthena")
+                && text.contains("tools/job-import")
+                && text.contains("crates/ro-db/data/NOTICE.md"),
+            "{} lacks attribution",
+            path.display()
+        );
+    }
+    assert_eq!(shipped().next_base_exp(0, 1), 548);
+}
+
+/// DB-CMB-03: NEXT exp from the shipped tables.
+#[test]
+fn db_cmb_03_next_exp() {
+    let db = shipped();
+    assert_eq!(db.next_base_exp(0, 1), 548);
+    assert_eq!(db.next_base_exp(0, 2), 894);
+    assert_eq!(db.next_base_exp(0, 99), NEXT_BASE_EXP_AT_MAX);
+    assert_eq!(db.next_job_exp(0, 1), 10);
+    assert_eq!(db.next_job_exp(0, 9), 340);
+    assert_eq!(db.next_job_exp(0, 10), NEXT_JOB_EXP_AT_MAX);
+    assert_eq!(db.next_job_exp(3, 1), 60, "Archer: 1st-class table");
+}
+
+/// DB-CMB-03 (final review finding 7): no shipped job sends a NEXT of 0 below its max level,
+/// which the client's exp bar would divide by. A job without a table gets the max constants.
+#[test]
+fn db_cmb_03_shipped_bars_are_never_zero_below_the_max() {
+    let db = shipped();
+    let mut empty = Vec::new();
+    for job in db.iter() {
+        for level in 1..job.max_base_level {
+            if db.next_base_exp(job.id, level) == 0 {
+                empty.push((job.id, "base", level));
+            }
+        }
+        for level in 1..job.max_job_level {
+            if db.next_job_exp(job.id, level) == 0 {
+                empty.push((job.id, "job", level));
+            }
+        }
+    }
+    assert!(empty.is_empty(), "zero bars: {empty:?}");
 }

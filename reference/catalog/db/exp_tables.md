@@ -13,6 +13,8 @@ Structure (field doc at lines 22-86, `Body:` at 86): `Body` is a list of group e
 
 Semantics (`pc.cpp:8640-8676`, `JobDatabase::get_baseExp/get_jobExp`): `Exp` at `Level L` is the exp needed to go from level L to L+1 (array index `L-1`). The entry at the max level is never consumed as a requirement: at max level `pc_nextbaseexp` returns the constant 99999999 and `pc_nextjobexp` 999999999 regardless of the table's last value (`config/const.hpp:73-75`), and stored exp is clamped to that. Exp values are 64-bit (`t_exp`); the Doram/4th tables exceed 32 bits. A class's max levels come from its group (`pc_maxbaselv/pc_maxjoblv`, via `job_db`, keyed by class id).
 
+Key names confirmed (`pc.cpp:13820, 14029-14110`; header `Type: JOB_STATS`, `Version: 4`): `Jobs`, `MaxBaseLevel` (u16), `BaseExp` list of `Level` (u16) + `Exp` (`asUInt64`, so unsigned 64-bit), `MaxJobLevel` (u16), `JobExp` list of `Level` + `Exp`.
+
 ### Lookup rule: (class id, level) to required exp
 
 Source: `pc.cpp:8566-8676` (`get_maxBaseLv`, `get_maxJobLv`, `pc_is_max*lv`, `get_baseExp`, `get_jobExp`, `pc_nextbaseexp`, `pc_nextjobexp`), loader `JobDatabase::parseBodyNode` `pc.cpp:13819-13870, 14029-14110`; applies to 20260219.
@@ -109,6 +111,16 @@ Fill rules after load (`loadingFinished`, `pc.cpp:593-619`): undefined differenc
 | -21 to -25 | 60 |
 | -26 to -30 | 35 |
 | -31 and lower | 10 |
+
+### level_penalty.yml format and loader rules
+
+Source: `db/re/level_penalty.yml` (header comment lines 22-29), `PenaltyDatabase::parseBodyNode` `pc.cpp:526-590`, `loadingFinished` `pc.cpp:593-621`, lookup `pc_level_penalty_mod` `pc.cpp:13325-13357`, enum `pc.hpp:1057-1062`. Applies to 20260219 renewal.
+
+* Header: `Type: PENALTY_DB`, `Version: 1` (`pc.hpp:1072`). Body entries: `- Type: <Exp|Drop|Mvp_Exp|Mvp_Drop>` then `LevelDifferences:` list of `- Difference: <int>` / `Rate: <n>`. Both `Difference` and `Rate` are required in each item (`nodesExist`), else the entry is aborted. The shipped file only has `Type: Exp` and `Type: Drop` bodies (Rate max in file 140).
+* `Type` is looked up as script constant `PENALTY_<Type>` (case-insensitive): `PENALTY_EXP` 1, `PENALTY_DROP` 2, `PENALTY_MVP_EXP` 3, `PENALTY_MVP_DROP` 4. Unknown type: entry rejected. A repeated `Type` merges into the existing table.
+* `Difference` is `int32` with `abs(d) <= MAX_LEVEL` (275), else the entry is rejected. Rate is read with `asUInt16Rate` (default max 10000, minimum 1): 0 or above 10000 rejects the entry (the file comment says "0-10000" but 0 is refused). Storage is `u16 rate[2*MAX_LEVEL]` initialised to `UINT16_MAX` = undefined, index `difference + MAX_LEVEL - 1`.
+* Fill rule confirmed: pass 1 from index `MAX_LEVEL-1` (difference 0) upward, undefined slots take the last defined rate (start 100); pass 2 from difference 0 downward, same (start 100). Note difference 0 itself, if undefined, becomes 100 in pass 1 and is not revisited.
+* Runtime (`pc_level_penalty_mod`): returns 100 if no player, if map flag `norenewalexppenalty`/`norenewaldroppenalty` is set for Exp/Drop, or for Drop/Mvp_Drop when the mob has `MD_FIXEDITEMDROP`; else `rate[(mob_level - player_base_level) + 274]`, 100 when the type has no table. There is no clamp in the source on the difference (|d| above 274 would index out of range): clamp in ours.
 
 Lookup index is `difference + MAX_LEVEL - 1` with `MAX_LEVEL = 275` (`map.hpp:78`), so |difference| beyond 274 would be out of range in the source; clamp. A type absent from the yml (e.g. MVP exp) returns 100.
 

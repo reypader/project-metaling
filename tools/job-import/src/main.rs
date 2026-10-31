@@ -38,6 +38,7 @@ fn main() -> anyhow::Result<()> {
             .count()
     );
     println!("status point rows: {}", converted.points.len());
+    println!("exp table groups: {}", converted.exp.len());
     println!(
         "skipped names without an id ({}): {}",
         report.unknown_jobs.len(),

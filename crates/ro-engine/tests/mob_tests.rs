@@ -8,9 +8,10 @@ use ro_core::{
     ScopedServerEvent, ServerEvent, SessionId, SessionIntent, Sex, UnitAppearance, UnitObjectType,
 };
 use ro_db::{
-    CellType, MapGrid, MapMobSpawns, MapNpcs, MobId, MobSpawn, NpcKind, NpcSpawn, NpcState,
+    CellType, MapGrid, MapMobSpawns, MapNpcs, MobClass, MobData, MobDb, MobId, MobMode, MobSpawn,
+    NpcKind, NpcSpawn, NpcState,
 };
-use ro_engine::{MapInstance, MobView, START_NPC_ID};
+use ro_engine::{MapInstance, MobView, Registries, START_NPC_ID};
 
 const A: u32 = 1;
 
@@ -133,7 +134,7 @@ fn walk(
 // ---------- ENG-MOB-01 ----------
 
 #[test]
-fn eng_mob_01_spawns_amount_per_line_with_placeholder_stats() {
+fn eng_mob_01_spawns_amount_per_line_with_default_stats_without_mob_db() {
     let mut leveled = line("Lunatic", 60, 60, (0, 0), 2);
     leveled.mob_id = MobId(1063);
     leveled.level = Some(12);
@@ -162,6 +163,62 @@ fn eng_mob_01_spawns_amount_per_line_with_placeholder_stats() {
     );
     assert_eq!(m[0].spawn.source, "test:Poring", "mob records its line");
     assert_eq!(m[4].spawn.source, "test:Lunatic");
+}
+
+/// Spec combat §2.1: with the mob registry loaded, a spawn takes HP, level, speed and the
+/// boss type from mob_db; a spawn-line level still wins.
+#[test]
+fn eng_mob_01_spawns_with_mob_db_stats() {
+    let poring = MobData {
+        id: MobId(1002),
+        aegis_name: "PORING".into(),
+        name: "Poring".into(),
+        level: 3,
+        hp: 55,
+        walk_speed: 400,
+        ..MobData::default()
+    };
+    let osiris = MobData {
+        id: MobId(1038),
+        aegis_name: "OSIRIS".into(),
+        name: "Osiris".into(),
+        level: 78,
+        hp: 1_175_840,
+        walk_speed: 100,
+        class: MobClass::Boss,
+        modes: [MobMode::Mvp].into_iter().collect(),
+        ..MobData::default()
+    };
+    let db = MobDb::from_mobs("test", vec![poring, osiris]).expect("valid mobs");
+    let mut engine = MapInstance::new("prt_fild08.gat", Arc::new(grid(200, 200)));
+    engine.set_registries(Registries {
+        mobs: Arc::new(db),
+        ..Registries::default()
+    });
+    let mut boss = line("Osiris", 110, 100, (0, 0), 1);
+    boss.mob_id = MobId(1038);
+    let mut leveled = line("Leveled", 102, 100, (0, 0), 1);
+    leveled.level = Some(9);
+    let created = engine.spawn_mobs(&MapMobSpawns {
+        spawns: vec![line("Poring", 101, 100, (0, 0), 1), leveled, boss],
+    });
+    assert_eq!(created, 3);
+    let m = mobs(&engine);
+    let stats: Vec<_> = m
+        .iter()
+        .map(|m| (m.mob_id.0, m.level, m.hp, m.max_hp, m.speed))
+        .collect();
+    assert_eq!(
+        stats,
+        [
+            (1002, 3, 55, 55, 400),
+            (1002, 9, 55, 55, 400),
+            (1038, 78, 1_175_840, 1_175_840, 100),
+        ]
+    );
+    let shown = standing_to_a(&enter(&mut engine, 100, 100));
+    let boss_types: Vec<_> = shown.iter().map(|u| (u.job, u.is_boss)).collect();
+    assert_eq!(boss_types, [(1002, 0), (1002, 0), (1038, 2)]);
 }
 
 #[test]

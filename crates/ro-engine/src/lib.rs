@@ -1,11 +1,13 @@
 //! Map simulation runtime: a single-threaded ECS map instance (see `DESIGN.md` §1a).
 
+mod combat;
 mod command;
 mod drops;
 mod engine;
 pub(crate) mod entity;
 mod equipment;
 mod error;
+mod experience;
 mod floor_item;
 mod inventory;
 mod job;

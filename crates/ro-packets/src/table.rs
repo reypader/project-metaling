@@ -126,6 +126,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0109 => Some(Dynamic),
         0x010e => Some(Fixed(11)), // ZC_SKILLINFO_UPDATE (PF-21; its absence stalled equip_sequence_3)
         0x010f => Some(Dynamic),   // ZC_SKILLINFO_LIST (specs/map-entry-settings)
+        0x0110 => Some(Fixed(14)), // ZC_ACK_TOUSESKILL (PF-21; captured in combat_sequence_2)
         0x0112 => Some(Fixed(4)),
         0x0113 => Some(Fixed(25)),
         0x0114 => Some(Fixed(31)),

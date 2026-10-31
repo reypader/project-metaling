@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, db/re/job_stats.yml, db/re/job_aspd.yml, db/re/job_exp.yml, db/re/job_basepoints.yml.
-# Modified: merged per job id (later files override earlier keys), reduced to max weight, max levels, job-level stat bonuses, ASPD bases and base HP/SP/AP; missing HP/SP/AP table slots filled with rAthena's fallback formulas (with its Super Novice line HP adjustment), all-zero AP tables omitted; exp tables and outfits dropped, by tools/job-import. Do not edit by hand.
+# Modified: merged per job id (later files override earlier keys), reduced to max weight, max levels, job-level stat bonuses, ASPD bases and base HP/SP/AP; missing HP/SP/AP table slots filled with rAthena's fallback formulas (with its Super Novice line HP adjustment), all-zero AP tables omitted; exp tables moved to job_exp.yml; outfits dropped, by tools/job-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
 %YAML 1.2
 ---

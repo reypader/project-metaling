@@ -57,7 +57,7 @@ Order inside `clif_parse_ActionRequest_sub` (`clif.cpp:11697-11745`):
 `unit_attack_timer` (`unit.cpp:3354`) -> `unit_attack_timer_sub(src, tid, tick)` (`unit.cpp:3187`). Result 0 means "cannot continue" and calls `unit_unattackable` (clears target + continue flag). Order for a player source:
 
 1. Clear `ud.attacktimer` first. (For monsters the timer is routed through the monster AI instead; out of scope.)
-2. Abort (return 0) if: src or target not on map; src or target dead; `battle_check_target` not enemy; `status_check_skilluse` fails; `unit_can_attack` fails; (optional) no straight path when `OFFICIAL_WALKPATH` is defined.
+2. Abort (return 0), one `||` chain evaluated in this order (rAthena `unit.cpp:3219-3227`, `OFFICIAL_WALKPATH` defined by default at `config/core.hpp:26`): src/target null or not on map (`prev == nullptr`); `status_isdead(src)`; `status_isdead(target)`; `battle_check_target(BCT_ENEMY) <= 0`; `!status_check_skilluse(src, target, 0, 0)`; **`!path_search_long(nullptr, m, src.x, src.y, target.x, target.y, CELL_CHKWALL)`** (flag is **CHKWALL, not CHKNOPASS**: only raw-1 walls block, raw-5 cliffs do not; start and destination cells are not tested; no distance limit, no `d < 2` shortcut, so it runs even when adjacent but then there are no intermediate cells and it passes); `!unit_can_attack`. All failures `return 0` silently (no packet), and the caller `unit_attack_timer` then calls `unit_unattackable`. This LOS check comes **before** the cast check, `canact`, the client-distance/`0x0139` test and `battle_check_range`. The same timer function is used for the request path (`tid == INVALID_TIMER`, called from `unit_attack`), so it applies to the first swing too; `unit_attack` itself (section 1) has no path check. `CELL_CHKNOPASS` with `path_search_long` is only used for the walk-command `path_len > 14` check (`unit.cpp:268`, `864`, `3088`), not for attacks. Consequence: `battle_check_range`'s own `path_search_long(CELL_CHKWALL)` (step 5) is redundant for the `d > 1` case when `OFFICIAL_WALKPATH` is on.
 3. Abort if currently casting (`ud.skilltimer` active) unless Free Cast.
 4. `canact_tick > tick` and no Free Cast: direct request (tid = INVALID) -> skill-fail message, return 0; in a repeating timer with `attack_continue`, push `attackabletime = max(attackabletime, canact_tick)` and re-arm; return 1.
 5. Range test (section 2). Out of range: send `0x0139`, return 1 with no timer.
@@ -142,7 +142,7 @@ Source (rathena, Renewal, applies to 20260219): `battle.cpp:7163-7205` (swing-ti
 | Condition | Packet to self | Result |
 | :--- | :--- | :--- |
 | ammo slot empty, bow | `0x013b` `ZC_ACTION_FAILURE` `type 0` (`ARROWFAIL_NO_AMMO`, client text "Please equip the proper ammunition first.") **(capture: `0x013b {00 00}`)** | `ATK_NONE` |
-| ammo slot empty, any gun or grenade launcher (weapon in `(W_KATAR, W_HUUMA)` exclusive) | `0x0110` `ZC_ACK_TOUSESKILL`, skill 0, `flag 0`, `cause 84` (`USESKILL_FAIL_NEED_MORE_BULLET`, `clif.hpp:492`) | `ATK_NONE` |
+| ammo slot empty, any gun or grenade launcher (weapon in `(W_KATAR, W_HUUMA)` exclusive) | `0x0110` `ZC_ACK_TOUSESKILL`, skill 0, `flag 0`, `cause 84` (`USESKILL_FAIL_NEED_MORE_BULLET`, `clif.hpp:492`) **(capture: `combat_sequence_2.txt` #2138, after `0x0088` ×2)** | `ATK_NONE` |
 | bow and ammo `SubType != Arrow` | `0x013b` type 0 | `ATK_NONE` |
 | revolver/rifle/gatling/shotgun and ammo `SubType != Bullet` | `0x0110` cause 84 | `ATK_NONE` |
 | grenade launcher and ammo `SubType != Bullet` (Renewal; pre-renewal `Grenade`) | `0x0110` cause 84 | `ATK_NONE` |
@@ -263,7 +263,7 @@ Source: [`../captures/combat_sequence_1.txt`](../captures/combat_sequence_1.txt)
 
 ### 8.4 PF-14: range 1 at 2 cells
 
-* **Not settled.** The straight and (2,1) attempts did not produce a clean sample, because Porings walk toward A and A's request is almost always sent mid-walk (step action, which uses `range + 1`):
+* **Settled later by `combat_sequence_2.txt`, see [8.6](#86-capture-2-combat_sequence_2txt-pf-14-gun-ammo-showdelay).** In this capture it was **not settled**. The straight and (2,1) attempts did not produce a clean sample, because Porings walk toward A and A's request is almost always sent mid-walk (step action, which uses `range + 1`):
   * "straight" (marker 1351): `0x0437` at 1378 while A was mid-walk (dest (141,219), `0x0087` 1370); the mob stood at (140,219) (its walk ended there, `0x09fd` 1354, next walk starts there at 1384). At the request A was about (142,219) = 2 cells straight, but A was walking, so this is a step action; the swing (1382) came 160 ms later with A stopped at (141,219) = **1 cell**.
   * "diagonal" (marker 1417): `0x0437` (action 0) at 1424 mid-walk (dest (153,228)); the mob reached A first and swung from (154,229) (1426-1428); A swung from (155,229) at 1429-1432: 1 cell.
   * One more hint: swing 940 (A at (150,189)) hit a Poring that was walking toward A, estimated at (150,191) = (0,2) straight; both step action and `unit_is_walking(target)` give `range + 1` there, so it does not test the plain rule either.
@@ -278,10 +278,32 @@ Source: [`../captures/combat_sequence_1.txt`](../captures/combat_sequence_1.txt)
 * Section 3.1 / `canact_tick` refusal (`0x0110`): unexercised, see Open questions.
 * Sections 5/7.1: `0x0977` at swing + `amotion` and survival of pending hits across `0x0118`: confirmed.
 
+### 8.6 Capture 2: combat_sequence_2.txt (PF-14, gun ammo, `@showdelay`)
+
+Source: [`../captures/combat_sequence_2.txt`](../captures/combat_sequence_2.txt), real client, rAthena `d4b8e7b8f`, `PACKETVER 20260219`, 2026-10-30. Proxy `#` (file line = `#` + 10). A = `#3` (`combattest1`), B = `#6` (`combattest2`, spawned the Pupas with `@monster pupa 10`). Pupas never move. No chat step markers; A's typed notes are at #1025 and #1465. Decoded by script from the hex payloads.
+
+* **PF-14 settled.** A had the Knife (range 1 by `0x013a` #653, amotion 590) and stood still for more than 3 s before each request:
+
+  | Request | A / Pupa | (dx,dy) | Client sent | Server |
+  | :--- | :--- | :--- | :--- | :--- |
+  | #774 | (153,173) / (153,175) | (0,2) | `0x0437` 7, no walk | `0x0088` ×2 at A's cell, `0x08c8` 46 (+5 ms) |
+  | #899 | (157,173) / (157,175) | (0,2) | `0x0437` 7, no walk | the same (+52 ms) |
+  | #819-824, #952-958 | 3 straight, (0,3) | (0,3) | `0x035f` to the adjacent cell, then `0x0437` 0 about 210 ms into the walk | swing on arrival, `0x0088` ×2 |
+  | #1164-1178, #1244-1247 | (2,1) | (2,1) | `0x035f` to the adjacent cell, then `0x0437` 7 about 40 ms later | swing about 280 ms later, `0x0088` ×2 |
+  | #1273-1275 | (2,2) | (2,2) | `0x035f`, then `0x0437` 0 | swing on arrival |
+
+  So a range-1 player standing still hits at 2 cells straight with no move, as `check_distance_client` predicts. The **client** runs the same test: for (2,1), (2,2) and 3 straight it walks to an adjacent cell first and sends the request during the 1-cell walk. No `0x0139` was sent in the whole capture. Section 8.3's `0x0139` replies came from requests the client sent while the target was moving.
+* **Request during a 1-cell walk:** the swing came when the walk ended, with `0x0088` ×2 (not ×3: the walk had already stopped). A ranged request during a long walk stopped A at once with `0x0088` ×3 (#1745, #2088), as in 8.2.
+* **Gun with no bullets** (Gunslinger, Black Rose 13155, range 9 by `0x013a` #1992, amotion 940): after the Bullets came off (#2134: `0x00ab`, `0x099a` pos `0x8000`), three requests (#2138, #2162, #2211) each got `0x0088` ×2 then `0x0110` `10 01 | 00 00 | 00 00 00 00 | 00 00 00 00 | 00 | 54` (skill 0, flag 0, cause 84 `NEED_MORE_BULLET`). No `0x08c8`, no `0x013b`, nothing spent. B got the `0x0088`s only. The proxy has no `0x0110` row and misframes it (#2142-2153; PF-21). Compare a Bow with no arrows (#1558): `0x0088` ×2 then `0x013b {0,0}`. Section 5.3's gun row is now captured.
+* **Gun shot with bullets** (#2088, A mid-walk): `0x0088` ×3, `0x07fa {idx 14, 1, reason 1}`, `0x00b0` weight 2623 → 2622, `0x08c8` 247 (`src_speed` 940). `0x0977` 0/51 at +943 ms (= amotion), then the kill (`0x0acb` ×2, `0x0acc` ×2, `0x0080`). B saw `0x0088` ×3 and `0x08c8`, not the ammo packets or `0x0977`. Same order as the bow in section 5.3. Only one bullet shot, so no run-out.
+* **`@showdelay` (#1673-#1827):** no `0x0110`. The shortest swing-to-request gap in the capture was 1.84 s, so `canact_tick` was again never reached (see the open question below).
+* **Confirmed again:** every action 7 was followed by `0x0118` 50-150 ms later and action 0 never was; a swing already due survives the `0x0118` (#1179 → #1183); a single swing (action 0) never repeats; `0x0977` lands at swing + amotion (598 ms Knife, 943 ms gun).
+
 ## Open questions / unverified
 
 * Settled by `combat_sequence_1.txt` (section 8): packet order (`0x0088` x2 or x3 before `0x08c8`), action byte (0 or 7 depending on `/noctrl` and click type; **not** always 7), `0x0118` pairing, deferred swings, `0x0139` and the client chase.
-* Still open: `target_id` the client sends for sit (not in this range); the `check_distance_client` straight-line +1 (range 1 hitting at 2 cells straight with a **standing, non-walking** target and no stepaction). The capture has no clean sample, see [8.4](#84-pf-14-range-1-at-2-cells).
-* Still open: a re-request **inside** `canact_tick` (`amotion + 100 ms`): the shortest re-request seen was 1025 ms after a swing, so `0x0110` and the silent refusal were never exercised.
+* Still open: `target_id` the client sends for sit (not in this range).
+* Settled by `combat_sequence_2.txt`: the `check_distance_client` straight-line +1 (PF-14). Range 1 hits at (2,0) with A standing; the client itself walks first for (2,1), (2,2) and (3,0). See [8.6](#86-capture-2-combat_sequence_2txt-pf-14-gun-ammo-showdelay).
+* Still open: a re-request **inside** `canact_tick` (`amotion + 100 ms`): the shortest re-request seen was 1025 ms after a swing (proxy #1913; 60 requests measured), so `0x0110` and the silent refusal were never exercised. The user who recorded it observed that the client seems to debounce fast clicks on a monster (2026-10-30), so a stock client may never send one; the server-side drop then only guards against modified clients. Keep the source rule. `combat_sequence_2.txt` (with `@showdelay` on) also has no re-request inside the window: shortest gap 1.84 s.
 * Still open: whether `0x0118` is what the client sends when it cancels with a ground click: it did not (8.5). The press/release meaning of the `7` + `0x0118` pair is inferred (8.1).
 * rust-ro was not consulted for this topic.

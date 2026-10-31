@@ -5,7 +5,10 @@ use std::path::{Path, PathBuf};
 
 use mob_import::{convert, render_file, Converted, SOURCE};
 use ro_core::ItemId;
-use ro_db::{ItemData, ItemDb, ItemType, MobClass, MobData, MobDb, MobDrop, MobId};
+use ro_db::{
+    Element, ItemData, ItemDb, ItemType, MobClass, MobData, MobDb, MobDrop, MobId, MobMode,
+    MobModes, MobRace, MobSize,
+};
 
 fn item(id: u32, aegis: &str) -> ItemData {
     ItemData {
@@ -157,11 +160,14 @@ fn tool_mobdb_02_class_mvp_merge() {
     Name: Duplicate Aegis
 ");
     let osiris = mob(&out, 1038);
-    assert_eq!((osiris.class, osiris.mvp), (MobClass::Boss, true));
+    assert_eq!((osiris.class, osiris.is_mvp()), (MobClass::Boss, true));
     assert_eq!(osiris.mvp_drops.len(), 3);
     assert_eq!(osiris.boss_type(), 2);
     let jr = mob(&out, 1039);
-    assert_eq!((jr.class, jr.mvp, jr.level), (MobClass::Boss, false, 50));
+    assert_eq!(
+        (jr.class, jr.is_mvp(), jr.level),
+        (MobClass::Boss, false, 50)
+    );
     assert_eq!(jr.name, "Baphomet Jr.", "merge keeps unlisted keys");
     assert_eq!(mob(&out, 1040).class, MobClass::Event);
     assert_eq!(mob(&out, 1040).walk_speed, 1000, "clamped to 20..=1000");
@@ -211,5 +217,198 @@ fn tool_mobdb_03_real_counts() {
     assert_eq!(osiris.drops.len(), 8);
     let bosses = db.iter().filter(|m| m.class == MobClass::Boss).count();
     assert_eq!(bosses, 732, "catalog Class: Boss count");
-    assert_eq!(db.iter().filter(|m| m.mvp).count(), 190);
+    assert_eq!(db.iter().filter(|m| m.is_mvp()).count(), 190);
+    assert_eq!(
+        (
+            poring.base_exp,
+            poring.job_exp,
+            poring.defense,
+            poring.attack_delay
+        ),
+        (150, 40, 2, 1872)
+    );
+    assert_eq!(poring.modes.bits(), 0x83, "Ai 02");
+    let plant = db.get(MobId(1080)).expect("Green Plant");
+    assert!(plant.has_mode(MobMode::IgnoreMelee));
+    let ignore_melee = db
+        .iter()
+        .filter(|m| m.has_mode(MobMode::IgnoreMelee))
+        .count();
+    assert_eq!(ignore_melee, 145, "catalog Modes: IgnoreMelee count");
+}
+
+fn modes(list: &[MobMode]) -> MobModes {
+    list.iter().copied().collect()
+}
+
+/// TOOL-MOBDB-04: combat fields. `Ai` sets the mode bits, `Modes` toggles them, `Class` adds
+/// its modes last; defaults, clamps and case-insensitive names follow catalog `db/mob_db.md`.
+#[test]
+fn tool_mobdb_04_combat_fields() {
+    let out = run("  - Id: 1002
+    AegisName: PORING
+    Name: Poring
+    Level: 1
+    Hp: 55
+    BaseExp: 150
+    JobExp: 40
+    Attack: 1
+    Defense: 2
+    Str: 6
+    Int: 0
+    Dex: 6
+    Luk: 5
+    AttackRange: 1
+    Size: Medium
+    Race: Plant
+    Element: Water
+    ElementLevel: 1
+    WalkSpeed: 400
+    AttackDelay: 1872
+    AttackMotion: 672
+    DamageMotion: 480
+    Ai: 02
+  - Id: 1080
+    AegisName: GREEN_PLANT
+    Name: Green Plant
+    Agi: 0
+    Vit: 0
+    Dex: 0
+    Luk: 0
+    Defense: 100
+    Ai: 06
+    Modes:
+      IgnoreMelee: true
+  - Id: 1100
+    AegisName: BOSSY
+    Name: Bossy
+    Class: Boss
+    Ai: 04
+    Size: large
+    Race: Player_Human
+    Element: GHOST
+    ElementLevel: 7
+    Defense: 40000
+    Resistance: 50
+    AttackDelay: 50
+    AttackMotion: 300
+    Modes:
+      canmove: false
+      KnockBackImmune: true
+  - Id: 1101
+    AegisName: ODD
+    Name: Odd
+    Ai: 14
+    AttackMotion: 9000
+    AttackDelay: 9000
+  - Id: 1102
+    AegisName: BARE
+    Name: Bare
+  - Id: 1102
+    Modes:
+      Looter: true
+  - Id: 1103
+    AegisName: RESET
+    Name: Reset
+    Ai: 01
+    Modes:
+      Aggressive: true
+  - Id: 1103
+    Ai: 02
+");
+    let poring = mob(&out, 1002);
+    assert_eq!(
+        (
+            poring.base_exp,
+            poring.job_exp,
+            poring.attack,
+            poring.defense
+        ),
+        (150, 40, 1, 2)
+    );
+    assert_eq!(
+        (poring.str, poring.agi, poring.vit, poring.int, poring.dex, poring.luk),
+        (6, 1, 1, 0, 6, 5),
+        "unlisted stats default to 1; an explicit 0 stays"
+    );
+    assert_eq!(
+        (
+            poring.size,
+            poring.race,
+            poring.element,
+            poring.element_level
+        ),
+        (MobSize::Medium, MobRace::Plant, Element::Water, 1)
+    );
+    assert_eq!(
+        (
+            poring.attack_delay,
+            poring.attack_motion,
+            poring.damage_motion
+        ),
+        (1872, 672, 480)
+    );
+    assert_eq!(poring.attack_range, 1);
+    assert_eq!(
+        poring.modes.bits(),
+        0x83,
+        "Ai 02 = CanMove|Looter|CanAttack"
+    );
+
+    let plant = mob(&out, 1080);
+    assert_eq!(plant.modes, modes(&[MobMode::IgnoreMelee]), "Ai 06 = 0");
+    assert_eq!((plant.agi, plant.vit, plant.dex, plant.luk), (0, 0, 0, 0));
+    assert_eq!(plant.defense, 100);
+    assert_eq!(
+        (plant.attack_delay, plant.attack_motion),
+        (100, 100),
+        "MAX_ASPD_NOPC defaults"
+    );
+
+    let boss = mob(&out, 1100);
+    // Ai 04 = 0x3885, CanMove cleared by Modes, then Boss adds Detector|StatusImmune|
+    // KnockbackImmune.
+    assert_eq!(
+        boss.modes.bits(),
+        0x3884 | 0x200_0000 | 0x400_0000 | 0x20_0000
+    );
+    assert_eq!(
+        (boss.size, boss.race, boss.element),
+        (MobSize::Large, MobRace::PlayerHuman, Element::Ghost),
+        "names match case-insensitively"
+    );
+    assert_eq!(boss.element_level, 1, "an invalid level falls back to 1");
+    assert_eq!(boss.defense, i16::MAX, "DEFTYPE_MAX");
+    assert_eq!(boss.resistance, 50);
+    assert_eq!(
+        (boss.attack_delay, boss.attack_motion),
+        (300, 300),
+        "delay clamped to 100, then raised to the motion"
+    );
+
+    let odd = mob(&out, 1101);
+    assert_eq!(odd.modes, MobModes::default(), "unknown Ai: 06");
+    assert_eq!(
+        (odd.attack_delay, odd.attack_motion),
+        (8000, 8000),
+        "MIN_ASPD cap"
+    );
+
+    assert_eq!(
+        mob(&out, 1102).modes,
+        modes(&[MobMode::Looter]),
+        "no Ai: mask 0; a re-listed id's Modes still apply"
+    );
+    assert_eq!(
+        mob(&out, 1103).modes.bits(),
+        0x83,
+        "a re-listed Ai replaces the mask and the earlier Modes"
+    );
+    for needle in ["1100: ElementLevel", "1101: unknown Ai"] {
+        assert!(
+            out.report.warnings.iter().any(|w| w.contains(needle)),
+            "{needle}: {:?}",
+            out.report.warnings
+        );
+    }
 }

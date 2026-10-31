@@ -1,6 +1,6 @@
 //! Job registry (`JOB_DATA`, from `tools/job-import`): per-job max weight, max levels, job-level
 //! stat bonuses, ASPD bases and base HP/SP/AP tables, plus the cumulative status- and
-//! trait-point table (`STATPOINT_DATA`).
+//! trait-point table (`STATPOINT_DATA`) and the base- and job-exp tables (`JOB_EXP_DATA`).
 
 use std::collections::{BTreeMap, HashMap};
 use std::path::Path;
@@ -16,6 +16,14 @@ pub const JOB_DATA_FILE: &str = "job_db.yml";
 pub const STATPOINT_DATA_TYPE: &str = "STATPOINT_DATA";
 pub const STATPOINT_DATA_VERSION: u32 = 2;
 pub const STATPOINT_DATA_FILE: &str = "statpoint.yml";
+pub const JOB_EXP_DATA_TYPE: &str = "JOB_EXP_DATA";
+pub const JOB_EXP_DATA_VERSION: u32 = 1;
+pub const JOB_EXP_DATA_FILE: &str = "job_exp.yml";
+
+/// rAthena's next base exp at (or above) the max base level, or for a job with no table.
+pub const NEXT_BASE_EXP_AT_MAX: u64 = 99_999_999;
+/// The same for job exp.
+pub const NEXT_JOB_EXP_AT_MAX: u64 = 999_999_999;
 
 const JOB_SCHEMA: Schema = Schema {
     db_type: JOB_DATA_TYPE,
@@ -24,6 +32,10 @@ const JOB_SCHEMA: Schema = Schema {
 const STATPOINT_SCHEMA: Schema = Schema {
     db_type: STATPOINT_DATA_TYPE,
     version: STATPOINT_DATA_VERSION,
+};
+const EXP_SCHEMA: Schema = Schema {
+    db_type: JOB_EXP_DATA_TYPE,
+    version: JOB_EXP_DATA_VERSION,
 };
 
 /// ASPD base of a weapon (or shield) the job table doesn't list.
@@ -129,6 +141,25 @@ pub struct StatPointRow {
     pub trait_points: u32,
 }
 
+/// Which level an exp table is for.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize)]
+pub enum ExpKind {
+    Base,
+    Job,
+}
+
+/// One `job_exp.yml` entry: jobs that share one exp table.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "PascalCase", deny_unknown_fields)]
+pub struct ExpGroup {
+    pub kind: ExpKind,
+    #[serde(serialize_with = "flow_list")]
+    pub jobs: Vec<u16>,
+    /// Index `level - 1`: the exp needed to go from `level` to `level + 1`. A missing row is 0.
+    #[serde(serialize_with = "flow_list")]
+    pub exp: Vec<u64>,
+}
+
 /// A loaded job, with its job bonus accumulated per job level.
 #[derive(Debug, Clone)]
 pub struct Job {
@@ -145,6 +176,9 @@ pub struct Job {
     base_sp: Vec<u32>,
     /// Empty when the job has no AP at any level.
     base_ap: Vec<u32>,
+    /// Index into `JobDb::exp_tables`, per `ExpKind`.
+    base_exp: Option<usize>,
+    job_exp: Option<usize>,
 }
 
 impl Job {
@@ -190,6 +224,8 @@ pub struct JobDb {
     status_points: Vec<u32>,
     /// Index `base_level - 1`.
     trait_points: Vec<u32>,
+    /// The shared exp tables that jobs point into.
+    exp_tables: Vec<Vec<u64>>,
 }
 
 impl JobDb {
@@ -228,6 +264,7 @@ impl JobDb {
             by_name: HashMap::with_capacity(jobs.len()),
             status_points: Vec::with_capacity(points.len()),
             trait_points: Vec::with_capacity(points.len()),
+            exp_tables: Vec::new(),
         };
         for data in jobs {
             let index = db.jobs.len();
@@ -266,12 +303,93 @@ impl JobDb {
         Ok(db)
     }
 
-    /// Loads `JOB_DATA_FILE` and `STATPOINT_DATA_FILE` from `dir`. A missing file is an error.
+    /// Parses `job_exp.yml`. `path` is only a label for errors.
+    pub fn parse_exp_tables(path: &str, text: &str) -> Result<Vec<ExpGroup>, DbLoadError> {
+        EXP_SCHEMA.parse(path, text)
+    }
+
+    pub fn exp_tables_to_yaml(groups: &[ExpGroup]) -> Result<String, DbLoadError> {
+        EXP_SCHEMA.to_yaml(groups)
+    }
+
+    /// Attaches the exp tables. Every job id must be known and in at most one group per kind.
+    pub fn with_exp_tables(
+        mut self,
+        path: &str,
+        groups: Vec<ExpGroup>,
+    ) -> Result<Self, DbLoadError> {
+        for group in groups {
+            let table = self.exp_tables.len();
+            for &id in &group.jobs {
+                let Some(&index) = self.by_id.get(&id) else {
+                    return Err(schema_error(
+                        path,
+                        format!("exp table names unknown job {id}"),
+                    ));
+                };
+                let job = &mut self.jobs[index];
+                let slot = match group.kind {
+                    ExpKind::Base => &mut job.base_exp,
+                    ExpKind::Job => &mut job.job_exp,
+                };
+                if slot.replace(table).is_some() {
+                    return Err(schema_error(
+                        path,
+                        format!("job {id} is in two {:?} exp tables", group.kind),
+                    ));
+                }
+            }
+            self.exp_tables.push(group.exp);
+        }
+        Ok(self)
+    }
+
+    /// Loads `JOB_DATA_FILE`, `STATPOINT_DATA_FILE` and `JOB_EXP_DATA_FILE` from `dir`. A
+    /// missing file is an error.
     pub fn load_dir(dir: &Path) -> Result<Self, DbLoadError> {
         let jobs = load_required(&JOB_SCHEMA, &dir.join(JOB_DATA_FILE))?;
         let points: Vec<StatPointRow> =
             load_required(&STATPOINT_SCHEMA, &dir.join(STATPOINT_DATA_FILE))?;
-        Self::from_parts(&dir.display().to_string(), jobs, &points)
+        let exp_path = dir.join(JOB_EXP_DATA_FILE);
+        let exp = load_required(&EXP_SCHEMA, &exp_path)?;
+        Self::from_parts(&dir.display().to_string(), jobs, &points)?
+            .with_exp_tables(&exp_path.display().to_string(), exp)
+    }
+
+    /// The base exp needed to go from `level` to `level + 1` (rAthena `pc_nextbaseexp`): 0 at
+    /// level 0, `NEXT_BASE_EXP_AT_MAX` at or above the job's max level or with no table, else
+    /// the table row (0 if missing).
+    pub fn next_base_exp(&self, job: u16, level: u16) -> u64 {
+        self.next_exp(job, level, ExpKind::Base)
+    }
+
+    /// The job-exp counterpart of `next_base_exp`, with `NEXT_JOB_EXP_AT_MAX`.
+    pub fn next_job_exp(&self, job: u16, level: u16) -> u64 {
+        self.next_exp(job, level, ExpKind::Job)
+    }
+
+    fn next_exp(&self, job: u16, level: u16, kind: ExpKind) -> u64 {
+        let at_max = match kind {
+            ExpKind::Base => NEXT_BASE_EXP_AT_MAX,
+            ExpKind::Job => NEXT_JOB_EXP_AT_MAX,
+        };
+        if level == 0 {
+            return 0;
+        }
+        let Some(job) = self.get(job) else {
+            return at_max;
+        };
+        let (max, table) = match kind {
+            ExpKind::Base => (job.max_base_level, job.base_exp),
+            ExpKind::Job => (job.max_job_level, job.job_exp),
+        };
+        let Some(table) = table.and_then(|i| self.exp_tables.get(i)) else {
+            return at_max;
+        };
+        if level >= max {
+            return at_max;
+        }
+        table.get(usize::from(level - 1)).copied().unwrap_or(0)
     }
 
     pub fn get(&self, id: u16) -> Option<&Job> {
@@ -375,6 +493,8 @@ fn build_job(path: &str, data: JobData) -> Result<Job, DbLoadError> {
         base_hp: data.base_hp,
         base_sp: data.base_sp,
         base_ap: data.base_ap,
+        base_exp: None,
+        job_exp: None,
     })
 }
 
@@ -410,6 +530,6 @@ fn is_zero_u32(value: &u32) -> bool {
 }
 
 /// Writes a long numeric table on one line (`[40, 46, 53]`).
-fn flow_list<S: Serializer>(values: &[u32], serializer: S) -> Result<S::Ok, S::Error> {
+fn flow_list<T: Serialize, S: Serializer>(values: &[T], serializer: S) -> Result<S::Ok, S::Error> {
     serde_saphyr::FlowSeq(values).serialize(serializer)
 }

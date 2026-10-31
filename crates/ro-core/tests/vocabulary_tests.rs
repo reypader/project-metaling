@@ -69,6 +69,7 @@ fn unit_appearance_and_new_server_events_construct() {
         speed: 150,
         dead_sit: 0,
         clevel: 1,
+        is_boss: 0,
         effect_state: 0,
         looks: UnitLooks::default(),
     };

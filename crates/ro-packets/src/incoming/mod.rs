@@ -26,6 +26,7 @@
 //!   `CZ_REQ_TAKEOFF_EQUIP_ALL` (0x0bf5)
 //! - `CZ_STATUS_CHANGE` (0x00bb), `CZ_ADVANCED_STATUS_CHANGE` (0x0b24)
 //! - `CZ_UPGRADE_SKILLLEVEL` (0x0112)
+//! - `CZ_CANCEL_LOCKON` (0x0118)
 
 pub mod char;
 pub mod frame;
@@ -43,9 +44,10 @@ pub use frame::{
 pub use helpers::{parse_sex, read_fixed_string};
 pub use login::CaLoginPacket;
 pub use map::{
-    CzAdvancedStatusChangePacket, CzBlockingPlayCancelPacket, CzChangeDirectionPacket,
-    CzEnterPacket, CzItemPickupPacket, CzItemThrowPacket, CzNotifyActorInitPacket,
-    CzReqDisconnectPacket, CzReqNamePacket, CzReqTakeoffEquipAllPacket, CzReqTakeoffEquipPacket,
-    CzReqWearEquipPacket, CzRequestActPacket, CzRequestChatPacket, CzRequestMovePacket,
-    CzRequestTimePacket, CzRestartPacket, CzStatusChangePacket, CzUpgradeSkillLevelPacket,
+    CzAdvancedStatusChangePacket, CzBlockingPlayCancelPacket, CzCancelLockonPacket,
+    CzChangeDirectionPacket, CzEnterPacket, CzItemPickupPacket, CzItemThrowPacket,
+    CzNotifyActorInitPacket, CzReqDisconnectPacket, CzReqNamePacket, CzReqTakeoffEquipAllPacket,
+    CzReqTakeoffEquipPacket, CzReqWearEquipPacket, CzRequestActPacket, CzRequestChatPacket,
+    CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket, CzStatusChangePacket,
+    CzUpgradeSkillLevelPacket,
 };

@@ -3,6 +3,71 @@
 Items consciously left out of finished work, with enough context to pick them up later.
 Remove an item when it lands. Newest feature first.
 
+## combat (branch `main`, plan `specs/combat/plan.md`)
+
+Spec: `specs/combat/spec.md` §5. What landed: player auto-attack on mobs (action 0/7, `0x0118`, step
+action, range and LOS), renewal normal-attack damage, bow and gun ammo, delayed hits with the skip rules, the
+damage log and `0x0977`, mob death with the +250 ms vanish, exp shares, natural base and job level-up, real
+NEXT exp, and real mob stats at spawn.
+
+### Still to verify by hand
+- **Manual client check** (plan "Finish") on `prt_fild08`: bare-hand and Knife Poring kills, an
+  out-of-range click, Esc, an Archer running out of arrows, level-ups from kills, relog. Then a metaling
+  capture compared with `combat_sequence_1.txt`.
+- Uncaptured, so source-only: the re-click inside `canact` (the client debounces fast clicks), a base-only
+  level-up, exp at the max job level (`0x0acc` 0), and whether an equip or look change stops the attack
+  (catalog `auto_attack.md` §7.3).
+
+### Mob AI (a separate feature; spec "Why mob attacks are not in this feature")
+- Retaliation, the aggro scan and view range, random walk (`MIN_RANDOMWALKTIME`), chase with
+  `unit_walktobl`, the hard and lazy AI timers.
+- Mob → player hits on this feature's core, with the square range and the 1000 ms delay cap for non-player
+  attackers. The in-loop `canact` re-arm of `unit_attack_timer_sub` step 4 (skipped: it can't trigger for
+  players).
+- Player HP pushes, player death (`0x0080` type 1, the death exp penalty), `CZ_RESTART` respawn. The dead
+  are already counted as attackers but paid nothing (`mobs.md` §3 step 2).
+- The flinch walk-stop of a damaged mob.
+
+### Death extras
+- **Respawn** (`delay1`/`delay2` rules, 1000 ms floor, `0x09fe` to the area). A dead mob stays gone until
+  the map world restarts.
+- **Event labels** run at death (see mob-spawning "Death and respawn").
+- **Drops** (`drop_mob_items` exists, still uncalled): owners from the damage log,
+  `first_attack_loot_bonus`, after the exp packets.
+
+### Damage fidelity
+- **The size table** (`size_fix`, the base file merged with the renewal overlay, `combat.md` §3) and **the
+  element table** (`attr_fix`, plus weapon and ammo element). Both are 100 % today, so e.g. a Knife hits a
+  Poring for 16-17 instead of rAthena's 12. Both need an import tool; the engine then feeds
+  `size_mod`/`attr_rate`, with no formula change.
+- Dual wield and katar `damage2`, Double Attack and other procs, masteries, cards and item `bonus` rates,
+  status-effect modifiers.
+- Gun ammo subtypes beyond Bullet (the Shell quirk), Vulture's Eye and other range skills.
+
+### Exp
+- **Not planned** (user decision, 2026-10-30): the renewal level-difference exp penalty
+  (`level_penalty.yml`). The capture shows it (Archer on Pupa 95 %, on Marine Sphere 40 %); ours pays 100 %.
+- MVP (`MvpExp`, `0x010c`/`0x010b`, MVP drops), party exp share with `0x0abd`/`0x080e`, KS protection,
+  `pk_mode`, VIP, Rich Mankind and other bonuses, `max_exp_gain_rate`, `@showexp`.
+- The `0x080e` rAthena sends after the level-up heal even when solo (same as `@blvl`; stats section).
+
+### Targets and gates
+- Attacking NPCs (`npc_click`), hidden or cloaked targets, attack-blocking statuses, `pc_cant_act` states.
+- Exit refusal within `prevent_logout` of attacking (exit-game "Needs combat").
+
+### Deviations
+- A kill that levels both base and job sends one stat diff (before the heal), where rAthena sends one per
+  burst; the job-bonus stat shows up in the base burst's diff.
+- Two kills paying one player in the same tick: the second kill queues behind the first, so its base
+  tail (if it levels again) comes after the one diff instead of before it. The values are always the
+  latest (`FollowUp::Live`).
+- No `0x0977` when a mob with a player in its damage log comes into that player's view (rAthena
+  `clif_getareachar_unit`).
+- Step actions starve for walkers faster than about 40 ms per cell (each step in a tick bumps `step_gen`
+  before the timers run). Interleave walkers and timers by due time if speed buffs arrive.
+- Spammed requests between `canact` and `attackable` each push a stale `Swing` timer (bounded by request
+  rate × adelay).
+
 ## skills (branch `main`, plan `specs/skills/plan.md`)
 
 Spec: `specs/skills/spec.md` §5. Learn only: skill data and resolved trees (`tools/skill-import`), the
@@ -86,10 +151,9 @@ gear (ATK/MATK/DEF/MDEF only), the tick's recalc pass with the follow-up queue, 
 ### Modifier sources and mechanics
 - Item, card and combo bonuses, and gear hard MDEF (`crates/ro-engine/DESIGN.md` §9.8). Passive skills
   (§9.9). Status effects (§10), including restoring saved ones at login (capture 2's late `SP_ASPD` is a
-  Berserk Potion buff). Damage (§11). Mob `Status` from `MobDb`.
+  Berserk Potion buff). Damage beyond normal attacks (§11; combat section).
 - `die_counter` (the Super Novice +10 assumes no deaths), Taekwon ranker HP ×3, enchant grade, overrefine
   damage.
-- Exp tables (NEXTBASEEXP/NEXTJOBEXP stay placeholders), exp gain and natural level-up.
 - Natural regen, overweight statuses.
 
 ### GM commands
@@ -200,8 +264,9 @@ API and `@item` are in.
   form, PF-07).
 
 ### Mob drops
-- Call `MapInstance::drop_mob_items` at mob death (combat), with owners from the damage log, in the death
-  tick after the exp packets (PF-15).
+- Call `MapInstance::drop_mob_items` at mob death, with owners from the damage log, in the death tick after
+  the exp packets (PF-15). Mob death exists since combat, which deliberately drops nothing; the function is
+  still uncalled.
 - The renewal drop level penalty and player drop-rate bonuses (`roll_mob_drops` has the slot for them).
 - MvpDrops and MVP rewards (imported, unused).
 
@@ -245,13 +310,9 @@ Spec: `specs/mob-spawning/spec.md` (§4 lists these too). Mobs are visible, name
   (catalog `mechanics/mobs.md` §1.5).
 
 ### mob_db stats
-- Real `Hp`, `Level`, `WalkSpeed` and `is_boss` (1 for `Class: Boss`, 2 for `Mvp`). Today every mob has
-  1 HP, level 1 (or the line's level) and speed 150, and `is_boss` is always 0. **The data is imported now**
-  (`crates/ro-db/data/mob/mob_db.yml`, `ro_db::MobDb` with `boss_type()`, shared with every
-  `MapInstance` via `set_registries`); only the wiring into `spawn_mobs` / `MobInfo` is left.
 - `GroupId` / `Title` in `0x0adf`. Today both are empty.
 
-### Death and respawn (need combat)
+### Death and respawn (death exists since combat; these don't)
 - **Respawn delays:** `delay2` counts only for `boss_monster` lines (`mob_spawn_variance: 1`); a given
   `delay1 < 1000` becomes 5000; rate scaling; a 1000 ms floor. `SpawnGroup.line` keeps the raw values.
 - **On (re)spawn while players are present:** `0x09fe` to `AREA_WOS`, then the name to `AREA`.
@@ -310,7 +371,8 @@ Spec: `specs/exit-game/spec.md` (§3 lists these too).
 
 ### Needs combat
 - **Refusing the exit (`0x018b` result 1, "wait 10 seconds").** rAthena refuses while the character is
-  hidden or cloaked, or within `prevent_logout` (10 s) of attacking, casting or taking damage. The same
+  hidden or cloaked, or within `prevent_logout` (10 s) of attacking, casting or taking damage. Player
+  attacks exist now (combat); casting and taking damage don't yet. The same
   check refuses `CZ_RESTART`.
 - **Delayed removal.** A client that closes inside the `prevent_logout` window stays in the world for 10 s.
 

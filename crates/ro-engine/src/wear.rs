@@ -5,7 +5,7 @@
 use ro_core::{ServerEvent, UnitLooks};
 use ro_db::{ItemData, ItemType};
 
-use crate::engine::MapInstance;
+use crate::engine::{MapInstance, VANISH_DIED};
 use crate::entity::Entity;
 use crate::equipment::{
     ammo_fits_weapon, check_equip, equip_view, is_ranged, prepare_equip, Refusal, Wearer,
@@ -23,8 +23,6 @@ const LOOK_SHOES: u8 = 9;
 const LOOK_ROBE: u8 = 12;
 /// rAthena `dead_sit` value of a dead unit.
 const DEAD: u8 = 1;
-/// `ZC_NOTIFY_VANISH` type for a death.
-const VANISH_DIED: u8 = 1;
 /// The `0x099a` index for a take-off whose slot is out of range (server index 0).
 const OUT_OF_RANGE_INDEX: u16 = 2;
 /// The ammo icon (`EFST_CLIENT_ONLY_EQUIP_ARROW`), started on every ammo equip and map entry and
@@ -71,7 +69,7 @@ impl MapInstance {
     }
 
     /// The dead gate of equip and take-off: `0x0080` type 1 to the area including self, no ack.
-    fn refuse_dead(&mut self, e: Entity) {
+    pub(crate) fn refuse_dead(&mut self, e: Entity) {
         let gid = self.gid(e);
         self.emit_aoi(
             e,

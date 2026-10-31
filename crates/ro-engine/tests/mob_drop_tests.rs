@@ -9,6 +9,7 @@ use ro_core::{
 };
 use ro_db::{
     CellType, ItemData, ItemDb, ItemType, MapGrid, MobClass, MobData, MobDb, MobDrop, MobId,
+    MobMode, MobModes,
 };
 use ro_engine::{roll_mob_drops, MapInstance, MobDropRequest};
 
@@ -54,13 +55,14 @@ fn mob(id: u32, class: MobClass, mvp: bool, drops: Vec<MobDrop>) -> MobData {
         id: MobId(id),
         aegis_name: format!("MOB_{id}"),
         name: format!("Mob {id}"),
-        level: 1,
-        hp: 1,
-        walk_speed: 150,
         class,
-        mvp,
+        modes: if mvp {
+            [MobMode::Mvp].into_iter().collect()
+        } else {
+            MobModes::default()
+        },
         drops,
-        mvp_drops: vec![],
+        ..MobData::default()
     }
 }
 

@@ -49,7 +49,6 @@ const SP_MAXAP: u16 = 233;
 const SP_UPOW: u16 = 247;
 /// The next-point cost of a stat at 1.
 const STAT_COST_AT_1: u8 = 2;
-const NEXT_BASE_EXP: i64 = 99_999_999;
 
 fn char_id(n: u32) -> CharId {
     CharId(150_000 + n)
@@ -608,18 +607,19 @@ fn reset_pushes(trait_cost: u8, status_point: i32, trait_point: i32) -> Vec<Serv
 }
 
 /// The base tail of `@blvl` and a capped `@job`.
-fn base_tail(status_point: i32, trait_point: i32, level: i32) -> Vec<ServerEvent> {
+fn base_tail(job: u16, status_point: i32, trait_point: i32, level: u16) -> Vec<ServerEvent> {
+    let next = i64::try_from(jobs().next_base_exp(job, level)).expect("fits");
     vec![
         p(SP_STATUSPOINT, status_point),
         p(SP_TRAITPOINT, trait_point),
-        p(SP_BASELEVEL, level),
+        p(SP_BASELEVEL, level.into()),
         ServerEvent::LongLongParameterChanged {
             var_id: SP_BASEEXP,
             value: 0,
         },
         ServerEvent::LongLongParameterChanged {
             var_id: SP_NEXTBASEEXP,
-            value: NEXT_BASE_EXP,
+            value: next,
         },
     ]
 }
@@ -697,7 +697,7 @@ fn eng_trait_03_level_down_resets_on_the_trait_pool() {
         .position(|e| matches!(e, ServerEvent::ParameterChanged { var_id: SP_SP, .. }))
         .expect("SP in the diff");
     assert!(sp < max_ap, "{out:?}");
-    let tail = base_tail(3980, 7, 195);
+    let tail = base_tail(DRAGON_KNIGHT, 3980, 7, 195);
     assert_eq!(out[out.len() - tail.len()..], tail[..], "{out:?}");
     let status = world.status();
     assert_eq!(
@@ -864,7 +864,7 @@ fn eng_trait_06_double_reset_from_b195() {
     ));
     let out = world.command("job 7");
     let mut want = reset_pushes(0, 1273, 0);
-    want.extend(base_tail(1273, 0, 99));
+    want.extend(base_tail(KNIGHT, 1273, 0, 99));
     want.push(p(SP_STATUSPOINT, 1221));
     want.extend(stat_costs(STAT_COST_AT_1));
     want.extend(reset_pushes(0, 1273, 0));

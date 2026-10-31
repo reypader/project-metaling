@@ -20,6 +20,7 @@ use tracing::warn;
 use crate::engine::{MapInstance, SP_MAXWEIGHT};
 use crate::entity::Entity;
 use crate::equipment::{GearStatus, WeaponGear};
+use crate::experience::LivePush;
 use crate::job::{class_flags, job_mapid, super_novice_bonus};
 use crate::status::{
     allocated_stats, battle_stats, battle_traits, couple, status_diff, Persisted, SP_AP, SP_HP,
@@ -71,10 +72,12 @@ pub(crate) enum FollowUp {
     LevelGearCheck,
     /// Save the character now (`@job`; rAthena `chrif_save`).
     Save,
+    /// Pushes whose values are read when sent: queued tails and exp (combat spec §2.9).
+    Live(LivePush),
 }
 
 /// The formulas' weapon class of a weapon type (spec §2.2; plan M2 mapping notes).
-fn weapon_class(weapon_type: WeaponType) -> WeaponClass {
+pub(crate) fn weapon_class(weapon_type: WeaponType) -> WeaponClass {
     use WeaponType::*;
     match weapon_type {
         Fist => WeaponClass::Fist,
@@ -437,6 +440,11 @@ impl MapInstance {
             // The unequips mark the player dirty again: the diff they cause waits for the next
             // tick's pass.
             FollowUp::LevelGearCheck => self.unequip_over_level(e),
+            FollowUp::Live(push) => {
+                for event in self.live_push_events(e, push) {
+                    self.emit_self(e, event);
+                }
+            }
             FollowUp::Save => {
                 if let Some(info) = self.world.players.get(e) {
                     self.save_requests.push(info.char_id);

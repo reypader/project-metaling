@@ -327,8 +327,15 @@ fn mech_03_aspd() {
         (22, 29, 540),
     ] {
         let case = novice(26, 165, 36, all(1), primary(1, agi - 1, 1, 1, dex - 1, 1));
-        assert_eq!(case.run().amotion, amotion, "AGI {agi} DEX {dex}");
+        let status = case.run();
+        assert_eq!(status.amotion, amotion, "AGI {agi} DEX {dex}");
+        // Spec combat §2.1: adelay = 2 × amotion; dmotion = clamp(800 − 4 × AGI, 400, 800)
+        // (combat_sequence_1.txt: dmg_speed 796 at AGI 1, 792 at AGI 2).
+        assert_eq!(status.adelay, 2 * amotion, "AGI {agi}");
+        assert_eq!(status.dmotion, 800 - 4 * agi, "AGI {agi}");
     }
+    let fast = novice(26, 165, 36, all(1), primary(1, 150, 1, 1, 1, 1)).run();
+    assert_eq!(fast.dmotion, 400, "dmotion floor");
 
     // Swordman B48 J11 (lines 1953-2097): Blade 460, + Guard 510, Guard alone 440, bare 390.
     let blade = weapon(WeaponClass::Melee, 53, 47);

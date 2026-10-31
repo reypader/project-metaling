@@ -9,8 +9,11 @@
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 
-use ro_db::MapGrid;
+use ro_db::{CellType, MapGrid};
+use ro_mechanics::check_distance_client;
 use smallvec::SmallVec;
+
+use crate::spatial::AREA_SIZE;
 
 /// rAthena `MAX_WALKPATH`.
 pub(crate) const MAX_WALKPATH: usize = 32;
@@ -241,10 +244,78 @@ impl AStarScratchBuffer {
     }
 }
 
+/// rAthena `CELL_CHKWALL` for line of sight: a cell that is neither walkable nor shootable
+/// (raw 1 and unknown types; a cliff is shootable). The last row and column and cells outside
+/// the map are never walls.
+fn is_los_wall(grid: &MapGrid, x: i32, y: i32) -> bool {
+    let (w, h) = (i32::from(grid.width()), i32::from(grid.height()));
+    if x < 0 || y < 0 || x >= w - 1 || y >= h - 1 {
+        return false;
+    }
+    // In bounds, so the casts are exact.
+    match grid.cell_type(x as u16, y as u16) {
+        Some(CellType::Wall | CellType::Unknown(_)) => true,
+        Some(_) | None => false,
+    }
+}
+
+/// rAthena `path_search_long` with `CELL_CHKWALL` (catalog `movement_aoi.md` §5): steps from the
+/// left endpoint towards the right one and fails on a wall strictly between the two cells.
+pub(crate) fn line_of_sight(grid: &MapGrid, from: (u16, u16), to: (u16, u16)) -> bool {
+    let (mut x0, mut y0) = (i32::from(from.0), i32::from(from.1));
+    let (mut x1, mut y1) = (i32::from(to.0), i32::from(to.1));
+    if x1 < x0 {
+        std::mem::swap(&mut x0, &mut x1);
+        std::mem::swap(&mut y0, &mut y1);
+    }
+    let (dx, dy) = (x1 - x0, y1 - y0);
+    let weight = if dx > dy.abs() { dx } else { dy.abs() };
+    let (mut wx, mut wy) = (0, 0);
+    while (x0, y0) != (x1, y1) {
+        wx += dx;
+        wy += dy;
+        if wx >= weight {
+            wx -= weight;
+            x0 += 1;
+        }
+        if wy >= weight {
+            wy -= weight;
+            y0 += 1;
+        } else if wy < 0 {
+            wy += weight;
+            y0 -= 1;
+        }
+        if (x0, y0) != (x1, y1) && is_los_wall(grid, x0, y0) {
+            return false;
+        }
+    }
+    true
+}
+
+/// rAthena `battle_check_range` for a player attacker on one map: the client distance, then
+/// adjacent cells pass without a wall test, more than `AREA_SIZE` cells never pass, and anything
+/// between needs line of sight.
+pub(crate) fn battle_check_range(
+    grid: &MapGrid,
+    from: (u16, u16),
+    to: (u16, u16),
+    range: u16,
+) -> bool {
+    let dx = i32::from(to.0) - i32::from(from.0);
+    let dy = i32::from(to.1) - i32::from(from.1);
+    if !check_distance_client(dx, dy, range) {
+        return false;
+    }
+    match dx.abs().max(dy.abs()) {
+        d if d < 2 => true,
+        d if d > i32::from(AREA_SIZE) => false,
+        _ => line_of_sight(grid, from, to),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ro_db::CellType;
 
     fn grid(w: u16, h: u16, walls: &[(u16, u16)]) -> MapGrid {
         let mut g = MapGrid::all_walkable(w, h).expect("valid dims");
@@ -259,6 +330,75 @@ mod tests {
         scratch
             .find_path(g, s, d, MAX_WALKPATH)
             .map(<[(u16, u16)]>::to_vec)
+    }
+
+    /// MECH-CMB-05: `path_search_long` with `CELL_CHKWALL` (catalog `movement_aoi.md` §5).
+    #[test]
+    fn mech_cmb_05_line_of_sight() {
+        // A wall between blocks; a cliff doesn't.
+        let mut g = grid(30, 30, &[(12, 10)]);
+        assert!(!line_of_sight(&g, (10, 10), (15, 10)));
+        assert!(!line_of_sight(&g, (15, 10), (10, 10)));
+        assert!(g.set(12, 10, CellType::Cliff));
+        assert!(line_of_sight(&g, (10, 10), (15, 10)));
+        // An unknown raw type is a wall.
+        assert!(g.set(12, 10, CellType::Unknown(9)));
+        assert!(!line_of_sight(&g, (10, 10), (15, 10)));
+
+        // End cells are never tested.
+        let g = grid(30, 30, &[(10, 10), (15, 10)]);
+        assert!(line_of_sight(&g, (10, 10), (15, 10)));
+
+        // Asymmetric rounding, dx = 4: dy = +1 steps y on the last step (tested cells on the
+        // source row); dy = -1 steps y on the first (tested cells on the destination row).
+        let g = grid(30, 30, &[(12, 11)]);
+        assert!(line_of_sight(&g, (10, 10), (14, 11)), "(12,11) not visited");
+        let g = grid(30, 30, &[(12, 10)]);
+        assert!(!line_of_sight(&g, (10, 10), (14, 11)), "(12,10) visited");
+        let g = grid(30, 30, &[(12, 9)]);
+        assert!(!line_of_sight(&g, (10, 10), (14, 9)), "(12,9) visited");
+        let g = grid(30, 30, &[(12, 10)]);
+        assert!(line_of_sight(&g, (10, 10), (14, 9)), "(12,10) not visited");
+        // The scan always runs from the left endpoint, so swapping the ends of the dy = -1 line
+        // gives the same answer as the original.
+        let g = grid(30, 30, &[(12, 9)]);
+        assert!(!line_of_sight(&g, (14, 9), (10, 10)));
+
+        // Vertical line, and the map's last row/column and outside cells are not walls.
+        let g = grid(30, 30, &[(5, 12)]);
+        assert!(!line_of_sight(&g, (5, 10), (5, 14)));
+        let g = grid(10, 10, &[(9, 5), (5, 9)]);
+        assert!(line_of_sight(&g, (9, 2), (9, 8)));
+        assert!(line_of_sight(&g, (2, 9), (8, 9)));
+    }
+
+    /// MECH-CMB-05: `battle_check_range` for a player: client distance, adjacent without a wall
+    /// test, beyond 14 never, else line of sight.
+    #[test]
+    fn mech_cmb_05_battle_check_range() {
+        let open = grid(60, 60, &[]);
+        assert!(battle_check_range(&open, (20, 20), (21, 20), 1));
+        assert!(battle_check_range(&open, (20, 20), (21, 21), 1));
+        assert!(
+            battle_check_range(&open, (20, 20), (22, 20), 1),
+            "straight +1"
+        );
+        assert!(!battle_check_range(&open, (20, 20), (22, 21), 1));
+        assert!(battle_check_range(&open, (20, 20), (20, 20), 0));
+        let g = grid(60, 60, &[(21, 20)]);
+        // Adjacent cells skip the wall test (here the wall is the target's neighbour).
+        assert!(battle_check_range(&g, (20, 20), (21, 21), 1));
+        assert!(
+            !battle_check_range(&g, (20, 20), (22, 20), 1),
+            "wall between"
+        );
+        assert!(
+            !battle_check_range(&g, (20, 20), (25, 20), 5),
+            "wall blocks"
+        );
+        assert!(battle_check_range(&g, (20, 21), (25, 21), 5));
+        assert!(!battle_check_range(&g, (20, 30), (35, 30), 20), "beyond 14");
+        assert!(battle_check_range(&g, (20, 30), (34, 30), 20));
     }
 
     #[test]

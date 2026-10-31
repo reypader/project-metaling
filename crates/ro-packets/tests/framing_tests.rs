@@ -215,6 +215,7 @@ fn test_outgoing_serializers_and_redecoding() {
                     speed: 150,
                     dead_sit: 0,
                     clevel: 10,
+                    is_boss: 0,
                     effect_state: 0,
                     looks: UnitLooks::default(),
                 },

@@ -13,18 +13,18 @@ use ro_mechanics::{next_stat_cost, ClassFlags};
 
 use crate::engine::MapInstance;
 use crate::entity::Entity;
+use crate::experience::LivePush;
 use crate::job::{class_flags, job_for_sex, job_mapid, JOBL_2, JOBL_FOURTH, JOBL_THIRD};
 use crate::stats::FollowUp;
 use crate::status::trait_costs;
 use crate::status::{
-    param, PLACEHOLDER_NEXT_BASE_EXP, PLACEHOLDER_NEXT_JOB_EXP, SP_BASEEXP, SP_BASELEVEL,
-    SP_JOBEXP, SP_JOBLEVEL, SP_NEXTBASEEXP, SP_NEXTJOBEXP, SP_SKILLPOINT, SP_STATUSPOINT,
-    SP_TRAITPOINT, SP_USTR,
+    exp, param, SP_BASEEXP, SP_BASELEVEL, SP_JOBEXP, SP_JOBLEVEL, SP_NEXTBASEEXP, SP_NEXTJOBEXP,
+    SP_SKILLPOINT, SP_STATUSPOINT, SP_TRAITPOINT, SP_USTR,
 };
 
 /// `0x019b` effects.
-const EFFECT_BASE_LEVEL_UP: u32 = 0;
-const EFFECT_JOB_LEVEL_UP: u32 = 1;
+pub(crate) const EFFECT_BASE_LEVEL_UP: u32 = 0;
+pub(crate) const EFFECT_JOB_LEVEL_UP: u32 = 1;
 /// `0x01d7` look types `@job` sends for the new class.
 const LOOK_BASE: u8 = 0;
 const LOOK_HAIR: u8 = 1;
@@ -92,7 +92,7 @@ fn gets_transcendent_points(class: &ClassFlags) -> bool {
 
 /// Status or skill points, capped at what their `smallint` columns hold so a save is never
 /// refused (Finish review m-2).
-fn points(value: u32) -> u16 {
+pub(crate) fn points(value: u32) -> u16 {
     const MAX_POINTS: u16 = i16::MAX.unsigned_abs();
     u16::try_from(value).map_or(MAX_POINTS, |v| v.min(MAX_POINTS))
 }
@@ -129,7 +129,7 @@ impl MapInstance {
 
     /// The `statpoint` gains from `low` to `high`, step by step (a step never takes points
     /// away).
-    fn status_points_between(&self, low: u16, high: u16) -> u32 {
+    pub(crate) fn status_points_between(&self, low: u16, high: u16) -> u32 {
         (low..high)
             .map(|l| {
                 self.jobs
@@ -140,7 +140,7 @@ impl MapInstance {
     }
 
     /// The `TraitPoints` gain from `low` to `high`. The table is cumulative and never falls.
-    fn trait_points_between(&self, low: u16, high: u16) -> u32 {
+    pub(crate) fn trait_points_between(&self, low: u16, high: u16) -> u32 {
         self.jobs
             .trait_points(high)
             .saturating_sub(self.jobs.trait_points(low))
@@ -158,7 +158,6 @@ impl MapInstance {
         info.status.base_exp = 0;
         info.status.status_point = points(u32::from(info.status.status_point) + gain);
         info.status.trait_point = points(u32::from(info.status.trait_point) + trait_gain);
-        let (status_point, trait_point) = (info.status.status_point, info.status.trait_point);
         let gid = self.gid(e);
         self.mark_dirty(e, false);
         self.mark_skills_dirty(e);
@@ -172,9 +171,7 @@ impl MapInstance {
         );
         let message = format!("Your base level went up to {to}.");
         self.queue_followup(e, FollowUp::ToSelf(chat_line(&message)));
-        for event in base_tail(status_point, trait_point, to) {
-            self.queue_followup(e, FollowUp::ToSelf(event));
-        }
+        self.queue_followup(e, FollowUp::Live(LivePush::BaseTail));
         self.queue_followup(e, FollowUp::LevelGearCheck);
     }
 
@@ -201,13 +198,10 @@ impl MapInstance {
             points(u32::from(info.status.trait_point).saturating_sub(remove_trait));
         info.clevel = to;
         info.status.base_exp = 0;
-        let (status_point, trait_point) = (info.status.status_point, info.status.trait_point);
         self.tell(e, &format!("Your base level went down to {to}."));
         self.mark_dirty(e, false);
         self.mark_skills_dirty(e);
-        for event in base_tail(status_point, trait_point, to) {
-            self.queue_followup(e, FollowUp::ToSelf(event));
-        }
+        self.queue_followup(e, FollowUp::Live(LivePush::BaseTail));
     }
 
     /// `@streset` / `@resetstat` (traits spec §2.8): the reset, then the diff, then our message.
@@ -333,29 +327,58 @@ impl MapInstance {
         } else {
             self.tell(e, &format!("Your job level went down to {to}."));
         }
-        self.send_job_level(e, to);
+        self.send_job_level(e);
         self.emit_self(e, param(SP_SKILLPOINT, skill_point.into()));
         self.mark_dirty(e, false);
         self.mark_skills_dirty(e);
     }
 
-    /// `SP_JOBLEVEL`, `SP_JOBEXP` (0) and `SP_NEXTJOBEXP`.
-    fn send_job_level(&mut self, e: Entity, level: u16) {
-        self.emit_self(e, param(SP_JOBLEVEL, level.into()));
-        self.emit_self(
-            e,
+    /// `SP_JOBLEVEL`, `SP_JOBEXP` and `SP_NEXTJOBEXP`.
+    fn send_job_level(&mut self, e: Entity) {
+        for event in self.job_level_tail(e) {
+            self.emit_self(e, event);
+        }
+    }
+
+    /// `SP_JOBLEVEL`, `SP_JOBEXP` and `SP_NEXTJOBEXP` with the player's current values.
+    pub(crate) fn job_level_tail(&self, e: Entity) -> Vec<ServerEvent> {
+        let Some(info) = self.world.players.get(e) else {
+            return Vec::new();
+        };
+        let (level, job_exp) = (info.status.job_level, info.status.job_exp);
+        vec![
+            param(SP_JOBLEVEL, level.into()),
             ServerEvent::LongLongParameterChanged {
                 var_id: SP_JOBEXP,
-                value: 0,
+                value: exp(job_exp),
             },
-        );
-        self.emit_self(
-            e,
             ServerEvent::LongLongParameterChanged {
                 var_id: SP_NEXTJOBEXP,
-                value: PLACEHOLDER_NEXT_JOB_EXP,
+                value: exp(self.jobs.next_job_exp(info.job, level)),
             },
-        );
+        ]
+    }
+
+    /// The base tail (spec §2.5; combat spec §2.9) with the player's current values: the point
+    /// totals, the level, the exp and the next bar.
+    pub(crate) fn base_tail(&self, e: Entity) -> Vec<ServerEvent> {
+        let Some(info) = self.world.players.get(e) else {
+            return Vec::new();
+        };
+        let status = &info.status;
+        vec![
+            param(SP_STATUSPOINT, status.status_point.into()),
+            param(SP_TRAITPOINT, status.trait_point.into()),
+            param(SP_BASELEVEL, info.clevel.into()),
+            ServerEvent::LongLongParameterChanged {
+                var_id: SP_BASEEXP,
+                value: exp(status.base_exp),
+            },
+            ServerEvent::LongLongParameterChanged {
+                var_id: SP_NEXTBASEEXP,
+                value: exp(self.jobs.next_base_exp(info.job, info.clevel)),
+            },
+        ]
     }
 
     /// The job `@job`'s argument names: an id, else a case-insensitive `JobDb` name.
@@ -407,10 +430,7 @@ impl MapInstance {
             info.clevel = max_base;
             info.status.base_exp = 0;
             self.reset_stats(e);
-            let (status_point, trait_point) = self.world.players.get(e).map_or((0, 0), |info| {
-                (info.status.status_point, info.status.trait_point)
-            });
-            for event in base_tail(status_point, trait_point, max_base) {
+            for event in self.base_tail(e) {
                 self.emit_self(e, event);
             }
         }
@@ -457,7 +477,7 @@ impl MapInstance {
             (true, false) => self.take_job_trait_points(e, &new_class),
             _ => {}
         }
-        self.send_job_level(e, 1);
+        self.send_job_level(e);
 
         // Step 6: gear the new class can't wear comes off. Step 7: the class looks.
         self.unequip_unusable(e);
@@ -547,23 +567,6 @@ impl MapInstance {
             self.emit_self(e, event);
         }
     }
-}
-
-/// The base tail of `@blvl` and a capped `@job` (spec §2.5): the running point totals.
-fn base_tail(status_point: u16, trait_point: u16, level: u16) -> [ServerEvent; 5] {
-    [
-        param(SP_STATUSPOINT, status_point.into()),
-        param(SP_TRAITPOINT, trait_point.into()),
-        param(SP_BASELEVEL, level.into()),
-        ServerEvent::LongLongParameterChanged {
-            var_id: SP_BASEEXP,
-            value: 0,
-        },
-        ServerEvent::LongLongParameterChanged {
-            var_id: SP_NEXTBASEEXP,
-            value: PLACEHOLDER_NEXT_BASE_EXP,
-        },
-    ]
 }
 
 #[cfg(test)]

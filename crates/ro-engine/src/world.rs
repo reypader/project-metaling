@@ -9,10 +9,12 @@ use ro_core::{
 use ro_db::{MobId, NpcState};
 use rustc_hash::FxHashMap;
 
+use crate::combat::{AttackState, DamageLog};
 use crate::entity::{Entity, EntityAllocator};
 use crate::equipment::GearStatus;
 use crate::error::EngineError;
 use crate::inventory::PlayerInventory;
+use crate::mob::MobStats;
 use crate::movement::WalkingPath;
 use crate::skills::SkillSet;
 use crate::sparse_set::SparseSet;
@@ -90,18 +92,27 @@ pub(crate) struct NpcInfo {
     pub(crate) state: NpcState,
 }
 
-/// Identity and state of a mob entity. Stats are placeholders until mob_db stats exist.
+/// Identity and state of a mob entity, with HP and level from mob_db.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) struct MobInfo {
     pub(crate) gid: u32,
     pub(crate) mob_id: MobId,
     /// Shared with the spawn group.
     pub(crate) name: Arc<str>,
+    /// The spawn-line level, else mob_db `Level`.
     pub(crate) level: u16,
     pub(crate) hp: u32,
     pub(crate) max_hp: u32,
+    /// rAthena `bosstype` for the entry packets.
+    pub(crate) is_boss: u8,
     /// Index into `MapInstance::spawn_groups`: the line this mob respawns from.
     pub(crate) spawn_group: u32,
+    /// Battle status and defender view, shared per mob id.
+    pub(crate) stats: Arc<MobStats>,
+    /// Who hit it and for how much (spec §2.7).
+    pub(crate) damage_log: DamageLog,
+    /// Killed: out of the grid, waiting for its death vanish (spec §2.8).
+    pub(crate) dying: bool,
 }
 
 /// An item lying on the floor (rAthena `flooritem_data`).
@@ -165,6 +176,9 @@ pub(crate) struct World {
     pub(crate) floor_items: SparseSet<FloorItem>,
     pub(crate) warps: SparseSet<WarpTrigger>,
     pub(crate) walking_paths: SparseSet<WalkingPath>,
+    /// Attack state of every unit that has attacked (kept after the attack stops: the delays
+    /// outlive it).
+    pub(crate) attacks: SparseSet<AttackState>,
     // Network id lookups.
     char_to_entity: FxHashMap<CharId, Entity>,
     gid_to_entity: FxHashMap<u32, Entity>,
@@ -190,6 +204,7 @@ impl World {
             floor_items: SparseSet::new(),
             warps: SparseSet::new(),
             walking_paths: SparseSet::new(),
+            attacks: SparseSet::new(),
             char_to_entity: FxHashMap::default(),
             gid_to_entity: FxHashMap::default(),
             grid: SpatialGrid8x8::new(width, height),
@@ -391,6 +406,7 @@ impl World {
         self.inventories.remove(entity);
         self.warps.remove(entity);
         self.walking_paths.remove(entity);
+        self.attacks.remove(entity);
         self.pending_move[i] = None;
         self.kinds[i] = EntityKind::Free;
         self.gids[i] = 0;

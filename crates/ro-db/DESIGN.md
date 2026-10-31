@@ -44,16 +44,17 @@ Like the spawn lists, the registries are imported offline into our own schema; `
 
 1. **Offline import (dev-only, MIT, clean-room):**
    * `tools/item-import` reads `db/re/item_db_{usable,equip,etc}.yml`, applies rAthena's load rules (`DelayConsume` -> `Usable`, equipment without `Locations` -> `Etc`, field-by-field merge of repeated ids, `AliasName` -> `ViewId`) and keeps only the fields Metaling uses, including the equipment fields with rAthena's type-clearing, level-clamping and forced-gender rules and the `Jobs` / `Classes` bitsets. It writes `ITEM_DATA` v2 to `data/item/item_{usable,equip,etc}.yml`, in id order.
-   * `tools/mob-import` reads `db/re/mob_db.yml` and resolves `Drops` / `MvpDrops` AegisNames to item ids through `ItemDb` (loaded from `data/item/`, so run item-import first). It writes `MOB_DATA` v1 to `data/mob/mob_db.yml`.
+   * `tools/mob-import` reads `db/re/mob_db.yml` and resolves `Drops` / `MvpDrops` AegisNames to item ids through `ItemDb` (loaded from `data/item/`, so run item-import first). It also keeps the combat fields (`specs/combat/spec.md` §0.1): exp, `Attack`, `Defense`, `Resistance`, the six stats, `AttackRange`, size, race, element and level, the three motions (`AttackDelay` raised to at least `AttackMotion`, as at rAthena's load), and the `Ai` + `Modes` bits as one `MobModes` set. It writes `MOB_DATA` v2 to `data/mob/mob_db.yml`.
    * Schemas: `specs/items/spec.md` §1; the v2 equipment keys in `specs/equipment/spec.md` §1.
 2. **Runtime (`ItemDb::load_dir`, `MobDb::load_dir`):** the map-server loads both once at startup from `ITEM_DATA_DIR` / `MOB_DATA_DIR` and shares them through `Arc` with every map instance. A missing file in a configured directory is an error; an unset directory gives an empty registry.
 3. **Lookups:** `ItemDb` by id, by case-insensitive AegisName (unique) and by case-insensitive Name (lowest id wins); `MobDb` by id. Both use `std` hash maps over an id-sorted `Vec`.
 4. **Validation:** duplicate ids, duplicate AegisNames, unknown keys, bad headers; for mobs also the id ranges, at most 10 drops / 3 MVP drops, and rates in `1..=10000`.
 
-`Level`, `Hp` and `WalkSpeed` are imported but not wired into spawned mobs yet (`DEFERRED.md`). Scripts, prices, mob combat stats and `db/import` overlays are not imported.
+Spawned mobs take `Level`, `Hp`, `WalkSpeed` and `is_boss` from `MobDb`, and the engine derives their battle status from the combat fields. Scripts, prices and `db/import` overlays are not imported.
 
 **Job and refine data** (`specs/stats/spec.md` §1.1–§1.2) follow the same pattern:
 
+* **Exp tables.** `tools/job-import` also reads `db/re/job_exp.yml` and writes `data/job/job_exp.yml` (`JOB_EXP_DATA`): groups of job ids that share a base or job table (catalog `db/exp_tables.md` "Lookup rule"). `JobDb::next_base_exp(job, level)` / `next_job_exp` return the row for `level`: 0 at level 0 or for a missing row (which stops the level-up loop), and `NEXT_BASE_EXP_AT_MAX` (99 999 999) / `NEXT_JOB_EXP_AT_MAX` (999 999 999) at or above the max level or with no table. `JobDb::load_dir` needs all three job files.
 * **Job data.** `tools/job-import` merges `db/re/job_{stats,aspd,exp,basepoints}.yml` per job id (later keys override earlier ones). It fills missing HP/SP table slots with the fallback formula, so the file always has dense `BaseHp`/`BaseSp` lists of `MaxBaseLevel` entries. Fallback-filled Super Novice line slots get rAthena's extra HP (+2000 from base 99, another +2000 from 150), which capture 3 confirmed for Hyper Novice. `BaseAp` is filled the same way from rAthena's AP fallback (200 from base 200 for every job, so 3rd classes at B200 get 200 too; catalog `mechanics/trait_stats.md` §2) and omitted when all zero. It writes `JOB_DATA` v2 to `data/job/job_db.yml`, and `statpoint.yml` as `STATPOINT_DATA` v2 with the cumulative `TraitPoints` (omitted when 0).
 * **`JobDb::load_dir`** reads both files from `JOB_DATA_DIR`. It accumulates the sparse `BonusStats` into one row per job level, and lays the ASPD bases out as an array indexed by `WeaponType` (unlisted = 200). Lookups are by id and by case-insensitive `Name`. Every per-level accessor clamps its level to the table. `Job::base_ap` reads 0 when the job has no AP table. `JobDb::trait_points` reads 0 below the first level that grants trait points, and the last row past the table (like `status_points`). Validation covers table lengths (an empty AP table is allowed), bonus levels within `MaxJobLevel`, unique ids and names, and status-point rows 1, 2, 3, ...
 * **Refine data.** `tools/refine-import` keeps `Bonus`/`RandomBonus` per `(Armor|Weapon, item level)` as lists of 20 (cumulative per refine level, as in rAthena). It writes `REFINE_DATA` v1 to `data/refine/refine.yml`.
@@ -138,9 +139,13 @@ pub struct ItemData {
 pub struct MobData {
     pub id: MobId,
     pub aegis_name: String, pub name: String,
-    pub level: u16, pub hp: u32, pub walk_speed: u16,   // imported, not wired yet
+    pub level: u16, pub hp: u32, pub walk_speed: u16,
     pub class: MobClass,              // Normal | Boss | Guardian | Battlefield | Event
-    pub mvp: bool,                    // boss_type(): 2 MVP, 1 Boss, else 0
+    pub base_exp: u64, pub job_exp: u64,
+    pub attack: u16, pub defense: i16, pub resistance: u16,   // and str..luk, attack_range (u16)
+    pub size: MobSize, pub race: MobRace, pub element: Element, pub element_level: u8,
+    pub attack_delay: u16, pub attack_motion: u16, pub damage_motion: u16,
+    pub modes: MobModes,              // Ai + Modes bits; has_mode(), is_mvp() (boss_type(): 2 MVP, 1 Boss)
     pub drops: Vec<MobDrop>,          // <= 10, db order; MobDrop { item: ItemId, rate: u16 }
     pub mvp_drops: Vec<MobDrop>,      // <= 3
 }

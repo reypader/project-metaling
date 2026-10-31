@@ -7,7 +7,7 @@ use ro_core::{CharId, FloorItemAppearance, InventoryItem, MapPosition, ServerEve
 use ro_db::ItemData;
 use tracing::{debug, warn};
 
-use crate::engine::{MapInstance, SP_WEIGHT};
+use crate::engine::{MapInstance, SP_WEIGHT, VANISH_DIED};
 use crate::entity::Entity;
 use crate::inventory::{slot_of, wire_index};
 use crate::world::{EntityKind, FloorItem};
@@ -24,8 +24,6 @@ const PICKUP_RANGE: u16 = 2;
 const PICKUP_REFUSED: u8 = 6;
 /// rAthena `dead_sit` value of a dead unit.
 const DEAD: u8 = 1;
-/// `ZC_NOTIFY_VANISH` type for a death.
-const VANISH_DIED: u8 = 1;
 /// `ZC_NOTIFY_ACT` type: pick up.
 const ACT_PICKUP_ITEM: u8 = 1;
 /// `map_cell_free` rejects cells closer than this to the edge.
@@ -202,6 +200,8 @@ impl MapInstance {
             // The failure ack went out; the item stays.
             return;
         }
+        // rAthena `pc_takeitem` stops the attack, silently.
+        self.stop_attack(e);
         let source_id = self.gid(e);
         self.emit_aoi(
             e,

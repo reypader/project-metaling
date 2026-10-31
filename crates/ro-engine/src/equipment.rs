@@ -291,6 +291,8 @@ pub(crate) struct WeaponGear {
     /// Item ATK and MATK.
     pub(crate) atk: u32,
     pub(crate) matk: u32,
+    /// Weapon level (the damage variance).
+    pub(crate) level: u8,
     /// Refine table entry (1/100 units); zero unrefined or not `Refineable`.
     pub(crate) refine: RefineBonus,
 }
@@ -342,6 +344,7 @@ impl Gear<'_> {
             weapon_type: data.weapon_type,
             atk: data.attack,
             matk: data.magic_attack,
+            level: data.weapon_level,
             refine: item_refine(data, item, RefineGroup::Weapon, data.weapon_level, refine),
         })
     }

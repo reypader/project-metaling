@@ -266,6 +266,8 @@ impl MapInstance {
             },
         );
         self.world.hide(e);
+        // rAthena `pc_setpos` stops the attack; leaving the map clears the step action.
+        self.drop_attack(e);
         let i = e.index();
         self.world.walking_paths.remove(e);
         self.world.pending_move[i] = None;

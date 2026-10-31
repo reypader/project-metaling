@@ -10,6 +10,10 @@ use super::char::{
     encode_hc_delete_char3_reserved, encode_hc_notify_zonesvr, encode_hc_refuse_enter,
     encode_hc_refuse_makechar,
 };
+use super::combat::{
+    encode_zc_ack_touseskill, encode_zc_attack_failure_for_distance,
+    encode_zc_delete_item_from_body, encode_zc_hp_info, encode_zc_notify_exp2,
+};
 use super::equip::{
     encode_zc_ack_takeoff_equip_all, encode_zc_action_failure, encode_zc_equip_arrow,
     encode_zc_msg, encode_zc_req_takeoff_equip_ack, encode_zc_req_wear_equip_ack,
@@ -24,10 +28,11 @@ use super::login::{encode_ac_accept_login, encode_ac_refuse_login, CharServerEnt
 use super::map::{
     encode_zc_accept_enter, encode_zc_ack_req_disconnect, encode_zc_ack_reqnameall,
     encode_zc_ack_reqnameall_npc, encode_zc_aid, encode_zc_change_direction,
-    encode_zc_inventory_expansion_info, encode_zc_notify_act, encode_zc_notify_moveentry11,
-    encode_zc_notify_newentry11, encode_zc_notify_playermove, encode_zc_notify_standentry11,
-    encode_zc_notify_time, encode_zc_notify_vanish, encode_zc_npcack_mapmove,
-    encode_zc_par_change_i32, encode_zc_restart_ack, encode_zc_sprite_change2, encode_zc_stopmove,
+    encode_zc_inventory_expansion_info, encode_zc_notify_act, encode_zc_notify_act_modern,
+    encode_zc_notify_moveentry11, encode_zc_notify_newentry11, encode_zc_notify_playermove,
+    encode_zc_notify_standentry11, encode_zc_notify_time, encode_zc_notify_vanish,
+    encode_zc_npcack_mapmove, encode_zc_par_change_i32, encode_zc_restart_ack,
+    encode_zc_sprite_change2, encode_zc_stopmove,
 };
 use super::settings::{
     encode_zc_ach_update_totals, encode_zc_config, encode_zc_config_notify,
@@ -378,6 +383,55 @@ impl EventEncoder for ModernEventEncoder {
             ServerEvent::SpecialEffect { gid, effect } => {
                 Ok(encode_zc_notify_effect(*gid, *effect))
             }
+            ServerEvent::Damage {
+                source_id,
+                target_id,
+                tick,
+                src_speed,
+                dmg_speed,
+                damage,
+                div,
+                damage_type,
+                damage2,
+            } => Ok(encode_zc_notify_act_modern(
+                *source_id,
+                *target_id,
+                *tick,
+                *src_speed,
+                *dmg_speed,
+                *damage,
+                0,
+                *div,
+                *damage_type,
+                *damage2,
+            )),
+            ServerEvent::MobHpBar { gid, hp, max_hp } => Ok(encode_zc_hp_info(*gid, *hp, *max_hp)),
+            ServerEvent::AttackOutOfRange {
+                target_id,
+                target_x,
+                target_y,
+                x,
+                y,
+                range,
+            } => Ok(encode_zc_attack_failure_for_distance(
+                *target_id,
+                (*target_x, *target_y),
+                (*x, *y),
+                *range,
+            )),
+            ServerEvent::ExpGained {
+                gid,
+                var_id,
+                amount,
+            } => Ok(encode_zc_notify_exp2(*gid, *var_id, *amount)),
+            ServerEvent::SkillFail { skill_id, cause } => {
+                Ok(encode_zc_ack_touseskill(*skill_id, *cause))
+            }
+            ServerEvent::ItemDeleted {
+                index,
+                amount,
+                reason,
+            } => Ok(encode_zc_delete_item_from_body(*reason, *index, *amount)),
         }
     }
 }
@@ -462,6 +516,11 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
             | PacketOpcode::ZC_ACTION_FAILURE
             | PacketOpcode::ZC_MSG
             | PacketOpcode::ZC_MSG_STATE_CHANGE3
+            | PacketOpcode::ZC_HP_INFO
+            | PacketOpcode::ZC_ATTACK_FAILURE_FOR_DISTANCE
+            | PacketOpcode::ZC_ACK_TOUSESKILL
+            | PacketOpcode::ZC_NOTIFY_EXP2
+            | PacketOpcode::ZC_DELETE_ITEM_FROM_BODY
     )
 }
 

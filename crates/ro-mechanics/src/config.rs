@@ -87,6 +87,20 @@ pub struct BattleConfig {
     pub quest_skill_learn: bool,
     /// A skill reset also wipes quest skills (with no refund).
     pub quest_skill_reset: bool,
+    // Combat (catalog `mechanics/auto_attack.md` §5.3, §6; `experience.md`).
+    /// A hit's HP change lands at swing + amotion rather than at once.
+    pub delay_battle_damage: bool,
+    /// Ammo spent per normal attack: 0 never; 1 and 2 both spend one.
+    pub arrow_decrement: u32,
+    /// Exp bonus percent per extra attacker of a kill, counting at most
+    /// `exp_bonus_max_attacker` attackers.
+    pub exp_bonus_attacker: u32,
+    pub exp_bonus_max_attacker: u32,
+    /// Damage-log members see the mob's HP bar (`0x0977`).
+    pub monster_hp_bars_info: bool,
+    /// Bit 1 hides skill failures, bit 2 hides the "skill interval" failure (a refused attack
+    /// request) unless `@showdelay`.
+    pub display_skill_fail: u32,
 }
 
 impl Default for BattleConfig {
@@ -145,6 +159,12 @@ impl Default for BattleConfig {
             player_skillup_limit: true,
             quest_skill_learn: false,
             quest_skill_reset: false,
+            delay_battle_damage: true,
+            arrow_decrement: 1,
+            exp_bonus_attacker: 25,
+            exp_bonus_max_attacker: 12,
+            monster_hp_bars_info: true,
+            display_skill_fail: 2,
         }
     }
 }
@@ -202,6 +222,13 @@ impl BattleConfig {
             self.trait_points_job_change,
             0,
             short,
+        )?;
+        range("arrow_decrement", self.arrow_decrement, 0, 2)?;
+        range(
+            "exp_bonus_max_attacker",
+            self.exp_bonus_max_attacker,
+            1,
+            u32::MAX,
         )?;
         Ok(())
     }

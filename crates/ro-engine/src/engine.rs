@@ -15,13 +15,15 @@ use ro_core::{
     ScopedServerEvent, ServerEvent, SessionIntent, Sex, UnitAppearance, UnitLooks, UnitObjectType,
 };
 use ro_db::{
-    CellType, ItemDb, JobDb, MapGrid, MapNpcs, MobDb, NpcKind, NpcSpawn, NpcState, RefineDb,
+    CellType, ItemDb, JobDb, MapGrid, MapNpcs, MobDb, MobId, NpcKind, NpcSpawn, NpcState, RefineDb,
     SkillDb, SkillTreeDb,
 };
 use ro_mechanics::BattleConfig;
+use rustc_hash::FxHashMap;
 use smallvec::SmallVec;
 use tracing::{debug, warn};
 
+use crate::combat::CombatTimers;
 use crate::entity::Entity;
 use crate::error::EngineError;
 use crate::floor_item::MIN_FLOOR_ID;
@@ -34,7 +36,7 @@ use crate::spatial::{step_visibility, AREA_SIZE};
 /// `clif_parse_ActionRequest_sub`).
 const ACTION_ATTACK: u8 = 0;
 const ACTION_ATTACK_REPEAT: u8 = 7;
-use crate::mob::SpawnGroup;
+use crate::mob::{MobStats, SpawnGroup};
 use crate::rng::SplitMix64;
 use crate::settings::Arrival;
 use crate::warp::{CellBits, MapTransfer, PlaySnapshot};
@@ -68,6 +70,7 @@ const OPTION_CLOAK: i32 = 0x4;
 
 /// `ZC_NOTIFY_VANISH` types.
 pub(crate) const VANISH_OUT_OF_SIGHT: u8 = 0;
+pub(crate) const VANISH_DIED: u8 = 1;
 const VANISH_LOGGED_OUT: u8 = 2;
 
 type PathCells = SmallVec<[(u16, u16); MAX_WALKPATH]>;
@@ -109,6 +112,10 @@ pub struct MapInstance {
     pub(crate) floor_expiry: BinaryHeap<Reverse<(u64, u32)>>,
     /// Next floor item id to try (cycles through `[2, 2_000_000)`).
     pub(crate) next_floor_id: u32,
+    /// Swings, step actions and delayed hits, soonest first (spec `specs/combat/spec.md` §2.4).
+    pub(crate) combat_timers: CombatTimers,
+    /// Battle values per mob id, computed at the first spawn of that id.
+    pub(crate) mob_stats: FxHashMap<MobId, Arc<MobStats>>,
     /// Global registries shared by every instance (empty until `set_registries`).
     pub(crate) items: Arc<ItemDb>,
     pub(crate) mob_db: Arc<MobDb>,
@@ -187,6 +194,8 @@ impl MapInstance {
             spawn_groups: Vec::new(),
             floor_expiry: BinaryHeap::new(),
             next_floor_id: MIN_FLOOR_ID,
+            combat_timers: CombatTimers::default(),
+            mob_stats: FxHashMap::default(),
             items: Arc::new(ItemDb::default()),
             mob_db: Arc::new(MobDb::default()),
             jobs: Arc::new(JobDb::default()),
@@ -209,6 +218,8 @@ impl MapInstance {
         self.skills = registries.skills;
         self.skill_tree = registries.skill_tree;
         self.battle = registries.battle;
+        // Built from the old mob db and battle config.
+        self.mob_stats.clear();
     }
 
     /// Whether the character currently has a walk in progress.
@@ -265,6 +276,7 @@ impl MapInstance {
                     speed: self.world.speed[i],
                     dead_sit: 0,
                     clevel: mob.level,
+                    is_boss: mob.is_boss,
                     effect_state: 0,
                     looks: UnitLooks::default(),
                 });
@@ -283,6 +295,7 @@ impl MapInstance {
                 speed: self.world.speed[i],
                 dead_sit: 0,
                 clevel: 0,
+                is_boss: 0,
                 effect_state: npc.effect_state,
                 looks: UnitLooks::default(),
             });
@@ -301,6 +314,7 @@ impl MapInstance {
             speed: self.world.speed[i],
             dead_sit: self.world.dead_sit[i],
             clevel: info.clevel,
+            is_boss: 0,
             effect_state: 0,
             looks: info.looks,
         })
@@ -319,13 +333,28 @@ impl MapInstance {
         radius: u16,
         exclude_self: bool,
     ) -> Vec<CharId> {
-        let (x, y) = self.cell(e);
+        let exclude = exclude_self.then_some(e);
+        self.recipients_around(self.cell(e), radius, exclude)
+    }
+
+    /// Characters within Chebyshev `radius` of a cell (visible only), sorted. For an area whose
+    /// unit has left the grid, like a dead mob's.
+    pub(crate) fn recipients_at(&mut self, cell: (u16, u16), radius: u16) -> Vec<CharId> {
+        self.recipients_around(cell, radius, None)
+    }
+
+    fn recipients_around(
+        &mut self,
+        (x, y): (u16, u16),
+        radius: u16,
+        exclude: Option<Entity>,
+    ) -> Vec<CharId> {
         self.world
             .grid
             .query_radius(x, y, radius, &self.world.positions, &mut self.recipients);
         let mut chars = Vec::with_capacity(self.recipients.len());
         for &r in &self.recipients {
-            if exclude_self && r == e {
+            if exclude == Some(r) {
                 continue;
             }
             if let Some(info) = self.world.players.get(r) {
@@ -347,6 +376,11 @@ impl MapInstance {
 
     pub(crate) fn emit_aoi(&mut self, e: Entity, exclude_self: bool, event: ServerEvent) {
         let chars = self.aoi_recipients(e, exclude_self);
+        self.emit_to(chars, event);
+    }
+
+    /// `event` to `chars` (sorted); nothing when there are none.
+    pub(crate) fn emit_to(&mut self, chars: Vec<CharId>, event: ServerEvent) {
         if !chars.is_empty() {
             self.events.push(ScopedServerEvent::new(
                 BroadcastScope::Characters(chars),
@@ -434,16 +468,24 @@ impl MapInstance {
                     },
                 );
             }
-            ClientIntent::RequestAction { action_type, .. } => {
-                if !matches!(action_type, ACTION_ATTACK | ACTION_ATTACK_REPEAT) {
+            ClientIntent::RequestAction {
+                target_id,
+                action_type,
+            } => match action_type {
+                ACTION_ATTACK | ACTION_ATTACK_REPEAT => {
+                    self.request_attack(e, target_id, action_type == ACTION_ATTACK_REPEAT, now_ms)
+                }
+                other => {
                     self.stop_walking(e);
+                    self.drop_attack(e);
+                    match other {
+                        ACTION_SIT => self.sit(e),
+                        ACTION_STAND => self.stand(e),
+                        other => debug!(map = %self.map_name, action = other, "ignoring action"),
+                    }
                 }
-                match action_type {
-                    ACTION_SIT => self.sit(e),
-                    ACTION_STAND => self.stand(e),
-                    other => debug!(map = %self.map_name, action = other, "ignoring action"),
-                }
-            }
+            },
+            ClientIntent::CancelAttack => self.cancel_attack(e),
             ClientIntent::RequestEntityName { entity_id } => self.name_request(e, entity_id),
             ClientIntent::PickUpItem { floor_id } => self.pick_up(e, floor_id, now_ms),
             ClientIntent::Chat { text } => self.chat(e, &text),
@@ -596,7 +638,7 @@ impl MapInstance {
     }
 
     /// Stops a walk in place: `ZC_STOPMOVE` to the AoI including the unit.
-    fn stop_walking(&mut self, e: Entity) {
+    pub(crate) fn stop_walking(&mut self, e: Entity) {
         if self.world.walking_paths.remove(e).is_some() {
             let (x, y) = self.cell(e);
             let gid = self.gid(e);
@@ -713,37 +755,45 @@ impl MapInstance {
     fn plan_moves(&mut self, now_ms: u64) {
         let mut moves = mem::take(&mut self.moves);
         for e in moves.drain(..) {
-            if !self.world.entities.is_alive(e) {
-                continue;
-            }
-            let Some(dest) = self.world.pending_move[e.index()].take() else {
-                continue;
-            };
-            if self.world.dead_sit[e.index()] == SITTING {
-                continue;
-            }
-            let from = self.cell(e);
-            // rAthena checks `max_walk_path` after a successful search; same outcome.
-            let Some(cells) = self.find_path(from, dest, MAX_WALK_PATH_CLICK) else {
-                continue;
-            };
-            if let Some(path) = self.world.walking_paths.get_mut(e) {
-                // Redirect: validated now, applied when the in-flight step ends.
-                path.pending_target = Some(dest);
-            } else if cells.is_empty() {
-                self.emit_self(
-                    e,
-                    ServerEvent::PlayerMoved {
-                        start: from,
-                        dest: from,
-                        move_start_tick: now_ms as u32,
-                    },
-                );
-            } else {
-                self.start_walk(e, &cells, from, now_ms);
+            if self.world.entities.is_alive(e) {
+                self.plan_move(e, now_ms);
             }
         }
         self.moves = moves;
+    }
+
+    /// Turns the entity's pending move request (if any) into a walk or a redirect. Normally run
+    /// by `plan_moves`; an attack request runs it early so a move queued before it in the same
+    /// tick happens first, as in rAthena.
+    pub(crate) fn plan_move(&mut self, e: Entity, now_ms: u64) {
+        let Some(dest) = self.world.pending_move[e.index()].take() else {
+            return;
+        };
+        if self.world.dead_sit[e.index()] == SITTING {
+            return;
+        }
+        let from = self.cell(e);
+        // rAthena checks `max_walk_path` after a successful search; same outcome.
+        let Some(cells) = self.find_path(from, dest, MAX_WALK_PATH_CLICK) else {
+            return;
+        };
+        // rAthena `unit_walktoxy` ends the attack (and its step action).
+        self.drop_attack(e);
+        if let Some(path) = self.world.walking_paths.get_mut(e) {
+            // Redirect: validated now, applied when the in-flight step ends.
+            path.pending_target = Some(dest);
+        } else if cells.is_empty() {
+            self.emit_self(
+                e,
+                ServerEvent::PlayerMoved {
+                    start: from,
+                    dest: from,
+                    move_start_tick: now_ms as u32,
+                },
+            );
+        } else {
+            self.start_walk(e, &cells, from, now_ms);
+        }
     }
 
     fn advance_walkers(&mut self, now_ms: u64) {
@@ -761,7 +811,10 @@ impl MapInstance {
                     self.world.walking_paths.remove(e);
                     break;
                 };
+                let old = self.cell(e);
                 self.step(e, next, step_end);
+                let diagonal = old.0 != next.0 && old.1 != next.1;
+                self.arm_step_action(e, diagonal, step_end);
                 if self.world.players.contains(e) {
                     // A warp clears the walk (or despawns `e`), which ends this loop.
                     self.touch_warps(e);
@@ -1084,6 +1137,8 @@ impl MapInstance {
         self.expire_floor_items(now_ms);
         // Steps that ended before `now` complete first, so this tick's clicks see them.
         self.advance_walkers(now_ms);
+        // Swings, step actions and hits due by now, at their own due times.
+        self.run_combat_timers(now_ms);
         let mut batch = mem::take(&mut self.intents);
         for intent in batch.drain(..) {
             self.handle_intent(intent, now_ms);

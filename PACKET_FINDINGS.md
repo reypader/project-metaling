@@ -21,7 +21,6 @@ Open questions and disagreements about wire packets for `PACKETVER = 20260219`. 
 | [PF-10](#pf-10) | Status window packets (`0x00bd`, `0x0141`, `0x00be`, `0x00bc`) | Struct only | Open |
 | [PF-12](#pf-12) | Where HP, SP, zeny and levels come from at login | Behaviour | Open |
 | [PF-13](#pf-13) | Attack request and swing packet order | Behaviour | Mostly confirmed (sit/stand target_id, canact re-click open) |
-| [PF-14](#pf-14) | Attack range: straight line reaches one cell further | Behaviour | Open (no clean sample in combat_sequence_1) |
 | [PF-16](#pf-16) | ASPD value on the wire is amotion | Behaviour | Open |
 | [PF-17](#pf-17) | `0x02c1` coloured message layout | Minor | Open |
 | [PF-19](#pf-19) | Server rules not settled by source (overweight attack, DEF clamps, regen weight rate) | Server rule | Open |
@@ -31,6 +30,7 @@ Open questions and disagreements about wire packets for `PACKETVER = 20260219`. 
 
 | Id | Topic | Resolved | By |
 | :--- | :--- | :--- | :--- |
+| [PF-14](#pf-14) | Attack range: straight line reaches one cell further | 2026-10-30 | `combat_sequence_2.txt`; [mechanics/auto_attack.md](reference/catalog/mechanics/auto_attack.md#86-capture-2-combat_sequence_2txt-pf-14-gun-ammo-showdelay) §8.6 |
 | [PF-15](#pf-15) | Mob kill timing: `0x0977` hp 0, exp, drops in the kill tick; vanish type 1 at about +250 ms | 2026-10-30 | `item_drop_pickup_sequence.txt`, `combat_sequence_1.txt`; [mechanics/combat.md](reference/catalog/mechanics/combat.md) §7, [mechanics/mobs.md](reference/catalog/mechanics/mobs.md#31-packet-order-for-one-normal-kill-single-player-loot-no-party-at-default-conf) |
 | [PF-09](#pf-09) | Exp and level-up packets and their order (natural base/job/double level-up, no-level-up kill, two-attacker share) | 2026-10-30 | `combat_sequence_1.txt`; [mechanics/experience.md#capture-combat_sequence_1txt](reference/catalog/mechanics/experience.md#capture-combat_sequence_1txt); residual items listed in PF-09 |
 | [PF-11](#pf-11) | Equip packets (`0x0998`, `0x0999`, `0x099a`, take-off, unequip-all, ammo, looks) | 2026-10-25 | `equip_sequence.txt`, `equip_sequence_2.txt`; [packets/equipment.md#captured-equip-sequences](reference/catalog/packets/equipment.md#captured-equip-sequences) |
@@ -239,9 +239,9 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 
 **Attack range reaches one cell further in a straight line**
 
-- **Status:** Open (capture gave no clean sample).
+- **Status:** Resolved 2026-10-30 by [`combat_sequence_2.txt`](reference/catalog/captures/combat_sequence_2.txt): with the Knife (range 1) and A standing still, a Pupa 2 cells straight was hit with no move (#774, #899). For (2,1), (2,2) and 3 straight the **client** walked to an adjacent cell first and sent the request during that walk, so it applies the same test. The source rule holds.
 - **Source:** player range check is `floor(sqrt(dx² + dy²) - 0.1) <= range` (`check_distance_client`, `path.cpp:485-523`). With range 1, a target 2 cells away in a straight line is in range but `(2,1)` is not. The "one cell further" reading comes from a source comment. Line of sight is checked at distance 2 and above. Mobs use square (Chebyshev) distance instead.
-- **Capture** ([`combat_sequence_1.txt`](reference/catalog/captures/combat_sequence_1.txt)): range 1 targets at (3,2), (3,1) and (1,3) cells got `0x0139` with range field 1 (949, 1249, 1257), as the formula predicts. The "straight 2" and "(2,1)" attempts (1378, 1424) were requested while A was walking, so they were step actions (`range + 1`), and the swings came when A had stopped 1 cell from the Poring (1380-1382, 1429-1432). A swing at about (0,2) (940) hit a walking target, also `range + 1`. So the plain rule is untested.
+- **Capture** ([`combat_sequence_1.txt`](reference/catalog/captures/combat_sequence_1.txt)): range 1 targets at (3,2), (3,1) and (1,3) cells got `0x0139` with range field 1 (949, 1249, 1257), as the formula predicts. The "straight 2" and "(2,1)" attempts (1378, 1424) were requested while A was walking, so they were step actions (`range + 1`), and the swings came when A had stopped 1 cell from the Poring (1380-1382, 1429-1432). A swing at about (0,2) (940) hit a walking target, also `range + 1`. So the plain rule is untested. The Archer phase (proxy #3400-#4620, range 5 then 11, stationary Pupa and Marine Sphere) was checked too on 2026-10-30. It has no sample with Chebyshev distance above the range or with `d = range + 1`, and no `0x0139`. The closest is A at (−5,−2) from a Pupa at range 5 (#3479, swings), which is in range by both rules. The user notes that the client seems to debounce fast clicks; that matters only for the `canact` re-request, not for this.
 - **Resolve by:** attack with A standing still (not walking, no queued step action) and the target standing at exactly (2,0), then (2,1). Use a stationary target (a Training Dummy or a mob that cannot move) so the mob does not close in.
 - **Catalog:** [mechanics/auto_attack.md#84-pf-14-range-1-at-2-cells](reference/catalog/mechanics/auto_attack.md#84-pf-14-range-1-at-2-cells).
 
@@ -351,6 +351,7 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 - **[`equip_sequence_4.txt`](reference/catalog/captures/equip_sequence_4.txt)** (proxy at `f5a2c29`): no `[STALLED FRAME DROPPED]` and no misframes across skill-ups after `@jlevel 99`, deaths and job changes. The only unknown frames are the char-server's AccountId echo (`0x8480`/`0x8481`) and the PIN tail.
 - **Item rows fixed** in milestone M1 of [`specs/items/plan.md`](specs/items/plan.md) (2026-10-23): `0x0add` 24, `0x00a1` 6, `0x009d` 19, `0x0b41` 70, `0x0b08` dynamic, `0x0b0b` 4, `0x01d7` 15, `0x00af` 6.
 - **Equipment rows fixed** in milestone M1 of [`specs/equipment/plan.md`](specs/equipment/plan.md) (2026-10-25): `0x0999` 11, `0x099a` 9, `0x0bae` 3, `0x013c` 4, `0x013b` 4, `0x0291` 4, `0x07e6` 8, `0x09cd` 8, pinned by `pkt_eq_01_table_lengths`.
+- **Combat row fixed** in milestone M3 of [`specs/combat/plan.md`](specs/combat/plan.md) (2026-10-30): `0x0110` `ZC_ACK_TOUSESKILL` 14 (skill u16, btype i32, itemId u32, flag u8, cause u8), which [`combat_sequence_2.txt`](reference/catalog/captures/combat_sequence_2.txt) logged as a 1-byte frame. Pinned by `pkt_cmb_01_lengths_and_implemented`.
 - **Resolve by:** for each opcode, take the length from the capture (the gap to the next real opcode) and check it against the catalog and source. Then add it to `table.rs` with a test. Re-run the proxy over a capture and expect no `UNKNOWN` frames apart from the AccountId echo.
 
 ## Capture plan

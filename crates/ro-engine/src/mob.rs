@@ -2,25 +2,21 @@
 //! `specs/mob-spawning/spec.md` ENG-MOB-01..03; catalog `mechanics/mobs.md` §1.1, §1.3, §1.4).
 //!
 //! Placement follows rAthena's defaults: `randomize_center_cell: yes`, `force_random_spawn: no`,
-//! `no_spawn_on_player: 0`. Mobs have placeholder stats until mob_db stats are loaded.
+//! `no_spawn_on_player: 0`. HP, level, speed and the boss type come from mob_db (spec
+//! `specs/combat/spec.md` §2.1); a mob id missing from it spawns with rAthena's struct defaults.
 
 use std::sync::Arc;
 
 use ro_core::MapPosition;
-use ro_db::{MapGrid, MapMobSpawns, MobId, MobSpawn};
+use ro_db::{MapGrid, MapMobSpawns, MobData, MobId, MobMode, MobSpawn};
+use ro_mechanics::{calc_mob_status, BattleConfig, DefenderView, MobStatusInputs, Primary, Status};
 use tracing::warn;
 
+use crate::combat::DamageLog;
 use crate::engine::MapInstance;
 use crate::error::EngineError;
 use crate::rng::SplitMix64;
 use crate::world::MobInfo;
-
-/// HP and max HP of every mob until mob_db stats exist.
-pub(crate) const PLACEHOLDER_MOB_HP: u32 = 1;
-/// Level of a mob whose spawn line gives none, until mob_db stats exist.
-pub(crate) const PLACEHOLDER_MOB_LEVEL: u16 = 1;
-/// rAthena's default mob `WalkSpeed`.
-pub(crate) const DEFAULT_MOB_SPEED: u16 = 150;
 
 /// rAthena `map_edge_size`: a map-wide search stays this far from the edges.
 const MAP_EDGE: i32 = 15;
@@ -29,6 +25,53 @@ const EDGE_GAP: i32 = 5;
 /// Tries around the center, then map-wide tries when the center isn't walkable.
 const NEAR_TRIES: u32 = 8;
 const MAP_WIDE_TRIES: u32 = 50;
+
+/// A mob type's battle values, computed once per mob id (spec `specs/combat/spec.md` §2.1) and
+/// shared by every mob of that id on the map.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct MobStats {
+    pub(crate) status: Status,
+    /// What a swing at this mob reads (with the `IgnoreMelee`/`IgnoreRanged` modes).
+    pub(crate) defender: DefenderView,
+    /// The db `BaseExp` / `JobExp` a kill shares out.
+    pub(crate) base_exp: u64,
+    pub(crate) job_exp: u64,
+}
+
+impl MobStats {
+    pub(crate) fn new(data: &MobData, config: &BattleConfig) -> Self {
+        let inputs = MobStatusInputs {
+            level: data.level,
+            stats: Primary {
+                str: i32::from(data.str),
+                agi: i32::from(data.agi),
+                vit: i32::from(data.vit),
+                int: i32::from(data.int),
+                dex: i32::from(data.dex),
+                luk: i32::from(data.luk),
+            },
+            defense: i32::from(data.defense),
+            resistance: i32::from(data.resistance),
+            max_hp: data.hp,
+            attack_motion: data.attack_motion,
+            attack_delay: data.attack_delay,
+            damage_motion: data.damage_motion,
+            attack_range: data.attack_range,
+        };
+        let status = calc_mob_status(&inputs, config);
+        let defender = DefenderView {
+            ignore_melee: data.has_mode(MobMode::IgnoreMelee),
+            ignore_ranged: data.has_mode(MobMode::IgnoreRanged),
+            ..DefenderView::from_status(&status)
+        };
+        Self {
+            status,
+            defender,
+            base_exp: data.base_exp,
+            job_exp: data.job_exp,
+        }
+    }
+}
 
 /// A spawn line with the rectangle rules applied for this map. Mobs keep its index so respawn
 /// can reuse it.
@@ -200,6 +243,14 @@ impl MapInstance {
                 warn!(map = %self.map_name, "too many mob spawn groups; rest skipped");
                 break;
             };
+            if self.mob_db.get(line.mob_id).is_none() {
+                warn!(
+                    map = %self.map_name,
+                    mob = line.mob_id.0,
+                    source = %line.source,
+                    "mob id not in mob_db; spawning with default stats"
+                );
+            }
             self.spawn_groups
                 .push(SpawnGroup::new(line, &self.walkability));
             let mut unplaced = 0;
@@ -248,17 +299,38 @@ impl MapInstance {
         while self.world.entity_by_gid(self.next_npc_id).is_some() {
             self.next_npc_id = self.next_npc_id.wrapping_add(1);
         }
+        let fallback;
+        let data = match self.mob_db.get(group.line.mob_id) {
+            Some(data) => data,
+            None => {
+                fallback = MobData::default();
+                &fallback
+            }
+        };
+        let mob_id = group.line.mob_id;
+        let stats = match self.mob_stats.get(&mob_id) {
+            Some(stats) => Arc::clone(stats),
+            None => {
+                let stats = Arc::new(MobStats::new(data, &self.battle));
+                self.mob_stats.insert(mob_id, Arc::clone(&stats));
+                stats
+            }
+        };
         let info = MobInfo {
             gid: self.next_npc_id,
-            mob_id: group.line.mob_id,
+            mob_id,
             name: Arc::clone(&group.name),
-            level: group.line.level.unwrap_or(PLACEHOLDER_MOB_LEVEL),
-            hp: PLACEHOLDER_MOB_HP,
-            max_hp: PLACEHOLDER_MOB_HP,
+            level: group.line.level.unwrap_or(data.level),
+            hp: data.hp,
+            max_hp: data.hp,
+            is_boss: data.boss_type(),
             spawn_group: index,
+            stats,
+            damage_log: DamageLog::default(),
+            dying: false,
         };
         let pos = MapPosition { x, y, dir: 0 };
-        let e = self.world.spawn_mob(info, pos, DEFAULT_MOB_SPEED)?;
+        let e = self.world.spawn_mob(info, pos, data.walk_speed)?;
         self.next_npc_id = self.next_npc_id.wrapping_add(1);
         self.world.show(e);
         Ok(true)

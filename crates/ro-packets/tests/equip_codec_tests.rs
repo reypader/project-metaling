@@ -254,6 +254,7 @@ fn wearer(looks: UnitLooks) -> UnitAppearance {
         speed: 150,
         dead_sit: 0,
         clevel: 10,
+        is_boss: 0,
         effect_state: 0,
         looks,
     }

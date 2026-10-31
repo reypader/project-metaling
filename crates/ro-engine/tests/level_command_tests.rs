@@ -69,9 +69,14 @@ const LOOK_SHOES: u8 = 9;
 const LOOK_ROBE: u8 = 12;
 const LOOK_BODY2: u8 = 13;
 
-/// Next exp until exp tables exist (spec §2.5).
-const NEXT_BASE_EXP: i64 = 99_999_999;
-const NEXT_JOB_EXP: i64 = 999_999_999;
+/// The exp bars the pushes carry, from the shipped tables (combat spec ENG-CMB-10).
+fn next_base(job: u16, level: u16) -> i64 {
+    i64::try_from(jobs().next_base_exp(job, level)).expect("fits")
+}
+
+fn next_job(job: u16, level: u16) -> i64 {
+    i64::try_from(jobs().next_job_exp(job, level)).expect("fits")
+}
 
 fn char_id(n: u32) -> CharId {
     CharId(150_000 + n)
@@ -323,13 +328,13 @@ fn index_of(events: &[ServerEvent], wanted: &ServerEvent) -> usize {
         .unwrap_or_else(|| panic!("{wanted:?} not in {events:?}"))
 }
 
-fn base_tail(status_point: u32, level: u16) -> Vec<ServerEvent> {
+fn base_tail(job: u16, status_point: u32, level: u16) -> Vec<ServerEvent> {
     vec![
         p(SP_STATUSPOINT, status_point as i32),
         p(SP_TRAITPOINT, 0),
         p(SP_BASELEVEL, level.into()),
         long(SP_BASEEXP, 0),
-        long(SP_NEXTBASEEXP, NEXT_BASE_EXP),
+        long(SP_NEXTBASEEXP, next_base(job, level)),
     ]
 }
 
@@ -349,7 +354,7 @@ fn eng_stat_06_base_level_up_order() {
     let mut w = World::new(NOVICE, 1, full(CharacterStatus::default()), Vec::new());
     let (a, b) = w.command("blvl 10");
     let points = jobs().status_points(11);
-    assert_eq!(a[a.len() - 5..], base_tail(points, 11)[..], "{a:?}");
+    assert_eq!(a[a.len() - 5..], base_tail(NOVICE, points, 11)[..], "{a:?}");
     let max_hp = index_of(&a, &p(SP_MAXHP, 90));
     index_of(&a, &p(SP_MAXSP, 21));
     let heal = index_of(&a, &p(SP_HP, 90));
@@ -390,7 +395,10 @@ fn eng_stat_06_elvmax_unequip_comes_last() {
         ],
         "{a:?}"
     );
-    assert_eq!(a[a.len() - 3], long(SP_NEXTBASEEXP, NEXT_BASE_EXP));
+    assert_eq!(
+        a[a.len() - 3],
+        long(SP_NEXTBASEEXP, next_base(HYPER_NOVICE, 100))
+    );
     assert_eq!(b, vec![effect(0), look(LOOK_HEAD_TOP, 0, 0)]);
 
     let (a, b) = w.command("blvl 1");
@@ -431,7 +439,7 @@ fn eng_stat_06_base_level_down_order() {
     let hp = i32::try_from(max_hp).expect("small") * 101 / 100;
     assert_eq!(a[1], p(SP_HP, hp), "clamp push first: {a:?}");
     let remove = jobs().status_points(11) - jobs().status_points(6);
-    let tail = base_tail(jobs().status_points(11) - remove, 6);
+    let tail = base_tail(NOVICE, jobs().status_points(11) - remove, 6);
     assert_eq!(a[a.len() - 5..], tail[..], "{a:?}");
     assert!(!a.contains(&effect(0)));
     assert!(b.is_empty(), "nothing for the observer: {b:?}");
@@ -498,7 +506,7 @@ fn eng_stat_06_refusals() {
     let (a, _) = w.command("blevel 500");
     assert_eq!(
         a[a.len() - 5..],
-        base_tail(jobs().status_points(99), 99)[..]
+        base_tail(NOVICE, jobs().status_points(99), 99)[..]
     );
     let (a, _) = w.command("lvup 1");
     assert_eq!(a.len(), 1, "already at the Novice max: {a:?}");
@@ -518,7 +526,7 @@ fn eng_stat_07_job_level_up_and_down() {
         [
             p(SP_JOBLEVEL, 10),
             long(SP_JOBEXP, 0),
-            long(SP_NEXTJOBEXP, NEXT_JOB_EXP),
+            long(SP_NEXTJOBEXP, next_job(NOVICE, 10)),
             p(SP_SKILLPOINT, 9),
         ],
         "{a:?}"
@@ -544,7 +552,7 @@ fn eng_stat_07_job_level_up_and_down() {
         [
             p(SP_JOBLEVEL, 8),
             long(SP_JOBEXP, 0),
-            long(SP_NEXTJOBEXP, NEXT_JOB_EXP),
+            long(SP_NEXTJOBEXP, next_job(NOVICE, 8)),
             p(SP_SKILLPOINT, 7),
         ],
         "{a:?}"
@@ -577,7 +585,7 @@ fn eng_stat_08_job_change_order() {
         [
             p(SP_JOBLEVEL, 1),
             long(SP_JOBEXP, 0),
-            long(SP_NEXTJOBEXP, NEXT_JOB_EXP),
+            long(SP_NEXTJOBEXP, next_job(SWORDMAN, 1)),
         ]
     );
     let class_looks = vec![
@@ -659,7 +667,7 @@ fn eng_stat_08_job_change_caps_the_base_level() {
     assert_eq!(a[..reset.len()], reset[..], "{a:?}");
     assert_eq!(
         a[reset.len()..reset.len() + 5],
-        base_tail(points, 99)[..],
+        base_tail(SWORDMAN, points, 99)[..],
         "{a:?}"
     );
     let progress = w.progress();

@@ -12,7 +12,7 @@ use std::collections::{BTreeMap, BTreeSet, HashMap};
 use std::path::Path;
 
 use anyhow::Context;
-use ro_db::{JobBonusEntry, JobData, JobDb, StatPointRow, WeaponType};
+use ro_db::{ExpGroup, ExpKind, JobBonusEntry, JobData, JobDb, StatPointRow, WeaponType};
 use serde::Deserialize;
 
 pub use job_ids::JOB_IDS;
@@ -52,6 +52,8 @@ pub struct Converted {
     /// Sorted by id.
     pub jobs: Vec<JobData>,
     pub points: Vec<StatPointRow>,
+    /// Jobs sharing one exp table, Base groups first, each ordered by its first job id.
+    pub exp: Vec<ExpGroup>,
     pub report: Report,
 }
 
@@ -108,10 +110,25 @@ pub fn convert(job_sources: &[(&str, &str)], statpoint: &str) -> anyhow::Result<
             }
         }
     }
+    let mut tables: BTreeMap<(ExpKind, Vec<u64>), Vec<u16>> = BTreeMap::new();
     let jobs = jobs
         .into_iter()
-        .map(|(id, acc)| acc.finish(id, &mut report))
+        .map(|(id, acc)| {
+            let (job, base_exp, job_exp) = acc.finish(id, &mut report);
+            for (kind, table) in [(ExpKind::Base, base_exp), (ExpKind::Job, job_exp)] {
+                if !table.is_empty() {
+                    tables.entry((kind, table)).or_default().push(id);
+                }
+            }
+            job
+        })
         .collect();
+    // Job ids arrive in order, so each group's ids are sorted.
+    let mut exp: Vec<ExpGroup> = tables
+        .into_iter()
+        .map(|((kind, exp), jobs)| ExpGroup { kind, jobs, exp })
+        .collect();
+    exp.sort_by_key(|group| (group.kind, group.jobs.first().copied()));
     let points = parse_body::<RawStatPoint>(statpoint)
         .context(STATPOINT_SOURCE)?
         .into_iter()
@@ -124,6 +141,7 @@ pub fn convert(job_sources: &[(&str, &str)], statpoint: &str) -> anyhow::Result<
     Ok(Converted {
         jobs,
         points,
+        exp,
         report,
     })
 }
@@ -139,7 +157,8 @@ pub fn render_jobs(jobs: &[JobData], rathena_commit: &str) -> anyhow::Result<Str
             "merged per job id (later files override earlier keys), reduced to max weight, max \
              levels, job-level stat bonuses, ASPD bases and base HP/SP/AP; missing HP/SP/AP \
              table slots filled with rAthena's fallback formulas (with its Super Novice line HP \
-             adjustment), all-zero AP tables omitted; exp tables and outfits dropped"
+             adjustment), all-zero AP tables omitted; exp tables moved to job_exp.yml; outfits \
+             dropped"
         )
     ))
 }
@@ -157,7 +176,21 @@ pub fn render_status_points(rows: &[StatPointRow], rathena_commit: &str) -> anyh
     ))
 }
 
-/// Writes `job_db.yml` and `statpoint.yml` into `out_dir` (created if missing).
+/// `job_exp.yml`: license/attribution comment, then the YAML.
+pub fn render_exp_tables(groups: &[ExpGroup], rathena_commit: &str) -> anyhow::Result<String> {
+    let yaml = JobDb::exp_tables_to_yaml(groups)?;
+    Ok(format!(
+        "{}{yaml}",
+        attribution(
+            rathena_commit,
+            JOB_SOURCES[2],
+            "merged per job id, rows above the job's max level dropped, missing rows set to 0, \
+             job names replaced by ids, jobs with identical tables grouped"
+        )
+    ))
+}
+
+/// Writes `job_db.yml`, `statpoint.yml` and `job_exp.yml` into `out_dir` (created if missing).
 pub fn write_output(
     out_dir: &Path,
     converted: &Converted,
@@ -172,6 +205,10 @@ pub fn write_output(
         (
             ro_db::STATPOINT_DATA_FILE,
             render_status_points(&converted.points, rathena_commit)?,
+        ),
+        (
+            ro_db::JOB_EXP_DATA_FILE,
+            render_exp_tables(&converted.exp, rathena_commit)?,
         ),
     ] {
         let path = out_dir.join(file);
@@ -204,7 +241,14 @@ fn parse_body<T: serde::de::DeserializeOwned>(text: &str) -> anyhow::Result<Vec<
     Ok(file.body)
 }
 
-/// One entry of any job file. Keys this importer doesn't use (exp tables, outfits) are ignored.
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "PascalCase")]
+struct RawExp {
+    level: u16,
+    exp: u64,
+}
+
+/// One entry of any job file. Keys this importer doesn't use (outfits) are ignored.
 #[derive(Debug, Default, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 struct RawEntry {
@@ -225,6 +269,8 @@ struct RawEntry {
     base_hp: Option<Vec<RawHp>>,
     base_sp: Option<Vec<RawSp>>,
     base_ap: Option<Vec<RawAp>>,
+    base_exp: Option<Vec<RawExp>>,
+    job_exp: Option<Vec<RawExp>>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -276,6 +322,8 @@ struct Acc {
     hp: BTreeMap<u16, u32>,
     sp: BTreeMap<u16, u32>,
     ap: BTreeMap<u16, u32>,
+    base_exp: BTreeMap<u16, u64>,
+    job_exp: BTreeMap<u16, u64>,
 }
 
 impl Acc {
@@ -325,9 +373,25 @@ impl Acc {
         for row in entry.base_ap.iter().flatten() {
             self.ap.insert(row.level, row.ap);
         }
+        for (rows, table) in [
+            (&entry.base_exp, &mut self.base_exp),
+            (&entry.job_exp, &mut self.job_exp),
+        ] {
+            for row in rows.iter().flatten() {
+                if row.level == 0 || row.level > MAX_LEVEL {
+                    warnings.push(format!(
+                        "{}: exp row Level {} outside 1..={MAX_LEVEL} ({label}), skipped",
+                        self.name, row.level
+                    ));
+                } else {
+                    table.insert(row.level, row.exp);
+                }
+            }
+        }
     }
 
-    fn finish(self, id: u16, report: &mut Report) -> JobData {
+    /// The job, and its base and job exp tables (empty when the files gave none).
+    fn finish(self, id: u16, report: &mut Report) -> (JobData, Vec<u64>, Vec<u64>) {
         let (max_base_level, max_job_level) = match (self.max_base_level, self.max_job_level) {
             (Some(base), Some(job)) => (base, job),
             (base, job) => {
@@ -380,7 +444,9 @@ impl Acc {
             .into_values()
             .filter(|entry| entry.level <= max_job_level)
             .collect();
-        JobData {
+        let base_exp = exp_table(&self.base_exp, max_base_level);
+        let job_exp = exp_table(&self.job_exp, max_job_level);
+        let job = JobData {
             id,
             name: self.name,
             max_weight: self.max_weight.unwrap_or(DEFAULT_MAX_WEIGHT),
@@ -392,8 +458,21 @@ impl Acc {
             base_hp,
             base_sp,
             base_ap,
-        }
+        };
+        (job, base_exp, job_exp)
     }
+}
+
+/// The dense exp table for levels `1..=` the last row at or below `max`; missing rows are 0
+/// (rAthena skips rows above the max level).
+fn exp_table(rows: &BTreeMap<u16, u64>, max: u16) -> Vec<u64> {
+    let last = rows
+        .range(..=max)
+        .next_back()
+        .map_or(0, |(&level, _)| level);
+    (1..=last)
+        .map(|level| rows.get(&level).copied().unwrap_or(0))
+        .collect()
 }
 
 /// A later key overrides an earlier one; an absent key keeps it.

@@ -74,11 +74,6 @@ const PUSH_DERIVED_PARAMS: [u16; 13] = [
 const STAT_COUNT: u16 = 6;
 const STATS: usize = STAT_COUNT as usize;
 
-/// `pc_nextbaseexp` / `pc_nextjobexp` at max level (`MAX_LEVEL_BASE_EXP`, `MAX_LEVEL_JOB_EXP`).
-/// Sent until exp tables exist: never 0, so the client's exp bar can't divide by 0.
-pub(crate) const PLACEHOLDER_NEXT_BASE_EXP: i64 = 99_999_999;
-pub(crate) const PLACEHOLDER_NEXT_JOB_EXP: i64 = 999_999_999;
-
 /// The value sent for an `SP_*` derived var.
 fn derived_value(status: &Status, var_id: u16) -> i32 {
     match var_id {
@@ -302,7 +297,8 @@ pub(crate) fn trait_costs(traits: &[u16; 6], cap: u16) -> impl Iterator<Item = S
         })
 }
 
-fn exp(value: u64) -> i64 {
+/// An exp value as the 64-bit signed wire field (rAthena `client_exp`).
+pub(crate) fn exp(value: u64) -> i64 {
     i64::try_from(value).unwrap_or(i64::MAX)
 }
 
@@ -408,19 +404,22 @@ impl MapInstance {
     /// Sends the exp vars, skill points and the status window with its follow-ups, in rAthena
     /// order. Login only.
     pub(crate) fn send_initial_status(&mut self, e: Entity) {
-        let Some((status, derived, job)) = self
+        let Some((status, derived, job, level)) = self
             .world
             .players
             .get(e)
-            .map(|info| (info.status, info.derived, info.job))
+            .map(|info| (info.status, info.derived, info.job, info.clevel))
         else {
             return;
         };
         for (var_id, value) in [
             (SP_BASEEXP, exp(status.base_exp)),
-            (SP_NEXTBASEEXP, PLACEHOLDER_NEXT_BASE_EXP),
+            (SP_NEXTBASEEXP, exp(self.jobs.next_base_exp(job, level))),
             (SP_JOBEXP, exp(status.job_exp)),
-            (SP_NEXTJOBEXP, PLACEHOLDER_NEXT_JOB_EXP),
+            (
+                SP_NEXTJOBEXP,
+                exp(self.jobs.next_job_exp(job, status.job_level)),
+            ),
         ] {
             self.emit_self(e, ServerEvent::LongLongParameterChanged { var_id, value });
         }

@@ -130,8 +130,8 @@ fn put_unit_tail(buf: &mut BytesMut, unit: &UnitAppearance) {
     buf.put_i16_le(0); // font
     buf.put_i32_le(-1); // max_hp: -1 unless a damaged mob
     buf.put_i32_le(-1); // hp
-    buf.put_u8(0); // is_boss
-                   // body (LOOK_BODY2): a player's body sprite is its job (every capture); 0 for the rest.
+    buf.put_u8(unit.is_boss);
+    // body (LOOK_BODY2): a player's body sprite is its job (every capture); 0 for the rest.
     buf.put_u16_le(match unit.object_type {
         UnitObjectType::Pc => unit.job,
         UnitObjectType::Npc | UnitObjectType::MobSpriteNpc | UnitObjectType::Mob => 0,
