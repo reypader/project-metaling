@@ -127,6 +127,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x010e => Some(Fixed(11)), // ZC_SKILLINFO_UPDATE (PF-21; its absence stalled equip_sequence_3)
         0x010f => Some(Dynamic),   // ZC_SKILLINFO_LIST (specs/map-entry-settings)
         0x0110 => Some(Fixed(14)), // ZC_ACK_TOUSESKILL (PF-21; captured in combat_sequence_2)
+        0x0111 => Some(Fixed(39)), // ZC_ADD_SKILL, `@questskill` (PF-21; scripting_1 capture)
         0x0112 => Some(Fixed(4)),
         0x0113 => Some(Fixed(25)),
         0x0114 => Some(Fixed(31)),
@@ -789,6 +790,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x08df => Some(Fixed(50)),
         0x08e0 => Some(Fixed(51)),
         0x08e1 => Some(Fixed(51)),
+        0x08e2 => Some(Fixed(27)), // ZC_NAVIGATION_ACTIVE, map entry (PF-21; scripting_1 capture)
         0x08e3 => Some(Fixed(149)),
         0x08e5 => Some(Fixed(41)),
         0x08e6 => Some(Fixed(4)),
@@ -936,7 +938,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0a24 => Some(Fixed(66)),
         0x0a25 => Some(Fixed(6)),
         0x0a26 => Some(Fixed(7)),
-        0x0a27 => Some(Fixed(8)), // ZC_RECOVERY2, natural regen heal display (PF-21)
+        0x0a27 => Some(Fixed(8)), // ZC_RECOVERY2, heal display with status_heal flag bit 2 (PF-21)
         0x0a2e => Some(Fixed(6)),
         0x0a2f => Some(Fixed(7)),
         0x0a30 => Some(Fixed(106)), // ZC_ACK_REQNAMEALL (struct size)
@@ -1137,7 +1139,14 @@ mod tests {
             Some(PacketLength::Fixed(156))
         );
         // Effects M0 proxy rows (catalog `scripting/skills.md` §5).
-        for (op, len) in [(0x0117, 18), (0x01b9, 6), (0x043d, 8), (0x0a27, 8)] {
+        for (op, len) in [
+            (0x0111, 39),
+            (0x0117, 18),
+            (0x01b9, 6),
+            (0x043d, 8),
+            (0x08e2, 27),
+            (0x0a27, 8),
+        ] {
             assert_eq!(
                 table.packet_length(PacketOpcode(op), ver),
                 Some(PacketLength::Fixed(len)),
