@@ -318,6 +318,7 @@ rAthena sends these by `sizeof(struct)` and the layouts below are what the struc
 **Packets the proxy can't frame (backlog)**
 
 - **Status:** Open, low priority. Revisit when nothing else is queued, or when a capture or a client bug looks odd: a misframed packet hides the packets after it.
+- **2026-10-31 (effects M0, before the skill/potion capture):** added `0x0117` (18), `0x01b9` (6), `0x043d` (8) and `0x0a27` (8), the remaining opcodes casting, potion use and natural regen can emit at 20260219 (catalog `scripting/skills.md` §5). The rest of those flows were already framed.
 - **Why it matters:** `tools/proxy` frames with `crates/ro-packets/src/table.rs`. A missing or wrong length makes the proxy log `UNKNOWN / UNMAPPED` frames and then garbage 1-byte frames (`0x0000`, `0x1e84`, `0x2800`, ...) until the stream re-syncs. The map-server never sends these packets today, so only captures and client-side tests are affected.
 - **Seen in the 2026-10-23 warp captures** ([`reference/catalog/captures/`](reference/catalog/captures/README.md)):
   - Server to client, missing from the table (`0x0b1b`, `0x0b8d`, `0x010f`, `0x02c9`, `0x0acb`, `0x0141`, `0x013a`, `0x0999`, `0x099a`, `0x080e` are now in). Confirmed from rAthena d4b8e7b at 20260219 (`sizeof` of the packed structs; rAthena frames by struct size, not the packetdb) and checked against the frame arithmetic of [`equip_sequence_3.txt`](reference/catalog/captures/equip_sequence_3.txt):

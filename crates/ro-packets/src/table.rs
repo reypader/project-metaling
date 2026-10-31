@@ -132,6 +132,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0114 => Some(Fixed(31)),
         0x0115 => Some(Fixed(35)),
         0x0116 => Some(Fixed(17)),
+        0x0117 => Some(Fixed(18)), // ZC_NOTIFY_GROUNDSKILL (PF-21)
         0x0118 => Some(Fixed(2)),
         0x0119 => Some(Fixed(13)),
         0x011b => Some(Fixed(20)),
@@ -230,6 +231,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x01b6 => Some(Fixed(114)),
         0x01b7 => Some(Fixed(6)),
         0x01b8 => Some(Fixed(3)),
+        0x01b9 => Some(Fixed(6)), // ZC_DISPEL, cast cancel (PF-21)
         0x01ba => Some(Fixed(26)),
         0x01bb => Some(Fixed(26)),
         0x01bc => Some(Fixed(26)),
@@ -639,6 +641,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0437 => Some(Fixed(7)),  // CZ_REQUEST_ACT
         0x0438 => Some(Fixed(10)), // CZ_USE_SKILL_TO_ID
         0x0439 => Some(Fixed(8)),
+        0x043d => Some(Fixed(8)), // ZC_SKILL_POSTDELAY, cooldown (PF-21)
         0x043e => Some(Dynamic),
         0x043f => Some(Fixed(25)),
         0x0441 => Some(Fixed(4)), // ZC_SKILLINFO_DELETE (PF-21)
@@ -933,6 +936,7 @@ pub fn lookup_packet_length(opcode: PacketOpcode, _packetver: u32) -> Option<Pac
         0x0a24 => Some(Fixed(66)),
         0x0a25 => Some(Fixed(6)),
         0x0a26 => Some(Fixed(7)),
+        0x0a27 => Some(Fixed(8)), // ZC_RECOVERY2, natural regen heal display (PF-21)
         0x0a2e => Some(Fixed(6)),
         0x0a2f => Some(Fixed(7)),
         0x0a30 => Some(Fixed(106)), // ZC_ACK_REQNAMEALL (struct size)
@@ -1132,6 +1136,14 @@ mod tests {
             table.packet_length(PacketOpcode(0x0ac5), ver),
             Some(PacketLength::Fixed(156))
         );
+        // Effects M0 proxy rows (catalog `scripting/skills.md` §5).
+        for (op, len) in [(0x0117, 18), (0x01b9, 6), (0x043d, 8), (0x0a27, 8)] {
+            assert_eq!(
+                table.packet_length(PacketOpcode(op), ver),
+                Some(PacketLength::Fixed(len)),
+                "opcode {op:#06x}"
+            );
+        }
         assert_eq!(
             table.packet_length(PacketOpcode(0x0b6f), ver),
             Some(PacketLength::Fixed(177))
