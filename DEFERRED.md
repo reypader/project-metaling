@@ -3,6 +3,55 @@
 Items consciously left out of finished work, with enough context to pick them up later.
 Remove an item when it lands. Newest feature first.
 
+## effects (branch `main`, plan `specs/effects/plan.md`; in progress)
+
+Spec: `specs/effects/spec.md`. Scope of the first slice: the effect/hook interface in `ro-scripting`
+(Rust hooks), casting `NV_FIRSTAID`, `SM_BASH` (no stun), `MC_MAMMONITE` and `AL_HEAL` (heal only), potion
+use (`itemheal`/`percentheal`), zeny plumbing, and a feature-gated Lua spike. Everything below was left
+out on purpose (settled with the user, 2026-10-31).
+
+### Needs the status-effect system (next plan)
+- Buff and debuff skills: Blessing, Increase AGI, Provoke, Angelus, Bash's stun (lv > 5 with Fatal Blow).
+- Item effects that start or end statuses: cures (`sc_end`), stat food, ASPD/ATK potions, speed and exp
+  boosts, `bonus_script` timed bonuses. EFST icons `0x0983`/`0x0196` for buffs.
+- The `Effect::ApplyStatus` building block (reserved in the interface, not declared).
+
+### Skill kinds and casting features
+- Magic damage: MATK/MDEF pipeline, Fire Bolt and the other bolts, Heal's holy damage on Undead.
+- Cast-bar skills in the client: the cast-time pipeline is engine-tested only, since none of the four skills
+  has a cast time. Cast cancel `0x01b9` and `CastCancel`, interruption by damage.
+- Cooldowns (`Cooldown`, `0x043d`).
+- Ground skills (`0x0366`/`0x0367`, `0x0117`) and skill units (`Unit:`), splash and knockback (Magnum
+  Break), multi-target skills.
+- Passive bonuses and masteries (Double Attack, Sword Mastery, Owl's Eye) through `PASSIVES`.
+- Requirements beyond SP/zeny/weapon: ammo, spirit spheres, item costs, `State`, `Status`, HP cost in
+  the client.
+- Item heal-rate bonuses (`bAddItemHealRate`, `itemhealrate2`, group rates), fame potions, Heal's
+  `HP_MEDITATIO` and other heal bonuses.
+
+### Other casters and sources
+- `itemskill` (Fly Wing, Butterfly Wing, scrolls): `0x0147`, `DelayConsume`, the item-origin
+  `CastSource::Item` path that skips requirements. Teleport and the `Teleport` effect.
+- Mob skill use (`mob_skill_db`, about 14.5k rows) and the `CastSource::Mob` path (cast time and delay from
+  the row, no SP). Needs mob AI.
+- NPC scripting (dialogs, shops, `npcskill`, `OnMyMobDead` labels): `crates/ro-scripting/DESIGN.md`
+  "Later". The shared unit API for NPC and monster scripts (spawn with a death callback, walk, cast,
+  get/set unit data, queries in range, events, timers) is in catalog `scripting/units.md`. It needs a
+  wire-gid `UnitId` in `ro-core`.
+
+### Item effects
+- Items whose `Script` the importer can't lift into `Use:` are refused (failure ack, nothing consumed)
+  instead of run. This is a deviation: rAthena runs any script.
+- Boxes (`getgroupitem` with `item_group_db.yml`), `getitem`, `warp` tickets, `rentitem`, pet, mercenary
+  and transform items, `monster` summon boxes, the 4 dialog items (`input`/`select`).
+- Equip `Script` bonuses, `EquipScript`/`UnEquipScript` and the bonus compiler (`crates/ro-engine/DESIGN.md`
+  §9.8), cards, combos, `autobonus`.
+
+### Lua
+- A production Lua backend: loading every definition from Lua, one VM per map worker, sandboxed globals,
+  memory and instruction limits, error reporting, hot reload (new state, validate, swap at a tick
+  boundary). The spike only proves the interface and measures the call cost.
+
 ## combat (branch `main`, plan `specs/combat/plan.md`)
 
 Spec: `specs/combat/spec.md` §5. What landed: player auto-attack on mobs (action 0/7, `0x0118`, step
@@ -86,7 +135,8 @@ the real login and `@job` lists, the class-change levels, the Stage 3 tree diff 
 
 ### Skill effects
 - Casting: the use-skill packets (`0x0113`/`0x0438`/`0x0af4`), SP/AP costs, cast time, delays, cooldowns,
-  effects (`crates/ro-engine/DESIGN.md` §10/§11).
+  effects (`crates/ro-engine/DESIGN.md` §10/§11). The first slice is in `specs/effects`; what it leaves
+  out is in the "effects" section above.
 - Passive bonuses and weapon masteries (§9.9). When they land, a passive skill-up's stat diff must go out
   *before* `0x010e`, as rAthena sends it from inside its recalc (§9.9 ordering note).
 - `NV_BASIC` level gates: sit, trade, emotes, chat rooms, party and so on.
@@ -275,7 +325,8 @@ API and `@item` are in.
   `loot = true` (first loot item goes N, no effect). `tools/mob-import` will need the looter bit.
 
 ### Item features
-- Item use `0x0439` / `0x01c8`, `0x07fa` deletes, item scripts, cooldowns.
+- Item use `0x0439` / `0x01c8`, `0x07fa` deletes, item scripts, cooldowns. Potion use is in
+  `specs/effects`; the other item effects are in the "effects" section above.
 - Rental items: `expire_time` timers and the rental-expired packets.
 - Overweight statuses `SC_WEIGHT50` / `SC_WEIGHT90`, and `0x0ade` at entry.
 - Inventory expansion: `inventory_slots` and a non-zero `0x0b18` (the persistence load refuses more than

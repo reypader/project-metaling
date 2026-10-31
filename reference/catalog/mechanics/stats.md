@@ -181,6 +181,15 @@ fires when (last_tick + interval) <= now ; each fire heals one per-tick amount
 ```
 Rules: no natural regen at all while dead or hidden/cloaked; none while overweight (>= 70%) except that sitting skill-regen still runs at half speed; while walking, natural HP regen is skipped unless the character has Moving HP Recovery (then the HP interval doubles), natural SP regen continues, and skill regen (the 10 s accumulators) is skipped. Poison, Bleeding, Berserk, Trick Dead and similar zero the regen flags. Heals go through `status_heal` to `pc_heal`, which pushes `SP_HP` / `SP_SP` (`0x00b0`) per tick. (Natural-regen AP behaviour for 4th classes was not analysed.)
 
+### Capture: scripting_1.txt (regen and `0x0a27`)
+
+Source: [captures/scripting_1.txt](../captures/scripting_1.txt), A = map session #7 (`skilltest2`), standing still, `20260219`, rAthena `d4b8e7b8f`.
+
+* **Natural regen is pushed as plain `0x00b0`** (`var 5` HP, `var 7` SP, new absolute value), never as `0x0a27`. While standing the HP tick is exactly **6.0 s** (15:45:56.738, :02.731, :08.734, ...) and the SP tick **8.0 s** (15:46:04.222, :12.221, :20.225), matching `natural_healhp_interval` 6000 / `healsp` 8000 ms. Each HP tick is followed by `0x080e {AID, hp, maxhp}` to A and to GM observers (see inventory.md 7.5), each SP tick is `0x00b0` only.
+* **Amounts match the formulas above:** VIT 1, MaxHP 137: +1 per tick (`1/5 + max(1, 137/200)`). INT 1, MaxSP 75: +1 (`1 + 0 + 0`). After `@vit 50` (VIT 51, MaxHP 205): HP ticks 0x94 to 0x9f = **+11** (`51/5 + max(1, 205/200)`).
+* **Sitting regen was not captured** (A sat for about 1 s at 15:33:07; no tick landed in it).
+* **`0x0a27` (8 bytes) is not regen.** 13 occurrences, all A, all `var = 5` (HP), amounts 53, 1, 2, 1, 2, 4, 2, 1, 2, 3, 1, 2, 1. Layout `type u16 @2 | amount i32 @4` as in inventory.md 7.1. They fall in the skill steps (15:33 to 15:40); the one checked in detail (15:40:15.232) came 0.54 s after a mob kill (exp `0x0acb`/`0x0acc` and drop `0x0add` at :14.690), so it is probably a kill-triggered HP gain, cause unconfirmed. Each is immediately followed by `0x080e` carrying the new HP, with **no `0x00b0` HP** in between; example 15:37:28.734: `0x00b0` HP 0xa0, then `0x0a27` amount 4, then `0x080e` hp 0xa4 = MaxHP (so the amount is the HP actually gained). It is the `clif_heal` form (`status_heal` flag bit 2), used by skill/combat heals. Do not use it for regen or items.
+
 ### When recalculation happens and what is pushed
 
 `status_calc_pc(sd, opt)` rebuilds base status and pushes diffs; triggers include login (`intif.cpp:3505`, `SCO_FIRST|SCO_FORCE`), level-up (`pc.cpp:8276`), job level-up (`:8346`), stat-up (`pc_statusup`, `:8904`), equip/unequip, skill learn, buff start/end and `bonus` scripts (many `pc.cpp` call sites), map change (`clif.cpp:11092`). Partial recalcs use `status_calc_bl(bl, {SCB_...})` flags (speed, ASPD, etc.). Push order and the per-field rule are in [../packets/status.md](../packets/status.md#recalculation-pushes).

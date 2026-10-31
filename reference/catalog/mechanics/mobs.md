@@ -134,6 +134,7 @@ Source: `$RATHENA_PATH` at `d4b8e7b8f`, renewal manifest `npc/re/scripts_main.co
 * `mob_randomwalk` (`mob.cpp:1673-1770`): needs `next_walktime` reached, `MD_CANMOVE`, no `MD_NORANDOMWALK`, and `unit_can_move`. Picks a random passable, pathable cell within ±7 (15x15 window, random stride direction). Success: `MSS_WALK`, `next_walktime = tick + rnd()%1000 + 4000 + walkpath_time`. Failure retries next interval; after 1000 failures it respawns (only with `mob_stuck_warning`).
 * In hard AI, slaves don't random-walk; a failed walk delays the next try by `rnd()%1000` or until `canmove_tick`. After dropping a target, `next_walktime = rnd()%1000 + 4000` (or `rnd()%1000` with `monster_ai & 0x8`).
 * Walk speed is `WalkSpeed` (§1.5).
+* **AI vs scripting:** the AI above is C++, with skill choice in `mob_skill_db` data. NPC and instance scripts only command units (spawn, cast, mode flips, HP resets) and never take over target selection. State, condition and target tables, the shared `unit_skilluse_*2` path and the shared-API conclusion are in [scripting/units.md](../scripting/units.md).
 
 ## 2. HP reduction
 

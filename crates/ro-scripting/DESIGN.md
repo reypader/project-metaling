@@ -1,205 +1,174 @@
-# Project Metaling — Dual-VM Scripting & Coroutine Design (`crates/ro-scripting`)
+# Project Metaling — Scripting Design (`crates/ro-scripting`)
 
-## 1. Architectural Overview & Dual-Backend Philosophy
+> **Status (2026-10-31).** §1-§5 are the effects foundation, planned in `specs/effects/` (skills and item
+> effects, Rust hooks, a feature-gated Lua spike). §6 (shared unit API) and §7 (NPC dialogs) are later
+> phases. Research: catalog `scripting/skills.md`, `scripting/items.md`, `scripting/units.md`,
+> `scripting/lua_notes.md`, `scripting/rust-ro-script-architecture.md`.
 
-`ro-scripting` is the asynchronous NPC dialog, quest progression, and event scripting subsystem for **Project Metaling**.
+## 1. Purpose
 
-### 1.1 Why Decouple `ro-engine` from the Scripting Language?
+`ro-scripting` is where game **rules** live: what a skill or an item does. `ro-engine` owns the
+**plumbing**: when a cast starts and ends, the checks, consuming costs, applying results, and the packets.
+The long-term goal is to move the rules into **Lua** and then change them, so the game can grow away from
+RO's mechanics (toward horizontal progression) by editing scripts rather than engine code. rAthena's script
+language is not a target: we never parse or run it. Its data comes in only through the `tools/*-import`
+importers.
 
-In legacy rAthena and Hercules, the custom C-like Athena Script bytecode VM (`script.cpp`) is tightly coupled to `map_session_data` and `npc_data` pointers. In **Project Metaling**:
+Three rules follow from that goal:
 
-1. `ro-engine` (`MapWorld`) has **zero knowledge** of Athena Script or Lua syntax. It stores only an opaque `ScriptId(pub u32)` on `EntityKind::Npc` entities.
-2. `ro-scripting` implements a **Backend-Agnostic Script Runner** capable of dispatching any `ScriptId` to either:
-   * **Backend(`LuaVmBackend` via `mlua`):** Runs modern **Lua 5.4 / Luau** scripts using native Rust `async`/`await` coroutines (`Lua::create_async_function`), enabling clean, strongly-typed custom NPCs, instances, and boss AI scripts.
+1. **Composable effects.** Most skills and items are a short list of engine-owned building blocks with
+   numbers attached. Code is only for what the blocks can't express.
+2. **Scripts return effects; they never mutate the world.** A hook reads a context and appends to an
+   effect list. The engine applies the list at a defined point. That keeps borrows simple, keeps the tick
+   deterministic, and makes the Rust and Lua backends interchangeable.
+3. **Backend-agnostic.** The engine sees one trait. The first backend is plain Rust functions. A Lua backend
+   implements the same trait.
+
+## 2. Effects, definitions and hooks
 
 ~~~text
-┌──────────────────────────────────────────────────────────────────────────┐
-│ crates/ro-engine (MapWorld Stage 2 / Stage 3)                            │
-│  • Player clicks NPC (`CZ_CONTACTNPC`) or steps into `OnTouch` box       │
-│  • Emits `ScriptTriggerEvent { char_id, entity, npc_entity, script_id }` │
-└────────────────────────────────────┬─────────────────────────────────────┘
-                                     │
-                                     ▼
-┌──────────────────────────────────────────────────────────────────────────┐
-│ crates/ro-scripting (ScriptHost & ActiveDialogRegistry)                  │
-│  Routes `ScriptId` by backend tag:                                       │
-│   └─► [LuaVmBackend]    (`mlua` async coroutine: `npc:say()`, `npc:next()`)│
-│                                                                          │
-│  Executes until hitting a Yield Point (`next`, `select`, `sleep2`, `end`)│
-└───────────────┬──────────────────────────────────────────┬───────────────┘
-                │ (Dialog UI Packets)                      │ (World Mutations)
-                ▼                                          ▼
-  ServerEvent (SelfOnly scope)                   ScriptWorldCommand
-  • `ZC_SAY_DIALOG`   (`0x00B4`)              • `WarpPlayer { map, x, y }`
-  • `ZC_WAIT_DIALOG`  (`0x00B5`)              • `ModifyZeny / GiveItem`
-  • `ZC_CLOSE_DIALOG` (`0x00B6`)              • `SetCharVar (sets DIRTY_BLOBS)`
-  • `ZC_MENU_LIST`    (`0x00B7`)              • `SpawnDynamicMob`
+ imported skill_db / item_db (GPL data)        ro-scripting                        ro-engine
+ costs, timing, range, target type,      ┌──────────────────────────┐     ┌──────────────────────────┐
+ lifted item `Use:` values ─────────────►│ Definitions               │     │ cast pipeline (cast.rs)  │
+                                         │  SkillDef: EffectSpec[]   │◄────│  checks, 0x0b1a, timers, │
+                                         │            + hook?        │     │  castend re-check        │
+                                         │ HookBackend (Rust | Lua)  │     │                          │
+                                         │  hook(ctx) -> Effect[]    │────►│ effect applier (effect.rs│
+                                         └──────────────────────────┘     │  damage, heal, spend,    │
+                                                                           │  consume, packets)       │
+                                                                           └──────────────────────────┘
 ~~~
 
----
+* **`EffectSpec`** is data inside a definition, with per-level values (`base + per_level × lv`), e.g.
+  `WeaponDamage { ratio: 100+30·lv, hit_pct: 5·lv }` for Bash, `Heal { to: Caster, hp: 5 }` for First Aid.
+* **`Effect`** is the resolved form the engine applies: `WeaponDamage`, `Heal`, `SpendSp`, `SpendHp`,
+  `SpendZeny`, `ConsumeItem`. `ApplyStatus`, `Teleport` and `Spawn` are reserved names, added by the plans
+  that need them. Effects live in a reusable `SmallVec` buffer; the hot path doesn't allocate.
+* **`SkillDef`** = skill id + effect specs + an optional hook. **Definitions hold effects and hooks only.**
+  Costs, cast and delay times, range and target type come from the imported `skill_db`, and potion values
+  from the item importer's `Use:` field. That keeps rAthena-derived numbers in GPL data, read from disk,
+  and out of code and out of our Lua files (CLAUDE.md licensing). Formula *facts* (Bash's ratio, First
+  Aid's 5 HP, the renewal Heal formula) are allowed in definitions and hooks.
+* **Hooks** are named. Definitions refer to them by name; the registry turns names into a `HookId` index
+  once, so a cast never does a string lookup. A hook gets a **`HookCtx`**: small `Copy` views of the caster
+  and target (level, job, battle STR..LUK, HP/SP and max, MATK range), skill id and level, the
+  `CastSource`, up to four integer args (item heal ranges), and the caster's skill levels through a
+  `SkillLevels` trait. It also gets a `Roll` (the engine's seeded RNG) and the output list.
+* **Costs first.** The engine checks the data costs, then puts the `Spend*` effects at the front of the
+  list. A hook may append more costs.
+* **Determinism.** Rolls are drawn in a documented order (the weapon hit roll, then variance; Heal's MATK
+  roll is its own draw). The same seed and inputs give the same effects from either backend.
+* **Errors.** A hook error is logged and the cast fails with no effects applied. Nothing panics.
 
-## 2. Non-Blocking Coroutine Lifecycle (Dialog State Machine)
+### 2.1 Crate boundaries
 
-NPC scripts are inherently conversational and stateful: a script sends lines of text, pauses for several seconds while the player reads and clicks **"Next"** or selects a menu option, and then resumes right where it left off.
+`ro-scripting` depends only on `ro-core` (plus `smallvec`, and `mlua` behind the `lua` feature). It never
+sees `ro-db` or `ro-mechanics` types: the engine builds the views. `ro-engine` depends on `ro-scripting`
+and implements `SkillLevels` and `Roll` for it. Damage and stat formulas stay in `ro-mechanics`:
+`Effect::WeaponDamage` carries a ratio and a hit modifier that the engine feeds into
+`ro_mechanics::calc_weapon_attack` through an `AttackContext`.
 
-**Strict Rule:** A script suspension MUST NEVER block an ECS worker thread or hold a borrow on `MapWorld`.
+## 3. Casters and sources
 
-### 2.1 The 4-Phase Suspension & Resumption Cycle
+Players, mobs, NPC scripts and items all cast through the same rAthena path (`unit_skilluse_id2` →
+`skill_castend_id`). Ours is one entry point too:
+`cast(caster, skill, level, target, CastSource)`.
 
-Each active player-NPC conversation is managed as an isolated `DialogSession` indexed by `CharId` inside `ro-scripting`:
-
-1. **Initiation (`ScriptTriggerEvent::ContactNpc` / `OnTouch`):**
-   * `ro-scripting` checks if `char_id` already has an active `DialogSession`. (If so, the click is ignored unless the current session is in a cancellable state).
-   * Spawns a new VM fiber (Athena VM instance or Lua `mlua::Thread` coroutine) bound to `(char_id, player_entity, npc_entity)`.
-2. **Step Execution & Output Accumulation:**
-   * Non-yielding commands (`mes "Hello";`, math expressions, variable reads) accumulate into the session's outbound buffer without pausing.
-3. **Suspension at Yield Boundaries (`DialogYieldState`):**
-   * When the script hits a blocking built-in, the coroutine suspends and sets the session's expected resume token:
-     * `next;` / `npc:next()` $\rightarrow$ Emits buffered `ZC_SAY_DIALOG` + `ZC_WAIT_DIALOG` (`0x00B5`), transitions to `AwaitingNext`.
-     * `select("Opt A:Opt B");` / `npc:select({...})` $\rightarrow$ Emits `ZC_MENU_LIST` (`0x00B7`), transitions to `AwaitingMenu { option_count }`.
-     * `input .@val;` / `npc:input()` $\rightarrow$ Emits `ZC_OPEN_EDITDLG` (`0x0142` / `0x01D4`), transitions to `AwaitingInput`.
-     * `sleep2 1000;` / `npc:sleep_ms(1000)` $\rightarrow$ Registers a wakeup tick (`current_tick + ticks`), transitions to `Sleeping { wake_tick }`.
-     * `close;` / `end;` $\rightarrow$ Emits `ZC_CLOSE_DIALOG` (`0x00B6`) (for `close;`) and drops the `DialogSession`.
-4. **Resumption or Safe Cancellation (`ScriptResumeEvent`):**
-   * When the client responds with `CZ_REQ_NEXT_SCRIPT` (`0x00B9`), `CZ_CHOOSE_MENU` (`0x00B8`), or `CZ_INPUT_EDITDLG`, `ro-engine` forwards `ScriptResumeEvent` to `ro-scripting`.
-   * **Protocol Validation:** `ro-scripting` verifies that the incoming resume variant matches the session's current `DialogYieldState` (preventing packet-injection skips where a client sends `CZ_REQ_NEXT_SCRIPT` when a menu selection is required).
-   * **Cancel / Disconnect Cleanup:** If the player selects `0xFF` (Cancel) on a menu, logs out, dies, or is warped away while a dialog is suspended, `ro-scripting` immediately aborts and drops the `DialogSession` fiber—eliminating rAthena's dangling `RID` bugs.
-
----
-
-## 3. Variable Scoping & Persistence Bridge (`ro-persistence` Integration)
-
-The Athena scripting language relies on **variable name prefixes** to determine both memory lifetime and database persistence. `ro-scripting` unifies all six scopes across both the Athena VM and Lua (via Lua proxy metatables):
-
-| Athena Prefix | Lua Equivalent (`ctx` API) | Scope & Lifetime | Storage & Persistence Backend |
+| `CastSource` | Requirements | Cast time and delay | Status |
 | :--- | :--- | :--- | :--- |
-| **`.@var`** | `local var = ...` | **Scope-Local Temporary:** Freed as soon as the script/coroutine ends. | Stored directly on the VM execution stack. Never leaves `ro-scripting`. |
-| **`@var`** | `ctx.temp.var` | **Character Temporary:** Lives for the player's online session; cleared on logout. | Stored in an in-memory `FxHashMap<String, ScriptValue>` attached to the player session. |
-| **`var`** *(no prefix)* | `ctx.char.var` | **Character Permanent:** Quest progress & flags persisted across logins. | Cached on the player's `ScriptVars` component. Any write flips `PersistenceDirtyFlags::DIRTY_BLOBS` (`1 << 1`), flushing to PostgreSQL `character_blobs.script_vars` (`JSONB`). |
-| **`#var` / `##var`** | `ctx.account.var` | **Account Permanent:** Shared across all characters on the same `AccountId`. | Flushed via `ro-persistence` to account-level `JSONB` storage. |
-| **`$var`** | `ctx.world.var` | **Server-Wide Permanent:** Global event states, WoE flags, server counters. | Stored in a shared `DashMap<String, ScriptValue>` and flushed asynchronously to PostgreSQL `mapreg`. |
-| **`.var`** | `ctx.npc.var` | **NPC-Instance Static:** Shared by all players talking to that specific NPC entity. | Stored inside `ro-scripting` indexed by `(NpcEntity, String)`. Reset on `@reloadscript` / server reboot. |
+| `Learned` | SP, zeny, weapon… from `skill_db`, checked at cast start and again at castend, consumed at castend | `skill_db` + renewal cast formula + `delayfix` | first slice |
+| `Item(ItemId)` | skipped (`itemskill`, Fly Wing, scrolls); the delayed-consume item is deleted at castend | `skill_db` | later |
+| `Mob` | none | the `mob_skill_db` row, unchanged | later (needs mob AI) |
 
-*Note on Postfix Type Sigils (`$`):* Both integer (`JobQuest = 1`) and string (`JobQuest$ = "Novice"`) values are stored as a tagged enum `ScriptValue { Int(i64), Str(String) }` serialized cleanly into `character_blobs.script_vars` (`JSONB`).
+## 4. Unit handles (settled 2026-10-31)
 
----
+The old open note asked how `ro-scripting` names an engine entity without a reverse dependency. Settled:
 
-## 4. World Commands & Event Label Dispatch
+* **Now:** effects address units relatively, `Who::{Caster, Target}`. The first slice needs nothing more.
+* **When queries or spawns arrive** (area effects, the shared unit API in §6): add a wire-gid newtype
+  `UnitId(u32)` to `ro-core`. That is the `bl.id` the client already sees (account id for players, the
+  110000000+ pool for mobs and NPCs; the engine has `gid(e)`). The engine maps it to and from `Entity`. Move
+  `MobId` and the future `ScriptId` into `ro-core` at the same time.
 
-Because `ro-scripting` cannot mutate `MapWorld` ECS columns (`Vitals`, `Inventory`, `MapPosition`) directly, all side effects produced by built-in script commands (`warp`, `getitem`, `delitem`, `heal`, `monster`, `sc_start`) are emitted as buffered `ScriptWorldCommand` messages defined in `ro-scripting` (`ro-engine` depends on `ro-scripting` and applies them):
+## 5. Lua backend
 
-> **Open decision (settle before implementing this section).** The snippet below breaks the crate dependency rule in `CLAUDE.md` as written:
-> - `Entity` is an `ro-engine` type, and `ro-engine` depends on `ro-scripting`, so `ro-scripting` cannot name it. Pick one: (a) `ro-scripting` defines an opaque handle (e.g. `ScriptEntity(u32)`) that the engine maps to and from `Entity`; or (b) move a plain entity-ID newtype into `ro-core`.
-> - `MobId`, `ScriptId` and `ItemId` are shared by `ro-db`, `ro-scripting` and `ro-engine`. `MobId` lives in `ro-db` today (mob spawning); the other two don't exist yet. Move them to `ro-core` (preferred), or add an `ro-scripting` → `ro-db` edge to the rule.
->
-> Record the outcome here and in the `CLAUDE.md` rule, then delete this note.
+Planned shape. The `specs/effects` spike (M9) tests it on one skill.
 
-~~~rust
-use crate::{CharId, Entity, ItemId, MapPosition, MobId, ScriptId};
+* **Engine:** `mlua` (MIT), vendored Lua 5.4 to start. Luau is the alternative if sandboxing matters more
+  (its `sandbox` mode is Luau-only).
+* **One VM per map worker**, not global. No `send` feature, no locks, and GC is paced per map. The VM stays
+  out of the shared registries.
+* **Definitions move into Lua.** A file returns a table: the effect specs and hook functions for its skills
+  or items. The loader converts the table into the same `SkillDef`/`HookId` registry the Rust definitions
+  fill, so the engine can't tell the backends apart.
+* **The context is passed as plain values or a small table per call**, never fine-grained userdata in
+  inner loops. The spike measures both options. No published Rust→Lua call costs exist, so we benchmark.
+* **Game state stays in Rust.** Scripts keep no state in globals. That makes reload lossless.
+* **Later:** sandboxed globals (no `os`/`io`/`debug`/`package`), memory and instruction limits
+  (`set_memory_limit`, `set_hook`), error reporting with file and line, and hot reload. Hot reload builds a
+  new state, validates it, and swaps it in at a tick boundary, or keeps the old one if loading fails.
+* Our Lua files are MIT and are read from disk. They never carry rAthena-derived values.
 
-/// Inbound triggers sent from `ro-engine` (`MapWorld`) to `ro-scripting`.
-#[derive(Debug, Clone)]
-pub enum ScriptTriggerEvent {
-    /// Fired once at server boot for every script defining an `OnInit:` label/hook.
-    ServerInit,
-    /// Player clicked an NPC (`CZ_CONTACTNPC` - 0x0090).
-    ContactNpc {
-        char_id: CharId,
-        player_entity: Entity,
-        npc_entity: Entity,
-        script_id: ScriptId,
-    },
-    /// Player stepped into an NPC's `(xs, ys)` `OnTouch:` proximity area in Stage 3.
-    TouchNpc {
-        char_id: CharId,
-        player_entity: Entity,
-        npc_entity: Entity,
-        script_id: ScriptId,
-    },
-    /// Player responded to an open dialog window (`0x00B9`, `0x00B8`, `0x0142`, `0x01D5`).
-    ResumeDialog {
-        char_id: CharId,
-        input: DialogResumeInput,
-    },
-    /// Named event hook (e.g., `"NpcName::OnMyMobDead"`, `"OnPCDieEvent"`, `"OnClock0000"`).
-    NamedEvent {
-        event_label: String,
-        attached_char: Option<CharId>,
-    },
-    /// Aborts any suspended coroutine for `char_id` on logout, death, or unexpected warp.
-    CancelDialog {
-        char_id: CharId,
-    },
-}
+## 6. Shared unit API for NPC and monster scripts (later)
 
-#[derive(Debug, Clone)]
-pub enum DialogResumeInput {
-    Next,
-    MenuChoice(u8),      // 1-based index; 0xFF = Cancel
-    NumberInput(i32),
-    StringInput(String),
-}
+rAthena scripts **command** units but never take over AI decisions (catalog `scripting/units.md`): spawn
+with a death label, timed casts, mode flips, HP resets, walk routes. Mob skill choice is data
+(`mob_skill_db`: state, condition, rate, delay, target). So the later API is shared by NPC scripts, boss
+scripts and mob behaviour:
 
-/// Outbound mutations emitted by `ro-scripting` back to `ro-engine` (`MapWorld`).
-#[derive(Debug, Clone)]
-pub enum ScriptWorldCommand {
-    /// Emits `ZC_SAY_DIALOG`, `ZC_WAIT_DIALOG`, `ZC_MENU_LIST`, or `ZC_CLOSE_DIALOG` to `char_id`.
-    SendDialogPacket {
-        char_id: CharId,
-        packet: DialogPacketPayload,
-    },
-    /// Teleports player (`warp "map", x, y;` or Kafra teleport service).
-    WarpPlayer {
-        char_id: CharId,
-        dest_map: String,
-        dest_pos: (u16, u16),
-    },
-    /// Modifies player HP/SP (`heal hp, sp;` or `percentheal`).
-    ModifyVitals {
-        char_id: CharId,
-        hp_delta: i32,
-        sp_delta: i32,
-    },
-    /// Modifies player Zeny and/or inventory (`getitem`, `delitem`, `Zeny -= 500`).
-    ModifyEconomy {
-        char_id: CharId,
-        zeny_delta: i64,
-        items_added: Vec<(ItemId, u16)>,
-        items_removed: Vec<(ItemId, u16)>,
-    },
-    /// Mutates a permanent character variable (`var`) and sets `DIRTY_BLOBS`.
-    SetCharPermanentVar {
-        char_id: CharId,
-        key: String,
-        value: ScriptValue,
-    },
-    /// Dynamically spawns monsters on a map (`monster "map", x, y, "name", mob_id, amount;`).
-    SpawnDynamicMob {
-        map_name: String,
-        pos: Option<(u16, u16)>,
-        mob_id: MobId,
-        count: u16,
-        on_death_event: Option<String>,
-    },
-    /// Enables or disables an NPC entity (`enablenpc` / `disablenpc`).
-    SetNpcEnabled {
-        unique_name: String,
-        enabled: bool,
-    },
-}
+* spawn and despawn (count, master/slave, a death callback); kill or count by owner
+* unit actions: walk to (with a completion callback), warp, stop, attack, cast on a unit or cell (the §3
+  entry point)
+* unit property get and set (HP, mode flags, speed); queries (units in range, by owner, exists)
+* events: death (with the killer), spawn, damaged, skill used on or by; timers per owner with a cancel
+  handle
 
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
-pub enum ScriptValue {
-    Int(i64),
-    Str(String),
-}
-~~~
+These become more `Effect` variants (commands) and more `HookCtx` reads, keyed by `UnitId` (§4).
+Target selection, the AI state machine, aggro and skill picking stay in the engine or in data. A Lua
+`on_think` hook could replace parts of them later.
 
----
+## 7. NPC dialogs (later)
 
-## 5. Pre-Check Guards for Transactional Commands (`getitem` / `Zeny`)
+The dialog design below predates the effects plan. It still holds, but is now **Lua-only**: an
+`mlua` coroutine per conversation instead of an Athena VM.
 
-When a script executes an economy command like `if (Zeny >= 500) { Zeny -= 500; getitem 501, 1; }`, `ro-scripting` requires synchronous read access to the player's current Zeny, Weight, and Inventory counts without holding a lock on `MapWorld`:
+### 7.1 Non-blocking dialog lifecycle
 
-1. **Read Snapshot on Dialog Start (`PlayerScriptSnapshot`):** When `ro-engine` emits `ScriptTriggerEvent::ContactNpc`, it attaches a lightweight copy of the player's current scalar state (`zeny`, `base_level`, `job_class`, `current_weight`, `max_weight`, and inventory item counts) plus a read handle to the player's `ScriptVars`.
-2. **Optimistic Validation & Atomic Commit:** The script validates `Zeny >= 500` and weight limits against its local `PlayerScriptSnapshot`, updates the snapshot in-place for subsequent lines in the same script step, and emits `ScriptWorldCommand::ModifyEconomy` so `ro-engine` commits the authoritative delta during Stage 4.
+**Strict rule:** a suspended script never blocks an ECS worker thread or holds a borrow on the world.
+
+1. **Initiation** (`CZ_CONTACTNPC` or an `OnTouch` area): if the player already has a `DialogSession`, the
+   click is ignored unless the session can be cancelled. Otherwise a Lua thread starts, bound to
+   `(char_id, player, npc)`.
+2. **Step execution:** non-yielding calls (text lines, math, variable reads) accumulate into the session's
+   outbound buffer.
+3. **Suspension at yield points:**
+   * `npc:next()` → `ZC_SAY_DIALOG` + `ZC_WAIT_DIALOG` (`0x00B5`), state `AwaitingNext`.
+     At 20260219 `mes` uses `0x0972` (catalog PF-21 notes).
+   * `npc:select({...})` → `ZC_MENU_LIST` (`0x00B7`), state `AwaitingMenu { option_count }`.
+   * `npc:input()` → `ZC_OPEN_EDITDLG` (`0x0142` / `0x01D4`), state `AwaitingInput`.
+   * `npc:sleep_ms(n)` → a wake-up tick, state `Sleeping { wake_tick }`.
+   * `close`/`end` → `ZC_CLOSE_DIALOG` (`0x00B6`) for close, then the session is dropped.
+4. **Resumption or cancellation:** `CZ_REQ_NEXT_SCRIPT` (`0x00B9`), `CZ_CHOOSE_MENU` (`0x00B8`) or
+   `CZ_INPUT_EDITDLG` resume the session only if they match its state, so a client can't skip a menu.
+   Cancel (`0xFF`), logout, death or a warp drops the session at once.
+
+### 7.2 Variable scopes
+
+| rAthena prefix | Lua (`ctx`) | Lifetime | Storage |
+| :--- | :--- | :--- | :--- |
+| `.@var` | `local` | the script run | Lua stack |
+| `@var` | `ctx.temp.var` | the player's session | in-memory map on the session |
+| `var` | `ctx.char.var` | permanent per character | `ScriptVars` component, flushed to PostgreSQL (`JSONB`) |
+| `#var` / `##var` | `ctx.account.var` | permanent per account | account-level `JSONB` |
+| `$var` | `ctx.world.var` | permanent server-wide | shared map, flushed to a `mapreg`-style table |
+| `.var` | `ctx.npc.var` | per NPC, until reload | in `ro-scripting`, keyed by NPC |
+
+Values are `ScriptValue { Int(i64), Str(String) }`.
+
+### 7.3 World commands and read snapshots
+
+Dialog scripts change the world the same way hooks do: by returning commands (warp, give/take items and
+zeny, set variables, spawn mobs, enable/disable NPCs). These extend the `Effect` vocabulary from §2 and
+use `UnitId` (§4). They are not a separate enum. For checks like "has 500 zeny", the dialog start
+attaches a small snapshot (zeny, levels, job, weight, item counts). The script updates that snapshot as it
+goes, and the engine commits the authoritative change when it applies the command.

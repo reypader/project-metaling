@@ -133,3 +133,39 @@ Source: `conf/atcommands.yml:1220-1222` (command `resetstat`, alias `streset`), 
 
 * `@resetstat` / `@streset`: `pc_resetstate(sd)` then `clif_displaymessage` msg id **207** (name arg). `@reset`: `pc_resetstate` + `pc_resetskill(sd,1)`, msg id **208**. `@resetskill`/`@skreset`: skills only, msg 206. No arguments, no failure case.
 * `pc_resetstate` effects and push order (stats 1/0, status and trait pools from the tables, +`trait_points_job_change` for trait jobs, +`transcendent_status_points` for upper/4th): [trait_stats.md#3-trait-points](./trait_stats.md#3-trait-points). The message is sent last, after the reset's own recalc diff.
+
+## Capture: scripting_1.txt (@zeny, @heal, @revive, @vit, @questskill)
+
+Source: [captures/scripting_1.txt](../captures/scripting_1.txt) (file line = proxy `#` + 10), A = map session #7, B = #4 (observer, GM). rAthena `d4b8e7b8f`, `20260219`. Chat replies are redacted text (`0x008e`); only the packets around them are recorded. Handler source for `@heal`: `atcommand.cpp:1371-1430`.
+
+### Zeny
+
+* **No `SP_ZENY` at map entry.** A's login burst (lines 187-228, before client `0x007d`) is `0x0283`, `0x0b18`, `0x02eb`, `0x0201`, two `0x008e`, `0x0091`, then `0x00b0` (var 25 max weight 20300), six `0x0141` (VIT..), `0x00b0` stat block, `0x013a`, HP/SP/max pairs, weight, `0x09e7`, `0x0a24`/`0x0a23` (achievements), `0x0ade`. **No `0x00b1` var 20 anywhere in it**, not even `0`: the char had 0 zeny, so the client showed 0 from char-select data or its default. Whether a character with non-zero saved zeny needs a push at login is NOT answered by this capture (it only shows that rAthena sends none for zeny 0); if Metaling loads non-zero zeny, send `0x00b1` var 20 once in the entry burst to be safe.
+* **Wire:** `0x00b1` ZC_LONGPAR_CHANGE, 8 bytes, `var u16 = 20 (SP_ZENY) | value i32` = the NEW absolute zeny. `@zeny 5000` from 0: `14 00 88 13 00 00` (5000), then the confirmation `0x008e`. Order: `0x00b1` first, message after. `@zeny 900000` from 0 (the Mammonite casts had spent the 5000 down to 0): `14 00 a0 bb 0d 00` = 900000 (`0x000dbba0`), then message. Nothing is sent to B.
+* **Mammonite (skill 42) zeny cost 1000 per cast at level 10:** per successful cast the push order is `0x00b0` var 7 (SP, new absolute) then `0x00b1` var 20 (zeny, new absolute) then `0x01de`. Values: 5000 to 4000 (`a0 0f`), 3000 (`b8 0b`), 2000 (`d0 07`), 1000 (`e8 03`), 0 (`00 00 00 00`); and 900000 to 899000 (`b8 b7 0d 00`), 898000, ... (-1000 each). The final cast that leaves 0 still pushes `0x00b1` with value 0 together with its SP push.
+* **Cast with too little zeny:** the next request got only `0x0110` ZC_ACK_TOUSESKILL `2a 00 | 00 00 00 00 | 00 00 00 00 | 00 | 05`: skill 42, flag 0, `cause` **5** (`USESKILL_FAIL_MONEY`), no SP spent, no `0x00b1`.
+* `@zeny` bounds, group requirement and messages: see the command table above (negative removes, `MAX_ZENY` = INT_MAX).
+
+### @heal `[hp sp]`
+
+* **Order of pushes (A's connection), HP and SP both change:** `0x00b0` var 5 (HP, new absolute), `0x080e {AID, hp, maxhp}`, `0x00b0` var 7 (SP), message. Seen with plain `@heal` after damage (HP 0xa4 = max, SP 0x24 = max) and with `@heal 0 1000`-style calls.
+* **A stat that does not change sends nothing**: plain `@heal` at full HP but low SP sent only `0x00b0` SP then the message; `@heal 0 1000` from SP 40 sent one `0x00b0` SP = 75 (MaxSP, clamped) and the message; `@heal 0 8000` clamped to MaxSP 75 the same way. The "everything already full" case was not captured (source: message 157, no packets).
+* **Negative HP is a self-hit:** `@heal -50 0` (HP 137 to 87), `@heal -1 1000`, `@heal -100 0`, `@heal -50 -50`: `0x00b0` var 5, `0x080e` (to A and to B), `0x08c8` ZC_NOTIFY_ACT type 4 (`DMG_ENDURE`, damage = the absolute HP amount, src = dst = A, AREA so B sees it), `0x009c` ZC_CHANGE_DIRECTION (`headdir 0`, `dir` 2/3/4) to A and B, then the message. `@heal -50 -50`: SP first (`0x00b0` var 7 = 0), then HP, then the rest. Mixed signs (`@heal -1 1000`): HP block (`0x00b0`, `0x080e`, `0x08c8`, `0x009c`), then SP `0x00b0`.
+* **`@heal 0 -9000`** (hp 0, sp negative, hp==0 so the opposing-signs branch): only `0x00b0` var 7 = 0 and the message (no damage packet, nothing for B). `@heal -20 0` typed by B on B: the same self-hit set goes to B, and A (nearby GM) receives only `0x080e`, `0x08c8` and `0x009c` for B (not B's `0x00b0`).
+* **Side channel:** `@heal` with positive values does NOT send `0x0a27` (uses `status_heal` flag 0).
+
+### @revive (alias of `@alive`)
+
+On A while dead, line 1189: `0x0148` ZC_RESURRECTION `{AID, type 0}` (AREA, to A and B), `0x00b0` var 5 = max HP (full, to A only), `0x080e` (A, B), `0x0196` ZC_MSG_STATE_CHANGE `{status 0x026e (dead icon), AID, flag 0}` (A, B), `0x09cb` (A, B), then two `0x008e` messages. SP not pushed.
+
+### @vit 50 (and the other stat commands)
+
+`0x0141` ZC_COUPLESTATUS `{var 15 (SP_VIT), base 51, bonus -50}` then `0x00be` ZC_STATUS_CHANGE `{22 00, 07}` (var 34 `SP_UVIT`, points needed for the next VIT point = 7), then `0x0141 {15, base 51, bonus 0}`, then recomputed derived values as `0x00b0`: var 46 `SP_DEF2` = 10, var 45 `SP_DEF1` = 32, var 48 = 0, var 47 `SP_MDEF1` = 14, var 6 `SP_MAXHP` = 205 (from 137), then the message. Note the transient first `0x0141` with bonus -50 (new base before the total is recalculated) is what the real server sends; the final one has bonus 0. Stat points are not consumed. HP is not pushed with the max (next natural tick shows `0x00b0` var 5 and `0x080e` with the new max).
+
+### @questskill `<id>` (ZC_ADD_SKILL `0x0111`, 39 bytes)
+
+First `@questskill 142` (NV_FIRSTAID, lines 1658-1662): one `0x0111` frame, 39 bytes = opcode `11 01` + `SKILLDATA` (the same 37-byte record as one `0x010f` entry, `packets_struct.hpp:4261`): `id u16 (8e 00) | inf i32 (04 00 00 00) | level u16 (1) | sp u16 (3) | range u16 (0) | name char[24] "NV_FIRSTAID" NUL padded | upFlag u8 (0, level equals max)`. The proxy in this checkout had no length for `0x0111` (7 bytes) and mis-split the frame into fake `0x0111`/`0x0100`/`0x0300` packets: any parser must use length 39. A repeat `@questskill 142` (already owned) sends only two message lines, no `0x0111`.
+
+### @allskill (as seen in this capture)
+
+`@allskill` (line 5736) replies with `0x00b0` var 25 (`SP_MAXWEIGHT`, 48300 here for a Merchant; the recalculation after the skills change it, source: Enlarge Weight Limit adds 2000 per level), the full `0x010f` skill list, `0x00b0` var 12 (`SP_SKILLPOINT`) = 0, then one message. Details of the list: [packets/settings.md](../packets/settings.md) and [scripting/skills.md](../scripting/skills.md).

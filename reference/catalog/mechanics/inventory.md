@@ -120,6 +120,86 @@ Consumption ordering when it passes:
 * Then: `canuseitem_tick = now + item_use_interval`, run the item's `Script` with the player attached (restoring any previously attached script state afterwards).
 * `clif_useitemack` with `ok == false` is sent to `SELF` only; `ok == true` to `AREA`.
 
+### 7.1 Wire layouts for potion use (20260219)
+
+* **Provenance:** `rathena` @ `d4b8e7b8f`, source, confirmed by capture in section 7.5. All `20260219`.
+* **`CZ_USE_ITEM` `0x0439`, 8 bytes** (`clif_packetdb.hpp:1151` `parseable_packet(0x0439,8,clif_parse_UseItem,2,4)`; not overridden in `clif_shuffle.hpp`, which only lists it for older versions): `index` u16 @2 (= inventory slot + 2), `AID` u32 @4 (read by the client, ignored by the server; the parser reads only `pos[0]`, `clif.cpp:12112`). Layout comment `clif.cpp:12080`.
+* **`ZC_USE_ITEM_ACK` `0x01c8`, 15 bytes** (`packets_struct.hpp:2577-2589`, `useItemAckType = 0x1c8` for `PACKETVER >= 3`, `:308-316`). Because `PACKETVER_MAIN_NUM >= 20181121`, `itemId` is u32: `0x01c8 | index u16 @2 (slot+2) | itemId u32 @4 | AID u32 @8 | amount u16 @12 | result u8 @14`. `amount` is the stack count REMAINING after use (`amount - 1`); `result` 1 = used, 0 = refused. Builder `clif_useitemack`, `clif.cpp:4468-4495`.
+* **Scope:** `result == 1` goes to `AREA` (observers receive it too); `result == 0` goes to `SELF` only (`clif.cpp:4488-4492`). The builder returns silently (sends NOTHING) when the slot's `nameid == 0` or `inventory_data[index]` is null, so a failure ack for an already-emptied slot is never sent.
+* **`ZC_RECOVERY`** (`clif_heal`, `clif.cpp:6840`): for `PACKETVER >= 20141022` it is `0x0a27`, 8 bytes: `type` u16 @2 (5 = HP, 7 = SP), `amount` i32 @4 (`packets.hpp:1210-1222`; older form `0x013d` has i16 amount). SELF only. Potions and `percentheal` do NOT use it (see 7.3).
+* **HP/SP push for potions:** `ZC_PAR_CHANGE` `0x00b0` (`clif.cpp:3550`, 8 bytes: `varID` u16 = 5 for `SP_HP` / 7 for `SP_SP`, `count` i32 = the NEW ABSOLUTE value, not the delta), SELF. `SP_HP` of a dead (hp 0) player is sent as 1 (max_hp/2 for Novice), `clif.cpp:3683-3690`.
+
+### 7.2 Gate order and what each refusal sends (potion path)
+
+Source: `clif.cpp:12080-12106`, `pc.cpp:6276-6575`. "Failure ack" = `clif_useitemack(n, 0, false)`, i.e. `0x01c8` SELF with `amount 0, result 0`.
+
+| # | Check (in order) | On refusal |
+| :-- | :-- | :-- |
+| 1 | Parser: player dead | `CLR_DEAD` clear packet to AREA; NO ack (`:12084-12087`) |
+| 2 | Parser: (trading and no NPC) or chat room or `PCBLOCK_USEITEM` | `clif_msg(MSI_BUSY)`; NO ack |
+| 3 | Parser: `n = index - 2` outside `[0, MAX_INVENTORY)` | silent return, no ack (`:12102`) |
+| 4 | `pc_useitem`: `mail_writing` | return 0 -> failure ack |
+| 5 | NPC script attached and (progress bar or no `npc_item_flag`) | return 0 -> failure ack (renewal adds `MSI_BUSY`) |
+| 6 | slot empty / `amount <= 0` | failure ack builder returns silently (nameid 0) |
+| 7 | `pc_isUseitem`: no `inventory_data`; `Type` not Healing/Usable/Cash | failure ack |
+| 8 | GM `ITEM_UNCONDITIONAL` permission | skips the rest of `pc_isUseitem` AND the `Delay` check |
+| 9 | mapflag `noitemconsumption` | failure ack |
+| 10 | `canuseitem_tick - now > 0` (i.e. used less than `item_use_interval` ago; default **100 ms**, `battle.cpp:8379`, `conf/battle/items.conf:68`; the tick is set AFTER the ack at `pc.cpp:6545`, so it is per-player, shared by all items) | failure ack, no message |
+| 11 | per-item `NoUse.Sitting` flag AND sitting AND GM level below override | `MSI_CANT_USE_WHEN_SITDOWN` + failure ack. Red/Blue Potion do not set it, so **sitting does not block potions by default**; only the flagged items |
+| 12 | storage open (non-Cash) | red message 388 + failure ack |
+| 13 | teleport/return/party-call item groups, Neuralizer, mercenary items | not relevant to potions |
+| 14 | Cash or group-container items: weight% `>= open_box_weight_rate` or free slots `<= 10` | message + `return 0` -> failure ack. **Not applied to normal potions** (type Healing) |
+| 15 | gender, `EquipLevelMin` > base level, `EquipLevelMax` < base level, `pc_job_can_use_item` (job), `sc.cant.consume`, `pc_isItemClass` | failure ack, no message |
+| 16 | `pc_useitem`: `sc.opt1` set (stone/freeze/stun/sleep, except STONEWAIT/BURNING) unless Nauthiz | failure ack |
+| 17 | `Delay.Duration` item cooldown (`pc_itemcd_check`, skipped for GM bypass) | failure ack (the check sends its own cooldown message) |
+| 18 | restricted-area no-equip lists (`itemdb_isNoEquip`) | `MSI_IMPOSSIBLE_USEITEM_AREA` + return 0 -> failure ack |
+
+Not gates for potions: weight (only Cash/groups), job-level, and `Delay:` unless the item sets it. `pc_useitem` never checks that the player is walking or attacking: using a potion neither stops movement nor the auto-attack loop in the source.
+
+### 7.3 Exact order for a successful potion (`itemheal`)
+
+1. `clif_useitemack(n, amount-1, true)` -> `0x01c8` AREA (`pc.cpp:6535`). The item id and index are read before deletion.
+2. `pc_delitem(n, 1, type=1, reason 0)` (`:6536`): `type&1` suppresses `0x07fa`, `type&2` is not set, so the only packet is `SP_WEIGHT` `0x00b0 {24, weight}` SELF. The ack's `amount` is what updates the client stack count; the client removes the slot itself at 0. (Order inside `pc_delitem`: see section 4.)
+3. Fame-potion flag: `potion_flag = 2` when `card[0] == CARD0_CREATE` and the creator ranks in the Alchemist fame list (`:6541`); normal potions leave it 0.
+4. `canuseitem_tick = now + item_use_interval` (`:6545`).
+5. `run_script` (`:6558`): `itemheal` -> `pc_itemheal` (7.4) -> `status_heal(sd, hp, sp, 1)`.
+6. `status_heal` (`status.cpp:1803-1888`): returns 0 for a dead target; clamps hp/sp to `max - current`; **if the clamped hp, sp and ap are all 0 (and flag&4 unset) it returns 0 and sends NOTHING**. Otherwise adds to the status and calls `pc_heal` (`pc.cpp:10663`). With flag `1` (bit 2 clear) `pc_heal` takes the `else` branch: `clif_updatestatus(SP_HP)` (`0x00b0` var 5) if hp != 0, then `SP_SP` (var 7) if sp != 0 (then AP). `clif_updatestatus` also runs `clif_update_hp` (`clif.cpp:3909`, `3539`): hpmeter packet only on `hpmeter_visible` maps, party HP packet if in a party (unless `party_hp_mode`), BG HP; nothing is sent to ordinary observers.
+7. `clif_heal` (`0x0a27`) is only used when flag bit 2 is set (`status_heal(..., 2|...)`, e.g. `status_set_hp` with flag 2, skill heals with `show_hp_sp_gain`, `skill.cpp:1784`). **Item and `percentheal` heals use flag 1 / 0, so no `0x0a27`**: the client sees the new HP via `0x00b0` only.
+8. Result at full HP: the potion is already consumed (steps 1-2 precede the script), the heal clamps to 0, and no HP/SP packet is sent. Only `0x01c8` (AREA) and `SP_WEIGHT` go out.
+
+Total for a normal Red Potion at reduced HP: `0x01c8` (AREA) -> `0x00b0` weight -> `0x00b0` HP. Blue Potion: `0x01c8` -> weight -> `0x00b0` SP. A potion with both values sends HP then SP.
+
+### 7.4 `itemheal` and `percentheal` formulas (renewal)
+
+Source: `script.cpp:6038-6095`, `pc.cpp:10695-10776` (itemheal), `pc.cpp:10792-10820` (percentheal), `status.cpp:1905-1973`, `utils.hpp:23`.
+
+* **`itemheal hp,sp{,char_id}`**: with `potion_flag == 1` (potion-pitcher mode) only stores the values; otherwise `pc_itemheal(sd, sd->itemid, hp, sp)`. The args are evaluated once per use, so `rand(a,b)` is rolled per drink.
+* **HP bonus (percent)** `b = 100 + 2*VIT + 10*SM_RECOVERY lv + 5*AM_LEARNINGPOTION lv`, with `VIT = battle_status.vit` (the total, including gear/buffs). Then in order: fame flag (`potion_flag == 2`: `b += b*50/100`; Rogue Soul Link adds `+b`, HP only); `b += bonus.itemhealrate2`; `b += b * itemgroup_rate/100`; `b += b * per_item_rate/100`; `b += b * SC_INCHEALRATE.val1/100`. Applied as `tmp = hp*b/100; if (b != 100 && tmp > hp) hp = tmp`.
+* **SP bonus** identical with `INT` (`battle_status.int_`), `MG_SRECOVERY`, `AM_LEARNINGPOTION`, `itemsphealrate2`, group/per-item SP rates; no Rogue bonus, no SC_INCHEALRATE.
+* **Then status modifiers** (only if `sc` non-empty): penalty = `SC_CRITICALWOUND.val2` + 20 if Death Hurt (`val3 == 1`); `SC_NORECOVER_STATE` sets penalty 100; `SC_VITALITYACTIVATION` hp += hp/2; Water Insignia lv 2 hp/sp += 10 %; renewal `SC_APPLEIDUN` hp += val3/100; `penalty > 0`: `hp -= hp*penalty/100`, same for sp; renewal `SC_EXTREMITYFIST` sp = 0; `SC_BITESCAR` hp = 0.
+* **Result** `status_heal(sd, hp, sp, 1)` (7.3). Worked example: Red Potion roll 50, VIT 1, no skills: `b = 102`, `50*102/100 = 51`. With VIT 0 and no skills `b = 100`, the multiply is skipped.
+* **`percentheal hp,sp{,char_id}`**: no VIT/INT/skill scaling. Script layer: renewal `SC_EXTREMITYFIST` -> sp 0; `SC_NORECOVER_STATE` -> hp and sp 0; `SC_BITESCAR` -> hp 0. `pc_percentheal` clamps both rates to `[-100, 100]`; both >= 0 -> `status_percent_heal(rate)` = `status_percent_change(.., -hp_rate, -sp_rate, 0, flag 0)`: heal = `apply_rate(max_hp, rate)` = `max_hp*rate/100` (`max_hp/100*rate` when max_hp > 100000), rate >= 100 = full max; a non-zero rate yields at least 1; then `status_heal(target, hp, sp, ap, 0)` (flag 0, so `0x00b0` pushes, no `0x0a27`). Negative rates damage (percent of MAX), and a crossed-sign pair is split into one heal and one damage call.
+* **`potion_flag`**: global in `script.cpp:365`. 0 normally; 2 for fame potions set in `pc_useitem`; 1 only from skill-launched "potion pitcher" (`script.cpp:12441`, `skill.cpp`), where `itemheal`/`percentheal` record `potion_hp/sp/per_hp/per_sp` instead of healing. Reset to 0 at the end of `pc_useitem` (`pc.cpp:6574`).
+
+### 7.5 Capture: scripting_1.txt (potion use)
+
+Source: [captures/scripting_1.txt](../captures/scripting_1.txt) lines 7732-8230 (proxy #7722 to the end; file line = proxy `#` + 10), rAthena `d4b8e7b8f`, `20260219`. A = `skilltest2` (map session #7, AID 2000000 = `80 84 1e 00`, a `group_id` GM), B = `skilltest1` (#4, observer, also GM). A's base stats: VIT 1, INT 1 (then VIT 51 after `@vit 50`). Everything below is captured fact unless marked "source".
+
+* **`0x0439` request (client to map):** payload `index u16 | AID u32`; e.g. `07 00 80 84 1e 00`. `index` 7 = slot 5 + 2 (Red Potion, nameid 501, `0x01f5`); 8 = Blue Potion (505, `0x01f9`). The `AID` is A's own AID. Confirms 7.1.
+* **`0x01c8` ack (15 bytes)** `07 00 | f5 01 00 00 | 80 84 1e 00 | 04 00 | 01` = index, nameid u32, AID u32 (the user, not the item), `amount` = stack REMAINING after the use (`amount-1`, confirmed: 5 potions gave 4, 3, 2; 52 gave 51 down to 33), `result` 1. **B (observer) receives the identical `0x01c8`** (AREA scope confirmed). Send order between A's copy and B's copy varies per use (A first in some, B first in others), so do not rely on it.
+* **Order for a heal that changes HP (A's connection):** `0x01c8` -> `0x00b0` var 24 `SP_WEIGHT` -> `0x00b0` var 5 `SP_HP` (new absolute value) -> `0x080e {AID, hp, maxhp}`. Blue Potion: `0x01c8` -> `SP_WEIGHT` -> `0x00b0` var 7 `SP_SP`; **no `0x080e`** and nothing for B except the `0x01c8`. Weight dropped 70 per Red Potion (`18 00 18 06 00 00` = 1560, then 1490, 1420) and 150 per Blue Potion in this DB (1420 to 1270).
+* **`0x080e` correction to 7.3 step 6:** B received `0x080e {AID, hp, maxhp}` (14 bytes) for every HP change of A, and A received its own. No party exists in the capture; the cause is `clif_update_hp` -> `clif_hpmeter` (`clif.cpp:3539`) which sends it to every nearby player whose group has `PC_PERM_VIEW_HPMETER` (`clif.cpp:11085`, set at map entry; both test accounts are GMs) on maps with a viewer (`mapdata->hpmeter_visible`). A normal player gets no `0x080e` about others and, with no party, not about itself either. For Metaling: gate `0x080e` on that permission (or party), not on "everyone nearby".
+* **No `0x0a27` and no `0x07fa` for potions** (source claim 7.3 confirmed: none appeared in any of the ~25 uses). `0x0a27` does exist in this capture, from skill steps (13 times, see stats.md); it is not part of the item path.
+* **Red Potion at reduced HP, VIT 1:** HP 87 to 137 (= MaxHP 137, clamped), so only a lower bound: `roll * 102 / 100 >= 50`. Not informative.
+* **After `@vit 50` (VIT 51, MaxHP 205), HP 92 to 186 = +94:** with `b = 100 + 2*51 = 202` the roll must satisfy `roll*202/100 = 94`, i.e. roll 47 (inside `rand(45,65)`). Without the VIT bonus 94 would be impossible. **The 7.4 HP formula (`2*VIT` percent, integer multiply then divide) is confirmed.** Next potion 186 to 205 (+19, clamped).
+* **Blue Potion (`itemheal 0, rand(40,60)`), INT 1:** SP 2 to 60 = +58: `b = 102`, roll 57 gives `57*102/100 = 58`, roll 56 would give 57. Consistent with `2*INT` percent. Second potion 60 to 75 (MaxSP 75, clamped). A third at full SP sent only `0x01c8` + weight.
+* **At full HP (or SP):** the potion is still consumed. Each use sent `0x01c8` (to A and B) and `0x00b0` `SP_WEIGHT` only, no HP/SP/`0x080e` (about 20 uses in the spam burst). Confirms 7.3 step 8.
+* **Use rate / spam:** the burst `15:47:07.096` to `:09.884` has 19 `0x0439` requests, gaps 119 to 192 ms (client-enforced pacing; typical 130 to 180 ms), stack 51 down to 33 with **every request acknowledged with `result` 1; no `result` 0 ack and no dropped request.** The server limit `item_use_interval` is 100 ms (`conf/battle/items.conf:68`), so this capture never tested a use under 100 ms. The refusal behaviour for faster uses is source-only (7.2 row 4: `canuseitem_tick` gate returns a failure ack).
+* **`@item 501 5`:** `0x0b41` (70 bytes) `07 00 | 05 00 | f5 01 00 00 | 01 ...`: index 7, `count` 5 (the amount ADDED), nameid, `is_identified` 1, rest zero; then `0x00b0` var 24 weight (880 = 530 before + 5 * 70), then the confirmation message (`0x008e`). Order: ack, weight, message. `@item 505 5` same, with six `0x0a24` achievement updates between weight and message (first Blue Potion in the inventory; achievements are out of scope).
+* **`@item 501 50`** (stack was 2): `0x0b41` index 7, `count` 0x32 = 50 (added, not the new total), weight 4470, message. No failure.
+* **`@item 501 500` failure:** a single `0x0b41` and **no weight push and no message**: payload `02 00 | 00 00 ...` with `index` = 2, `count` 0, all zero except the byte at frame offset 33 = `02` (`ADDITEM_OVERWEIGHT`; 500 * 70 = 35000 exceeds the room left). This is the first captured failure form and matches the layout in [packets/inventory.md](../packets/inventory.md#0x0b41-zc_item_pickup_ack-add-item--pickup-result) (index 2, count 0, `result` at offset 33).
+* **Natural regen visible in the burst:** HP +1 every 6.0 s, SP +1 every 8.0 s while standing, each as `0x00b0`; after `@vit 50` HP +11 per tick (`51/5 + max(1, 205/200) = 11`). See [stats.md](./stats.md#capture-scripting_1txt-regen-and-0x0a27).
+
 ## 8. Weight
 
 > Open findings: [PF-19](../../../PACKET_FINDINGS.md#pf-19).

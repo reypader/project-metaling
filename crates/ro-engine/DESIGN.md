@@ -193,6 +193,8 @@ pub struct ServerTick {
 
 **Combat as implemented (`specs/combat/spec.md`).** Swings, hits and death vanishes are timers in one per-map heap, popped right after the walkers. That is earlier than Stage 1's intents, so a hit due by `now` lands before this tick's clicks see the mob. A swing computes its `DamageResult` from the attacker's current snapshot and queues the hit; the hit lowers HP **inline** at its due time (catalog `auto_attack.md` §7.1 skip rules), not through a Stage 4 `HitResolved` fold. With only player attackers and no stateful defences this gives the same result; revisit it when mob attacks or barriers arrive (§11.4). A natural level-up from a kill sends its first burst's pushes inline and queues the rest, so a base + job level-up in one kill shares one diff (spec §2.9 deviation).
 
+**Casting (planned, `specs/effects/`).** A cast end is one more timer in the same combat heap (`CastEnd`; a zero cast time runs it in the same tick). At castend the engine re-checks and consumes the costs, asks `ro-scripting` to resolve the skill's effects (`crates/ro-scripting/DESIGN.md` §2), and applies them **inline**, like hits. A weapon-skill hit reuses the auto-attack `PendingHit` path, so its HP lands at +amotion. Heals change vitals only, with no dirty mark. `canact` is one per-unit gate shared by swings and casts. Potion use runs the same resolve and apply from its intent in Stage 1.
+
 **Deliberate packet-order deviation.** rAthena recalculates inline, so a captured equip sequence interleaves each displaced item's stat diff between the acks (catalog `packets/equipment.md` "Captured equip sequences"). Here one net diff follows all of the tick's acks. Unequip-all of N items sends one diff instead of N. The client is expected to accept this because every push is an independent absolute value. A manual client check confirms it (`specs/stats/spec.md`).
 
 ---
@@ -659,6 +661,7 @@ After Stage 3 computes the new `Status`, the diff against the stored snapshot em
 * **Passive skills** (Owl's Eye DEX+lv, Dragonology INT, Cavalier Mastery's ASPD restore) are modifier sources in the base layer, from a passive-skill table keyed by `(skill, level)` plus an optional weapon-type condition.
 * **Weapon masteries** that add ATK only on hit (Sword Mastery) go to `CombatBonus`, not the status.
 * **Active buffs** are status effects (§10). **Offensive skills** are damage contexts (§11) with a skill ratio.
+* **Casting and effects** (planned, `specs/effects/`): what a skill does is defined in `ro-scripting` as effect building blocks plus optional hooks (Rust now, Lua later). The engine owns the cast pipeline (`src/cast.rs`) and the effect applier (`src/effect.rs`). Costs and timing come from the imported `skill_db`.
 
 ---
 
@@ -700,7 +703,7 @@ rAthena hard-codes each status change's stat effect in `status_calc_*` switch ca
 
 ## 11. Damage Pipeline: Outgoing & Incoming (normal attack implemented)
 
-> **Implemented** (`specs/combat/spec.md`): `ro_mechanics::calc_weapon_attack(&AttackerView, &DefenderView, &BattleConfig, roll)` for a player's normal attack on a mob: lucky dodge, crit, hit, infinite defense (`IgnoreMelee`/`IgnoreRanged`), the status/weapon/equip parts with ammo ATK, P.ATK, Res, hard and soft DEF, min 1, the crit multiplier. `size_mod` and `attr_rate` are inputs fixed at 100 until the size and element tables are imported. There is no `AttackContext` or `CombatBonus` yet, and the result is applied by the combat timer heap, not a Stage 4 fold (§5.1 "Combat as implemented"). The rest of this section is still the plan.
+> **Implemented** (`specs/combat/spec.md`): `ro_mechanics::calc_weapon_attack(&AttackerView, &DefenderView, &BattleConfig, roll)` for a player's normal attack on a mob: lucky dodge, crit, hit, infinite defense (`IgnoreMelee`/`IgnoreRanged`), the status/weapon/equip parts with ammo ATK, P.ATK, Res, hard and soft DEF, min 1, the crit multiplier. `size_mod` and `attr_rate` are inputs fixed at 100 until the size and element tables are imported. There is no `AttackContext` or `CombatBonus` yet, and the result is applied by the combat timer heap, not a Stage 4 fold (§5.1 "Combat as implemented"). The rest of this section is still the plan. `specs/effects/` adds the first `AttackContext` (skill ratio, hit-rate modifier, crit and lucky-dodge flags), with `AttackContext::NORMAL` keeping the normal attack unchanged.
 >
 > Design only. Formulas: catalog `mechanics/combat.md` (normal attack, renewal) and `mechanics/auto_attack.md` (timing). Magic, skills and monster-vs-player are not yet catalogued.
 
