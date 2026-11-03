@@ -173,3 +173,71 @@ Save (`char.cpp:418-448`): whole table rewritten for the char (DELETE then multi
 Load (`char.cpp:1165-1190`): `SELECT id, lv, flag ... LIMIT MAX_SKILL`; flag kept only if 3, else PERMANENT; rows with id 0 ignored. After load the tree is recomputed (`pc_calc_skilltree`) which makes level-0 tree skills visible.
 
 Metaling minimum: persist rows `(char_id, id, lv, flag)` for lv > 0 only; flag 0 normal, 3 for granted (e.g. platinum skills granted by NPC); visible-but-level-0 entries are derived at login from the tree.
+
+## skill_db.yml cast/requirement fields (effects import)
+
+Source: `SkillDatabase::parseBodyNode` (`skill.cpp:14775`) at commit `d4b8e7b8f`; counts from a Ruby YAML pass over `db/re/skill_db.yml` (1635 skills). Applies to 20260219 (renewal; `RENEWAL_CAST` is on, `src/config/renewal.hpp:37`). Header doc: `db/re/skill_db.yml:19-139`. Per-level list expansion for every `{Level, X}` list below is the algorithm above (`parseNode`, `skill.cpp:14705`); `MAX_SKILL_LEVEL` = 13 (`skill.hpp:43`).
+
+### Generic per-level scalars (`parseNode(name, subkey, ...)`, ints, `asInt32`)
+
+Scalar form = one int for all levels. List form = sequence of maps `{Level: n, <SubKey>: int}`. Absent key on a NEW skill = all slots 0 (memset); on a merge (later entry for existing Id) the old values stay.
+
+| Key | List entry key | Absent default | Skills (scalar / list) | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| `CastTime` (`:15174`) | `Time` ms | 0 | 439 / 111 (550) | never negative in data |
+| `FixedCastTime` (`:15223`, only `#ifdef RENEWAL_CAST`) | `Time` ms | **0** (memset, `:15228`) | 527 / 53 (580) | **Absent is NOT -1.** Header says "Default: 0" (`skill_db.yml:68`). Only `NPC_EARTHQUAKE` (653) writes an explicit `-1` (scalar), which is the only way the "-1 = split CastTime 80/20" branch in `skill_vfcastfix` runs from data. `skill.hpp:307` comment ("-1 means 20% of cast") is stale vs the loader. 426 skills have both CastTime and FixedCastTime, 124 CastTime only, 154 FixedCastTime only (no CastTime). |
+| `AfterCastActDelay` (`:15182`) | `Time` ms | 0 | 622 / 16 (638) | Negative allowed by the engine (`skill_delayfix`: `-time + amotion`); **0 negative values in the shipped data**. |
+| `AfterCastWalkDelay` (`:15190`) | `Time` ms | 0 | 14 / 1 (15) | |
+| `Cooldown` (`:15214`) | `Time` ms | 0 | 526 / 80 (606) | |
+| `HitCount` (`:14959`) | `Count` | 0 | 1330 / 34 (1364) | **Negative IS used**: 147 skills have a negative count (141 scalar, 6 list), e.g. `KN_BRANDISHSPEAR` -3, `WZ_VERMILION` -20, `AS_SONICBLOW` -8, `MO_TRIPLEATTACK` -3, `CG_ARROWVULCAN` -9. Meaning (`DAMAGE_DIV_FIX`, `battle.cpp:4238`, applied `:4248-4256`): `div_` = number of hits shown in `0x01de` `div`. Positive N: the computed damage is per hit and is multiplied by N. Negative N: the computed damage is the TOTAL; `div_` is flipped to `abs`, damage is divided by `abs(N)` and then multiplied back (integer truncation loses the remainder), so the total is a multiple of N. On zero damage / lucky dodge the sign is just flipped (`:4254`, `:5427`). `skill_get_num` indexes by level like the other arrays. |
+
+`Requires` sub-keys using the same `parseNode` with subkey `Amount` (all absent = 0):
+
+| Key | Skills (scalar / list) | Notes |
+| :--- | :--- | :--- |
+| `HpCost` (`:15287`) | 3 / 1 (4: `AL_INCAGI` 29, `MO_BALKYOUNG` 1016, `MS_MAGNUM` 8202, `MER_INCAGI` 8240) | values 15 or 200; no negatives |
+| `ZenyCost` (`:15343`) | 2 / 5 (7) | e.g. Mammonite list 100..1000 |
+| `SpCost` (`:15294`, existing) | | see above |
+
+### `Element` (`skill.cpp:14967-15024`)
+
+* Scalar string (`!is_seq`) = one element for all levels; or sequence of `{Level, Element}` (value string). The loader prepends `ELE_` and looks up the script constant (case-insensitive constants); unknown name -> row rejected; `None` (ELE_NONE = -1) is rejected explicitly.
+* Absent: new skill = `ELE_NEUTRAL` for all levels.
+* Counts: 628 scalar, 4 list (ids 425, 492, 731, 5026). Value usage (per entry/scalar): Weapon 306, Fire 82, Water 56, Wind 49, Earth 42, Holy 39, Dark 22, Poison 21, Ghost 13, Neutral 11, Endowed 14, Undead 4, Random 1 (`NPC_RANDOMATTACK`).
+* Numeric codes (`map.hpp:390-407`): `Neutral` 0, `Water` 1, `Earth` 2, `Fire` 3, `Wind` 4, `Poison` 5, `Holy` 6, `Dark` 7, `Ghost` 8, `Undead` 9, `All` 10 (`ELE_ALL`, exported `script_constants.hpp:3492`), `ELE_MAX` 11 (not exported), special `Weapon` 12, `Endowed` 13, `Random` 14. Special values are resolved at hit time: `Weapon` = attacker's right-hand weapon element (`sstatus->rhw.ele`, `skill.cpp:2823`), `Endowed` = `status_get_attack_sc_element` (endow status element), `Random` = `rnd() % ELE_ALL` (0..9) (`skill.cpp:2823-2829`; Ground Drift picks from 5 elements, `:6006`). The `0x0b1a` cast packet element for these specials is whatever `skill_get_ele` returns raw (see scripting/skills.md).
+
+### `DamageFlags` (`:14879-14898`)
+
+A map `Name: bool` (all 1172 uses are maps; every value is `true`, none `false`); `NK_` + name looked up; `true` sets, `false` clears the bit. Bit indices (`skill.hpp:62-75`): `NoDamage` 0, `Splash` 1, `SplashSplit` 2, `IgnoreAtkCard` 3, `IgnoreElement` 4, `IgnoreDefense` 5, `IgnoreFlee` 6, `IgnoreDefCard` 7, `Critical` 8, `IgnoreLongCard` 9, `SimpleDefense` 10. Counts: NoDamage 816, Splash 432, IgnoreFlee 76, Critical 58, IgnoreDefense 43, IgnoreDefCard 20, IgnoreElement 16, IgnoreAtkCard 13, SimpleDefense 7, SplashSplit 6, IgnoreLongCard 1. Absent: new skill = no bits.
+
+### `CastTimeFlags` (`:15232-15250`) (affects cast math)
+
+Map `Name: bool`, prefix `SKILL_CAST_` (`skill.hpp:163-167`): `IgnoreDex` = 0x1 (52 skills), `IgnoreStatus` = 0x2 (38), `IgnoreItemBonus` = 0x4 (35); 53 skills carry the key. `CastDelayFlags` is the same shape for `delaynodex` (`:15256+`). Details of effect: scripting/skills.md section 4.1.
+
+### `Requires.Weapon` (`:15351-15390`)
+
+* **Always a map** `Name: true|false` (170 skills, 0 scalar, 0 per-level form: it is one bitmask, `s_skill_require.weapon`, not an array, `skill.hpp:246`). `W_` + name looked up (case-insensitive); `true` sets bit `1 << W_x`, `false` clears it.
+* `All: true` as the only key sets mask 0 (= no restriction); `All` is not used in the shipped file. Absent `Weapon` on a new skill = 0 = any weapon (the header's "(Default: All)"). Mask 0 means no check (`skill.cpp:9224`: `require.weapon && !pc_check_weapontype`).
+* Names and `W_` codes (`pc.hpp:959-992`): `Fist` 0, `Dagger` 1, `1hSword` 2, `2hSword` 3, `1hSpear` 4, `2hSpear` 5, `1hAxe` 6, `2hAxe` 7, `Mace` 8, `2hMace` 9, `Staff` 10, `Bow` 11, `Knuckle` 12, `Musical` 13, `Whip` 14, `Book` 15, `Katar` 16, `Revolver` 17, `Rifle` 18, `Gatling` 19, `Shotgun` 20, `Grenade` 21, `Huuma` 22, `2hStaff` 23 (`MAX_WEAPON_TYPE` = 24; `W_SHIELD` = 24 alias). Dual-wield constants are accepted by the loader (exported `script_constants.hpp:3799-3804`) but unused in the data: `Double_DD` 25, `Double_SS` 26, `Double_AA` 27, `Double_DS` 28, `Double_DA` 29, `Double_SA` 30 (names are the constant minus `W_`; there is no `DoubleDD` spelling).
+* Usage counts of `true` keys: Musical 71, Whip 71, 2hSpear 34, 1hSpear 32, Bow 24, Revolver 25, Rifle 24, Shotgun 24, Grenade 22, Gatling 21, 2hSword 21, 2hAxe 21, Dagger 18, 1hSword 18, 1hAxe 18, Katar 18, Mace 16, 2hMace 14, Book 14, Huuma 13, Staff 12, Knuckle 12, Fist 10, 2hStaff 1.
+
+### `Requires.State` (`:15442-15456`)
+
+A **scalar string only** (one state per skill; 87 skills), `ST_` + name, stored as an int (`skill.hpp:697-718`): `None` 0, `Hidden` 1, `Riding` 2, `Falcon` 3, `Cart` 4, `Shield` 5, `Recover_Weight_Rate` 6, `Move_Enable` 7, `Water` 8, `Ridingdragon` 9, `Wug` 10, `Ridingwug` 11, `Mado` 12, `Elementalspirit` 13, `Elementalspirit2` 14, `Peco` 15, `Sunstance` 16, `Moonstance` 17, `Starstance` 18, `Universestance` 19. Usage: Mado 22, Shield 16, Cart 8, Falcon 7, Starstance 5, Universestance 5, Ridingdragon 4, Water 2, Wug 2, Recover_Weight_Rate 2, Move_Enable 3, Moonstance 3, Sunstance 3, Elementalspirit 3, Riding 1, Elementalspirit2 1. Absent = 0 (None).
+
+### `Requires.ItemCost` (`:15495-15540`)
+
+Always a **sequence of maps** (219 skills, 305 entries, max 10 entries per skill = `MAX_SKILL_ITEM_REQUIRE`, `skill.hpp:211`): `Item` (aegis name, looked up in `item_db`; unknown -> row rejected; 119 distinct items), `Amount` (int32), optional `Level` (1..MaxLevel, else row rejected). No scalar form.
+* Without `Level` (all entries of a skill): entries fill slots 0,1,2... in order; **all** listed items are required at **every** level.
+* With `Level` (13 skills: WZ_FIREPILLAR, NC_SHAPESHIFT, NC_REPAIR, SO_SUMMON_AGNI/AQUA/VENTUS/TERA, SO_FIRE/WATER/WIND/EARTH_INSIGNIA, GN_FIRE_EXPANSION, KO_MAKIBISHI; 48 entries): sets `itemid_level_dependent`; the entry goes to slot `Level-1` (then later entries without `Level` continue after it); at cast time only the entry for the cast level is required (`skill.cpp:9860,9929-9932`). `NC_SHAPESHIFT`/`NC_REPAIR` additionally need their last-slot fuel item as a second requirement (`:9866-9870`).
+
+### Rows for the slice skills (this section's keys only)
+
+| Skill | CastTime | FixedCastTime | AfterCastActDelay | AfterCastWalkDelay | Cooldown | HitCount | Element | DamageFlags | HpCost | ZenyCost | Weapon | ItemCost | State |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `NV_FIRSTAID` 142 | absent (0) | absent (0) | absent (0) | absent | absent | 1 | absent (Neutral) | `NoDamage` | absent | absent | absent (any) | absent | absent |
+| `SM_BASH` 5 | absent | absent | absent | absent | absent | 1 | `Weapon` (scalar) | absent | absent | absent | map, 22 keys `true`: Fist, Dagger, 1hSword, 2hSword, 1hSpear, 2hSpear, 1hAxe, 2hAxe, Mace, 2hMace, Staff, Knuckle, Musical, Whip, Book, Katar, Revolver, Rifle, Gatling, Shotgun, Grenade, Huuma (no Bow, no 2hStaff) | absent | absent |
+| `MC_MAMMONITE` **42** (not 153) | absent | absent | absent | absent | absent | 1 | `Weapon` | absent | absent | list L1..10 = 100*L | absent (any) | absent | absent |
+| `AL_HEAL` 28 | absent | absent | scalar `500` | absent | absent | 1 | `Holy` | `NoDamage`, `IgnoreDefense` | absent | absent | absent | absent | absent |
+
+Other keys on these rows: First Aid `Requires: SpCost 3`, `Flags: IsQuest`; Bash `Duration2: 4500`, `Status: Stun`, SpCost list 8x5,15x5; Mammonite `Flags: AllowOnMado`, SpCost 5, `Range -1`; Heal `Flags: IsAutoShadowSpell`, `Type: Magic`, `Range 9`, SpCost 13+3(L-1).

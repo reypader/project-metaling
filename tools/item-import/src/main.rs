@@ -40,6 +40,13 @@ fn main() -> anyhow::Result<()> {
         );
     }
     println!("merged repeated ids: {}", report.merged);
+    println!(
+        "use scripts lifted: {} ({} itemheal, {} percentheal), not lifted: {}",
+        report.lifted_item_heal + report.lifted_percent_heal,
+        report.lifted_item_heal,
+        report.lifted_percent_heal,
+        report.not_lifted
+    );
     let shown = if args.all_warnings {
         report.warnings.len()
     } else {

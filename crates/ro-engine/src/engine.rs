@@ -19,10 +19,12 @@ use ro_db::{
     SkillDb, SkillTreeDb,
 };
 use ro_mechanics::BattleConfig;
+use ro_scripting::EffectList;
 use rustc_hash::FxHashMap;
 use smallvec::SmallVec;
 use tracing::{debug, warn};
 
+use crate::cast::SkillScripts;
 use crate::combat::CombatTimers;
 use crate::entity::Entity;
 use crate::error::EngineError;
@@ -55,7 +57,7 @@ const ACTION_SIT: u8 = 2;
 const ACTION_STAND: u8 = 3;
 /// rAthena `dead_sit` values.
 const STANDING: u8 = 0;
-const SITTING: u8 = 2;
+pub(crate) const SITTING: u8 = 2;
 
 /// rAthena `START_NPC_NUM`: first NPC unit id. Above every account id (< 100,000,000).
 pub const START_NPC_ID: u32 = 110_000_000;
@@ -124,6 +126,9 @@ pub struct MapInstance {
     pub(crate) skills: Arc<SkillDb>,
     pub(crate) skill_tree: Arc<SkillTreeDb>,
     pub(crate) battle: Arc<BattleConfig>,
+    pub(crate) scripts: SkillScripts,
+    /// The effects of the cast being applied; reused so a cast doesn't allocate.
+    pub(crate) effect_buf: EffectList,
     /// Players the tick's stat pass owes a recalc or follow-ups, in marking order (each once;
     /// `PlayerInfo::stat_flags` has `LISTED`). Reused across ticks.
     pub(crate) stat_queue: Vec<Entity>,
@@ -141,6 +146,8 @@ pub struct Registries {
     pub skills: Arc<SkillDb>,
     pub skill_tree: Arc<SkillTreeDb>,
     pub battle: Arc<BattleConfig>,
+    /// Skill and item-use definitions with their hook backend (spec `specs/effects` §2.1).
+    pub scripts: SkillScripts,
 }
 
 /// rAthena direction of a one-cell step (0 N, 1 NW, 2 W, 3 SW, 4 S, 5 SE, 6 E, 7 NE; y+ is north).
@@ -203,6 +210,8 @@ impl MapInstance {
             skills: Arc::new(SkillDb::default()),
             skill_tree: Arc::new(SkillTreeDb::default()),
             battle: Arc::new(BattleConfig::default()),
+            scripts: SkillScripts::default(),
+            effect_buf: EffectList::new(),
             stat_queue: Vec::new(),
             save_requests: Vec::new(),
         }
@@ -218,6 +227,7 @@ impl MapInstance {
         self.skills = registries.skills;
         self.skill_tree = registries.skill_tree;
         self.battle = registries.battle;
+        self.scripts = registries.scripts;
         // Built from the old mob db and battle config.
         self.mob_stats.clear();
     }
@@ -496,6 +506,12 @@ impl MapInstance {
             ClientIntent::RaiseStat { var, amount } => self.raise_stat(e, var, amount),
             ClientIntent::RaiseTrait { var, amount } => self.raise_trait(e, var, amount),
             ClientIntent::UpgradeSkill { id } => self.upgrade_skill(e, id),
+            ClientIntent::UseSkill {
+                level,
+                skill_id,
+                target,
+            } => self.use_skill(e, skill_id, level, target, now_ms),
+            ClientIntent::UseItem { index } => self.use_item(e, index, now_ms),
             ClientIntent::BlockingPlayCancel => self.emit_self(e, ServerEvent::LoadConfirmed),
             other => debug!(map = %self.map_name, intent = ?other, "intent not handled by engine"),
         }

@@ -120,6 +120,8 @@ fn settings(events: &[ScopedServerEvent], n: u32) -> Vec<ServerEvent> {
                 ServerEvent::SkillList { .. }
                     | ServerEvent::ShortcutKeyList { .. }
                     | ServerEvent::LongLongParameterChanged { .. }
+                    // Zeny (`0x00b1`) is not sent at entry: it rides in the char list (PER-EFF-01).
+                    | ServerEvent::LongParameterChanged { .. }
                     | ServerEvent::StatusWindow { .. }
                     | ServerEvent::CoupleStatus { .. }
                     | ServerEvent::AttackRange { .. }

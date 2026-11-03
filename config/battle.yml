@@ -92,3 +92,10 @@ exp_bonus_attacker: 25
 exp_bonus_max_attacker: 12
 monster_hp_bars_info: true
 display_skill_fail: 2
+
+# Casting and item use: the `2 x DEX + INT` at which the variable cast time reaches 0; the
+# percent of a cast that is fixed when a skill's FixedCastTime is -1; ms between two
+# consumable uses.
+vcast_stat_scale: 530
+default_fixed_castrate: 20
+item_use_interval: 100

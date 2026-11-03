@@ -101,6 +101,13 @@ pub struct BattleConfig {
     /// Bit 1 hides skill failures, bit 2 hides the "skill interval" failure (a refused attack
     /// request) unless `@showdelay`.
     pub display_skill_fail: u32,
+    // Casting and item use (catalog `scripting/skills.md` §4.1, `mechanics/inventory.md` §7.2).
+    /// `2 × DEX + INT` at which the variable cast time reaches 0.
+    pub vcast_stat_scale: u32,
+    /// Percent of the cast time that is fixed when a skill's `FixedCastTime` is −1.
+    pub default_fixed_castrate: u32,
+    /// ms between two consumable uses.
+    pub item_use_interval: u32,
 }
 
 impl Default for BattleConfig {
@@ -165,6 +172,9 @@ impl Default for BattleConfig {
             exp_bonus_max_attacker: 12,
             monster_hp_bars_info: true,
             display_skill_fail: 2,
+            vcast_stat_scale: 530,
+            default_fixed_castrate: 20,
+            item_use_interval: 100,
         }
     }
 }
@@ -194,6 +204,13 @@ impl BattleConfig {
         range("max_sp", self.max_sp, 1, int)?;
         range("max_ap", self.max_ap, MIN_MAX_AP, int)?;
         range("min_hitrate", self.min_hitrate, 0, 100)?;
+        range("vcast_stat_scale", self.vcast_stat_scale, 1, int)?;
+        range(
+            "default_fixed_castrate",
+            self.default_fixed_castrate,
+            0,
+            100,
+        )?;
         range("max_hitrate", self.max_hitrate, 0, 100)?;
         let short = u32::from(i16::MAX.unsigned_abs());
         for (name, value) in [

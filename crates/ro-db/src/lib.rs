@@ -14,7 +14,7 @@ mod yaml;
 
 pub use cell::{CellType, DbLoadError, MapDataError};
 pub use item::{
-    AmmoType, Gender, ItemData, ItemDb, ItemType, WeaponType, ALL_CLASSES, ALL_JOBS,
+    AmmoType, Gender, ItemData, ItemDb, ItemType, ItemUse, WeaponType, ALL_CLASSES, ALL_JOBS,
     ITEM_DATA_FILES, ITEM_DATA_TYPE, ITEM_DATA_VERSION,
 };
 pub use job::{
@@ -38,7 +38,8 @@ pub use refine::{
     REFINE_DATA_VERSION,
 };
 pub use skill::{
-    JobTree, SkillData, SkillDb, SkillFlags, SkillRequirement, SkillTreeDb, TreeEntry,
-    MAX_SKILL_LEVEL, SKILL_DATA_FILE, SKILL_DATA_TYPE, SKILL_DATA_VERSION, SKILL_TREE_DATA_FILE,
-    SKILL_TREE_DATA_TYPE, SKILL_TREE_DATA_VERSION,
+    CastTimeFlags, DamageFlags, JobTree, SkillData, SkillDb, SkillElement, SkillFlags,
+    SkillItemCost, SkillRequirement, SkillTreeDb, TreeEntry, MAX_SKILL_LEVEL, SKILL_DATA_FILE,
+    SKILL_DATA_TYPE, SKILL_DATA_VERSION, SKILL_TREE_DATA_FILE, SKILL_TREE_DATA_TYPE,
+    SKILL_TREE_DATA_VERSION,
 };

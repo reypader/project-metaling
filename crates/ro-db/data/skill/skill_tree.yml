@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, db/re/skill_db.yml, db/re/skill_tree.yml.
-# Modified: trimmed to learn-only fields, per-level arrays expanded, tree inheritance resolved, names resolved to ids, by tools/skill-import. Do not edit by hand.
+# Modified: trimmed to the fields Metaling uses, per-level arrays expanded, tree inheritance resolved, names resolved to ids, by tools/skill-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
 %YAML 1.2
 ---

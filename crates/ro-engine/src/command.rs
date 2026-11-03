@@ -93,6 +93,8 @@ impl MapInstance {
             "resetskill" | "skreset" => self.command_reset_skills(e),
             "reset" => self.command_reset_all(e),
             "allskill" | "allskills" | "skillall" | "skillsall" => self.command_all_skills(e),
+            "zeny" => self.command_zeny(e, params),
+            "heal" => self.command_heal(e, params),
             _ => self.tell(e, &format!("Unknown command: @{command}")),
         }
     }

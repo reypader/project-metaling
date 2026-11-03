@@ -50,6 +50,7 @@ tokio-util = { version = "0.7", features = ["codec"] }
 clap = { version = "4.5", features = ["derive"] }
 anyhow = "1.0"
 sqlx = { version = "0.8", features = ["runtime-tokio", "postgres"] }
+mlua = { version = "0.12", features = ["lua54", "vendored"] }
 
 [workspace.lints.clippy]
 # Production code must not panic on bad input; drop the session instead.

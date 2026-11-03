@@ -3,12 +3,41 @@
 Items consciously left out of finished work, with enough context to pick them up later.
 Remove an item when it lands. Newest feature first.
 
-## effects (branch `main`, plan `specs/effects/plan.md`; in progress)
+## effects (branch `main`, plan `specs/effects/plan.md`)
 
-Spec: `specs/effects/spec.md`. Scope of the first slice: the effect/hook interface in `ro-scripting`
-(Rust hooks), casting `NV_FIRSTAID`, `SM_BASH` (no stun), `MC_MAMMONITE` and `AL_HEAL` (heal only), potion
-use (`itemheal`/`percentheal`), zeny plumbing, and a feature-gated Lua spike. Everything below was left
-out on purpose (settled with the user, 2026-10-31).
+Spec: `specs/effects/spec.md` §5. What landed: the effect/hook interface in `ro-scripting` (effect specs,
+definitions, `RustHooks`), the `0x0438` cast pipeline with requirements, cast begin/end timers and step
+actions, `NV_FIRSTAID`, `SM_BASH` (no stun), `MC_MAMMONITE` and `AL_HEAL` (heal only), `0x0439` potion use
+(`itemheal`/`percentheal`, 288 lifted items), zeny (load/save, char list, `0x00b1`), `@heal`/`@zeny`, and a
+feature-gated Lua spike (`LuaHooks`, `hook_bench`). Everything below was left out on purpose (settled with
+the user, 2026-10-31) or found while building.
+
+### Still to verify by hand
+- **Manual client check** (plan "Finish") on `prt_fild08` with an observer: First Aid (after
+  `@heal -50 0`, and at full HP), Bash lv 10/1 on Porings (a kill, a mid-loop cast), Mammonite with
+  `@zeny` (and running out), Heal on self, the observer and a Poring, Red/Blue Potions (and at full HP).
+  Then a metaling capture compared against `scripting_1.txt`.
+- **The cast-time capture** (plan "Session A results", Fire Bolt at five DEX/INT pairs) was never recorded.
+  MECH-EFF-03 tests the catalog's worked examples; ENG-EFF-12's cast-time flow is engine-only.
+- Uncaptured, so source-only (catalog `mechanics/inventory.md` §7.2-§7.4): a level-restricted potion's
+  failure ack, the HP-then-SP push order of a percent heal with both down, and the last potion of a stack.
+
+### Deviations
+- Heal on Undead is dropped silently, not turned into holy damage.
+- Items without a lifted `Use` are refused (see "Item effects").
+- The size and element modifiers stay at 100 %.
+- `@heal` can't kill, and has no self-hit animation.
+- `0x080e` (the HP meter rAthena sends to `view_hpmeter` GM observers and party members) is not sent.
+- A dead player's item use is silent; rAthena sends a dead-state refresh. Revisit with player death.
+- `canuseitem_at` lives on `PlayerInfo`, so the 100 ms item-use gate resets on a map change.
+
+### Casting gaps (found while building)
+- The castend walk delay (`300 + AfterCastWalkDelay`, catalog `scripting/skills.md` §3 step 8).
+- With a cast time above 0, a pending cast is not cleared by a warp, and attacks are not refused while it
+  runs (both belong with cast cancel).
+- `SkillData.hit_count` is imported but not read: `WeaponDamage.div` comes from the definition (1).
+- Rental items (`expire_time != 0`) get the failure-form ack while their effects still apply (source
+  behavior). Nothing creates rentals yet.
 
 ### Needs the status-effect system (next plan)
 - Buff and debuff skills: Blessing, Increase AGI, Provoke, Angelus, Bash's stun (lv > 5 with Fatal Blow).
@@ -50,7 +79,15 @@ out on purpose (settled with the user, 2026-10-31).
 ### Lua
 - A production Lua backend: loading every definition from Lua, one VM per map worker, sandboxed globals,
   memory and instruction limits, error reporting, hot reload (new state, validate, swap at a tick
-  boundary). The spike only proves the interface and measures the call cost.
+  boundary). The spike (`crates/ro-scripting/src/lua.rs`, feature `lua`) proves the interface and
+  measures the call cost.
+- The spike's hook call costs ~2.5 µs with a fresh ctx table and ~6.5 µs with scoped userdata, against
+  4-20 ns for a Rust hook (catalog `scripting/lua_notes.md` §3.1). Most of it is building and reading
+  tables and making scoped functions. The production backend should pass plain arguments or lazily read
+  `'static` userdata, return effects through an emitter, and reach `roll`/`skill_level` through
+  `Lua::set_app_data`, then measure again.
+- `verify.sh` doesn't build the `lua` feature. Its checks run by hand: `cargo clippy -p ro-scripting
+  --features lua --all-targets`, `cargo test -p ro-scripting --features lua`.
 
 ## combat (branch `main`, plan `specs/combat/plan.md`)
 

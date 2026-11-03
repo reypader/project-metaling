@@ -19,7 +19,7 @@ use ro_core::{
 use ro_db::{
     ItemDb, JobDb, MapGrid, MapMobSpawns, MapNpcs, MobDb, NpcKind, RefineDb, SkillDb, SkillTreeDb,
 };
-use ro_engine::{EngineError, MapInstance, MapTransfer, PlaySnapshot, Registries};
+use ro_engine::{EngineError, MapInstance, MapTransfer, PlaySnapshot, Registries, SkillScripts};
 use ro_mechanics::BattleConfig;
 use ro_packets::{EventEncoder, Phase0EventEncoder};
 use tokio::sync::{mpsc, oneshot};
@@ -189,6 +189,7 @@ pub fn load_registries(paths: RegistryPaths<'_>) -> anyhow::Result<Registries> {
         skills: Arc::new(skills),
         skill_tree: Arc::new(skill_tree),
         battle: Arc::new(battle),
+        scripts: SkillScripts::builtin()?,
     })
 }
 

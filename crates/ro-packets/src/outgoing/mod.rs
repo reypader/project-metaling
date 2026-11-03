@@ -39,6 +39,7 @@
 //! - the rest of the entry burst: 0x01d7, 0x099b, 0x09e7, 0x0a24, 0x0ade
 //! - equipment (0x0999, 0x099a, 0x0bae, 0x013c, 0x013b, 0x0291) and the status icon 0x0983
 //! - combat (0x0977, 0x0139, 0x0110, 0x0acc, 0x07fa; the swing 0x08c8 is in `map`)
+//! - skills and item use (0x0b1a, 0x01de, 0x09cb, 0x01c8) and the long status var 0x00b1
 
 pub mod char;
 pub mod combat;
@@ -49,6 +50,7 @@ pub mod item;
 pub mod login;
 pub mod map;
 pub mod settings;
+pub mod skill;
 pub mod status;
 
 pub use char::{
@@ -95,6 +97,10 @@ pub use settings::{
     encode_zc_notify_unreadmail, encode_zc_overweight_percent, encode_zc_party_config,
     encode_zc_repute_info_default, encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_delete,
     encode_zc_skillinfo_list, encode_zc_skillinfo_update,
+};
+pub use skill::{
+    encode_zc_longpar_change, encode_zc_notify_skill2, encode_zc_use_item_ack2,
+    encode_zc_use_skill2, encode_zc_useskill_ack, SkillDamageParams,
 };
 pub use status::{
     encode_zc_attack_range, encode_zc_couplestatus, encode_zc_longlongpar_change,

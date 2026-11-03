@@ -14,7 +14,8 @@ use std::collections::BinaryHeap;
 use ro_core::{CharId, ServerEvent};
 use ro_db::{AmmoType, WeaponType};
 use ro_mechanics::{
-    calc_weapon_attack, check_distance_client, exp_share, shared_exp, AttackerView, WeaponAttack,
+    calc_weapon_attack, check_distance_client, exp_share, shared_exp, AttackContext, AttackerView,
+    WeaponAttack,
 };
 use smallvec::SmallVec;
 use tracing::warn;
@@ -30,13 +31,13 @@ use crate::stats::weapon_class;
 
 /// `0x0110` for a request inside `canact`: `NV_BASIC`, `USESKILL_FAIL_SKILLINTERVAL`.
 const SKILL_NV_BASIC: u16 = 1;
-const FAIL_SKILL_INTERVAL: u8 = 4;
+pub(crate) const FAIL_SKILL_INTERVAL: u8 = 4;
 /// `0x0110` for a gun with no bullets: skill 0, `USESKILL_FAIL_NEED_MORE_BULLET`.
 const FAIL_NEED_MORE_BULLET: u8 = 84;
 /// `0x013b` `ARROWFAIL_NO_AMMO`.
 const ARROW_FAIL_NO_AMMO: u16 = 0;
 /// `display_skill_fail` bit that hides the skill-interval refusal.
-const HIDE_SKILL_INTERVAL: u32 = 2;
+pub(crate) const HIDE_SKILL_INTERVAL: u32 = 2;
 /// `0x07fa` delete type of spent ammo.
 const DELETE_SPENT: u16 = 1;
 /// A diagonal step costs 14/10 of a straight one.
@@ -86,15 +87,37 @@ pub(crate) struct AttackState {
     /// The attack came from a step action: range + 1.
     step_attack: bool,
     /// The next swing may start here (ms).
-    attackable_at: u64,
-    /// A fresh request is accepted from here (ms).
-    canact_at: u64,
+    pub(crate) attackable_at: u64,
+    /// A fresh request (attack or skill) is accepted from here (ms).
+    pub(crate) canact_at: u64,
     /// The pending step action's target (rAthena `target_to`).
-    step_target: Option<Entity>,
+    pub(crate) step_target: Option<Entity>,
+    /// The pending step action is this skill cast instead of an attack (rAthena
+    /// `stepskill_id`/`stepskill_lv`).
+    pub(crate) step_skill: Option<StepSkill>,
     /// Bumped when the loop stops or restarts; an armed swing with an older value is stale.
     swing_gen: u32,
     /// Bumped when a step action is armed or replaced.
     step_gen: u32,
+    /// The cast between cast begin and castend (rAthena `ud.skill_id`/`skilltarget`).
+    pub(crate) cast: Option<PendingCast>,
+    /// Bumped by every cast begin; a `CastEnd` timer with an older value is stale.
+    pub(crate) cast_gen: u32,
+}
+
+/// A skill request stored as the step action.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) struct StepSkill {
+    pub(crate) skill: u16,
+    pub(crate) level: u16,
+}
+
+/// A begun cast waiting for its castend.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) struct PendingCast {
+    pub(crate) skill: u16,
+    pub(crate) level: u8,
+    pub(crate) target: Entity,
 }
 
 /// A hit swung at `target`, applied at swing + amotion (spec §2.7).
@@ -118,6 +141,11 @@ pub(crate) enum CombatTimer {
         generation: u32,
     },
     Hit(PendingHit),
+    /// The end of a cast begun with this generation (spec `specs/effects/spec.md` §2.3).
+    CastEnd {
+        caster: Entity,
+        generation: u32,
+    },
     /// A dead mob's `0x0080` type 1 around its death cell, then its despawn.
     Vanish {
         mob: Entity,
@@ -258,11 +286,12 @@ impl MapInstance {
             state.continuous = false;
             state.step_attack = false;
             state.step_target = None;
+            state.step_skill = None;
         }
     }
 
     /// A live mob in the grid (a dying mob has left it).
-    fn attackable(&self, target: Entity) -> bool {
+    pub(crate) fn attackable(&self, target: Entity) -> bool {
         self.world.entities.is_alive(target)
             && self.world.mobs.get(target).is_some_and(|mob| !mob.dying)
             && self.world.in_grid[target.index()]
@@ -300,6 +329,7 @@ impl MapInstance {
         state.step_attack = step_attack;
         state.swing_gen = state.swing_gen.wrapping_add(1);
         state.step_target = None;
+        state.step_skill = None;
         state.step_gen = state.step_gen.wrapping_add(1);
         if !in_reach {
             state.step_target = Some(target);
@@ -433,30 +463,24 @@ impl MapInstance {
             }
         }
         let long_range = needed.is_some();
-        let attacker = AttackerView {
-            weapon: weapon.map(|w| WeaponAttack {
-                atk: w.atk,
-                refine_atk: w.refine.bonus / 100,
-                level: w.level,
-                overrefine: status.overrefine[0],
-                dex_based: weapon_class(w.weapon_type).is_ranged(),
-            }),
-            equip_atk: if long_range {
-                ammo.map_or(0, |data| i32::try_from(data.attack).unwrap_or(i32::MAX))
-            } else {
-                0
-            },
-            long_range,
-            ..AttackerView::from_status(status)
+        let equip_atk = if long_range {
+            ammo.map_or(0, |data| i32::try_from(data.attack).unwrap_or(i32::MAX))
+        } else {
+            0
         };
+        let attacker = attacker_view(info, equip_atk, long_range);
         let amotion = status.amotion;
         let source_id = info.account_id.0;
         let target_id = mob.gid;
         let defender = mob.stats.defender;
         let dmotion = mob.stats.status.dmotion;
-        let result = calc_weapon_attack(&attacker, &defender, &self.battle, |n| {
-            u32::try_from(self.rng.below(u64::from(n))).unwrap_or(0)
-        });
+        let result = calc_weapon_attack(
+            &attacker,
+            &defender,
+            &AttackContext::NORMAL,
+            &self.battle,
+            |n| u32::try_from(self.rng.below(u64::from(n))).unwrap_or(0),
+        );
         if long_range && self.battle.arrow_decrement > 0 {
             if let Some(slot) = ammo_slot {
                 self.spend_ammo(e, slot);
@@ -479,24 +503,38 @@ impl MapInstance {
             },
         );
         if hit {
-            let hit = PendingHit {
-                attacker: e,
-                target,
-                damage: result.damage,
-                max_distance: chebyshev(self.cell(e), self.cell(target)) + AREA_SIZE,
-            };
-            let delay = if self.battle.delay_battle_damage {
-                u64::try_from(amotion).unwrap_or(0)
-            } else {
-                1
-            };
-            if delay <= 1 {
-                self.apply_hit(&hit, due);
-            } else {
-                self.combat_timers.push(due + delay, CombatTimer::Hit(hit));
-            }
+            self.queue_hit(e, target, result.damage, amotion, due);
         }
         true
+    }
+
+    /// A hit of `damage` from `e` on mob `target`, landing at `due + amotion` (or at once
+    /// without `delay_battle_damage`) through the skip rules of `apply_hit`. Swings and weapon
+    /// skills share it.
+    pub(crate) fn queue_hit(
+        &mut self,
+        e: Entity,
+        target: Entity,
+        damage: i32,
+        amotion: i32,
+        due: u64,
+    ) {
+        let hit = PendingHit {
+            attacker: e,
+            target,
+            damage,
+            max_distance: chebyshev(self.cell(e), self.cell(target)) + AREA_SIZE,
+        };
+        let delay = if self.battle.delay_battle_damage {
+            u64::try_from(amotion).unwrap_or(0)
+        } else {
+            1
+        };
+        if delay <= 1 {
+            self.apply_hit(&hit, due);
+        } else {
+            self.combat_timers.push(due + delay, CombatTimer::Hit(hit));
+        }
     }
 
     /// One ammo off the worn stack (spec §2.6): the last one comes off first (`0x099a`), then
@@ -551,7 +589,7 @@ impl MapInstance {
     }
 
     /// `0x0977` to every damage-log member on this map within `AREA_SIZE` of the mob.
-    fn send_hp_bar(&mut self, target: Entity) {
+    pub(crate) fn send_hp_bar(&mut self, target: Entity) {
         let Some(mob) = self.world.mobs.get(target) else {
             return;
         };
@@ -634,6 +672,25 @@ impl MapInstance {
         }
     }
 
+    /// Stores a skill request as the step action on `target` (rAthena `stepaction` with
+    /// `stepskill_id`), replacing any pending one: it fires half a step after the next step
+    /// ends.
+    pub(crate) fn set_step_skill(&mut self, e: Entity, target: Entity, step: StepSkill) {
+        let state = self.world.attacks.entry(e);
+        state.step_target = Some(target);
+        state.step_skill = Some(step);
+        state.step_gen = state.step_gen.wrapping_add(1);
+    }
+
+    /// rAthena `unit_stop_stepaction`: no pending step action, and an armed one goes stale.
+    pub(crate) fn clear_step_action(&mut self, e: Entity) {
+        if let Some(state) = self.world.attacks.get_mut(e) {
+            state.step_target = None;
+            state.step_skill = None;
+            state.step_gen = state.step_gen.wrapping_add(1);
+        }
+    }
+
     /// After a completed walk step of a unit with a pending step action: fire it half a step
     /// later (catalog §7.2).
     pub(crate) fn arm_step_action(&mut self, e: Entity, diagonal: bool, step_end: u64) {
@@ -673,6 +730,14 @@ impl MapInstance {
             return;
         };
         let continuous = state.continuous;
+        if let Some(step) = state.step_skill.take() {
+            // The cast request runs again from the top (rAthena `unit_skilluse_id`).
+            if self.world.entities.is_alive(target) {
+                let target_gid = self.gid(target);
+                self.use_skill(e, step.skill, step.level, target_gid, due);
+            }
+            return;
+        }
         if !self.attackable(target) || chebyshev(self.cell(e), self.cell(target)) > AREA_SIZE {
             return;
         }
@@ -705,6 +770,11 @@ impl MapInstance {
                     }
                 }
                 CombatTimer::Hit(hit) => self.apply_hit(&hit, due),
+                CombatTimer::CastEnd { caster, generation } => {
+                    if self.world.entities.is_alive(caster) {
+                        self.cast_end(caster, generation, due);
+                    }
+                }
                 CombatTimer::Vanish { mob, cell } => {
                     if self.world.entities.is_alive(mob) {
                         self.vanish_dead_mob(mob, cell);
@@ -712,5 +782,28 @@ impl MapInstance {
                 }
             }
         }
+    }
+}
+
+/// What `calc_weapon_attack` reads of a player: its status, the right-hand weapon, and the
+/// ammo ATK and range of a ranged swing (`equip_atk` 0 and `long_range` false for melee and for
+/// weapon skills).
+pub(crate) fn attacker_view(
+    info: &crate::world::PlayerInfo,
+    equip_atk: i32,
+    long_range: bool,
+) -> AttackerView {
+    let status = &info.derived;
+    AttackerView {
+        weapon: info.gear.right.map(|w| WeaponAttack {
+            atk: w.atk,
+            refine_atk: w.refine.bonus / 100,
+            level: w.level,
+            overrefine: status.overrefine[0],
+            dex_based: weapon_class(w.weapon_type).is_ranged(),
+        }),
+        equip_atk,
+        long_range,
+        ..AttackerView::from_status(status)
     }
 }

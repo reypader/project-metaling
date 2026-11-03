@@ -1,5 +1,6 @@
-//! Renewal normal-attack damage (`specs/combat/spec.md` §2.5; catalog `mechanics/combat.md`
-//! §1-§5, checked against the `combat_sequence_1.txt` vectors in §7.3) and the client's
+//! Renewal weapon-attack damage for normal attacks and weapon skills (`specs/combat/spec.md`
+//! §2.5, `specs/effects/spec.md` §2.6; catalog `mechanics/combat.md` §1-§5, checked against the
+//! `combat_sequence_1.txt` vectors in §7.3, and `scripting/skills.md` §9) and the client's
 //! circular attack range (`auto_attack.md` §2). Pure: the engine builds the views from `Status`
 //! and the gear, and passes the random source.
 
@@ -152,6 +153,39 @@ impl DefenderView {
     }
 }
 
+/// What kind of weapon attack this is: a normal attack, or a weapon skill's modifiers.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct AttackContext {
+    /// Skill ratio in percent, applied to the ATK sum after P.ATK, before Res and DEF.
+    pub ratio: i32,
+    /// Hit-rate modifier in percent of `hit − flee`, before the min/max clamp (Bash).
+    pub hit_pct: i32,
+    /// Whether the attack may crit. Skills can't unless their data says so.
+    pub can_crit: bool,
+    /// Whether the defender's perfect dodge (`flee2`) applies. Never for skills.
+    pub can_lucky_dodge: bool,
+}
+
+impl AttackContext {
+    /// A normal attack: ratio 100, no hit modifier, crit and lucky dodge on.
+    pub const NORMAL: Self = Self {
+        ratio: 100,
+        hit_pct: 0,
+        can_crit: true,
+        can_lucky_dodge: true,
+    };
+
+    /// A weapon skill: no crit and no lucky dodge.
+    pub fn skill(ratio: i32, hit_pct: i32) -> Self {
+        Self {
+            ratio,
+            hit_pct,
+            can_crit: false,
+            can_lucky_dodge: false,
+        }
+    }
+}
+
 /// How a swing landed.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum HitKind {
@@ -198,22 +232,27 @@ impl DamageResult {
     }
 }
 
-/// A normal weapon attack. `roll(n)` returns `rnd() % n`; it is called in rAthena's order:
-/// lucky dodge (only when the defender has `flee2`), crit (only with a positive chance), hit
-/// (not after a crit), then the weapon variance and the overrefine.
+/// A weapon attack. `roll(n)` returns `rnd() % n`; it is called in rAthena's order: lucky
+/// dodge (only when `context` allows it and the defender has `flee2`), crit (only when allowed
+/// and with a positive chance), hit (not after a crit), then the weapon variance and the
+/// overrefine. A skill (`AttackContext::skill`) therefore rolls the hit, then the variance.
 pub fn calc_weapon_attack(
     attacker: &AttackerView,
     defender: &DefenderView,
+    context: &AttackContext,
     config: &BattleConfig,
     mut roll: impl FnMut(u32) -> u32,
 ) -> DamageResult {
-    if defender.flee2 > 0 && below(roll(PER_MILLE), defender.flee2) {
+    if context.can_lucky_dodge && defender.flee2 > 0 && below(roll(PER_MILLE), defender.flee2) {
         return DamageResult::missed(HitKind::LuckyDodge);
     }
     let cri = attacker.cri - defender.luk * CRIT_LUK_FACTOR;
-    let crit = cri > 0 && below(roll(PER_MILLE), cri);
+    let crit = context.can_crit && cri > 0 && below(roll(PER_MILLE), cri);
     if !crit {
-        let hitrate = (attacker.hit - defender.flee).clamp(
+        let mut hitrate = attacker.hit - defender.flee;
+        // C int math: truncates toward zero, also for a negative `hit − flee`.
+        hitrate += hitrate * context.hit_pct / 100;
+        let hitrate = hitrate.clamp(
             i32::try_from(config.min_hitrate).unwrap_or(0),
             i32::try_from(config.max_hitrate).unwrap_or(100),
         );
@@ -244,7 +283,8 @@ pub fn calc_weapon_attack(
     // `percentAtk` is `(weapon + equip) × atk_rate / 100`: 0 until item bonuses exist.
     let mut damage = status_atk + weapon_atk + equip_atk;
     damage = damage * (100 + i64::from(attacker.patk)) / 100;
-    // The skill ratio of a normal attack is 100.
+    // `masteryAtk` would be added here; there are no mastery skills yet. The ratio covers it.
+    damage = damage * i64::from(context.ratio) / 100;
 
     if defender.res > 0 {
         let res = f64::from(defender.res);

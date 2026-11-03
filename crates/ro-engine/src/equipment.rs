@@ -461,17 +461,10 @@ pub(crate) fn check_equip(
     weapon_type: u16,
 ) -> Result<(), Refusal> {
     let fail = Err(Refusal::Result(EQUIP_FAIL));
-    if (item.equip_level_min != 0 && wearer.base_level < item.equip_level_min)
-        || (item.equip_level_max != 0 && wearer.base_level > item.equip_level_max)
-    {
+    if !level_allows(item, wearer) {
         return Err(Refusal::Result(EQUIP_FAIL_LEVEL));
     }
-    let sex_ok = match item.gender {
-        Gender::Both => true,
-        Gender::Female => wearer.sex == Sex::Female,
-        Gender::Male => wearer.sex == Sex::Male,
-    };
-    if !sex_ok || entry.attribute != 0 {
+    if !gender_allows(item, wearer) || entry.attribute != 0 {
         return fail;
     }
     if let Some(ammo) = item.ammo_type.filter(|_| item.item_type == ItemType::Ammo) {
@@ -481,6 +474,28 @@ pub(crate) fn check_equip(
         return fail;
     }
     Ok(())
+}
+
+/// `pc_isUseitem`'s restrictions on the user (catalog `mechanics/inventory.md` §7.2 row 15):
+/// gender, base level, job and class, as for equipment.
+pub(crate) fn usable_by(item: &ItemData, user: &Wearer) -> bool {
+    gender_allows(item, user)
+        && level_allows(item, user)
+        && job_can_use(&item.jobs, user.mapid)
+        && class_can_use(item.classes, user.mapid)
+}
+
+fn level_allows(item: &ItemData, wearer: &Wearer) -> bool {
+    (item.equip_level_min == 0 || wearer.base_level >= item.equip_level_min)
+        && (item.equip_level_max == 0 || wearer.base_level <= item.equip_level_max)
+}
+
+fn gender_allows(item: &ItemData, wearer: &Wearer) -> bool {
+    match item.gender {
+        Gender::Both => true,
+        Gender::Female => wearer.sex == Sex::Female,
+        Gender::Male => wearer.sex == Sex::Male,
+    }
 }
 
 fn ammo_check(ammo: AmmoType, weapon_type: u16, mapid: u32) -> Result<(), Refusal> {

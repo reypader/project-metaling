@@ -14,8 +14,8 @@ use std::path::Path;
 
 use anyhow::Context;
 use ro_db::{
-    JobTree, SkillData, SkillDb, SkillFlags, SkillRequirement, SkillTreeDb, TreeEntry,
-    MAX_SKILL_LEVEL,
+    CastTimeFlags, DamageFlags, JobTree, SkillData, SkillDb, SkillElement, SkillFlags,
+    SkillItemCost, SkillRequirement, SkillTreeDb, TreeEntry, WeaponType, MAX_SKILL_LEVEL,
 };
 use serde::de::{MapAccess, Visitor};
 use serde::{Deserialize, Deserializer};
@@ -185,8 +185,9 @@ fn attribution(commit: &str) -> String {
         "# SPDX-License-Identifier: GPL-3.0-only\n\
          # Derived from rAthena (https://github.com/rathena/rathena) commit {commit}, \
          {SKILL_DB_SOURCE}, {SKILL_TREE_SOURCE}.\n\
-         # Modified: trimmed to learn-only fields, per-level arrays expanded, tree inheritance \
-         resolved, names resolved to ids, by tools/skill-import. Do not edit by hand.\n\
+         # Modified: trimmed to the fields Metaling uses, per-level arrays expanded, tree \
+         inheritance resolved, names resolved to ids, by tools/skill-import. Do not edit by \
+         hand.\n\
          # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.\n"
     )
 }
@@ -208,7 +209,8 @@ fn parse_body<T: serde::de::DeserializeOwned>(text: &str) -> anyhow::Result<Vec<
 
 // ---------- skill_db.yml ----------
 
-/// One `skill_db.yml` entry. Keys this importer doesn't use are ignored.
+/// One `skill_db.yml` entry. Keys this importer doesn't use are ignored. Shapes: catalog
+/// `db/skills.md` "skill_db.yml cast/requirement fields".
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 struct RawSkill {
@@ -220,12 +222,29 @@ struct RawSkill {
     requires: Option<RawRequires>,
     #[serde(default)]
     flags: BTreeMap<String, bool>,
+    cast_time: Option<PerLevel<RawTime>>,
+    fixed_cast_time: Option<PerLevel<RawTime>>,
+    after_cast_act_delay: Option<PerLevel<RawTime>>,
+    after_cast_walk_delay: Option<PerLevel<RawTime>>,
+    cooldown: Option<PerLevel<RawTime>>,
+    hit_count: Option<PerLevel<RawCount>>,
+    element: Option<RawElement>,
+    #[serde(default)]
+    damage_flags: BTreeMap<String, bool>,
+    #[serde(default)]
+    cast_time_flags: BTreeMap<String, bool>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Default, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 struct RawRequires {
-    sp_cost: Option<PerLevel<RawSpCost>>,
+    sp_cost: Option<PerLevel<RawAmount>>,
+    hp_cost: Option<PerLevel<RawAmount>>,
+    zeny_cost: Option<PerLevel<RawAmount>>,
+    weapon: Option<BTreeMap<String, bool>>,
+    #[serde(default)]
+    item_cost: Vec<RawItemCost>,
+    state: Option<String>,
 }
 
 /// rAthena's per-level keys: one value for every level, or a `{Level, value}` list.
@@ -236,18 +255,54 @@ enum PerLevel<T> {
     List(Vec<T>),
 }
 
+/// One `{Level, value}` entry of a per-level list.
+trait Entry {
+    fn pair(&self) -> (u16, i32);
+}
+
+macro_rules! entry {
+    ($name:ident, $field:ident) => {
+        #[derive(Debug, Deserialize)]
+        #[serde(rename_all = "PascalCase")]
+        struct $name {
+            level: u16,
+            $field: i32,
+        }
+
+        impl Entry for $name {
+            fn pair(&self) -> (u16, i32) {
+                (self.level, self.$field)
+            }
+        }
+    };
+}
+
+entry!(RawRange, size);
+entry!(RawAmount, amount);
+entry!(RawTime, time);
+entry!(RawCount, count);
+
+/// `Element`: one name for every level, or a `{Level, Element}` list.
 #[derive(Debug, Deserialize)]
-#[serde(rename_all = "PascalCase")]
-struct RawRange {
-    level: u16,
-    size: i32,
+#[serde(untagged)]
+enum RawElement {
+    Scalar(String),
+    List(Vec<RawElementEntry>),
 }
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-struct RawSpCost {
+struct RawElementEntry {
     level: u16,
+    element: String,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "PascalCase")]
+struct RawItemCost {
+    item: String,
     amount: i32,
+    level: Option<u16>,
 }
 
 fn convert_skill(raw: RawSkill, warnings: &mut Vec<String>) -> Option<SkillData> {
@@ -274,25 +329,43 @@ fn convert_skill(raw: RawSkill, warnings: &mut Vec<String>) -> Option<SkillData>
         }
     };
     let levels = usize::from(raw.max_level);
-    let sp = raw.requires.and_then(|r| r.sp_cost).map(|sp| match sp {
-        PerLevel::Scalar(value) => Ok([value; SLOTS]),
-        PerLevel::List(list) => {
-            expand(&list.iter().map(|e| (e.level, e.amount)).collect::<Vec<_>>())
+    let requires = raw.requires.unwrap_or_default();
+    // Expands each per-level key; a bad level drops the whole skill, as in rAthena.
+    let mut bad_level = None;
+    let sp_cost = slots_of(requires.sp_cost.as_ref(), &mut bad_level);
+    let hp_cost = slots_of(requires.hp_cost.as_ref(), &mut bad_level);
+    let zeny_cost = slots_of(requires.zeny_cost.as_ref(), &mut bad_level);
+    let range = slots_of(raw.range.as_ref(), &mut bad_level);
+    let cast_time = slots_of(raw.cast_time.as_ref(), &mut bad_level);
+    let fixed_cast_time = slots_of(raw.fixed_cast_time.as_ref(), &mut bad_level);
+    let act_delay = slots_of(raw.after_cast_act_delay.as_ref(), &mut bad_level);
+    let walk_delay = slots_of(raw.after_cast_walk_delay.as_ref(), &mut bad_level);
+    let cooldown = slots_of(raw.cooldown.as_ref(), &mut bad_level);
+    let hit_count = slots_of(raw.hit_count.as_ref(), &mut bad_level);
+    let element = match raw.element.as_ref().map(|e| elements(e, &label, warnings)) {
+        Some(Err(e)) => {
+            bad_level.get_or_insert(e);
+            None
         }
-    });
-    let range = raw.range.map(|range| match range {
-        PerLevel::Scalar(value) => Ok([value; SLOTS]),
-        PerLevel::List(list) => expand(&list.iter().map(|e| (e.level, e.size)).collect::<Vec<_>>()),
-    });
-    let (sp_cost, range) = match (sp.transpose(), range.transpose()) {
-        (Ok(sp), Ok(range)) => (sp, range),
-        (Err(e), _) | (_, Err(e)) => {
-            warnings.push(format!("{label}: {e}, skipped"));
-            return None;
-        }
+        Some(Ok(slots)) => Some(slots),
+        None => None,
     };
-    let sp_cost = narrow(sp_cost, levels, &label, "SpCost", warnings);
-    let range = narrow(range, levels, &label, "Range", warnings);
+    if let Some(e) = bad_level {
+        warnings.push(format!("{label}: {e}, skipped"));
+        return None;
+    }
+    let element = element
+        .map(|slots| slots[..levels].to_vec())
+        .filter(|list| list.iter().any(|e| *e != SkillElement::Neutral))
+        .unwrap_or_default();
+    let item_cost = requires
+        .item_cost
+        .into_iter()
+        .filter_map(|cost| item_cost(cost, raw.max_level, &label, warnings))
+        .collect();
+    let state = requires
+        .state
+        .filter(|state| !state.eq_ignore_ascii_case("None"));
     let mut flags = SkillFlags::default();
     for (name, &on) in &raw.flags {
         let slot = match name.as_str() {
@@ -310,14 +383,228 @@ fn convert_skill(raw: RawSkill, warnings: &mut Vec<String>) -> Option<SkillData>
         };
         *slot = on;
     }
+    let mut damage_flags = DamageFlags::default();
+    for (name, &on) in &raw.damage_flags {
+        let slot = match name.as_str() {
+            "NoDamage" => &mut damage_flags.no_damage,
+            "Splash" => &mut damage_flags.splash,
+            "SplashSplit" => &mut damage_flags.splash_split,
+            "IgnoreAtkCard" => &mut damage_flags.ignore_atk_card,
+            "IgnoreElement" => &mut damage_flags.ignore_element,
+            "IgnoreDefense" => &mut damage_flags.ignore_defense,
+            "IgnoreFlee" => &mut damage_flags.ignore_flee,
+            "IgnoreDefCard" => &mut damage_flags.ignore_def_card,
+            "Critical" => &mut damage_flags.critical,
+            "IgnoreLongCard" => &mut damage_flags.ignore_long_card,
+            "SimpleDefense" => &mut damage_flags.simple_defense,
+            other => {
+                warnings.push(format!("{label}: unknown DamageFlags '{other}', ignored"));
+                continue;
+            }
+        };
+        *slot = on;
+    }
+    let mut cast_time_flags = CastTimeFlags::default();
+    for (name, &on) in &raw.cast_time_flags {
+        let slot = match name.as_str() {
+            "IgnoreDex" => &mut cast_time_flags.ignore_dex,
+            "IgnoreStatus" => &mut cast_time_flags.ignore_status,
+            "IgnoreItemBonus" => &mut cast_time_flags.ignore_item_bonus,
+            other => {
+                warnings.push(format!("{label}: unknown CastTimeFlags '{other}', ignored"));
+                continue;
+            }
+        };
+        *slot = on;
+    }
+    let weapons = requires
+        .weapon
+        .map(|map| weapons(&map, &label, warnings))
+        .unwrap_or_default();
     Some(SkillData {
         id: raw.id,
         name: raw.name,
         max_level: raw.max_level,
         inf,
-        sp_cost,
-        range,
+        sp_cost: narrow(sp_cost, levels, &label, "SpCost", warnings),
+        range: narrow(range, levels, &label, "Range", warnings),
         flags,
+        cast_time: narrow(cast_time, levels, &label, "CastTime", warnings),
+        fixed_cast_time: narrow(fixed_cast_time, levels, &label, "FixedCastTime", warnings),
+        after_cast_act_delay: narrow(act_delay, levels, &label, "AfterCastActDelay", warnings),
+        after_cast_walk_delay: narrow(walk_delay, levels, &label, "AfterCastWalkDelay", warnings),
+        cooldown: narrow(cooldown, levels, &label, "Cooldown", warnings),
+        hit_count: narrow(hit_count, levels, &label, "HitCount", warnings),
+        element,
+        damage_flags,
+        cast_time_flags,
+        hp_cost: narrow(hp_cost, levels, &label, "HpCost", warnings),
+        zeny_cost: narrow(zeny_cost, levels, &label, "ZenyCost", warnings),
+        weapons,
+        item_cost,
+        state,
+    })
+}
+
+/// A per-level key's 13 slots; `None` when absent. A bad level is kept in `bad` (first wins).
+fn slots_of<T: Entry>(
+    key: Option<&PerLevel<T>>,
+    bad: &mut Option<BadLevel>,
+) -> Option<[i32; SLOTS]> {
+    let result = match key? {
+        PerLevel::Scalar(value) => Ok([*value; SLOTS]),
+        PerLevel::List(list) => expand(&list.iter().map(Entry::pair).collect::<Vec<_>>()),
+    };
+    match result {
+        Ok(slots) => Some(slots),
+        Err(e) => {
+            bad.get_or_insert(e);
+            None
+        }
+    }
+}
+
+/// `Element` slots. A list sets the listed levels; unlisted levels below the highest listed one
+/// stay Neutral (rAthena's zeroed slot), and the levels above it repeat it. Element codes aren't
+/// numbers to extrapolate, so the `expand` series rule doesn't apply.
+fn elements(
+    raw: &RawElement,
+    label: &str,
+    warnings: &mut Vec<String>,
+) -> Result<[SkillElement; SLOTS], BadLevel> {
+    let mut named = |name: &str| {
+        skill_element(name).unwrap_or_else(|| {
+            warnings.push(format!("{label}: unknown Element '{name}', using Neutral"));
+            SkillElement::Neutral
+        })
+    };
+    let mut out = [SkillElement::Neutral; SLOTS];
+    match raw {
+        RawElement::Scalar(name) => out = [named(name); SLOTS],
+        RawElement::List(list) => {
+            let mut top = 0;
+            for entry in list {
+                let slot = usize::from(entry.level);
+                if !(1..=SLOTS).contains(&slot) {
+                    return Err(BadLevel(entry.level));
+                }
+                out[slot - 1] = named(&entry.element);
+                top = top.max(slot);
+            }
+            if top > 0 {
+                let last = out[top - 1];
+                out[top..].fill(last);
+            }
+        }
+    }
+    Ok(out)
+}
+
+fn skill_element(name: &str) -> Option<SkillElement> {
+    const NAMES: [(&str, SkillElement); 13] = [
+        ("Neutral", SkillElement::Neutral),
+        ("Water", SkillElement::Water),
+        ("Earth", SkillElement::Earth),
+        ("Fire", SkillElement::Fire),
+        ("Wind", SkillElement::Wind),
+        ("Poison", SkillElement::Poison),
+        ("Holy", SkillElement::Holy),
+        ("Dark", SkillElement::Dark),
+        ("Ghost", SkillElement::Ghost),
+        ("Undead", SkillElement::Undead),
+        ("Weapon", SkillElement::Weapon),
+        ("Endowed", SkillElement::Endowed),
+        ("Random", SkillElement::Random),
+    ];
+    NAMES
+        .iter()
+        .find(|(n, _)| n.eq_ignore_ascii_case(name))
+        .map(|(_, e)| *e)
+}
+
+/// `Requires.Weapon` as a sorted set; empty = any weapon (`All: true`, or every key false).
+fn weapons(
+    map: &BTreeMap<String, bool>,
+    label: &str,
+    warnings: &mut Vec<String>,
+) -> Vec<WeaponType> {
+    const NAMES: [(&str, WeaponType); 24] = [
+        ("Fist", WeaponType::Fist),
+        ("Dagger", WeaponType::Dagger),
+        ("1hSword", WeaponType::OneHandSword),
+        ("2hSword", WeaponType::TwoHandSword),
+        ("1hSpear", WeaponType::OneHandSpear),
+        ("2hSpear", WeaponType::TwoHandSpear),
+        ("1hAxe", WeaponType::OneHandAxe),
+        ("2hAxe", WeaponType::TwoHandAxe),
+        ("Mace", WeaponType::Mace),
+        ("2hMace", WeaponType::TwoHandMace),
+        ("Staff", WeaponType::Staff),
+        ("Bow", WeaponType::Bow),
+        ("Knuckle", WeaponType::Knuckle),
+        ("Musical", WeaponType::Musical),
+        ("Whip", WeaponType::Whip),
+        ("Book", WeaponType::Book),
+        ("Katar", WeaponType::Katar),
+        ("Revolver", WeaponType::Revolver),
+        ("Rifle", WeaponType::Rifle),
+        ("Gatling", WeaponType::Gatling),
+        ("Shotgun", WeaponType::Shotgun),
+        ("Grenade", WeaponType::Grenade),
+        ("Huuma", WeaponType::Huuma),
+        ("2hStaff", WeaponType::TwoHandStaff),
+    ];
+    if map.get("All").copied().unwrap_or(false) {
+        return Vec::new();
+    }
+    let mut set = BTreeSet::new();
+    for (name, &on) in map {
+        if name == "All" {
+            continue;
+        }
+        let Some(&(_, weapon)) = NAMES.iter().find(|(n, _)| n.eq_ignore_ascii_case(name)) else {
+            warnings.push(format!("{label}: Weapon '{name}' not supported, ignored"));
+            continue;
+        };
+        if on {
+            set.insert(weapon);
+        } else {
+            set.remove(&weapon);
+        }
+    }
+    set.into_iter().collect()
+}
+
+fn item_cost(
+    raw: RawItemCost,
+    max_level: u8,
+    label: &str,
+    warnings: &mut Vec<String>,
+) -> Option<SkillItemCost> {
+    let Ok(amount) = u32::try_from(raw.amount) else {
+        warnings.push(format!(
+            "{label}: ItemCost {} amount {}, dropped",
+            raw.item, raw.amount
+        ));
+        return None;
+    };
+    let level = match raw.level {
+        None => None,
+        Some(level) => match u8::try_from(level) {
+            Ok(level) if (1..=max_level).contains(&level) => Some(level),
+            _ => {
+                warnings.push(format!(
+                    "{label}: ItemCost {} level {level}, dropped",
+                    raw.item
+                ));
+                return None;
+            }
+        },
+    };
+    Some(SkillItemCost {
+        item: raw.item,
+        amount,
+        level,
     })
 }
 

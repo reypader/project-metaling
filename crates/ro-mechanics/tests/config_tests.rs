@@ -47,6 +47,9 @@ fn mech_06_defaults_are_the_shipped_values() {
     assert_eq!((c.exp_bonus_attacker, c.exp_bonus_max_attacker), (25, 12));
     assert!(c.monster_hp_bars_info);
     assert_eq!(c.display_skill_fail, 2);
+    // Casting and item use (catalog `scripting/skills.md` §4.1, `mechanics/inventory.md` §7.2).
+    assert_eq!((c.vcast_stat_scale, c.default_fixed_castrate), (530, 20));
+    assert_eq!(c.item_use_interval, 100);
 }
 
 /// MECH-06: a partial file overrides only its keys; an unknown key is an error.
@@ -100,6 +103,8 @@ fn validation_rejects_out_of_range_values() {
         "trait_points_job_change: 4294967295\n",
         "arrow_decrement: 3\n",
         "exp_bonus_max_attacker: 0\n",
+        "vcast_stat_scale: 0\n",
+        "default_fixed_castrate: 101\n",
     ] {
         assert!(parse(bad).validate().is_err(), "{bad}");
     }
@@ -123,6 +128,7 @@ fn shipped_battle_yml_equals_the_defaults() {
         "arrow_decrement:",
         "exp_bonus_max_attacker:",
         "display_skill_fail:",
+        "item_use_interval:",
     ] {
         assert!(text.contains(key), "config/battle.yml lists {key}");
     }

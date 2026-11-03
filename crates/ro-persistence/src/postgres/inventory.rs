@@ -8,7 +8,7 @@ use sqlx::query;
 use ro_core::{
     CharId, CharacterInventory, CharacterLooks, CharacterProgress, CharacterStatus, InventoryItem,
     ItemId, ItemOption, LearnedSkill, SkillFlag, INVENTORY_SLOTS, ITEM_CARD_SLOTS,
-    ITEM_OPTION_SLOTS,
+    ITEM_OPTION_SLOTS, MAX_ZENY,
 };
 
 use super::{get_col, map_sqlx_error};
@@ -198,7 +198,7 @@ impl InventoryRepository for PostgresRepo {
         let Some(row) = query(
             "SELECT c.str, c.agi, c.vit, c.int_stat, c.dex, c.luk, c.job_level, c.status_point, \
              c.skill_point, c.base_exp, c.job_exp, c.hp, c.max_hp, c.sp, c.max_sp, \
-             c.pow, c.sta, c.wis, c.spl, c.con, c.crt, c.trait_point, c.ap, \
+             c.pow, c.sta, c.wis, c.spl, c.con, c.crt, c.trait_point, c.ap, c.zeny, \
              c.change_level_2nd, c.change_level_3rd, c.change_level_4th, \
              c.unique_item_counter, a.group_id \
              FROM characters c JOIN accounts a ON a.account_id = c.account_id \
@@ -238,6 +238,8 @@ impl InventoryRepository for PostgresRepo {
             trait_point: int(&row, "trait_point")?,
             // Kept over logout (`keep_ap_on_logout`); the spawn clamps it to MaxAP.
             ap: int(&row, "ap")?,
+            // A hand-edited value above the cap loads capped (spec §2.8).
+            zeny: int::<u32>(&row, "zeny")?.min(MAX_ZENY),
         };
         let unique_item_counter = big(&row, "unique_item_counter")?;
         let group_id: i32 = get_col(&row, "group_id")?;
@@ -321,8 +323,8 @@ impl InventoryRepository for PostgresRepo {
              status_point = $19, skill_point = $20, hp = $21, max_hp = $22, sp = $23, \
              max_sp = $24, pow = $25, sta = $26, wis = $27, spl = $28, con = $29, crt = $30, \
              trait_point = $31, ap = $32, change_level_2nd = $33, change_level_3rd = $34, \
-             change_level_4th = $35 \
-             WHERE char_id = $36",
+             change_level_4th = $35, zeny = $36 \
+             WHERE char_id = $37",
         )
         .bind(i64::from(inventory.unique_item_counter))
         .bind(i32::from(looks.weapon_type))
@@ -359,6 +361,7 @@ impl InventoryRepository for PostgresRepo {
         .bind(to_small("change_level_2nd", progress.change_level[0])?)
         .bind(to_small("change_level_3rd", progress.change_level[1])?)
         .bind(to_small("change_level_4th", progress.change_level[2])?)
+        .bind(to_int("zeny", status.zeny)?)
         .bind(char_id)
         .execute(&mut *tx)
         .await

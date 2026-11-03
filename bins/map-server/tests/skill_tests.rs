@@ -48,7 +48,7 @@ fn bin_skill_02_skill_data_dir_is_required() {
     std::fs::create_dir_all(&dir).expect("temp dir");
     std::fs::write(
         dir.join(ro_db::SKILL_DATA_FILE),
-        "Header: {Type: SKILL_DATA, Version: 1}\nBody:\n- {Id: 1, Name: NV_BASIC, MaxLevel: 9}\n",
+        "Header: {Type: SKILL_DATA, Version: 2}\nBody:\n- {Id: 1, Name: NV_BASIC, MaxLevel: 9}\n",
     )
     .expect("write skills");
     std::fs::write(

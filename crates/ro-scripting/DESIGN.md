@@ -1,8 +1,8 @@
 # Project Metaling — Scripting Design (`crates/ro-scripting`)
 
-> **Status (2026-10-31).** §1-§5 are the effects foundation, planned in `specs/effects/` (skills and item
-> effects, Rust hooks, a feature-gated Lua spike). §6 (shared unit API) and §7 (NPC dialogs) are later
-> phases. Research: catalog `scripting/skills.md`, `scripting/items.md`, `scripting/units.md`,
+> **Status (2026-11-03).** §1-§4 are implemented (`specs/effects/`: skills and item effects through Rust
+> hooks). §5 is a feature-gated spike (`LuaHooks`), not used by the engine. §6 (shared unit API) and §7
+> (NPC dialogs) are later phases. Deferred work: `DEFERRED.md` "effects". Research: catalog `scripting/skills.md`, `scripting/items.md`, `scripting/units.md`,
 > `scripting/lua_notes.md`, `scripting/rust-ro-script-architecture.md`.
 
 ## 1. Purpose
@@ -77,8 +77,12 @@ Players, mobs, NPC scripts and items all cast through the same rAthena path (`un
 | `CastSource` | Requirements | Cast time and delay | Status |
 | :--- | :--- | :--- | :--- |
 | `Learned` | SP, zeny, weapon… from `skill_db`, checked at cast start and again at castend, consumed at castend | `skill_db` + renewal cast formula + `delayfix` | first slice |
-| `Item(ItemId)` | skipped (`itemskill`, Fly Wing, scrolls); the delayed-consume item is deleted at castend | `skill_db` | later |
+| `ItemSkill(ItemId)` | skipped (`itemskill`, Fly Wing, scrolls); the delayed-consume item is deleted at cast begin | `skill_db` | later |
 | `Mob` | none | the `mob_skill_db` row, unchanged | later (needs mob AI) |
+| `ItemUse(ItemId)` | not a cast: an item's own use script (a potion), run from `0x0439` | none | first slice |
+
+A Fly Wing makes two calls: `ItemUse(601)` for its script, which will return a cast effect, then
+`ItemSkill(601)` for the teleport cast the client sends back (settled 2026-11-01).
 
 ## 4. Unit handles (settled 2026-10-31)
 
@@ -92,7 +96,12 @@ The old open note asked how `ro-scripting` names an engine entity without a reve
 
 ## 5. Lua backend
 
-Planned shape. The `specs/effects` spike (M9) tests it on one skill.
+Planned shape. The `specs/effects` spike (M9, 2026-11-03) built `LuaHooks` behind the `lua` feature (`src/lua.rs`,
+`lua/sm_bash.lua`, `lua/item_heal.lua`). It loads definitions and hooks from a returned table and matches the Rust
+backend effect for effect and roll for roll (SCR-LUA-01). The benchmark (`examples/hook_bench.rs`, catalog
+`scripting/lua_notes.md` §3.1) puts a bare call at ~35 ns, but a hook call at ~2.5 µs with a fresh ctx table and
+~6.5 µs with scoped userdata, against 4-20 ns for Rust. Most of that is building and reading tables, so the production
+backend should pass less (see the context bullet). The spike is not wired into the engine.
 
 * **Engine:** `mlua` (MIT), vendored Lua 5.4 to start. Luau is the alternative if sandboxing matters more
   (its `sandbox` mode is Luau-only).
@@ -101,8 +110,11 @@ Planned shape. The `specs/effects` spike (M9) tests it on one skill.
 * **Definitions move into Lua.** A file returns a table: the effect specs and hook functions for its skills
   or items. The loader converts the table into the same `SkillDef`/`HookId` registry the Rust definitions
   fill, so the engine can't tell the backends apart.
-* **The context is passed as plain values or a small table per call**, never fine-grained userdata in
-  inner loops. The spike measures both options. No published Rust→Lua call costs exist, so we benchmark.
+* **The context is passed lean.** Measured (catalog `scripting/lua_notes.md` §3.1): the full ctx table is ~1 µs of
+  the 2.5 µs, each scoped function ~230 ns, a returned effect table ~330 ns, and scoped non-`'static` userdata is the
+  slowest option (a new metatable per call). Production: plain arguments or lazily read `'static` userdata, effects
+  returned through a `'static` emitter or multiple returns, and `roll`/`skill_level` as `'static` functions reaching
+  per-call state through `Lua::set_app_data`. Measure again before any per-hit hook.
 * **Game state stays in Rust.** Scripts keep no state in globals. That makes reload lossless.
 * **Later:** sandboxed globals (no `os`/`io`/`debug`/`package`), memory and instruction limits
   (`set_memory_limit`, `set_hook`), error reporting with file and line, and hot reload. Hot reload builds a

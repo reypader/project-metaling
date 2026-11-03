@@ -1360,6 +1360,7 @@ async fn per_trait_01_traits_and_select_values_round_trip() {
         traits: [1, 2, 3, 4, 5, 110],
         trait_point: 19,
         ap: 150,
+        zeny: 123_456,
         ..CharacterStatus::default()
     };
     let progress = CharacterProgress {
@@ -1399,8 +1400,74 @@ async fn per_trait_01_traits_and_select_values_round_trip() {
             status_point: 1325,
             skill_point: 11,
             stats: [21, 22, 23, 24, 25, 26],
+            zeny: 123_456,
         }
     );
+}
+
+/// PER-EFF-01 (`specs/effects` §2.8): a new character has 0 zeny; zeny saves with the play state
+/// (also covered by the round trip above) and the char-select summary carries it.
+#[tokio::test]
+async fn per_eff_01_zeny_defaults_to_zero_and_round_trips() {
+    let (repo, _acc, char_id) = inventory_fixture(0).await;
+    let state = repo
+        .load_play_state(char_id)
+        .await
+        .expect("loads")
+        .expect("exists");
+    assert_eq!(state.status.zeny, 0);
+    let progress = CharacterProgress {
+        job_class: 0,
+        base_level: 1,
+        status: CharacterStatus {
+            zeny: 4000,
+            ..state.status
+        },
+        change_level: [0; 3],
+    };
+    repo.save_play_state(
+        char_id,
+        &state.inventory,
+        &CharacterLooks::default(),
+        &progress,
+        &[],
+    )
+    .await
+    .expect("saves");
+    let state = repo
+        .load_play_state(char_id)
+        .await
+        .expect("loads")
+        .expect("exists");
+    assert_eq!(state.status.zeny, 4000);
+    let summary = CharacterRepository::find_by_id(&repo, char_id)
+        .await
+        .expect("query")
+        .expect("exists");
+    assert_eq!(summary.select_stats.zeny, 4000);
+}
+
+/// PER-EFF-01 (`specs/effects` §2.8, final review): a stored zeny above `MAX_ZENY` (a hand edit)
+/// loads capped, in the play state and in the char-select summary.
+#[tokio::test]
+async fn per_eff_01_loaded_zeny_is_capped() {
+    let (repo, _acc, char_id) = inventory_fixture(0).await;
+    sqlx::query("UPDATE characters SET zeny = 1500000000 WHERE char_id = $1")
+        .bind(i32::try_from(char_id.0).expect("fits"))
+        .execute(repo.pool())
+        .await
+        .expect("updates");
+    let state = repo
+        .load_play_state(char_id)
+        .await
+        .expect("loads")
+        .expect("exists");
+    assert_eq!(state.status.zeny, ro_core::MAX_ZENY);
+    let summary = CharacterRepository::find_by_id(&repo, char_id)
+        .await
+        .expect("query")
+        .expect("exists");
+    assert_eq!(summary.select_stats.zeny, ro_core::MAX_ZENY);
 }
 
 /// PER-TRAIT-01: a database from before traits gains the eight columns, defaulting to 0, and

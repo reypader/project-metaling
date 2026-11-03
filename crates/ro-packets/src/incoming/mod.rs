@@ -27,6 +27,7 @@
 //! - `CZ_STATUS_CHANGE` (0x00bb), `CZ_ADVANCED_STATUS_CHANGE` (0x0b24)
 //! - `CZ_UPGRADE_SKILLLEVEL` (0x0112)
 //! - `CZ_CANCEL_LOCKON` (0x0118)
+//! - `CZ_USE_SKILL_TO_ID` (0x0438), `CZ_USE_ITEM2` (0x0439)
 
 pub mod char;
 pub mod frame;
@@ -49,5 +50,5 @@ pub use map::{
     CzNotifyActorInitPacket, CzReqDisconnectPacket, CzReqNamePacket, CzReqTakeoffEquipAllPacket,
     CzReqTakeoffEquipPacket, CzReqWearEquipPacket, CzRequestActPacket, CzRequestChatPacket,
     CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket, CzStatusChangePacket,
-    CzUpgradeSkillLevelPacket,
+    CzUpgradeSkillLevelPacket, CzUseItemPacket, CzUseSkillToIdPacket,
 };

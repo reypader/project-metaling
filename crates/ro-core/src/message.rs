@@ -145,6 +145,16 @@ pub enum ClientIntent {
     UpgradeSkill {
         id: u16,
     },
+    /// `0x0438`: cast skill `skill_id` at `level` on unit `target` (a wire gid).
+    UseSkill {
+        level: u16,
+        skill_id: u16,
+        target: u32,
+    },
+    /// `0x0439`: use the item at wire `index` (slot + 2). The packet's AID is not read.
+    UseItem {
+        index: u16,
+    },
 }
 
 impl fmt::Debug for ClientIntent {
@@ -296,6 +306,17 @@ impl fmt::Debug for ClientIntent {
                 .field("amount", amount)
                 .finish(),
             Self::UpgradeSkill { id } => f.debug_struct("UpgradeSkill").field("id", id).finish(),
+            Self::UseSkill {
+                level,
+                skill_id,
+                target,
+            } => f
+                .debug_struct("UseSkill")
+                .field("level", level)
+                .field("skill_id", skill_id)
+                .field("target", target)
+                .finish(),
+            Self::UseItem { index } => f.debug_struct("UseItem").field("index", index).finish(),
         }
     }
 }
@@ -804,6 +825,54 @@ pub enum ServerEvent {
         index: u16,
         amount: u16,
         reason: u16,
+    },
+    /// `0x00b1` `ZC_LONGPAR_CHANGE`: a status var sent as a long (`SP_ZENY` 20 is the only user).
+    LongParameterChanged {
+        var_id: u16,
+        value: i32,
+    },
+    /// `0x0b1a` `ZC_USESKILL_ACK`: `src` began casting `skill_id` on `dst`. `delay_ms` is the cast
+    /// time (0 for an instant cast, which still sends this). `x`/`y` are 0 for a unit target.
+    SkillCasting {
+        src: u32,
+        dst: u32,
+        x: u16,
+        y: u16,
+        skill_id: u16,
+        element: u32,
+        delay_ms: u32,
+    },
+    /// `0x01de` `ZC_NOTIFY_SKILL2`: a damaging skill hit (or missed, with `damage` 0).
+    /// `src_speed` is the caster's amotion, `dmg_speed` the target's dmotion (0 on a miss).
+    SkillDamage {
+        skill_id: u16,
+        src: u32,
+        dst: u32,
+        tick: u32,
+        src_speed: i32,
+        dmg_speed: i32,
+        damage: i32,
+        level: i16,
+        div: i16,
+        damage_type: u8,
+    },
+    /// `0x09cb` `ZC_USE_SKILL2`: a non-damaging skill took effect. For heals `value` is the
+    /// computed (unclamped) amount.
+    SkillNoDamage {
+        skill_id: u16,
+        value: i32,
+        target: u32,
+        src: u32,
+        ok: bool,
+    },
+    /// `0x01c8` `ZC_USE_ITEM_ACK2`: the use of the item at wire `index` by `gid`. `amount` is the
+    /// amount left on success and 0 on a failure.
+    ItemUseAck {
+        index: u16,
+        item_id: u32,
+        gid: u32,
+        amount: i16,
+        ok: bool,
     },
 }
 

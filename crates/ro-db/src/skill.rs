@@ -1,8 +1,9 @@
 //! Skill registry (`SKILL_DATA`) and per-job skill trees (`SKILL_TREE_DATA`), from
-//! `tools/skill-import` (spec `specs/skills/spec.md` §0-§1). Learn-only fields: per-level SP
-//! cost and range, the target type and the flags that decide learnability and range bonuses.
-//! The trees come with rAthena's inheritance already resolved, so each job lists every skill it
-//! can learn.
+//! `tools/skill-import` (specs `specs/skills/spec.md` §0-§1, `specs/effects/spec.md` §0.1, §1).
+//! Per skill: the target type, the flags that decide learnability and range bonuses, and the
+//! per-level casting data (costs, range, cast and delay times, element, requirements). The
+//! trees come with rAthena's inheritance already resolved, so each job lists every skill it can
+//! learn.
 
 use std::collections::HashMap;
 use std::path::Path;
@@ -10,10 +11,11 @@ use std::path::Path;
 use serde::{Deserialize, Serialize, Serializer};
 
 use crate::yaml::{is_false, Schema};
-use crate::DbLoadError;
+use crate::{DbLoadError, Element, WeaponType};
 
 pub const SKILL_DATA_TYPE: &str = "SKILL_DATA";
-pub const SKILL_DATA_VERSION: u32 = 1;
+/// 2 added the casting fields (`specs/effects`).
+pub const SKILL_DATA_VERSION: u32 = 2;
 pub const SKILL_DATA_FILE: &str = "skill_db.yml";
 pub const SKILL_TREE_DATA_TYPE: &str = "SKILL_TREE_DATA";
 pub const SKILL_TREE_DATA_VERSION: u32 = 1;
@@ -68,6 +70,127 @@ impl SkillFlags {
     }
 }
 
+/// rAthena `DamageFlags` (`NK_*`; catalog `db/skills.md` "DamageFlags").
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "PascalCase", deny_unknown_fields)]
+pub struct DamageFlags {
+    /// A support skill: no damage step.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub no_damage: bool,
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub splash: bool,
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub splash_split: bool,
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub ignore_atk_card: bool,
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub ignore_element: bool,
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub ignore_defense: bool,
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub ignore_flee: bool,
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub ignore_def_card: bool,
+    /// The skill can crit.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub critical: bool,
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub ignore_long_card: bool,
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub simple_defense: bool,
+}
+
+impl DamageFlags {
+    pub fn is_empty(&self) -> bool {
+        *self == Self::default()
+    }
+}
+
+/// rAthena `CastTimeFlags` (`SKILL_CAST_*`; catalog `scripting/skills.md` §4.1).
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "PascalCase", deny_unknown_fields)]
+pub struct CastTimeFlags {
+    /// DEX and INT don't shorten the cast.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub ignore_dex: bool,
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub ignore_status: bool,
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub ignore_item_bonus: bool,
+}
+
+impl CastTimeFlags {
+    pub fn is_empty(&self) -> bool {
+        *self == Self::default()
+    }
+}
+
+/// A skill's element: a plain element, or one picked when the skill hits.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum SkillElement {
+    #[default]
+    Neutral,
+    Water,
+    Earth,
+    Fire,
+    Wind,
+    Poison,
+    Holy,
+    Dark,
+    Ghost,
+    Undead,
+    /// The attacker's weapon element (Bash, Mammonite).
+    Weapon,
+    /// The attacker's endow status element.
+    Endowed,
+    /// A random element per hit.
+    Random,
+}
+
+impl SkillElement {
+    /// rAthena's `ELE_*` number: 0-9 for the plain elements, then `Weapon` 12, `Endowed` 13,
+    /// `Random` 14.
+    pub fn code(self) -> u8 {
+        match self.element() {
+            Some(element) => element as u8,
+            None => match self {
+                Self::Weapon => 12,
+                Self::Endowed => 13,
+                _ => 14,
+            },
+        }
+    }
+
+    /// The plain element; `None` for the ones picked at hit time.
+    pub fn element(self) -> Option<Element> {
+        Some(match self {
+            Self::Neutral => Element::Neutral,
+            Self::Water => Element::Water,
+            Self::Earth => Element::Earth,
+            Self::Fire => Element::Fire,
+            Self::Wind => Element::Wind,
+            Self::Poison => Element::Poison,
+            Self::Holy => Element::Holy,
+            Self::Dark => Element::Dark,
+            Self::Ghost => Element::Ghost,
+            Self::Undead => Element::Undead,
+            Self::Weapon | Self::Endowed | Self::Random => return None,
+        })
+    }
+}
+
+/// An item a cast consumes (`Requires.ItemCost`).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "PascalCase", deny_unknown_fields)]
+pub struct SkillItemCost {
+    /// Item aegis name (resolved against the item registry by the user).
+    pub item: String,
+    pub amount: u32,
+    /// Only this level needs the item; `None` = every level.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub level: Option<u8>,
+}
+
 /// One skill as stored in `skill_db.yml`.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase", deny_unknown_fields)]
@@ -97,6 +220,92 @@ pub struct SkillData {
     pub range: Vec<i16>,
     #[serde(default, skip_serializing_if = "SkillFlags::is_empty")]
     pub flags: SkillFlags,
+    // The per-level lists below follow the `sp_cost` rule: `max_level` entries, or none when
+    // the value is 0 (the default) at every level.
+    /// Cast time, ms.
+    #[serde(
+        default,
+        skip_serializing_if = "Vec::is_empty",
+        serialize_with = "flow_list"
+    )]
+    pub cast_time: Vec<u32>,
+    /// Renewal fixed cast time, ms. −1 splits `cast_time` by `default_fixed_castrate`.
+    #[serde(
+        default,
+        skip_serializing_if = "Vec::is_empty",
+        serialize_with = "flow_list"
+    )]
+    pub fixed_cast_time: Vec<i32>,
+    /// ms before the caster can act again; negative means `−delay + amotion`.
+    #[serde(
+        default,
+        skip_serializing_if = "Vec::is_empty",
+        serialize_with = "flow_list"
+    )]
+    pub after_cast_act_delay: Vec<i32>,
+    /// ms before the caster can walk again.
+    #[serde(
+        default,
+        skip_serializing_if = "Vec::is_empty",
+        serialize_with = "flow_list"
+    )]
+    pub after_cast_walk_delay: Vec<u32>,
+    /// Per-skill reuse delay, ms.
+    #[serde(
+        default,
+        skip_serializing_if = "Vec::is_empty",
+        serialize_with = "flow_list"
+    )]
+    pub cooldown: Vec<u32>,
+    /// Hits shown; negative means the damage is the total, split over `|n|` hits.
+    #[serde(
+        default,
+        skip_serializing_if = "Vec::is_empty",
+        serialize_with = "flow_list"
+    )]
+    pub hit_count: Vec<i8>,
+    /// Neutral at every level when empty.
+    #[serde(
+        default,
+        skip_serializing_if = "Vec::is_empty",
+        serialize_with = "flow_list"
+    )]
+    pub element: Vec<SkillElement>,
+    #[serde(default, skip_serializing_if = "DamageFlags::is_empty")]
+    pub damage_flags: DamageFlags,
+    #[serde(default, skip_serializing_if = "CastTimeFlags::is_empty")]
+    pub cast_time_flags: CastTimeFlags,
+    /// `Requires.HpCost`.
+    #[serde(
+        default,
+        skip_serializing_if = "Vec::is_empty",
+        serialize_with = "flow_list"
+    )]
+    pub hp_cost: Vec<u32>,
+    /// `Requires.ZenyCost`.
+    #[serde(
+        default,
+        skip_serializing_if = "Vec::is_empty",
+        serialize_with = "flow_list"
+    )]
+    pub zeny_cost: Vec<u32>,
+    /// `Requires.Weapon`: the weapon types allowed, sorted; empty = any weapon.
+    #[serde(
+        default,
+        skip_serializing_if = "Vec::is_empty",
+        serialize_with = "flow_list"
+    )]
+    pub weapons: Vec<WeaponType>,
+    /// `Requires.ItemCost`, in file order.
+    #[serde(
+        default,
+        skip_serializing_if = "Vec::is_empty",
+        serialize_with = "flow_list"
+    )]
+    pub item_cost: Vec<SkillItemCost>,
+    /// `Requires.State` name (`Shield`, `Cart`, ...); `None` = no state needed.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub state: Option<String>,
 }
 
 impl SkillData {
@@ -113,6 +322,75 @@ impl SkillData {
     /// Range at `level` (clamped to `max_level`); 0 at level 0.
     pub fn range(&self, level: u8) -> i16 {
         per_level(&self.range, level)
+    }
+
+    // The accessors below also clamp to `max_level` and return the default at level 0.
+
+    pub fn cast_time(&self, level: u8) -> u32 {
+        per_level(&self.cast_time, level)
+    }
+
+    pub fn fixed_cast_time(&self, level: u8) -> i32 {
+        per_level(&self.fixed_cast_time, level)
+    }
+
+    pub fn after_cast_act_delay(&self, level: u8) -> i32 {
+        per_level(&self.after_cast_act_delay, level)
+    }
+
+    pub fn after_cast_walk_delay(&self, level: u8) -> u32 {
+        per_level(&self.after_cast_walk_delay, level)
+    }
+
+    pub fn cooldown(&self, level: u8) -> u32 {
+        per_level(&self.cooldown, level)
+    }
+
+    pub fn hit_count(&self, level: u8) -> i8 {
+        per_level(&self.hit_count, level)
+    }
+
+    pub fn element(&self, level: u8) -> SkillElement {
+        per_level(&self.element, level)
+    }
+
+    pub fn hp_cost(&self, level: u8) -> u32 {
+        per_level(&self.hp_cost, level)
+    }
+
+    pub fn zeny_cost(&self, level: u8) -> u32 {
+        per_level(&self.zeny_cost, level)
+    }
+
+    /// Whether `weapon` meets `Requires.Weapon`.
+    pub fn allows_weapon(&self, weapon: WeaponType) -> bool {
+        self.weapons.is_empty() || self.weapons.contains(&weapon)
+    }
+
+    /// The items a cast at `level` consumes. When any entry names a level, only the entries for
+    /// that level count (rAthena's level-dependent item costs); otherwise every entry does.
+    pub fn item_cost(&self, level: u8) -> impl Iterator<Item = &SkillItemCost> {
+        let by_level = self.item_cost.iter().any(|cost| cost.level.is_some());
+        self.item_cost
+            .iter()
+            .filter(move |cost| !by_level || cost.level == Some(level))
+    }
+
+    /// `(YAML key, length)` of every per-level list.
+    fn list_lengths(&self) -> [(&'static str, usize); 11] {
+        [
+            ("SpCost", self.sp_cost.len()),
+            ("Range", self.range.len()),
+            ("CastTime", self.cast_time.len()),
+            ("FixedCastTime", self.fixed_cast_time.len()),
+            ("AfterCastActDelay", self.after_cast_act_delay.len()),
+            ("AfterCastWalkDelay", self.after_cast_walk_delay.len()),
+            ("Cooldown", self.cooldown.len()),
+            ("HitCount", self.hit_count.len()),
+            ("Element", self.element.len()),
+            ("HpCost", self.hp_cost.len()),
+            ("ZenyCost", self.zeny_cost.len()),
+        ]
     }
 }
 
@@ -168,12 +446,27 @@ impl SkillDb {
                 ));
             }
             let levels = usize::from(skill.max_level);
-            if !(skill.sp_cost.is_empty() || skill.sp_cost.len() == levels)
-                || !(skill.range.is_empty() || skill.range.len() == levels)
+            if let Some(key) = skill
+                .list_lengths()
+                .into_iter()
+                .find_map(|(key, len)| (len != 0 && len != levels).then_some(key))
             {
                 return Err(schema_error(
                     path,
-                    format!("{label}: SpCost and Range need {levels} entries or none"),
+                    format!("{label}: {key} needs {levels} entries or none"),
+                ));
+            }
+            if let Some(cost) = skill
+                .item_cost
+                .iter()
+                .find(|cost| cost.level.is_some_and(|l| l == 0 || l > skill.max_level))
+            {
+                return Err(schema_error(
+                    path,
+                    format!(
+                        "{label}: ItemCost {} level out of 1..={}",
+                        cost.item, skill.max_level
+                    ),
                 ));
             }
         }

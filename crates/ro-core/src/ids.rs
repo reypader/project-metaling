@@ -59,6 +59,8 @@ pub struct CharacterSelectStats {
     pub skill_point: u16,
     /// Allocated STR..LUK, without the job bonus.
     pub stats: [u16; 6],
+    /// Zeny on hand: the client takes it from here; map entry sends no `0x00b1`.
+    pub zeny: u32,
 }
 
 /// The worn gear the char-select screen shows (the `characters` look columns). Not the same as

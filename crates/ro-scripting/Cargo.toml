@@ -3,7 +3,18 @@ name = "ro-scripting"
 version.workspace = true
 edition.workspace = true
 
+[features]
+# The Lua hook backend spike (`specs/effects` M9). Not built by `verify.sh`; never default.
+lua = ["dep:mlua"]
+
 [dependencies]
+ro-core.workspace = true
+smallvec.workspace = true
+mlua = { workspace = true, optional = true }
 
 [lints]
 workspace = true
+
+[[example]]
+name = "hook_bench"
+required-features = ["lua"]

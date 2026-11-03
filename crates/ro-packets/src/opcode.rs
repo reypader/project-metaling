@@ -850,6 +850,7 @@ impl PacketOpcode {
     pub const CZ_SALE_CLOSE: Self = Self(0x09bc);
     pub const CZ_SALE_REFRESH: Self = Self(0x09c3);
     pub const ZC_SKILL_ENTRY5: Self = Self(0x09ca);
+    pub const ZC_USE_SKILL2: Self = Self(0x09cb);
     pub const CZ_GM_ITEM_MONSTER: Self = Self(0x09ce);
     pub const PACKET_0X09D1: Self = Self(0x09d1);
     pub const CZ_NPC_SHOP_CLOSED: Self = Self(0x09d4);
@@ -981,6 +982,7 @@ impl PacketOpcode {
     pub const CZ_REQ_EXTEND_BODYITEM_SIZE: Self = Self(0x0b16);
     pub const ZC_INVENTORY_EXPANSION_INFO: Self = Self(0x0b18);
     pub const CZ_CLOSE_MSGBOX_EXTEND_BODYITEM_SIZE: Self = Self(0x0b19);
+    pub const ZC_USESKILL_ACK: Self = Self(0x0b1a);
     pub const ZC_LOAD_CONFIRM: Self = Self(0x0b1b);
     pub const CZ_PING_LIVE: Self = Self(0x0b1c);
     pub const ZC_SHORTCUT_KEY_LIST_V4: Self = Self(0x0b20);
@@ -1878,6 +1880,7 @@ impl PacketOpcode {
             0x09bc => Some("CZ_SALE_CLOSE"),
             0x09c3 => Some("CZ_SALE_REFRESH"),
             0x09ca => Some("ZC_SKILL_ENTRY5"),
+            0x09cb => Some("ZC_USE_SKILL2"),
             0x09ce => Some("CZ_GM_ITEM_MONSTER"),
             0x09d1 => Some("PACKET_0X09D1"),
             0x09d4 => Some("CZ_NPC_SHOP_CLOSED"),
@@ -2009,6 +2012,7 @@ impl PacketOpcode {
             0x0b16 => Some("CZ_REQ_EXTEND_BODYITEM_SIZE"),
             0x0b18 => Some("ZC_INVENTORY_EXPANSION_INFO"),
             0x0b19 => Some("CZ_CLOSE_MSGBOX_EXTEND_BODYITEM_SIZE"),
+            0x0b1a => Some("ZC_USESKILL_ACK"),
             0x0b1b => Some("ZC_LOAD_CONFIRM"),
             0x0b1c => Some("CZ_PING_LIVE"),
             0x0b20 => Some("ZC_SHORTCUT_KEY_LIST_V4"),

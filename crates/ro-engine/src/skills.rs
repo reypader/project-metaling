@@ -384,7 +384,7 @@ pub(crate) fn compute_visible(
 /// `range2` of a learned skill (catalog `db/skills.md` "range2"): the absolute range at
 /// `level`, plus the bonuses from the player's Vulture's Eye, Snake Eye, Radius and Research
 /// Trap; Shadow Jump's flag replaces it with Shadow Jump's range. 0 at level 0.
-fn range2(data: &SkillData, level: u8, set: &SkillSet, skills: &SkillDb) -> u16 {
+pub(crate) fn range2(data: &SkillData, level: u8, set: &SkillSet, skills: &SkillDb) -> u16 {
     if level == 0 {
         return 0;
     }
@@ -725,7 +725,7 @@ mod tests {
     const GATED_JOB: u16 = 901;
 
     /// Hand-written skills (values from the capture where there is one).
-    const SKILLS: &str = "Header: {Type: SKILL_DATA, Version: 1}
+    const SKILLS: &str = "Header: {Type: SKILL_DATA, Version: 2}
 Body:
 - {Id: 1, Name: NV_BASIC, MaxLevel: 9}
 - {Id: 2, Name: SM_SWORD, MaxLevel: 10}

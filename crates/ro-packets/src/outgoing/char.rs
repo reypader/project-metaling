@@ -29,7 +29,7 @@ pub fn encode_character_info(buf: &mut BytesMut, c: &CharacterSummary) {
     let st = &c.select_stats;
     buf.put_u32_le(c.char_id.0); // GID
     buf.put_i64_le(exp(st.base_exp)); // exp (int64 for >= 20170830)
-    buf.put_i32_le(0); // money
+    buf.put_i32_le(i32::try_from(st.zeny).unwrap_or(i32::MAX)); // money
     buf.put_i64_le(exp(st.job_exp)); // jobexp (int64 for >= 20170830)
     buf.put_i32_le(c.job_level as i32); // joblevel
     buf.put_i32_le(0); // bodystate

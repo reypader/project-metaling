@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, db/re/item_db_equip.yml.
-# Modified: reduced to the fields Metaling uses (ITEM_DATA v2, with equipment fields) and normalized by tools/item-import. Do not edit by hand.
+# Modified: reduced to the fields Metaling uses (ITEM_DATA v3, with equipment fields and lifted heal `Use` effects) and normalized by tools/item-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
 %YAML 1.2
 ---
 Header:
   Type: ITEM_DATA
-  Version: 2
+  Version: 3
 Body:
 - Id: 1100
   AegisName: Taurus_Sword_J

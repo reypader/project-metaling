@@ -5,14 +5,14 @@ use std::path::{Path, PathBuf};
 
 use ro_core::ItemId;
 use ro_db::{
-    AmmoType, DbLoadError, Gender, ItemData, ItemDb, ItemType, WeaponType, ALL_CLASSES, ALL_JOBS,
-    ITEM_DATA_FILES,
+    AmmoType, DbLoadError, Gender, ItemData, ItemDb, ItemType, ItemUse, WeaponType, ALL_CLASSES,
+    ALL_JOBS, ITEM_DATA_FILES,
 };
 
 const VALID: &str = r#"
 Header:
   Type: ITEM_DATA
-  Version: 2
+  Version: 3
 Body:
   - Id: 501
     AegisName: Red_Potion
@@ -49,7 +49,7 @@ Body:
 "#;
 
 fn header(body: &str) -> String {
-    format!("Header:\n  Type: ITEM_DATA\n  Version: 2\nBody:\n{body}")
+    format!("Header:\n  Type: ITEM_DATA\n  Version: 3\nBody:\n{body}")
 }
 
 fn knife() -> ItemData {
@@ -174,7 +174,7 @@ fn expect_err(text: &str) -> DbLoadError {
 fn db_item_02_rejects_wrong_header() {
     for text in [
         VALID.replace("Type: ITEM_DATA", "Type: ITEM_DB"),
-        VALID.replace("Version: 2", "Version: 3"),
+        VALID.replace("Version: 3", "Version: 4"),
     ] {
         assert!(matches!(expect_err(&text), DbLoadError::Schema { .. }));
     }
@@ -244,7 +244,7 @@ fn db_item_02_load_dir() {
 const EQUIPMENT: &str = r#"
 Header:
   Type: ITEM_DATA
-  Version: 2
+  Version: 3
 Body:
   - Id: 1201
     AegisName: Knife
@@ -408,7 +408,7 @@ fn db_item_04_type_numbers() {
 /// DB-ITEM-05: a v1 file is rejected (the data is regenerated, no backwards compatibility).
 #[test]
 fn db_item_05_rejects_v1() {
-    let v1 = VALID.replace("Version: 2", "Version: 1");
+    let v1 = VALID.replace("Version: 3", "Version: 1");
     assert!(matches!(expect_err(&v1), DbLoadError::Schema { .. }));
 }
 
@@ -460,4 +460,29 @@ fn db_item_03_shipped_data_loads() {
         [Gender::Male, Gender::Female],
         "forced wedding-ring genders"
     );
+}
+
+/// DB-EFF-02 (`specs/effects/spec.md` §1): the lifted `Use` effects of the shipped potions.
+#[test]
+fn db_eff_02_shipped_use_effects() {
+    let db = ItemDb::load_dir(&shipped_dir()).unwrap_or_else(|e| panic!("{e}"));
+    let on_use = |id| db.get(ItemId(id)).expect("shipped item").on_use;
+    assert_eq!(
+        on_use(501),
+        Some(ItemUse::ItemHeal {
+            hp: (45, 65),
+            sp: (0, 0)
+        }),
+        "Red Potion"
+    );
+    assert!(
+        matches!(on_use(505), Some(ItemUse::ItemHeal { hp: (0, 0), sp }) if sp.1 > 0),
+        "Blue Potion heals SP only"
+    );
+    assert!(matches!(on_use(500), Some(ItemUse::PercentHeal { .. })));
+    // 526: `itemheal` plus `sc_end` cures (catalog `scripting/items.md` §5), not lifted.
+    assert_eq!(on_use(526), None);
+    assert_eq!(on_use(1201), None, "equipment has no use effect");
+    let lifted = db.iter().filter(|item| item.on_use.is_some()).count();
+    assert_eq!(lifted, 288, "catalog scripting/items.md §5");
 }

@@ -61,6 +61,7 @@ fn pkt_char_01_entry_carries_the_saved_status() {
         status_point: 1325,
         skill_point: 11,
         stats: [1; 6],
+        zeny: 0,
     });
     assert_eq!((i64_at(&e, 4), i64_at(&e, 16)), (0, 0), "exp, jobexp");
     assert_eq!(i16_at(&e, 48), 1325, "jobpoint");
@@ -112,4 +113,15 @@ fn pkt_char_01_caps() {
         (100_000, 1_000_000, 32_767, 32_767)
     );
     assert_eq!(e[132..138], [255, 255, 254, 1, 0, 255]);
+}
+
+/// PER-EFF-01 (wire half): the entry's `money` (u32 at 12) carries the saved zeny, as in
+/// `scripting_2.txt` 487 (`0x0b72`, 5000 zeny); map entry sends no `0x00b1`.
+#[test]
+fn per_eff_01_entry_carries_zeny() {
+    let e = entry(CharacterSelectStats {
+        zeny: 5000,
+        ..CharacterSelectStats::default()
+    });
+    assert_eq!(e[12..16], 5000u32.to_le_bytes());
 }

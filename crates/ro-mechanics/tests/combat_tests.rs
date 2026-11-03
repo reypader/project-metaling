@@ -4,8 +4,8 @@
 
 use ro_mechanics::{
     calc_mob_status, calc_weapon_attack, check_distance_client, exp_share, shared_exp,
-    AttackerView, BattleConfig, DamageResult, DefenderView, HitKind, MobStatusInputs, Primary,
-    WeaponAttack,
+    AttackContext, AttackerView, BattleConfig, DamageResult, DefenderView, HitKind,
+    MobStatusInputs, Primary, WeaponAttack,
 };
 
 fn stats(str: i32, agi: i32, vit: i32, int: i32, dex: i32, luk: i32) -> Primary {
@@ -89,7 +89,13 @@ fn rolls(high: bool) -> impl FnMut(u32) -> u32 {
 }
 
 fn swing(a: &AttackerView, d: &DefenderView, high: bool) -> DamageResult {
-    calc_weapon_attack(a, d, &BattleConfig::default(), rolls(high))
+    calc_weapon_attack(
+        a,
+        d,
+        &AttackContext::NORMAL,
+        &BattleConfig::default(),
+        rolls(high),
+    )
 }
 
 /// The damage range over the weapon variance.
@@ -130,12 +136,24 @@ fn mech_cmb_02_miss_hit_crit_def_and_infinite_defense() {
         hit: 177,
         ..attacker(1, 1, 1, None)
     };
-    let miss = calc_weapon_attack(&novice, &target, &config, |n| if n == 100 { 75 } else { 0 });
+    let miss = calc_weapon_attack(&novice, &target, &AttackContext::NORMAL, &config, |n| {
+        if n == 100 {
+            75
+        } else {
+            0
+        }
+    });
     assert_eq!(
         (miss.damage, miss.kind, miss.kind.wire_type()),
         (0, HitKind::Miss, 0)
     );
-    let hit = calc_weapon_attack(&novice, &target, &config, |n| if n == 100 { 74 } else { 0 });
+    let hit = calc_weapon_attack(&novice, &target, &AttackContext::NORMAL, &config, |n| {
+        if n == 100 {
+            74
+        } else {
+            0
+        }
+    });
     // Bare hands: 2 × batk 1 = 2; 2 × 4002 / 4020 = 1, − 1 = 0, then the minimum 1.
     assert_eq!(
         (hit.damage, hit.kind, hit.div, hit.damage2),
@@ -143,7 +161,13 @@ fn mech_cmb_02_miss_hit_crit_def_and_infinite_defense() {
     );
     // The hit rate is clamped to min_hitrate: HIT 1 still hits on a roll of 4.
     let blind = AttackerView { hit: 1, ..novice };
-    let lucky = calc_weapon_attack(&blind, &target, &config, |n| if n == 100 { 4 } else { 0 });
+    let lucky = calc_weapon_attack(&blind, &target, &AttackContext::NORMAL, &config, |n| {
+        if n == 100 {
+            4
+        } else {
+            0
+        }
+    });
     assert_eq!(lucky.kind, HitKind::Normal);
 
     // Crit: CRI 31 (0.1 %) − 2 × Pupa LUK 1 = 29; a roll of 28 crits, takes atkmax (18) and
@@ -153,12 +177,24 @@ fn mech_cmb_02_miss_hit_crit_def_and_infinite_defense() {
         ..attacker(49, 12, 15, Some(knife()))
     };
     let pupa = defender(&mob(4, stats(1, 1, 3, 1, 1, 1), 24));
-    let crit = calc_weapon_attack(&critter, &pupa, &config, |n| if n == 1000 { 28 } else { 0 });
+    let crit = calc_weapon_attack(&critter, &pupa, &AttackContext::NORMAL, &config, |n| {
+        if n == 1000 {
+            28
+        } else {
+            0
+        }
+    });
     assert_eq!(
         (crit.damage, crit.kind, crit.kind.wire_type()),
         (149, HitKind::Crit, 10)
     );
-    let no_crit = calc_weapon_attack(&critter, &pupa, &config, |n| if n == 1000 { 29 } else { 0 });
+    let no_crit = calc_weapon_attack(&critter, &pupa, &AttackContext::NORMAL, &config, |n| {
+        if n == 1000 {
+            29
+        } else {
+            0
+        }
+    });
     assert_eq!(no_crit.kind, HitKind::Normal, "29 is not below 29");
 
     // Infinite defense: IgnoreMelee takes 1 from a melee hit, a crit included; a ranged attack
@@ -168,7 +204,7 @@ fn mech_cmb_02_miss_hit_crit_def_and_infinite_defense() {
         ..defender(&mob(1, stats(1, 0, 0, 1, 0, 0), 100))
     };
     assert_eq!(swing(&critter, &plant, true).damage, 1);
-    let crit = calc_weapon_attack(&critter, &plant, &config, |_| 0);
+    let crit = calc_weapon_attack(&critter, &plant, &AttackContext::NORMAL, &config, |_| 0);
     assert_eq!((crit.damage, crit.kind), (1, HitKind::Crit));
     let archer = AttackerView {
         long_range: true,
@@ -185,7 +221,13 @@ fn mech_cmb_02_miss_hit_crit_def_and_infinite_defense() {
         ..plant
     };
     assert_eq!(swing(&archer, &ranged_plant, true).damage, 1);
-    let missed = calc_weapon_attack(&blind, &plant, &config, |n| if n == 100 { 99 } else { 0 });
+    let missed = calc_weapon_attack(&blind, &plant, &AttackContext::NORMAL, &config, |n| {
+        if n == 100 {
+            99
+        } else {
+            0
+        }
+    });
     assert_eq!((missed.damage, missed.kind), (0, HitKind::Miss));
 
     // Lucky dodge only when the defender has perfect dodge.
@@ -193,7 +235,13 @@ fn mech_cmb_02_miss_hit_crit_def_and_infinite_defense() {
         flee2: 50,
         ..target
     };
-    let dodged = calc_weapon_attack(&novice, &dodgy, &config, |n| if n == 1000 { 49 } else { 0 });
+    let dodged = calc_weapon_attack(&novice, &dodgy, &AttackContext::NORMAL, &config, |n| {
+        if n == 1000 {
+            49
+        } else {
+            0
+        }
+    });
     assert_eq!(
         (dodged.damage, dodged.kind, dodged.kind.wire_type()),
         (0, HitKind::LuckyDodge, 11)

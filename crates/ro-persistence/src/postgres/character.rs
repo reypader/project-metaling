@@ -10,7 +10,7 @@ use crate::RepositoryError;
 use crate::{CancelDeleteOutcome, CharacterRepository, CreateCharacterError, DeleteReserveOutcome};
 use ro_core::{
     AccountId, CharId, CharacterLooks, CharacterSelectStats, CharacterSummary,
-    CreateCharacterRequest, MapPosition, Sex,
+    CreateCharacterRequest, MapPosition, Sex, MAX_ZENY,
 };
 
 use super::{get_col, map_sex, map_sqlx_error, sex_to_i16, PostgresRepo};
@@ -22,7 +22,7 @@ macro_rules! summary_columns {
          hair_style, hair_color, last_map, last_x, last_y, last_dir, delete_date, \
          weapon_type, shield_view, head_top_view, head_mid_view, head_bot_view, robe_view, \
          base_exp, job_exp, hp, max_hp, sp, max_sp, status_point, skill_point, \
-         str, agi, vit, int_stat, dex, luk"
+         str, agi, vit, int_stat, dex, luk, zeny"
     };
 }
 
@@ -165,6 +165,8 @@ fn select_stats(row: &PgRow) -> Result<CharacterSelectStats, RepositoryError> {
             small("dex")?,
             small("luk")?,
         ],
+        // A hand-edited value above the cap loads capped (spec §2.8).
+        zeny: int("zeny")?.min(MAX_ZENY),
     })
 }
 

@@ -16,7 +16,7 @@ use super::map::{
     CzNotifyActorInitPacket, CzReqDisconnectPacket, CzReqNamePacket, CzReqTakeoffEquipAllPacket,
     CzReqTakeoffEquipPacket, CzReqWearEquipPacket, CzRequestActPacket, CzRequestChatPacket,
     CzRequestMovePacket, CzRequestTimePacket, CzRestartPacket, CzStatusChangePacket,
-    CzUpgradeSkillLevelPacket,
+    CzUpgradeSkillLevelPacket, CzUseItemPacket, CzUseSkillToIdPacket,
 };
 
 /// Enumeration of all recognized decoded client frames across login, char, and map servers.
@@ -142,6 +142,14 @@ pub fn decode_frame(raw: &RawPacket, packetver: u32) -> Result<DecodedFrame, Pac
         }
         0x0118 => {
             let p = CzCancelLockonPacket::decode(raw)?;
+            Ok(DecodedFrame::Intent(p.to_intent()))
+        }
+        0x0438 => {
+            let p = CzUseSkillToIdPacket::decode(raw)?;
+            Ok(DecodedFrame::Intent(p.to_intent()))
+        }
+        0x0439 => {
+            let p = CzUseItemPacket::decode(raw)?;
             Ok(DecodedFrame::Intent(p.to_intent()))
         }
         _ => {

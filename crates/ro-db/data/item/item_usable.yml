@@ -1,43 +1,67 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Derived from rAthena (https://github.com/rathena/rathena) commit d4b8e7b8f16061cc2496d377ac8f777ce72a4f39, db/re/item_db_usable.yml.
-# Modified: reduced to the fields Metaling uses (ITEM_DATA v2, with equipment fields) and normalized by tools/item-import. Do not edit by hand.
+# Modified: reduced to the fields Metaling uses (ITEM_DATA v3, with equipment fields and lifted heal `Use` effects) and normalized by tools/item-import. Do not edit by hand.
 # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.
 %YAML 1.2
 ---
 Header:
   Type: ITEM_DATA
-  Version: 2
+  Version: 3
 Body:
 - Id: 500
   AegisName: Warnut_Chocoball
   Name: Choko Gangjeong
   Type: Healing
   Weight: 10
+  Use:
+    PercentHeal:
+      Hp: 10
+      Sp: 10
 - Id: 501
   AegisName: Red_Potion
   Name: Red Potion
   Type: Healing
   Weight: 70
+  Use:
+    ItemHeal:
+      Hp: [45, 65]
+      Sp: [0, 0]
 - Id: 502
   AegisName: Orange_Potion
   Name: Orange Potion
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [105, 145]
+      Sp: [0, 0]
 - Id: 503
   AegisName: Yellow_Potion
   Name: Yellow Potion
   Type: Healing
   Weight: 130
+  Use:
+    ItemHeal:
+      Hp: [175, 235]
+      Sp: [0, 0]
 - Id: 504
   AegisName: White_Potion
   Name: White Potion
   Type: Healing
   Weight: 150
+  Use:
+    ItemHeal:
+      Hp: [325, 405]
+      Sp: [0, 0]
 - Id: 505
   AegisName: Blue_Potion
   Name: Blue Potion
   Type: Healing
   Weight: 150
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [40, 60]
 - Id: 506
   AegisName: Green_Potion
   Name: Green Potion
@@ -48,21 +72,37 @@ Body:
   Name: Red Herb
   Type: Healing
   Weight: 30
+  Use:
+    ItemHeal:
+      Hp: [18, 28]
+      Sp: [0, 0]
 - Id: 508
   AegisName: Yellow_Herb
   Name: Yellow Herb
   Type: Healing
   Weight: 50
+  Use:
+    ItemHeal:
+      Hp: [38, 58]
+      Sp: [0, 0]
 - Id: 509
   AegisName: White_Herb
   Name: White Herb
   Type: Healing
   Weight: 70
+  Use:
+    ItemHeal:
+      Hp: [75, 115]
+      Sp: [0, 0]
 - Id: 510
   AegisName: Blue_Herb
   Name: Blue Herb
   Type: Healing
   Weight: 70
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [15, 30]
 - Id: 511
   AegisName: Green_Herb
   Name: Green Herb
@@ -73,56 +113,100 @@ Body:
   Name: Apple
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [16, 22]
+      Sp: [0, 0]
 - Id: 513
   AegisName: Banana
   Name: Banana
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [17, 21]
+      Sp: [0, 0]
 - Id: 514
   AegisName: Grape
   Name: Grape
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [10, 15]
 - Id: 515
   AegisName: Carrot
   Name: Carrot
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [18, 20]
+      Sp: [0, 0]
 - Id: 516
   AegisName: Sweet_Potato
   Name: Potato
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [15, 23]
+      Sp: [0, 0]
 - Id: 517
   AegisName: Meat
   Name: Meat
   Type: Healing
   Weight: 150
+  Use:
+    ItemHeal:
+      Hp: [70, 100]
+      Sp: [0, 0]
 - Id: 518
   AegisName: Honey
   Name: Honey
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [70, 100]
+      Sp: [20, 40]
 - Id: 519
   AegisName: Milk
   Name: Milk
   Type: Healing
   Weight: 30
+  Use:
+    ItemHeal:
+      Hp: [27, 37]
+      Sp: [0, 0]
 - Id: 520
   AegisName: Leaflet_Of_Hinal
   Name: Hinalle Leaflet
   Type: Healing
   Weight: 10
+  Use:
+    ItemHeal:
+      Hp: [175, 235]
+      Sp: [0, 0]
 - Id: 521
   AegisName: Leaflet_Of_Aloe
   Name: Aloe Leaflet
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [325, 405]
+      Sp: [0, 0]
 - Id: 522
   AegisName: Fruit_Of_Mastela
   Name: Mastela Fruit
   Type: Healing
   Weight: 30
+  Use:
+    ItemHeal:
+      Hp: [400, 600]
+      Sp: [0, 0]
 - Id: 523
   AegisName: Holy_Water
   Name: Holy Water
@@ -143,41 +227,73 @@ Body:
   Name: Monster's Feed
   Type: Healing
   Weight: 150
+  Use:
+    ItemHeal:
+      Hp: [72, 108]
+      Sp: [0, 0]
 - Id: 529
   AegisName: Candy
   Name: Candy
   Type: Healing
   Weight: 30
+  Use:
+    ItemHeal:
+      Hp: [45, 65]
+      Sp: [0, 0]
 - Id: 530
   AegisName: Candy_Striper
   Name: Candy Cane
   Type: Healing
   Weight: 40
+  Use:
+    ItemHeal:
+      Hp: [105, 145]
+      Sp: [0, 0]
 - Id: 531
   AegisName: Apple_Juice
   Name: Apple Juice
   Type: Healing
   Weight: 40
+  Use:
+    ItemHeal:
+      Hp: [25, 35]
+      Sp: [0, 0]
 - Id: 532
   AegisName: Banana_Juice
   Name: Banana Juice
   Type: Healing
   Weight: 40
+  Use:
+    ItemHeal:
+      Hp: [26, 34]
+      Sp: [0, 0]
 - Id: 533
   AegisName: Grape_Juice
   Name: Grape Juice
   Type: Healing
   Weight: 40
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [15, 25]
 - Id: 534
   AegisName: Carrot_Juice
   Name: Carrot Juice
   Type: Healing
   Weight: 40
+  Use:
+    ItemHeal:
+      Hp: [27, 33]
+      Sp: [0, 0]
 - Id: 535
   AegisName: Pumpkin
   Name: Pumpkin
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [19, 19]
+      Sp: [0, 0]
 - Id: 536
   AegisName: Ice_Cream
   Name: Ice Cream
@@ -188,61 +304,109 @@ Body:
   Name: Pet Food
   Type: Healing
   Weight: 10
+  Use:
+    ItemHeal:
+      Hp: [50, 90]
+      Sp: [0, 0]
 - Id: 538
   AegisName: Well_Baked_Cookie
   Name: Well-baked Cookie
   Type: Healing
   Weight: 30
+  Use:
+    ItemHeal:
+      Hp: [160, 200]
+      Sp: [0, 0]
 - Id: 539
   AegisName: Piece_Of_Cake
   Name: Piece of Cake
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [270, 330]
+      Sp: [0, 0]
 - Id: 540
   AegisName: Falcon's_Feed
   Name: Falcon Food
   Type: Healing
   Weight: 50
+  Use:
+    ItemHeal:
+      Hp: [185, 225]
+      Sp: [0, 0]
 - Id: 541
   AegisName: Pecopeco's_Feed
   Name: PecoPeco Food
   Type: Healing
   Weight: 50
+  Use:
+    ItemHeal:
+      Hp: [325, 405]
+      Sp: [0, 0]
 - Id: 542
   AegisName: Festive_Cookie
   Name: Festival Cookie
   Type: Healing
   Weight: 10
+  Use:
+    ItemHeal:
+      Hp: [325, 405]
+      Sp: [0, 0]
 - Id: 543
   AegisName: Festive_Rainbow_Cake
   Name: Festival Rainbow Cake
   Type: Healing
   Weight: 10
+  Use:
+    ItemHeal:
+      Hp: [325, 405]
+      Sp: [0, 0]
 - Id: 544
   AegisName: Fish_Slice
   Name: Raw Fish
   Type: Healing
   Weight: 30
+  Use:
+    ItemHeal:
+      Hp: [25, 60]
+      Sp: [0, 0]
 - Id: 545
   AegisName: Red_Slim_Potion
   Name: Condensed Red Potion
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [45, 65]
+      Sp: [0, 0]
 - Id: 546
   AegisName: Yellow_Slim_Potion
   Name: Condensed Yellow Potion
   Type: Healing
   Weight: 30
+  Use:
+    ItemHeal:
+      Hp: [175, 235]
+      Sp: [0, 0]
 - Id: 547
   AegisName: White_Slim_Potion
   Name: Condensed White Potion
   Type: Healing
   Weight: 50
+  Use:
+    ItemHeal:
+      Hp: [325, 405]
+      Sp: [0, 0]
 - Id: 548
   AegisName: Cheese
   Name: Cheese
   Type: Healing
   Weight: 50
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [10, 15]
 - Id: 549
   AegisName: Nice_Sweet_Potato
   Name: Yam
@@ -253,21 +417,37 @@ Body:
   Name: Rice Cake
   Type: Healing
   Weight: 10
+  Use:
+    ItemHeal:
+      Hp: [10, 15]
+      Sp: [0, 0]
 - Id: 551
   AegisName: Shusi
   Name: Sushi
   Type: Healing
   Weight: 50
+  Use:
+    ItemHeal:
+      Hp: [50, 60]
+      Sp: [0, 0]
 - Id: 552
   AegisName: KETUPAT
   Name: Ketupat
   Type: Healing
   Weight: 10
+  Use:
+    ItemHeal:
+      Hp: [70, 90]
+      Sp: [20, 30]
 - Id: 553
   AegisName: Bun
   Name: Bao
   Type: Healing
   Weight: 50
+  Use:
+    ItemHeal:
+      Hp: [35, 70]
+      Sp: [0, 0]
 - Id: 554
   AegisName: Mojji
   Name: Mochi
@@ -278,56 +458,100 @@ Body:
   Name: Traditional Rice Cake
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [105, 145]
+      Sp: [0, 0]
 - Id: 556
   AegisName: Long_Rice_Cake
   Name: Rice Cake Stick
   Type: Healing
   Weight: 10
+  Use:
+    ItemHeal:
+      Hp: [20, 25]
+      Sp: [0, 0]
 - Id: 557
   AegisName: Hash_Rice_Cake
   Name: Neatly Sliced Rice Cake
   Type: Healing
   Weight: 10
+  Use:
+    ItemHeal:
+      Hp: [25, 30]
+      Sp: [0, 0]
 - Id: 558
   AegisName: Chocolate
   Name: Chocolate
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [1, 1]
+      Sp: [1, 1]
 - Id: 559
   AegisName: HandMade_Chocolate
   Name: Hand-made Chocolate
   Type: Healing
   Weight: 80
+  Use:
+    ItemHeal:
+      Hp: [50, 50]
+      Sp: [50, 50]
 - Id: 560
   AegisName: HandMade_Chocolate_
   Name: Handmade White Chocolate
   Type: Healing
   Weight: 80
+  Use:
+    ItemHeal:
+      Hp: [50, 50]
+      Sp: [50, 50]
 - Id: 561
   AegisName: White_Chocolate
   Name: White Chocolate
   Type: Healing
   Weight: 80
+  Use:
+    ItemHeal:
+      Hp: [50, 50]
+      Sp: [50, 50]
 - Id: 562
   AegisName: Pizza
   Name: Doublecrust Swiss Fondue
   Type: Healing
   Weight: 150
+  Use:
+    ItemHeal:
+      Hp: [70, 100]
+      Sp: [0, 0]
 - Id: 563
   AegisName: Pizza_01
   Name: Doublecrust Swiss Fondue
   Type: Healing
   Weight: 150
+  Use:
+    ItemHeal:
+      Hp: [375, 445]
+      Sp: [0, 0]
 - Id: 564
   AegisName: Rice_Ball
   Name: Rice Ball
   Type: Healing
   Weight: 30
+  Use:
+    ItemHeal:
+      Hp: [200, 200]
+      Sp: [0, 0]
 - Id: 565
   AegisName: Vita500_Bottle
   Name: Vita500
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [142, 274]
+      Sp: [0, 0]
 - Id: 566
   AegisName: Tomyumkung
   Name: Tom Yum Goong
@@ -338,31 +562,55 @@ Body:
   Name: Shrimp
   Type: Healing
   Weight: 40
+  Use:
+    ItemHeal:
+      Hp: [117, 192]
+      Sp: [0, 0]
 - Id: 568
   AegisName: Lemon
   Name: Lemon
   Type: Healing
   Weight: 40
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [10, 20]
 - Id: 569
   AegisName: Novice_Potion
   Name: Novice Potion
   Type: Healing
   Weight: 10
+  Use:
+    ItemHeal:
+      Hp: [44, 66]
+      Sp: [0, 0]
 - Id: 570
   AegisName: Lucky_Candy
   Name: Lucky Candy
   Type: Healing
   Weight: 30
+  Use:
+    ItemHeal:
+      Hp: [45, 65]
+      Sp: [0, 0]
 - Id: 571
   AegisName: Lucky_Candy_Cane
   Name: Lucky Candy Cane
   Type: Healing
   Weight: 40
+  Use:
+    ItemHeal:
+      Hp: [105, 145]
+      Sp: [0, 0]
 - Id: 572
   AegisName: Lucky_Cookie
   Name: Lucky Cookie
   Type: Healing
   Weight: 30
+  Use:
+    ItemHeal:
+      Hp: [160, 200]
+      Sp: [0, 0]
 - Id: 573
   AegisName: Chocolate_Drink
   Name: Chocolate Drink
@@ -373,46 +621,82 @@ Body:
   Name: Egg
   Type: Healing
   Weight: 30
+  Use:
+    ItemHeal:
+      Hp: [33, 42]
+      Sp: [0, 0]
 - Id: 575
   AegisName: Piece_Of_Cake_
   Name: 2nd Anniversary Cake
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [270, 330]
+      Sp: [0, 0]
 - Id: 576
   AegisName: Prickly_Fruit
   Name: Prickly Fruit
   Type: Healing
   Weight: 60
+  Use:
+    ItemHeal:
+      Hp: [150, 300]
+      Sp: [20, 30]
 - Id: 577
   AegisName: Grain
   Name: Bag of Grain
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [60, 70]
+      Sp: [0, 0]
 - Id: 578
   AegisName: Strawberry
   Name: Strawberry
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [16, 28]
 - Id: 579
   AegisName: Delicious_Fish
   Name: Fresh Fish
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [100, 150]
+      Sp: [0, 0]
 - Id: 580
   AegisName: Bread
   Name: Bread
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [50, 90]
+      Sp: [0, 0]
 - Id: 581
   AegisName: Mushroom
   Name: Edible Mushroom
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [20, 30]
+      Sp: [0, 0]
 - Id: 582
   AegisName: Orange
   Name: Orange
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [10, 20]
+      Sp: [10, 20]
 - Id: 583
   AegisName: KETUPAT_
   Name: Ketupat Sayur
@@ -423,6 +707,10 @@ Body:
   Name: Fish Cake Soup
   Type: Healing
   Weight: 60
+  Use:
+    ItemHeal:
+      Hp: [40, 70]
+      Sp: [0, 0]
 - Id: 585
   AegisName: Wurst
   Name: Brusti
@@ -433,26 +721,46 @@ Body:
   Name: Mother's Cake
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [325, 405]
+      Sp: [0, 0]
 - Id: 587
   AegisName: Prickly_Fruit_
   Name: Red Prickly Fruit
   Type: Healing
   Weight: 60
+  Use:
+    ItemHeal:
+      Hp: [270, 330]
+      Sp: [20, 30]
 - Id: 588
   AegisName: Spaghetti
   Name: Spaghetti
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [40, 70]
+      Sp: [0, 0]
 - Id: 589
   AegisName: Pizza_02
   Name: Pizza
   Type: Healing
   Weight: 150
+  Use:
+    ItemHeal:
+      Hp: [375, 445]
+      Sp: [0, 0]
 - Id: 590
   AegisName: Brezel_
   Name: Pretzel
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [50, 90]
+      Sp: [0, 0]
 - Id: 591
   AegisName: Caviar_Pancake
   Name: Caviar Pancake
@@ -483,23 +791,39 @@ Body:
   Name: Cute Strawberry-Choco
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [1, 100]
 - Id: 597
   AegisName: Lovely_Choco_Tart
   Name: Lovely Choco-Tart
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [10, 400]
+      Sp: [0, 0]
 - Id: 598
   AegisName: Light_Red_Pot
   Name: Light Red Potion
   Type: Healing
   Weight: 10
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [45, 65]
+      Sp: [0, 0]
 - Id: 599
   AegisName: Light_Orange_Pot
   Name: Light Orange Potion
   Type: Healing
   Weight: 10
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [105, 145]
+      Sp: [0, 0]
 - Id: 601
   AegisName: Wing_Of_Fly
   Name: Fly Wing
@@ -535,11 +859,19 @@ Body:
   Name: Yggdrasil Berry
   Type: Healing
   Weight: 300
+  Use:
+    PercentHeal:
+      Hp: 100
+      Sp: 100
 - Id: 608
   AegisName: Seed_Of_Yggdrasil
   Name: Yggdrasil Seed
   Type: Healing
   Weight: 300
+  Use:
+    PercentHeal:
+      Hp: 50
+      Sp: 50
 - Id: 609
   AegisName: Amulet
   Name: Amulet
@@ -775,6 +1107,10 @@ Body:
   Name: Korean Rice Cake
   Type: Healing
   Weight: 10
+  Use:
+    PercentHeal:
+      Hp: 10
+      Sp: 0
 - Id: 664
   AegisName: Gift_Box_1
   Name: Gift Box
@@ -805,6 +1141,10 @@ Body:
   Name: Tempting Rice-Cake Soup
   Type: Healing
   Weight: 100
+  Use:
+    PercentHeal:
+      Hp: 10
+      Sp: 10
 - Id: 671
   AegisName: Gold_Coin
   Name: Gold Coin
@@ -837,6 +1177,10 @@ Body:
   Name: Magic Carnation
   Type: Healing
   Weight: 1000
+  Use:
+    PercentHeal:
+      Hp: 0
+      Sp: 20
 - Id: 681
   AegisName: Memory_Of_Wedding
   Name: Sweet Memory of Marriage
@@ -862,6 +1206,10 @@ Body:
   Name: Ramadan
   Type: Healing
   Weight: 300
+  Use:
+    PercentHeal:
+      Hp: 100
+      Sp: 50
 - Id: 686
   AegisName: Earth_Scroll_1_3
   Name: Level 3 Earth Spike
@@ -1272,81 +1620,141 @@ Body:
   Type: Healing
   Weight: 10
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [175, 235]
+      Sp: [0, 0]
 - Id: 11501
   AegisName: Light_White_Pot
   Name: Light White Potion
   Type: Healing
   Weight: 10
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [325, 405]
+      Sp: [0, 0]
 - Id: 11502
   AegisName: Light_Blue_Pot
   Name: Light Blue Potion
   Type: Healing
   Weight: 10
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [40, 60]
 - Id: 11503
   AegisName: Siege_White_Potion
   Name: WoE White Potion
   Type: Healing
   Weight: 100
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [400, 500]
+      Sp: [0, 0]
 - Id: 11504
   AegisName: Siege_Blue_Potion
   Name: WoE Blue Potion
   Type: Healing
   Weight: 100
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [50, 70]
 - Id: 11505
   AegisName: Iris
   Name: Iris
   Type: Healing
   Weight: 30
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [150, 150]
 - Id: 11506
   AegisName: Fanta_Orange
   Name: Fanta Orange
   Type: Healing
   Weight: 10
+  Use:
+    ItemHeal:
+      Hp: [50, 70]
+      Sp: [10, 12]
 - Id: 11507
   AegisName: Fanta_Grape
   Name: Fanta Grape
   Type: Healing
   Weight: 10
+  Use:
+    ItemHeal:
+      Hp: [50, 70]
+      Sp: [10, 12]
 - Id: 11508
   AegisName: Karada_Meguri_Tea
   Name: Karada Meguricha
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [50, 70]
+      Sp: [10, 12]
 - Id: 11509
   AegisName: Royal_Milk_Tea
   Name: Black Tea Kochakaden
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [50, 70]
+      Sp: [10, 12]
 - Id: 11510
   AegisName: Coke_Zero
   Name: Coca Cola Zero
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [50, 70]
+      Sp: [10, 12]
 - Id: 11511
   AegisName: Coke_No_Cal
   Name: Diet Coca Cola
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [50, 70]
+      Sp: [10, 12]
 - Id: 11512
   AegisName: Coca_Cola
   Name: Coca Cola
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [50, 70]
+      Sp: [10, 12]
 - Id: 11513
   AegisName: Protect_Neck_Candy
   Name: Protect Neck Candy
   Type: Healing
   Weight: 1
+  Use:
+    ItemHeal:
+      Hp: [5, 25]
+      Sp: [0, 0]
 - Id: 11514
   AegisName: Enriched_Slim_Pot
   Name: Enriched Slim Pot
   Type: Healing
   Weight: 50
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [335, 415]
+      Sp: [0, 0]
 - Id: 11515
   AegisName: Coconut
   Name: Coconut
@@ -1357,109 +1765,189 @@ Body:
   Name: Asai Fruit
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [16, 22]
+      Sp: [0, 0]
 - Id: 11517
   AegisName: Puri_Potion
   Name: Puri Potion
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [400, 600]
+      Sp: [0, 0]
 - Id: 11518
   AegisName: N_Blue_Potion
   Name: Blue Potion
   Type: Healing
   Weight: 50
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [5, 5]
 - Id: 11519
   AegisName: Beef_Toast
   Name: Beef Toast
   Type: Healing
   Weight: 40
+  Use:
+    ItemHeal:
+      Hp: [170, 250]
+      Sp: [0, 0]
 - Id: 11520
   AegisName: Mora_Mandarin
   Name: Mora Mandar
   Type: Healing
   Weight: 20
   EquipLevelMin: 100
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [50, 80]
 - Id: 11521
   AegisName: Pingui_Berry_Juice
   Name: Pingui Berry Juice
   Type: Healing
   Weight: 50
   EquipLevelMin: 100
+  Use:
+    ItemHeal:
+      Hp: [400, 800]
+      Sp: [50, 80]
 - Id: 11522
   AegisName: Red_Raffle_Sap
   Name: Red Raffle Sap
   Type: Healing
   Weight: 100
   EquipLevelMin: 100
+  Use:
+    ItemHeal:
+      Hp: [400, 800]
+      Sp: [0, 0]
 - Id: 11523
   AegisName: Yellow_Raffle_Sap
   Name: Yellow Raffle Sap
   Type: Healing
   Weight: 120
   EquipLevelMin: 110
+  Use:
+    ItemHeal:
+      Hp: [600, 1000]
+      Sp: [0, 0]
 - Id: 11524
   AegisName: White_Raffle_Sap
   Name: White Raffle Sap
   Type: Healing
   Weight: 140
   EquipLevelMin: 120
+  Use:
+    ItemHeal:
+      Hp: [800, 1200]
+      Sp: [0, 0]
 - Id: 11525
   AegisName: Mora_Hip_Tea
   Name: Mora Hip Tea
   Type: Healing
   Weight: 150
   EquipLevelMin: 120
+  Use:
+    ItemHeal:
+      Hp: [1500, 2000]
+      Sp: [0, 0]
 - Id: 11526
   AegisName: Rafflecino
   Name: Rafflecino
   Type: Healing
   Weight: 100
   EquipLevelMin: 120
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [120, 160]
 - Id: 11527
   AegisName: Baklava
   Name: Baklava
   Type: Healing
   Weight: 600
+  Use:
+    ItemHeal:
+      Hp: [1200, 1200]
+      Sp: [440, 440]
 - Id: 11528
   AegisName: Kanafeh
   Name: Kanafeh
   Type: Healing
   Weight: 200
+  Use:
+    ItemHeal:
+      Hp: [300, 300]
+      Sp: [240, 240]
 - Id: 11529
   AegisName: MAAMOUL_
   Name: Maamoul
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [120, 120]
+      Sp: [60, 60]
 - Id: 11530
   AegisName: Jujube
   Name: Jujube
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [30, 30]
+      Sp: [0, 0]
 - Id: 11531
   AegisName: Coffee
   Name: Coffee
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [10, 10]
 - Id: 11532
   AegisName: Nasi_Goreng
   Name: Nasi Goreng
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [17, 23]
+      Sp: [0, 0]
 - Id: 11533
   AegisName: Satay
   Name: Satay
   Type: Healing
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [17, 23]
+      Sp: [0, 0]
 - Id: 11534
   AegisName: Coco_Juice
   Name: Coconut Juice
   Type: Healing
   Weight: 50
+  Use:
+    ItemHeal:
+      Hp: [17, 23]
+      Sp: [0, 0]
 - Id: 11535
   AegisName: Almond_Chocolate
   Name: Almond Chocolate
   Type: Healing
   Weight: 200
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [8, 16]
 - Id: 11536
   AegisName: Cat_Hard_Biscuit
   Name: Cat Biscuit
@@ -1475,66 +1963,118 @@ Body:
   Name: Fresh Octopus Legs
   Type: Healing
   Weight: 30
+  Use:
+    ItemHeal:
+      Hp: [35, 60]
+      Sp: [5, 10]
 - Id: 11539
   AegisName: Athale_Choco
   Name: Athale Choco
   Type: Healing
   Weight: 80
+  Use:
+    ItemHeal:
+      Hp: [50, 50]
+      Sp: [50, 50]
 - Id: 11540
   AegisName: Shyai_Choco
   Name: Shyai Choco
   Type: Healing
   Weight: 80
+  Use:
+    ItemHeal:
+      Hp: [50, 50]
+      Sp: [50, 50]
 - Id: 11541
   AegisName: Mid_Choco
   Name: Mid Choco
   Type: Healing
   Weight: 80
+  Use:
+    ItemHeal:
+      Hp: [50, 50]
+      Sp: [50, 50]
 - Id: 11542
   AegisName: Zonda_Choco
   Name: Zonda Choco
   Type: Healing
   Weight: 80
+  Use:
+    ItemHeal:
+      Hp: [50, 50]
+      Sp: [50, 50]
 - Id: 11543
   AegisName: Goedo_Choco
   Name: Goedo Choco
   Type: Healing
   Weight: 80
+  Use:
+    ItemHeal:
+      Hp: [50, 50]
+      Sp: [50, 50]
 - Id: 11544
   AegisName: Huike_Choco
   Name: Huike Choco
   Type: Healing
   Weight: 80
+  Use:
+    ItemHeal:
+      Hp: [50, 50]
+      Sp: [50, 50]
 - Id: 11545
   AegisName: Rune_Choco
   Name: Rune Choco
   Type: Healing
   Weight: 80
+  Use:
+    ItemHeal:
+      Hp: [50, 50]
+      Sp: [50, 50]
 - Id: 11546
   AegisName: Pope_Choco
   Name: Pope Choco
   Type: Healing
   Weight: 80
+  Use:
+    ItemHeal:
+      Hp: [50, 50]
+      Sp: [50, 50]
 - Id: 11547
   AegisName: Woe_Violet_Potion
   Name: Siege Purple Potion
   Type: Healing
   Weight: 80
+  Use:
+    ItemHeal:
+      Hp: [500, 700]
+      Sp: [60, 85]
 - Id: 11548
   AegisName: Woe_White_Potion
   Name: Siege White Potion
   Type: Healing
   Weight: 80
+  Use:
+    PercentHeal:
+      Hp: 10
+      Sp: 0
 - Id: 11549
   AegisName: Woe_Blue_Potion
   Name: Siege Blue Potion
   Type: Healing
   Weight: 80
+  Use:
+    PercentHeal:
+      Hp: 0
+      Sp: 10
 - Id: 11550
   AegisName: Pumpkin_Cake
   Name: Pumpkin Cake
   Type: Healing
   Weight: 40
+  Use:
+    PercentHeal:
+      Hp: 5
+      Sp: 5
 - Id: 11551
   AegisName: Savory_Herb_Salad
   Name: Savory Herb Salad
@@ -1564,26 +2104,46 @@ Body:
   Name: Red Potion RG
   Type: Healing
   Weight: 40
+  Use:
+    ItemHeal:
+      Hp: [325, 325]
+      Sp: [0, 0]
 - Id: 11556
   AegisName: Blue_Potion_RG
   Name: RG Blue Potion
   Type: Healing
   Weight: 90
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [40, 60]
 - Id: 11557
   AegisName: TE_White_Potion
   Name: TE White Potion
   Type: Healing
   Weight: 300
+  Use:
+    ItemHeal:
+      Hp: [325, 325]
+      Sp: [0, 0]
 - Id: 11558
   AegisName: TE_White_Slim_Potion
   Name: TE White Slim Potion
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [325, 325]
+      Sp: [0, 0]
 - Id: 11562
   AegisName: Pie_Fruit
   Name: Pie Fruit
   Type: Healing
   Weight: 30
+  Use:
+    ItemHeal:
+      Hp: [65, 90]
+      Sp: [35, 40]
 - Id: 11563
   AegisName: Hot_Tee
   Name: Hot Tea
@@ -1594,42 +2154,70 @@ Body:
   Name: Sweet Canape
   Type: Usable
   Weight: 20
+  Use:
+    ItemHeal:
+      Hp: [1000, 1000]
+      Sp: [0, 0]
 - Id: 11565
   AegisName: White_Potion_B
   Name: White Potion
   Type: Healing
   Weight: 150
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [325, 405]
+      Sp: [0, 0]
 - Id: 11566
   AegisName: Yellow_Potion_B
   Name: "[Not For Sale] Yellow Potion"
   Type: Healing
   Weight: 130
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [175, 235]
+      Sp: [0, 0]
 - Id: 11567
   AegisName: Novice_Potion_B
   Name: Novice Potion
   Type: Healing
   Weight: 0
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [44, 66]
+      Sp: [0, 0]
 - Id: 11568
   AegisName: Red_Slim_Potion_B
   Name: Red Slim Potion
   Type: Healing
   Weight: 20
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [45, 65]
+      Sp: [0, 0]
 - Id: 11569
   AegisName: Orange_Potion_B
   Name: "[Not For Sale] Orange Potion"
   Type: Healing
   Weight: 100
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [105, 145]
+      Sp: [0, 0]
 - Id: 11570
   AegisName: Red_Potion_B
   Name: "[Not For Sale] Red Potion"
   Type: Healing
   Weight: 70
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [45, 65]
+      Sp: [0, 0]
 - Id: 11571
   AegisName: Green_Potion_B
   Name: Green Potion
@@ -1642,48 +2230,80 @@ Body:
   Type: Healing
   Weight: 150
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [40, 60]
 - Id: 11573
   AegisName: White_Slim_Potion_B
   Name: White Slim Potion
   Type: Healing
   Weight: 50
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [325, 405]
+      Sp: [0, 0]
 - Id: 11574
   AegisName: Yellow_Slim_Potion_B
   Name: Yellow Slim Potion
   Type: Healing
   Weight: 30
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [175, 235]
+      Sp: [0, 0]
 - Id: 11577
   AegisName: Rice_Ball_B
   Name: Rice Ball
   Type: Healing
   Weight: 30
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [200, 200]
+      Sp: [0, 0]
 - Id: 11578
   AegisName: Candy_Striper_B
   Name: Candy Bar
   Type: Healing
   Weight: 40
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [105, 145]
+      Sp: [0, 0]
 - Id: 11580
   AegisName: Candy_B
   Name: Candy
   Type: Healing
   Weight: 30
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [45, 65]
+      Sp: [0, 0]
 - Id: 11581
   AegisName: Piece_Of_Cake_B
   Name: Piece of Cake
   Type: Healing
   Weight: 100
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [270, 330]
+      Sp: [0, 0]
 - Id: 11582
   AegisName: Well_Baked_Cookie_B
   Name: Well-baked Cookie
   Type: Healing
   Weight: 30
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [160, 200]
+      Sp: [0, 0]
 - Id: 11583
   AegisName: Chocolate_Drink_B
   Name: Chocolate Drink
@@ -1696,39 +2316,67 @@ Body:
   Type: Healing
   Weight: 80
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [50, 50]
+      Sp: [50, 50]
 - Id: 11585
   AegisName: HandMade_Chocolate_B
   Name: Hand-made Chocolate
   Type: Healing
   Weight: 80
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [50, 50]
+      Sp: [50, 50]
 - Id: 11586
   AegisName: HandMade_Chocolate_B_
   Name: Hand-made White Chocolate
   Type: Healing
   Weight: 80
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [50, 50]
+      Sp: [50, 50]
 - Id: 11587
   AegisName: Chocolate_B
   Name: Chocolate
   Type: Healing
   Weight: 20
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [1, 1]
+      Sp: [1, 1]
 - Id: 11588
   AegisName: Strawberry_
   Name: Fresh Strawberries
   Type: Healing
   Weight: 10
+  Use:
+    ItemHeal:
+      Hp: [32, 56]
+      Sp: [16, 28]
 - Id: 11589
   AegisName: Iceflake
   Name: Cold Snow Cone
   Type: Healing
   Weight: 50
+  Use:
+    PercentHeal:
+      Hp: 5
+      Sp: 5
 - Id: 11590
   AegisName: Meat_Skewer5
   Name: Skewer No.5
   Type: Healing
   Weight: 300
+  Use:
+    ItemHeal:
+      Hp: [760, 810]
+      Sp: [10, 10]
 - Id: 11592
   AegisName: Trance_Candy_R
   Name: Trans Candy Red
@@ -1754,6 +2402,10 @@ Body:
   Name: Blood In Skull
   Type: Healing
   Weight: 50
+  Use:
+    ItemHeal:
+      Hp: [600, 800]
+      Sp: [0, 0]
 - Id: 11597
   AegisName: Iron_Bug
   Name: Iron Worm
@@ -1801,12 +2453,20 @@ Body:
   Name: Cookie Bat
   Type: Healing
   Weight: 30
+  Use:
+    ItemHeal:
+      Hp: [50, 100]
+      Sp: [0, 0]
 - Id: 11606
   AegisName: Light_White_Pot_
   Name: "[Not for Sale] Light White Potion"
   Type: Healing
   Weight: 10
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [325, 325]
+      Sp: [0, 0]
 - Id: 11607
   AegisName: Crepe
   Name: Sweet Crepe
@@ -1817,26 +2477,46 @@ Body:
   Name: Chocolate Egg
   Type: Healing
   Weight: 50
+  Use:
+    ItemHeal:
+      Hp: [325, 405]
+      Sp: [0, 0]
 - Id: 11609
   AegisName: Yummy_Cookie_Egg
   Name: Tasty Cookie Egg
   Type: Healing
   Weight: 50
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [40, 60]
 - Id: 11610
   AegisName: Sweet_Melon
   Name: Sweet Melon
   Type: Healing
   Weight: 50
+  Use:
+    ItemHeal:
+      Hp: [350, 350]
+      Sp: [0, 0]
 - Id: 11611
   AegisName: Pop_Corn
   Name: Popcorn
   Type: Healing
   Weight: 30
+  Use:
+    ItemHeal:
+      Hp: [235, 235]
+      Sp: [0, 0]
 - Id: 11612
   AegisName: Aromatic_Pop_Corn
   Name: Aromatic Popcorn
   Type: Healing
   Weight: 50
+  Use:
+    ItemHeal:
+      Hp: [800, 800]
+      Sp: [0, 0]
 - Id: 11613
   AegisName: Harvest_Cookie
   Name: Harvest Biscuit
@@ -1848,17 +2528,29 @@ Body:
   Type: Healing
   Weight: 30
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [27, 37]
+      Sp: [0, 0]
 - Id: 11615
   AegisName: Sweet_Potato_
   Name: Sweet Potato
   Type: Healing
   Weight: 20
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [15, 23]
+      Sp: [0, 0]
 - Id: 11616
   AegisName: Yummy_Meat
   Name: Delicious Meat
   Type: Healing
   Weight: 50
+  Use:
+    ItemHeal:
+      Hp: [100, 150]
+      Sp: [0, 0]
 - Id: 11617
   AegisName: Silvervine_Choco
   Name: Silvervine Chocoball
@@ -1875,29 +2567,49 @@ Body:
   Type: Healing
   Weight: 70
   EquipLevelMin: 60
+  Use:
+    ItemHeal:
+      Hp: [325, 325]
+      Sp: [0, 0]
 - Id: 11622
   AegisName: High_YelloPotion
   Name: Yellow Syrup
   Type: Healing
   Weight: 100
   EquipLevelMin: 60
+  Use:
+    ItemHeal:
+      Hp: [900, 900]
+      Sp: [0, 0]
 - Id: 11623
   AegisName: High_WhitePotion
   Name: White Syrup
   Type: Healing
   Weight: 140
   EquipLevelMin: 60
+  Use:
+    ItemHeal:
+      Hp: [1800, 1800]
+      Sp: [0, 0]
 - Id: 11624
   AegisName: High_BluePotion
   Name: Blue Syrup
   Type: Healing
   Weight: 100
   EquipLevelMin: 60
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [180, 180]
 - Id: 11625
   AegisName: Gourmet_Popcorn
   Name: Gourmet Butter Popcorn
   Type: Healing
   Weight: 40
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [20, 20]
 - Id: 11626
   AegisName: Kings_Melon_5
   Name: Recooked Melon Bread
@@ -1910,6 +2622,10 @@ Body:
   Weight: 1
   EquipLevelMin: 60
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [1500, 1500]
+      Sp: [0, 0]
 - Id: 11628
   AegisName: Fleshy_Larva
   Name: Fleshy Larva
@@ -1917,6 +2633,10 @@ Body:
   Weight: 1
   EquipLevelMin: 60
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [140, 140]
 - Id: 11629
   AegisName: Acorn_Chocoball
   Name: Acorn Chocolate Ball
@@ -1927,18 +2647,30 @@ Body:
   Name: Lunch Box
   Type: Healing
   Weight: 150
+  Use:
+    PercentHeal:
+      Hp: 50
+      Sp: 50
 - Id: 11631
   AegisName: 2401_ev_Rainbow
   Name: New Year Rainbow Rice Cake
   Type: Healing
   Weight: 50
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 100
+      Sp: 100
 - Id: 11632
   AegisName: 2401_ev_Sesamepastry
   Name: New Year Dasik
   Type: Healing
   Weight: 20
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 20
+      Sp: 20
 - Id: 11633
   AegisName: 2401_ev_WindTteok
   Name: New Year Wind Rice Cake
@@ -1946,6 +2678,10 @@ Body:
   Weight: 1
   EquipLevelMin: 60
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [1500, 1500]
+      Sp: [0, 0]
 - Id: 11634
   AegisName: 2401_ev_Yugwa
   Name: New Year Yugwa
@@ -1953,6 +2689,10 @@ Body:
   Weight: 1
   EquipLevelMin: 60
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [140, 140]
 - Id: 11635
   AegisName: 2401_ev_RedLin
   Name: Red Inverse Scale
@@ -1965,6 +2705,10 @@ Body:
   Weight: 1
   EquipLevelMin: 90
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [1800, 1800]
+      Sp: [0, 0]
 - Id: 11637
   AegisName: 24_S_Ev_Berry_Soda
   Name: Berry Soda
@@ -1972,6 +2716,10 @@ Body:
   Weight: 1
   EquipLevelMin: 90
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [180, 180]
 - Id: 11638
   AegisName: 24_A_Ev_Choco_C
   Name: Symposium Choco Egg Cookie
@@ -1979,6 +2727,10 @@ Body:
   Weight: 1
   EquipLevelMin: 100
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [2650, 2650]
+      Sp: [0, 0]
 - Id: 11639
   AegisName: 24_A_Ev_Egg_C
   Name: Symposium Egg Cookie
@@ -1986,6 +2738,10 @@ Body:
   Weight: 1
   EquipLevelMin: 100
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [260, 260]
 - Id: 11640
   AegisName: E_Deli_BBQ
   Name: Well Roasted Meat
@@ -1993,6 +2749,10 @@ Body:
   Weight: 1
   EquipLevelMin: 70
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [1750, 1750]
+      Sp: [0, 0]
 - Id: 11641
   AegisName: E_Leather_Bottle
   Name: Leather Water Bottle
@@ -2000,11 +2760,19 @@ Body:
   Weight: 1
   EquipLevelMin: 70
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [160, 160]
 - Id: 11701
   AegisName: Girl_Bunch_Of_Flower
   Name: Girl's Bouquet
   Type: Healing
   Weight: 50
+  Use:
+    ItemHeal:
+      Hp: [105, 145]
+      Sp: [0, 0]
 - Id: 11702
   AegisName: Moon_Cookie
   Name: Moon Cookie
@@ -2015,56 +2783,100 @@ Body:
   Name: Mystery Blood
   Type: Healing
   Weight: 10
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [25, 35]
 - Id: 11704
   AegisName: KETUPAT_F
   Name: Ketupat
   Type: Healing
   Weight: 10
+  Use:
+    ItemHeal:
+      Hp: [70, 90]
+      Sp: [0, 0]
 - Id: 11705
   AegisName: Special_White_Potion
   Name: Children's Potion
   Type: Healing
   Weight: 10
+  Use:
+    ItemHeal:
+      Hp: [425, 425]
+      Sp: [0, 0]
 - Id: 11706
   AegisName: Steak
   Name: Steak
   Type: Healing
   Weight: 200
+  Use:
+    ItemHeal:
+      Hp: [700, 1000]
+      Sp: [0, 0]
 - Id: 11707
   AegisName: Roasted_Beef
   Name: Roast Beef
   Type: Healing
   Weight: 200
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [100, 200]
 - Id: 11708
   AegisName: Fore_Flank_Sirloin
   Name: Fore Flank Sirloin
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [30, 50]
+      Sp: [1, 5]
 - Id: 11709
   AegisName: Fanta_Zero_Lemon
   Name: Fanta Zero Lemon
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [50, 70]
+      Sp: [10, 12]
 - Id: 11710
   AegisName: Sakura_Mist
   Name: Sakura Mist
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [50, 70]
+      Sp: [10, 12]
 - Id: 11711
   AegisName: Sakura_Milk_Tea
   Name: Sakura Milk Tea
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [50, 70]
+      Sp: [10, 12]
 - Id: 11712
   AegisName: First_Leaf_Tea
   Name: Flower
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [50, 70]
+      Sp: [10, 12]
 - Id: 11713
   AegisName: Julia's_Candy
   Name: Julia's Candy
   Type: Healing
   Weight: 30
+  Use:
+    ItemHeal:
+      Hp: [40, 45]
+      Sp: [0, 0]
 - Id: 12000
   AegisName: Cold_Scroll_2_5
   Name: Level 5 Frost Diver
@@ -2785,6 +3597,10 @@ Body:
   Name: Red Can
   Type: Usable
   Weight: 300
+  Use:
+    PercentHeal:
+      Hp: 25
+      Sp: 25
 - Id: 12144
   AegisName: Sphere_Case_Wind
   Name: Lightning Sphere Pack
@@ -3040,6 +3856,10 @@ Body:
   Name: Grace Moon Cake
   Type: Healing
   Weight: 300
+  Use:
+    PercentHeal:
+      Hp: 50
+      Sp: 50
 - Id: 12189
   AegisName: Red_Box_
   Name: Old Red Box
@@ -3060,11 +3880,19 @@ Body:
   Name: Pumpkin Pie
   Type: Healing
   Weight: 30
+  Use:
+    PercentHeal:
+      Hp: 5
+      Sp: 5
 - Id: 12193
   AegisName: Brezel
   Name: Pretzel
   Type: Usable
   Weight: 20
+  Use:
+    PercentHeal:
+      Hp: 5
+      Sp: 5
 - Id: 12194
   AegisName: Hometown_Gift
   Name: Hometown Gift
@@ -3075,16 +3903,28 @@ Body:
   Name: Plain Rice Cake
   Type: Healing
   Weight: 100
+  Use:
+    PercentHeal:
+      Hp: 0
+      Sp: 20
 - Id: 12196
   AegisName: Hearty_Rice_Cake
   Name: Hearty Rice Cake
   Type: Healing
   Weight: 100
+  Use:
+    PercentHeal:
+      Hp: 50
+      Sp: 0
 - Id: 12197
   AegisName: Salty_Rice_Cake
   Name: Salty Rice Cake
   Type: Healing
   Weight: 100
+  Use:
+    PercentHeal:
+      Hp: 10
+      Sp: 10
 - Id: 12198
   AegisName: Lucky_Rice_Cake
   Name: Lucky Rice Cake
@@ -3281,11 +4121,19 @@ Body:
   Name: Kvass
   Type: Healing
   Weight: 200
+  Use:
+    PercentHeal:
+      Hp: 100
+      Sp: 100
 - Id: 12234
   AegisName: Cacao99
   Name: Fierce Cacao 99%
   Type: Healing
   Weight: 100
+  Use:
+    PercentHeal:
+      Hp: 25
+      Sp: 0
 - Id: 12235
   AegisName: Strawberry_Choco
   Name: Chocolate Strawberry
@@ -3343,6 +4191,10 @@ Body:
   Name: Green Ale
   Type: Healing
   Weight: 500
+  Use:
+    PercentHeal:
+      Hp: 100
+      Sp: 0
 - Id: 12246
   AegisName: Magic_Card_Album
   Name: Mystical Card Album
@@ -3405,6 +4257,10 @@ Body:
   Type: Healing
   Weight: 100
   EquipLevelMin: 50
+  Use:
+    PercentHeal:
+      Hp: 25
+      Sp: 25
 - Id: 12258
   AegisName: Bombring_Box
   Name: Bomb Poring Box
@@ -3488,6 +4344,10 @@ Body:
   Type: Healing
   Weight: 70
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 5
+      Sp: 0
 - Id: 12272
   AegisName: Mre_B
   Name: Military Ration B
@@ -3603,11 +4463,19 @@ Body:
   Name: Unripe Yggdrasilberry
   Type: Healing
   Weight: 200
+  Use:
+    PercentHeal:
+      Hp: 20
+      Sp: 0
 - Id: 12293
   AegisName: Dried_Yggdrasilberry
   Name: Dried Yggdrasilberry
   Type: Healing
   Weight: 200
+  Use:
+    PercentHeal:
+      Hp: 0
+      Sp: 20
 - Id: 12294
   AegisName: PC_Bang_Coin_Box1
   Name: PC-Room Coin Box
@@ -3777,6 +4645,10 @@ Body:
   Type: Healing
   Weight: 50
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 5
+      Sp: 5
 - Id: 12323
   AegisName: N_Fly_Wing
   Name: Novice Fly Wing
@@ -3826,12 +4698,20 @@ Body:
   Type: Healing
   Weight: 10
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 6
+      Sp: 0
 - Id: 12332
   AegisName: Fruit_Juice
   Name: Fruit Juice
   Type: Healing
   Weight: 10
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 0
+      Sp: 6
 - Id: 12333
   AegisName: Ansila
   Name: Ancilla
@@ -3850,16 +4730,28 @@ Body:
   Name: Grilled Delicious Skewer
   Type: Healing
   Weight: 350
+  Use:
+    PercentHeal:
+      Hp: 60
+      Sp: 60
 - Id: 12336
   AegisName: Baked_Mushroom
   Name: Grilled Mushroom
   Type: Healing
   Weight: 300
+  Use:
+    PercentHeal:
+      Hp: 30
+      Sp: 30
 - Id: 12337
   AegisName: Grilled_Sausage
   Name: Grilled Sausages
   Type: Healing
   Weight: 200
+  Use:
+    PercentHeal:
+      Hp: 20
+      Sp: 20
 - Id: 12338
   AegisName: Grilled_Corn
   Name: Grilled Corn
@@ -4069,6 +4961,10 @@ Body:
   Name: Rice Cake Soup
   Type: Usable
   Weight: 100
+  Use:
+    PercentHeal:
+      Hp: 50
+      Sp: 50
 - Id: 12379
   AegisName: Pope's_Cookie
   Name: Pope Cookie
@@ -4214,6 +5110,10 @@ Body:
   Type: Usable
   Weight: 0
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 5
+      Sp: 5
 - Id: 12403
   AegisName: Lucky_Egg_C2
   Name: Lucky Egg C2
@@ -4926,6 +5826,10 @@ Body:
   Name: NY Rice Cake Soup
   Type: Usable
   Weight: 100
+  Use:
+    PercentHeal:
+      Hp: 20
+      Sp: 20
 - Id: 12537
   AegisName: Solo_Gift_Basket
   Name: Gift Chocolate Basket
@@ -5276,6 +6180,10 @@ Body:
   Name: Fresh Watermelon Juice
   Type: Healing
   Weight: 100
+  Use:
+    PercentHeal:
+      Hp: 5
+      Sp: 5
 - Id: 12602
   AegisName: Special_Box1
   Name: Special Box I
@@ -5389,6 +6297,10 @@ Body:
   Name: Delicious Jelly
   Type: Healing
   Weight: 50
+  Use:
+    PercentHeal:
+      Hp: 3
+      Sp: 3
 - Id: 12625
   AegisName: Sapa_Feat_Cert_Pack
   Name: Sapha Certification Bag
@@ -5821,6 +6733,10 @@ Body:
   Weight: 10
   EquipLevelMin: 85
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 100
+      Sp: 0
 - Id: 12705
   AegisName: Noble_Nameplate
   Name: Noble Nameplate
@@ -5848,6 +6764,10 @@ Body:
   Name: Guyak Candy
   Type: Healing
   Weight: 150
+  Use:
+    PercentHeal:
+      Hp: 30
+      Sp: 30
 - Id: 12710
   AegisName: Guyak_Pudding
   Name: Guyak Pudding
@@ -5858,11 +6778,19 @@ Body:
   Name: Pretzel
   Type: Healing
   Weight: 100
+  Use:
+    ItemHeal:
+      Hp: [50, 90]
+      Sp: [0, 0]
 - Id: 12712
   AegisName: Green_Beer
   Name: Green Beer
   Type: Usable
   Weight: 100
+  Use:
+    PercentHeal:
+      Hp: 0
+      Sp: 50
 - Id: 12713
   AegisName: Monster_Extract
   Name: Monster Extract
@@ -6034,6 +6962,10 @@ Body:
   Name: Snow Flowers
   Type: Usable
   Weight: 10
+  Use:
+    PercentHeal:
+      Hp: 10
+      Sp: 10
 - Id: 12740
   AegisName: Inc_Str_Scroll
   Name: Amplification Scroll
@@ -6113,6 +7045,10 @@ Body:
   Type: Usable
   Weight: 10
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 50
+      Sp: 50
 - Id: 12755
   AegisName: Traditional_Firecrack
   Name: Chinese Fireworks
@@ -6664,11 +7600,19 @@ Body:
   Name: RG Golden Apple Slice
   Type: Usable
   Weight: 300
+  Use:
+    PercentHeal:
+      Hp: 50
+      Sp: 50
 - Id: 12857
   AegisName: GoldenApple_RG
   Name: RG Golden Apple
   Type: Usable
   Weight: 300
+  Use:
+    PercentHeal:
+      Hp: 100
+      Sp: 100
 - Id: 12858
   AegisName: Golden_Potion_RG
   Name: RG Golden Potion
@@ -14134,18 +15078,30 @@ Body:
   Type: Healing
   Weight: 10
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 100
+      Sp: 0
 - Id: 14523
   AegisName: Pill_
   Name: Pill
   Type: Healing
   Weight: 10
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 0
+      Sp: 100
 - Id: 14524
   AegisName: Superb_Fish_Slice
   Name: Superb Fish Slice
   Type: Healing
   Weight: 10
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 100
+      Sp: 100
 - Id: 14525
   AegisName: Chewy_Ricecake
   Name: Chewy Ricecake
@@ -14652,6 +15608,10 @@ Body:
   Name: Spoiled Cuisine
   Type: Usable
   Weight: 300
+  Use:
+    PercentHeal:
+      Hp: 10
+      Sp: 10
 - Id: 14611
   AegisName: M_Def_Potion
   Name: M Def Potion
@@ -15046,6 +16006,10 @@ Body:
   Type: Healing
   Weight: 10
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 10
+      Sp: 0
 - Id: 14843
   AegisName: DF_Insurance
   Name: "[Scroll] Life Insurance"
@@ -15160,6 +16124,10 @@ Body:
   Type: Healing
   Weight: 0
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 20
+      Sp: 0
 - Id: 16100
   AegisName: Angry_Mouth_C_Box
   Name: Angry Mouth Box
@@ -23262,6 +24230,10 @@ Body:
   Name: Riesen Bretzel
   Type: Healing
   Weight: 0
+  Use:
+    PercentHeal:
+      Hp: 100
+      Sp: 0
 - Id: 22625
   AegisName: Oktoberfest_Bag
   Name: Oktoberfest Bag
@@ -23370,6 +24342,10 @@ Body:
   Name: Honey Songpyun
   Type: Healing
   Weight: 200
+  Use:
+    PercentHeal:
+      Hp: 20
+      Sp: 0
 - Id: 22658
   AegisName: BraisedShortRibs
   Name: Cow Steamed Ribs
@@ -23452,6 +24428,10 @@ Body:
   Name: Single Cookie
   Type: Healing
   Weight: 50
+  Use:
+    PercentHeal:
+      Hp: 5
+      Sp: 5
 - Id: 22687
   AegisName: Pieces_Of_Sentiment
   Name: Sentimental Fragment
@@ -23504,6 +24484,10 @@ Body:
   Name: Pegasus Cotton Candy
   Type: Usable
   Weight: 50
+  Use:
+    PercentHeal:
+      Hp: 40
+      Sp: 40
 - Id: 22702
   AegisName: Minus_Str
   Name: STR Reduction Potion
@@ -23887,6 +24871,10 @@ Body:
   Name: Pumpkin Candy
   Type: Usable
   Weight: 50
+  Use:
+    PercentHeal:
+      Hp: 0
+      Sp: 25
 - Id: 22842
   AegisName: Sealed_Dracula_Scroll2
   Name: Sealed Dracula Scroll II
@@ -24049,6 +25037,10 @@ Body:
   Name: Chocolate Rice Cake Soup
   Type: Usable
   Weight: 0
+  Use:
+    PercentHeal:
+      Hp: 10
+      Sp: 10
 - Id: 22883
   AegisName: SeptemberGiftBox_
   Name: September Gift Box
@@ -24316,6 +25308,10 @@ Body:
   Name: Cherry Blossom Rice Cake
   Type: Usable
   Weight: 30
+  Use:
+    PercentHeal:
+      Hp: 30
+      Sp: 30
 - Id: 22946
   AegisName: Status_Decrease_Scroll
   Name: Stats Reduction Scroll
@@ -24456,6 +25452,10 @@ Body:
   Type: Usable
   Weight: 10
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 30
+      Sp: 30
 - Id: 22996
   AegisName: Comp_Neuralizer
   Name: "[Gift] Neuralizer"
@@ -24658,6 +25658,10 @@ Body:
   Type: Healing
   Weight: 300
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 50
+      Sp: 50
 - Id: 23043
   AegisName: Yggdrasil_Seed_Box_
   Name: "[Sale] Yggdrasil Seed Box"
@@ -25763,6 +26767,10 @@ Body:
   Type: Usable
   Weight: 30
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 30
+      Sp: 30
 - Id: 23318
   AegisName: Shadow_Scroll2
   Name: Shadow Scroll II
@@ -25779,6 +26787,10 @@ Body:
   Name: Sweet Melon Juice
   Type: Usable
   Weight: 100
+  Use:
+    PercentHeal:
+      Hp: 30
+      Sp: 30
 - Id: 23322
   AegisName: Melon_Parfait
   Name: Melon Parfait
@@ -25974,12 +26986,20 @@ Body:
   Type: Usable
   Weight: 0
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 10
+      Sp: 10
 - Id: 23363
   AegisName: E_Watermelon_Pudding
   Name: Watermelon Pudding
   Type: Usable
   Weight: 0
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 30
+      Sp: 30
 - Id: 23364
   AegisName: Cryptura_Cookie
   Name: Critatura Pope Cookie
@@ -25997,6 +27017,10 @@ Body:
   Name: Spaghetti and Sauce
   Type: Usable
   Weight: 100
+  Use:
+    PercentHeal:
+      Hp: 30
+      Sp: 30
 - Id: 23368
   AegisName: Store_Search1
   Name: Special Shopper Catalog
@@ -26066,6 +27090,10 @@ Body:
   Name: Home Food
   Type: Usable
   Weight: 100
+  Use:
+    PercentHeal:
+      Hp: 20
+      Sp: 20
 - Id: 23446
   AegisName: Savage_Trap
   Name: Savage Trap
@@ -26481,6 +27509,10 @@ Body:
   Name: Dogly Bottle Z
   Type: Healing
   Weight: 180
+  Use:
+    PercentHeal:
+      Hp: 18
+      Sp: 18
 - Id: 23661
   AegisName: 2018_New_Year_Scroll
   Name: 2018 New Year Scroll
@@ -30490,6 +31522,10 @@ Body:
   Name: "[Scroll] Halloween Candy"
   Type: Healing
   Weight: 10
+  Use:
+    PercentHeal:
+      Hp: 30
+      Sp: 30
 - Id: 101128
   AegisName: Season_Evt_Reward_11
   Name: Royal Reward Box
@@ -30770,6 +31806,10 @@ Body:
   Type: Usable
   Weight: 0
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 30
+      Sp: 30
 - Id: 101279
   AegisName: 2022_LunarNewYears_box
   Name: New Year Gift Box
@@ -30822,6 +31862,10 @@ Body:
   Name: Love Confession Chocolate
   Type: Healing
   Weight: 0
+  Use:
+    PercentHeal:
+      Hp: 30
+      Sp: 30
 - Id: 101331
   AegisName: Fruits_Set_Trap
   Name: Fruit Set Trap
@@ -33221,12 +34265,20 @@ Body:
   Type: Usable
   Weight: 1
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 20
+      Sp: 20
 - Id: 102910
   AegisName: 2403_ev_Berry_Cake
   Name: Strawberry Cream Cake
   Type: Usable
   Weight: 1
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 50
+      Sp: 50
 - Id: 102911
   AegisName: 2403_ev_Mont_Blanc
   Name: Mont Blanc Cake
@@ -33257,6 +34309,10 @@ Body:
   Type: Usable
   Weight: 1
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 100
+      Sp: 100
 - Id: 102947
   AegisName: aegis_102947
   Name: Antiquity of Ghost Ship (Ghost Ship Captain)
@@ -34157,6 +35213,10 @@ Body:
   Type: Usable
   Weight: 50
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 100
+      Sp: 100
 - Id: 103657
   AegisName: E_Card_Pack
   Name: Celebrity Card Pack
@@ -37088,24 +38148,40 @@ Body:
   Type: Healing
   Weight: 2
   EquipLevelMin: 120
+  Use:
+    ItemHeal:
+      Hp: [655, 675]
+      Sp: [0, 0]
 - Id: 1100004
   AegisName: Concentrated_B_P
   Name: Concentrated Blue Potion
   Type: Healing
   Weight: 2
   EquipLevelMin: 120
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [340, 360]
 - Id: 1100005
   AegisName: Concentrated_G_P
   Name: Concentrated Gold Potion
   Type: Healing
   Weight: 2
   EquipLevelMin: 180
+  Use:
+    ItemHeal:
+      Hp: [2730, 2750]
+      Sp: [0, 0]
 - Id: 1100006
   AegisName: Ep19_Dry_Icegangu
   Name: Dried Ice Gangu
   Type: Healing
   Weight: 5
   EquipLevelMin: 200
+  Use:
+    ItemHeal:
+      Hp: [1925, 1925]
+      Sp: [0, 0]
 - Id: 1100007
   AegisName: Fried_Sausage
   Name: Roasted sausages
@@ -37131,6 +38207,10 @@ Body:
   Weight: 5
   EquipLevelMin: 180
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [350, 350]
 - Id: 1100011
   AegisName: Monster_Bread
   Name: Monster Bread
@@ -37138,6 +38218,10 @@ Body:
   Weight: 3
   EquipLevelMin: 180
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [4500, 4500]
+      Sp: [0, 0]
 - Id: 1100012
   AegisName: Monster_Bread_
   Name: Forbidden Monster Bread
@@ -37145,6 +38229,10 @@ Body:
   Weight: 3
   EquipLevelMin: 180
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [450, 450]
 - Id: 1100013
   AegisName: South_Pork_Slice
   Name: Southern Style Pork Head Meat
@@ -37159,6 +38247,10 @@ Body:
   Weight: 2
   EquipLevelMin: 60
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [40, 40]
 - Id: 1100015
   AegisName: Grilled_Veg_Skewers_
   Name: Fire-grilled Suspicious Skewers
@@ -37166,6 +38258,10 @@ Body:
   Weight: 10
   EquipLevelMin: 60
   NoDrop: true
+  Use:
+    PercentHeal:
+      Hp: 10
+      Sp: 10
 - Id: 1100016
   AegisName: Night_M_Ice_Flakes
   Name: Night Market Bingsu
@@ -37173,6 +38269,10 @@ Body:
   Weight: 3
   EquipLevelMin: 120
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [150, 150]
 - Id: 1100017
   AegisName: Night_M_Ice_Cream
   Name: Night Market Ice Cream
@@ -37180,6 +38280,10 @@ Body:
   Weight: 2
   EquipLevelMin: 120
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [2500, 2500]
+      Sp: [0, 0]
 - Id: 1100018
   AegisName: Night_M_Cotton_Candy
   Name: Night Market Cotton Candy
@@ -37187,6 +38291,10 @@ Body:
   Weight: 2
   EquipLevelMin: 120
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [250, 250]
 - Id: 1100019
   AegisName: Grilled_Veg_Skewers
   Name: Fire-grilled Vegetable Skewers
@@ -37194,6 +38302,10 @@ Body:
   Weight: 1
   EquipLevelMin: 60
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [1200, 1200]
+      Sp: [0, 0]
 - Id: 1100020
   AegisName: Grilled_Hm_Sausage
   Name: Fire-grilled Homemade Sausage
@@ -37201,12 +38313,20 @@ Body:
   Weight: 1
   EquipLevelMin: 60
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [120, 120]
 - Id: 1100021
   AegisName: 2403_ev_Berry_Cup
   Name: Strawberry Fresh Cream Cupcake
   Type: Healing
   Weight: 1
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [200, 200]
 - Id: 1100022
   AegisName: 2403_ev_Macaron
   Name: Moist Macaron
@@ -37214,6 +38334,10 @@ Body:
   Weight: 1
   EquipLevelMin: 60
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [2000, 2000]
+      Sp: [0, 0]
 - Id: 1100027
   AegisName: 2501_ev_Matjalal
   Name: Matjalal
@@ -37224,11 +38348,19 @@ Body:
   Name: Delicious Noodle
   Type: Healing
   Weight: 10
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [300, 300]
 - Id: 1100029
   AegisName: aegis_1100029
   Name: Delicious Dumplings
   Type: Healing
   Weight: 10
+  Use:
+    ItemHeal:
+      Hp: [2500, 2500]
+      Sp: [0, 0]
 - Id: 1100032
   AegisName: CLB_HM_3Cheese
   Name: Hanmac Triple Cheese Burger
@@ -37236,6 +38368,10 @@ Body:
   Weight: 1
   EquipLevelMin: 200
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [3250, 3250]
+      Sp: [0, 0]
 - Id: 1100033
   AegisName: CLB_HM_Pizzalio
   Name: Hanmac Pizzario Burger
@@ -37243,6 +38379,10 @@ Body:
   Weight: 1
   EquipLevelMin: 100
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [650, 650]
+      Sp: [0, 0]
 - Id: 1100034
   AegisName: CLB_HM_PC_Yangnyeom
   Name: Pocket Chicken Seasoning
@@ -37250,6 +38390,10 @@ Body:
   Weight: 1
   EquipLevelMin: 200
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [420, 420]
 - Id: 1100035
   AegisName: CLB_HM_PC_Hot_Fried
   Name: Pocket Chicken Hot Fries
@@ -37257,11 +38401,19 @@ Body:
   Weight: 1
   EquipLevelMin: 100
   NoDrop: true
+  Use:
+    ItemHeal:
+      Hp: [0, 0]
+      Sp: [300, 300]
 - Id: 1100036
   AegisName: aegis_1100036
   Name: Sharing Fish
   Type: Healing
   Weight: 1
+  Use:
+    ItemHeal:
+      Hp: [2500, 2500]
+      Sp: [0, 0]
 - Id: 1100037
   AegisName: 25_A_Ev_Cookie
   Name: Orleans' Handmade Cookies

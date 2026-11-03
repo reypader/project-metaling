@@ -3,12 +3,16 @@
 //!
 //! Written from `reference/catalog/db/item_db.md` (clean-room), not ported from rAthena.
 
+mod script;
+
 use std::collections::{BTreeMap, HashMap};
 use std::path::Path;
 
 use anyhow::Context;
 use ro_core::ItemId;
-use ro_db::{AmmoType, Gender, ItemData, ItemDb, ItemType, WeaponType, ALL_CLASSES, ALL_JOBS};
+use ro_db::{
+    AmmoType, Gender, ItemData, ItemDb, ItemType, ItemUse, WeaponType, ALL_CLASSES, ALL_JOBS,
+};
 use serde::de::{MapAccess, Visitor};
 use serde::{Deserialize, Deserializer};
 
@@ -45,6 +49,11 @@ pub struct Report {
     pub read: Vec<usize>,
     /// Entries that merged into an earlier entry with the same id.
     pub merged: usize,
+    /// Consumables whose `Script` became a `Use` (a single `itemheal` or `percentheal`).
+    pub lifted_item_heal: usize,
+    pub lifted_percent_heal: usize,
+    /// Consumables with a `Script` that was not lifted.
+    pub not_lifted: usize,
     pub warnings: Vec<String>,
 }
 
@@ -89,9 +98,17 @@ pub fn convert(sources: &[(&str, &str)]) -> anyhow::Result<Converted> {
     let mut aegis_ids: HashMap<String, ItemId> = HashMap::new();
     for (file_index, entry) in raw {
         let id = entry.id;
+        let has_script = entry.script.is_some();
         let Some(item) = build(entry.clone(), &mut report.warnings) else {
             continue;
         };
+        if has_script && is_consumable(item.item_type) {
+            match item.on_use {
+                Some(ItemUse::ItemHeal { .. }) => report.lifted_item_heal += 1,
+                Some(ItemUse::PercentHeal { .. }) => report.lifted_percent_heal += 1,
+                None => report.not_lifted += 1,
+            }
+        }
         let key = item.aegis_name.to_lowercase();
         if aegis_ids.contains_key(&key) {
             report.warnings.push(format!(
@@ -134,7 +151,7 @@ pub fn render_file(
     Ok(format!(
         "# SPDX-License-Identifier: GPL-3.0-only\n\
          # Derived from rAthena (https://github.com/rathena/rathena) commit {rathena_commit}, {source}.\n\
-         # Modified: reduced to the fields Metaling uses (ITEM_DATA v2, with equipment fields) and normalized by tools/item-import. Do not edit by hand.\n\
+         # Modified: reduced to the fields Metaling uses (ITEM_DATA v3, with equipment fields and lifted heal `Use` effects) and normalized by tools/item-import. Do not edit by hand.\n\
          # See crates/ro-db/data/LICENSE and crates/ro-db/data/NOTICE.md.\n{yaml}"
     ))
 }
@@ -204,6 +221,7 @@ struct RawItem {
     flags: Option<RawFlags>,
     stack: Option<RawStack>,
     trade: Option<RawTrade>,
+    script: Option<String>,
 }
 
 /// A YAML map of `name: bool`, in file order.
@@ -281,6 +299,7 @@ impl RawItem {
         take(&mut self.gender, later.gender);
         take(&mut self.jobs, later.jobs);
         take(&mut self.refineable, later.refineable);
+        take(&mut self.script, later.script);
         if let Some(Switches(later_classes)) = later.classes {
             // An earlier entry without `Classes` stood for every class.
             let mine = self
@@ -748,6 +767,11 @@ fn build(raw: RawItem, warnings: &mut Vec<String>) -> Option<ItemData> {
     }
     let jobs = jobs(id, raw.jobs, warnings);
     let classes = classes(id, raw.classes, warnings);
+    let on_use = raw
+        .script
+        .as_deref()
+        .filter(|_| is_consumable(item_type))
+        .and_then(script::lift);
 
     Some(ItemData {
         id: ItemId(id),
@@ -780,5 +804,14 @@ fn build(raw: RawItem, warnings: &mut Vec<String>) -> Option<ItemData> {
         drop_effect,
         no_drop: trade.no_drop.unwrap_or(false),
         no_drop_override: trade.override_level.unwrap_or(DEFAULT_TRADE_OVERRIDE),
+        on_use,
     })
+}
+
+/// The types whose `Script` runs on use (equipment scripts are bonuses).
+fn is_consumable(item_type: ItemType) -> bool {
+    matches!(
+        item_type,
+        ItemType::Healing | ItemType::Usable | ItemType::Cash
+    )
 }

@@ -75,6 +75,8 @@ pub(crate) struct PlayerInfo {
     pub(crate) skills: SkillSet,
     /// The job level at each class change (2nd, 3rd, 4th); 0 = unset.
     pub(crate) change_level: [u16; 3],
+    /// rAthena `canuseitem_tick`: no item use before this time (ms), shared by every item.
+    pub(crate) canuseitem_at: u64,
 }
 
 /// Static appearance and identity of an NPC entity (warps included).
@@ -257,6 +259,7 @@ impl World {
                 changemap: false,
                 skills: SkillSet::from_spawn(&spawn.skills, &spawn.hidden_skills),
                 change_level: spawn.change_level,
+                canuseitem_at: 0,
             },
         );
         self.char_to_entity.insert(spawn.char_id, entity);

@@ -356,6 +356,7 @@ impl InventoryRepository for InMemoryRepo {
                 stats: [
                     status.str, status.agi, status.vit, status.int, status.dex, status.luk,
                 ],
+                zeny: status.zeny,
             };
         }
         self.statuses.lock().unwrap().insert(id, progress.status);

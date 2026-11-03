@@ -8,6 +8,9 @@ use crate::item::CharacterInventory;
 /// Default walk speed in ms per orthogonal cell (rAthena `DEFAULT_WALK_SPEED`).
 pub const DEFAULT_WALK_SPEED: u16 = 150;
 
+/// The most zeny a character can hold (spec `specs/effects/spec.md` §2.8).
+pub const MAX_ZENY: u32 = 1_000_000_000;
+
 /// Allocated stats and traits, job level, unspent points, exp and HP/SP/AP of a character (the
 /// `characters` row). The base level is `CharacterSpawn::base_level`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -33,6 +36,8 @@ pub struct CharacterStatus {
     pub trait_point: u16,
     /// Current AP (MaxAP is derived, not stored).
     pub ap: u32,
+    /// Zeny on hand, at most [`MAX_ZENY`].
+    pub zeny: u32,
 }
 
 impl Default for CharacterStatus {
@@ -58,6 +63,7 @@ impl Default for CharacterStatus {
             traits: [0; 6],
             trait_point: 0,
             ap: 0,
+            zeny: 0,
         }
     }
 }

@@ -67,7 +67,7 @@ fn gated_skills() -> (Arc<SkillDb>, Arc<SkillTreeDb>) {
         "gated",
         SkillDb::parse(
             "gated",
-            "Header: {Type: SKILL_DATA, Version: 1}
+            "Header: {Type: SKILL_DATA, Version: 2}
 Body:
 - {Id: 1, Name: NV_BASIC, MaxLevel: 9}
 - {Id: 2, Name: SM_SWORD, MaxLevel: 10}

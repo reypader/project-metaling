@@ -41,6 +41,10 @@ use super::settings::{
     encode_zc_repute_info_default, encode_zc_shortcut_key_list_empty, encode_zc_skillinfo_delete,
     encode_zc_skillinfo_list, encode_zc_skillinfo_update,
 };
+use super::skill::{
+    encode_zc_longpar_change, encode_zc_notify_skill2, encode_zc_use_item_ack2,
+    encode_zc_use_skill2, encode_zc_useskill_ack, SkillDamageParams,
+};
 use super::status::{
     encode_zc_attack_range, encode_zc_couplestatus, encode_zc_longlongpar_change,
     encode_zc_msg_state_change3, encode_zc_notify_effect, encode_zc_status,
@@ -432,6 +436,64 @@ impl EventEncoder for ModernEventEncoder {
                 amount,
                 reason,
             } => Ok(encode_zc_delete_item_from_body(*reason, *index, *amount)),
+            ServerEvent::LongParameterChanged { var_id, value } => {
+                Ok(encode_zc_longpar_change(*var_id, *value))
+            }
+            ServerEvent::SkillCasting {
+                src,
+                dst,
+                x,
+                y,
+                skill_id,
+                element,
+                delay_ms,
+            } => Ok(encode_zc_useskill_ack(
+                *src,
+                *dst,
+                (*x, *y),
+                *skill_id,
+                *element,
+                *delay_ms,
+            )),
+            ServerEvent::SkillDamage {
+                skill_id,
+                src,
+                dst,
+                tick,
+                src_speed,
+                dmg_speed,
+                damage,
+                level,
+                div,
+                damage_type,
+            } => Ok(encode_zc_notify_skill2(&SkillDamageParams {
+                skill_id: *skill_id,
+                src: *src,
+                dst: *dst,
+                tick: *tick,
+                src_speed: *src_speed,
+                dmg_speed: *dmg_speed,
+                damage: *damage,
+                level: *level,
+                div: *div,
+                damage_type: *damage_type,
+            })),
+            ServerEvent::SkillNoDamage {
+                skill_id,
+                value,
+                target,
+                src,
+                ok,
+            } => Ok(encode_zc_use_skill2(*skill_id, *value, *target, *src, *ok)),
+            ServerEvent::ItemUseAck {
+                index,
+                item_id,
+                gid,
+                amount,
+                ok,
+            } => Ok(encode_zc_use_item_ack2(
+                *index, *item_id, *gid, *amount, *ok,
+            )),
         }
     }
 }
@@ -521,6 +583,11 @@ pub fn is_implemented_outbound_opcode(opcode: PacketOpcode, _packetver: u32) -> 
             | PacketOpcode::ZC_ACK_TOUSESKILL
             | PacketOpcode::ZC_NOTIFY_EXP2
             | PacketOpcode::ZC_DELETE_ITEM_FROM_BODY
+            | PacketOpcode::ZC_LONGPAR_CHANGE
+            | PacketOpcode::ZC_USESKILL_ACK
+            | PacketOpcode::ZC_NOTIFY_SKILL_0X01DE
+            | PacketOpcode::ZC_USE_SKILL2
+            | PacketOpcode::ZC_USE_ITEM_ACK2
     )
 }
 

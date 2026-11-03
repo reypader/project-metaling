@@ -5,7 +5,9 @@ use std::path::PathBuf;
 
 use item_import::{convert, render_file, Converted, SOURCES};
 use ro_core::ItemId;
-use ro_db::{AmmoType, Gender, ItemData, ItemDb, ItemType, WeaponType, ALL_CLASSES, ALL_JOBS};
+use ro_db::{
+    AmmoType, Gender, ItemData, ItemDb, ItemType, ItemUse, WeaponType, ALL_CLASSES, ALL_JOBS,
+};
 
 fn db(body: &str) -> String {
     format!("Header:\n  Type: ITEM_DB\n  Version: 3\nBody:\n{body}")
@@ -641,4 +643,87 @@ fn tool_item_05_real_counts() {
         unknown_jobs.is_empty(),
         "every shipped job name resolves: {unknown_jobs:?}"
     );
+    // Catalog `scripting/items.md` §5: 288 whole-script heals.
+    assert_eq!(
+        (out.report.lifted_item_heal, out.report.lifted_percent_heal),
+        (212, 76)
+    );
+}
+
+/// DB-EFF-03 (`specs/effects/spec.md` §0.2): whole-script heals are lifted into `Use`, from our
+/// own fixture rows.
+#[test]
+fn db_eff_03_use_scripts_are_lifted() {
+    let usable = "  - Id: 601
+    AegisName: Test_Rand_Hp
+    Name: Rand Hp
+    Type: Healing
+    Script: |
+      itemheal rand(10,20),0;
+  - Id: 602
+    AegisName: Test_Sp
+    Name: Sp
+    Type: Healing
+    Script: |
+      itemheal 0,rand(5,9);
+  - Id: 603
+    AegisName: Test_Const
+    Name: Const
+    Type: Healing
+    Script: |
+      itemheal 30,4; /* comment */
+  - Id: 604
+    AegisName: Test_Percent
+    Name: Percent
+    Type: Usable
+    Script: |
+      percentheal 15,5;
+  - Id: 605
+    AegisName: Test_Mixed
+    Name: Mixed
+    Type: Healing
+    Script: |
+      itemheal rand(10,20),0;
+      sc_end SC_POISON;
+  - Id: 606
+    AegisName: Test_Box
+    Name: Box
+    Type: Usable
+    Script: |
+      getitem 601,1;
+  - Id: 607
+    AegisName: Test_No_Script
+    Name: No Script
+    Type: Healing
+";
+    let equip = "  - Id: 1290
+    AegisName: Test_Equip
+    Name: Equip
+    Type: Weapon
+    Locations:
+      Right_Hand: true
+    Script: |
+      itemheal 5,5;
+";
+    let out = run(usable, equip, "");
+    let heal = |hp, sp| Some(ItemUse::ItemHeal { hp, sp });
+    assert_eq!(find(&out, 601).on_use, heal((10, 20), (0, 0)));
+    assert_eq!(find(&out, 602).on_use, heal((0, 0), (5, 9)));
+    assert_eq!(find(&out, 603).on_use, heal((30, 30), (4, 4)));
+    assert_eq!(
+        find(&out, 604).on_use,
+        Some(ItemUse::PercentHeal { hp: 15, sp: 5 })
+    );
+    for id in [605, 606, 607, 1290] {
+        assert_eq!(find(&out, id).on_use, None, "item {id}");
+    }
+    let r = &out.report;
+    assert_eq!(
+        (r.lifted_item_heal, r.lifted_percent_heal, r.not_lifted),
+        (3, 1, 2)
+    );
+    // The lifted effect survives a render and reload.
+    let text = render_file(&out.files[0], "abc123", SOURCES[0].0).expect("renders");
+    let items = ItemDb::parse_file("usable", &text).expect("parses back");
+    assert_eq!(items, out.files[0]);
 }

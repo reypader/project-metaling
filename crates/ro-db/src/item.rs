@@ -1,19 +1,21 @@
 //! The item registry (`ITEM_DATA` YAML), produced offline by `tools/item-import` from rAthena's
-//! item database. Only the fields the inventory, floor items, `@item` and equipment use.
+//! item database. Only the fields the inventory, floor items, `@item`, equipment and item use
+//! read.
 
 use std::collections::HashMap;
 use std::path::Path;
 
 use ro_core::ItemId;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize, Serializer};
 
 use crate::yaml::{is_false, Schema};
 use crate::DbLoadError;
 
 /// `Header.Type` of an item file.
 pub const ITEM_DATA_TYPE: &str = "ITEM_DATA";
-/// `Header.Version` this crate reads and writes (2 added the equipment fields).
-pub const ITEM_DATA_VERSION: u32 = 2;
+/// `Header.Version` this crate reads and writes (2 added the equipment fields, 3 the `Use`
+/// effect).
+pub const ITEM_DATA_VERSION: u32 = 3;
 /// `Jobs` of an item usable by every job: all bits of the three base-class sets.
 pub const ALL_JOBS: [u64; 3] = [u64::MAX; 3];
 /// `Classes` of an item usable by every class (renewal `ITEMJ_ALL`, seven bits).
@@ -187,6 +189,27 @@ fn is_zero_u8(v: &u8) -> bool {
     *v == 0
 }
 
+/// What using a consumable does: the whole rAthena `Script` when it is a single heal
+/// statement, lifted by the importer (`specs/effects/spec.md` §0.2).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all_fields = "PascalCase", deny_unknown_fields)]
+pub enum ItemUse {
+    /// `itemheal`: HP and SP rolled in an inclusive `(min, max)` range each, then scaled by
+    /// the user's VIT/INT and recovery skills.
+    ItemHeal {
+        #[serde(serialize_with = "flow_pair")]
+        hp: (u32, u32),
+        #[serde(serialize_with = "flow_pair")]
+        sp: (u32, u32),
+    },
+    /// `percentheal`: percent of max HP and SP.
+    PercentHeal { hp: u8, sp: u8 },
+}
+
+fn flow_pair<S: Serializer>(pair: &(u32, u32), serializer: S) -> Result<S::Ok, S::Error> {
+    serde_saphyr::FlowSeq([pair.0, pair.1]).serialize(serializer)
+}
+
 /// One item database entry.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase", deny_unknown_fields)]
@@ -273,6 +296,9 @@ pub struct ItemData {
         skip_serializing_if = "is_default_no_drop_override"
     )]
     pub no_drop_override: u16,
+    /// The use effect of a consumable; `None` when the script isn't a lifted heal.
+    #[serde(rename = "Use", default, skip_serializing_if = "Option::is_none")]
+    pub on_use: Option<ItemUse>,
 }
 
 /// An `Etc` item with id 0 and every other field at its YAML default. For tests and builders:
@@ -310,6 +336,7 @@ impl Default for ItemData {
             drop_effect: 0,
             no_drop: false,
             no_drop_override: DEFAULT_NO_DROP_OVERRIDE,
+            on_use: None,
         }
     }
 }

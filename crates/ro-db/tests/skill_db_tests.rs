@@ -4,7 +4,8 @@
 use std::path::Path;
 
 use ro_db::{
-    DbLoadError, SkillDb, SkillRequirement, SkillTreeDb, SKILL_DATA_FILE, SKILL_TREE_DATA_FILE,
+    DbLoadError, SkillDb, SkillElement, SkillRequirement, SkillTreeDb, WeaponType, SKILL_DATA_FILE,
+    SKILL_TREE_DATA_FILE,
 };
 
 const NOVICE: u16 = 0;
@@ -177,7 +178,7 @@ fn trees_are_checked_against_the_registry() {
         "t",
         SkillDb::parse(
             "t",
-            "Header: {Type: SKILL_DATA, Version: 1}\nBody:\n- {Id: 1, Name: A, MaxLevel: 5}\n",
+            "Header: {Type: SKILL_DATA, Version: 2}\nBody:\n- {Id: 1, Name: A, MaxLevel: 5}\n",
         )
         .expect("parse"),
     )
@@ -197,11 +198,55 @@ fn trees_are_checked_against_the_registry() {
     }
     let bad_levels = SkillDb::parse(
         "t",
-        "Header: {Type: SKILL_DATA, Version: 1}\nBody:\n- {Id: 1, Name: A, MaxLevel: 2, SpCost: [1]}\n",
+        "Header: {Type: SKILL_DATA, Version: 2}\nBody:\n- {Id: 1, Name: A, MaxLevel: 2, SpCost: [1]}\n",
     )
     .expect("parse");
     assert!(matches!(
         SkillDb::from_rows("t", bad_levels),
         Err(DbLoadError::Schema { .. })
     ));
+}
+
+/// DB-EFF-01 (`specs/effects/spec.md` §1): the casting fields of the slice skills.
+#[test]
+fn db_eff_01_shipped_casting_fields() {
+    const MC_MAMMONITE: u16 = 42;
+    const AL_HEAL: u16 = 28;
+    let (skills, _) = shipped();
+    let bash = skills.get(SM_BASH).expect("bash");
+    assert_eq!(
+        (bash.sp(1), bash.sp(5), bash.sp(6), bash.sp(10)),
+        (8, 8, 15, 15)
+    );
+    assert_eq!(bash.zeny_cost(10), 0);
+    assert_eq!(bash.element(1), SkillElement::Weapon);
+    assert!(bash.allows_weapon(WeaponType::Fist) && !bash.allows_weapon(WeaponType::Bow));
+    assert_eq!(bash.hit_count(1), 1);
+
+    let mammonite = skills.get(MC_MAMMONITE).expect("mammonite");
+    assert_eq!(
+        (mammonite.zeny_cost(1), mammonite.zeny_cost(10)),
+        (100, 1000)
+    );
+    assert!(mammonite.allows_weapon(WeaponType::Bow));
+
+    let heal = skills.get(AL_HEAL).expect("heal");
+    assert!((1..=10).all(|lv| heal.after_cast_act_delay(lv) == 500));
+    assert_eq!(heal.element(10), SkillElement::Holy);
+    assert_eq!(heal.element(10).code(), 6);
+    assert!(heal.damage_flags.no_damage && heal.damage_flags.ignore_defense);
+
+    let first_aid = skills.get(NV_FIRSTAID).expect("first aid");
+    assert_eq!((first_aid.sp(1), first_aid.inf), (3, 4));
+    assert_eq!(first_aid.element(1), SkillElement::Neutral);
+    for skill in [first_aid, bash, mammonite, heal] {
+        assert_eq!(skill.cast_time(1), 0, "{} has no cast time", skill.name);
+        assert_eq!(
+            skill.fixed_cast_time(1),
+            0,
+            "{} has no fixed cast",
+            skill.name
+        );
+        assert!(skill.item_cost.is_empty() && skill.state.is_none());
+    }
 }

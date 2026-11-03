@@ -83,6 +83,12 @@ dataset is regenerated from a different commit, update its section.
   - `Gender` is forced for instruments (male), whips (female) and the two wedding rings;
   - `Jobs` becomes three base-class bitsets and `Classes` an `ITEMJ_` mask, with an unknown
     name allowing every job or class.
+- **Modified on 2026-11-01 by `tools/item-import` (`ITEM_DATA` version 3, `specs/effects`):**
+  regenerated from the same commit and files. A consumable's (`Healing`, `Usable`, `Cash`)
+  `Script` that is, once comments are removed, exactly one `itemheal <hp>,<sp>;` (each side a
+  constant or `rand(min,max)`) or `percentheal <hp>,<sp>;` statement becomes a `Use` field
+  (`ItemHeal` with inclusive `[min, max]` pairs, or `PercentHeal`). Every other script is still
+  dropped. 288 scripts are lifted (212 `itemheal`, 76 `percentheal`).
 - **Regenerate** (pass an expanded path, not one starting with `~`):
 
   ```bash
@@ -189,6 +195,16 @@ dataset is regenerated from a different commit, update its section.
     `JobLevel` to the job's max levels, and drops level-0 requirements;
   - turns job and skill names into ids (`Supernovice` is Super Novice). Mounted and dummy jobs
     with no class mapping (`Knight2`, ...) are skipped. Each tree is sorted by skill id.
+- **Modified on 2026-11-01 by `tools/skill-import`** (`SKILL_DATA` version 2, `specs/effects`):
+  also keeps the casting keys `CastTime`, `FixedCastTime`, `AfterCastActDelay`,
+  `AfterCastWalkDelay`, `Cooldown`, `HitCount`, `Element`, `DamageFlags`, `CastTimeFlags`, and
+  from `Requires` the `HpCost`, `ZenyCost`, `Weapon`, `ItemCost` and `State`. The changes:
+  - the numeric per-level keys expand like `SpCost`. `Element` names fill their listed levels
+    and repeat the last listed one above it;
+  - `Requires.Weapon` becomes a sorted list of the allowed weapon types (`Weapons`, renamed to
+    our `WeaponType` names). `All` or no key means any weapon, and the unused dual-wield names
+    are dropped;
+  - `ItemCost` keeps the aegis name, amount and optional level. `State: None` is dropped.
 - **Regenerate** (pass an expanded path):
 
   ```bash

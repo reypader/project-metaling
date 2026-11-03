@@ -4,7 +4,7 @@
 
 use std::collections::HashMap;
 
-use ro_db::{SkillDb, SkillRequirement, SkillTreeDb};
+use ro_db::{SkillDb, SkillElement, SkillRequirement, SkillTreeDb, WeaponType};
 use skill_import::{convert, expand, render_skills, render_trees, Converted, MaxLevels};
 
 const SKILLS: &str = "Header:
@@ -29,6 +29,7 @@ Body:
     MaxLevel: 10
     TargetType: Attack
     Range: -1
+    Element: Weapon
     Requires:
       SpCost:
         - Level: 1
@@ -45,6 +46,9 @@ Body:
           Amount: 15
       Weapon:
         Fist: true
+        Dagger: true
+        Bow: false
+        Double_DD: true
   - Id: 6
     Name: SM_PROVOKE
     Description: Provoke
@@ -64,6 +68,13 @@ Body:
     TargetType: Self
     Requires:
       SpCost: 30
+      Weapon:
+        All: true
+      ItemCost:
+        - Item: Test_Gem
+          Amount: 2
+        - Item: Test_Dust
+          Amount: 1
   - Id: 8
     Name: SM_ENDURE
     Description: Endure
@@ -77,6 +88,10 @@ Body:
     Description: First Aid
     MaxLevel: 1
     TargetType: Self
+    DamageFlags:
+      NoDamage: true
+    Requires:
+      State: None
     Flags:
       IsQuest: true
   - Id: 143
@@ -100,6 +115,49 @@ Body:
     Description: Pierce
     MaxLevel: 10
     TargetType: Attack
+    HitCount: -3
+    Element:
+      - Level: 1
+        Element: Fire
+      - Level: 3
+        Element: Holy
+    DamageFlags:
+      Critical: true
+      IgnoreFlee: true
+      Shiny: true
+    CastTimeFlags:
+      IgnoreDex: true
+    CastTime:
+      - Level: 1
+        Time: 1000
+      - Level: 2
+        Time: 1200
+    FixedCastTime: -1
+    AfterCastActDelay: 700
+    AfterCastWalkDelay: 300
+    Cooldown:
+      - Level: 1
+        Time: 0
+      - Level: 2
+        Time: 5000
+    Requires:
+      HpCost: 15
+      ZenyCost:
+        - Level: 1
+          Amount: 10
+        - Level: 2
+          Amount: 20
+      ItemCost:
+        - Item: Test_Gem
+          Amount: 1
+          Level: 2
+        - Item: Test_Dust
+          Amount: 3
+          Level: 4
+        - Item: Test_Bad
+          Amount: 1
+          Level: 11
+      State: Shield
   - Id: 9999
     Name: UNUSED_SKILL
     Description: Unused
@@ -388,7 +446,15 @@ fn jobs_without_an_id_are_skipped() {
     // `Supernovice` is the tree file's name for Super Novice (23).
     assert_eq!(tree(&c, 23), [(1, 9), (142, 1), (334, 1)]);
     assert_eq!(c.trees.len(), 6);
-    assert!(c.report.warnings.is_empty(), "{:?}", c.report.warnings);
+    // The only warnings are the casting fixture's deliberate bad entries.
+    let tree_warnings: Vec<_> = c
+        .report
+        .warnings
+        .iter()
+        .filter(|w| w.starts_with("job "))
+        .collect();
+    assert!(tree_warnings.is_empty(), "{tree_warnings:?}");
+    assert_eq!(c.report.warnings.len(), 3, "{:?}", c.report.warnings);
 }
 
 #[test]
@@ -419,4 +485,67 @@ fn rendered_files_load_back() {
         10,
         "falls back to the skill's"
     );
+}
+
+/// Spec `specs/effects/spec.md` §0.1: the casting fields, from our own fixture rows.
+#[test]
+fn casting_fields_are_imported() {
+    let c = converted();
+    let db = SkillDb::from_rows("test", c.skills.clone()).expect("valid registry");
+
+    let pierce = db.get(56).expect("pierce");
+    assert_eq!(pierce.hit_count, [-3; 10]);
+    // Listed levels 1 and 3; the gap stays Neutral, later levels repeat the last one.
+    assert_eq!(pierce.element(1), SkillElement::Fire);
+    assert_eq!(pierce.element(2), SkillElement::Neutral);
+    assert_eq!(pierce.element(10), SkillElement::Holy);
+    assert!(pierce.damage_flags.critical && pierce.damage_flags.ignore_flee);
+    assert!(!pierce.damage_flags.no_damage);
+    assert!(pierce.cast_time_flags.ignore_dex);
+    // Per-level lists use the series expansion like SpCost.
+    assert_eq!(
+        pierce.cast_time,
+        [1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800]
+    );
+    assert_eq!(pierce.fixed_cast_time(4), -1);
+    assert_eq!(pierce.after_cast_act_delay(10), 700);
+    assert_eq!(pierce.after_cast_walk_delay(1), 300);
+    assert_eq!((pierce.cooldown(1), pierce.cooldown(3)), (0, 10000));
+    assert_eq!(pierce.hp_cost(7), 15);
+    assert_eq!((pierce.zeny_cost(1), pierce.zeny_cost(10)), (10, 100));
+    assert_eq!(pierce.state.as_deref(), Some("Shield"));
+    // Level-dependent item costs: only that level's entry; the bad level was dropped.
+    let at = |lv| {
+        pierce
+            .item_cost(lv)
+            .map(|c| c.item.as_str())
+            .collect::<Vec<_>>()
+    };
+    assert_eq!(
+        (at(1), at(2), at(4)),
+        (vec![], vec!["Test_Gem"], vec!["Test_Dust"])
+    );
+    assert_eq!(pierce.item_cost.len(), 2);
+
+    let bash = db.get(5).expect("bash");
+    assert_eq!(bash.element(5), SkillElement::Weapon);
+    assert_eq!(bash.element(5).code(), 12);
+    assert_eq!(bash.weapons, [WeaponType::Fist, WeaponType::Dagger]);
+    assert!(bash.allows_weapon(WeaponType::Dagger) && !bash.allows_weapon(WeaponType::Bow));
+
+    let magnum = db.get(7).expect("magnum");
+    assert!(magnum.weapons.is_empty() && magnum.allows_weapon(WeaponType::Bow));
+    assert_eq!(magnum.item_cost(3).count(), 2);
+
+    let first_aid = db.get(142).expect("first aid");
+    assert!(first_aid.damage_flags.no_damage);
+    assert_eq!(first_aid.state, None);
+
+    let provoke = db.get(6).expect("provoke");
+    assert_eq!(provoke.element(1), SkillElement::Neutral);
+    assert_eq!((provoke.hit_count(1), provoke.cast_time(1)), (0, 0));
+    assert!(provoke.cast_time.is_empty() && provoke.element.is_empty());
+
+    let warned = |needle: &str| c.report.warnings.iter().any(|w| w.contains(needle));
+    assert!(warned("Double_DD") && warned("Shiny") && warned("Test_Bad"));
 }
