@@ -186,7 +186,7 @@ No potion capture arrived, and none was needed (session C already covered potion
 27. **`lua/item_heal.lua` was added** (not in the spec), so "same seed" actually exercises rolls (Bash draws none) and ruling 9. Cost if wrong: one extra MIT file.
 28. **Lua hook results are strict.** A non-integer or out-of-range number, or a negative heal, is a hook error, unlike `LevelValue`'s "negative heals 0". Cost if wrong: a spike-only divergence.
 29. **`mlua` isn't in the README**: it has no dependency list, and Acknowledgements credit reference repos and data sources. Cost if wrong: one line.
-30. **`./verify.sh --smoke` couldn't run:** rAthena's docker containers hold port 6900. They weren't stopped without asking.
+30. **`./verify.sh --smoke` couldn't run at first:** rAthena's docker containers held port 6900, and they weren't stopped without asking. After the commit, the user stopped them and the smoke run passed (2026-11-05, on `f206617`).
 
 **Final `reviewer` run (whole diff): no Critical. Fixes applied:**
 - **Important:** a loaded stack of amount 0 underflowed `amount - 1` in `use_item` (a debug panic on the map actor; in release, a free heal every 100 ms). It is now silent like an empty slot (catalog §7.2). `consume_one` returns false on a failed removal, and then no effect applies. Test: `eng_eff_15_zero_amount_stack_is_silent` (RED: overflow panic).
