@@ -2,9 +2,8 @@ use anyhow::{Context, Result};
 use clap::Parser;
 use ro_core::{ServerType, TARGET_PACKETVER};
 use ro_proxy::{
-    config::{format_host_port, ProxyArgs},
-    forwarder::run_proxy_server,
-    generate_log_filename, PacketSequenceRecorder,
+    config::format_host_port, forwarder::run_proxy_server, generate_log_filename,
+    PacketSequenceRecorder, ProxyArgs,
 };
 use std::{io::ErrorKind, sync::Arc, time::SystemTime};
 use tokio::net::TcpListener;

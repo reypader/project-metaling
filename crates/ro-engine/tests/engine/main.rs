@@ -1,0 +1,20 @@
+#![allow(clippy::unwrap_used, clippy::expect_used)]
+
+mod chat_command;
+mod combat;
+mod common;
+mod effects;
+mod equipment;
+mod error;
+mod floor_item;
+mod inventory;
+mod level_command;
+mod map_instance;
+mod mob;
+mod mob_drop;
+mod npc;
+mod settings;
+mod skill;
+mod stats;
+mod traits;
+mod warp;

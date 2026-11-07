@@ -4,7 +4,7 @@
 use std::path::Path;
 
 use serde::de::DeserializeOwned;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize, Serializer};
 
 use crate::DbLoadError;
 
@@ -118,4 +118,35 @@ struct DbFileRef<'a, T> {
 /// `skip_serializing_if` helper for flags that default to `false`.
 pub(crate) fn is_false(b: &bool) -> bool {
     !*b
+}
+
+/// `skip_serializing_if` helper for numbers that default to zero.
+pub(crate) fn is_zero<T: Default + PartialEq>(value: &T) -> bool {
+    *value == T::default()
+}
+
+/// Writes a long numeric table on one line (`[40, 46, 53]`).
+pub(crate) fn flow_list<T: Serialize, S: Serializer>(
+    values: &[T],
+    serializer: S,
+) -> Result<S::Ok, S::Error> {
+    serde_saphyr::FlowSeq(values).serialize(serializer)
+}
+
+/// Loads a file that must exist.
+pub(crate) fn load_required<T: DeserializeOwned>(
+    schema: &Schema,
+    path: &Path,
+) -> Result<Vec<T>, DbLoadError> {
+    schema.load(path)?.ok_or_else(|| DbLoadError::Io {
+        path: path.display().to_string(),
+        message: "file not found".into(),
+    })
+}
+
+pub(crate) fn schema_error(path: &str, message: String) -> DbLoadError {
+    DbLoadError::Schema {
+        path: path.to_string(),
+        message,
+    }
 }

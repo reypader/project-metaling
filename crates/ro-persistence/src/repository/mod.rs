@@ -1,35 +1,17 @@
 //! Repository contracts the servers depend on, implemented by `PostgresRepo` and by test doubles.
 
-use serde::{Deserialize, Serialize};
-
 mod account;
+mod auth_error;
 mod character;
+mod character_outcome_dto;
+mod error;
 mod inventory;
+mod play_state;
 
-pub use account::{AccountRepository, AuthError};
-pub use character::{
-    CancelDeleteOutcome, CharacterRepository, CreateCharacterError, DeleteReserveOutcome,
-};
-pub use inventory::{InventoryRepository, PlayState};
-
-/// Standard error variants returned by persistence repositories.
-#[derive(thiserror::Error, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub enum RepositoryError {
-    #[error("Record not found")]
-    NotFound,
-
-    #[error("Ownership mismatch or forbidden access")]
-    Forbidden,
-
-    #[error("Resource conflict: {0}")]
-    Conflict(String),
-
-    #[error("Identifier space exhausted: {0}")]
-    Exhausted(String),
-
-    #[error("Repository backend unavailable: {0}")]
-    Unavailable(String),
-
-    #[error("Internal repository failure: {0}")]
-    Internal(String),
-}
+pub use account::AccountRepository;
+pub use auth_error::AuthError;
+pub use character::CharacterRepository;
+pub use character_outcome_dto::{CancelDeleteOutcome, CreateCharacterError, DeleteReserveOutcome};
+pub use error::RepositoryError;
+pub use inventory::InventoryRepository;
+pub use play_state::PlayState;

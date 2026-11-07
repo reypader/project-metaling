@@ -79,7 +79,7 @@ the user, 2026-10-31) or found while building.
 ### Lua
 - A production Lua backend: loading every definition from Lua, one VM per map worker, sandboxed globals,
   memory and instruction limits, error reporting, hot reload (new state, validate, swap at a tick
-  boundary). The spike (`crates/ro-scripting/src/lua.rs`, feature `lua`) proves the interface and
+  boundary). The spike (`crates/ro-scripting/src/lua/`, feature `lua`) proves the interface and
   measures the call cost.
 - The spike's hook call costs ~2.5 µs with a fresh ctx table and ~6.5 µs with scoped userdata, against
   4-20 ns for a Rust hook (catalog `scripting/lua_notes.md` §3.1). Most of it is building and reading
@@ -254,7 +254,7 @@ gear (ATK/MATK/DEF/MDEF only), the tick's recalc pass with the follow-up queue, 
 - An `elvmax` unequip runs as a follow-up, so its own stat diff goes out next tick. The captured items had
   no stats, so nothing was visible; an `elvmax` item with stats would show its diff one tick late.
 - `status_diff` allocates two `Vec`s per recalc (dirty players only; idle ticks allocate nothing).
-- `wear.rs`: `DISPLACED` and `CASCADED_AMMO` are now identical; merge them or give them a reason to differ.
+- `equipment/systems/unequip.rs`: `DISPLACED` and `CASCADED_AMMO` are now identical; merge them or give them a reason to differ.
 
 ## equipment (branch `main`, plan `specs/equipment/plan.md`)
 
@@ -314,7 +314,7 @@ login-time `0x0091`, and every entry starts with `0x01d7` and sends `0x099b`.
 - Logging in on a same-map warp cell: the first `0x007d` warps the player, the client's second `0x007d` (the
   login reload) then runs the destination's actor init, and the warp's own `0x007d` only re-sends the inventory.
   Input should work, but the client may miss the destination's unit entries. rAthena has the same order.
-- Fix 2 simplifications (`crates/ro-engine/src/settings.rs`, `status.rs`):
+- Fix 2 simplifications (`crates/ro-engine/src/session/entry_settings.rs`, `stats/login_push.rs`):
   - `0x01d7` at entry goes to the player only; rAthena also sends it to observers in view, just before their
     `0x09fe`.
   - The MOTD is one fixed line (`MOTD`), not configurable.
@@ -328,7 +328,7 @@ login-time `0x0091`, and every entry starts with `0x01d7` and sends `0x099b`.
   nor `0x0ac4`, `0x082d` and `0x006b`.
 - Save and load hotkeys (`CZ_SHORTCUT_KEY_CHANGE*`, row shift) and the config toggles (`CZ_CONFIG`,
   `CZ_PARTY_CONFIG`, equipment window).
-- Status block placeholders (`crates/ro-engine/src/status.rs`):
+- Status block placeholders (`crates/ro-engine/src/stats/`):
   - NEXTBASEEXP/NEXTJOBEXP are the max-level constants until exp tables are imported.
 - Reputation points (always 0) and the reputation types list (fixed 1–4 in `ro-packets`).
 
@@ -421,7 +421,7 @@ Spec: `specs/mob-spawning/spec.md` (§4 lists these too). Mobs are visible, name
 - Once-spawns: the script `monster` command and `@monster`.
 - Mob gids are per map instance (rAthena: one global pool shared with NPCs).
 
-### Placement fidelity (`crates/ro-engine/src/mob.rs`, from the final review)
+### Placement fidelity (`crates/ro-engine/src/mob/placement.rs`, from the final review)
 - **Per-axis map-wide search.** When one search radius is negative (a line like `map,50,0` gives span
   `(1, 0)`), `search` goes map-wide on both axes; rAthena decides per axis. The shipped data has no such
   line.

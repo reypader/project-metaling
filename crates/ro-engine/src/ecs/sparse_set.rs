@@ -1,0 +1,140 @@
+//! `SparseSet<T>`: entity-indexed component storage with contiguous dense slices.
+
+use crate::ecs::Entity;
+
+const EMPTY: u32 = u32::MAX;
+
+/// `sparse[entity.index()]` points into the dense arrays. Lookups also compare the stored
+/// entity, so a stale handle (old generation) never sees the new occupant's data.
+#[derive(Debug)]
+pub(crate) struct SparseSet<T> {
+    sparse: Vec<u32>,
+    dense_entities: Vec<Entity>,
+    dense_data: Vec<T>,
+}
+
+impl<T> Default for SparseSet<T> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl<T> SparseSet<T> {
+    pub(crate) fn new() -> Self {
+        Self {
+            sparse: Vec::new(),
+            dense_entities: Vec::new(),
+            dense_data: Vec::new(),
+        }
+    }
+
+    #[cfg(test)]
+    pub(crate) fn len(&self) -> usize {
+        self.dense_data.len()
+    }
+
+    fn dense_index(&self, entity: Entity) -> Option<usize> {
+        let slot = *self.sparse.get(entity.index())?;
+        if slot == EMPTY {
+            return None;
+        }
+        let slot = slot as usize;
+        (self.dense_entities.get(slot) == Some(&entity)).then_some(slot)
+    }
+
+    pub(crate) fn contains(&self, entity: Entity) -> bool {
+        self.dense_index(entity).is_some()
+    }
+
+    pub(crate) fn get(&self, entity: Entity) -> Option<&T> {
+        self.dense_index(entity)
+            .and_then(|slot| self.dense_data.get(slot))
+    }
+
+    pub(crate) fn get_mut(&mut self, entity: Entity) -> Option<&mut T> {
+        self.dense_index(entity)
+            .and_then(|slot| self.dense_data.get_mut(slot))
+    }
+
+    /// Inserts or replaces; returns the previous value for this exact entity.
+    pub(crate) fn insert(&mut self, entity: Entity, value: T) -> Option<T> {
+        if let Some(slot) = self.dense_index(entity) {
+            return self
+                .dense_data
+                .get_mut(slot)
+                .map(|old| std::mem::replace(old, value));
+        }
+        // A stale occupant of the same index (older generation) is dropped first.
+        if let Some(&slot) = self.sparse.get(entity.index()) {
+            if slot != EMPTY {
+                if let Some(&stale) = self.dense_entities.get(slot as usize) {
+                    self.remove(stale);
+                }
+            }
+        }
+        if self.sparse.len() <= entity.index() {
+            self.sparse.resize(entity.index() + 1, EMPTY);
+        }
+        // Dense length is bounded by the entity capacity (u32), so this fits.
+        let slot = u32::try_from(self.dense_data.len()).unwrap_or(EMPTY);
+        if let Some(sparse) = self.sparse.get_mut(entity.index()) {
+            *sparse = slot;
+        }
+        self.dense_entities.push(entity);
+        self.dense_data.push(value);
+        None
+    }
+
+    /// The entity's value, inserting `T::default()` first when it has none.
+    pub(crate) fn entry(&mut self, entity: Entity) -> &mut T
+    where
+        T: Default,
+    {
+        let slot = match self.dense_index(entity) {
+            Some(slot) => slot,
+            None => {
+                self.insert(entity, T::default());
+                self.dense_data.len() - 1
+            }
+        };
+        &mut self.dense_data[slot]
+    }
+
+    /// Swap-removes; the moved element's sparse entry is repointed. Missing is a no-op.
+    pub(crate) fn remove(&mut self, entity: Entity) -> Option<T> {
+        let slot = self.dense_index(entity)?;
+        let last = self.dense_data.len().checked_sub(1)?;
+        self.dense_entities.swap(slot, last);
+        self.dense_data.swap(slot, last);
+        self.dense_entities.pop();
+        let value = self.dense_data.pop();
+        if let Some(sparse) = self.sparse.get_mut(entity.index()) {
+            *sparse = EMPTY;
+        }
+        if slot != last {
+            if let Some(&moved) = self.dense_entities.get(slot) {
+                if let Some(sparse) = self.sparse.get_mut(moved.index()) {
+                    *sparse = slot as u32;
+                }
+            }
+        }
+        value
+    }
+
+    pub(crate) fn entities(&self) -> &[Entity] {
+        &self.dense_entities
+    }
+
+    /// Values in the same order as `entities()`.
+    pub(crate) fn values(&self) -> &[T] {
+        &self.dense_data
+    }
+
+    #[cfg(test)]
+    pub(crate) fn values_mut(&mut self) -> &mut [T] {
+        &mut self.dense_data
+    }
+}
+
+#[cfg(test)]
+mod tests;

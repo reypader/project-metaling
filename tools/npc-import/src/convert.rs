@@ -5,48 +5,12 @@ use std::collections::{BTreeMap, HashMap};
 
 use ro_db::{MapMobSpawns, MapNpcs, MobId, MobSpawn, NpcKind, NpcSpawn, NpcState, WarpDest};
 
-use crate::header::{self, Header, HeaderError, Location, MobHeader, Place, SkipReason};
+use crate::header;
+use crate::header_dto::{Header, HeaderError, Location, MobHeader, Place, SkipReason};
 use crate::lex;
+use crate::lex_dto::Record;
+use crate::report_dto::{Imported, Report};
 use crate::sprite::{SpriteTable, INVISIBLE, WARPNPC};
-
-/// Counts of what was converted and skipped, plus messages worth a look.
-#[derive(Debug, Default, Clone, PartialEq, Eq)]
-pub struct Report {
-    pub files: usize,
-    /// Converted positioned NPCs by header keyword (`warp`, `warp2`, `script`, `duplicate`, `shop`, ...).
-    pub converted: BTreeMap<String, usize>,
-    /// Records not converted, by reason.
-    pub skipped: BTreeMap<String, usize>,
-    /// Problems rAthena would warn about (bad header, unknown sprite, renamed duplicate name, ...).
-    pub warnings: Vec<String>,
-    /// Files rAthena would stop reading early, with the reason.
-    pub file_errors: Vec<String>,
-    /// Spawn lines (`monster` / `boss_monster`).
-    pub mobs: MobReport,
-}
-
-/// What happened to the spawn lines.
-#[derive(Debug, Default, Clone, PartialEq, Eq)]
-pub struct MobReport {
-    /// Converted lines by keyword (`monster`, `boss_monster`).
-    pub converted: BTreeMap<String, usize>,
-    /// Lines not converted, by reason.
-    pub skipped: BTreeMap<String, usize>,
-    /// Sum of `Amount` over converted lines.
-    pub total_amount: u64,
-    /// The map with the most mobs, and its total.
-    pub largest_map: Option<(String, u64)>,
-    /// Lines converted with a change (cut name, dropped size/ai, ...) or skipped.
-    pub warnings: Vec<String>,
-}
-
-/// Everything one import produced, keyed by map name.
-#[derive(Debug, Default)]
-pub struct Imported {
-    pub npcs: BTreeMap<String, MapNpcs>,
-    pub mobs: BTreeMap<String, MapMobSpawns>,
-    pub report: Report,
-}
 
 /// rAthena `MAX_LEVEL`.
 const MAX_LEVEL: i64 = 275;
@@ -58,12 +22,6 @@ const DEFAULT_DELAY1: u32 = 5000;
 const MAX_DELAY: i64 = 0x0fff_ffff;
 /// An event label shorter than this is ignored (the data uses `0` / `1` as "none").
 const MIN_EVENT_LEN: usize = 4;
-
-impl Report {
-    fn count(map: &mut BTreeMap<String, usize>, key: &str) {
-        *map.entry(key.to_string()).or_default() += 1;
-    }
-}
 
 /// What a later `duplicate(...)` copies from its source.
 #[derive(Debug, Clone)]
@@ -232,7 +190,7 @@ impl Importer {
         });
     }
 
-    fn add_header(&mut self, h: Header, rec: &lex::Record, at: &str) {
+    fn add_header(&mut self, h: Header, rec: &Record, at: &str) {
         let keyword = rec.w2.to_ascii_lowercase();
         match h {
             Header::Skip(reason) => Report::count(&mut self.report.skipped, skip_label(reason)),
@@ -354,7 +312,7 @@ impl Importer {
     #[allow(clippy::too_many_arguments)]
     fn place(
         &mut self,
-        rec: &lex::Record,
+        rec: &Record,
         at: &str,
         place: Place,
         source: Source,

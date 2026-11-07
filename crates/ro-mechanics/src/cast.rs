@@ -1,26 +1,7 @@
 //! Renewal cast time and after-cast delay at default config (`specs/effects/spec.md` §2.3-§2.4;
 //! catalog `scripting/skills.md` §4 and §4.1). No status, item or skill reductions exist yet.
 
-use crate::BattleConfig;
-
-/// A skill's cast-time data at one level (`skill_db` `CastTime`, `FixedCastTime`,
-/// `CastTimeFlags.IgnoreDex`).
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
-pub struct CastTimeData {
-    /// ms.
-    pub cast_time: u32,
-    /// ms; −1 splits `cast_time` by `default_fixed_castrate`.
-    pub fixed_cast_time: i32,
-    pub ignore_dex: bool,
-}
-
-/// Who casts: a player's DEX and INT reduce the variable part; mobs and NPCs use the data
-/// cast time as is.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Caster {
-    Player { dex: i32, int: i32 },
-    MobOrNpc,
-}
+use crate::{BattleConfig, CastTimeData, Caster};
 
 /// The cast time in ms. For a player: the variable part is
 /// `time × (1 − √((2·DEX + INT) / vcast_stat_scale))`, truncated and at least 0, then the fixed

@@ -8,7 +8,8 @@ use crate::RepositoryError;
 use crate::{AccountRepository, AuthError};
 use ro_core::{Account, AccountId, AccountState};
 
-use super::{get_col, map_account_state, map_sex, map_sqlx_error, PostgresRepo};
+use super::mapping::{get_col, map_account_state, map_sex, map_sqlx_error};
+use super::PostgresRepo;
 
 /// Maps a database row to an `Account` entity using the row extraction helper.
 pub(crate) fn row_to_account(row: &PgRow) -> Result<Account, RepositoryError> {

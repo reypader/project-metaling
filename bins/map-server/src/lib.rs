@@ -2,6 +2,8 @@ mod claim;
 pub mod config;
 pub mod service;
 pub mod session;
+#[cfg(test)]
+mod test_support;
 
 pub use claim::{Claim, MapRepository};
 

@@ -29,11 +29,11 @@ Three rules follow from that goal:
 ~~~text
  imported skill_db / item_db (GPL data)        ro-scripting                        ro-engine
  costs, timing, range, target type,      ┌──────────────────────────┐     ┌──────────────────────────┐
- lifted item `Use:` values ─────────────►│ Definitions               │     │ cast pipeline (cast.rs)  │
+ lifted item `Use:` values ─────────────►│ Definitions               │     │ cast pipeline (cast/)    │
                                          │  SkillDef: EffectSpec[]   │◄────│  checks, 0x0b1a, timers, │
                                          │            + hook?        │     │  castend re-check        │
                                          │ HookBackend (Rust | Lua)  │     │                          │
-                                         │  hook(ctx) -> Effect[]    │────►│ effect applier (effect.rs│
+                                         │  hook(ctx) -> Effect[]    │────►│ effect applier (cast/)   │
                                          └──────────────────────────┘     │  damage, heal, spend,    │
                                                                            │  consume, packets)       │
                                                                            └──────────────────────────┘
@@ -96,7 +96,7 @@ The old open note asked how `ro-scripting` names an engine entity without a reve
 
 ## 5. Lua backend
 
-Planned shape. The `specs/effects` spike (M9, 2026-11-03) built `LuaHooks` behind the `lua` feature (`src/lua.rs`,
+Planned shape. The `specs/effects` spike (M9, 2026-11-03) built `LuaHooks` behind the `lua` feature (`src/lua/`,
 `lua/sm_bash.lua`, `lua/item_heal.lua`). It loads definitions and hooks from a returned table and matches the Rust
 backend effect for effect and roll for roll (SCR-LUA-01). The benchmark (`examples/hook_bench.rs`, catalog
 `scripting/lua_notes.md` §3.1) puts a bare call at ~35 ns, but a hook call at ~2.5 µs with a fresh ctx table and

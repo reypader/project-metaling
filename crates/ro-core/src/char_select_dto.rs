@@ -1,0 +1,67 @@
+//! Character-select DTOs: the character slots, their looks and stats, and the char-server list.
+
+use serde::{Deserialize, Serialize};
+
+use crate::ids_dto::{AccountId, CharId, MapPosition, Sex};
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CharacterSummary {
+    pub char_id: CharId,
+    pub account_id: AccountId,
+    pub slot: u8,
+    pub name: String,
+    pub sex: Sex,
+    pub job_class: u16,
+    pub base_level: u16,
+    pub job_level: u16,
+    pub hair_style: u16,
+    pub hair_color: u16,
+    pub last_map: String,
+    pub last_pos: MapPosition,
+    pub delete_date: Option<u64>,
+    pub looks: CharacterLooks,
+    pub select_stats: CharacterSelectStats,
+}
+
+/// The status values the char-select screen shows (`CHARACTER_INFO`): the last saved ones, not
+/// recomputed. No traits or AP: the entry has no fields for them.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CharacterSelectStats {
+    pub base_exp: u64,
+    pub job_exp: u64,
+    pub hp: u32,
+    pub max_hp: u32,
+    pub sp: u32,
+    pub max_sp: u32,
+    pub status_point: u16,
+    pub skill_point: u16,
+    /// Allocated STR..LUK, without the job bonus.
+    pub stats: [u16; 6],
+    /// Zeny on hand: the client takes it from here; map entry sends no `0x00b1`.
+    pub zeny: u32,
+}
+
+/// The worn gear the char-select screen shows (the `characters` look columns). Not the same as
+/// the map's [`UnitLooks`](crate::UnitLooks): the weapon here is a type, not an item id.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CharacterLooks {
+    /// The weapon type (rAthena `W_*`, or a dual-wield constant); 0 bare-handed.
+    pub weapon_type: u16,
+    /// The `View` of the armor in the left hand; 0 for nothing or a left-hand weapon.
+    pub shield: u16,
+    /// View ids after the costume override.
+    pub head_top: u16,
+    pub head_mid: u16,
+    pub head_bottom: u16,
+    pub robe: u16,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CharServerInfo {
+    pub ip: [u8; 4],
+    pub port: u16,
+    pub name: String,
+    pub users: u16,
+    pub server_type: u16,
+    pub new_server: u16,
+}

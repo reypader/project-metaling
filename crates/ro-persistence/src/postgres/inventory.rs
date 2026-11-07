@@ -11,7 +11,8 @@ use ro_core::{
     ITEM_OPTION_SLOTS, MAX_ZENY,
 };
 
-use super::{get_col, map_sqlx_error};
+use super::convert::{big, int, narrow, small, to_big, to_int, to_small};
+use super::mapping::{get_col, map_sqlx_error};
 use crate::{InventoryRepository, PlayState, PostgresRepo, RepositoryError};
 
 const SELECT_SKILLS: &str =
@@ -56,45 +57,6 @@ const INSERT_ITEMS: &str = "INSERT INTO inventory (char_id, nameid, amount, equi
     option_id4, option_val4, option_parm4, \
     expire_time, favorite, bound, unique_id, equip_switch, enchantgrade, ord) \
     ORDER BY t.ord";
-
-fn bad(col: &str, value: impl std::fmt::Display) -> RepositoryError {
-    RepositoryError::Internal(format!("column '{col}' out of range: {value}"))
-}
-
-/// Reads an integer column stored wider than its Rust type.
-fn narrow<T: TryFrom<i64>>(col: &str, wide: i64) -> Result<T, RepositoryError> {
-    T::try_from(wide).map_err(|_| bad(col, wide))
-}
-
-fn big<T: TryFrom<i64>>(row: &PgRow, col: &str) -> Result<T, RepositoryError> {
-    let wide: i64 = get_col(row, col)?;
-    narrow(col, wide)
-}
-
-fn int<T: TryFrom<i64>>(row: &PgRow, col: &str) -> Result<T, RepositoryError> {
-    let wide: i32 = get_col(row, col)?;
-    narrow(col, i64::from(wide))
-}
-
-fn small<T: TryFrom<i64>>(row: &PgRow, col: &str) -> Result<T, RepositoryError> {
-    let wide: i16 = get_col(row, col)?;
-    narrow(col, i64::from(wide))
-}
-
-/// A value for a `SMALLINT` column; one that doesn't fit is refused, not wrapped.
-fn to_small(col: &str, value: u16) -> Result<i16, RepositoryError> {
-    i16::try_from(value).map_err(|_| bad(col, value))
-}
-
-/// A value for an `INT` column.
-fn to_int(col: &str, value: u32) -> Result<i32, RepositoryError> {
-    i32::try_from(value).map_err(|_| bad(col, value))
-}
-
-/// A value for a `BIGINT` column.
-fn to_big(col: &str, value: u64) -> Result<i64, RepositoryError> {
-    i64::try_from(value).map_err(|_| bad(col, value))
-}
 
 const CARD_COLS: [&str; ITEM_CARD_SLOTS] = ["card0", "card1", "card2", "card3"];
 const OPTION_COLS: [[&str; 3]; ITEM_OPTION_SLOTS] = [

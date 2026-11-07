@@ -5,7 +5,7 @@ use sqlx::{query, raw_sql, PgPool};
 use crate::RepositoryError;
 use ro_core::Account;
 
-use super::{account_state_to_i16, map_sqlx_error, sex_to_i16};
+use super::mapping::{account_state_to_i16, map_sqlx_error, sex_to_i16};
 
 /// Authoritative PostgreSQL repository backed by a connection pool (`sqlx::PgPool`).
 #[derive(Debug, Clone)]

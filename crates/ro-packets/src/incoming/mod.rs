@@ -32,6 +32,7 @@
 pub mod char;
 pub mod frame;
 pub mod helpers;
+pub mod intent_parser;
 pub mod login;
 pub mod map;
 
@@ -39,10 +40,9 @@ pub use char::{
     ChCharListReqPacket, ChDeleteChar3CancelPacket, ChDeleteChar3ReservedPacket, ChEnterPacket,
     ChMakeCharPacket, ChSelectCharPacket, PingPacket,
 };
-pub use frame::{
-    decode_frame, DecodedFrame, ModernIntentParser, Phase0IntentParser, RathenaIntentParser,
-};
+pub use frame::{decode_frame, DecodedFrame};
 pub use helpers::{parse_sex, read_fixed_string};
+pub use intent_parser::{ModernIntentParser, Phase0IntentParser, RathenaIntentParser};
 pub use login::CaLoginPacket;
 pub use map::{
     CzAdvancedStatusChangePacket, CzBlockingPlayCancelPacket, CzCancelLockonPacket,

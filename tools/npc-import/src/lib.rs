@@ -7,9 +7,13 @@
 
 mod convert;
 mod header;
+mod header_dto;
 mod lex;
+mod lex_dto;
 mod manifest;
+mod report_dto;
 mod sprite;
+mod sprite_dto;
 
 use std::collections::BTreeMap;
 use std::path::Path;
@@ -17,9 +21,11 @@ use std::path::Path;
 use anyhow::Context;
 use ro_db::{DbLoadError, MapMobSpawns, MapNpcs};
 
-pub use convert::{Imported, Importer, MobReport, Report};
-pub use lex::{records, LexError, Record};
+pub use convert::Importer;
+pub use lex::records;
+pub use lex_dto::{LexError, Record};
 pub use manifest::{resolve as resolve_manifest, Manifest};
+pub use report_dto::{Imported, MobReport, Report};
 pub use sprite::SpriteTable;
 
 /// Renewal manifest entry point, relative to the rAthena root.

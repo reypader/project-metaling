@@ -4,101 +4,18 @@
 
 use ro_db::NpcState;
 
-use crate::lex::Record;
+use crate::header_dto::{
+    CutName, Header, HeaderError, Location, MobHeader, ParsedName, Place, SkipReason,
+};
+use crate::lex_dto::Record;
 
 /// rAthena `NPC_NAME_LENGTH`.
 pub const NPC_NAME_LENGTH: usize = 50;
 /// rAthena reads the map name with `%15[^,]`.
 const MAP_NAME_MAX: usize = 15;
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Location {
-    pub map: String,
-    pub x: i16,
-    pub y: i16,
-    pub dir: i16,
-}
-
-/// Where an NPC header puts it: on a map, or floating (`-`, not on any map).
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum Place {
-    Map(Location),
-    Floating,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum Header {
-    Warp {
-        loc: Location,
-        warp2: bool,
-        state: NpcState,
-        span: (i16, i16),
-        dest_map: String,
-        dest: (i16, i16),
-    },
-    Script {
-        place: Place,
-        state: NpcState,
-        sprite: String,
-        /// OnTouch half-extents when both are given and non-negative.
-        trigger: Option<(i16, i16)>,
-    },
-    Shop {
-        place: Place,
-        sprite: String,
-    },
-    Duplicate {
-        place: Place,
-        src: String,
-        /// Raw `w4`: its meaning depends on the source's kind.
-        w4: String,
-    },
-    /// A `monster` / `boss_monster` spawn line.
-    Mob(MobHeader),
-    /// Not something this tool converts (`function`, `mapflag`, ...).
-    Skip(SkipReason),
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub enum SkipReason {
-    Function,
-    Mapflag,
-    UnknownKeyword,
-}
-
 /// rAthena `NAME_LENGTH - 1`: a mob name is read with `%23[^,]`.
 pub const MOB_NAME_MAX: usize = 23;
-
-/// A spawn line's fields as written, before validation and name/id resolution. Absent numbers
-/// in `w1` are 0.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct MobHeader {
-    pub map: String,
-    pub x: i16,
-    pub y: i16,
-    /// Raw `(xs, ys)`.
-    pub span: (i16, i16),
-    /// The keyword was `boss_monster`.
-    pub boss: bool,
-    /// The name part of `w3`, cut to `MOB_NAME_MAX` bytes.
-    pub name: String,
-    pub name_truncated: bool,
-    /// The level part of `w3`; `None` when absent or not a number.
-    pub level: Option<i64>,
-    /// Mob id or AegisName token, trimmed.
-    pub mob: String,
-    pub amount: i64,
-    pub delay1: Option<i64>,
-    pub delay2: Option<i64>,
-    /// Raw event field, quotes not yet stripped.
-    pub event: Option<String>,
-    pub size: Option<i64>,
-    pub ai: Option<i64>,
-}
-
-/// Why a header that looked like an NPC could not be read.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct HeaderError(pub String);
 
 const SHOP_KEYWORDS: [&str; 5] = ["shop", "cashshop", "itemshop", "pointshop", "marketshop"];
 
@@ -387,16 +304,6 @@ pub fn sprite_token(w4: &str) -> &str {
     &w4[..end]
 }
 
-/// An NPC name split into its parts.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct ParsedName {
-    pub display: String,
-    /// `None` when rAthena would generate one (empty, or still containing `::`).
-    pub unique: Option<String>,
-    /// A part was longer than `NPC_NAME_LENGTH` and was cut (rAthena warns).
-    pub truncated: bool,
-}
-
 /// Splits `w3` at the first `::`; without it both parts are the full string. Each is cut to
 /// `NPC_NAME_LENGTH` bytes (on a char boundary).
 pub fn parse_name(w3: &str) -> ParsedName {
@@ -411,12 +318,6 @@ pub fn parse_name(w3: &str) -> ParsedName {
         truncated: display.truncated || unique.truncated,
         unique: (!unique.text.is_empty() && !unique.text.contains("::")).then_some(unique.text),
     }
-}
-
-/// A name cut to a byte limit.
-pub struct CutName {
-    pub text: String,
-    pub truncated: bool,
 }
 
 /// Cuts `s` to at most `max` bytes, on a char boundary.

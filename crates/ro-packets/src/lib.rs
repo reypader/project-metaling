@@ -4,18 +4,24 @@
 //! length table lookups, incoming packet decoders, and outgoing packet serializers
 //! for Ragnarok Online protocol version `TARGET_PACKETVER = 20260219`.
 
-mod codec;
 mod coords;
+mod error;
+mod event_encoder;
 mod incoming;
 mod opcode;
 mod outgoing;
+mod packet_decoder;
+mod packet_encoder;
+mod packet_intent_parser;
+mod packet_length_table;
 mod table;
-mod wire;
+mod wire_dto;
 
-pub use codec::{PacketDecoder, PacketEncoder};
 pub use coords::{
     pack_map_position, pack_pos2, pack_pos_dir, unpack_map_position, unpack_pos2, unpack_pos_dir,
 };
+pub use error::PacketCodecError;
+pub use event_encoder::EventEncoder;
 pub use incoming::{
     decode_frame, parse_sex, read_fixed_string, CaLoginPacket, ChCharListReqPacket,
     ChDeleteChar3CancelPacket, ChDeleteChar3ReservedPacket, ChEnterPacket, ChMakeCharPacket,
@@ -61,8 +67,9 @@ pub use outgoing::{
     is_implemented_outbound_opcode, write_fixed_string, ActParams, CharServerEntry,
     ModernEventEncoder, Phase0EventEncoder, RathenaEventEncoder, SkillDamageParams,
 };
+pub use packet_decoder::PacketDecoder;
+pub use packet_encoder::PacketEncoder;
+pub use packet_intent_parser::PacketIntentParser;
+pub use packet_length_table::PacketLengthTable;
 pub use table::{lookup_packet_length, RathenaPacketLengthTable};
-pub use wire::{
-    EventEncoder, PacketCodecError, PacketIntentParser, PacketLength, PacketLengthTable, RawPacket,
-    MAX_PACKET_SIZE,
-};
+pub use wire_dto::{PacketLength, RawPacket, MAX_PACKET_SIZE};

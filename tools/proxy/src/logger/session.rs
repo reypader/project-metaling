@@ -1,6 +1,5 @@
 use std::{
     collections::VecDeque,
-    fmt,
     sync::{
         atomic::{AtomicUsize, Ordering},
         Arc, Mutex,
@@ -10,34 +9,13 @@ use std::{
 use ro_core::ServerType;
 use ro_packets::PacketOpcode;
 
-use crate::logger::{recorder::PacketSequenceRecorder, resync::DEFAULT_PREVIEW_BYTES};
+use crate::logger::{
+    recorder::PacketSequenceRecorder,
+    resync::DEFAULT_PREVIEW_BYTES,
+    sequence_dto::{PacketDirection, PacketSequenceEntry},
+};
 
 pub const DEFAULT_MAX_SESSION_HISTORY: usize = 10_000;
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum PacketDirection {
-    ClientToServer,
-    ServerToClient,
-}
-
-impl fmt::Display for PacketDirection {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::ClientToServer => write!(f, "CLIENT -> SERVER"),
-            Self::ServerToClient => write!(f, "SERVER -> CLIENT"),
-        }
-    }
-}
-
-/// A recorded packet entry in the chronological sequence of a session.
-#[derive(Debug, Clone)]
-pub struct PacketSequenceEntry {
-    pub seq: usize,
-    pub direction: PacketDirection,
-    pub opcode: PacketOpcode,
-    pub length: usize,
-    pub detail: String,
-}
 
 /// Tracks the chronological sequence of packets for an individual connection session.
 #[derive(Debug)]
@@ -178,58 +156,4 @@ impl SessionSequenceTracker {
 }
 
 #[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_session_sequence_tracker_with_global() {
-        let recorder = Arc::new(PacketSequenceRecorder::new());
-        let tracker = SessionSequenceTracker::with_global(ServerType::Login, 10, recorder.clone());
-
-        assert_eq!(tracker.packet_count(), 0);
-
-        let entry = PacketSequenceEntry {
-            seq: tracker.next_seq(),
-            direction: PacketDirection::ClientToServer,
-            opcode: PacketOpcode(0x0064),
-            length: 55,
-            detail: "[IMPLEMENTED] CA_LOGIN".to_string(),
-        };
-        tracker.record(entry);
-
-        assert_eq!(tracker.packet_count(), 1);
-        assert_eq!(recorder.len(), 1);
-
-        let global_entries = recorder.entries();
-        assert_eq!(global_entries.len(), 1);
-        assert_eq!(global_entries[0].global_seq, 1);
-        assert_eq!(global_entries[0].session_id, 10);
-        assert_eq!(global_entries[0].server_type, ServerType::Login);
-        assert_eq!(global_entries[0].direction, PacketDirection::ClientToServer);
-        assert_eq!(global_entries[0].opcode, PacketOpcode(0x0064));
-    }
-
-    #[test]
-    fn test_session_sequence_tracker_bounded_capacity() {
-        let tracker = SessionSequenceTracker::with_history_limit(2);
-        assert_eq!(tracker.max_history(), 2);
-
-        for i in 1..=4 {
-            tracker.record(PacketSequenceEntry {
-                seq: tracker.next_seq(),
-                direction: PacketDirection::ClientToServer,
-                opcode: PacketOpcode(0x0064),
-                length: 55,
-                detail: format!("Session Packet {}", i),
-            });
-        }
-
-        assert_eq!(tracker.packet_count(), 4);
-
-        let flow = tracker.format_sequence_flow();
-        assert!(!flow.contains("Session Packet 1"));
-        assert!(!flow.contains("Session Packet 2"));
-        assert!(flow.contains("Session Packet 3"));
-        assert!(flow.contains("Session Packet 4"));
-    }
-}
+mod tests;

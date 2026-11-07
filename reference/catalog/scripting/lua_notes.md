@@ -58,7 +58,7 @@ Findings:
 * **Scoped non-`'static` userdata is the slowest option** (6.5 µs): mlua builds a new metatable for each one (documented on `Scope::create_userdata`). `'static` userdata with a once-registered metatable is cheaper than a field-by-field table (760 vs 1 330 ns for two units).
 * `Lua::scope` itself is free. The cost is what's created inside it.
 * **For the production backend** (none of these are built yet): pass the few values a hook reads as plain arguments, or as lazily filled `'static` userdata, never a full snapshot table; let hooks return effects through a `'static` emitter function or multiple returns instead of a list of tables; give `roll`/`skill_level` as `'static` functions that reach the per-call state through `Lua::set_app_data`, instead of making scoped closures per call. Measure again before adding per-hit hooks.
-* Determinism: with the same seed, the Lua `sm_bash` and `item_heal` hooks give the same effects and the same roll sequence as the Rust ones (SCR-LUA-01, `crates/ro-scripting/tests/lua_tests.rs`), including a constant `itemheal` side that draws no roll.
+* Determinism: with the same seed, the Lua `sm_bash` and `item_heal` hooks give the same effects and the same roll sequence as the Rust ones (SCR-LUA-01, `crates/ro-scripting/tests/scripting/lua.rs`), including a constant `itemheal` side that draws no roll.
 
 ## 4. VM topology
 
